@@ -35,7 +35,7 @@
   "errors": {
     "403": {
       "title": "403 - 访问被拒绝",
-      "subtitle": "抱歉，您无权访问 EduManagement 360 系统的该区域。"
+      "subtitle": "抱歉，您无权访问 School Pro 系统的该区域。"
     },
     "404": {
       "title": "404 - 页面未找到",
@@ -44,11 +44,11 @@
     "general": "发生错误，请稍后重试。"
   },
   "brand": {
-    "title": "SchoolPro",
+    "title": "School Pro",
     "tagline": "教育管理系统"
   },
   "footer": {
-    "copyright": "© 2026 EduManagement 360. 保留所有权利。",
+    "copyright": "© 2026 School Pro. 保留所有权利。",
     "technicalSupport": "技术支持"
   }
 }

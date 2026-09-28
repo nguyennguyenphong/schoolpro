@@ -7,7 +7,6 @@ export interface UseHomeResult {
   loading: boolean;
   error: Error | null;
   refetch: () => Promise<void>;
-  submitAssignment: (id: string) => Promise<boolean>;
 }
 
 // Backward compatibility alias
@@ -56,32 +55,10 @@ export function useHome(): UseHomeResult {
     };
   }, []);
 
-  const submitAssignment = useCallback(async (id: string): Promise<boolean> => {
-    try {
-      const res = await homeService.submitAssignment(id);
-      if (res.success) {
-        setData((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            urgentAssignments: prev.urgentAssignments.map((item) =>
-              item.id === id ? { ...item, isSubmitted: true } : item
-            ),
-          };
-        });
-        return true;
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  }, []);
-
   return {
     data,
     loading,
     error,
     refetch: fetchData,
-    submitAssignment,
   };
 }

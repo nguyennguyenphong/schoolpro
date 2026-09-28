@@ -83,7 +83,7 @@ export const DashboardPage: React.FC = () => {
               Bảng Thống kê & Phân tích Học tập
             </h1>
             <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-              360° Analytics
+              Thống kê Học tập
             </span>
           </div>
           <p className="text-xs text-slate-500 mb-0">

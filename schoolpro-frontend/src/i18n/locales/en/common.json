@@ -35,7 +35,7 @@
   "errors": {
     "403": {
       "title": "403 - Access Denied",
-      "subtitle": "Sorry, you do not have permission to access this section of EduManagement 360."
+      "subtitle": "Sorry, you do not have permission to access this section of School Pro."
     },
     "404": {
       "title": "404 - Page Not Found",
@@ -44,11 +44,11 @@
     "general": "An error occurred, please try again later."
   },
   "brand": {
-    "title": "SchoolPro",
+    "title": "School Pro",
     "tagline": "Education Management System"
   },
   "footer": {
-    "copyright": "© 2026 EduManagement 360. All rights reserved.",
+    "copyright": "© 2026 School Pro. All rights reserved.",
     "technicalSupport": "Technical Support"
   }
 }

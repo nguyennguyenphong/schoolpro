@@ -5,8 +5,6 @@ import {
   HomeSkeleton,
   WelcomeBanner,
   FunctionalCardsGrid,
-  RemindersCarousel,
-  AnnouncementsSection,
 } from "@/modules/students/features/home/components";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -14,7 +12,7 @@ import { Icon } from "@/components/ui/Icon";
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
-  const { data, loading, error, refetch, submitAssignment } = useHome();
+  const { data, loading, error, refetch } = useHome();
 
   if (loading && !data) {
     return <HomeSkeleton />;
@@ -49,22 +47,9 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* 1. Hero Welcome Banner (Bordered & Accessible) */}
       <WelcomeBanner profile={data.profile} />
 
-      {/* 2. Functional Cards Grid (360 Ecosystem Features) */}
       <FunctionalCardsGrid features={data.features} />
-
-      {/* 3. Section Nhắc nhở (Carousel of Reminder Cards) */}
-      <RemindersCarousel
-        schedule={data.todaySchedule}
-        assignments={data.urgentAssignments}
-        exams={data.upcomingExams}
-        onSubmitAssignment={submitAssignment}
-      />
-
-      {/* 4. Section Thông báo (Top 10 Announcements List) */}
-      <AnnouncementsSection notices={data.notices} />
     </div>
   );
 };

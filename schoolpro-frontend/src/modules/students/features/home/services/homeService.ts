@@ -1,21 +1,20 @@
 import type {
   HomeData,
   StudentProfile,
-  ClassScheduleItem,
-  AssignmentItem,
+  FeatureItem,
 } from "@/modules/students/features/home/types";
 import { mockHomeData } from "@/modules/students/features/home/services/mock/mockHomeData";
 
 /**
  * Service layer for Student Home feature.
- * Currently backed by structured mock data with simulated async latency.
+ * Backed by structured mock data with simulated async latency.
  * Ready for REST / GraphQL API integration.
  */
 class HomeService {
   private latency = 350;
 
   /**
-   * Fetches full home page data for student
+   * Fetches full home page data for student (profile and functional cards)
    */
   async getHomeData(): Promise<HomeData> {
     return new Promise((resolve) => {
@@ -42,38 +41,12 @@ class HomeService {
   }
 
   /**
-   * Fetches today's schedule
+   * Fetches functional cards list
    */
-  async getTodaySchedule(): Promise<ClassScheduleItem[]> {
+  async getFeatures(): Promise<FeatureItem[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve([...mockHomeData.todaySchedule]);
-      }, this.latency);
-    });
-  }
-
-  /**
-   * Simulates submitting an assignment
-   */
-  async submitAssignment(assignmentId: string): Promise<{ success: boolean; message: string }> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const item = mockHomeData.urgentAssignments.find((a) => a.id === assignmentId);
-        if (item) {
-          item.isSubmitted = true;
-        }
-        resolve({ success: true, message: "Nộp bài thành công!" });
-      }, 500);
-    });
-  }
-
-  /**
-   * Fetches urgent assignments
-   */
-  async getUrgentAssignments(): Promise<AssignmentItem[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([...mockHomeData.urgentAssignments]);
+        resolve([...mockHomeData.features]);
       }, this.latency);
     });
   }

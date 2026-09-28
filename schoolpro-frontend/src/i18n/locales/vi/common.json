@@ -35,7 +35,7 @@
   "errors": {
     "403": {
       "title": "403 - Truy cập bị từ chối",
-      "subtitle": "Xin lỗi, bạn không có quyền truy cập vào phân vùng này của hệ thống EduManagement 360."
+      "subtitle": "Xin lỗi, bạn không có quyền truy cập vào phân vùng này của hệ thống School Pro."
     },
     "404": {
       "title": "404 - Không tìm thấy trang",
@@ -44,11 +44,11 @@
     "general": "Đã có lỗi xảy ra, vui lòng thử lại sau."
   },
   "brand": {
-    "title": "SchoolPro",
+    "title": "School Pro",
     "tagline": "Hệ thống Quản lý Giáo dục"
   },
   "footer": {
-    "copyright": "© 2026 EduManagement 360. Bảo lưu mọi quyền.",
+    "copyright": "© 2026 School Pro. Bảo lưu mọi quyền.",
     "technicalSupport": "Hỗ trợ kỹ thuật"
   }
 }

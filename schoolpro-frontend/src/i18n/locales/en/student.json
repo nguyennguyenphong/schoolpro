@@ -13,7 +13,7 @@
     "welcome": "Welcome back, {{name}}! Have a productive study day.",
     "currentSemester": "Semester 1",
     "academicYear": "Academic Year 2026 - 2027",
-    "quickActions": "360 Ecosystem Features",
+    "quickActions": "System Features",
     "viewAll": "View all"
   },
   "dashboard": {
@@ -21,12 +21,12 @@
     "welcome": "Welcome back, {{name}}! Have a productive study day.",
     "currentSemester": "Semester 1",
     "academicYear": "Academic Year 2026 - 2027",
-    "quickActions": "360 Ecosystem Features",
+    "quickActions": "System Features",
     "viewAll": "View all"
   },
   "features": {
     "announcements": {
-      "title": "Notices 360",
+      "title": "Notices",
       "description": "Updates from school, department & faculty",
       "badge": "3 new"
     },
@@ -36,7 +36,7 @@
       "badge": "4 tasks"
     },
     "assignments": {
-      "title": "Assignments 360",
+      "title": "Assignments",
       "description": "Homework, project deliverables & quizzes",
       "badge": "2 due"
     },
@@ -55,13 +55,13 @@
       "description": "Academic forums and group discussions",
       "badge": "12 replies"
     },
-    "schedule360": {
-      "title": "Schedule 360",
+    "schedule": {
+      "title": "Schedule",
       "description": "Weekly timetable, room and section changes",
       "badge": "Today"
     },
-    "gradebook360": {
-      "title": "Gradebook 360",
+    "gradebook": {
+      "title": "Gradebook",
       "description": "Academic transcripts, attendance & progress",
       "badge": "Updated"
     }

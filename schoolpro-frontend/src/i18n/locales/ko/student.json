@@ -13,7 +13,7 @@
     "welcome": "환영합니다, {{name}}님! 활기찬 하루 되세요.",
     "currentSemester": "1학기",
     "academicYear": "2026 - 2027 학년도",
-    "quickActions": "360 에코시스템 기능",
+    "quickActions": "시스템 기능",
     "viewAll": "전체 보기"
   },
   "dashboard": {
@@ -21,12 +21,12 @@
     "welcome": "환영합니다, {{name}}님! 활기찬 하루 되세요.",
     "currentSemester": "1학기",
     "academicYear": "2026 - 2027 학년도",
-    "quickActions": "360 에코시스템 기능",
+    "quickActions": "시스템 기능",
     "viewAll": "전체 보기"
   },
   "features": {
     "announcements": {
-      "title": "공지사항 360",
+      "title": "공지사항",
       "description": "학교, 학과 및 교수님의 주요 소식",
       "badge": "3건 신규"
     },
@@ -55,13 +55,13 @@
       "description": "학습 포럼, 그룹 스터디 및 교수님 Q&A",
       "badge": "12건 답변"
     },
-    "schedule360": {
-      "title": "시간표 360",
+    "schedule": {
+      "title": "시간표",
       "description": "주간 시간표, 강의실 변경 및 보강 일정",
       "badge": "오늘"
     },
-    "gradebook360": {
-      "title": "성적표 360",
+    "gradebook": {
+      "title": "성적표",
       "description": "학업 성적, 출석 현황 및 학습 분석",
       "badge": "업데이트됨"
     }

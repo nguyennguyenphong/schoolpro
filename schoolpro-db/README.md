@@ -1,4 +1,4 @@
-# 🎓 SchoolPro 360 - Enterprise High School Database Architecture
+# 🎓 School Pro - Enterprise High School Database Architecture
 
 Hệ thống cơ sở dữ liệu **PostgreSQL Enterprise** toàn diện cho Trường Trung học Phổ thông (Cấp 3), được thiết kế theo chuẩn **Kiến trúc chống phá vỡ cấu trúc (Future-Proof Architecture)**, tích hợp sẵn **Master Data theo Chương trình GDPT 2018 & Thông tư 22/2021/TT-BGDĐT**, hỗ trợ đa vai trò linh hoạt và vận hành tức thì qua Docker & pgAdmin 4.
 
@@ -163,10 +163,10 @@ schoolpro-db/
 | Schema | Vai trò nghiệp vụ |
 | :--- | :--- |
 | **`core`** | Quản lý người dùng, phân quyền RBAC, hồ sơ học sinh/giáo viên/phụ huynh, cơ cấu khối - lớp - tổ, phân công chức vụ theo niên khóa, Câu lạc bộ Đoàn - Hội, Lookup Engine & Custom Fields. |
-| **`academic`** | Nghiệp vụ học đường THPT 360: TKB ca - tiết, sổ đầu bài, tài liệu, bài tập, tổ hợp môn GDPT 2018, ngân hàng câu hỏi & thi trắc nghiệm online, điểm số & đánh giá rèn luyện/học bạ TT22, miễn giảm môn học, hoạt động ngoại khóa trải nghiệm, quản lý học phí & khoản thu. |
-| **`emulation`** | Thi đua 360 độ: Tiêu chí chung toàn trường & nội bộ riêng của lớp, sổ trực ban giám thị, nề nếp cờ đỏ, bảng tổng sắp xếp hạng tuần/tháng, sổ vàng khen thưởng & kỷ luật. |
+| **`academic`** | Nghiệp vụ học đường THPT: TKB ca - tiết, sổ đầu bài, tài liệu, bài tập, tổ hợp môn GDPT 2018, ngân hàng câu hỏi & thi trắc nghiệm online, điểm số & đánh giá rèn luyện/học bạ TT22, miễn giảm môn học, hoạt động ngoại khóa trải nghiệm, quản lý học phí & khoản thu. |
+| **`emulation`** | Thi đua & Nề nếp: Tiêu chí chung toàn trường & nội bộ riêng của lớp, sổ trực ban giám thị, nề nếp cờ đỏ, bảng tổng sắp xếp hạng tuần/tháng, sổ vàng khen thưởng & kỷ luật. |
 | **`evaluation`** | Đánh giá khảo sát: Học sinh đánh giá giáo viên cuối kỳ (hoàn toàn ẩn danh); Báo cáo hỏng hóc và theo dõi sửa chữa cơ sở vật chất (máy chiếu, đèn, bàn ghế,...). |
-| **`notification`** | Kênh thông tin liên lạc 360: Thông báo đa kênh; Sổ liên lạc điện tử định kỳ; Nhắn tin trực tiếp 1-1 Phụ huynh - Giáo viên; Nhắc nhở học vụ; Token thông báo đẩy FCM/APNs. |
+| **`notification`** | Kênh thông tin liên lạc: Thông báo đa kênh; Sổ liên lạc điện tử định kỳ; Nhắn tin trực tiếp 1-1 Phụ huynh - Giáo viên; Nhắc nhở học vụ; Token thông báo đẩy FCM/APNs. |
 | **`sys`** | Hạ tầng thông minh: Thẻ chức năng Dashboard động theo Role, tùy biến sắp xếp của người dùng, Cài đặt cá nhân hóa 4 tầng, Audit logs, Event Outbox Pattern. |
 
 ---
@@ -185,7 +185,7 @@ Khi chạy `init.sql`, hệ thống tự động nạp toàn bộ danh mục s�
 8. **Phòng học & Cơ sở vật chất:** Phòng học A101, A102, B101; Phòng thí nghiệm Lý - Hóa - Sinh; Phòng máy tính Tin học; Thư viện; Hội trường 500 chỗ; Nhà đa năng.
 9. **Cột điểm Thông tư 22:** Kiểm tra miệng, 15 phút (ĐĐGtx - hệ số 1), Giữa kỳ (ĐĐGgk - hệ số 2), Cuối kỳ (ĐĐGck - hệ số 3).
 10. **Chức vụ đối tượng:** Giáo viên chủ nhiệm, GV bộ môn, Lớp trưởng, Lớp phó học tập, Lớp phó lao động, Lớp phó nề nếp, Bí thư chi đoàn, Tổ trưởng, Đội viên cờ đỏ, Giám thị khối,...
-11. **17 Modules Card giao diện:** TKB 360, Bảng điểm học bạ, Bài tập, Đề thi, Sổ đầu bài, Đánh giá GV ẩn danh, Báo hỏng thiết bị, Xếp hạng thi đua,...
+11. **17 Modules Card giao diện:** Thời khóa biểu, Bảng điểm học bạ, Bài tập, Đề thi, Sổ đầu bài, Đánh giá GV ẩn danh, Báo hỏng thiết bị, Xếp hạng thi đua,...
 12. **10 Tiêu chí thi đua:** Nề nếp đi học đúng giờ, đồng phục phù hiệu, vệ sinh lớp học, giờ học tốt điểm A, hoa điểm 10,...
 
 ---

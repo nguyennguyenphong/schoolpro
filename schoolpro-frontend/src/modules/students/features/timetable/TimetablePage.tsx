@@ -58,7 +58,7 @@ export const TimetablePage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h1 className="text-xl font-bold text-slate-900 mb-0">
-              Thời khóa biểu & Lịch học 360
+              Thời khóa biểu & Lịch học
             </h1>
             <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
               HK1 • 2026-2027

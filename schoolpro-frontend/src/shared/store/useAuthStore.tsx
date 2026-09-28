@@ -15,7 +15,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: (role, _token) => set({
     isAuthenticated: true,
     role,
-    user: { name: "Người dùng thử nghiệm", email: "user@edu360.vn" }
+    user: { name: "Người dùng thử nghiệm", email: "user@schoolpro.edu.vn" }
   }),
   logout: () => set({ isAuthenticated: false, role: null, user: null }),
 }));

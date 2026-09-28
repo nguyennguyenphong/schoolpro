@@ -3,15 +3,14 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { formatDate } from "@/i18n";
 import type { StudentProfile } from "@/modules/students/features/home/types";
+import { useNavigate } from "react-router-dom";
 
 interface WelcomeBannerProps {
   profile?: StudentProfile;
-  onViewSchedule?: () => void;
 }
 
 export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
   profile,
-  onViewSchedule,
 }) => {
   const { t, i18n } = useTranslation(["common", "student"]);
 
@@ -30,11 +29,15 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
     i18n.language
   );
 
+  const navigate = useNavigate();
+  const onViewSchedule = () => {
+    navigate("/student/timetable");
+  }
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-blue-700 via-blue-600 to-indigo-700 text-white p-6 sm:p-8 shadow-md shadow-blue-500/15 border border-blue-500/40">
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
         <div className="space-y-2">
-          {/* Academic Info Badges (Bordered) */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md border border-white/30">
               {t("student:home.currentSemester")} • {t("student:home.academicYear")}

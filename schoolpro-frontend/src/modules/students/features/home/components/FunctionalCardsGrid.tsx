@@ -20,7 +20,7 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
       onFeatureClick(item);
     } else {
       const title = (t as (key: string) => string)(`student:features.${item.translationKey}.title`);
-      message.info(`${title} (EduManagement 360)`);
+      message.info(`${title}`);
     }
   };
 
@@ -30,7 +30,7 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h2 id="functional-cards-title" className="text-base sm:text-lg font-bold text-slate-900 mb-0">
-            {t("student:home.quickActions", { defaultValue: "Chức năng hệ sinh thái 360" })}
+            {t("student:home.quickActions", { defaultValue: "Chức năng hệ thống" })}
           </h2>
         </div>
       </div>

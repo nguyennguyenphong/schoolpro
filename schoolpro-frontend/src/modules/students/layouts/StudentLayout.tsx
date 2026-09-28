@@ -42,7 +42,7 @@ export const StudentLayout: React.FC = () => {
     },
     {
       key: "schedule",
-      label: t("student:features.schedule360.title"),
+      label: t("student:features.schedule.title"),
       path: "/student/timetable",
       icon: "calendar" as const,
     },
@@ -62,10 +62,10 @@ export const StudentLayout: React.FC = () => {
     },
     {
       key: "gradebook",
-      label: t("student:features.gradebook360.title"),
+      label: t("student:features.gradebook.title"),
       path: "#grades",
       icon: "file" as const,
-      onClick: () => message.info(t("student:features.gradebook360.title")),
+      onClick: () => message.info(t("student:features.gradebook.title")),
     },
     {
       key: "evaluations",

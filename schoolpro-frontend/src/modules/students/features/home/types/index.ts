@@ -31,8 +31,8 @@ export interface FeatureItem {
     | "materials"
     | "evaluations"
     | "discussions"
-    | "schedule360"
-    | "gradebook360";
+    | "timetable"
+    | "gradebook";
   iconName: FeatureIconName;
   iconBgColor: string;
   iconColor: string;
@@ -42,63 +42,9 @@ export interface FeatureItem {
   route?: string;
 }
 
-export interface ClassScheduleItem {
-  id: string;
-  courseCode: string;
-  courseName: string;
-  credits: number;
-  timeRange: string;
-  startTime: string;
-  endTime: string;
-  room: string;
-  building: string;
-  instructorName: string;
-  instructorEmail?: string;
-  status: "upcoming" | "ongoing" | "completed";
-  onlineMeetingUrl?: string;
-}
-
-export interface AssignmentItem {
-  id: string;
-  title: string;
-  courseCode: string;
-  courseName: string;
-  dueDate: string;
-  dueDaysLeft: number;
-  priority: "critical" | "urgent" | "normal";
-  isSubmitted: boolean;
-  maxScore: number;
-}
-
-export interface UpcomingExamItem {
-  id: string;
-  courseCode: string;
-  courseName: string;
-  examDate: string;
-  examTime: string;
-  room: string;
-  building: string;
-  seatNumber: string;
-  format: "essay" | "multiple_choice" | "practice";
-}
-
-export interface AcademicNoticeItem {
-  id: string;
-  title: string;
-  summary: string;
-  publishDate: string;
-  department: string;
-  isImportant: boolean;
-  category: "registration" | "exam" | "scholarship" | "finance" | "activity" | "general";
-}
-
 export interface HomeData {
   profile: StudentProfile;
   features: FeatureItem[];
-  todaySchedule: ClassScheduleItem[];
-  urgentAssignments: AssignmentItem[];
-  upcomingExams: UpcomingExamItem[];
-  notices: AcademicNoticeItem[];
 }
 
 // Backward compatibility alias

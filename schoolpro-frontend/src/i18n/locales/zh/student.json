@@ -13,7 +13,7 @@
     "welcome": "欢迎回来，{{name}}！祝您今天学习愉快。",
     "currentSemester": "第1学期",
     "academicYear": "2026 - 2027学年",
-    "quickActions": "360生态功能专区",
+    "quickActions": "系统功能",
     "viewAll": "查看全部"
   },
   "dashboard": {
@@ -21,12 +21,12 @@
     "welcome": "欢迎回来，{{name}}！祝您今天学习愉快。",
     "currentSemester": "第1学期",
     "academicYear": "2026 - 2027学年",
-    "quickActions": "360生态功能专区",
+    "quickActions": "系统功能",
     "viewAll": "查看全部"
   },
   "features": {
     "announcements": {
-      "title": "校园通知 360",
+      "title": "校园通知",
       "description": "学校、学院及授课教师最新动态",
       "badge": "3条新动态"
     },
@@ -55,13 +55,13 @@
       "description": "学习互动社区、小组研讨及教师答疑",
       "badge": "12条回复"
     },
-    "schedule360": {
-      "title": "智能课表 360",
+    "schedule": {
+      "title": "智能课表",
       "description": "查看每周课表、调课通知及实验机房",
       "badge": "今日"
     },
-    "gradebook360": {
-      "title": "成绩学分 360",
+    "gradebook": {
+      "title": "成绩学分",
       "description": "考试成绩查询、出勤率及学业分析",
       "badge": "已更新"
     }

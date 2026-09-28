@@ -13,7 +13,7 @@
     "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
     "currentSemester": "Học kỳ 1",
     "academicYear": "Năm học 2026 - 2027",
-    "quickActions": "Chức năng hệ sinh thái 360",
+    "quickActions": "Chức năng hệ thống",
     "viewAll": "Xem tất cả"
   },
   "dashboard": {
@@ -21,12 +21,12 @@
     "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
     "currentSemester": "Học kỳ 1",
     "academicYear": "Năm học 2026 - 2027",
-    "quickActions": "Chức năng hệ sinh thái 360",
+    "quickActions": "Chức năng hệ thống",
     "viewAll": "Xem tất cả"
   },
   "features": {
     "announcements": {
-      "title": "Thông báo 360",
+      "title": "Thông báo",
       "description": "Tin tức từ nhà trường, khoa và giảng viên",
       "badge": "3 mới"
     },
@@ -52,16 +52,16 @@
     },
     "discussions": {
       "title": "Thảo luận & Hỏi đáp",
-      "description": "Diễn đàn học tập, trao đổi nhóm cùng GV",
+      "description": "Diễn đàn học tập, trao đổi nhóm",
       "badge": "12 phản hồi"
     },
-    "schedule360": {
-      "title": "Thời khóa biểu 360",
+    "schedule": {
+      "title": "Thời khóa biểu",
       "description": "Tra cứu lịch học tuần, đổi ca học và phòng",
       "badge": "Hôm nay"
     },
-    "gradebook360": {
-      "title": "Bảng điểm 360",
+    "gradebook": {
+      "title": "Bảng điểm",
       "description": "Kết quả học tập, chuyên cần và phân tích",
       "badge": "Đã cập nhật"
     }

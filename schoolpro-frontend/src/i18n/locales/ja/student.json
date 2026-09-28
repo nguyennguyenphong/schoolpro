@@ -13,7 +13,7 @@
     "welcome": "おかえりなさい、{{name}}さん！今日も一日頑張りましょう。",
     "currentSemester": "第1学期",
     "academicYear": "2026 - 2027年度",
-    "quickActions": "360エコシステム機能",
+    "quickActions": "システム機能",
     "viewAll": "すべて表示"
   },
   "dashboard": {
@@ -21,12 +21,12 @@
     "welcome": "おかえりなさい、{{name}}さん！今日も一日頑張りましょう。",
     "currentSemester": "第1学期",
     "academicYear": "2026 - 2027年度",
-    "quickActions": "360エコシステム機能",
+    "quickActions": "システム機能",
     "viewAll": "すべて表示"
   },
   "features": {
     "announcements": {
-      "title": "お知らせ 360",
+      "title": "お知らせ",
       "description": "大学・学部・担当教員からの最新情報",
       "badge": "3件新着"
     },
@@ -55,13 +55,13 @@
       "description": "学習フォーラム、グループ質疑応答",
       "badge": "12件返信"
     },
-    "schedule360": {
-      "title": "時間割 360",
+    "schedule": {
+      "title": "時間割",
       "description": "週間時間割確認、教室変更、振替授業",
       "badge": "本日"
     },
-    "gradebook360": {
-      "title": "成績簿 360",
+    "gradebook": {
+      "title": "成績簿",
       "description": "成績確認、出席状況、学習進捗分析",
       "badge": "更新済み"
     }

@@ -35,7 +35,7 @@
   "errors": {
     "403": {
       "title": "403 - アクセスが拒否されました",
-      "subtitle": "申し訳ありませんが、EduManagement 360のこの領域にアクセスする権限がありません。"
+      "subtitle": "申し訳ありませんが、School Proのこの領域にアクセスする権限がありません。"
     },
     "404": {
       "title": "404 - ページが見つかりません",
@@ -44,11 +44,11 @@
     "general": "エラーが発生しました。しばらくしてからもう一度お試しください。"
   },
   "brand": {
-    "title": "SchoolPro",
+    "title": "School Pro",
     "tagline": "教育管理システム"
   },
   "footer": {
-    "copyright": "© 2026 EduManagement 360. All rights reserved.",
+    "copyright": "© 2026 School Pro. All rights reserved.",
     "technicalSupport": "テクニカルサポート"
   }
 }
