@@ -41,8 +41,8 @@ export const StudentLayout: React.FC = () => {
       icon: "chart" as const,
     },
     {
-      key: "schedule",
-      label: t("student:features.schedule.title"),
+      key: "timetable",
+      label: t("student:features.timetable.title"),
       path: "/student/timetable",
       icon: "calendar" as const,
     },

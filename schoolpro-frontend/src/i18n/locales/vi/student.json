@@ -30,20 +30,55 @@
       "description": "Tin tức từ nhà trường, khoa và giảng viên",
       "badge": "3 mới"
     },
-    "reminders": {
-      "title": "Nhắc nhở học tập",
-      "description": "Lịch học, điểm danh và hạn học phí",
-      "badge": "4 việc cần làm"
+    "timetable": {
+      "title": "Thời khóa biểu",
+      "description": "Tra cứu lịch học tuần, ca học, phòng học và giáo viên",
+      "badge": "Hôm nay"
     },
     "assignments": {
       "title": "Bài tập & Đồ án",
       "description": "Nộp bài tập về nhà, đồ án và trắc nghiệm",
       "badge": "2 đến hạn"
     },
+    "exams": {
+      "title": "Khảo thí & Đề thi",
+      "description": "Lịch kiểm tra định kỳ, trắc nghiệm trực tuyến tính giờ",
+      "badge": "Sắp diễn ra"
+    },
+    "gradebook": {
+      "title": "Bảng điểm & Học bạ",
+      "description": "Kết quả học tập, điểm kiểm tra thường xuyên và GPA",
+      "badge": "Đã cập nhật"
+    },
     "materials": {
       "title": "Tài liệu học tập",
       "description": "Giáo trình điện tử, slide và bài giảng số",
       "badge": "18 tài liệu"
+    },
+    "attendance": {
+      "title": "Chuyên cần & Điểm danh",
+      "description": "Theo dõi lịch sử điểm danh và gửi đơn xin nghỉ học",
+      "badge": "98% chuyên cần"
+    },
+    "contactBook": {
+      "title": "Sổ liên lạc điện tử",
+      "description": "Phiếu nhận xét định kỳ từ GVCN và phản hồi phụ huynh",
+      "badge": "Tuần 4"
+    },
+    "emulation": {
+      "title": "Thi đua & Nề nếp",
+      "description": "Điểm nề nếp cờ đỏ, hoa điểm mười và xếp hạng tổ lớp",
+      "badge": "Hạng 2"
+    },
+    "fees": {
+      "title": "Học phí & Khoản thu",
+      "description": "Tra cứu hóa đơn học phí, bảo hiểm y tế và biên lai",
+      "badge": "Đã hoàn tất"
+    },
+    "reminders": {
+      "title": "Nhắc nhở học tập",
+      "description": "Lịch học, điểm danh và hạn học phí",
+      "badge": "4 việc cần làm"
     },
     "evaluations": {
       "title": "Đánh giá & Khảo sát",
@@ -54,16 +89,6 @@
       "title": "Thảo luận & Hỏi đáp",
       "description": "Diễn đàn học tập, trao đổi nhóm",
       "badge": "12 phản hồi"
-    },
-    "schedule": {
-      "title": "Thời khóa biểu",
-      "description": "Tra cứu lịch học tuần, đổi ca học và phòng",
-      "badge": "Hôm nay"
-    },
-    "gradebook": {
-      "title": "Bảng điểm",
-      "description": "Kết quả học tập, chuyên cần và phân tích",
-      "badge": "Đã cập nhật"
     }
   },
   "remindersSection": {

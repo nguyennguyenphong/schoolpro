@@ -30,20 +30,55 @@
       "description": "학교, 학과 및 교수님의 주요 소식",
       "badge": "3건 신규"
     },
-    "reminders": {
-      "title": "학습 알림",
-      "description": "수업 일정, 출석 체크 및 등록금 납부 기한",
-      "badge": "4건 할 일"
+    "timetable": {
+      "title": "시간표",
+      "description": "주간 시간표, 교시별 일정, 강의실 및 담당 교사 확인",
+      "badge": "오늘"
     },
     "assignments": {
       "title": "과제 및 프로젝트",
       "description": "과제 제출, 팀 프로젝트 및 퀴즈",
       "badge": "2건 마감임박"
     },
+    "exams": {
+      "title": "시험 및 평가",
+      "description": "정기 고사 일정, 온라인 타이머 퀴즈 및 고사장 안내",
+      "badge": "예정"
+    },
+    "gradebook": {
+      "title": "성적표",
+      "description": "학업 성적, 출석 현황 및 학습 분석",
+      "badge": "업데이트됨"
+    },
     "materials": {
       "title": "학습 자료실",
       "description": "전자 교재, 강의 슬라이드 및 기출문제",
       "badge": "18건 자료"
+    },
+    "attendance": {
+      "title": "출결 및 결석계",
+      "description": "출결 이력 조회 및 온라인 결석계·체험학습 신청",
+      "badge": "출석률 98%"
+    },
+    "contactBook": {
+      "title": "전자 알림장",
+      "description": "담임 교사 정기 의견서 및 학부모 확인",
+      "badge": "4주차"
+    },
+    "emulation": {
+      "title": "상벌 및 학급 자율평가",
+      "description": "학급 규율 점수, 모범 학생 표창 및 학급 순위",
+      "badge": "2위"
+    },
+    "fees": {
+      "title": "등록금 및 납부 내역",
+      "description": "등록금 고지서, 건강보험료 및 납부 영수증 조회",
+      "badge": "납부 완료"
+    },
+    "reminders": {
+      "title": "학습 알림",
+      "description": "수업 일정, 출석 체크 및 등록금 납부 기한",
+      "badge": "4건 할 일"
     },
     "evaluations": {
       "title": "강의 평가 및 설문",
@@ -54,16 +89,6 @@
       "title": "토론 및 질의응답",
       "description": "학습 포럼, 그룹 스터디 및 교수님 Q&A",
       "badge": "12건 답변"
-    },
-    "schedule": {
-      "title": "시간표",
-      "description": "주간 시간표, 강의실 변경 및 보강 일정",
-      "badge": "오늘"
-    },
-    "gradebook": {
-      "title": "성적표",
-      "description": "학업 성적, 출석 현황 및 학습 분석",
-      "badge": "업데이트됨"
     }
   },
   "remindersSection": {

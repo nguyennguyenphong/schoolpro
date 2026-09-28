@@ -20,19 +20,27 @@ export type FeatureIconName =
   | "settings"
   | "user"
   | "book"
-  | "download";
+  | "download"
+  | "calendar"
+  | "clock"
+  | "chart";
 
 export interface FeatureItem {
   id: string;
   translationKey:
     | "announcements"
     | "reminders"
-    | "assignments"
-    | "materials"
-    | "evaluations"
-    | "discussions"
     | "timetable"
-    | "gradebook";
+    | "assignments"
+    | "exams"
+    | "gradebook"
+    | "materials"
+    | "attendance"
+    | "contactBook"
+    | "emulation"
+    | "fees"
+    | "evaluations"
+    | "discussions";
   iconName: FeatureIconName;
   iconBgColor: string;
   iconColor: string;

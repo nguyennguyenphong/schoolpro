@@ -30,20 +30,55 @@
       "description": "大学・学部・担当教員からの最新情報",
       "badge": "3件新着"
     },
-    "reminders": {
-      "title": "学習リマインダー",
-      "description": "授業日程、出欠確認、学費納入期限",
-      "badge": "4件のタスク"
+    "timetable": {
+      "title": "時間割",
+      "description": "週間時間割、授業時限、教室および担当教員の確認",
+      "badge": "本日"
     },
     "assignments": {
       "title": "課題・レポート",
       "description": "宿題、プロジェクト提出、小テスト",
       "badge": "2件締切間近"
     },
+    "exams": {
+      "title": "定期試験・テスト",
+      "description": "試験日程、オンライン制限時間テスト、座席確認",
+      "badge": "近日実施"
+    },
+    "gradebook": {
+      "title": "成績簿",
+      "description": "成績確認、出席状況、学習進捗分析",
+      "badge": "更新済み"
+    },
     "materials": {
       "title": "学習教材・資料",
       "description": "電子シラバス、講義スライド、過去問",
       "badge": "18件資料"
+    },
+    "attendance": {
+      "title": "出欠・出席管理",
+      "description": "出席履歴の確認および欠席・公欠届の提出",
+      "badge": "出席率98%"
+    },
+    "contactBook": {
+      "title": "電子連絡帳",
+      "description": "担任教員からの定期所見・連絡および保護者確認",
+      "badge": "第4週"
+    },
+    "emulation": {
+      "title": "風紀・表彰",
+      "description": "規律点、クラス順位、月間努力賞",
+      "badge": "第2位"
+    },
+    "fees": {
+      "title": "学費・諸費用納入",
+      "description": "学費納入案内、保険料明細および領収書の確認",
+      "badge": "納入完了"
+    },
+    "reminders": {
+      "title": "学習リマインダー",
+      "description": "授業日程、出欠確認、学費納入期限",
+      "badge": "4件のタスク"
     },
     "evaluations": {
       "title": "授業評価アンケート",
@@ -54,16 +89,6 @@
       "title": "ディスカッション・Q&A",
       "description": "学習フォーラム、グループ質疑応答",
       "badge": "12件返信"
-    },
-    "schedule": {
-      "title": "時間割",
-      "description": "週間時間割確認、教室変更、振替授業",
-      "badge": "本日"
-    },
-    "gradebook": {
-      "title": "成績簿",
-      "description": "成績確認、出席状況、学習進捗分析",
-      "badge": "更新済み"
     }
   },
   "remindersSection": {

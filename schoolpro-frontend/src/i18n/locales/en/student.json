@@ -30,20 +30,55 @@
       "description": "Updates from school, department & faculty",
       "badge": "3 new"
     },
-    "reminders": {
-      "title": "Smart Reminders",
-      "description": "Classes, attendance and tuition deadlines",
-      "badge": "4 tasks"
+    "timetable": {
+      "title": "Timetable",
+      "description": "Weekly class schedules, period slots, rooms & teachers",
+      "badge": "Today"
     },
     "assignments": {
       "title": "Assignments",
       "description": "Homework, project deliverables & quizzes",
       "badge": "2 due"
     },
+    "exams": {
+      "title": "Exams & Testing",
+      "description": "Upcoming test schedule, online timed quiz & seat assignments",
+      "badge": "Upcoming"
+    },
+    "gradebook": {
+      "title": "Gradebook & Transcript",
+      "description": "Academic performance, regular test marks & GPA",
+      "badge": "Updated"
+    },
     "materials": {
       "title": "Learning Materials",
       "description": "Digital syllabus, lecture slides & sample tests",
       "badge": "18 files"
+    },
+    "attendance": {
+      "title": "Attendance & Absence",
+      "description": "Attendance history tracking and digital leave requests",
+      "badge": "98% Present"
+    },
+    "contactBook": {
+      "title": "Contact Book",
+      "description": "Homeroom periodic reports & parent acknowledgment",
+      "badge": "Week 4"
+    },
+    "emulation": {
+      "title": "Conduct & Emulation",
+      "description": "Discipline points, class ranking & merit awards",
+      "badge": "Rank 2"
+    },
+    "fees": {
+      "title": "Tuition & Fees",
+      "description": "Check tuition invoices, health insurance & receipts",
+      "badge": "Paid"
+    },
+    "reminders": {
+      "title": "Smart Reminders",
+      "description": "Classes, attendance and tuition deadlines",
+      "badge": "4 tasks"
     },
     "evaluations": {
       "title": "Evaluations & Surveys",
@@ -54,16 +89,6 @@
       "title": "Discussions & Q&A",
       "description": "Academic forums and group discussions",
       "badge": "12 replies"
-    },
-    "schedule": {
-      "title": "Schedule",
-      "description": "Weekly timetable, room and section changes",
-      "badge": "Today"
-    },
-    "gradebook": {
-      "title": "Gradebook",
-      "description": "Academic transcripts, attendance & progress",
-      "badge": "Updated"
     }
   },
   "remindersSection": {

@@ -30,20 +30,55 @@
       "description": "学校、学院及授课教师最新动态",
       "badge": "3条新动态"
     },
-    "reminders": {
-      "title": "智能学习提醒",
-      "description": "上课日程、出勤签到及学费截止日",
-      "badge": "4项待办"
+    "timetable": {
+      "title": "智能课表",
+      "description": "查看每周课表、节次时段、上课教室及任课教师",
+      "badge": "今日"
     },
     "assignments": {
       "title": "课后作业与设计",
       "description": "提交作业、课程设计及单元测验",
       "badge": "2项临期"
     },
+    "exams": {
+      "title": "考务与考试",
+      "description": "期中/期末考试日程、在线计时测验及考场座位",
+      "badge": "近期举行"
+    },
+    "gradebook": {
+      "title": "成绩学分",
+      "description": "考试成绩查询、出勤率及学业分析",
+      "badge": "已更新"
+    },
     "materials": {
       "title": "课程学习资料",
       "description": "电子教材、讲义课件及历年试题",
       "badge": "18份资料"
+    },
+    "attendance": {
+      "title": "考勤与请假",
+      "description": "查阅出勤历史记录并在线提交请假申请",
+      "badge": "出勤率98%"
+    },
+    "contactBook": {
+      "title": "家校电子联系簿",
+      "description": "班主任定期评语与反馈、家长查阅与确认",
+      "badge": "第4周"
+    },
+    "emulation": {
+      "title": "量化纪律与评优",
+      "description": "红旗班级纪律分、班级排名及优秀表彰",
+      "badge": "第2名"
+    },
+    "fees": {
+      "title": "学杂费缴纳",
+      "description": "查看学杂费账单、学生医保明细及电子收据",
+      "badge": "已缴清"
+    },
+    "reminders": {
+      "title": "智能学习提醒",
+      "description": "上课日程、出勤签到及学费截止日",
+      "badge": "4项待办"
     },
     "evaluations": {
       "title": "教学评估与问卷",
@@ -54,16 +89,6 @@
       "title": "在线讨论与答疑",
       "description": "学习互动社区、小组研讨及教师答疑",
       "badge": "12条回复"
-    },
-    "schedule": {
-      "title": "智能课表",
-      "description": "查看每周课表、调课通知及实验机房",
-      "badge": "今日"
-    },
-    "gradebook": {
-      "title": "成绩学分",
-      "description": "考试成绩查询、出勤率及学业分析",
-      "badge": "已更新"
     }
   },
   "remindersSection": {

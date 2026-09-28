@@ -1,13 +1,17 @@
 import React from "react";
-import { Select } from "antd";
-import type { SelectProps } from "antd";
+import type { MenuProps } from "antd";
 import { useLanguage } from "../hooks/useLanguage";
 import type { SupportedLanguage } from "../config";
+import { Dropdown } from "@/components/ui/Dropdown";
+import { Icon } from "@/components/ui/Icon";
 
-export interface LanguageSwitcherProps extends Omit<SelectProps, "value" | "onChange" | "options"> {
+export interface LanguageSwitcherProps {
   showFlagOnly?: boolean;
   className?: string;
   width?: number | string;
+  style?: React.CSSProperties;
+  placement?: "bottomLeft" | "bottomCenter" | "bottomRight" | "topLeft" | "topCenter" | "topRight";
+  trigger?: ("click" | "hover" | "contextMenu")[];
 }
 
 export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
@@ -15,38 +19,66 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   className = "",
   width = 140,
   style,
-  ...restProps
+  placement = "bottomRight",
+  trigger = ["click"],
 }) => {
-  const { currentLanguage, changeLanguage, languages } = useLanguage();
+  const { currentLanguage, currentMetadata, changeLanguage, languages } = useLanguage();
 
-  const options = languages.map((item) => ({
-    value: item.code,
+  const menuItems: MenuProps["items"] = languages.map((item) => ({
+    key: item.code,
     label: (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2.5 py-1 px-1">
         <img
           src={item.flag}
           alt={item.name}
-          className="w-5 h-3.5 object-cover rounded-xs shadow-xs shrink-0"
+          className="w-5 h-3.5 object-cover rounded-xs shadow-2xs shrink-0"
         />
-        {!showFlagOnly && (
-          <span className="text-sm font-medium text-slate-700">
-            {item.nativeName}
-          </span>
-        )}
+        <span className="text-xs font-medium text-slate-700">
+          {item.nativeName}
+        </span>
       </div>
     ),
   }));
 
+  const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
+    changeLanguage(key as SupportedLanguage);
+  };
+
   return (
-    <Select
-      aria-label="Language selector"
-      value={currentLanguage}
-      onChange={(val) => changeLanguage(val as SupportedLanguage)}
-      options={options}
-      style={{ width: showFlagOnly ? 70 : width, ...style }}
+    <Dropdown
+      menu={{
+        items: menuItems,
+        selectedKeys: [currentLanguage],
+        onClick: handleMenuClick,
+      }}
+      trigger={trigger}
+      placement={placement}
       className={`language-switcher ${className}`}
-      popupMatchSelectWidth={false}
-      {...restProps}
-    />
+    >
+      <button
+        type="button"
+        aria-label="Language selector"
+        style={{ width: showFlagOnly ? 70 : width, ...style }}
+        className="h-8.75 flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-blue-400"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <img
+            src={currentMetadata?.flag}
+            alt={currentMetadata?.name}
+            className="w-5 h-3.5 object-cover rounded-xs shadow-2xs shrink-0"
+          />
+          {!showFlagOnly && (
+            <span className="text-xs font-semibold text-slate-700 truncate group-hover:text-blue-600 transition-colors">
+              {currentMetadata?.nativeName}
+            </span>
+          )}
+        </div>
+        <Icon
+          name="chevron-down"
+          size={13}
+          className="text-slate-400 group-hover:text-blue-600 transition-colors shrink-0"
+        />
+      </button>
+    </Dropdown>
   );
 };
