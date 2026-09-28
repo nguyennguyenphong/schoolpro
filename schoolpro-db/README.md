@@ -44,7 +44,6 @@ Thư mục dự án được tổ chức khoa học theo chuẩn cơ sở dữ l
 
 ```
 schoolpro-db/
-├── main.sql                        # File SQL tổng thể nguyên bản để đối chiếu
 ├── README.md                       # Tài liệu hướng dẫn kiến trúc và vận hành
 ├── docker-compose.yml              # File khởi chạy Docker Compose tại thư mục gốc
 ├── docker/                         # Cấu hình container và kịch bản khởi động
@@ -73,7 +72,7 @@ schoolpro-db/
     │   │   ├── master_emulation_criteria.sql
     │   │   ├── master_settings_definitions.sql
     │   │   └── master_modules.sql
-    │   ├── core/                   # Người dùng, vai trò, chức vụ, hồ sơ thành viên
+    │   ├── core/                   # Người dùng, vai trò, chức vụ, hồ sơ thành viên, CLB
     │   │   ├── core_custom_field_definitions.sql
     │   │   ├── core_custom_field_values.sql
     │   │   ├── core_users.sql
@@ -90,8 +89,10 @@ schoolpro-db/
     │   │   ├── core_teachers.sql
     │   │   ├── core_staff.sql
     │   │   ├── core_student_class_enrollments.sql
-    │   │   └── core_class_subject_teachers.sql
-    │   ├── academic/               # Nghiệp vụ học vụ: TKB, sổ đầu bài, bài tập, điểm số TT22
+    │   │   ├── core_class_subject_teachers.sql
+    │   │   ├── core_clubs.sql
+    │   │   └── core_club_members.sql
+    │   ├── academic/               # Nghiệp vụ học vụ: TKB, ngân hàng câu hỏi, bài thi online, TT22, tổ hợp môn, học phí
     │   │   ├── academic_timetables.sql
     │   │   ├── academic_timetable_changes.sql
     │   │   ├── academic_class_journal_entries.sql
@@ -99,17 +100,32 @@ schoolpro-db/
     │   │   ├── academic_material_attachments.sql
     │   │   ├── academic_assignments.sql
     │   │   ├── academic_assignment_submissions.sql
+    │   │   ├── academic_curriculum_tracks.sql
+    │   │   ├── academic_curriculum_track_subjects.sql
+    │   │   ├── academic_student_track_enrollments.sql
+    │   │   ├── academic_question_bank.sql
     │   │   ├── academic_exams.sql
+    │   │   ├── academic_exam_questions.sql
+    │   │   ├── academic_exam_submissions.sql
+    │   │   ├── academic_exam_submission_answers.sql
     │   │   ├── academic_student_scores.sql
+    │   │   ├── academic_conduct_evaluations.sql
     │   │   ├── academic_report_cards.sql
+    │   │   ├── academic_student_term_summaries.sql
+    │   │   ├── academic_subject_exemptions.sql
+    │   │   ├── academic_extracurricular_activities.sql
+    │   │   ├── academic_activity_participations.sql
+    │   │   ├── academic_fee_items.sql
+    │   │   ├── academic_student_fee_bills.sql
     │   │   └── academic_attendance.sql
-    │   ├── emulation/              # Thi đua nề nếp, cờ đỏ, bảng xếp hạng đa cấp
+    │   ├── emulation/              # Thi đua nề nếp, cờ đỏ, bảng xếp hạng đa cấp, khen thưởng & kỷ luật
     │   │   ├── emulation_periods.sql
     │   │   ├── emulation_class_custom_criteria.sql
     │   │   ├── emulation_supervisor_duty_logs.sql
     │   │   ├── emulation_records.sql
     │   │   ├── emulation_rankings.sql
-    │   │   └── emulation_disciplinary_records.sql
+    │   │   ├── emulation_disciplinary_records.sql
+    │   │   └── emulation_awards.sql
     │   ├── evaluation/             # Đánh giá giáo viên ẩn danh & Báo hỏng cơ sở vật chất
     │   │   ├── evaluation_forms.sql
     │   │   ├── evaluation_questions.sql
@@ -117,11 +133,13 @@ schoolpro-db/
     │   │   ├── evaluation_submissions.sql
     │   │   ├── evaluation_answers.sql
     │   │   └── evaluation_facility_incident_reports.sql
-    │   ├── notification/           # Thông báo, nhắc nhở cá nhân, push tokens
+    │   ├── notification/           # Thông báo, sổ liên lạc điện tử, tin nhắn PH-GV, nhắc nhở cá nhân, push tokens
     │   │   ├── notification_announcements.sql
     │   │   ├── notification_announcement_reads.sql
     │   │   ├── notification_reminders.sql
-    │   │   └── notification_push_tokens.sql
+    │   │   ├── notification_push_tokens.sql
+    │   │   ├── notification_contact_book_notes.sql
+    │   │   └── notification_parent_teacher_messages.sql
     │   └── sys/                    # Cấu hình card động theo role, user settings, audit logs
     │       ├── sys_role_modules.sql
     │       ├── sys_user_module_preferences.sql
@@ -131,9 +149,9 @@ schoolpro-db/
     │       ├── sys_audit_logs.sql
     │       └── sys_event_outbox.sql
     ├── 03_views/                   # Các View tổng hợp dữ liệu thời gian thực
-    │   └── views.sql               # v_current_class_leadership, v_teacher_assignments,...
+    │   └── views.sql               # v_current_class_leadership, v_student_360_profile,...
     ├── 04_triggers/                # Đăng ký Triggers
-    │   └── triggers.sql            # Triggers tự động cập nhật updated_at
+    │   └── triggers.sql            # Triggers tự động cập nhật updated_at cho tất cả bảng
     └── 05_seeds/                   # Dữ liệu khởi tạo (INSERT statements)
         └── init.sql                # Master Data & tài khoản seed mẫu
 ```
@@ -144,11 +162,11 @@ schoolpro-db/
 
 | Schema | Vai trò nghiệp vụ |
 | :--- | :--- |
-| **`core`** | Quản lý người dùng, phân quyền RBAC, hồ sơ học sinh/giáo viên/phụ huynh, cơ cấu khối - lớp - tổ, phân công chức vụ theo niên khóa, Lookup Engine & Custom Fields. |
-| **`academic`** | Nghiệp vụ học đường THPT: Thời khóa biểu ca - tiết, sổ đầu bài điện tử, tài liệu môn học, bài tập về nhà, ngân hàng đề kiểm tra, điểm số theo Thông tư 22/2021/TT-BGDĐT. |
-| **`emulation`** | Thi đua 360 độ: Tiêu chí chung toàn trường & tiêu chí nội bộ riêng của từng lớp, sổ trực ban giám thị, điểm danh nề nếp cờ đỏ, bảng tổng sắp xếp hạng tuần/tháng. |
+| **`core`** | Quản lý người dùng, phân quyền RBAC, hồ sơ học sinh/giáo viên/phụ huynh, cơ cấu khối - lớp - tổ, phân công chức vụ theo niên khóa, Câu lạc bộ Đoàn - Hội, Lookup Engine & Custom Fields. |
+| **`academic`** | Nghiệp vụ học đường THPT 360: TKB ca - tiết, sổ đầu bài, tài liệu, bài tập, tổ hợp môn GDPT 2018, ngân hàng câu hỏi & thi trắc nghiệm online, điểm số & đánh giá rèn luyện/học bạ TT22, miễn giảm môn học, hoạt động ngoại khóa trải nghiệm, quản lý học phí & khoản thu. |
+| **`emulation`** | Thi đua 360 độ: Tiêu chí chung toàn trường & nội bộ riêng của lớp, sổ trực ban giám thị, nề nếp cờ đỏ, bảng tổng sắp xếp hạng tuần/tháng, sổ vàng khen thưởng & kỷ luật. |
 | **`evaluation`** | Đánh giá khảo sát: Học sinh đánh giá giáo viên cuối kỳ (hoàn toàn ẩn danh); Báo cáo hỏng hóc và theo dõi sửa chữa cơ sở vật chất (máy chiếu, đèn, bàn ghế,...). |
-| **`notification`** | Kênh thông tin liên lạc: Thông báo đa hướng (toàn trường, theo khối, lớp, vai trò); Nhắc nhở học vụ cá nhân; Token thông báo đẩy FCM/APNs. |
+| **`notification`** | Kênh thông tin liên lạc 360: Thông báo đa kênh; Sổ liên lạc điện tử định kỳ; Nhắn tin trực tiếp 1-1 Phụ huynh - Giáo viên; Nhắc nhở học vụ; Token thông báo đẩy FCM/APNs. |
 | **`sys`** | Hạ tầng thông minh: Thẻ chức năng Dashboard động theo Role, tùy biến sắp xếp của người dùng, Cài đặt cá nhân hóa 4 tầng, Audit logs, Event Outbox Pattern. |
 
 ---

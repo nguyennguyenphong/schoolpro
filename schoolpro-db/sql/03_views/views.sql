@@ -113,3 +113,39 @@ LEFT JOIN sys.system_settings ss ON ss.setting_id = sd.id AND (ss.school_id = u.
 WHERE sd.is_active = TRUE;
 
 COMMENT ON VIEW sys.v_user_effective_settings IS 'Settings resolution engine resolving User Preference -> Role Override -> School Policy -> System Default';
+
+-- View: Student 360 Comprehensive Profile
+CREATE OR REPLACE VIEW core.v_student_360_profile AS
+SELECT
+  s.id AS student_id,
+  s.student_code,
+  u.full_name AS student_name,
+  u.gender,
+  u.email,
+  u.phone_number,
+  c.id AS class_id,
+  c.code AS class_code,
+  c.name AS class_name,
+  g.name AS grade_name,
+  sch.name AS school_name,
+  t.name AS track_name,
+  t.career_orientation,
+  homeroom_u.full_name AS homeroom_teacher_name,
+  homeroom_t.phone AS homeroom_teacher_phone,
+  (SELECT COUNT(*) FROM core.club_members cm WHERE cm.student_id = s.id AND cm.status = 'ACTIVE') AS active_clubs_count,
+  (SELECT COUNT(*) FROM emulation.awards aw WHERE aw.student_id = s.id) AS awards_count,
+  (SELECT COUNT(*) FROM academic.student_fee_bills fb WHERE fb.student_id = s.id AND fb.payment_status = 'UNPAID') AS unpaid_fee_bills_count
+FROM core.students s
+JOIN core.users u ON u.id = s.user_id
+JOIN core.schools sch ON sch.id = u.school_id
+LEFT JOIN core.student_class_enrollments sce ON sce.student_id = s.id AND sce.status = 'ACTIVE'
+LEFT JOIN core.classes c ON c.id = sce.class_id
+LEFT JOIN core.grades g ON g.id = c.grade_id
+LEFT JOIN academic.student_track_enrollments ste ON ste.student_id = s.id AND ste.status = 'ACTIVE'
+LEFT JOIN academic.curriculum_tracks t ON t.id = ste.track_id
+LEFT JOIN core.position_assignments pa ON pa.class_id = c.id AND pa.is_current = TRUE
+  AND pa.position_id = (SELECT id FROM core.positions WHERE code = 'HOMEROOM_TEACHER' LIMIT 1)
+LEFT JOIN core.users homeroom_u ON homeroom_u.id = pa.user_id
+LEFT JOIN core.teachers homeroom_t ON homeroom_t.user_id = homeroom_u.id;
+
+COMMENT ON VIEW core.v_student_360_profile IS '360-degree synthesized profile of a student aggregating classroom, homeroom mentor, track, clubs, awards, and fees';

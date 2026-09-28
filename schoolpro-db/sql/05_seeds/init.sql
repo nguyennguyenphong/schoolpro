@@ -306,3 +306,84 @@ FROM core.users u, core.positions p WHERE u.username = 'gv_toan_minh' AND p.code
 INSERT INTO core.position_assignments (user_id, position_id, academic_year_id, scope_type, class_id, is_current, note)
 SELECT u.id, p.id, 'b0000000-0000-0000-0000-000000000003', 'CLASS', 'f0000000-0000-0000-0000-000000000001', TRUE, 'Lớp trưởng 10A1 phụ trách chung'
 FROM core.users u, core.positions p WHERE u.username = 'hs_le_hoang_nam' AND p.code = 'CLASS_MONITOR';
+
+-- 21. MASTER DATA: Additional 360 Modules
+INSERT INTO sys.modules (code, name, short_name, description, icon, route, module_type, category, default_color, default_badge) VALUES
+  ('STUDENT_CONTACT_BOOK', 'Sổ liên lạc điện tử',  'Sổ liên lạc', 'Xem phiếu nhận xét định kỳ từ GVCN và ký xác nhận',          'book-open',  '/student/contact-book', 'CARD', 'COMMUNICATION', '#0284C7', 'Mới'),
+  ('STUDENT_CLUBS',        'Câu lạc bộ & Ngoại khóa','CLB Đoàn',   'Đăng ký tham gia CLB, hoạt động tình nguyện, ngày hội STEM', 'users',      '/student/clubs',        'CARD', 'EMULATION',     '#8B5CF6', '2 CLB'),
+  ('STUDENT_FEES',         'Học phí & Khoản thu',    'Học phí',    'Tra cứu hóa đơn học phí, bảo hiểm y tế và thanh toán online', 'credit-card','/student/fees',         'CARD', 'MANAGEMENT',    '#10B981', 'Học kỳ 1'),
+  ('STUDENT_TRACK',        'Tổ hợp môn GDPT 2018',   'Tổ hợp môn', 'Thông tin ban học tập, cụm chuyên đề lựa chọn',               'layers',     '/student/track',        'CARD', 'ACADEMIC',      '#6366F1', 'Ban A00'),
+  ('STUDENT_ONLINE_TEST',  'Khảo thí Trắc nghiệm',   'Thi online', 'Làm bài kiểm tra trực tuyến, trắc nghiệm tính giờ',           'check-circle','/student/online-test', 'CARD', 'ACADEMIC',      '#F43F5E', 'Sắp tới')
+ON CONFLICT (code) DO NOTHING;
+
+-- Map additional modules to Student role
+INSERT INTO sys.role_modules (role_id, module_id, is_visible, is_pinned_default, order_no)
+SELECT r.id, m.id, TRUE, FALSE, 11 FROM core.roles r, sys.modules m WHERE r.code = 'STUDENT' AND m.code = 'STUDENT_CONTACT_BOOK'
+UNION ALL SELECT r.id, m.id, TRUE, FALSE, 12 FROM core.roles r, sys.modules m WHERE r.code = 'STUDENT' AND m.code = 'STUDENT_CLUBS'
+UNION ALL SELECT r.id, m.id, TRUE, FALSE, 13 FROM core.roles r, sys.modules m WHERE r.code = 'STUDENT' AND m.code = 'STUDENT_FEES'
+UNION ALL SELECT r.id, m.id, TRUE, FALSE, 14 FROM core.roles r, sys.modules m WHERE r.code = 'STUDENT' AND m.code = 'STUDENT_TRACK'
+UNION ALL SELECT r.id, m.id, TRUE, FALSE, 15 FROM core.roles r, sys.modules m WHERE r.code = 'STUDENT' AND m.code = 'STUDENT_ONLINE_TEST'
+ON CONFLICT (role_id, module_id) DO NOTHING;
+
+-- 22. SAMPLE SEED DATA: Curriculum Tracks GDPT 2018
+INSERT INTO academic.curriculum_tracks (id, school_id, grade_id, code, name, career_orientation, description) VALUES
+  ('70000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'TRACK_TN_A00', 'Ban Tự nhiên A00 (Toán - Vật lý - Hóa học - Tin học)', 'Kỹ thuật, Công nghệ thông tin, Bách khoa', 'Tổ hợp môn định hướng khối ngành khoa học kỹ thuật'),
+  ('70000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'TRACK_XH_D01', 'Ban Xã hội D01 (Ngữ văn - Lịch sử - Địa lý - GDKT&PL)', 'Kinh tế, Luật, Báo chí truyền thông, Ngoại giao', 'Tổ hợp môn định hướng khối ngành khoa học xã hội')
+ON CONFLICT (school_id, grade_id, code) DO NOTHING;
+
+-- Student Track Enrollment for Nam
+INSERT INTO academic.student_track_enrollments (student_id, track_id, academic_year_id, status)
+SELECT s.id, '70000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000003', 'ACTIVE'
+FROM core.students s WHERE s.student_code = 'HS20261001'
+ON CONFLICT (student_id, academic_year_id) DO NOTHING;
+
+-- 23. SAMPLE SEED DATA: Question Bank
+INSERT INTO academic.question_bank (id, subject_id, grade_id, chapter_name, difficulty_level, question_type, content, options, correct_answers, solution_explanation, default_score) VALUES
+  ('80000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'Mệnh đề & Tập hợp', 'RECOGNITION', 'SINGLE_CHOICE',
+   'Cho tập hợp $A = \{x \in \mathbb{R} \mid x^2 - 4 = 0\}$. Số phần tử của tập hợp $A$ là:',
+   '[{"key":"A","text":"0"},{"key":"B","text":"1"},{"key":"C","text":"2"},{"key":"D","text":"4"}]'::jsonb,
+   '["C"]'::jsonb,
+   'Phương trình $x^2 - 4 = 0 \Leftrightarrow x = \pm 2$. Cả hai nghiệm đều là số thực, vậy $A = \{-2; 2\}$ có 2 phần tử.', 0.25)
+ON CONFLICT DO NOTHING;
+
+-- 24. SAMPLE SEED DATA: Clubs & Membership
+INSERT INTO core.clubs (id, school_id, code, name, category, description) VALUES
+  ('90000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'CLUB_ROBOTICS', 'CLB Sáng tạo Robotics & STEM', 'ACADEMIC', 'Nghiên cứu lập trình nhúng, thiết kế robot thi đấu VEX'),
+  ('90000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'CLUB_BASKETBALL', 'CLB Bóng rổ THPT Lê Quý Đôn', 'SPORTS', 'Tập luyện và thi đấu giải bóng rổ học sinh thành phố')
+ON CONFLICT (code) DO NOTHING;
+
+INSERT INTO core.club_members (club_id, student_id, role_title, status)
+SELECT '90000000-0000-0000-0000-000000000001', s.id, 'HEAD_OF_COMMITTEE', 'ACTIVE'
+FROM core.students s WHERE s.student_code = 'HS20261001'
+ON CONFLICT (club_id, student_id) DO NOTHING;
+
+-- 25. SAMPLE SEED DATA: Tuition & Fees
+INSERT INTO academic.fee_items (id, school_id, academic_year_id, semester_id, code, name, category, amount, is_mandatory, due_date) VALUES
+  ('a1000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000003', 'd0000000-0000-0000-0000-000000000001', 'FEE_BHYT_2026', 'Bảo hiểm y tế học sinh năm học 2026-2027', 'HEALTH_INSURANCE', 680400.00, TRUE, '2026-10-31'),
+  ('a1000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000003', 'd0000000-0000-0000-0000-000000000001', 'FEE_HOCPHI_HK1', 'Học phí Học kỳ 1 (Quy định Nhà nước)', 'TUITION', 300000.00, TRUE, '2026-11-15')
+ON CONFLICT (school_id, academic_year_id, code) DO NOTHING;
+
+INSERT INTO academic.student_fee_bills (student_id, fee_item_id, bill_code, original_amount, final_amount, paid_amount, payment_status, payment_method, paid_at)
+SELECT s.id, 'a1000000-0000-0000-0000-000000000001', 'BILL-2026-10A1-001', 680400.00, 680400.00, 680400.00, 'PAID', 'BANK_TRANSFER', now()
+FROM core.students s WHERE s.student_code = 'HS20261001'
+ON CONFLICT (student_id, fee_item_id) DO NOTHING;
+
+-- 26. SAMPLE SEED DATA: Emulation Awards
+INSERT INTO emulation.awards (student_id, academic_year_id, award_category, level, prize, title, decision_number, bonus_points, signed_by)
+SELECT s.id, 'b0000000-0000-0000-0000-000000000003', 'STEM_INNOVATION', 'PROVINCIAL', 'FIRST_PRIZE', 'Giải Nhất Hội thi Sáng tạo Robot Cấp Thành phố', 'QĐ-142/SGDĐT', 20, 'Giám đốc Sở GD&ĐT'
+FROM core.students s WHERE s.student_code = 'HS20261001'
+ON CONFLICT DO NOTHING;
+
+-- 27. SAMPLE SEED DATA: Electronic Contact Book
+INSERT INTO notification.contact_book_notes (student_id, class_id, semester_id, period_type, period_label, academic_digest, attendance_digest, emulation_digest, teacher_remarks, parent_acknowledged, created_by)
+SELECT s.id, 'f0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000001', 'WEEKLY', 'Tuần 4 (22/09 - 27/09)',
+  '{"toan": 9.5, "ngu_van": 8.0, "tieng_anh": 9.0}'::jsonb,
+  '{"present": 5, "absent": 0, "late": 0}'::jsonb,
+  '{"bonus_points": 15, "violations": 0}'::jsonb,
+  'Em Nam gương mẫu, hoàn thành xuất sắc nhiệm vụ điều hành sinh hoạt 15 phút đầu giờ của lớp.',
+  TRUE,
+  u.id
+FROM core.students s, core.users u
+WHERE s.student_code = 'HS20261001' AND u.username = 'gv_toan_minh'
+ON CONFLICT (student_id, semester_id, period_type, period_label) DO NOTHING;
+
