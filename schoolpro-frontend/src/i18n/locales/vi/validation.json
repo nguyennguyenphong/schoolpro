@@ -1,0 +1,15 @@
+{
+  "required": "Trường này là bắt buộc!",
+  "roleRequired": "Vui lòng chọn vai trò của bạn!",
+  "codeRequired": "Vui lòng nhập mã số định danh!",
+  "codeMinLength": "Tài khoản phải có ít nhất {{min}} ký tự!",
+  "passwordRequired": "Vui lòng nhập mật khẩu hệ thống!",
+  "passwordMinLength": "Mật khẩu phải có ít nhất {{min}} ký tự!",
+  "invalidEmail": "Email không hợp lệ!",
+  "invalidPhone": "Số điện thoại không hợp lệ!",
+  "identifierRequired": "Vui lòng nhập email hoặc mã định danh!",
+  "otpRequired": "Vui lòng nhập đầy đủ mã OTP!",
+  "otpLength": "Mã OTP phải có đúng 6 chữ số!",
+  "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu mới!",
+  "passwordMismatch": "Mật khẩu xác nhận không khớp với mật khẩu mới!"
+}

@@ -1,0 +1,124 @@
+{
+  "header": {
+    "searchPlaceholder": "강의, 과제, 학습 자료 검색...",
+    "profile": "학생 프로필",
+    "settings": "계정 설정",
+    "changePassword": "비밀번호 변경",
+    "logout": "로그아웃",
+    "notifications": "알림",
+    "studentId": "학번"
+  },
+  "home": {
+    "title": "홈",
+    "welcome": "환영합니다, {{name}}님! 활기찬 하루 되세요.",
+    "currentSemester": "1학기",
+    "academicYear": "2026 - 2027 학년도",
+    "quickActions": "360 에코시스템 기능",
+    "viewAll": "전체 보기"
+  },
+  "dashboard": {
+    "title": "통계",
+    "welcome": "환영합니다, {{name}}님! 활기찬 하루 되세요.",
+    "currentSemester": "1학기",
+    "academicYear": "2026 - 2027 학년도",
+    "quickActions": "360 에코시스템 기능",
+    "viewAll": "전체 보기"
+  },
+  "features": {
+    "announcements": {
+      "title": "공지사항 360",
+      "description": "학교, 학과 및 교수님의 주요 소식",
+      "badge": "3건 신규"
+    },
+    "reminders": {
+      "title": "학습 알림",
+      "description": "수업 일정, 출석 체크 및 등록금 납부 기한",
+      "badge": "4건 할 일"
+    },
+    "assignments": {
+      "title": "과제 및 프로젝트",
+      "description": "과제 제출, 팀 프로젝트 및 퀴즈",
+      "badge": "2건 마감임박"
+    },
+    "materials": {
+      "title": "학습 자료실",
+      "description": "전자 교재, 강의 슬라이드 및 기출문제",
+      "badge": "18건 자료"
+    },
+    "evaluations": {
+      "title": "강의 평가 및 설문",
+      "description": "강의 만족도 조사 및 과목 평가",
+      "badge": "평가 대기"
+    },
+    "discussions": {
+      "title": "토론 및 질의응답",
+      "description": "학습 포럼, 그룹 스터디 및 교수님 Q&A",
+      "badge": "12건 답변"
+    },
+    "schedule360": {
+      "title": "시간표 360",
+      "description": "주간 시간표, 강의실 변경 및 보강 일정",
+      "badge": "오늘"
+    },
+    "gradebook360": {
+      "title": "성적표 360",
+      "description": "학업 성적, 출석 현황 및 학습 분석",
+      "badge": "업데이트됨"
+    }
+  },
+  "remindersSection": {
+    "title": "알림",
+    "subtitle": "오늘의 강의, 마감 임박 과제 및 시험 일정 요약",
+    "totalCount": "{{count}}개의 확인 필요한 항목",
+    "scheduleBadge": "오늘의 수업",
+    "assignmentBadge": "마감 임박 과제",
+    "examBadge": "예정된 시험"
+  },
+  "noticesSection": {
+    "title": "공지사항",
+    "subtitle": "각 부서, 학과 및 교육 부서의 최신 10개 공지",
+    "viewAll": "전체 공지 보기",
+    "markAllRead": "읽음 표시",
+    "filterAll": "전체",
+    "readMore": "상세보기"
+  },
+  "schedule": {
+    "title": "오늘의 수업 일정 및 강의 알림",
+    "subtitle": "오늘 예정된 강의 및 학습 활동",
+    "room": "강의실",
+    "instructor": "담당 교수",
+    "statusUpcoming": "예정",
+    "statusOngoing": "수업 중",
+    "statusCompleted": "종료",
+    "noClassesToday": "오늘 예정된 수업이 없습니다.",
+    "viewFullSchedule": "전체 시간표 보기",
+    "joinClass": "강의실 입장",
+    "details": "상세 보기"
+  },
+  "assignments": {
+    "title": "마감 임박 과제 알림",
+    "subtitle": "이번 주 마감되는 필수 과제 및 시험",
+    "dueInDays": "{{days}}일 남음",
+    "dueTomorrow": "마감: 내일",
+    "dueToday": "마감: 오늘",
+    "submitNow": "지금 제출",
+    "submitted": "제출 완료",
+    "noAssignments": "현재 마감 임박한 과제가 없습니다.",
+    "viewAllAssignments": "전체 과제 목록 보기"
+  },
+  "exams": {
+    "title": "시험 일정 및 설문조사",
+    "subtitle": "중간고사 및 교과목 설문조사 안내",
+    "room": "고사장",
+    "seatNo": "수험번호",
+    "date": "시험일",
+    "viewExamCard": "수험표 확인",
+    "noExams": "이번 주 예정된 시험이 없습니다."
+  },
+  "academicAlerts": {
+    "title": "학사 공지 및 긴급 알림",
+    "viewAll": "공지사항 전체보기",
+    "important": "긴급",
+    "academicYear": "2026학년도"
+  }
+}

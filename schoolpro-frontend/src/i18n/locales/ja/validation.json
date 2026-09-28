@@ -1,0 +1,15 @@
+{
+  "required": "この項目は必須です！",
+  "roleRequired": "役割を選択してください！",
+  "codeRequired": "識別コードを入力してください！",
+  "codeMinLength": "アカウントは少なくとも{{min}}文字必要です！",
+  "passwordRequired": "パスワードを入力してください！",
+  "passwordMinLength": "パスワードは少なくとも{{min}}文字必要です！",
+  "invalidEmail": "無効なメールアドレスです！",
+  "invalidPhone": "無効な電話番号です！",
+  "identifierRequired": "メールアドレスまたは識別コードを入力してください！",
+  "otpRequired": "OTPコードをすべて入力してください！",
+  "otpLength": "OTPコードは6桁である必要があります！",
+  "confirmPasswordRequired": "新しいパスワードを確認してください！",
+  "passwordMismatch": "確認用パスワードが一致しません！"
+}

@@ -1,0 +1,15 @@
+{
+  "required": "이 항목은 필수입니다!",
+  "roleRequired": "역할을 선택해 주세요!",
+  "codeRequired": "식별 코드를 입력해 주세요!",
+  "codeMinLength": "계정은 최소 {{min}}자 이상이어야 합니다!",
+  "passwordRequired": "비밀번호를 입력해 주세요!",
+  "passwordMinLength": "비밀번호는 최소 {{min}}자 이상이어야 합니다!",
+  "invalidEmail": "유효하지 않은 이메일 주소입니다!",
+  "invalidPhone": "유효하지 않은 전화번호입니다!",
+  "identifierRequired": "이메일 또는 식별 코드를 입력해 주세요!",
+  "otpRequired": "OTP 인증 번호를 모두 입력해 주세요!",
+  "otpLength": "OTP 인증 번호는 6자리여야 합니다!",
+  "confirmPasswordRequired": "새 비밀번호를 다시 확인해 주세요!",
+  "passwordMismatch": "새 비밀번호가 일치하지 않습니다!"
+}

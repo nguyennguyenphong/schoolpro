@@ -1,0 +1,54 @@
+{
+  "actions": {
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "search": "Tìm kiếm",
+    "reset": "Đặt lại",
+    "close": "Đóng",
+    "loading": "Đang xử lý..."
+  },
+  "buttons": {
+    "login": "Đăng nhập",
+    "backToLogin": "Quay lại đăng nhập"
+  },
+  "status": {
+    "success": "Thành công",
+    "error": "Lỗi",
+    "warning": "Cảnh báo",
+    "info": "Thông tin",
+    "loading": "Đang tải..."
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "unauthorized": "Không có quyền truy cập",
+    "notFound": "Không tìm thấy trang"
+  },
+  "pageLoader": {
+    "loadingText": "Đang tải trang..."
+  },
+  "errors": {
+    "403": {
+      "title": "403 - Truy cập bị từ chối",
+      "subtitle": "Xin lỗi, bạn không có quyền truy cập vào phân vùng này của hệ thống EduManagement 360."
+    },
+    "404": {
+      "title": "404 - Không tìm thấy trang",
+      "subtitle": "Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển."
+    },
+    "general": "Đã có lỗi xảy ra, vui lòng thử lại sau."
+  },
+  "brand": {
+    "title": "SchoolPro",
+    "tagline": "Hệ thống Quản lý Giáo dục"
+  },
+  "footer": {
+    "copyright": "© 2026 EduManagement 360. Bảo lưu mọi quyền.",
+    "technicalSupport": "Hỗ trợ kỹ thuật"
+  }
+}

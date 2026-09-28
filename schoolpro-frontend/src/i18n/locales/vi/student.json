@@ -1,0 +1,124 @@
+{
+  "header": {
+    "searchPlaceholder": "Tìm kiếm môn học, bài giảng, tài liệu...",
+    "profile": "Hồ sơ sinh viên",
+    "settings": "Cài đặt tài khoản",
+    "changePassword": "Đổi mật khẩu",
+    "logout": "Đăng xuất",
+    "notifications": "Thông báo",
+    "studentId": "MSSV"
+  },
+  "home": {
+    "title": "Trang chủ",
+    "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
+    "currentSemester": "Học kỳ 1",
+    "academicYear": "Năm học 2026 - 2027",
+    "quickActions": "Chức năng hệ sinh thái 360",
+    "viewAll": "Xem tất cả"
+  },
+  "dashboard": {
+    "title": "Thống kê",
+    "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
+    "currentSemester": "Học kỳ 1",
+    "academicYear": "Năm học 2026 - 2027",
+    "quickActions": "Chức năng hệ sinh thái 360",
+    "viewAll": "Xem tất cả"
+  },
+  "features": {
+    "announcements": {
+      "title": "Thông báo 360",
+      "description": "Tin tức từ nhà trường, khoa và giảng viên",
+      "badge": "3 mới"
+    },
+    "reminders": {
+      "title": "Nhắc nhở học tập",
+      "description": "Lịch học, điểm danh và hạn học phí",
+      "badge": "4 việc cần làm"
+    },
+    "assignments": {
+      "title": "Bài tập & Đồ án",
+      "description": "Nộp bài tập về nhà, đồ án và trắc nghiệm",
+      "badge": "2 đến hạn"
+    },
+    "materials": {
+      "title": "Tài liệu học tập",
+      "description": "Giáo trình điện tử, slide và bài giảng số",
+      "badge": "18 tài liệu"
+    },
+    "evaluations": {
+      "title": "Đánh giá & Khảo sát",
+      "description": "Khảo sát chất lượng giảng dạy và môn học",
+      "badge": "Chờ đánh giá"
+    },
+    "discussions": {
+      "title": "Thảo luận & Hỏi đáp",
+      "description": "Diễn đàn học tập, trao đổi nhóm cùng GV",
+      "badge": "12 phản hồi"
+    },
+    "schedule360": {
+      "title": "Thời khóa biểu 360",
+      "description": "Tra cứu lịch học tuần, đổi ca học và phòng",
+      "badge": "Hôm nay"
+    },
+    "gradebook360": {
+      "title": "Bảng điểm 360",
+      "description": "Kết quả học tập, chuyên cần và phân tích",
+      "badge": "Đã cập nhật"
+    }
+  },
+  "remindersSection": {
+    "title": "Nhắc nhở",
+    "subtitle": "Tổng hợp ca học hôm nay, hạn nộp bài tập và lịch thi quan trọng",
+    "totalCount": "{{count}} việc cần chú ý",
+    "scheduleBadge": "Lịch học hôm nay",
+    "assignmentBadge": "Hạn nộp bài tập",
+    "examBadge": "Lịch thi sắp tới"
+  },
+  "noticesSection": {
+    "title": "Thông báo",
+    "subtitle": "10 thông báo mới nhất từ các phòng ban, khoa và đơn vị đào tạo",
+    "viewAll": "Xem tất cả thông báo",
+    "markAllRead": "Đã xem",
+    "filterAll": "Tất cả",
+    "readMore": "Chi tiết"
+  },
+  "schedule": {
+    "title": "Lịch học & Nhắc nhở ca học hôm nay",
+    "subtitle": "Các lớp học và hoạt động học tập trong ngày",
+    "room": "Phòng",
+    "instructor": "Giảng viên",
+    "statusUpcoming": "Sắp diễn ra",
+    "statusOngoing": "Đang diễn ra",
+    "statusCompleted": "Đã kết thúc",
+    "noClassesToday": "Hôm nay bạn không có lịch học nào.",
+    "viewFullSchedule": "Xem toàn bộ thời khóa biểu",
+    "joinClass": "Vào lớp học",
+    "details": "Xem chi tiết"
+  },
+  "assignments": {
+    "title": "Nhắc nhở Hạn nộp Bài tập",
+    "subtitle": "Các bài tập cần hoàn thành gấp trong tuần",
+    "dueInDays": "Còn {{days}} ngày",
+    "dueTomorrow": "Hạn nộp: Ngày mai",
+    "dueToday": "Hạn nộp: Hôm nay",
+    "submitNow": "Nộp bài ngay",
+    "submitted": "Đã nộp",
+    "noAssignments": "Hiện không có bài tập nào cần nộp gấp.",
+    "viewAllAssignments": "Xem danh sách bài tập"
+  },
+  "exams": {
+    "title": "Lịch thi & Khảo sát sắp tới",
+    "subtitle": "Các kỳ thi giữa kỳ và khảo sát học phần",
+    "room": "Phòng thi",
+    "seatNo": "SBD",
+    "date": "Ngày thi",
+    "viewExamCard": "Xem thẻ dự thi",
+    "noExams": "Chưa có lịch thi mới trong tuần này."
+  },
+  "academicAlerts": {
+    "title": "Thông báo & Cảnh báo học vụ",
+    "viewAll": "Xem tất cả",
+    "important": "Khẩn",
+    "academicYear": "Năm 2026"
+  }
+}

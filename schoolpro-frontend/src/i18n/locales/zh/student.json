@@ -1,0 +1,124 @@
+{
+  "header": {
+    "searchPlaceholder": "搜索课程、课件、学习资料...",
+    "profile": "学生个人主页",
+    "settings": "账户设置",
+    "changePassword": "修改密码",
+    "logout": "退出登录",
+    "notifications": "通知",
+    "studentId": "学号"
+  },
+  "home": {
+    "title": "首页",
+    "welcome": "欢迎回来，{{name}}！祝您今天学习愉快。",
+    "currentSemester": "第1学期",
+    "academicYear": "2026 - 2027学年",
+    "quickActions": "360生态功能专区",
+    "viewAll": "查看全部"
+  },
+  "dashboard": {
+    "title": "统计分析",
+    "welcome": "欢迎回来，{{name}}！祝您今天学习愉快。",
+    "currentSemester": "第1学期",
+    "academicYear": "2026 - 2027学年",
+    "quickActions": "360生态功能专区",
+    "viewAll": "查看全部"
+  },
+  "features": {
+    "announcements": {
+      "title": "校园通知 360",
+      "description": "学校、学院及授课教师最新动态",
+      "badge": "3条新动态"
+    },
+    "reminders": {
+      "title": "智能学习提醒",
+      "description": "上课日程、出勤签到及学费截止日",
+      "badge": "4项待办"
+    },
+    "assignments": {
+      "title": "课后作业与设计",
+      "description": "提交作业、课程设计及单元测验",
+      "badge": "2项临期"
+    },
+    "materials": {
+      "title": "课程学习资料",
+      "description": "电子教材、讲义课件及历年试题",
+      "badge": "18份资料"
+    },
+    "evaluations": {
+      "title": "教学评估与问卷",
+      "description": "评教系统及课程满意度问卷调查",
+      "badge": "待评教"
+    },
+    "discussions": {
+      "title": "在线讨论与答疑",
+      "description": "学习互动社区、小组研讨及教师答疑",
+      "badge": "12条回复"
+    },
+    "schedule360": {
+      "title": "智能课表 360",
+      "description": "查看每周课表、调课通知及实验机房",
+      "badge": "今日"
+    },
+    "gradebook360": {
+      "title": "成绩学分 360",
+      "description": "考试成绩查询、出勤率及学业分析",
+      "badge": "已更新"
+    }
+  },
+  "remindersSection": {
+    "title": "提醒",
+    "subtitle": "今日课程安排、临近作业截止日及近期考试速览",
+    "totalCount": "{{count}}项需处理事项",
+    "scheduleBadge": "今日课程",
+    "assignmentBadge": "待交作业",
+    "examBadge": "近期考试"
+  },
+  "noticesSection": {
+    "title": "通知公告",
+    "subtitle": "各部门、院系及教务部门最新发布的10条通知",
+    "viewAll": "查看全部通知",
+    "markAllRead": "标记已读",
+    "filterAll": "全部",
+    "readMore": "详情"
+  },
+  "schedule": {
+    "title": "今日课程与上课提醒",
+    "subtitle": "今日安排的课堂及学习活动",
+    "room": "教室",
+    "instructor": "授课教师",
+    "statusUpcoming": "未开始",
+    "statusOngoing": "进行中",
+    "statusCompleted": "已结束",
+    "noClassesToday": "今天没有安排课程。",
+    "viewFullSchedule": "查看完整课表",
+    "joinClass": "进入课堂",
+    "details": "查看详情"
+  },
+  "assignments": {
+    "title": "临期作业提交提醒",
+    "subtitle": "本周内即将截止的课程作业与设计",
+    "dueInDays": "剩余 {{days}} 天",
+    "dueTomorrow": "截止日期: 明天",
+    "dueToday": "截止日期: 今天",
+    "submitNow": "立即提交",
+    "submitted": "已提交",
+    "noAssignments": "暂无临近截止的作业。",
+    "viewAllAssignments": "查看全部作业"
+  },
+  "exams": {
+    "title": "近期考试与问卷提醒",
+    "subtitle": "期中考试日程与教学质量问卷",
+    "room": "考场",
+    "seatNo": "座位号",
+    "date": "考试日期",
+    "viewExamCard": "查看准考信息",
+    "noExams": "本周暂无考试安排。"
+  },
+  "academicAlerts": {
+    "title": "教务通知与重要提醒",
+    "viewAll": "查看全部公告",
+    "important": "重要",
+    "academicYear": "2026学年"
+  }
+}

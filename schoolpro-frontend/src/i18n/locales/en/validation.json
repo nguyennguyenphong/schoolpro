@@ -1,0 +1,15 @@
+{
+  "required": "This field is required!",
+  "roleRequired": "Please select your role!",
+  "codeRequired": "Please enter your identifier code!",
+  "codeMinLength": "Account must be at least {{min}} characters!",
+  "passwordRequired": "Please enter your password!",
+  "passwordMinLength": "Password must be at least {{min}} characters!",
+  "invalidEmail": "Invalid email address!",
+  "invalidPhone": "Invalid phone number!",
+  "identifierRequired": "Please enter your email or identifier code!",
+  "otpRequired": "Please enter the complete OTP code!",
+  "otpLength": "OTP code must be 6 digits!",
+  "confirmPasswordRequired": "Please confirm your new password!",
+  "passwordMismatch": "Confirm password does not match new password!"
+}

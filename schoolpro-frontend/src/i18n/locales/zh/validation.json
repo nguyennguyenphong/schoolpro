@@ -1,0 +1,15 @@
+{
+  "required": "此项为必填项！",
+  "roleRequired": "请选择您的访问身份！",
+  "codeRequired": "请输入您的识别码！",
+  "codeMinLength": "账号至少需要 {{min}} 个字符！",
+  "passwordRequired": "请输入您的系统密码！",
+  "passwordMinLength": "密码至少需要 {{min}} 个字符！",
+  "invalidEmail": "无效的电子邮箱地址！",
+  "invalidPhone": "无效的电话号码！",
+  "identifierRequired": "请输入您的电子邮箱或识别码！",
+  "otpRequired": "请输入完整的 OTP 验证码！",
+  "otpLength": "OTP 验证码必须为 6 位数字！",
+  "confirmPasswordRequired": "请再次确认您的新密码！",
+  "passwordMismatch": "两次输入的新密码不一致！"
+}

@@ -1,0 +1,54 @@
+{
+  "actions": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "confirm": "Confirm",
+    "back": "Back",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "reset": "Reset",
+    "close": "Close",
+    "loading": "Processing..."
+  },
+  "buttons": {
+    "login": "Sign In",
+    "backToLogin": "Back to Sign In"
+  },
+  "status": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "loading": "Loading..."
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "unauthorized": "Access Denied",
+    "notFound": "Page Not Found"
+  },
+  "pageLoader": {
+    "loadingText": "Loading page..."
+  },
+  "errors": {
+    "403": {
+      "title": "403 - Access Denied",
+      "subtitle": "Sorry, you do not have permission to access this section of EduManagement 360."
+    },
+    "404": {
+      "title": "404 - Page Not Found",
+      "subtitle": "The page you are looking for does not exist or has been moved."
+    },
+    "general": "An error occurred, please try again later."
+  },
+  "brand": {
+    "title": "SchoolPro",
+    "tagline": "Education Management System"
+  },
+  "footer": {
+    "copyright": "© 2026 EduManagement 360. All rights reserved.",
+    "technicalSupport": "Technical Support"
+  }
+}
