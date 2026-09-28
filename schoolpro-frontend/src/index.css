@@ -1,11 +1,1 @@
 @import "tailwindcss";
-
-.custom-dropdown,
-.custom-dropdown .ant-dropdown,
-.custom-dropdown .ant-dropdown-menu,
-.ant-dropdown-menu {
-  border-radius: 6px !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  filter: none !important;
-}

@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { message } from "antd";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
@@ -52,7 +54,32 @@ export const TimetablePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5 pb-8">
+    <div className="space-y-4 sm:space-y-5 pb-8">
+      {/* 0. Breadcrumb Navigation */}
+      <div className="flex items-center justify-between py-2 px-3.5 rounded-lg bg-white border border-slate-200">
+        <Breadcrumb
+          items={[
+            {
+              href: "/student/home",
+              title: (
+                <span className="flex items-center gap-1.5">
+                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                  <span>Trang chủ</span>
+                </span>
+              ),
+            },
+            {
+              title: (
+                <span className="flex items-center gap-1.5">
+                  <Icon name="calendar" size={14} className="text-blue-600 shrink-0" />
+                  <span>Thời khóa biểu & Lịch học</span>
+                </span>
+              ),
+            },
+          ]}
+        />
+      </div>
+
       {/* 1. Header & Quick Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>

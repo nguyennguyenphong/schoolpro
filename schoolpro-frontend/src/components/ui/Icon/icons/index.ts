@@ -40,6 +40,7 @@ import {
   Calendar,
   Clock,
   MapPin,
+  Home,
 } from "lucide-react";
 
 export const iconMap = {
@@ -101,4 +102,5 @@ export const iconMap = {
   calendar: Calendar,
   clock: Clock,
   "map-pin": MapPin,
+  home: Home,
 } as const;

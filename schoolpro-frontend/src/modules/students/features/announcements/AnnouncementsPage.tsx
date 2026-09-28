@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Empty, Pagination } from "antd";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
@@ -59,6 +61,31 @@ export const AnnouncementsPage: React.FC = () => {
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
+      {/* 0. Breadcrumb Navigation */}
+      <div className="flex items-center justify-between py-2 px-3.5 rounded-md bg-white border border-slate-200">
+        <Breadcrumb
+          items={[
+            {
+              href: "/student/home",
+              title: (
+                <span className="flex items-center gap-1.5">
+                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                  <span>Trang chủ</span>
+                </span>
+              ),
+            },
+            {
+              title: (
+                <span className="flex items-center gap-1.5">
+                  <Icon name="info" size={14} className="text-blue-600 shrink-0" />
+                  <span>Bảng tin & Thông báo</span>
+                </span>
+              ),
+            },
+          ]}
+        />
+      </div>
+
       {/* 1. Header Section with clean border separation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
         <div>
