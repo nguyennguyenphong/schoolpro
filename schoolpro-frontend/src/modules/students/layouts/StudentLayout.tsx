@@ -47,6 +47,12 @@ export const StudentLayout: React.FC = () => {
       icon: "calendar" as const,
     },
     {
+      key: "notices",
+      label: t("student:features.announcements.title"),
+      path: "/student/notices",
+      icon: "info" as const,
+    },
+    {
       key: "assignments",
       label: t("student:features.assignments.title"),
       path: "#assignments",
@@ -167,11 +173,11 @@ export const StudentLayout: React.FC = () => {
             {/* Notifications Button (Bordered) */}
             <button
               type="button"
-              onClick={() => message.info(t("student:header.notifications"))}
+              onClick={() => navigate("/student/notices")}
               className="w-9 h-9 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center justify-center transition-all text-slate-600 relative cursor-pointer"
               aria-label={t("student:header.notifications")}
             >
-              <Badge count={3} size="small" offset={[-2, 2]}>
+              <Badge count={3} offset={[-2, 2]}>
                 <Icon name="info" size={17} />
               </Badge>
             </button>

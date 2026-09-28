@@ -58,7 +58,6 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            size="small"
             onClick={onGoToToday}
             className="text-xs rounded-lg"
           >
@@ -167,14 +166,13 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                         rel="noreferrer"
                         className="no-underline"
                       >
-                        <Button variant="outline" size="small" className="rounded-lg text-xs">
+                        <Button variant="outline" className="rounded-lg text-xs">
                           Vào lớp trực tuyến
                         </Button>
                       </a>
                     )}
                     <Button
                       variant="primary"
-                      size="small"
                       onClick={() => onSlotClick(slot)}
                       className="rounded-lg text-xs"
                     >

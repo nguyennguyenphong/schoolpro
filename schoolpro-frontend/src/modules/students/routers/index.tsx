@@ -20,11 +20,19 @@ const TimetablePage = lazy(() =>
   }))
 );
 
+const AnnouncementsPage = lazy(() =>
+  import("@/modules/students/features/announcements").then(({ AnnouncementsPage }) => ({
+    default: AnnouncementsPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />
+    <Route path="/student/notices" element={<AnnouncementsPage />} />
+    <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
     <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />
     <Route path="/student" element={<Navigate to="/student/home" replace />} />
   </Route>

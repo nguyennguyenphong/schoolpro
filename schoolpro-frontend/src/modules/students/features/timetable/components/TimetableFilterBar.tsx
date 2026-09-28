@@ -100,7 +100,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           {/* Today Button */}
           <Button
             variant="outline"
-            size="small"
             onClick={onTodayClick}
             className="text-xs font-semibold rounded-lg"
           >
@@ -191,8 +190,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 { label: "Tuần", value: "week" },
                 { label: "Tháng", value: "month" },
                 { label: "Năm", value: "year" },
-              ]}
-              size="small"
+              ]}              
               className="bg-slate-100 p-0.5 rounded-lg text-xs"
             />
           </div>
@@ -208,7 +206,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 { label: "Theo ngày", value: "day" },
                 { label: "Danh sách", value: "list" },
               ]}
-              size="small"
               className="bg-slate-100 p-0.5 rounded-lg text-xs"
             />
           </div>
