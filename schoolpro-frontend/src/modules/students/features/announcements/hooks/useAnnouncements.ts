@@ -94,26 +94,6 @@ export const useAnnouncements = () => {
     [setSearchParams],
   );
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [listResult, summaryData, deptData] = await Promise.all([
-        announcementService.getAnnouncements(filter),
-        announcementService.getSummary(),
-        announcementService.getDepartments(),
-      ]);
-      setAnnouncements(listResult.items);
-      setTotal(listResult.total);
-      setTotalPages(listResult.totalPages);
-      setSummary(summaryData);
-      setDepartments(deptData);
-    } catch {
-      message.error("Lỗi khi tải danh sách thông báo. Vui lòng thử lại!");
-    } finally {
-      setLoading(false);
-    }
-  }, [filter]);
-
   useEffect(() => {
     let ignore = false;
 
@@ -345,6 +325,5 @@ export const useAnnouncements = () => {
     openDetail,
     closeDetail,
     markAllAsRead,
-    refetch: fetchData,
   };
 };
