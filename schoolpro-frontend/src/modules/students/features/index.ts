@@ -5,3 +5,4 @@ export * from "@/modules/students/features/timetable";
 export * from "@/modules/students/features/exams";
 export * from "@/modules/students/features/evaluation";
 export * from "@/modules/students/features/dashboard";
+export * from "@/modules/students/features/assignments";

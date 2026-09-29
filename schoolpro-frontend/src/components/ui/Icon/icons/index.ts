@@ -41,6 +41,18 @@ import {
   Clock,
   MapPin,
   Home,
+  FileText,
+  FileSpreadsheet,
+  FileArchive,
+  Image as ImageIcon,
+  Video,
+  Music,
+  Play,
+  Pause,
+  Volume2,
+  Paperclip,
+  Mail,
+  Send,
 } from "lucide-react";
 
 export const iconMap = {
@@ -76,8 +88,18 @@ export const iconMap = {
   eye: Eye,
   "eye-off": EyeOff,
 
-  // Files
+  // Files & Media
   file: File,
+  "file-text": FileText,
+  "file-spreadsheet": FileSpreadsheet,
+  "file-archive": FileArchive,
+  image: ImageIcon,
+  video: Video,
+  music: Music,
+  play: Play,
+  pause: Pause,
+  volume: Volume2,
+  paperclip: Paperclip,
   download: Download,
   upload: Upload,
 
@@ -98,6 +120,9 @@ export const iconMap = {
 
   book: BookOpenCheck,
   password: Lock,
+  lock: Lock,
+  mail: Mail,
+  send: Send,
   chart: BarChart3,
   calendar: Calendar,
   clock: Clock,

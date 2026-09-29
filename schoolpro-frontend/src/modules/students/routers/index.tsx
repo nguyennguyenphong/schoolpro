@@ -26,12 +26,26 @@ const AnnouncementsPage = lazy(() =>
   }))
 );
 
+const AssignmentsPage = lazy(() =>
+  import("@/modules/students/features/assignments").then(({ AssignmentsPage }) => ({
+    default: AssignmentsPage,
+  }))
+);
+
+const AssignmentSubmitPage = lazy(() =>
+  import("@/modules/students/features/assignments").then(({ AssignmentSubmitPage }) => ({
+    default: AssignmentSubmitPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />
     <Route path="/student/notices" element={<AnnouncementsPage />} />
+    <Route path="/student/assignments" element={<AssignmentsPage />} />
+    <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />
     <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
     <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />
     <Route path="/student" element={<Navigate to="/student/home" replace />} />
