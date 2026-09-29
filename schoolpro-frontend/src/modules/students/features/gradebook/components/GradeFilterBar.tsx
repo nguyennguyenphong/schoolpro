@@ -166,8 +166,8 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             onClick={onResetFilters}
             className="text-slate-600 hover:text-blue-600"
           >
-            <Icon name="refresh" size={12} className="mr-1" />
-            Đặt lại bộ lọc
+            <Icon name="refresh" size={12} />
+            <span>Đặt lại bộ lọc</span>
           </Button>
         )}
       </div>

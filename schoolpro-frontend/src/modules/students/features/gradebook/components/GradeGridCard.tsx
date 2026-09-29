@@ -173,10 +173,10 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
             e.stopPropagation();
             onOpenDetail(item);
           }}
-          className="text-slate-700 group-hover:text-blue-600 group-hover:border-blue-300 font-semibold"
+          className="text-slate-700 group-hover:text-blue-600 group-hover:border-blue-300 font-semibold flex items-center gap-1.5"
         >
-          Xem chi tiết điểm
-          <Icon name="arrow-right" size={13} className="ml-1" />
+          <span>Xem chi tiết điểm</span>
+          <Icon name="arrow-right" size={13} />
         </Button>
       </div>
     </Card>

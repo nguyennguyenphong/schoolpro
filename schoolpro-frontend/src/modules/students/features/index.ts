@@ -7,3 +7,4 @@ export * from "@/modules/students/features/evaluation";
 export * from "@/modules/students/features/dashboard";
 export * from "@/modules/students/features/assignments";
 export * from "@/modules/students/features/materials";
+export * from "@/modules/students/features/gradebook";

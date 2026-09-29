@@ -11,7 +11,7 @@ interface GradeSummaryCardsProps {
 export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* 1. Điểm trung bình học kỳ (ĐTB - GPA) */}
+      {/* 1. Điểm trung bình học kỳ */}
       <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -23,18 +23,18 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
         </div>
 
         <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-blue-600 tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {summary.gpa.toFixed(2)}
           </span>
           <span className="text-xs text-slate-400 font-semibold">/ 10.0</span>
-          <Tag color="blue" className="ml-auto m-0 font-semibold">
-            HK1 • 2025-2026
+          <Tag color="processing" className="ml-auto m-0 font-semibold">
+            Học kỳ 1
           </Tag>
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-          <span>Tiến độ: <strong className="text-slate-700">+0.35</strong> so với HK trước</span>
-          <span className="text-blue-600 font-semibold">Xuất sắc</span>
+          <span>Phạm vi: <strong className="text-slate-700">13 môn học</strong></span>
+          <span className="text-blue-600 font-medium">Xuất sắc</span>
         </div>
       </Card>
 
@@ -60,7 +60,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span>Đạt chuẩn: <strong className="text-slate-700">Thông tư 22 BGD</strong></span>
-          <span className="text-purple-600 font-semibold">Khen thưởng</span>
+          <span className="text-purple-600 font-medium">Khen thưởng</span>
         </div>
       </Card>
 
@@ -86,8 +86,8 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-          <span>Vi phạm: <strong className="text-slate-700">0 lần</strong></span>
-          <span className="text-emerald-600 font-semibold">Tích cực</span>
+          <span>Vi phạm nề nếp: <strong className="text-slate-700">0 lần</strong></span>
+          <span className="text-emerald-600 font-medium">Tích cực</span>
         </div>
       </Card>
 
@@ -107,14 +107,14 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
             Hạng {summary.classPosition}
           </span>
           <span className="text-xs text-slate-400 font-semibold">/ {summary.totalClassStudents} HS</span>
-          <Tag color="gold" className="ml-auto m-0 font-semibold">
-            Top 7% Lớp 11A1
+          <Tag color="warning" className="ml-auto m-0 font-semibold">
+            Top 7%
           </Tag>
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span>Danh hiệu: <strong className="text-slate-700">Học sinh Giỏi</strong></span>
-          <span className="text-amber-600 font-semibold">Thành tích cao</span>
+          <span className="text-amber-600 font-medium">Xuất sắc</span>
         </div>
       </Card>
     </div>
