@@ -1,0 +1,255 @@
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { message } from "antd";
+import type {
+  MaterialItem,
+  MaterialSummary,
+  MaterialFilter,
+  MaterialCategory,
+  MaterialFormat,
+  MaterialViewMode,
+} from "@/modules/students/features/materials/types";
+import { materialsService, mockMaterialsData } from "@/modules/students/features/materials/services";
+
+export function useMaterials() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Initial state parsed from URL query
+  const initialFilter: MaterialFilter = useMemo(
+    () => ({
+      searchQuery: searchParams.get("q") || "",
+      subject: searchParams.get("subject") || "all",
+      category: (searchParams.get("category") as MaterialCategory) || "all",
+      format: (searchParams.get("format") as MaterialFormat) || "all",
+      semester: searchParams.get("semester") || "all",
+      sortBy:
+        (searchParams.get("sort") as
+          | "newest"
+          | "most_downloaded"
+          | "title_asc"
+          | "size_asc") || "newest",
+      viewMode: (searchParams.get("view") as MaterialViewMode) || "grid",
+      page: parseInt(searchParams.get("page") || "1", 10),
+      pageSize: parseInt(searchParams.get("pageSize") || "9", 10),
+    }),
+    [searchParams],
+  );
+
+  const [filter, setFilter] = useState<MaterialFilter>(initialFilter);
+  const [materials, setMaterials] = useState<MaterialItem[]>([]);
+  const [total, setTotal] = useState(0);
+  const [summary, setSummary] = useState<MaterialSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Detail Modal State
+  const [selectedMaterial, setSelectedMaterial] = useState<MaterialItem | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // Multi-selection State
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refetch = useCallback(() => {
+    setRefreshKey((k) => k + 1);
+  }, []);
+
+  // Subjects list
+  const subjects = useMemo(() => materialsService.getSubjectsList(), []);
+
+  // Sync state to URL (only non-default values)
+  const updateUrlParams = useCallback((newFilter: MaterialFilter) => {
+    const params = new URLSearchParams();
+    if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
+    if (newFilter.subject !== "all") params.set("subject", newFilter.subject);
+    if (newFilter.category !== "all") params.set("category", newFilter.category);
+    if (newFilter.semester !== "all") params.set("semester", newFilter.semester);
+    if (newFilter.sortBy !== "newest") params.set("sort", newFilter.sortBy);
+    if (newFilter.viewMode !== "grid") params.set("view", newFilter.viewMode);
+    if (newFilter.page > 1) params.set("page", newFilter.page.toString());
+    if (newFilter.pageSize !== 9) params.set("pageSize", newFilter.pageSize.toString());
+    return params;
+  }, []);
+
+  // Fetch materials
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadData() {
+      try {
+        const res = await materialsService.getMaterials(filter);
+        if (!ignore) {
+          setMaterials(res.items);
+          setTotal(res.total);
+          setSummary(materialsService.calculateSummary(mockMaterialsData));
+          setLoading(false);
+        }
+      } catch {
+        if (!ignore) {
+          message.error("Không thể tải danh sách tài liệu học tập.");
+          setLoading(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      ignore = true;
+    };
+  }, [filter, refreshKey]);
+
+  // Filter setters
+  const updateFilter = useCallback(
+    (partial: Partial<MaterialFilter>) => {
+      setFilter((prev) => {
+        const next = { ...prev, ...partial };
+        if (
+          partial.searchQuery !== undefined ||
+          partial.subject !== undefined ||
+          partial.category !== undefined ||
+          partial.semester !== undefined
+        ) {
+          next.page = 1;
+        }
+        setSearchParams(updateUrlParams(next), { replace: true });
+        return next;
+      });
+    },
+    [setSearchParams, updateUrlParams],
+  );
+
+  const setSearchQuery = (query: string) => updateFilter({ searchQuery: query });
+  const setSubject = (sub: string) => updateFilter({ subject: sub });
+  const setCategory = (cat: string) => updateFilter({ category: cat });
+  const setSemester = (sem: string) => updateFilter({ semester: sem });
+  const setSortBy = (sort: MaterialFilter["sortBy"]) => updateFilter({ sortBy: sort });
+  const setViewMode = (mode: MaterialViewMode) => updateFilter({ viewMode: mode });
+  const setPage = (page: number, pageSize?: number) => {
+    updateFilter({ page, ...(pageSize && { pageSize }) });
+  };
+
+  const resetFilters = useCallback(() => {
+    const cleared: MaterialFilter = {
+      searchQuery: "",
+      subject: "all",
+      category: "all",
+      semester: "all",
+      sortBy: "newest",
+      viewMode: filter.viewMode,
+      page: 1,
+      pageSize: filter.pageSize,
+    };
+    setFilter(cleared);
+    setSearchParams(updateUrlParams(cleared), { replace: true });
+  }, [filter.viewMode, filter.pageSize, setSearchParams, updateUrlParams]);
+
+  // Multi-selection Handlers
+  const toggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  }, []);
+
+  const selectAll = useCallback(() => {
+    const allPageIds = materials.map((m) => m.id);
+    setSelectedIds((prev) => {
+      const isAllSelected = allPageIds.every((id) => prev.includes(id));
+      if (isAllSelected) {
+        return prev.filter((id) => !allPageIds.includes(id));
+      } else {
+        return Array.from(new Set([...prev, ...allPageIds]));
+      }
+    });
+  }, [materials]);
+
+  const clearSelection = useCallback(() => {
+    setSelectedIds([]);
+  }, []);
+
+  const isAllCurrentPageSelected = useMemo(() => {
+    if (materials.length === 0) return false;
+    return materials.every((m) => selectedIds.includes(m.id));
+  }, [materials, selectedIds]);
+
+  // Download actions
+  const handleDownload = useCallback(async (item: MaterialItem) => {
+    try {
+      await materialsService.incrementDownload(item.id);
+      setMaterials((prev) =>
+        prev.map((m) =>
+          m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
+        ),
+      );
+      message.success(`Đang tải tệp: ${item.fileName}`);
+    } catch {
+      message.error("Lỗi khi tải tệp.");
+    }
+  }, []);
+
+  const handleDownloadSelected = useCallback(() => {
+    if (selectedIds.length === 0) return;
+    message.success(
+      `Đang khởi tạo gói nén ZIP gồm ${selectedIds.length} tài liệu được chọn...`,
+    );
+    clearSelection();
+  }, [selectedIds, clearSelection]);
+
+  const toggleBookmark = useCallback((id: string) => {
+    try {
+      const isBookmarked = materialsService.toggleBookmark(id);
+      setMaterials((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),
+      );
+      message.success(
+        isBookmarked
+          ? "Đã lưu tài liệu vào mục Yêu thích!"
+          : "Đã bỏ lưu tài liệu khỏi mục Yêu thích.",
+      );
+    } catch {
+      message.error("Không thể lưu tài liệu.");
+    }
+  }, []);
+
+  // Modal Handlers
+  const openDetail = useCallback((item: MaterialItem) => {
+    setSelectedMaterial(item);
+    setIsDetailOpen(true);
+  }, []);
+
+  const closeDetail = useCallback(() => {
+    setIsDetailOpen(false);
+    setSelectedMaterial(null);
+  }, []);
+
+  return {
+    materials,
+    total,
+    summary,
+    subjects,
+    loading,
+    filter,
+    selectedMaterial,
+    isDetailOpen,
+    selectedIds,
+    isAllCurrentPageSelected,
+    setSearchQuery,
+    setSubject,
+    setCategory,
+    setSemester,
+    setSortBy,
+    setViewMode,
+    setPage,
+    resetFilters,
+    toggleSelect,
+    selectAll,
+    clearSelection,
+    handleDownload,
+    handleDownloadSelected,
+    downloadMaterial: handleDownload,
+    downloadSelected: handleDownloadSelected,
+    toggleBookmark,
+    openDetail,
+    closeDetail,
+    refetch,
+  };
+}

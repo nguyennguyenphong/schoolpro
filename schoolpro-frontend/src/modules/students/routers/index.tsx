@@ -38,6 +38,18 @@ const AssignmentSubmitPage = lazy(() =>
   }))
 );
 
+const MaterialsPage = lazy(() =>
+  import("@/modules/students/features/materials").then(({ MaterialsPage }) => ({
+    default: MaterialsPage,
+  }))
+);
+
+const SubjectMaterialsPage = lazy(() =>
+  import("@/modules/students/features/materials").then(({ SubjectMaterialsPage }) => ({
+    default: SubjectMaterialsPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
@@ -46,6 +58,8 @@ export const StudentRoutes = (
     <Route path="/student/notices" element={<AnnouncementsPage />} />
     <Route path="/student/assignments" element={<AssignmentsPage />} />
     <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />
+    <Route path="/student/materials" element={<MaterialsPage />} />
+    <Route path="/student/materials/:subjectCode" element={<SubjectMaterialsPage />} />
     <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
     <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />
     <Route path="/student" element={<Navigate to="/student/home" replace />} />

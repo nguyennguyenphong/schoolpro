@@ -61,9 +61,8 @@ export const StudentLayout: React.FC = () => {
     {
       key: "materials",
       label: t("student:features.materials.title"),
-      path: "#materials",
+      path: "/student/materials",
       icon: "download" as const,
-      onClick: () => message.info(t("student:features.materials.title")),
     },
     {
       key: "gradebook",

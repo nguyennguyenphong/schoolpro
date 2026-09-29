@@ -1,0 +1,199 @@
+import React from "react";
+import { Empty, Pagination } from "antd";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import {
+  MaterialSummaryCards,
+  MaterialFilterBar,
+  MaterialSelectionBar,
+  MaterialCard,
+  MaterialListItem,
+  MaterialsSkeleton,
+} from "@/modules/students/features/materials/components";
+import { useMaterials } from "@/modules/students/features/materials/hooks";
+
+export const MaterialsPage: React.FC = () => {
+  const {
+    materials,
+    total,
+    summary,
+    subjects,
+    loading,
+    filter,
+    selectedIds,
+    isAllCurrentPageSelected,
+    setSearchQuery,
+    setSubject,
+    setCategory,
+    setSemester,
+    setSortBy,
+    setViewMode,
+    setPage,
+    resetFilters,
+    toggleSelect,
+    selectAll,
+    clearSelection,
+    downloadSelected,
+    downloadMaterial,
+    toggleBookmark,
+  } = useMaterials();
+
+  const hasActiveFilters = Boolean(
+    filter.searchQuery.trim() ||
+      filter.subject !== "all" ||
+      filter.category !== "all" ||
+      filter.semester !== "all" ||
+      filter.sortBy !== "newest",
+  );
+
+  if (loading && materials.length === 0) {
+    return <MaterialsSkeleton />;
+  }
+
+  return (
+    <div className="space-y-4 sm:space-y-5 pb-10">
+      {/* 1. Page Header with integrated Breadcrumb */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
+        <Breadcrumb
+          items={[
+            {
+              href: "/student/home",
+              title: (
+                <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
+                  <Icon name="home" size={13} className="text-slate-400 shrink-0" />
+                  <span>Trang chủ</span>
+                </span>
+              ),
+            },
+            {
+              title: (
+                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                  <Icon name="download" size={13} className="text-blue-600 shrink-0" />
+                  <span>Kho tài liệu học tập</span>
+                </span>
+              ),
+            },
+          ]}
+        />
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
+                Kho tài liệu & Bài giảng số
+              </h1>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 mb-0">
+              Tra cứu và tải xuống sách giáo khoa, đề cương ôn tập, bài giảng điện tử và đề thi của các bộ môn (Lớp 11A1)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Summary Metric Cards (Dashboard style) */}
+      {summary && <MaterialSummaryCards summary={summary} />}
+
+      {/* 3. Search & Multi-criteria Filter Bar (Auto-focus, URL sync, BỎ field Định dạng) */}
+      <MaterialFilterBar
+        filter={filter}
+        subjects={subjects}
+        onSearchChange={setSearchQuery}
+        onSubjectChange={setSubject}
+        onCategoryChange={setCategory}
+        onSemesterChange={setSemester}
+        onSortByChange={setSortBy}
+        onViewModeChange={setViewMode}
+        onResetFilters={resetFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
+
+      {/* 4. Multi-selection Bar (Shows when items are checked) */}
+      <MaterialSelectionBar
+        selectedCount={selectedIds.length}
+        totalOnPage={materials.length}
+        isAllSelected={isAllCurrentPageSelected}
+        onSelectAll={selectAll}
+        onClearSelection={clearSelection}
+        onDownloadSelected={downloadSelected}
+      />
+
+      {/* 5. Results Area (NO MODAL, direct download) */}
+      {materials.length === 0 ? (
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <Empty
+            description={
+              <div className="space-y-1.5">
+                <p className="text-sm font-bold text-slate-700 mb-0">
+                  Không tìm thấy tài liệu phù hợp
+                </p>
+                <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
+                  {hasActiveFilters
+                    ? "Không có tài liệu nào khớp với các điều kiện lọc đã chọn. Hãy thử tìm kiếm bằng từ khóa hoặc điều kiện khác."
+                    : "Hiện tại chưa có tài liệu nào trong danh mục này."}
+                </p>
+              </div>
+            }
+          >
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                onClick={resetFilters}
+                className="mt-3"
+              >
+                Đặt lại tất cả bộ lọc
+              </Button>
+            )}
+          </Empty>
+        </div>
+      ) : filter.viewMode === "grid" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {materials.map((item) => (
+            <MaterialCard
+              key={item.id}
+              item={item}
+              isSelected={selectedIds.includes(item.id)}
+              onToggleSelect={toggleSelect}
+              onDownload={downloadMaterial}
+              onToggleBookmark={toggleBookmark}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 sm:gap-3.5">
+          {materials.map((item) => (
+            <MaterialListItem
+              key={item.id}
+              item={item}
+              isSelected={selectedIds.includes(item.id)}
+              onToggleSelect={toggleSelect}
+              onDownload={downloadMaterial}
+              onToggleBookmark={toggleBookmark}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* 6. Pagination with Border Framing (Responsive & Clean) */}
+      {total > 0 && (
+        <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-xs text-slate-500">
+            Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
+            <strong className="text-slate-800">{total}</strong> tài liệu học tập
+          </div>
+
+          <Pagination
+            current={filter.page}
+            pageSize={filter.pageSize}
+            total={total}
+            onChange={(page, pageSize) => setPage(page, pageSize)}
+            showSizeChanger
+            pageSizeOptions={["9", "18", "36", "72"]}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+export default MaterialsPage;

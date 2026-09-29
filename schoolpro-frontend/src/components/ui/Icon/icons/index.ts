@@ -53,6 +53,8 @@ import {
   Paperclip,
   Mail,
   Send,
+  Presentation,
+  Bookmark,
 } from "lucide-react";
 
 export const iconMap = {
@@ -127,5 +129,12 @@ export const iconMap = {
   calendar: Calendar,
   clock: Clock,
   "map-pin": MapPin,
+  presentation: Presentation,
+  bookmark: Bookmark,
   home: Home,
+  fileText: FileText,
+  fileArchive: FileArchive,
+  fileSpreadsheet: FileSpreadsheet,
+  checkCircle: CircleCheck,
+  archive: FileArchive,
 } as const;

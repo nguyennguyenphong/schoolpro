@@ -1,0 +1,13 @@
+-r base.txt
+
+coverage==7.16.2
+
+factory_boy==3.3.3
+Faker==40.40.0
+
+iniconfig==2.3.0
+pluggy==1.6.0
+
+pytest==9.1.1
+pytest-cov==7.1.0
+pytest-django==4.14.0
