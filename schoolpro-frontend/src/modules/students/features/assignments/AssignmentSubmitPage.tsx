@@ -742,7 +742,7 @@ export const AssignmentSubmitPage: React.FC = () => {
                 <span className="text-slate-500">Email giáo viên:</span>
                 <span className="font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded flex items-center gap-1">
                   <Icon name="mail" size={11} className="text-blue-600" />
-                  <span className="truncate max-w-[150px]">{teacherEmail}</span>
+                  <span className="truncate max-w-37.5">{teacherEmail}</span>
                 </span>
               </div>
 

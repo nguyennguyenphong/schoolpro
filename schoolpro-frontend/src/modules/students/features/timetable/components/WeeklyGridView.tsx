@@ -117,7 +117,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                       }`}
                     >
                       {daySlots.length === 0 ? (
-                        <div className="h-[185px] w-full flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-slate-100 rounded-xl bg-slate-50/30 select-none">
+                        <div className="h-46.25 w-full flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-slate-100 rounded-xl bg-slate-50/30 select-none">
                           <span>Trống</span>
                         </div>
                       ) : (
@@ -130,7 +130,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                               <div
                                 key={slot.id}
                                 onClick={() => onSlotClick(slot)}
-                                className={`h-[185px] w-full bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer relative group hover:border-blue-400 hover:shadow-xs ${
+                                className={`h-46.25 w-full bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer relative group hover:border-blue-400 hover:shadow-xs ${
                                   isPractice
                                     ? "border-l-[3.5px] border-l-emerald-600"
                                     : "border-l-[3.5px] border-l-blue-600"
