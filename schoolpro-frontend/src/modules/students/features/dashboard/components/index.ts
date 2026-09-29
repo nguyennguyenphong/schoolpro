@@ -1,7 +1,11 @@
+export { StudentProfileBanner } from "@/modules/students/features/dashboard/components/StudentProfileBanner";
+export { DashboardFilterBar } from "@/modules/students/features/dashboard/components/DashboardFilterBar";
 export { MetricCards } from "@/modules/students/features/dashboard/components/MetricCards";
 export { GpaTrendChart } from "@/modules/students/features/dashboard/components/GpaTrendChart";
-export { CreditDistributionChart } from "@/modules/students/features/dashboard/components/CreditDistributionChart";
+export { SubjectScoreComparisonChart } from "@/modules/students/features/dashboard/components/SubjectScoreComparisonChart";
+export { ClassRankDistributionChart } from "@/modules/students/features/dashboard/components/ClassRankDistributionChart";
+export { SubjectGroupChart, CreditDistributionChart } from "@/modules/students/features/dashboard/components/SubjectGroupChart";
 export { CompetencyRadarChart } from "@/modules/students/features/dashboard/components/CompetencyRadarChart";
-export { GradeDistributionChart } from "@/modules/students/features/dashboard/components/GradeDistributionChart";
-export { RecentCoursesTable } from "@/modules/students/features/dashboard/components/RecentCoursesTable";
+export { AttendanceConductCard, GradeDistributionChart } from "@/modules/students/features/dashboard/components/AttendanceConductCard";
+export { SubjectGradesTable, RecentCoursesTable } from "@/modules/students/features/dashboard/components/SubjectGradesTable";
 export { DashboardSkeleton } from "@/modules/students/features/dashboard/components/DashboardSkeleton";

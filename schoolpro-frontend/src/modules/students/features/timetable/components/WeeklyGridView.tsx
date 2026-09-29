@@ -54,7 +54,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-2xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[950px] border-collapse table-fixed text-left">
+        <table className="w-full min-w-237.5 border-collapse table-fixed text-left">
           {/* Table Header: 7 Days with equal width columns */}
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200">
