@@ -6,21 +6,17 @@ import { Icon } from "@/components/ui/Icon";
 interface DashboardFilterBarProps {
   academicYear: string;
   semester: string;
-  loading?: boolean;
   onYearChange: (year: string) => void;
   onSemesterChange: (semester: string) => void;
   onResetFilters: () => void;
-  onRefresh: () => void;
 }
 
 export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
   academicYear,
   semester,
-  loading = false,
   onYearChange,
   onSemesterChange,
   onResetFilters,
-  onRefresh,
 }) => {
   const yearOptions = [
     { value: "2025-2026", label: "Năm học 2025 - 2026" },
@@ -37,7 +33,7 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
   const isFiltered = academicYear !== "2025-2026" || semester !== "hk1";
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
       {/* Left: Filter dropdowns */}
       <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
         <div className="flex items-center gap-1.5">
@@ -65,37 +61,20 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
             size="middle"
           />
         </div>
-
-        {isFiltered && (
-          <Button
-            variant="outline"
-            size="small"
-            onClick={onResetFilters}
-            className="text-xs text-slate-600 hover:text-blue-600"
-          >
-            <Icon name="refresh" size={12} className="mr-1" />
-            Về mặc định
-          </Button>
-        )}
       </div>
 
-      {/* Right: Refresh button */}
-      <div className="flex items-center justify-end gap-2">
+      {/* Right: Reset to default if filtered */}
+      {isFiltered && (
         <Button
           variant="outline"
           size="small"
-          onClick={onRefresh}
-          disabled={loading}
-          className="text-xs text-slate-700"
+          onClick={onResetFilters}
+          className="text-xs text-slate-600 hover:text-blue-600"
         >
-          <Icon
-            name="refresh"
-            size={13}
-            className={`mr-1.5 text-slate-500 ${loading ? "animate-spin" : ""}`}
-          />
-          Cập nhật dữ liệu
+          <Icon name="refresh" size={12} className="mr-1" />
+          Về mặc định
         </Button>
-      </div>
+      )}
     </div>
   );
 };

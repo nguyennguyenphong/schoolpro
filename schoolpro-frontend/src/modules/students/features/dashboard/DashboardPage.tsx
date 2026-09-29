@@ -130,11 +130,9 @@ export const DashboardPage: React.FC = () => {
       <DashboardFilterBar
         academicYear={academicYear}
         semester={semester}
-        loading={loading}
         onYearChange={setAcademicYear}
         onSemesterChange={setSemester}
         onResetFilters={resetFilters}
-        onRefresh={refetch}
       />
 
       {/* 4. Core Metric Cards (Style synchronized with AnnouncementSummaryCards) */}
