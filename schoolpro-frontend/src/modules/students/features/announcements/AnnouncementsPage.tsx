@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Empty, Pagination } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
@@ -43,7 +42,6 @@ export const AnnouncementsPage: React.FC = () => {
     markSelectedAsUnread,
     openDetail,
     closeDetail,
-    refetch,
   } = useAnnouncements();
 
   const hasActiveFilters = Boolean(
@@ -98,17 +96,6 @@ export const AnnouncementsPage: React.FC = () => {
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường
           </p>
-        </div>
-
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <Button
-            variant="outline"
-            onClick={() => refetch()}
-            className="text-xs font-semibold text-slate-700 hover:text-blue-600 hover:border-blue-300"
-          >
-            <Icon name="clock" size={14} className="mr-1.5 text-slate-500" />
-            Làm mới
-          </Button>
         </div>
       </div>
 
