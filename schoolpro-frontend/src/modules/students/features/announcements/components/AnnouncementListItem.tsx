@@ -73,7 +73,7 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
   return (
     <Card
       onClick={() => onClick(item)}
-      className={`border rounded-xl shadow-2xs hover:shadow-sm transition-all cursor-pointer group bg-white [&>.ant-card-body]:p-4 ${
+      className={`border rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : !item.isRead
@@ -102,14 +102,14 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
               )}
               <Tag
                 color={categoryConfig.color}
-                className="text-[11px] font-semibold px-2 py-0.2 rounded mr-0"
+                className="text-[11px] font-semibold px-2 py-0.5 rounded-md mr-0"
               >
                 {categoryConfig.label}
               </Tag>
               {priorityConfig && (
                 <Tag
                   color={priorityConfig.color}
-                  className="text-[11px] font-bold px-2 py-0.2 rounded mr-0"
+                  className="text-[11px] font-bold px-2 py-0.5 rounded-md border mr-0"
                 >
                   {priorityConfig.label}
                 </Tag>

@@ -42,6 +42,7 @@ export const AnnouncementsPage: React.FC = () => {
     markSelectedAsUnread,
     openDetail,
     closeDetail,
+    refetch,
   } = useAnnouncements();
 
   const hasActiveFilters = Boolean(
@@ -59,55 +60,59 @@ export const AnnouncementsPage: React.FC = () => {
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
-      {/* 0. Breadcrumb Navigation */}
-      <div className="flex items-center justify-between py-2 px-3.5 rounded-md bg-white border border-slate-200">
+      {/* Page Header with integrated Breadcrumb */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
               href: "/student/home",
               title: (
-                <span className="flex items-center gap-1.5">
-                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
+                  <Icon name="home" size={13} className="text-slate-400 shrink-0" />
                   <span>Trang chủ</span>
                 </span>
               ),
             },
             {
               title: (
-                <span className="flex items-center gap-1.5">
-                  <Icon name="info" size={14} className="text-blue-600 shrink-0" />
+                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                  <Icon name="info" size={13} className="text-blue-600 shrink-0" />
                   <span>Bảng tin & Thông báo</span>
                 </span>
               ),
             },
           ]}
         />
-      </div>
 
-      {/* 1. Header Section with clean border separation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-              Bảng tin & Thông báo học vụ
-            </h1>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
+                Bảng tin & Thông báo học vụ
+              </h1>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 mb-0">
+              Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường
+            </p>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường
-          </p>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => refetch()}
+              className="text-xs font-semibold text-slate-700 hover:text-blue-600 hover:border-blue-300 h-8"
+            >
+              <Icon name="clock" size={13} className="mr-1.5 text-slate-500" />
+              Làm mới
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* 2. Summary Metric Cards (Equal Height & Bordered) */}
-      {summary && (
-        <AnnouncementSummaryCards
-          summary={summary}
-          onFilterUnread={() => setReadStatus("unread")}
-          onFilterUrgent={() => setPriority("urgent")}
-          onFilterAcademic={() => setCategory("exam")}
-        />
-      )}
+      {/* 2. Summary Metric Cards (Dashboard style) */}
+      {summary && <AnnouncementSummaryCards summary={summary} />}
 
       {/* 3. Search & Filter Bar (Always auto-focus on input, syncs with URL) */}
       <AnnouncementFilterBar
@@ -176,7 +181,7 @@ export const AnnouncementsPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3 sm:gap-3.5">
           {announcements.map((item) => (
             <AnnouncementListItem
               key={item.id}
@@ -191,7 +196,7 @@ export const AnnouncementsPage: React.FC = () => {
 
       {/* 6. Pagination with Border Framing (Responsive & Clean) */}
       {total > 0 && (
-        <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-500">
             Hiển thị <strong className="text-slate-800">{announcements.length}</strong> trên tổng số{" "}
             <strong className="text-slate-800">{total}</strong> thông báo
@@ -203,7 +208,7 @@ export const AnnouncementsPage: React.FC = () => {
             total={total}
             onChange={(page, pageSize) => setPage(page, pageSize)}
             showSizeChanger
-            pageSizeOptions={["6", "9", "12", "18"]}            
+            pageSizeOptions={["10", "20", "50", "100"]}            
             className="text-xs"
           />
         </div>

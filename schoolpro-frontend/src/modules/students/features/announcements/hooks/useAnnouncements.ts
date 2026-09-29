@@ -25,8 +25,8 @@ export const useAnnouncements = () => {
     const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
     const parsedPage = parseInt(searchParams.get("page") || "1", 10);
     const page = Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1;
-    const parsedPageSize = parseInt(searchParams.get("pageSize") || "9", 10);
-    const pageSize = Number.isInteger(parsedPageSize) && parsedPageSize > 0 ? parsedPageSize : 9;
+    const parsedPageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+    const pageSize = Number.isInteger(parsedPageSize) && parsedPageSize > 0 ? parsedPageSize : 10;
 
     return {
       searchQuery: q,
@@ -94,8 +94,29 @@ export const useAnnouncements = () => {
     [setSearchParams],
   );
 
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [listResult, summaryData, deptData] = await Promise.all([
+        announcementService.getAnnouncements(filter),
+        announcementService.getSummary(),
+        announcementService.getDepartments(),
+      ]);
+      setAnnouncements(listResult.items);
+      setTotal(listResult.total);
+      setTotalPages(listResult.totalPages);
+      setSummary(summaryData);
+      setDepartments(deptData);
+    } catch {
+      message.error("Lỗi khi tải danh sách thông báo. Vui lòng thử lại!");
+    } finally {
+      setLoading(false);
+    }
+  }, [filter]);
+
   useEffect(() => {
     let ignore = false;
+
     async function loadData() {
       try {
         const [listResult, summaryData, deptData] = await Promise.all([
@@ -324,5 +345,6 @@ export const useAnnouncements = () => {
     openDetail,
     closeDetail,
     markAllAsRead,
+    refetch: fetchData,
   };
 };

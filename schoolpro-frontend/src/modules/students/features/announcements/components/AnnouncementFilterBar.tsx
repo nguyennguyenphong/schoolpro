@@ -43,122 +43,76 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
     inputEl?.focus();
   }, []);
 
-  const categoryOptions: { label: string; value: AnnouncementCategory }[] = [
-    { label: "Tất cả chuyên mục", value: "all" },
-    { label: "Khảo thí & Lịch thi", value: "exam" },
-    { label: "Đào tạo & Học vụ", value: "academic" },
-    { label: "Học phí & Khoản thu", value: "tuition" },
-    { label: "Đoàn trường & Ngoại khóa", value: "activity" },
-    { label: "Lớp & Giáo viên CN", value: "homeroom" },
-    { label: "Thông báo chung", value: "general" },
+  const categories: { label: string; value: AnnouncementCategory; icon: string }[] = [
+    { label: "Tất cả", value: "all", icon: "file" },
+    { label: "Khảo thí & Lịch thi", value: "exam", icon: "calendar" },
+    { label: "Đào tạo & Học vụ", value: "academic", icon: "book" },
+    { label: "Học phí & Khoản thu", value: "tuition", icon: "settings" },
+    { label: "Đoàn trường & Ngoại khóa", value: "activity", icon: "user" },
+    { label: "Lớp & GVCN", value: "homeroom", icon: "info" },
+    { label: "Thông báo chung", value: "general", icon: "file" },
   ];
 
   const sortOptions: { label: string; value: AnnouncementSortOption }[] = [
     { label: "Mới nhất trước", value: "newest" },
     { label: "Cũ nhất trước", value: "oldest" },
-    { label: "Lượt xem nhiều nhất", value: "views" },
-    { label: "Mức độ ưu tiên cao", value: "priority" },
+    { label: "Xem nhiều nhất", value: "views" },
+    { label: "Ưu tiên khẩn cấp", value: "priority" },
   ];
 
   return (
-    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-      {/* 1. Top row: Search input (always auto-focused) + View mode toggle + Reset filters */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        <div className="relative flex-1">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+      {/* 1. Category Pills: User-friendly 1-click filter */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        {categories.map((cat) => {
+          const isActive = filter.category === cat.value;
+          return (
+            <button
+              key={cat.value}
+              type="button"
+              onClick={() => onCategoryChange(cat.value)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900"
+              }`}
+            >
+              <span>{cat.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 2. Search & Toolbar Controls */}
+      <div className="pt-2 border-t border-slate-100/90 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
+        {/* Search input with clean auto-focus */}
+        <div className="relative flex-1 min-w-55">
           <Input
             id="announcement-search-input"
             autoFocus
             placeholder="Tìm kiếm thông báo theo tiêu đề, văn bản, phòng ban, tác giả..."
             value={filter.searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            prefix={<Icon name="search" size={16} className="text-slate-400" />}
+            prefix={<Icon name="search" size={15} className="text-slate-400 mr-1" />}
             allowClear
-            className="rounded-lg h-10 text-xs sm:text-sm border-slate-200 focus:border-blue-500"
           />
         </div>
 
-        <div className="flex items-center gap-2 justify-between md:justify-end shrink-0">
-          {hasActiveFilters && (
-            <Button
-              variant="outline"
-              onClick={onResetFilters}
-              className="text-xs font-medium text-rose-600 border-rose-200 hover:border-rose-400 hover:bg-rose-50"
-            >
-              <Icon name="check" size={13} className="mr-1 text-rose-500" />
-              Đặt lại bộ lọc
-            </Button>
-          )}
-
-          {/* View mode toggle */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-            <button
-              type="button"
-              onClick={() => onViewModeChange("grid")}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
-                filter.viewMode === "grid"
-                  ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-              title="Chế độ xem dạng thẻ (Grid View)"
-            >
-              <Icon name="calendar" size={14} />
-              <span className="hidden sm:inline">Dạng thẻ</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onViewModeChange("list")}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
-                filter.viewMode === "list"
-                  ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-              title="Chế độ xem danh sách (List View)"
-            >
-              <Icon name="file" size={14} />
-              <span className="hidden sm:inline">Danh sách</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Bottom row: 5 Filter dropdowns with clean borders */}
-      <div className="pt-2.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
-        {/* Bộ lọc 1: Danh mục thông báo */}
-        <div className="space-y-1">
-          <label className="text-[11px] font-semibold text-slate-500 block">
-            Danh mục thông báo
-          </label>
-          <Select
-            value={filter.category}
-            onChange={onCategoryChange}
-            options={categoryOptions}
-            className="w-full text-xs"
-            size="middle"
-          />
-        </div>
-
-        {/* Bộ lọc 2: Đơn vị ban hành */}
-        <div className="space-y-1">
-          <label className="text-[11px] font-semibold text-slate-500 block">
-            Đơn vị ban hành
-          </label>
+        {/* Secondary dropdown filters */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Đơn vị ban hành */}
           <Select
             value={filter.department}
             onChange={onDepartmentChange}
             options={[
-              { label: "Tất cả đơn vị ban hành", value: "all" },
+              { label: "Tất cả đơn vị", value: "all" },
               ...departments.map((d) => ({ label: d, value: d })),
             ]}
-            className="w-full text-xs"
+            className="w-36 sm:w-40 text-xs"
             size="middle"
           />
-        </div>
 
-        {/* Bộ lọc 3: Trạng thái xem */}
-        <div className="space-y-1">
-          <label className="text-[11px] font-semibold text-slate-500 block">
-            Trạng thái xem
-          </label>
+          {/* Trạng thái */}
           <Select
             value={filter.readStatus}
             onChange={onReadStatusChange}
@@ -167,16 +121,11 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               { label: "Chưa đọc", value: "unread" },
               { label: "Đã đọc", value: "read" },
             ]}
-            className="w-full text-xs"
+            className="w-32 text-xs"
             size="middle"
           />
-        </div>
 
-        {/* Bộ lọc 4: Mức độ ưu tiên */}
-        <div className="space-y-1">
-          <label className="text-[11px] font-semibold text-slate-500 block">
-            Mức độ ưu tiên
-          </label>
+          {/* Mức độ */}
           <Select
             value={filter.priority}
             onChange={onPriorityChange}
@@ -186,23 +135,58 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               { label: "Quan trọng", value: "high" },
               { label: "Bình thường", value: "normal" },
             ]}
-            className="w-full text-xs"
+            className="w-32 text-xs"
             size="middle"
           />
-        </div>
 
-        {/* Bộ lọc 5: Sắp xếp */}
-        <div className="space-y-1">
-          <label className="text-[11px] font-semibold text-slate-500 block">
-            Sắp xếp hiển thị
-          </label>
+          {/* Sắp xếp */}
           <Select
             value={filter.sortBy}
             onChange={onSortByChange}
             options={sortOptions}
-            className="w-full text-xs"
+            className="w-36 text-xs"
             size="middle"
           />
+
+          {/* Reset button */}
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              onClick={onResetFilters}
+              title="Đặt lại tất cả bộ lọc"
+            >
+              <Icon name="check" size={13} className="text-rose-500" />
+              Đặt lại
+            </Button>
+          )}
+
+          {/* View mode toggle */}
+          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0 ml-auto md:ml-0">
+            <button
+              type="button"
+              onClick={() => onViewModeChange("grid")}
+              className={`p-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                filter.viewMode === "grid"
+                  ? "bg-white text-blue-600 shadow-2xs font-semibold"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              title="Chế độ xem dạng thẻ (Grid View)"
+            >
+              <Icon name="calendar" size={14} />
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange("list")}
+              className={`p-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                filter.viewMode === "list"
+                  ? "bg-white text-blue-600 shadow-2xs font-semibold"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+              title="Chế độ xem danh sách (List View)"
+            >
+              <Icon name="file" size={14} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

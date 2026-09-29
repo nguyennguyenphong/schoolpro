@@ -1,115 +1,127 @@
 import React from "react";
 import { Card } from "@/components/ui/Card";
+import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { AnnouncementSummary } from "@/modules/students/features/announcements/types";
 
 interface AnnouncementSummaryCardsProps {
   summary: AnnouncementSummary;
-  onFilterUnread?: () => void;
-  onFilterUrgent?: () => void;
-  onFilterAcademic?: () => void;
 }
 
-export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> = ({
-  summary,
-  onFilterUnread,
-  onFilterUrgent,
-  onFilterAcademic,
-}) => {
+export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> = ({ summary }) => {
+  const readCount = Math.max(0, summary.total - summary.unreadCount);
+  const readPercentage = summary.total > 0 ? Math.round((readCount / summary.total) * 100) : 100;
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số thông báo */}
-      <Card className="border border-slate-200 bg-white rounded-xl shadow-2xs hover:shadow-xs transition-all h-full [&>.ant-card-body]:p-4 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between">
-        <div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-500 font-medium">Tổng thông báo</span>
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shrink-0">
-              <Icon name="file" size={20} />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-2xl font-black text-slate-900 leading-tight">
-              {summary.total}
-            </span>
-            <span className="text-xs text-slate-500 font-normal">bản tin</span>
-          </div>
+      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-blue-400 transition-all">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Tổng số thông báo
+          </span>
+          <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+            <Icon name="file" size={17} />
+          </span>
         </div>
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-          <span>Tin tức từ toàn trường & GVCN</span>
+
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            {summary.total}
+          </span>
+          <span className="text-xs text-slate-400 font-semibold">bản tin</span>
+          <Tag color="processing" className="text-[11px] font-bold ml-auto mr-0">
+            Học kỳ II
+          </Tag>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <span>Phạm vi: <strong className="text-slate-700">Toàn trường & Lớp</strong></span>
+          <span className="text-blue-600 font-medium">Đã cập nhật</span>
         </div>
       </Card>
 
-      {/* 2. Thông báo chưa đọc */}
-      <Card
-        onClick={onFilterUnread}
-        className="border border-slate-200 bg-white rounded-xl shadow-2xs hover:shadow-xs hover:border-amber-300 transition-all cursor-pointer h-full [&>.ant-card-body]:p-4 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between"
-      >
-        <div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-500 font-medium">Bản tin chưa đọc</span>
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shrink-0">
-              <Icon name="clock" size={20} />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-2xl font-black text-amber-600 leading-tight">
-              {summary.unreadCount}
-            </span>
-            <span className="text-xs text-slate-500 font-normal">cần xem</span>
-          </div>
+      {/* 2. Bản tin chưa đọc */}
+      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-amber-400 transition-all">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Bản tin chưa đọc
+          </span>
+          <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
+            <Icon name="clock" size={17} />
+          </span>
         </div>
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-          <span className="text-amber-700 font-medium">Nhấn để lọc tin chưa đọc</span>
-          <Icon name="arrow-right" size={12} className="text-amber-500" />
+
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">
+            {summary.unreadCount}
+          </span>
+          <span className="text-xs text-slate-400 font-semibold">tin mới</span>
+          <Tag
+            color={summary.unreadCount > 0 ? "warning" : "success"}
+            className="text-[11px] font-bold ml-auto mr-0"
+          >
+            {summary.unreadCount > 0 ? "Cần xem" : "Đã đọc hết"}
+          </Tag>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <span>Tiến độ đã đọc: <strong className="text-slate-700">{readPercentage}%</strong></span>
+          <span className="text-amber-600 font-medium">{readCount}/{summary.total} tin</span>
         </div>
       </Card>
 
-      {/* 3. Khẩn & Quan trọng */}
-      <Card
-        onClick={onFilterUrgent}
-        className="border border-slate-200 bg-white rounded-xl shadow-2xs hover:shadow-xs hover:border-rose-300 transition-all cursor-pointer h-full [&>.ant-card-body]:p-4 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between"
-      >
-        <div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-500 font-medium">Khẩn & Quan trọng</span>
-            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100 shrink-0">
-              <Icon name="info" size={20} />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-2xl font-black text-rose-600 leading-tight">
-              {summary.urgentCount}
-            </span>
-            <span className="text-xs text-slate-500 font-normal">thông báo ưu tiên</span>
-          </div>
+      {/* 3. Khẩn cấp & Ưu tiên */}
+      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-rose-400 transition-all">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Khẩn & Quan trọng
+          </span>
+          <span className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center shrink-0">
+            <Icon name="warning" size={17} />
+          </span>
         </div>
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-          <span className="text-rose-700 font-medium">Quy chế thi, lịch học khẩn</span>
-          <Icon name="arrow-right" size={12} className="text-rose-500" />
+
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-rose-600 tracking-tight">
+            {summary.urgentCount}
+          </span>
+          <span className="text-xs text-slate-400 font-semibold">thông báo</span>
+          <Tag color="error" className="text-[11px] font-bold ml-auto mr-0">
+            Ưu tiên cao
+          </Tag>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <span>Trọng tâm: <strong className="text-slate-700">Lịch thi, học vụ</strong></span>
+          <span className="text-rose-600 font-semibold">Xem ngay</span>
         </div>
       </Card>
 
       {/* 4. Khảo thí & Học vụ */}
-      <Card
-        onClick={onFilterAcademic}
-        className="border border-slate-200 bg-white rounded-xl shadow-2xs hover:shadow-xs hover:border-violet-300 transition-all cursor-pointer h-full [&>.ant-card-body]:p-4 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between"
-      >
-        <div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-500 font-medium">Khảo thí & Đào tạo</span>
-            <div className="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center border border-violet-100 shrink-0">
-              <Icon name="book" size={20} />
-            </div>
-          </div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <span className="text-2xl font-black text-violet-600 leading-tight">
-              {summary.examCount + summary.academicCount}
-            </span>
-            <span className="text-xs text-slate-500 font-normal">thông báo học vụ</span>
-          </div>
+      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-purple-400 transition-all">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Khảo thí & Học vụ
+          </span>
+          <span className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center shrink-0">
+            <Icon name="book" size={17} />
+          </span>
         </div>
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-          <span className="text-violet-700 font-medium">{summary.examCount} thi cử • {summary.academicCount} học tập</span>
+
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            {summary.examCount + summary.academicCount}
+          </span>
+          <span className="text-xs text-slate-400 font-semibold">văn bản</span>
+          <Tag color="purple" className="text-[11px] font-bold ml-auto mr-0">
+            Chính khóa
+          </Tag>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <span>Lịch thi: <strong className="text-slate-700">{summary.examCount}</strong></span>
+          <span>Học vụ: <strong className="text-slate-700">{summary.academicCount}</strong></span>
         </div>
       </Card>
     </div>

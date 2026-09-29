@@ -51,7 +51,7 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           onClick={onMarkAsRead}
           className="text-xs font-semibold bg-blue-600 hover:bg-blue-700"
         >
-          <Icon name="check" size={13} className="mr-1.5" />
+          <Icon name="check" size={13} />
           Đánh dấu đã đọc
         </Button>
 
@@ -60,7 +60,7 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           onClick={onMarkAsUnread}
           className="text-xs font-semibold text-slate-700 bg-white hover:border-slate-400"
         >
-          <Icon name="clock" size={13} className="mr-1.5" />
+          <Icon name="clock" size={13} />
           Đánh dấu chưa đọc
         </Button>
 
