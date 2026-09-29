@@ -45,7 +45,7 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           variant="primary"
           onClick={onDownloadSelected}
         >
-          <Icon name="download" size={13} className="mr-1.5" />
+          <Icon name="download" size={13} />
           <span>Tải xuống gói ZIP ({selectedCount})</span>
         </Button>
 
@@ -54,7 +54,7 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           onClick={onClearSelection}
           className="bg-white text-slate-700"
         >
-          <Icon name="close" size={13} className="mr-1.5" />
+          <Icon name="close" size={13} />
           <span>Bỏ chọn</span>
         </Button>
       </div>

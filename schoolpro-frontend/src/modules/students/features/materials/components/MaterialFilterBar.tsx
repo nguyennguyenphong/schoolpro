@@ -19,12 +19,12 @@ interface MaterialFilterBarProps {
   onSortByChange: (value: MaterialFilter["sortBy"]) => void;
   onViewModeChange: (mode: MaterialViewMode) => void;
   onResetFilters: () => void;
-  hasActiveFilters: boolean;
+  hasActiveFilters?: boolean;
 }
 
 export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   filter,
-  subjects,
+  subjects = [],
   onSearchChange,
   onSubjectChange,
   onCategoryChange,
@@ -32,121 +32,113 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   onSortByChange,
   onViewModeChange,
   onResetFilters,
-  hasActiveFilters,
+  hasActiveFilters = false,
 }) => {
   const { searchQuery, subject, category, semester, sortBy, viewMode } = filter;
 
-  // Auto-focus input on mount
   useEffect(() => {
-    const input = document.getElementById("material-search-input");
-    if (input) {
-      input.focus();
-    }
+    // Auto focus search input on mount
+    const inputEl = document.getElementById("material-search-input");
+    inputEl?.focus();
   }, []);
 
-  const subjectOptions = subjects
-    ? [
-        { value: "all", label: "Tất cả môn học" },
-        ...subjects.map((s) => ({ value: s.code, label: s.name })),
-      ]
-    : [];
+  const subjectOptions = [
+    { label: "Tất cả môn học", value: "all" },
+    ...subjects.map((s) => ({ label: s.name, value: s.code })),
+  ];
 
   const categoryOptions = [
-    { value: "all", label: "Tất cả danh mục" },
-    { value: "lecture", label: "Bài giảng điện tử" },
-    { value: "outline", label: "Đề cương ôn tập" },
-    { value: "textbook", label: "Sách giáo khoa" },
-    { value: "exam_prep", label: "Đề thi & Đáp án" },
-    { value: "reference", label: "Tài liệu tham khảo" },
+    { label: "Tất cả danh mục", value: "all" },
+    { label: "Bài giảng điện tử", value: "lecture" },
+    { label: "Đề cương ôn tập", value: "outline" },
+    { label: "Sách giáo khoa", value: "textbook" },
+    { label: "Đề thi & Đáp án", value: "exam_prep" },
+    { label: "Tài liệu tham khảo", value: "reference" },
   ];
 
   const semesterOptions = [
-    { value: "all", label: "Tất cả học kỳ" },
-    { value: "HK1", label: "Học kỳ 1" },
-    { value: "HK2", label: "Học kỳ 2" },
+    { label: "Tất cả học kỳ", value: "all" },
+    { label: "Học kỳ 1", value: "HK1" },
+    { label: "Học kỳ 2", value: "HK2" },
   ];
 
   const sortOptions = [
-    { value: "newest", label: "Mới cập nhật nhất" },
-    { value: "most_downloaded", label: "Tải nhiều nhất" },
-    { value: "title_asc", label: "Tên tài liệu (A-Z)" },
-    { value: "size_asc", label: "Dung lượng nhỏ nhất" },
+    { label: "Mới nhất trước", value: "newest" },
+    { label: "Tải nhiều nhất", value: "most_downloaded" },
+    { label: "Tên tài liệu (A-Z)", value: "title_asc" },
+    { label: "Dung lượng nhỏ nhất", value: "size_asc" },
   ];
 
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-      {/* Search Input & View Mode Toggle */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+      {/* Top row: Search input & View mode toggle (Identical to AssignmentFilterBar) */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">
           <Input
             id="material-search-input"
+            autoFocus
+            placeholder="Tìm kiếm tài liệu theo tên, chuyên đề, giáo viên..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm kiếm tài liệu, chuyên đề học tập, giáo viên..."
-            prefix={<Icon name="search" size={16} className="text-slate-400" />}
-            className="w-full"
+            prefix={<Icon name="search" size={15} className="text-slate-400" />}
             allowClear
+            className="w-full"
           />
         </div>
 
-        {/* View Mode Toggle Button */}
-        <div className="flex items-center gap-1.5 self-end sm:self-center border border-slate-200 rounded-lg p-1 bg-slate-50 shrink-0">
+        {/* View Mode Toggle: Grid vs List with 'Lưới thẻ' and 'Danh sách' */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0 self-end sm:self-auto">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`p-1.5 rounded transition-colors ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-600 hover:text-slate-900"
             }`}
-            title="Dạng lưới"
           >
-            <Icon name="menu" size={16} />
+            <Icon name="chart" size={13} />
+            <span>Lưới thẻ</span>
           </button>
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`p-1.5 rounded transition-colors ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "list"
-                ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-600 hover:text-slate-900"
             }`}
-            title="Dạng danh sách"
           >
-            <Icon name="filter" size={16} />
+            <Icon name="menu" size={13} />
+            <span>Danh sách</span>
           </button>
         </div>
       </div>
 
-      {/* Dropdown Filters (ĐÃ BỎ field Định dạng hoàn toàn) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+      {/* Bottom row: Filter Dropdowns (NO 'Bộ lọc' text, identical to AssignmentFilterBar) */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="flex items-center gap-1 text-slate-500 text-xs font-semibold shrink-0 mr-1">
-            <Icon name="filter" size={13} className="text-blue-600" />
-            <span>Bộ lọc:</span>
-          </div>
-
-          {/* 1. Môn học (nếu có truyền) */}
-          {subjects && onSubjectChange && (
+          {/* 1. Môn học */}
+          {onSubjectChange && subjects.length > 0 && (
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Môn học:</span>
               <Select
                 value={subject}
                 onChange={onSubjectChange}
                 options={subjectOptions}
-                className="w-36 sm:w-44"
+                className="w-36 sm:w-40"
               />
             </div>
           )}
 
-          {/* 2. Loại tài liệu (Danh mục) */}
+          {/* 2. Danh mục */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Danh mục:</span>
             <Select
               value={category}
               onChange={(val: string) => onCategoryChange(val as MaterialCategory)}
               options={categoryOptions}
-              className="w-40 sm:w-48"
+              className="w-36 sm:w-40"
             />
           </div>
 
@@ -168,18 +160,19 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
               value={sortBy}
               onChange={onSortByChange}
               options={sortOptions}
-              className="w-44 sm:w-48"
+              className="w-36 sm:w-40"
             />
           </div>
         </div>
 
+        {/* Reset filter button */}
         {hasActiveFilters && (
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={onResetFilters}
-            className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+            className="text-slate-600 hover:text-blue-600"
           >
-            <Icon name="refresh" size={13} className="mr-1" />
+            <Icon name="refresh" size={12} className="mr-1" />
             Đặt lại bộ lọc
           </Button>
         )}

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
@@ -21,6 +22,12 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   onDownload,
   onToggleBookmark,
 }) => {
+  const navigate = useNavigate();
+
+  const handleSubjectClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/student/materials/${item.subjectCode}`);
+  };
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
     switch (fmt) {
       case "pdf":
@@ -126,7 +133,12 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
           {/* Info Column */}
           <div className="space-y-1.5 flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <Tag color="blue" className="m-0 font-medium">
+              <Tag
+                color="blue"
+                className="m-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                onClick={handleSubjectClick}
+                title={`Xem danh sách tài liệu môn ${item.subjectName}`}
+              >
                 {item.subjectName}
               </Tag>
               <Tag color={categoryConfig.color} className="m-0 font-semibold text-xs">
@@ -186,7 +198,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
             onClick={() => onDownload(item)}
             className="font-semibold"
           >
-            <Icon name="download" size={14} className="mr-1.5" />
+            <Icon name="download" size={14} />
             Tải về ({item.fileSize})
           </Button>
         </div>

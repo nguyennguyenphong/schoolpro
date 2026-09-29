@@ -136,7 +136,7 @@ export const SubjectMaterialsPage: React.FC = () => {
             onClick={() => navigate("/student/materials")}
             className="text-slate-700 font-medium self-start md:self-center"
           >
-            <Icon name="arrow-left" size={14} className="mr-1.5" />
+            <Icon name="arrow-left" size={14} />
             Đổi môn học khác
           </Button>
         </div>

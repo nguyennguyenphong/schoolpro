@@ -152,7 +152,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
             handleCardClick();
           }}
         >
-          <Icon name="fileText" size={14} className="mr-1.5" />
+          <Icon name="fileText" size={14} />
           Xem tài liệu ({item.totalMaterials})
         </Button>
       </div>

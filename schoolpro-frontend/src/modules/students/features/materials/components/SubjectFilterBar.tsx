@@ -60,14 +60,9 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
         </div>
       </div>
 
-      {/* Dropdown Filters (BỎ field Định dạng) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+      {/* Dropdown Filters */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="flex items-center gap-1 text-slate-500 text-xs font-semibold shrink-0 mr-1">
-            <Icon name="filter" size={13} className="text-blue-600" />
-            <span>Bộ lọc:</span>
-          </div>
-
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Học kỳ:</span>
@@ -93,11 +88,11 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
 
         {hasActiveFilters && (
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={onResetFilters}
-            className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+            className="text-slate-600 hover:text-blue-600"
           >
-            <Icon name="refresh" size={13} className="mr-1" />
+            <Icon name="refresh" size={12} className="mr-1" />
             Đặt lại bộ lọc
           </Button>
         )}

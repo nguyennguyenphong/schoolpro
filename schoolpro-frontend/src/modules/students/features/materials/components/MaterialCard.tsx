@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -21,6 +22,12 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   onDownload,
   onToggleBookmark,
 }) => {
+  const navigate = useNavigate();
+
+  const handleSubjectClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/student/materials/${item.subjectCode}`);
+  };
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
     switch (fmt) {
       case "pdf":
@@ -124,7 +131,12 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
               </div>
             )}
 
-            <Tag color="blue" className="m-0 shrink-0 font-medium">
+            <Tag
+              color="blue"
+              className="m-0 shrink-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
+              onClick={handleSubjectClick}
+              title={`Xem danh sách tài liệu môn ${item.subjectName}`}
+            >
               {item.subjectName}
             </Tag>
 
@@ -213,7 +225,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
               onDownload(item);
             }}
           >
-            <Icon name="download" size={14} className="mr-1.5" />
+            <Icon name="download" size={14} />
             Tải về ({item.fileSize})
           </Button>
         </div>
