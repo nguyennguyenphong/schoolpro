@@ -138,8 +138,8 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
                   <td className="py-3 px-3.5 text-right whitespace-nowrap">
                     <Button
                       variant="outline"
+                      size="small"
                       onClick={() => onSlotClick(slot)}
-                      className="rounded-lg text-xs"
                     >
                       Xem
                     </Button>

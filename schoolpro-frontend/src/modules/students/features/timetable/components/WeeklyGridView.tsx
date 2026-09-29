@@ -51,52 +51,30 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
     };
   });
 
-  const getThemeStyles = (theme?: string) => {
-    switch (theme) {
-      case "emerald":
-        return "border-emerald-200 bg-emerald-50/70 hover:bg-emerald-50 text-emerald-900";
-      case "violet":
-        return "border-violet-200 bg-violet-50/70 hover:bg-violet-50 text-violet-900";
-      case "amber":
-        return "border-amber-200 bg-amber-50/70 hover:bg-amber-50 text-amber-900";
-      case "rose":
-        return "border-rose-200 bg-rose-50/70 hover:bg-rose-50 text-rose-900";
-      case "cyan":
-        return "border-cyan-200 bg-cyan-50/70 hover:bg-cyan-50 text-cyan-900";
-      case "indigo":
-        return "border-indigo-200 bg-indigo-50/70 hover:bg-indigo-50 text-indigo-900";
-      case "blue":
-      default:
-        return "border-blue-200 bg-blue-50/70 hover:bg-blue-50 text-blue-900";
-    }
-  };
-
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-2xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[900px] border-collapse text-left">
-          {/* Table Header: 7 Days */}
+        <table className="w-full min-w-[950px] border-collapse table-fixed text-left">
+          {/* Table Header: 7 Days with equal width columns */}
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200">
-              <th className="w-24 p-3 text-center border-r border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <th className="w-28 p-3 text-center border-r border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Ca học
               </th>
               {weekDays.map((d) => (
                 <th
                   key={d.dayNum}
-                  className={`p-3 text-center border-r border-slate-200 last:border-r-0 transition-colors ${
+                  className={`p-3 text-center border-r border-slate-200 last:border-r-0 transition-colors w-[13.14%] ${
                     d.isToday
                       ? "bg-blue-50/80 text-blue-700"
-                      : d.isSelected
-                      ? "bg-slate-100/80 text-slate-800"
                       : "text-slate-700"
                   }`}
                 >
                   <div className="flex flex-col items-center justify-center">
                     <span className="text-xs font-bold block">{d.label}</span>
-                    <div className="flex items-center gap-1 mt-0.5">
+                    <div className="mt-0.5">
                       <span
-                        className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                        className={`text-[11px] px-2 py-0.5 rounded-full font-medium inline-block ${
                           d.isToday
                             ? "bg-blue-600 text-white font-bold"
                             : "text-slate-500"
@@ -115,8 +93,8 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
           <tbody className="divide-y divide-slate-200">
             {SHIFTS.map((shift) => (
               <tr key={shift.key} className="align-top">
-                {/* Shift Column */}
-                <td className="p-3 border-r border-slate-200 bg-slate-50/50 text-center w-28">
+                {/* Shift Info Column */}
+                <td className="p-3 border-r border-slate-200 bg-slate-50/50 text-center w-28 align-middle">
                   <span className="text-xs font-bold text-slate-800 block">
                     {shift.label}
                   </span>
@@ -125,81 +103,95 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                   </span>
                 </td>
 
-                {/* 7 Days Columns for this Shift */}
+                {/* 7 Day Columns with equal width and equal card height */}
                 {weekDays.map((d) => {
                   const daySlots = slots.filter(
-                    (s) =>
-                      s.date === d.dateStr && s.shift === shift.key
+                    (s) => s.date === d.dateStr && s.shift === shift.key,
                   );
 
                   return (
                     <td
                       key={d.dayNum}
-                      className={`p-2 border-r border-slate-200 last:border-r-0 min-h-[140px] w-[13.5%] transition-colors ${
+                      className={`p-2 border-r border-slate-200 last:border-r-0 w-[13.14%] align-top transition-colors ${
                         d.isToday ? "bg-blue-50/20" : ""
                       }`}
                     >
                       {daySlots.length === 0 ? (
-                        <div className="h-full min-h-[110px] flex items-center justify-center text-[11px] text-slate-300 italic border border-dashed border-slate-100 rounded-lg p-2">
-                          Trống
+                        <div className="h-[185px] w-full flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-slate-100 rounded-xl bg-slate-50/30 select-none">
+                          <span>Trống</span>
                         </div>
                       ) : (
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                           {daySlots.map((slot) => {
+                            const isPractice = slot.classType === "practice";
                             const isOngoing = slot.status === "ongoing";
+
                             return (
                               <div
                                 key={slot.id}
                                 onClick={() => onSlotClick(slot)}
-                                className={`p-2.5 rounded-lg border shadow-2xs cursor-pointer transition-all duration-200 relative group hover:shadow-xs hover:-translate-y-0.5 ${getThemeStyles(
-                                  slot.colorTheme
-                                )} ${isOngoing ? "ring-2 ring-blue-500" : ""}`}
+                                className={`h-[185px] w-full bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer relative group hover:border-blue-400 hover:shadow-xs ${
+                                  isPractice
+                                    ? "border-l-[3.5px] border-l-emerald-600"
+                                    : "border-l-[3.5px] border-l-blue-600"
+                                } ${isOngoing ? "ring-2 ring-blue-500/30" : ""}`}
                               >
                                 {isOngoing && (
-                                  <span className="absolute -top-1.5 -right-1.5 flex h-3 w-3">
+                                  <span className="absolute -top-1.5 -right-1.5 flex h-2.5 w-2.5">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-600" />
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600" />
                                   </span>
                                 )}
 
-                                {/* Top: Course Code & Class Type */}
-                                <div className="flex items-center justify-between gap-1 mb-1">
-                                  <span className="text-[11px] font-black tracking-wide font-mono">
-                                    {slot.courseCode}
-                                  </span>
-                                  <Tag
-                                    color={slot.classType === "practice" ? "green" : "blue"}
-                                    className="text-[10px] px-1.5 py-0 m-0 leading-tight font-medium"
+                                {/* Top Section: Code, Tag & Title */}
+                                <div>
+                                  {/* Row 1: Code & Type Tag */}
+                                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                                    <span className="font-mono text-xs font-bold text-slate-700 truncate">
+                                      {slot.courseCode}
+                                    </span>
+                                    <Tag
+                                      color={isPractice ? "green" : "blue"}
+                                      className="m-0 text-[10px] shrink-0 font-medium"
+                                    >
+                                      {isPractice ? "Thực hành" : "Lý thuyết"}
+                                    </Tag>
+                                  </div>
+
+                                  {/* Row 2: Course Name (Dedicated 2-line row) */}
+                                  <h4
+                                    className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug h-8 group-hover:text-blue-600 transition-colors mb-0"
+                                    title={slot.courseName}
                                   >
-                                    {slot.classType === "practice" ? "Thực hành" : "Lý thuyết"}
-                                  </Tag>
+                                    {slot.courseName}
+                                  </h4>
                                 </div>
 
-                                {/* Course Name */}
-                                <h4 className="text-xs font-bold leading-snug line-clamp-2 mb-1.5 group-hover:text-blue-600 transition-colors">
-                                  {slot.courseName}
-                                </h4>
+                                {/* Bottom Section: Each info on its own row */}
+                                <div className="pt-2 border-t border-slate-100 space-y-1.5 text-[11px]">
+                                  {/* Row 3: Dedicated Time Row */}
+                                  <div className="flex items-center gap-1.5 text-slate-600">
+                                    <Icon name="clock" size={12} className="text-slate-400 shrink-0" />
+                                    <span className="truncate font-medium">
+                                      {slot.startTime} - {slot.endTime} ({slot.periods})
+                                    </span>
+                                  </div>
 
-                                {/* Time & Periods */}
-                                <div className="flex items-center gap-1 text-[11px] text-slate-600 mb-1">
-                                  <Icon name="clock" size={11} className="shrink-0 text-slate-400" />
-                                  <span className="font-medium">
-                                    {slot.startTime} - {slot.endTime}
-                                  </span>
-                                </div>
+                                  {/* Row 4: Dedicated Room & Building Row */}
+                                  <div className="flex items-center gap-1.5 text-slate-700">
+                                    <Icon name="map-pin" size={12} className="text-slate-400 shrink-0" />
+                                    <span className="truncate font-semibold" title={`${slot.room} • ${slot.building}`}>
+                                      {slot.room} • {slot.building}
+                                    </span>
+                                  </div>
 
-                                {/* Room & Building */}
-                                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-700 mb-1">
-                                  <Icon name="map-pin" size={11} className="shrink-0 text-slate-400" />
-                                  <span className="truncate">
-                                    {slot.room} • {slot.building}
-                                  </span>
-                                </div>
-
-                                {/* Instructor */}
-                                <div className="flex items-center gap-1 text-[10px] text-slate-500 truncate pt-1 border-t border-slate-200/60 mt-1">
-                                  <Icon name="user" size={10} className="shrink-0 text-slate-400" />
-                                  <span className="truncate">{slot.instructorName}</span>
+                                  {/* Row 5: Dedicated Instructor Row */}
+                                  <div className="flex items-center gap-1.5 text-slate-500">
+                                    <Icon name="user" size={12} className="text-slate-400 shrink-0" />
+                                    <span className="truncate" title={slot.instructorName}>
+                                      {slot.instructorName}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             );

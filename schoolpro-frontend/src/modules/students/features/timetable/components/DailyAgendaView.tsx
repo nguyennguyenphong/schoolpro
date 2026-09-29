@@ -58,8 +58,8 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
+            size="small"
             onClick={onGoToToday}
-            className="text-xs rounded-lg"
           >
             Quay lại hôm nay
           </Button>
@@ -68,7 +68,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
 
       {/* Sessions Timeline List */}
       {slots.length === 0 ? (
-        <Card className="p-12 text-center border border-slate-200 bg-white rounded-xl shadow-2xs">
+        <Card className="rounded-xl shadow-2xs text-center [&>.ant-card-body]:p-12">
           <div className="w-14 h-14 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
             <Icon name="calendar" size={28} />
           </div>
@@ -78,19 +78,19 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
           <p className="text-xs text-slate-500 max-w-sm mx-auto mb-4">
             Bạn có thể chuyển sang chế độ xem Lưới tuần để theo dõi tổng thể lịch học của cả tuần.
           </p>
-          <Button variant="primary" onClick={onGoToToday} className="rounded-lg text-xs">
+          <Button variant="primary" onClick={onGoToToday}>
             Xem lịch học tuần này
           </Button>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {slots.map((slot) => {
             const isOngoing = slot.status === "ongoing";
             return (
               <Card
                 key={slot.id}
-                className={`p-5 border bg-white rounded-xl shadow-2xs transition-all hover:shadow-xs hover:border-blue-300 relative ${
-                  isOngoing ? "border-blue-400 ring-2 ring-blue-500/20" : "border-slate-200"
+                className={`rounded-xl shadow-2xs transition-all hover:border-blue-300 [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5 relative ${
+                  isOngoing ? "border-blue-400 ring-2 ring-blue-500/20" : ""
                 }`}
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

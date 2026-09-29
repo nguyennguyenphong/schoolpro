@@ -23,11 +23,21 @@ class TimetableService {
         const target = dayjs(filter.selectedDate);
         let filtered = [...mockTimetableSlots];
 
-        // 1. Filter by Date / Week / Month / Year
-        if (filter.filterMode === "date" || filter.viewMode === "day") {
+        // 1. Filter by Week (or Date/Month if specified)
+        if (filter.filterMode === "date") {
           const targetDateStr = target.format("YYYY-MM-DD");
           filtered = filtered.filter((s) => s.date === targetDateStr);
-        } else if (filter.filterMode === "week" || filter.viewMode === "week") {
+        } else if (filter.filterMode === "month") {
+          filtered = filtered.filter((s) => {
+            const slotDate = dayjs(s.date);
+            return slotDate.year() === target.year() && slotDate.month() === target.month();
+          });
+        } else if (filter.filterMode === "year") {
+          filtered = filtered.filter((s) => {
+            return dayjs(s.date).year() === target.year();
+          });
+        } else {
+          // Default: Filter by week
           const weekStart = target.startOf("isoWeek");
           const weekEnd = target.endOf("isoWeek");
           filtered = filtered.filter((s) => {
@@ -37,15 +47,6 @@ class TimetableService {
               slotDate.isSame(weekEnd, "day") ||
               slotDate.isBetween(weekStart, weekEnd, "day")
             );
-          });
-        } else if (filter.filterMode === "month") {
-          filtered = filtered.filter((s) => {
-            const slotDate = dayjs(s.date);
-            return slotDate.year() === target.year() && slotDate.month() === target.month();
-          });
-        } else if (filter.filterMode === "year") {
-          filtered = filtered.filter((s) => {
-            return dayjs(s.date).year() === target.year();
           });
         }
 

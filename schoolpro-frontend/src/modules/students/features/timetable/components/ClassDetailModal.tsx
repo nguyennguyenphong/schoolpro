@@ -30,7 +30,6 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
       footer={null}
       width={560}
       centered
-      className="rounded-2xl overflow-hidden"
     >
       <div className="pt-2 space-y-5">
         {/* Header */}
@@ -138,7 +137,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
               rel="noreferrer"
               className="no-underline"
             >
-              <Button variant="outline" className="rounded-lg text-xs">
+              <Button variant="outline">
                 Vào lớp trực tuyến
               </Button>
             </a>
@@ -146,7 +145,6 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
           <Button
             variant="primary"
             onClick={onClose}
-            className="rounded-lg text-xs"
           >
             Đóng
           </Button>

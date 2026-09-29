@@ -1,5 +1,5 @@
 import React from "react";
-import { message } from "antd";
+import { Empty } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -7,7 +7,6 @@ import {
   TimetableSummaryCards,
   TimetableFilterBar,
   WeeklyGridView,
-  DailyAgendaView,
   ListView,
   ClassDetailModal,
   TimetableSkeleton,
@@ -18,148 +17,84 @@ export const TimetablePage: React.FC = () => {
   const {
     slots,
     summary,
-    courses,
     filter,
     loading,
     error,
     selectedSlot,
     isDetailOpen,
+    hasActiveFilters,
     currentWeekLabel,
-    currentMonthLabel,
-    currentYearLabel,
-    currentDateLabel,
     setSelectedDate,
-    setFilterMode,
     setViewMode,
-    setCourseCode,
-    setShift,
-    setClassType,
-    setStatus,
-    setSearchQuery,
+    resetFilters,
     openSlotDetail,
     closeSlotDetail,
     goToToday,
-    goToPrevious,
-    goToNext,
+    goToPreviousWeek,
+    goToNextWeek,
     refetch,
   } = useTimetable();
 
-  const handleExportPdf = () => {
-    message.success("Đang chuẩn bị file PDF Thời khóa biểu để tải xuống...");
-  };
-
-  const handleSyncCalendar = () => {
-    message.info("Tính năng đồng bộ lịch học với Google Calendar / iCal!");
-  };
-
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
-      {/* 0. Breadcrumb Navigation */}
-      <div className="flex items-center justify-between py-2 px-3.5 rounded-lg bg-white border border-slate-200">
+      {/* 1. Page Header with integrated Breadcrumb */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
               href: "/student/home",
               title: (
-                <span className="flex items-center gap-1.5">
-                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
+                  <Icon name="home" size={13} className="text-slate-400 shrink-0" />
                   <span>Trang chủ</span>
                 </span>
               ),
             },
             {
               title: (
-                <span className="flex items-center gap-1.5">
-                  <Icon name="calendar" size={14} className="text-blue-600 shrink-0" />
+                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                  <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
                   <span>Thời khóa biểu & Lịch học</span>
                 </span>
               ),
             },
           ]}
         />
-      </div>
 
-      {/* 1. Header & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
-        <div>
+        <div className="pt-1">
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-xl font-bold text-slate-900 mb-0">
+            <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               Thời khóa biểu & Lịch học
             </h1>
             <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
               HK1 • 2026-2027
             </span>
           </div>
-          <p className="text-xs text-slate-500 mb-0">
-            Tra cứu lịch học tuần, lọc theo ngày/tháng/năm, phòng học và thông tin giảng viên
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            Tra cứu lịch học tuần, giảng đường, giảng viên và ca học các môn trong tuần
           </p>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            size="middle"
-            onClick={handleSyncCalendar}
-            icon={<Icon name="calendar" size={14} />}
-            className="rounded-lg text-xs"
-          >
-            Đồng bộ Calendar
-          </Button>
-
-          <Button
-            variant="primary"
-            size="middle"
-            onClick={handleExportPdf}
-            icon={<Icon name="download" size={14} />}
-            className="rounded-lg text-xs"
-          >
-            Xuất TKB (PDF)
-          </Button>
-
-          <Button
-            variant="outline"
-            size="middle"
-            onClick={() => refetch()}
-            icon={<Icon name="refresh" size={14} className={loading ? "animate-spin" : ""} />}
-            className="rounded-lg text-xs"
-            title="Làm mới thời khóa biểu"
-          />
         </div>
       </div>
 
-      {/* 2. Overview Summary Cards */}
+      {/* 2. Overview Summary Cards (Dashboard style) */}
       <TimetableSummaryCards summary={summary} />
 
-      {/* 3. Comprehensive Date / Month / Year Filter Bar */}
+      {/* 3. Filter Bar (Select by week and view mode) */}
       <TimetableFilterBar
         selectedDate={filter.selectedDate}
-        filterMode={filter.filterMode}
         viewMode={filter.viewMode}
-        courseCode={filter.courseCode}
-        shift={filter.shift}
-        classType={filter.classType}
-        status={filter.status}
-        searchQuery={filter.searchQuery}
-        courses={courses}
         currentWeekLabel={currentWeekLabel}
-        currentMonthLabel={currentMonthLabel}
-        currentYearLabel={currentYearLabel}
-        currentDateLabel={currentDateLabel}
+        hasActiveFilters={hasActiveFilters}
         onDateChange={setSelectedDate}
-        onFilterModeChange={setFilterMode}
         onViewModeChange={setViewMode}
-        onCourseChange={setCourseCode}
-        onShiftChange={setShift}
-        onClassTypeChange={setClassType}
-        onStatusChange={setStatus}
-        onSearchChange={setSearchQuery}
+        onResetFilters={resetFilters}
         onTodayClick={goToToday}
-        onPrevClick={goToPrevious}
-        onNextClick={goToNext}
+        onPrevWeekClick={goToPreviousWeek}
+        onNextWeekClick={goToNextWeek}
       />
 
-      {/* 4. Main Timetable Schedule View (Week / Day / List) */}
+      {/* 4. Schedule Results View (Grid & List only) */}
       {loading && slots.length === 0 ? (
         <TimetableSkeleton />
       ) : error ? (
@@ -173,33 +108,44 @@ export const TimetablePage: React.FC = () => {
           <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
             {error.message || "Đã xảy ra lỗi khi tải dữ liệu thời khóa biểu. Vui lòng thử lại."}
           </p>
-          <Button variant="primary" onClick={() => refetch()} className="rounded-lg text-xs">
+          <Button variant="primary" size="small" onClick={() => refetch()}>
             Tải lại thời khóa biểu
           </Button>
         </div>
-      ) : (
-        <div>
-          {filter.viewMode === "week" && (
-            <WeeklyGridView
-              selectedDate={filter.selectedDate}
-              slots={slots}
-              onSlotClick={openSlotDetail}
-            />
-          )}
-
-          {filter.viewMode === "day" && (
-            <DailyAgendaView
-              selectedDate={filter.selectedDate}
-              slots={slots}
-              onSlotClick={openSlotDetail}
-              onGoToToday={goToToday}
-            />
-          )}
-
-          {filter.viewMode === "list" && (
-            <ListView slots={slots} onSlotClick={openSlotDetail} />
-          )}
+      ) : slots.length === 0 ? (
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+          <Empty
+            description={
+              <div className="space-y-1.5">
+                <p className="text-sm font-bold text-slate-700 mb-0">
+                  Không có lịch học trong tuần này
+                </p>
+                <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
+                  Hiện tại chưa có buổi học nào được xếp lịch trong khoảng thời gian đã chọn.
+                </p>
+              </div>
+            }
+          >
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                size="small"
+                onClick={resetFilters}
+                className="mt-3"
+              >
+                Đặt lại về tuần này
+              </Button>
+            )}
+          </Empty>
         </div>
+      ) : filter.viewMode === "grid" ? (
+        <WeeklyGridView
+          selectedDate={filter.selectedDate}
+          slots={slots}
+          onSlotClick={openSlotDetail}
+        />
+      ) : (
+        <ListView slots={slots} onSlotClick={openSlotDetail} />
       )}
 
       {/* 5. Class Detail Modal Popup */}

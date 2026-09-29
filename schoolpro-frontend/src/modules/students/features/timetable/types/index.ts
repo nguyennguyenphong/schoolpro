@@ -35,17 +35,17 @@ export interface TimetableSlot {
 
 export type TimetableFilterMode = "date" | "week" | "month" | "year";
 
-export type TimetableViewMode = "week" | "day" | "list";
+export type TimetableViewMode = "grid" | "list";
 
 export interface TimetableFilter {
   selectedDate: string; // "YYYY-MM-DD"
-  filterMode: TimetableFilterMode;
   viewMode: TimetableViewMode;
+  searchQuery?: string;
+  filterMode?: TimetableFilterMode;
   courseCode?: string;
   shift?: "all" | ClassShift;
   classType?: "all" | ClassType;
   status?: "all" | ClassStatus;
-  searchQuery?: string;
 }
 
 export interface TimetableSummary {

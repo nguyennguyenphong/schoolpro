@@ -1,69 +1,74 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import type {
   TimetableSlot,
   TimetableFilter,
   TimetableSummary,
-  TimetableFilterMode,
   TimetableViewMode,
-  ClassShift,
-  ClassType,
-  ClassStatus,
 } from "@/modules/students/features/timetable/types";
 import { timetableService } from "@/modules/students/features/timetable/services";
 
 export interface UseTimetableResult {
   slots: TimetableSlot[];
   summary: TimetableSummary;
-  courses: { code: string; name: string }[];
   filter: TimetableFilter;
   loading: boolean;
   error: Error | null;
   selectedSlot: TimetableSlot | null;
   isDetailOpen: boolean;
+  hasActiveFilters: boolean;
   currentWeekLabel: string;
-  currentMonthLabel: string;
-  currentYearLabel: string;
-  currentDateLabel: string;
   setSelectedDate: (date: string) => void;
-  setFilterMode: (mode: TimetableFilterMode) => void;
   setViewMode: (mode: TimetableViewMode) => void;
-  setCourseCode: (code?: string) => void;
-  setShift: (shift?: "all" | ClassShift) => void;
-  setClassType: (type?: "all" | ClassType) => void;
-  setStatus: (status?: "all" | ClassStatus) => void;
-  setSearchQuery: (query: string) => void;
+  resetFilters: () => void;
   openSlotDetail: (slot: TimetableSlot) => void;
   closeSlotDetail: () => void;
   goToToday: () => void;
-  goToPrevious: () => void;
-  goToNext: () => void;
+  goToPreviousWeek: () => void;
+  goToNextWeek: () => void;
   refetch: () => Promise<void>;
 }
 
 const DEFAULT_DATE = "2026-09-28";
 
 export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => {
-  const [filter, setFilter] = useState<TimetableFilter>({
-    selectedDate: initialDate,
-    filterMode: "week",
-    viewMode: "week",
-    shift: "all",
-    classType: "all",
-    status: "all",
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  // Initialize filter state from URL params
+  const initialFilter: TimetableFilter = useMemo(() => {
+    const date = searchParams.get("date") || initialDate;
+    const rawView = searchParams.get("view");
+    const view: TimetableViewMode = rawView === "list" ? "list" : "grid";
+
+    return {
+      selectedDate: date,
+      viewMode: view,
+    };
+  }, [searchParams, initialDate]);
+
+  const [filter, setFilter] = useState<TimetableFilter>(initialFilter);
   const [slots, setSlots] = useState<TimetableSlot[]>([]);
-  const [courses, setCourses] = useState<{ code: string; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<TimetableSlot | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
-  // Load courses once
-  useEffect(() => {
-    timetableService.getCoursesList().then(setCourses).catch(console.error);
-  }, []);
+  // Sync state to URL params (only set keys with active data)
+  const updateUrlParams = useCallback(
+    (newFilter: TimetableFilter) => {
+      const params = new URLSearchParams();
+      if (newFilter.selectedDate !== DEFAULT_DATE) {
+        params.set("date", newFilter.selectedDate);
+      }
+      if (newFilter.viewMode !== "grid") {
+        params.set("view", newFilter.viewMode);
+      }
+
+      setSearchParams(params, { replace: true });
+    },
+    [setSearchParams],
+  );
 
   const fetchSlots = useCallback(async () => {
     setLoading(true);
@@ -108,65 +113,50 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
     return timetableService.calculateSummary(slots);
   }, [slots]);
 
-  // Labels for UI
-  const targetDayjs = dayjs(filter.selectedDate);
+  const hasActiveFilters = useMemo(() => {
+    return filter.selectedDate !== DEFAULT_DATE;
+  }, [filter.selectedDate]);
 
+  // Week range label for UI
   const currentWeekLabel = useMemo(() => {
+    const targetDayjs = dayjs(filter.selectedDate);
     const start = targetDayjs.startOf("isoWeek").format("DD/MM/YYYY");
     const end = targetDayjs.endOf("isoWeek").format("DD/MM/YYYY");
-    return `${start} - ${end}`;
-  }, [targetDayjs]);
+    const weekNum = targetDayjs.diff(dayjs("2026-09-01"), "week") + 1;
+    return `${start} - ${end} (Tuần ${Math.max(1, weekNum)})`;
+  }, [filter.selectedDate]);
 
-  const currentMonthLabel = useMemo(() => {
-    return targetDayjs.format("MM/YYYY");
-  }, [targetDayjs]);
+  // Handlers that update filter state & sync URL
+  const setSelectedDate = useCallback(
+    (date: string) => {
+      setFilter((prev) => {
+        const next = { ...prev, selectedDate: date };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
 
-  const currentYearLabel = useMemo(() => {
-    return targetDayjs.format("YYYY");
-  }, [targetDayjs]);
+  const setViewMode = useCallback(
+    (mode: TimetableViewMode) => {
+      setFilter((prev) => {
+        const next = { ...prev, viewMode: mode };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
 
-  const currentDateLabel = useMemo(() => {
-    return targetDayjs.format("DD/MM/YYYY");
-  }, [targetDayjs]);
-
-  // Handlers
-  const setSelectedDate = useCallback((date: string) => {
-    setFilter((prev) => ({ ...prev, selectedDate: date }));
-  }, []);
-
-  const setFilterMode = useCallback((mode: TimetableFilterMode) => {
-    setFilter((prev) => {
-      let newViewMode = prev.viewMode;
-      if (mode === "date") newViewMode = "day";
-      if (mode === "week") newViewMode = "week";
-      if (mode === "month" || mode === "year") newViewMode = "list";
-      return { ...prev, filterMode: mode, viewMode: newViewMode };
-    });
-  }, []);
-
-  const setViewMode = useCallback((mode: TimetableViewMode) => {
-    setFilter((prev) => ({ ...prev, viewMode: mode }));
-  }, []);
-
-  const setCourseCode = useCallback((code?: string) => {
-    setFilter((prev) => ({ ...prev, courseCode: code }));
-  }, []);
-
-  const setShift = useCallback((shift?: "all" | ClassShift) => {
-    setFilter((prev) => ({ ...prev, shift }));
-  }, []);
-
-  const setClassType = useCallback((type?: "all" | ClassType) => {
-    setFilter((prev) => ({ ...prev, classType: type }));
-  }, []);
-
-  const setStatus = useCallback((status?: "all" | ClassStatus) => {
-    setFilter((prev) => ({ ...prev, status }));
-  }, []);
-
-  const setSearchQuery = useCallback((query: string) => {
-    setFilter((prev) => ({ ...prev, searchQuery: query }));
-  }, []);
+  const resetFilters = useCallback(() => {
+    const next: TimetableFilter = {
+      selectedDate: DEFAULT_DATE,
+      viewMode: "grid",
+    };
+    setFilter(next);
+    setSearchParams(new URLSearchParams(), { replace: true });
+  }, [setSearchParams]);
 
   const openSlotDetail = useCallback((slot: TimetableSlot) => {
     setSelectedSlot(slot);
@@ -178,69 +168,47 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
   }, []);
 
   const goToToday = useCallback(() => {
-    setFilter((prev) => ({ ...prev, selectedDate: DEFAULT_DATE }));
-  }, []);
+    setSelectedDate(DEFAULT_DATE);
+  }, [setSelectedDate]);
 
-  const goToPrevious = useCallback(() => {
+  const goToPreviousWeek = useCallback(() => {
     setFilter((prev) => {
       const current = dayjs(prev.selectedDate);
-      let updated = current;
-      if (prev.filterMode === "date" || prev.viewMode === "day") {
-        updated = current.subtract(1, "day");
-      } else if (prev.filterMode === "week" || prev.viewMode === "week") {
-        updated = current.subtract(1, "week");
-      } else if (prev.filterMode === "month") {
-        updated = current.subtract(1, "month");
-      } else if (prev.filterMode === "year") {
-        updated = current.subtract(1, "year");
-      }
-      return { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      const updated = current.subtract(1, "week");
+      const next = { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      updateUrlParams(next);
+      return next;
     });
-  }, []);
+  }, [updateUrlParams]);
 
-  const goToNext = useCallback(() => {
+  const goToNextWeek = useCallback(() => {
     setFilter((prev) => {
       const current = dayjs(prev.selectedDate);
-      let updated = current;
-      if (prev.filterMode === "date" || prev.viewMode === "day") {
-        updated = current.add(1, "day");
-      } else if (prev.filterMode === "week" || prev.viewMode === "week") {
-        updated = current.add(1, "week");
-      } else if (prev.filterMode === "month") {
-        updated = current.add(1, "month");
-      } else if (prev.filterMode === "year") {
-        updated = current.add(1, "year");
-      }
-      return { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      const updated = current.add(1, "week");
+      const next = { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      updateUrlParams(next);
+      return next;
     });
-  }, []);
+  }, [updateUrlParams]);
 
   return {
     slots,
     summary,
-    courses,
     filter,
     loading,
     error,
     selectedSlot,
     isDetailOpen,
+    hasActiveFilters,
     currentWeekLabel,
-    currentMonthLabel,
-    currentYearLabel,
-    currentDateLabel,
     setSelectedDate,
-    setFilterMode,
     setViewMode,
-    setCourseCode,
-    setShift,
-    setClassType,
-    setStatus,
-    setSearchQuery,
+    resetFilters,
     openSlotDetail,
     closeSlotDetail,
     goToToday,
-    goToPrevious,
-    goToNext,
+    goToPreviousWeek,
+    goToNextWeek,
     refetch: fetchSlots,
   };
 };
