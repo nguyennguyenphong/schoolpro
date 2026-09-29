@@ -96,17 +96,6 @@ export const AnnouncementsPage: React.FC = () => {
               Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường
             </p>
           </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <Button
-              variant="outline"
-              size="small"
-              onClick={() => refetch()}
-            >
-              <Icon name="clock" size={13} className="mr-1.5 text-slate-500" />
-              Làm mới
-            </Button>
-          </div>
         </div>
       </div>
 
