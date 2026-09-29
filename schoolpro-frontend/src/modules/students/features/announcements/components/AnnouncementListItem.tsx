@@ -73,12 +73,12 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
   return (
     <Card
       onClick={() => onClick(item)}
-      className={`border rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
+      className={`rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : !item.isRead
-          ? "border-l-4 border-l-blue-600 border-slate-200 hover:border-blue-300"
-          : "border-slate-200 hover:border-blue-300"
+          ? "border-l-4 border-l-blue-600 hover:border-blue-300"
+          : "hover:border-blue-300"
       }`}
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -89,7 +89,6 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
               <Checkbox
                 checked={isSelected}
                 onChange={handleCheckboxChange}
-                className="custom-checkbox"
               />
             </div>
           )}
@@ -102,14 +101,14 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
               )}
               <Tag
                 color={categoryConfig.color}
-                className="text-[11px] font-semibold px-2 py-0.5 rounded-md mr-0"
+                className="m-0 font-medium"
               >
                 {categoryConfig.label}
               </Tag>
               {priorityConfig && (
                 <Tag
                   color={priorityConfig.color}
-                  className="text-[11px] font-bold px-2 py-0.5 rounded-md border mr-0"
+                  className="m-0 font-semibold"
                 >
                   {priorityConfig.label}
                 </Tag>
@@ -149,8 +148,8 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
 
           <Button
             variant="ghost"
-
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 p-0 h-auto"
+            size="small"
+            className="text-blue-600 hover:text-blue-700"
           >
             <span>Chi tiết</span>
             <Icon name="arrow-right" size={13} className="ml-1" />

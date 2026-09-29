@@ -32,27 +32,26 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
       footer={null}
       width={780}
       centered
-      className="announcement-detail-modal"
     >
       <div className="space-y-5 pt-2">
         {/* Header tags & date */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Tag color="blue" className="text-xs font-semibold px-2.5 py-0.5 rounded-md mr-0">
+            <Tag color="blue" className="m-0 font-medium">
               {item.department}
             </Tag>
             {item.isPinned && (
-              <Tag color="gold" className="text-xs font-bold px-2 py-0.5 rounded-md mr-0">
+              <Tag color="gold" className="m-0 font-semibold">
                 Ghim đầu trang
               </Tag>
             )}
             {item.priority === "urgent" && (
-              <Tag color="red" className="text-xs font-bold px-2 py-0.5 rounded-md mr-0">
+              <Tag color="red" className="m-0 font-semibold">
                 Khẩn cấp
               </Tag>
             )}
             {item.targetAudience && (
-              <Tag color="default" className="text-xs px-2 py-0.5 rounded-md mr-0">
+              <Tag color="default" className="m-0">
                 Đối tượng: {item.targetAudience}
               </Tag>
             )}
@@ -132,7 +131,6 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
           <Button
             variant="outline"
             onClick={handlePrint}
-            className="text-xs font-medium text-slate-700"
           >
             <Icon name="file" size={14} className="mr-1.5" />
             In văn bản
@@ -141,7 +139,6 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
           <Button
             variant="primary"
             onClick={onClose}
-            className="text-xs font-semibold bg-blue-600 hover:bg-blue-700"
           >
             Đóng
           </Button>

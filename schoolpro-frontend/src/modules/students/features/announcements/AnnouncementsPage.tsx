@@ -102,7 +102,6 @@ export const AnnouncementsPage: React.FC = () => {
               variant="outline"
               size="small"
               onClick={() => refetch()}
-              className="text-xs font-semibold text-slate-700 hover:text-blue-600 hover:border-blue-300 h-8"
             >
               <Icon name="clock" size={13} className="mr-1.5 text-slate-500" />
               Làm mới
@@ -161,7 +160,7 @@ export const AnnouncementsPage: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={resetFilters}
-                className="text-xs font-semibold mt-3"
+                className="mt-3"
               >
                 Đặt lại tất cả bộ lọc
               </Button>
@@ -208,8 +207,7 @@ export const AnnouncementsPage: React.FC = () => {
             total={total}
             onChange={(page, pageSize) => setPage(page, pageSize)}
             showSizeChanger
-            pageSizeOptions={["10", "20", "50", "100"]}            
-            className="text-xs"
+            pageSizeOptions={["10", "20", "50", "100"]}
           />
         </div>
       )}

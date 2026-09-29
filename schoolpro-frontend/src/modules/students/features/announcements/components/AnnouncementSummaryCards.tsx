@@ -15,7 +15,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số thông báo */}
-      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-blue-400 transition-all">
+      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Tổng số thông báo
@@ -30,7 +30,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
             {summary.total}
           </span>
           <span className="text-xs text-slate-400 font-semibold">bản tin</span>
-          <Tag color="processing" className="text-[11px] font-bold ml-auto mr-0">
+          <Tag color="processing" className="ml-auto m-0 font-semibold">
             Học kỳ II
           </Tag>
         </div>
@@ -42,7 +42,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
       </Card>
 
       {/* 2. Bản tin chưa đọc */}
-      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-amber-400 transition-all">
+      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Bản tin chưa đọc
@@ -59,7 +59,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
           <span className="text-xs text-slate-400 font-semibold">tin mới</span>
           <Tag
             color={summary.unreadCount > 0 ? "warning" : "success"}
-            className="text-[11px] font-bold ml-auto mr-0"
+            className="ml-auto m-0 font-semibold"
           >
             {summary.unreadCount > 0 ? "Cần xem" : "Đã đọc hết"}
           </Tag>
@@ -72,7 +72,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
       </Card>
 
       {/* 3. Khẩn cấp & Ưu tiên */}
-      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-rose-400 transition-all">
+      <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Khẩn & Quan trọng
@@ -87,7 +87,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
             {summary.urgentCount}
           </span>
           <span className="text-xs text-slate-400 font-semibold">thông báo</span>
-          <Tag color="error" className="text-[11px] font-bold ml-auto mr-0">
+          <Tag color="error" className="ml-auto m-0 font-semibold">
             Ưu tiên cao
           </Tag>
         </div>
@@ -99,7 +99,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
       </Card>
 
       {/* 4. Khảo thí & Học vụ */}
-      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs hover:border-purple-400 transition-all">
+      <Card className="rounded-xl shadow-2xs hover:border-purple-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Khảo thí & Học vụ
@@ -114,7 +114,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
             {summary.examCount + summary.academicCount}
           </span>
           <span className="text-xs text-slate-400 font-semibold">văn bản</span>
-          <Tag color="purple" className="text-[11px] font-bold ml-auto mr-0">
+          <Tag color="purple" className="ml-auto m-0 font-semibold">
             Chính khóa
           </Tag>
         </div>

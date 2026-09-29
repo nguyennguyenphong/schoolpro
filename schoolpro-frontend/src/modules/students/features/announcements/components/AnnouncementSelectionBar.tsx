@@ -32,9 +32,10 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           checked={isAllSelected}
           indeterminate={selectedCount > 0 && selectedCount < totalOnPage}
           onChange={onSelectAll}
-          className="text-xs font-semibold text-slate-800"
         >
-          <span>Chọn tất cả ({totalOnPage} tin trên trang)</span>
+          <span className="text-xs font-semibold text-slate-800">
+            Chọn tất cả ({totalOnPage} tin trên trang)
+          </span>
         </Checkbox>
 
         <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
@@ -48,26 +49,26 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
       <div className="flex items-center gap-2 flex-wrap">
         <Button
           variant="primary"
+          size="small"
           onClick={onMarkAsRead}
-          className="text-xs font-semibold bg-blue-600 hover:bg-blue-700"
         >
-          <Icon name="check" size={13} />
+          <Icon name="check" size={13} className="mr-1" />
           Đánh dấu đã đọc
         </Button>
 
         <Button
           variant="outline"
+          size="small"
           onClick={onMarkAsUnread}
-          className="text-xs font-semibold text-slate-700 bg-white hover:border-slate-400"
         >
-          <Icon name="clock" size={13} />
+          <Icon name="clock" size={13} className="mr-1" />
           Đánh dấu chưa đọc
         </Button>
 
         <Button
           variant="ghost"
+          size="small"
           onClick={onClearSelection}
-          className="text-xs font-medium text-slate-500 hover:text-slate-700"
         >
           Bỏ chọn
         </Button>

@@ -84,9 +84,9 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
       </div>
 
       {/* 2. Search & Toolbar Controls */}
-      <div className="pt-2 border-t border-slate-100/90 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
+      <div className="pt-2 border-t border-slate-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
         {/* Search input with clean auto-focus */}
-        <div className="relative flex-1 min-w-55">
+        <div className="flex-1 min-w-[200px]">
           <Input
             id="announcement-search-input"
             autoFocus
@@ -108,8 +108,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               { label: "Tất cả đơn vị", value: "all" },
               ...departments.map((d) => ({ label: d, value: d })),
             ]}
-            className="w-36 sm:w-40 text-xs"
-            size="middle"
+            className="w-36 sm:w-40"
           />
 
           {/* Trạng thái */}
@@ -121,8 +120,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               { label: "Chưa đọc", value: "unread" },
               { label: "Đã đọc", value: "read" },
             ]}
-            className="w-32 text-xs"
-            size="middle"
+            className="w-32"
           />
 
           {/* Mức độ */}
@@ -135,8 +133,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               { label: "Quan trọng", value: "high" },
               { label: "Bình thường", value: "normal" },
             ]}
-            className="w-32 text-xs"
-            size="middle"
+            className="w-32"
           />
 
           {/* Sắp xếp */}
@@ -144,8 +141,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
             value={filter.sortBy}
             onChange={onSortByChange}
             options={sortOptions}
-            className="w-36 text-xs"
-            size="middle"
+            className="w-36"
           />
 
           {/* Reset button */}
@@ -155,7 +151,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
               onClick={onResetFilters}
               title="Đặt lại tất cả bộ lọc"
             >
-              <Icon name="check" size={13} className="text-rose-500" />
+              <Icon name="check" size={13} className="text-rose-500 mr-1" />
               Đặt lại
             </Button>
           )}
