@@ -4,12 +4,21 @@ import { Avatar, message } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
+import type { IconName } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
 import { Tag } from "@/components/ui/Tag";
 import { LanguageSwitcher } from "@/i18n";
 import { useAuthStore } from "@/shared/store/useAuthStore";
+
+interface StudentNavItem {
+  key: string;
+  label: string;
+  path: string;
+  icon: IconName;
+  onClick?: () => void;
+}
 
 export const StudentLayout: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
@@ -27,7 +36,7 @@ export const StudentLayout: React.FC = () => {
     navigate("/login");
   };
 
-  const navItems = [
+  const navItems: StudentNavItem[] = [
     {
       key: "home",
       label: t("student:home.title"),
@@ -73,9 +82,8 @@ export const StudentLayout: React.FC = () => {
     {
       key: "evaluations",
       label: t("student:features.evaluations.title"),
-      path: "#evaluations",
-      icon: "settings" as const,
-      onClick: () => message.info(t("student:features.evaluations.title")),
+      path: "/student/evaluations",
+      icon: "checkCircle" as const,
     },
   ];
 

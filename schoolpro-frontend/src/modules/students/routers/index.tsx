@@ -56,6 +56,18 @@ const GradebookPage = lazy(() =>
   }))
 );
 
+const EvaluationPage = lazy(() =>
+  import("@/modules/students/features/evaluation").then(({ EvaluationPage }) => ({
+    default: EvaluationPage,
+  }))
+);
+
+const SurveyDetailPage = lazy(() =>
+  import("@/modules/students/features/evaluation").then(({ SurveyDetailPage }) => ({
+    default: SurveyDetailPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
@@ -67,6 +79,10 @@ export const StudentRoutes = (
     <Route path="/student/materials" element={<MaterialsPage />} />
     <Route path="/student/materials/:subjectCode" element={<SubjectMaterialsPage />} />
     <Route path="/student/gradebook" element={<GradebookPage />} />
+    <Route path="/student/evaluations" element={<EvaluationPage />} />
+    <Route path="/student/evaluations/:id" element={<SurveyDetailPage />} />
+    <Route path="/student/surveys/:id" element={<SurveyDetailPage />} />
+    <Route path="/student/surveys" element={<Navigate to="/student/evaluations" replace />} />
     <Route path="/student/grades" element={<Navigate to="/student/gradebook" replace />} />
     <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
     <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />

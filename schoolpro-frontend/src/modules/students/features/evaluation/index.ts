@@ -1,1 +1,6 @@
-export * from "@/modules/students/features/evaluation/types";
+export * from "./types";
+export * from "./services";
+export * from "./hooks";
+export * from "./components";
+export * from "./EvaluationPage";
+export * from "./SurveyDetailPage";
