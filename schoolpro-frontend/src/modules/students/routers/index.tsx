@@ -86,12 +86,19 @@ const ExamDetailPage = lazy(() =>
   }))
 );
 
+const ContactBookPage = lazy(() =>
+  import("@/modules/students/features/contact-book").then(({ ContactBookPage }) => ({
+    default: ContactBookPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />
     <Route path="/student/attendance" element={<AttendancePage />} />
+    <Route path="/student/contact-book" element={<ContactBookPage />} />
     <Route path="/student/exams" element={<ExamsPage />} />
     <Route path="/student/exams/:id" element={<ExamDetailPage />} />
     <Route path="/student/notices" element={<AnnouncementsPage />} />

@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
-import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { FeatureItem } from "@/modules/students/features/home/types";
 
@@ -22,9 +21,6 @@ export const FunctionalCardItem: React.FC<FunctionalCardItemProps> = ({
   const description = (t as (key: string) => string)(
     `student:features.${item.translationKey}.description`,
   );
-  const badgeText = (t as (key: string) => string)(
-    `student:features.${item.translationKey}.badge`,
-  );
 
   return (
     <a href={item.route} rel="noopener noreferrer" className="block h-full">
@@ -39,15 +35,6 @@ export const FunctionalCardItem: React.FC<FunctionalCardItemProps> = ({
             >
               <Icon name={item.iconName} size={21} />
             </div>
-
-            {Boolean(badgeText) && (
-              <Tag
-                color={item.badgeColor || "blue"}
-                className="text-[11px] font-bold mr-0 px-2.5 py-0.5 rounded-full border border-current/20 shadow-2xs shrink-0"
-              >
-                {badgeText}
-              </Tag>
-            )}
           </div>
 
           <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1.5 flex items-center justify-between gap-1.5 h-6">

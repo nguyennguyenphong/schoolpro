@@ -9,3 +9,4 @@ export * from "@/modules/students/features/assignments";
 export * from "@/modules/students/features/materials";
 export * from "@/modules/students/features/gradebook";
 export * from "@/modules/students/features/attendance";
+export * from "@/modules/students/features/contact-book";

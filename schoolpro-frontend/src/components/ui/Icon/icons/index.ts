@@ -62,6 +62,7 @@ import {
   UserCheck,
   Hash,
   Sparkles,
+  Phone,
 } from "lucide-react";
 
 export const iconMap = {
@@ -151,4 +152,5 @@ export const iconMap = {
   userCheck: UserCheck,
   hash: Hash,
   sparkles: Sparkles,
+  phone: Phone,
 } as const;
