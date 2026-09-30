@@ -55,6 +55,13 @@ import {
   Send,
   Presentation,
   Bookmark,
+  QrCode,
+  Camera,
+  ScanLine,
+  KeyRound,
+  UserCheck,
+  Hash,
+  Sparkles,
 } from "lucide-react";
 
 export const iconMap = {
@@ -137,4 +144,11 @@ export const iconMap = {
   fileSpreadsheet: FileSpreadsheet,
   checkCircle: CircleCheck,
   archive: FileArchive,
+  qrCode: QrCode,
+  camera: Camera,
+  scan: ScanLine,
+  keyRound: KeyRound,
+  userCheck: UserCheck,
+  hash: Hash,
+  sparkles: Sparkles,
 } as const;

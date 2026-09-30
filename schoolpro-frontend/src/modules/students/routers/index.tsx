@@ -68,11 +68,18 @@ const SurveyDetailPage = lazy(() =>
   }))
 );
 
+const AttendancePage = lazy(() =>
+  import("@/modules/students/features/attendance").then(({ AttendancePage }) => ({
+    default: AttendancePage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />
+    <Route path="/student/attendance" element={<AttendancePage />} />
     <Route path="/student/notices" element={<AnnouncementsPage />} />
     <Route path="/student/assignments" element={<AssignmentsPage />} />
     <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />

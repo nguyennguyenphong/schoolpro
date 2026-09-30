@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Progress, Rate, Modal, message } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -58,58 +58,70 @@ export const SurveyDetailPage: React.FC = () => {
   // Handle rating change (clicking selected rating again clears it)
   const handleRatingChange = (questionId: string, value: number) => {
     setAnswers((prev) => {
-      if (prev[questionId] === value) {
-        const updated = { ...prev };
-        delete updated[questionId];
-        return updated;
+      const next = { ...prev };
+      if (!value || value <= 0 || prev[questionId] === value) {
+        delete next[questionId];
+      } else {
+        next[questionId] = value;
       }
-      return { ...prev, [questionId]: value };
+      return next;
     });
   };
 
   // Handle radio change (clicking selected option again deselects it)
   const handleRadioChange = (questionId: string, value: string) => {
     setAnswers((prev) => {
-      if (prev[questionId] === value) {
-        const updated = { ...prev };
-        delete updated[questionId];
-        return updated;
+      const next = { ...prev };
+      if (!value || prev[questionId] === value) {
+        delete next[questionId];
+      } else {
+        next[questionId] = value;
       }
-      return { ...prev, [questionId]: value };
+      return next;
     });
   };
 
   // Handle checkbox toggle (add/remove from array; if empty, removes key)
   const handleCheckboxToggle = (questionId: string, optionValue: string) => {
     setAnswers((prev) => {
-      const currentList = Array.isArray(prev[questionId])
-        ? (prev[questionId] as string[])
+      const next = { ...prev };
+      const prevVal = prev[questionId];
+      const currentList: string[] = Array.isArray(prevVal)
+        ? [...prevVal]
+        : typeof prevVal === "string" && prevVal.trim()
+        ? [prevVal]
         : [];
-      let updatedList: string[];
-      if (currentList.includes(optionValue)) {
-        updatedList = currentList.filter((item) => item !== optionValue);
+
+      const index = currentList.indexOf(optionValue);
+      if (index > -1) {
+        currentList.splice(index, 1);
       } else {
-        updatedList = [...currentList, optionValue];
+        currentList.push(optionValue);
       }
 
-      if (updatedList.length === 0) {
-        const updated = { ...prev };
-        delete updated[questionId];
-        return updated;
+      const cleanedList = currentList.filter(
+        (item) => typeof item === "string" && item.trim().length > 0
+      );
+
+      if (cleanedList.length === 0) {
+        delete next[questionId];
+      } else {
+        next[questionId] = cleanedList;
       }
-      return { ...prev, [questionId]: updatedList };
+      return next;
     });
   };
 
   // Handle text change (if empty trimmed string, removes key)
   const handleTextChange = (questionId: string, text: string) => {
     setAnswers((prev) => {
-      if (!text.trim()) {
-        const updated = { ...prev };
-        delete updated[questionId];
-        return updated;
+      const next = { ...prev };
+      if (!text || !text.trim()) {
+        delete next[questionId];
+      } else {
+        next[questionId] = text;
       }
-      return { ...prev, [questionId]: text };
+      return next;
     });
   };
 
@@ -117,27 +129,30 @@ export const SurveyDetailPage: React.FC = () => {
   const isExpired = survey?.status === "expired";
   const isReadOnly = isCompleted || isExpired;
 
+  // Check if a specific question is answered
+  const isQuestionAnswered = useCallback(
+    (qId: string): boolean => {
+      const val = answers[qId];
+      if (val === undefined || val === null) return false;
+      if (typeof val === "string") return val.trim().length > 0;
+      if (Array.isArray(val)) {
+        return val.some((item) => typeof item === "string" && item.trim().length > 0);
+      }
+      if (typeof val === "number") return val > 0;
+      return false;
+    },
+    [answers]
+  );
+
   // Realtime calculation of answered questions
   const totalQuestions = survey?.questions.length || 0;
   const answeredCount = useMemo(() => {
     if (!survey) return 0;
-    return survey.questions.filter((q) => {
-      const val = answers[q.id];
-      if (val === undefined || val === null || val === "") return false;
-      if (Array.isArray(val) && val.length === 0) return false;
-      return true;
-    }).length;
-  }, [survey, answers]);
+    return survey.questions.filter((q) => isQuestionAnswered(q.id)).length;
+  }, [survey, isQuestionAnswered]);
 
-  const progressPercent = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
-
-  // Check if a specific question is answered
-  const isQuestionAnswered = (qId: string) => {
-    const val = answers[qId];
-    if (val === undefined || val === null || val === "") return false;
-    if (Array.isArray(val) && val.length === 0) return false;
-    return true;
-  };
+  const progressPercent =
+    totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
 
   const scrollToQuestion = (qId: string) => {
     const elem = document.getElementById(`question-${qId}`);
@@ -612,6 +627,7 @@ export const SurveyDetailPage: React.FC = () => {
                     <div className="space-y-1.5">
                       <TextArea
                         rows={4}
+                        allowClear
                         placeholder={
                           isReadOnly
                             ? "Không có ý kiến đóng góp"
