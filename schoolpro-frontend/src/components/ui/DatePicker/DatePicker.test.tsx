@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import {
   DatePicker,
   RangePicker,
-} from "./DatePicker";
+} from "@/components/ui/DatePicker/DatePicker";
 
 describe("DatePicker", () => {
   describe("rendering", () => {

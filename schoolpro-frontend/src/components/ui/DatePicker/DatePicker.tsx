@@ -5,7 +5,7 @@ import {
 import type {
   DatePickerProps,
   RangePickerProps,
-} from "./types";
+} from "@/components/ui/DatePicker/types";
 
 export const DatePicker = (
   props: DatePickerProps,

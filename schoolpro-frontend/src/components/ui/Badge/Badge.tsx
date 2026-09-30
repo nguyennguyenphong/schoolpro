@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge as AntBadge } from "antd";
-import type { BadgeProps } from "./types";
-import { badgeStyles } from "./styles";
+import type { BadgeProps } from "@/components/ui/Badge/types";
+import { badgeStyles } from "@/components/ui/Badge/styles";
 
 export const Badge: React.FC<BadgeProps> & {
   Ribbon: typeof AntBadge.Ribbon;

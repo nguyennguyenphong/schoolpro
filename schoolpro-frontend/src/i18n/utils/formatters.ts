@@ -1,4 +1,4 @@
-import { normalizeLanguageCode, type SupportedLanguage } from "../config";
+import { normalizeLanguageCode, type SupportedLanguage } from "@/i18n/config";
 
 const LOCALE_BCP47: Record<SupportedLanguage, string> = {
   vi: "vi-VN",

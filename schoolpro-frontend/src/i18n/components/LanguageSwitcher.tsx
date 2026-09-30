@@ -1,7 +1,7 @@
 import React from "react";
 import type { MenuProps } from "antd";
-import { useLanguage } from "../hooks/useLanguage";
-import type { SupportedLanguage } from "../config";
+import { useLanguage } from "@/i18n/hooks/useLanguage";
+import type { SupportedLanguage } from "@/i18n/config";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Icon } from "@/components/ui/Icon";
 

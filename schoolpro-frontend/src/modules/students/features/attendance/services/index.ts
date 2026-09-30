@@ -1,2 +1,2 @@
-export { attendanceService } from "./attendanceService";
-export * from "./mock/mockAttendanceData";
+export { attendanceService } from "@/modules/students/features/attendance/services/attendanceService";
+export * from "@/modules/students/features/attendance/services/mock/mockAttendanceData";

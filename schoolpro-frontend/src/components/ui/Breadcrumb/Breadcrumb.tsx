@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb as AntBreadcrumb } from "antd";
-import type { BreadcrumbProps } from "./types";
-import { breadcrumbStyles } from "./styles";
+import type { BreadcrumbProps } from "@/components/ui/Breadcrumb/types";
+import { breadcrumbStyles } from "@/components/ui/Breadcrumb/styles";
 
 export const Breadcrumb: React.FC<BreadcrumbProps> & {
   Item: typeof AntBreadcrumb.Item;

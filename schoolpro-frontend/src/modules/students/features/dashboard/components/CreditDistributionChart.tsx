@@ -1,1 +1,1 @@
-export { SubjectGroupChart as CreditDistributionChart } from "./SubjectGroupChart";
+export { SubjectGroupChart as CreditDistributionChart } from "@/modules/students/features/dashboard/components/SubjectGroupChart";

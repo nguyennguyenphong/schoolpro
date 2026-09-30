@@ -1,9 +1,9 @@
 export {
   DatePicker,
   RangePicker,
-} from "./DatePicker";
+} from "@/components/ui/DatePicker/DatePicker";
 
 export type {
   DatePickerProps,
   RangePickerProps,
-} from "./types";
+} from "@/components/ui/DatePicker/types";

@@ -1,6 +1,6 @@
-export { AssignmentsPage } from "./AssignmentsPage";
-export { AssignmentSubmitPage } from "./AssignmentSubmitPage";
-export * from "./types";
-export * from "./components";
-export * from "./hooks";
-export * from "./services";
+export { AssignmentsPage } from "@/modules/students/features/assignments/AssignmentsPage";
+export { AssignmentSubmitPage } from "@/modules/students/features/assignments/AssignmentSubmitPage";
+export * from "@/modules/students/features/assignments/types";
+export * from "@/modules/students/features/assignments/components";
+export * from "@/modules/students/features/assignments/hooks";
+export * from "@/modules/students/features/assignments/services";

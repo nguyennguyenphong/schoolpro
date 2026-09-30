@@ -1,4 +1,4 @@
-import { SUPPORTED_LANGUAGES, normalizeLanguageCode } from "../config";
+import { SUPPORTED_LANGUAGES, normalizeLanguageCode } from "@/i18n/config";
 
 /**
  * Synchronizes HTML document attributes (lang, dir) for accessibility and styling.

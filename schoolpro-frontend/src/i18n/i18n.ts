@@ -11,38 +11,38 @@ import "dayjs/locale/ko";
 import "dayjs/locale/zh-cn";
 
 // Import translation resources
-import viCommon from "./locales/vi/common.json";
-import viAuth from "./locales/vi/auth.json";
-import viValidation from "./locales/vi/validation.json";
-import viStudent from "./locales/vi/student.json";
+import viCommon from "@/i18n/locales/vi/common.json";
+import viAuth from "@/i18n/locales/vi/auth.json";
+import viValidation from "@/i18n/locales/vi/validation.json";
+import viStudent from "@/i18n/locales/vi/student.json";
 
-import enCommon from "./locales/en/common.json";
-import enAuth from "./locales/en/auth.json";
-import enValidation from "./locales/en/validation.json";
-import enStudent from "./locales/en/student.json";
+import enCommon from "@/i18n/locales/en/common.json";
+import enAuth from "@/i18n/locales/en/auth.json";
+import enValidation from "@/i18n/locales/en/validation.json";
+import enStudent from "@/i18n/locales/en/student.json";
 
-import jaCommon from "./locales/ja/common.json";
-import jaAuth from "./locales/ja/auth.json";
-import jaValidation from "./locales/ja/validation.json";
-import jaStudent from "./locales/ja/student.json";
+import jaCommon from "@/i18n/locales/ja/common.json";
+import jaAuth from "@/i18n/locales/ja/auth.json";
+import jaValidation from "@/i18n/locales/ja/validation.json";
+import jaStudent from "@/i18n/locales/ja/student.json";
 
-import koCommon from "./locales/ko/common.json";
-import koAuth from "./locales/ko/auth.json";
-import koValidation from "./locales/ko/validation.json";
-import koStudent from "./locales/ko/student.json";
+import koCommon from "@/i18n/locales/ko/common.json";
+import koAuth from "@/i18n/locales/ko/auth.json";
+import koValidation from "@/i18n/locales/ko/validation.json";
+import koStudent from "@/i18n/locales/ko/student.json";
 
-import zhCommon from "./locales/zh/common.json";
-import zhAuth from "./locales/zh/auth.json";
-import zhValidation from "./locales/zh/validation.json";
-import zhStudent from "./locales/zh/student.json";
+import zhCommon from "@/i18n/locales/zh/common.json";
+import zhAuth from "@/i18n/locales/zh/auth.json";
+import zhValidation from "@/i18n/locales/zh/validation.json";
+import zhStudent from "@/i18n/locales/zh/student.json";
 
 import {
   DEFAULT_LANGUAGE,
   SUPPORTED_LANGUAGES,
   normalizeLanguageCode,
   type SupportedLanguage,
-} from "./config";
-import { syncDocumentAttributes } from "./utils/syncDocument";
+} from "@/i18n/config";
+import { syncDocumentAttributes } from "@/i18n/utils/syncDocument";
 
 export const resources = {
   vi: {

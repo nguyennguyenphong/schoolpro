@@ -1,7 +1,7 @@
 export {
   Rate,
-} from "./Rate";
+} from "@/components/ui/Rate/Rate";
 
 export type {
   RateProps,
-} from "./types";
+} from "@/components/ui/Rate/types";

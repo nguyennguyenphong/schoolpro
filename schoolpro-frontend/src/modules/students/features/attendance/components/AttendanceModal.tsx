@@ -145,10 +145,10 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
       title={null}
       destroyOnHidden
       centered
-      className="p-0 [&>.ant-modal-content]:p-0 [&>.ant-modal-content]:rounded-3xl [&>.ant-modal-content]:overflow-hidden"
+      className="p-0"
     >
       {/* 1. Modal Top Banner */}
-      <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-5 text-white relative">
+      <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-5 text-white relative rounded-xl mt-7">
         <div className="flex items-start justify-between gap-3 pr-8">
           <div className="space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-blue-200 block">
@@ -433,29 +433,6 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                         </Button>
                       </div>
                     )}
-
-                    {/* Quick Sample Demo Button for Upload */}
-                    {!selectedImage && (
-                      <div className="bg-amber-50 rounded-xl p-3 border border-amber-200 flex items-center justify-between text-xs text-amber-900 gap-2">
-                        <div className="flex items-center gap-1.5">
-                          <Icon name="sparkles" size={15} className="text-amber-600 shrink-0" />
-                          <span>Chưa có ảnh chụp sẵn?</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedImage(
-                              "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-                                record.qrToken
-                            );
-                            setSelectedImageName(`QR_Attendance_${record.subjectCode}.png`);
-                          }}
-                          className="text-xs font-bold text-amber-700 underline hover:text-amber-900 cursor-pointer"
-                        >
-                          Tải ảnh QR mẫu của lớp
-                        </button>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
@@ -479,28 +456,10 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                     length={6}
                     value={enteredCode}
                     onChange={(val) => setEnteredCode(val)}
-                    className="font-mono text-lg font-bold"
+                    className="font-bold"
+                    size="large"
+                    autoFocus
                   />
-                </div>
-
-                {/* Sample Code Quick Fill Helper */}
-                <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 text-xs flex items-center justify-between text-blue-900 gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <Icon name="keyRound" size={14} className="text-blue-600 shrink-0" />
-                    <span>
-                      Mã lớp buổi này: <strong className="font-mono text-blue-800 font-bold">{record.attendanceCode}</strong>
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEnteredCode(record.attendanceCode);
-                      handleSubmitCode(record.attendanceCode);
-                    }}
-                    className="text-xs font-bold text-blue-700 underline hover:text-blue-900 cursor-pointer shrink-0"
-                  >
-                    Điền nhanh & Điểm danh
-                  </button>
                 </div>
 
                 {/* Action Buttons */}

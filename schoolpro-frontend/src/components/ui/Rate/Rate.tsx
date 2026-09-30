@@ -4,7 +4,7 @@ import {
 
 import type {
   RateProps,
-} from "./types";
+} from "@/components/ui/Rate/types";
 
 export const Rate = (
   props: RateProps,

@@ -9,7 +9,7 @@ import type {
   TextAreaProps,
   OTPProps,
 } from "@/components/ui/Input/types";
-import { inputStyles } from "./styles";
+import { inputStyles } from "@/components/ui/Input/styles";
 
 export const Input = (
   props: InputProps,

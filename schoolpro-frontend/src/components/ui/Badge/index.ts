@@ -1,2 +1,2 @@
-export { Badge } from "./Badge";
-export type { BadgeProps, RibbonProps } from "./types";
+export { Badge } from "@/components/ui/Badge/Badge";
+export type { BadgeProps, RibbonProps } from "@/components/ui/Badge/types";

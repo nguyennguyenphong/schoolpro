@@ -1,1 +1,1 @@
-export { useGradebook } from "./useGradebook";
+export { useGradebook } from "@/modules/students/features/gradebook/hooks/useGradebook";

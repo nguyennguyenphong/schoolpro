@@ -1,4 +1,4 @@
-import type { ButtonVariant } from "../types";
+import type { ButtonVariant } from "@/components/ui/Button/types";
 
 export interface ButtonVariantConfig {
   type: "primary" | "default" | "text" | "link";

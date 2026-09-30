@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import i18n from "../i18n";
+import i18n from "@/i18n/i18n";
 import {
   normalizeLanguageCode,
   SUPPORTED_LANGUAGES,
   DEFAULT_LANGUAGE,
-} from "../config";
-import { formatCurrency, formatNumber, formatDate } from "../utils/formatters";
+} from "@/i18n/config";
+import { formatCurrency, formatNumber, formatDate } from "@/i18n/utils/formatters";
 import dayjs from "dayjs";
 
 describe("i18n Configuration & Normalization", () => {

@@ -3,15 +3,15 @@ import { Empty, Skeleton } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { useAttendance } from "./hooks";
+import { useAttendance } from "@/modules/students/features/attendance/hooks";
 import {
   AttendanceSummaryCards,
   DateSelector,
   SubjectAttendanceCard,
   AttendanceModal,
   AttendanceDetailModal,
-} from "./components";
-import type { AttendanceRecord } from "./types";
+} from "@/modules/students/features/attendance/components";
+import type { AttendanceRecord } from "@/modules/students/features/attendance/types";
 
 export const AttendancePage: React.FC = () => {
   const {
@@ -29,7 +29,6 @@ export const AttendancePage: React.FC = () => {
     goToPreviousDay,
     goToNextDay,
     performCheckIn,
-    reload,
   } = useAttendance();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -81,32 +80,26 @@ export const AttendancePage: React.FC = () => {
               ),
             },
             {
-              title: <span className="font-bold text-slate-800">Điểm danh môn học</span>,
+              title: (
+                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
+                  <Icon name="userCheck" size={13} className="text-blue-600 shrink-0" />
+                  <span>Điểm danh môn học</span>
+                </span>
+              ),
             },
           ]}
         />
 
-        <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-1">
+        <div className="pt-1">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               Điểm danh môn học theo ngày
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              Điểm danh nhanh bằng <strong>Quét mã QR</strong>, <strong>Tải ảnh QR</strong> hoặc <strong>Nhập mã code</strong> do thầy cô cung cấp.
-            </p>
           </div>
-
-          <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
-            <Button
-              variant="outline"
-              onClick={reload}
-              loading={loading}
-              className="font-medium text-xs flex items-center gap-1.5"
-            >
-              <Icon name="refresh" size={13} />
-              <span>Làm mới</span>
-            </Button>
-          </div>
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            Điểm danh nhanh bằng <strong>Quét mã QR</strong>, <strong>Tải ảnh QR</strong> hoặc <strong>Nhập mã code</strong> do thầy cô cung cấp.
+          </p>
         </div>
       </div>
 

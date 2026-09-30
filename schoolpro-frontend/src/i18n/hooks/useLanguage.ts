@@ -6,7 +6,7 @@ import {
   normalizeLanguageCode,
   type SupportedLanguage,
   type LanguageMetadata,
-} from "../config";
+} from "@/i18n/config";
 
 export function useLanguage() {
   const { i18n, t } = useTranslation();

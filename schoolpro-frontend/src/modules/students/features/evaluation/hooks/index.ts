@@ -1,1 +1,1 @@
-export { useEvaluation } from "./useEvaluation";
+export { useEvaluation } from "@/modules/students/features/evaluation/hooks/useEvaluation";

@@ -1,5 +1,5 @@
-export { GradebookPage } from "./GradebookPage";
-export * from "./types";
-export * from "./services";
-export * from "./hooks";
-export * from "./components";
+export { GradebookPage } from "@/modules/students/features/gradebook/GradebookPage";
+export * from "@/modules/students/features/gradebook/types";
+export * from "@/modules/students/features/gradebook/services";
+export * from "@/modules/students/features/gradebook/hooks";
+export * from "@/modules/students/features/gradebook/components";

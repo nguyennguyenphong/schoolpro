@@ -7,7 +7,7 @@ import type {
 import {
   mockAttendanceRecords,
   mockAttendanceSummary,
-} from "./mock/mockAttendanceData";
+} from "@/modules/students/features/attendance/services/mock/mockAttendanceData";
 
 class AttendanceService {
   private records: AttendanceRecord[] = [...mockAttendanceRecords];

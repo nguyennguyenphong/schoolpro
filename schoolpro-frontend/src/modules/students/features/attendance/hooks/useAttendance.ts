@@ -7,7 +7,7 @@ import type {
   CheckInPayload,
   CheckInResult,
 } from "@/modules/students/features/attendance/types";
-import { attendanceService } from "../services";
+import { attendanceService } from "@/modules/students/features/attendance/services";
 
 export const useAttendance = (initialDate = "2026-09-29") => {
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
