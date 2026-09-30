@@ -8,11 +8,13 @@ interface EvaluationSummaryCardsProps {
   summary: EvaluationSummary;
 }
 
-export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({ summary }) => {
+export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({
+  summary,
+}) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số phiếu khảo sát */}
-      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Tổng số khảo sát
@@ -39,7 +41,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({ 
       </Card>
 
       {/* 2. Cần thực hiện */}
-      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Cần thực hiện
@@ -69,7 +71,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({ 
       </Card>
 
       {/* 3. Đã hoàn thành */}
-      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Đã hoàn thành

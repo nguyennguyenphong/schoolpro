@@ -104,7 +104,11 @@ export const EvaluationPage: React.FC = () => {
       </div>
 
       {/* 2. Overview Summary Cards (Dashboard & Announcements style) */}
-      {summary && <EvaluationSummaryCards summary={summary} />}
+      {summary && (
+        <EvaluationSummaryCards
+          summary={summary}
+        />
+      )}
 
       {/* 3. Navigation Tabs */}
       <div className="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs flex flex-wrap items-center gap-2">

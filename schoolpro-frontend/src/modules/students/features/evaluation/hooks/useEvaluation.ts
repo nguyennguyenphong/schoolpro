@@ -1,10 +1,35 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { message } from "antd";
 import type { SurveyItem, EvaluationSummary } from "@/modules/students/features/evaluation/types";
 import { evaluationService } from "@/modules/students/features/evaluation/services";
 
 export const useEvaluation = () => {
-  const [activeTab, setActiveTab] = useState<"pending" | "completed" | "all">("pending");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Đọc trạng thái lọc từ query param `status` trên URL (?status=all | pending | completed)
+  const rawStatus = searchParams.get("status");
+  const activeTab: "all" | "pending" | "completed" = useMemo(() => {
+    if (
+      rawStatus &&
+      ["all", "pending", "completed"].includes(rawStatus.toLowerCase())
+    ) {
+      return rawStatus.toLowerCase() as "all" | "pending" | "completed";
+    }
+    return "pending";
+  }, [rawStatus]);
+
+  const setActiveTab = useCallback(
+    (tab: "all" | "pending" | "completed") => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("status", tab);
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
+
   const [surveys, setSurveys] = useState<SurveyItem[]>([]);
   const [summary, setSummary] = useState<EvaluationSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,9 +43,9 @@ export const useEvaluation = () => {
       ]);
       setSurveys(surveysRes);
       setSummary(summaryRes);
-      setLoading(false);
     } catch {
       message.error("Không thể tải danh sách đánh giá & khảo sát.");
+    } finally {
       setLoading(false);
     }
   }, [activeTab]);
