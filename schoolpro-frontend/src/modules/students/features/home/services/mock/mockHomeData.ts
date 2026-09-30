@@ -61,7 +61,7 @@ export const mockHomeData: HomeData = {
       iconBgColor: "bg-violet-50 border border-violet-200",
       iconColor: "text-violet-600",
       badgeColor: "purple",
-      route: "/student/dashboard",
+      route: "/student/gradebook",
     },
     {
       id: "feat-materials",

@@ -110,7 +110,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
 
         {/* Breakdown Table */}
         <div className="space-y-2">
-          <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-0">
+          <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">
             Danh sách bài kiểm tra & Đánh giá định kỳ
           </h4>
 
