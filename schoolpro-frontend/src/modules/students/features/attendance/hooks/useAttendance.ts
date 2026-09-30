@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { message } from "antd";
 import type {
@@ -10,14 +11,44 @@ import type {
 import { attendanceService } from "@/modules/students/features/attendance/services";
 
 export const useAttendance = (initialDate = "2026-09-29") => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [summary, setSummary] = useState<AttendanceSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [filterStatus, setFilterStatus] = useState<string>("all");
   const [activeRecordForModal, setActiveRecordForModal] =
     useState<AttendanceRecord | null>(null);
+
+  // Đọc trạng thái lọc từ query param `status` trên URL (?status=all | open | present | absent)
+  const filterStatus = useMemo(() => {
+    const rawStatus = searchParams.get("status");
+    if (
+      rawStatus &&
+      ["all", "open", "present", "absent"].includes(rawStatus.toLowerCase())
+    ) {
+      return rawStatus.toLowerCase();
+    }
+    return "all";
+  }, [searchParams]);
+
+  // Đẩy trạng thái mới lên URL qua query param `status`
+  const setFilterStatus = useCallback(
+    (newStatus: string) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        if (newStatus && ["all", "open", "present", "absent"].includes(newStatus.toLowerCase())) {
+          next.set("status", newStatus.toLowerCase());
+        } else if (newStatus) {
+          next.set("status", newStatus);
+        } else {
+          next.delete("status");
+        }
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
 
   const loadData = useCallback(async () => {
     try {
