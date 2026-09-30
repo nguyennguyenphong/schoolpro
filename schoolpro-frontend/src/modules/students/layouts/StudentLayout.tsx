@@ -86,6 +86,12 @@ export const StudentLayout: React.FC = () => {
       icon: "chart" as const,
     },
     {
+      key: "exams",
+      label: t("student:features.exams.title", "Khảo thí & Đề thi"),
+      path: "/student/exams",
+      icon: "fileText" as const,
+    },
+    {
       key: "evaluations",
       label: t("student:features.evaluations.title"),
       path: "/student/evaluations",

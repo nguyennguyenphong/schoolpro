@@ -57,10 +57,9 @@ export const DashboardPage: React.FC = () => {
           </p>
           <Button
             variant="primary"
-            size="small"
             onClick={refetch}
           >
-            <Icon name="refresh" size={13} className="mr-1.5" />
+            <Icon name="refresh" size={13} />
             Tải lại dữ liệu
           </Button>
         </div>

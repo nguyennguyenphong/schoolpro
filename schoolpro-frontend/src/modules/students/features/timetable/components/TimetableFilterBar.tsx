@@ -45,7 +45,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
       <div className="flex flex-wrap items-center gap-2">
         <Button
           variant="outline"
-          size="small"
+
           onClick={onTodayClick}
         >
           Tuần này
@@ -97,7 +97,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
         {hasActiveFilters && (
           <Button
             variant="outline"
-            size="small"
             onClick={onResetFilters}
             title="Đặt lại về tuần này"
           >

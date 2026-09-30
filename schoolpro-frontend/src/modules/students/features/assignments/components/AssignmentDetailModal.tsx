@@ -134,7 +134,6 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
                   </div>
                   <Button
                     variant="outline"
-                    size="small"
                     className="text-xs h-7 px-2 shrink-0"
                     onClick={() => message.info(`Đang tải xuống: ${file.name}`)}
                   >
@@ -231,12 +230,11 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-2">
-              <Button variant="outline" size="small" onClick={onClose}>
+              <Button variant="outline" onClick={onClose}>
                 Hủy bỏ
               </Button>
               <Button
                 variant="primary"
-                size="small"
                 onClick={handleSubmit}
                 disabled={submitting}
               >

@@ -49,25 +49,22 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
       <div className="flex items-center gap-2 flex-wrap">
         <Button
           variant="primary"
-          size="small"
           onClick={onMarkAsRead}
         >
-          <Icon name="check" size={13} className="mr-1" />
+          <Icon name="check" size={13} />
           Đánh dấu đã đọc
         </Button>
 
         <Button
           variant="outline"
-          size="small"
           onClick={onMarkAsUnread}
         >
-          <Icon name="clock" size={13} className="mr-1" />
+          <Icon name="clock" size={13} />
           Đánh dấu chưa đọc
         </Button>
 
         <Button
           variant="ghost"
-          size="small"
           onClick={onClearSelection}
         >
           Bỏ chọn

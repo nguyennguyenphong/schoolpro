@@ -58,7 +58,6 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            size="small"
             onClick={onGoToToday}
           >
             Quay lại hôm nay

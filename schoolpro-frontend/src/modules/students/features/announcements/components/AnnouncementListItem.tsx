@@ -148,11 +148,11 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
 
           <Button
             variant="ghost"
-            size="small"
+  
             className="text-blue-600 hover:text-blue-700"
           >
             <span>Chi tiết</span>
-            <Icon name="arrow-right" size={13} className="ml-1" />
+            <Icon name="arrow-right" size={13} />
           </Button>
         </div>
       </div>

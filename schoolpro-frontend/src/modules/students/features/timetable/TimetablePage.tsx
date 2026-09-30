@@ -108,7 +108,7 @@ export const TimetablePage: React.FC = () => {
           <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
             {error.message || "Đã xảy ra lỗi khi tải dữ liệu thời khóa biểu. Vui lòng thử lại."}
           </p>
-          <Button variant="primary" size="small" onClick={() => refetch()}>
+          <Button variant="primary" onClick={() => refetch()}>
             Tải lại thời khóa biểu
           </Button>
         </div>
@@ -129,7 +129,6 @@ export const TimetablePage: React.FC = () => {
             {hasActiveFilters && (
               <Button
                 variant="outline"
-                size="small"
                 onClick={resetFilters}
                 className="mt-3"
               >
