@@ -72,7 +72,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
   return (
     <Card
       onClick={() => onClick(item)}
-      className={`h-full rounded-xl shadow-2xs transition-all cursor-pointer [&>.ant-card-body]:p-4 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between ${
+      className={`h-full rounded-xl shadow-2xs transition-all cursor-pointer ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : !item.isRead

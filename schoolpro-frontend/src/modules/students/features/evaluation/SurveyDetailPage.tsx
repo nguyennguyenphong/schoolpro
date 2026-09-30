@@ -294,7 +294,7 @@ export const SurveyDetailPage: React.FC = () => {
           </Button>
         </div>
 
-        <div className="pt-1 space-y-2 border-b border-slate-100 pb-4">
+        <div className="pt-1 space-y-2 pb-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
@@ -691,7 +691,7 @@ export const SurveyDetailPage: React.FC = () => {
         <div className="lg:col-span-4 flex flex-col gap-4.5 lg:sticky lg:top-20 self-start">
           {/* Progress & Questions Grid Card */}
           <Card className="rounded-2xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
-            <div className="border-b border-slate-100 pb-3">
+            <div className="pb-3">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
                 Tiến độ thực hiện
               </span>
@@ -742,7 +742,7 @@ export const SurveyDetailPage: React.FC = () => {
               </div>
 
               {/* Legend: Colors meaning */}
-              <div className="pt-3 border-t border-slate-100 flex items-center gap-4 text-[11px] text-slate-500 mb-3">
+              <div className="pt-3 flex items-center gap-4 text-[11px] text-slate-500 mb-3">
                 <div className="flex items-center gap-1.5">
                   <span className="w-3.5 h-3.5 rounded bg-emerald-600 inline-block" />
                   <span>Đã làm xong</span>
@@ -756,7 +756,7 @@ export const SurveyDetailPage: React.FC = () => {
 
             {/* Quick Action Button in Sidebar */}
             {!isReadOnly && (
-              <div className="pt-2 border-t border-slate-100">
+              <div className="pt-2">
                 <Button
                   variant="primary"
                   onClick={handlePreSubmit}
@@ -771,27 +771,27 @@ export const SurveyDetailPage: React.FC = () => {
           </Card>
 
           {/* Survey Summary Details Card */}
-          <Card className="rounded-2xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 space-y-3">
+          <Card className="rounded-2xl border-slate-200 shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
               Thông tin đợt khảo sát
             </span>
 
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-100">
+            <div className="space-y-2 text-xs mt-3">
+              <div className="flex justify-between">
                 <span className="text-slate-400">Hình thức:</span>
                 <span className="font-semibold text-slate-700">
                   {survey.isAnonymous ? "Ẩn danh 100%" : "Định danh cá nhân"}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Thời gian ước tính:</span>
                 <span className="font-semibold text-slate-700">~{survey.estimatedMinutes} phút</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Hạn chót gửi:</span>
                 <strong className="text-rose-600">{survey.endDate}</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Lớp học:</span>
                 <span className="font-semibold text-slate-700">Lớp 11A1</span>
               </div>

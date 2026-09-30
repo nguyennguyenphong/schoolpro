@@ -73,7 +73,7 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
   return (
     <Card
       onClick={() => onClick(item)}
-      className={`rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
+      className={`rounded-xl shadow-2xs transition-all cursor-pointer w-full ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : !item.isRead

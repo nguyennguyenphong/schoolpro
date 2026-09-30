@@ -321,7 +321,7 @@ export const ExamDetailPage: React.FC = () => {
         </div>
 
         {/* Exam Title & Badges */}
-        <div className="space-y-2 pt-1 border-t border-slate-100">
+        <div className="space-y-2 pt-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="w-2 h-6 rounded-full bg-blue-600 inline-block" />
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
@@ -662,11 +662,11 @@ export const ExamDetailPage: React.FC = () => {
         </div>
 
         {/* Right Column: Sticky Progress Sidebar & Question Palette */}
-        <div className="lg:col-span-4 sticky top-20 space-y-4">
+        <div className="lg:col-span-4 flex flex-col gap-4.5 lg:sticky lg:top-20 self-start">
           <Card className="rounded-2xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
             {/* Header: Progress & Timer */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between pb-3">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                   Tiến độ làm bài
                 </span>
@@ -733,7 +733,7 @@ export const ExamDetailPage: React.FC = () => {
               </div>
 
               {/* Legend: Color meanings */}
-              <div className="pt-3 border-t border-slate-100 flex items-center gap-4 text-[11px] text-slate-500">
+              <div className="pt-3 flex items-center gap-4 text-[11px] text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <span className="w-3 h-3 rounded bg-emerald-600 inline-block" />
                   <span>Đã làm xong</span>
@@ -747,7 +747,7 @@ export const ExamDetailPage: React.FC = () => {
 
             {/* Submit Action Button */}
             {!isReadOnly && (
-              <div className="pt-2 border-t border-slate-100">
+              <div className="pt-2">
                 <Button
                   variant="primary"
                   onClick={handlePreSubmit}
@@ -762,25 +762,25 @@ export const ExamDetailPage: React.FC = () => {
           </Card>
 
           {/* Exam Summary Details Card */}
-          <Card className="rounded-2xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 space-y-3">
+          <Card className="rounded-2xl border-slate-200 shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
               Thông tin đề thi
             </span>
 
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-100">
+            <div className="space-y-2 text-xs mt-3">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Mã đề thi:</span>
                 <span className="font-mono font-bold text-slate-800">{exam.code}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Thời gian làm bài:</span>
                 <span className="font-semibold text-slate-800">{exam.durationMinutes} phút</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Tổng điểm bài thi:</span>
                 <span className="font-bold text-slate-800">{exam.maxScore} điểm</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-100">
+              <div className="flex justify-between py-1">
                 <span className="text-slate-400">Hạn nộp:</span>
                 <strong className="text-rose-600">{exam.endDate}</strong>
               </div>
@@ -800,7 +800,7 @@ export const ExamDetailPage: React.FC = () => {
         footer={null}
         width={480}
         centered
-        destroyOnClose
+        destroyOnHidden
       >
         <div className="p-2 space-y-4">
           <div className="flex items-center gap-3">

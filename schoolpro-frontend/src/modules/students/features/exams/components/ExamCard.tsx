@@ -76,41 +76,38 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
         </p>
 
         {/* Meta Stats Row */}
-        <div className="border-t border-slate-100">
-          <div className="mt-2 flex items-center gap-3.5 text-xs text-slate-400 flex-wrap pt-1">
-            <span className="flex items-center gap-1">
-              <Icon name="clock" size={13} className="text-slate-400" />
-              <span>~{item.durationMinutes} phút làm</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <Icon name="fileText" size={13} className="text-slate-400" />
-              <span>{item.totalQuestions} câu hỏi</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <Icon name="calendar" size={13} className="text-slate-400" />
-              <span>Hạn chót: <strong className="text-slate-700">{item.endDate}</strong></span>
-            </span>
-          </div>
+        <div className="mt-2 flex items-center gap-3.5 text-xs text-slate-400 flex-wrap pt-1">
+          <span className="flex items-center gap-1">
+            <Icon name="clock" size={13} className="text-slate-400" />
+            <span>~{item.durationMinutes} phút làm</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <Icon name="fileText" size={13} className="text-slate-400" />
+            <span>{item.totalQuestions} câu hỏi</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <Icon name="calendar" size={13} className="text-slate-400" />
+            <span>Hạn chót: <strong className="text-slate-700">{item.endDate}</strong></span>
+          </span>
+          <span className="flex items-center gap-1">
+            {isCompleted && item.completedAt ? (
+              <span className="flex items-center gap-1.5">
+                <span>Đã nộp: <strong>{item.completedAt}</strong></span>
+                {item.score !== undefined && (
+                  <Tag color="success" className="m-0 font-bold">
+                    {item.score} / {item.maxScore} đ
+                  </Tag>
+                )}
+              </span>
+            ) : (
+              <span>Học kỳ 1 • 2025-2026</span>
+            )}
+          </span>
         </div>
       </div>
 
       {/* Footer Action */}
-      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-        <div className="text-xs text-slate-500">
-          {isCompleted && item.completedAt ? (
-            <span className="flex items-center gap-1.5">
-              <span>Đã nộp: <strong>{item.completedAt}</strong></span>
-              {item.score !== undefined && (
-                <Tag color="success" className="m-0 font-bold">
-                  {item.score} / {item.maxScore} đ
-                </Tag>
-              )}
-            </span>
-          ) : (
-            <span>Học kỳ 1 • 2025-2026</span>
-          )}
-        </div>
-
+      <div className="pt-3 mt-3 flex items-center justify-end gap-2">
         <div>
           {isPending && (
             <Button

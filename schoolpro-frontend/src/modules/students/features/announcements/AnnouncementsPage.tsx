@@ -99,11 +99,16 @@ export const AnnouncementsPage: React.FC = () => {
       </div>
 
       {/* 2. Summary Metric Cards (Dashboard style) */}
-      {summary && <AnnouncementSummaryCards summary={summary} />}
+      {summary && (
+        <AnnouncementSummaryCards
+          summary={summary}
+        />
+      )}
 
       {/* 3. Search & Filter Bar (Always auto-focus on input, syncs with URL) */}
       <AnnouncementFilterBar
         filter={filter}
+        summary={summary}
         departments={departments}
         onSearchChange={setSearchQuery}
         onCategoryChange={setCategory}

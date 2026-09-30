@@ -8,14 +8,16 @@ interface AnnouncementSummaryCardsProps {
   summary: AnnouncementSummary;
 }
 
-export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> = ({ summary }) => {
+export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> = ({
+  summary,
+}) => {
   const readCount = Math.max(0, summary.total - summary.unreadCount);
   const readPercentage = summary.total > 0 ? Math.round((readCount / summary.total) * 100) : 100;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số thông báo */}
-      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Tổng số thông báo
@@ -42,7 +44,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
       </Card>
 
       {/* 2. Bản tin chưa đọc */}
-      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Bản tin chưa đọc
