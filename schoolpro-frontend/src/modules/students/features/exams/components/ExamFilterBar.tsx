@@ -33,6 +33,12 @@ export const ExamFilterBar: React.FC<ExamFilterBarProps> = ({
     count?: number;
   }> = [
     {
+      key: "all",
+      label: "Tất cả đề thi",
+      icon: "file",
+      count: summary?.total ?? 0,
+    },
+    {
       key: "pending",
       label: "Cần thực hiện",
       icon: "clock",
@@ -43,12 +49,6 @@ export const ExamFilterBar: React.FC<ExamFilterBarProps> = ({
       label: "Đã hoàn thành",
       icon: "checkCircle",
       count: summary?.completedCount ?? 0,
-    },
-    {
-      key: "all",
-      label: "Tất cả đề thi",
-      icon: "file",
-      count: summary?.total ?? 0,
     },
   ];
 

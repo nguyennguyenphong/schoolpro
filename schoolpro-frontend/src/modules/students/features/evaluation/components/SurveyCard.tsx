@@ -106,19 +106,21 @@ export const SurveyCard: React.FC<SurveyCardProps> = ({
         </p>
 
         {/* Meta Stats Row */}
-        <div className="flex items-center gap-3.5 text-xs text-slate-400 flex-wrap pt-1 border-t border-slate-100">
-          <span className="flex items-center gap-1">
-            <Icon name="clock" size={13} className="text-slate-400" />
-            <span>~{item.estimatedMinutes} phút làm</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Icon name="fileText" size={13} className="text-slate-400" />
-            <span>{item.totalQuestions} câu hỏi</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Icon name="calendar" size={13} className="text-slate-400" />
-            <span>Hạn chót: <strong className="text-slate-700">{item.endDate}</strong></span>
-          </span>
+        <div className="border-t border-slate-100">
+          <div className="mt-2 flex items-center gap-3.5 text-xs text-slate-400 flex-wrap pt-1">
+            <span className="flex items-center gap-1">
+              <Icon name="clock" size={13} className="text-slate-400" />
+              <span>~{item.estimatedMinutes} phút làm</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="fileText" size={13} className="text-slate-400" />
+              <span>{item.totalQuestions} câu hỏi</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="calendar" size={13} className="text-slate-400" />
+              <span>Hạn chót: <strong className="text-slate-700">{item.endDate}</strong></span>
+            </span>
+          </div>
         </div>
       </div>
 

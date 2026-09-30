@@ -36,6 +36,12 @@ export const EvaluationPage: React.FC = () => {
     count?: number;
   }> = [
     {
+      key: "all",
+      label: "Tất cả khảo sát",
+      icon: "file",
+      count: summary?.total ?? 0,
+    },
+    {
       key: "pending",
       label: "Cần thực hiện",
       icon: "clock",
@@ -46,12 +52,6 @@ export const EvaluationPage: React.FC = () => {
       label: "Đã hoàn thành",
       icon: "checkCircle",
       count: summary?.completedCount ?? 0,
-    },
-    {
-      key: "all",
-      label: "Tất cả khảo sát",
-      icon: "file",
-      count: summary?.total ?? 0,
     },
   ];
 
