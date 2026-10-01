@@ -116,6 +116,21 @@
         "reveal": "always",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "🧹 Database: Reset Tables (Clean - No Seed)",
+      "type": "shell",
+      "command": "bash scripts/reset-db-no-seed.sh",
+      "detail": "Clears persistent volumes and re-initializes all tables WITHOUT initial seed data",
+      "icon": {
+        "id": "trash",
+        "color": "terminal.ansiYellow"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
     }
   ]
 }

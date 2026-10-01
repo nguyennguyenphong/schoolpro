@@ -144,8 +144,12 @@ echo "=== Step 11: Registering Database Triggers ==="
 execute_sql "$SQL_DIR/04_triggers/triggers.sql"
 
 # 12. Master & Seed Data (INSERT Statements)
-echo "=== Step 12: Populating Master Data & Seed Records ==="
-execute_sql "$SQL_DIR/05_seeds/init.sql"
+if [ "${SKIP_SEED:-false}" != "true" ]; then
+  echo "=== Step 12: Populating Master Data & Seed Records ==="
+  execute_sql "$SQL_DIR/05_seeds/init.sql"
+else
+  echo "=== Step 12: Skipping Master Data & Seed Records (SKIP_SEED=true) ==="
+fi
 
 echo "=========================================================="
 echo " SchoolPro Database Initialization Finished Successfully! "

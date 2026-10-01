@@ -40,6 +40,7 @@ Press `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS) -> Select **Tasks: Run 
 | **`🔍 Quality: Run Full System Check`** | Runs full static analysis for backend (Ruff & Django) & frontend (Oxlint & TSC) | `bash scripts/check-all.sh` |
 | **`🛑 Database: Stop Services`** | Gracefully stops database containers | `docker compose -f schoolpro-db/docker-compose.yml down` |
 | **`🔄 Database: Reset & Re-seed Tables`** | Clears persistent volumes & re-initializes all 90 tables & seed data | `bash scripts/reset-db.sh` |
+| **`🧹 Database: Reset Tables (Clean - No Seed)`** | Clears persistent volumes & re-initializes all tables WITHOUT seed data | `bash scripts/reset-db-no-seed.sh` |
 
 ---
 

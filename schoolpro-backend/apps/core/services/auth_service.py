@@ -130,18 +130,37 @@ class AuthService(BaseService):
 
     def _verify_password(self, raw_password: str, stored_hash: str) -> bool:
         """
-        Validates password against hash using Django hasher or direct comparison for seed data.
+        Validates password against hash using:
+        1. PostgreSQL pgcrypto crypt() for $2a$ / $2b$ Blowfish hashes (SchoolPro seed DB)
+        2. Django password hasher (PBKDF2/BCrypt)
+        3. Plain-text comparison fallback for dev seeds
         """
-        if not stored_hash:
+        if not stored_hash or not raw_password:
             return False
 
+        # 1. PostgreSQL pgcrypto Blowfish check ($2a$, $2b$, $2y$)
+        if stored_hash.startswith(("$2a$", "$2b$", "$2y$")):
+            try:
+                from django.db import connection
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT (crypt(%s, %s) = %s)",
+                        [raw_password, stored_hash, stored_hash],
+                    )
+                    row = cursor.fetchone()
+                    if row and row[0] is True:
+                        return True
+            except Exception as e:
+                self.logger.warning("Database crypt password verification failed: %s", e)
+
+        # 2. Standard Django hasher
         try:
             if check_password(raw_password, stored_hash):
                 return True
         except Exception:
             pass
 
-        # Fallback for plain-text seed/test accounts
+        # 3. Fallback for plain-text seed/test accounts
         return raw_password == stored_hash
 
     def _resolve_active_role(
