@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission
+
 from common.constants.roles import RoleCode
 
 
@@ -12,9 +13,12 @@ class IsSchoolAdmin(BasePermission):
             return False
         if request.user.is_superuser or request.user.is_staff:
             return True
-        return hasattr(request.user, "roles") and request.user.roles.filter(
-            code__in=[RoleCode.ADMIN, RoleCode.PRINCIPAL]
-        ).exists()
+        return (
+            hasattr(request.user, "roles")
+            and request.user.roles.filter(
+                code__in=[RoleCode.ADMIN, RoleCode.PRINCIPAL]
+            ).exists()
+        )
 
 
 class IsTeacher(BasePermission):
@@ -27,9 +31,12 @@ class IsTeacher(BasePermission):
             return False
         if request.user.is_superuser:
             return True
-        return hasattr(request.user, "roles") and request.user.roles.filter(
-            code__in=[RoleCode.TEACHER, RoleCode.HOMEROOM_TEACHER, RoleCode.ADMIN]
-        ).exists()
+        return (
+            hasattr(request.user, "roles")
+            and request.user.roles.filter(
+                code__in=[RoleCode.TEACHER, RoleCode.HOMEROOM_TEACHER, RoleCode.ADMIN]
+            ).exists()
+        )
 
 
 class IsStudent(BasePermission):
@@ -40,9 +47,10 @@ class IsStudent(BasePermission):
     def has_permission(self, request, view):
         if not (request.user and request.user.is_authenticated):
             return False
-        return hasattr(request.user, "roles") and request.user.roles.filter(
-            code=RoleCode.STUDENT
-        ).exists()
+        return (
+            hasattr(request.user, "roles")
+            and request.user.roles.filter(code=RoleCode.STUDENT).exists()
+        )
 
 
 class IsGuardian(BasePermission):
@@ -53,15 +61,17 @@ class IsGuardian(BasePermission):
     def has_permission(self, request, view):
         if not (request.user and request.user.is_authenticated):
             return False
-        return hasattr(request.user, "roles") and request.user.roles.filter(
-            code=RoleCode.GUARDIAN
-        ).exists()
+        return (
+            hasattr(request.user, "roles")
+            and request.user.roles.filter(code=RoleCode.GUARDIAN).exists()
+        )
 
 
 class HasModulePermission(BasePermission):
     """
     Checks if the user has specific module-level action permission (e.g. 'academic.score.update').
     """
+
     required_permission: str = ""
 
     def __init__(self, permission_code: str = ""):

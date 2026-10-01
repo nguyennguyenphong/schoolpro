@@ -5,6 +5,7 @@ class ErrorCode(StrEnum):
     """
     Standard machine-readable error codes for API consumers.
     """
+
     VALIDATION_ERROR = "VALIDATION_ERROR"
     RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND"
     UNAUTHORIZED = "UNAUTHORIZED"

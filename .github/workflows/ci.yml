@@ -1,4 +1,4 @@
-name: SchoolPro Enterprise CI/CD Pipeline
+name: SchoolPro CI/CD Pipeline
 
 on:
   push:

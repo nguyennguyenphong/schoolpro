@@ -5,6 +5,7 @@ class RoleCode(StrEnum):
     """
     Standard system role identifiers aligned with core_roles.
     """
+
     SUPER_ADMIN = "SUPER_ADMIN"
     ADMIN = "ADMIN"
     PRINCIPAL = "PRINCIPAL"

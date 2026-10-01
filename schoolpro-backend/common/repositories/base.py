@@ -1,6 +1,8 @@
-from typing import TypeVar, Generic, Type, Optional, Sequence
-from django.db.models import Model, QuerySet
+from collections.abc import Sequence
+from typing import Generic, TypeVar
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Model, QuerySet
 
 T = TypeVar("T", bound=Model)
 
@@ -11,14 +13,14 @@ class BaseRepository(Generic[T]):
     Centralizes query optimizations, filters, and standard CRUD operations.
     """
 
-    def __init__(self, model_class: Type[T]):
+    def __init__(self, model_class: type[T]):
         self.model_class = model_class
 
     def get_queryset(self) -> QuerySet[T]:
         """Return base queryset for the entity."""
         return self.model_class.objects.all()
 
-    def get_by_id(self, entity_id: str) -> Optional[T]:
+    def get_by_id(self, entity_id: str) -> T | None:
         """Fetch entity by primary key or return None."""
         try:
             return self.get_queryset().get(id=entity_id)

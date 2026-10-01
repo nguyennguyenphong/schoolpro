@@ -43,6 +43,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    "common.middleware.request_id.RequestIDMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -132,7 +133,7 @@ SIMPLE_JWT = {
 # DRF Spectacular (OpenAPI 3 / Swagger)
 SPECTACULAR_SETTINGS = {
     "TITLE": "SchoolPro Management API",
-    "DESCRIPTION": "Hệ thống quản lý trường học toàn diện SchoolPro (Enterprise Modular Monolith)",
+    "DESCRIPTION": "Hệ thống quản lý trường học toàn diện SchoolPro (Modular Monolith)",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,

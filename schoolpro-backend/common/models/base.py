@@ -86,7 +86,7 @@ class AuditableModel(models.Model):
 
 class BaseModel(UUIDModel, TimeStampedModel, SoftDeleteModel, AuditableModel):
     """
-    Standard Enterprise Base Model for all SchoolPro database entities.
+    Standard Base Model for all SchoolPro database entities.
     Combines UUID primary key, timestamps, soft-delete, and audit actor fields.
     """
 

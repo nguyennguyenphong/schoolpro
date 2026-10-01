@@ -1,6 +1,7 @@
 """
 URL routing configuration for Academic Affairs domain.
 """
+
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 

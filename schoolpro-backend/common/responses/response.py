@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 class APIResponse:
     """
-    Standard Enterprise REST API response wrapper.
+    Standard REST API response wrapper.
     Ensures consistent payload structure across all SchoolPro endpoints.
     """
 

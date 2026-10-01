@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def custom_exception_handler(exc, context):
     """
-    Enterprise global exception handler for Django REST Framework.
+    Global exception handler for Django REST Framework.
     Formats all errors into the standard JSON response format.
     """
     response = exception_handler(exc, context)
