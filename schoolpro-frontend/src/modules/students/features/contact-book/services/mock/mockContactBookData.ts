@@ -2,12 +2,14 @@ import type {
   ContactBookSummary,
   SubjectFeedbackItem,
   WeeklyReportItem,
-  ParentMessage,
+  ParentNoteItem,
 } from "@/modules/students/features/contact-book/types";
 
 export const mockContactBookSummary: ContactBookSummary = {
   studentName: "Nguyễn Văn An",
   studentCode: "HS202688",
+  dateOfBirth: "15/10/2009",
+  gender: "Nam",
   className: "11A1",
   academicYear: "2025 - 2026",
   semester: "Học kỳ 1",
@@ -16,6 +18,15 @@ export const mockContactBookSummary: ContactBookSummary = {
     phone: "0912.345.678",
     email: "mainguyen@schoolpro.edu.vn",
     subject: "Giáo viên Toán & Chủ nhiệm",
+  },
+  parentInfo: {
+    fatherName: "Nguyễn Văn Bình",
+    fatherPhone: "0912.345.678",
+    fatherJob: "Kỹ sư công nghệ thông tin",
+    motherName: "Lê Thị Thảo",
+    motherPhone: "0987.654.321",
+    motherJob: "Bác sĩ nhi khoa",
+    address: "Số 25, Phố Hoàng Cầu, Phường Ô Chợ Dừa, Quận Đống Đa, Hà Nội",
   },
   currentGpa: 8.6,
   conduct: "Tốt",
@@ -54,7 +65,7 @@ export const mockWeeklyReports: WeeklyReportItem[] = [
     parentFeedback: {
       content:
         "Gia đình rất vui vì kết quả tuần này của cháu. Ở nhà cháu tự giác học bài và rèn luyện thể thao đều đặn. Cảm ơn cô giáo đã luôn quan tâm sát sao.",
-      senderName: "Nguyễn Văn Bình (Phụ huynh)",
+      senderName: "Nguyễn Văn Bình (Bố học sinh)",
       submittedAt: "28/09/2026 19:30",
       isConfirmed: true,
     },
@@ -80,7 +91,7 @@ export const mockWeeklyReports: WeeklyReportItem[] = [
     parentFeedback: {
       content:
         "Thứ Tư cháu bị cảm nhẹ nên xin phép nghỉ 1 buổi. Gia đình đã kèm cháu học bù bài vở kịp thời. Cảm ơn cô.",
-      senderName: "Nguyễn Văn Bình (Phụ huynh)",
+      senderName: "Nguyễn Văn Bình (Bố học sinh)",
       submittedAt: "21/09/2026 20:15",
       isConfirmed: true,
     },
@@ -104,7 +115,7 @@ export const mockWeeklyReports: WeeklyReportItem[] = [
     teacherSignature: "Nguyễn Thị Mai",
     signedDate: "13/09/2026",
     parentFeedback: {
-      content: "Gia đình đã xem và ký xác nhận.",
+      content: "Gia đình đã xem và ký xác nhận sổ liên lạc tuần.",
       senderName: "Lê Thị Thảo (Mẹ học sinh)",
       submittedAt: "14/09/2026 18:00",
       isConfirmed: true,
@@ -238,45 +249,58 @@ export const mockSubjectFeedbacks: SubjectFeedbackItem[] = [
   },
 ];
 
-export const mockParentMessages: ParentMessage[] = [
+export const mockParentNotes: ParentNoteItem[] = [
   {
-    id: "msg-01",
-    senderRole: "teacher",
-    senderName: "Cô Nguyễn Thị Mai (GVCN)",
-    content:
-      "Kính gửi gia đình: Tuần này em An học tập rất xuất sắc, điểm kiểm tra môn Toán đạt 10. Em cũng vừa được chọn vào đội bồi dưỡng HSG cấp trường môn Tin học. Chúc mừng em và gia đình!",
-    createdAt: "27/09/2026 17:30",
+    id: "note-04",
     weekNumber: 4,
-    isRead: true,
+    parentName: "Nguyễn Văn Bình",
+    parentRole: "Bố học sinh",
+    phone: "0912.345.678",
+    homeStudyComment:
+      "Ở nhà cháu tự giác ngồi vào bàn học đúng 19h30, hoàn thành bài tập Toán và Tiếng Anh trước khi đi ngủ. Tinh thần học tập phấn khởi, sức khỏe tốt.",
+    generalOpinion:
+      "Gia đình rất mừng vì sự tiến bộ của cháu trong đợt kiểm tra vừa qua. Rất mong cô giáo tiếp tục rèn giũa và bồi dưỡng thêm cho cháu môn Tin học và Tiếng Anh.",
+    signedAt: "28/09/2026 19:30",
+    isConfirmed: true,
+    teacherResponse: {
+      teacherName: "Cô Nguyễn Thị Mai (GVCN)",
+      content:
+        "Cảm ơn gia đình đã luôn đồng hành cùng nhà trường. Em An đã được chọn vào đội dự tuyển học sinh giỏi Tin học của trường, cô sẽ theo sát hỗ trợ em.",
+      respondedAt: "29/09/2026 08:15",
+    },
   },
   {
-    id: "msg-02",
-    senderRole: "parent",
-    senderName: "Nguyễn Văn Bình (Phụ huynh)",
-    content:
-      "Gia đình rất cảm ơn cô giáo và nhà trường đã luôn tận tình chỉ bảo, động viên cháu. Gia đình sẽ tiếp tục nhắc nhở cháu giữ gìn sức khỏe và sắp xếp thời gian hợp lý ạ.",
-    createdAt: "28/09/2026 19:35",
-    weekNumber: 4,
-    isRead: true,
-  },
-  {
-    id: "msg-03",
-    senderRole: "parent",
-    senderName: "Nguyễn Văn Bình (Phụ huynh)",
-    content:
-      "Thưa cô, sáng thứ Tư cháu An bị sốt nhẹ nên gia đình xin phép cho cháu nghỉ học 1 ngày để đi khám. Gia đình đã có đơn xin phép gửi cô qua hệ thống ạ.",
-    createdAt: "17/09/2026 06:45",
+    id: "note-03",
     weekNumber: 3,
-    isRead: true,
+    parentName: "Nguyễn Văn Bình",
+    parentRole: "Bố học sinh",
+    phone: "0912.345.678",
+    homeStudyComment:
+      "Cháu có bị cảm sốt nhẹ vào giữa tuần nên phải nghỉ 1 buổi. Gia đình đã cho cháu nghỉ ngơi và kèm cháu chép bài, làm bù đầy đủ bài tập môn Hóa.",
+    generalOpinion:
+      "Gia đình xin chân thành cảm ơn cô giáo chủ nhiệm và các bạn trong tổ đã quan tâm, gửi bài vở kịp thời cho cháu.",
+    signedAt: "21/09/2026 20:15",
+    isConfirmed: true,
+    teacherResponse: {
+      teacherName: "Cô Nguyễn Thị Mai (GVCN)",
+      content: "Em An đã hoàn thành bài bù rất tốt, sức khỏe trên lớp ổn định.",
+      respondedAt: "22/09/2026 09:00",
+    },
   },
   {
-    id: "msg-04",
-    senderRole: "teacher",
-    senderName: "Cô Nguyễn Thị Mai (GVCN)",
-    content:
-      "Cô đã nhận được đơn của gia đình. Chúc em An mau khỏe, bài vở trên lớp cô đã nhờ bạn nhóm trưởng chụp và gửi cho An rồi nhé bố mẹ yên tâm.",
-    createdAt: "17/09/2026 07:15",
-    weekNumber: 3,
-    isRead: true,
+    id: "note-02",
+    weekNumber: 2,
+    parentName: "Lê Thị Thảo",
+    parentRole: "Mẹ học sinh",
+    phone: "0987.654.321",
+    homeStudyComment:
+      "Cháu chuẩn bị sách vở và trang phục chu đáo. Tích cực tham gia các hoạt động Đoàn đội của lớp.",
+    generalOpinion:
+      "Gia đình đã xem kết quả nề nếp và học tập tuần 2 của cháu, hoàn toàn nhất trí với nhận xét của giáo viên chủ nhiệm.",
+    signedAt: "14/09/2026 18:00",
+    isConfirmed: true,
   },
 ];
+
+// Giữ alias tương thích
+export const mockParentMessages = mockParentNotes;

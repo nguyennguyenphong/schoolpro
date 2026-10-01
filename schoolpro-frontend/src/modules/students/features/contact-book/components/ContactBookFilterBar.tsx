@@ -43,18 +43,18 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
   const tabs: Array<{
     key: ContactBookTab;
     label: string;
-    icon: "file" | "clock" | "chart" | "mail";
+    icon: "book" | "calendar" | "chart" | "fileText";
     countText?: string;
   }> = [
     {
       key: "overview",
-      label: "Tổng quan học kỳ",
-      icon: "file",
+      label: "Tổng quan & Bìa sổ",
+      icon: "book",
     },
     {
       key: "weekly",
-      label: "Nhận xét hàng tuần",
-      icon: "clock",
+      label: "Theo dõi từng tuần",
+      icon: "calendar",
       countText: "4 tuần",
     },
     {
@@ -65,9 +65,9 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
     },
     {
       key: "feedback",
-      label: "Ý kiến & Trao đổi",
-      icon: "mail",
-      countText: `${summary?.parentFeedbackCount ?? 3} tin`,
+      label: "Ý kiến Cha Mẹ học sinh",
+      icon: "fileText",
+      countText: `${summary?.parentFeedbackCount ?? 3} phiếu`,
     },
   ];
 
@@ -83,7 +83,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
 
   return (
     <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-      {/* 1. Bộ lọc trạng thái ở trên (Tabs theo chuẩn) */}
+      {/* 1. Bộ lọc trạng thái ở trên (Tabs theo chuẩn sổ liên lạc) */}
       <div className="flex flex-wrap items-center gap-1.5">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.key;
@@ -123,20 +123,20 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
       {/* 2. Dưới đó là input search và hành động nhanh */}
       <div className="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Input Search */}
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 w-full sm:w-auto">
           <Input
             id="contact-book-search-input"
             autoFocus
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm kiếm môn học, nhận xét giáo viên, phụ huynh..."
+            placeholder="Tìm kiếm môn học, nhận xét giáo viên, ý kiến gia đình..."
             prefix={<Icon name="search" size={14} className="text-slate-400" />}
             allowClear
             className="rounded-lg text-xs w-full"
           />
         </div>
 
-        {/* Action Button: Gửi phản hồi phụ huynh */}
+        {/* Action Button: Ghi ý kiến vào sổ liên lạc */}
         <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
           <Button
             variant="primary"
@@ -144,7 +144,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
             className="rounded-lg text-xs font-semibold"
           >
             <Icon name="edit" size={14} />
-            <span>Gửi ý kiến phụ huynh</span>
+            <span>Ghi ý kiến vào sổ</span>
           </Button>
         </div>
       </div>

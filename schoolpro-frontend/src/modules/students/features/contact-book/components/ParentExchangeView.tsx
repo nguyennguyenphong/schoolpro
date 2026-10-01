@@ -1,172 +1,175 @@
-import React, { useState } from "react";
-import { Avatar, Input as AntInput } from "antd";
+import React from "react";
+import { Empty } from "antd";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type {
-  ParentMessage,
+  ParentNoteItem,
   SendFeedbackPayload,
 } from "@/modules/students/features/contact-book/types";
 
 interface ParentExchangeViewProps {
-  messages: ParentMessage[];
-  onSendMessage: (payload: SendFeedbackPayload) => Promise<boolean>;
+  messages?: ParentNoteItem[];
+  parentNotes?: ParentNoteItem[];
+  onSendMessage?: (payload: SendFeedbackPayload) => Promise<boolean>;
+  onAddParentNote?: (payload: SendFeedbackPayload) => Promise<boolean>;
   onOpenFeedbackModal: () => void;
-  submitting: boolean;
+  submitting?: boolean;
 }
 
 export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
   messages,
-  onSendMessage,
+  parentNotes,
   onOpenFeedbackModal,
-  submitting,
 }) => {
-  const [quickContent, setQuickContent] = useState("");
-  const [isSending, setIsSending] = useState(false);
-
-  const handleSendQuick = async () => {
-    if (!quickContent.trim()) return;
-    setIsSending(true);
-    const success = await onSendMessage({
-      content: quickContent.trim(),
-      parentName: "Nguyễn Văn Bình",
-      phone: "0987.654.321",
-    });
-    if (success) {
-      setQuickContent("");
-    }
-    setIsSending(false);
-  };
+  const notesList = parentNotes || messages || [];
 
   return (
-    <div className="space-y-4">
-      {/* Intro info box */}
-      <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center shrink-0">
-            <Icon name="mail" size={18} />
+    <div className="flex flex-col gap-6 w-full">
+      {/* Intro info box - Đúng tính chất trang sổ liên lạc của Cha Mẹ học sinh */}
+      <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
+        <div className="flex items-center gap-3.5">
+          <span className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0 shadow-2xs">
+            <Icon name="fileText" size={20} />
           </span>
           <div>
-            <h4 className="text-sm font-bold text-slate-900 mb-0.5">
-              Kênh trao đổi 2 chiều giữa Phụ huynh & Giáo viên chủ nhiệm
+            <h4 className="text-sm sm:text-base font-bold text-slate-900 mb-0.5">
+              Mục ghi ý kiến và Ký xác nhận của Cha Mẹ học sinh
             </h4>
-            <p className="text-xs text-slate-500 mb-0">
-              Nơi tiếp nhận ý kiến đóng góp, xin phép nghỉ học và trao đổi định kỳ về tình hình học tập của học sinh
+            <p className="text-xs sm:text-sm text-slate-500 mb-0">
+              Phần dành cho phụ huynh ghi nhận xét về việc học ở nhà, sinh hoạt của con em và đề xuất ý kiến với nhà trường theo từng tuần
             </p>
           </div>
         </div>
 
         <Button
-          variant="outline"
+          variant="primary"
           onClick={onOpenFeedbackModal}
-          className="shrink-0 text-xs font-semibold"
+          className="shrink-0 text-xs font-semibold px-4 h-9"
         >
           <Icon name="edit" size={14} />
-          <span>Gửi phản hồi chính thức</span>
+          <span>Ghi ý kiến vào sổ liên lạc</span>
         </Button>
       </div>
 
-      {/* Messages Stream Card */}
-      <Card className="rounded-xl border-slate-200 shadow-2xs overflow-hidden [&>.ant-card-body]:p-5">
-        <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-4 bg-purple-600 rounded-full inline-block" />
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-0">
-              Lịch sử trao đổi & Ý kiến phản hồi ({messages.length})
-            </h3>
-          </div>
-          <span className="text-xs text-slate-400">Tự động lưu trữ</span>
+      {/* Danh sách các phiếu ghi ý kiến định kỳ trong sổ */}
+      {notesList.length === 0 ? (
+        <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-slate-200 shadow-2xs">
+          <Empty
+            description={
+              <div className="flex flex-col gap-1.5">
+                <p className="text-sm font-bold text-slate-700 mb-0">
+                  Chưa có phiếu ghi ý kiến nào của Cha Mẹ học sinh
+                </p>
+                <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
+                  Quý phụ huynh vui lòng bấm nút "Ghi ý kiến vào sổ liên lạc" để đóng góp ý kiến và ký xác nhận định kỳ.
+                </p>
+              </div>
+            }
+          >
+            <Button variant="primary" onClick={onOpenFeedbackModal} className="mt-3">
+              <Icon name="edit" size={14} />
+              <span>Ghi ý kiến ngay</span>
+            </Button>
+          </Empty>
         </div>
-
-        <div className="space-y-4 mb-6">
-          {messages.map((msg) => {
-            const isTeacher = msg.senderRole === "teacher";
-
-            return (
-              <div
-                key={msg.id}
-                className={`flex gap-3 items-start ${isTeacher ? "flex-row" : "flex-row-reverse"}`}
+      ) : (
+        <div className="flex flex-col gap-6 sm:gap-5 w-full">
+          {notesList.map((note) => (
+            <div key={note.id} className="w-full">
+              <Card
+                className="w-full rounded-2xl border border-slate-200/90 shadow-xs"
               >
-                {/* Avatar */}
-                <Avatar
-                  size={36}
-                  src={
-                    isTeacher
-                      ? "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-                      : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150"
-                  }
-                  className={`border shrink-0 mt-0.5 ${
-                    isTeacher ? "border-purple-200" : "border-blue-200"
-                  }`}
-                />
-
-                {/* Bubble */}
-                <div
-                  className={`max-w-xl rounded-2xl p-4 shadow-2xs space-y-1.5 ${
-                    isTeacher
-                      ? "bg-purple-50/50 border border-purple-100 text-slate-800 rounded-tl-none"
-                      : "bg-blue-600 text-white rounded-tr-none"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-3 text-xs">
-                    <span className={`font-bold ${isTeacher ? "text-purple-900" : "text-white"}`}>
-                      {msg.senderName}
+                {/* Header của phiếu ghi ý kiến */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 font-extrabold text-sm flex items-center justify-center border border-blue-200 shrink-0 shadow-2xs">
+                      T{note.weekNumber}
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      {msg.weekNumber && (
-                        <Tag
-                          color={isTeacher ? "purple" : "blue"}
-                          className="m-0 text-[10px] font-semibold"
-                        >
-                          Tuần {msg.weekNumber}
-                        </Tag>
-                      )}
-                      <span className={`text-[11px] ${isTeacher ? "text-slate-400" : "text-blue-100"}`}>
-                        {msg.createdAt}
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
+                          Ý kiến của Cha Mẹ học sinh — Tuần {note.weekNumber}
+                        </h4>
+                        {note.isConfirmed && (
+                          <Tag color="success" className="m-0 font-semibold text-[10px]">
+                            Đã ký sổ
+                          </Tag>
+                        )}
+                      </div>
+                      <span className="text-xs text-slate-500 block mt-0.5">
+                        Người ký: <strong>{note.parentName}</strong> ({note.parentRole || "Phụ huynh"}) • SĐT: {note.phone}
                       </span>
                     </div>
                   </div>
 
-                  <p
-                    className={`text-xs sm:text-sm leading-relaxed mb-0 ${
-                      isTeacher ? "text-slate-700" : "text-white"
-                    }`}
-                  >
-                    {msg.content}
-                  </p>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 self-start sm:self-auto px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
+                    <Icon name="clock" size={13} className="text-slate-400" />
+                    <span>Ký ngày: <strong className="text-slate-700">{note.signedAt}</strong></span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
 
-        {/* Quick Send Input Area */}
-        <div className="pt-4 border-t border-slate-100 bg-slate-50/60 -mx-5 -mb-5 p-4 rounded-b-xl">
-          <span className="text-xs font-bold text-slate-700 block mb-2">
-            Gửi nhanh lời nhắn cho Giáo viên chủ nhiệm:
-          </span>
-          <div className="flex gap-2">
-            <AntInput.TextArea
-              rows={2}
-              value={quickContent}
-              onChange={(e) => setQuickContent(e.target.value)}
-              placeholder="Nhập nội dung trao đổi, thắc mắc hoặc lời cảm ơn tới GVCN..."
-              className="rounded-lg text-xs"
-              disabled={isSending || submitting}
-            />
-            <Button
-              variant="primary"
-              onClick={handleSendQuick}
-              disabled={!quickContent.trim() || isSending || submitting}
-              className="shrink-0 self-end text-xs font-semibold px-4 h-10"
-            >
-              <Icon name="send" size={14} />
-              <span>Gửi tin</span>
-            </Button>
-          </div>
+                {/* Thân phiếu: Gồm 2 mục chuẩn như sổ giấy */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 my-5">
+                  {/* 1. Nhận xét tình hình học ở nhà */}
+                  <div className="p-4 sm:p-5 rounded-xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-wide">
+                      <Icon name="home" size={14} className="text-blue-600" />
+                      <span>Tình hình tự học & sinh hoạt tại nhà</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-0">
+                      {note.homeStudyComment || "Gia đình đã kiểm tra và theo dõi sát sao việc học tại nhà của cháu."}
+                    </p>
+                  </div>
+
+                  {/* 2. Ý kiến, đề xuất với nhà trường */}
+                  <div className="p-4 sm:p-5 rounded-xl bg-blue-50/50 border border-blue-200/90 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900 uppercase tracking-wide">
+                      <Icon name="edit" size={14} className="text-blue-600" />
+                      <span>Ý kiến đóng góp & đề xuất của gia đình</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-800 leading-relaxed mb-0">
+                      "{note.generalOpinion || "Gia đình hoàn toàn nhất trí với nhận xét và kết quả của giáo viên."}"
+                    </p>
+                  </div>
+                </div>
+
+                {/* Phần tiếp nhận & phản hồi chính thức từ Giáo viên chủ nhiệm */}
+                {note.teacherResponse ? (
+                  <div className="p-4 rounded-xl bg-purple-50/60 border border-purple-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-purple-900 flex items-center gap-1">
+                          <Icon name="checkCircle" size={14} className="text-purple-600" />
+                          Ý kiến tiếp thu từ GVCN:
+                        </span>
+                        <span className="text-[11px] text-purple-700 font-semibold">
+                          {note.teacherResponse.teacherName}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-700 mb-0 leading-relaxed">
+                        {note.teacherResponse.content}
+                      </p>
+                    </div>
+                    <span className="text-[11px] text-purple-600 shrink-0 font-medium px-2.5 py-1 bg-white/70 rounded-md border border-purple-200">
+                      Ghi nhận: {note.teacherResponse.respondedAt}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-xs text-slate-500 flex items-center justify-between pt-3 border-t border-slate-100">
+                    <span className="flex items-center gap-1.5 text-slate-400">
+                      <Icon name="check" size={13} className="text-emerald-500" />
+                      Ý kiến đã được lưu trữ chính thức vào hồ sơ Sổ liên lạc của học sinh
+                    </span>
+                    <span className="text-blue-600 font-medium">Học kỳ 1 • 2025-2026</span>
+                  </div>
+                )}
+              </Card>
+            </div>
+          ))}
         </div>
-      </Card>
+      )}
     </div>
   );
 };

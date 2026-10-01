@@ -21,37 +21,86 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
   onOpenFeedbackModal,
 }) => {
   return (
-    <div className="space-y-4 sm:space-y-5">
-      {/* 1. Student & Homeroom Teacher Profile Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Student Academic Info */}
+    <div className="flex flex-col gap-5 sm:gap-6 w-full">
+      {/* 1. Student Academic Info & Family Info */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Student & Family Information (Trang Bìa & Lý Lịch Sổ Liên Lạc) */}
         <Card className="rounded-xl border-slate-200 shadow-2xs lg:col-span-2 [&>.ant-card-body]:p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-1.5 h-4 bg-blue-600 rounded-full inline-block" />
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-0">
-              Thông tin học sinh & Hồ sơ học kỳ
-            </h3>
+          <div className="flex items-center justify-between gap-2 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-4 bg-blue-600 rounded-full inline-block" />
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-0">
+                Lý lịch học sinh & Thông tin gia đình
+              </h3>
+            </div>
+            <Tag color="blue" className="m-0 font-semibold text-xs">
+              Sổ chính khóa 2025 - 2026
+            </Tag>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-slate-100 mb-4 bg-slate-50/60 rounded-xl px-4">
+          {/* Thông tin học sinh */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-slate-100 mb-4 bg-slate-50/60 rounded-xl px-4 text-xs">
             <div>
-              <span className="text-[11px] font-medium text-slate-400 block">Học sinh</span>
+              <span className="text-[11px] font-medium text-slate-400 block">Họ và tên</span>
               <span className="text-xs sm:text-sm font-bold text-slate-800">{summary.studentName}</span>
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-400 block">Mã định danh</span>
+              <span className="text-[11px] font-medium text-slate-400 block">Mã số học sinh</span>
               <span className="text-xs sm:text-sm font-mono font-bold text-blue-600">{summary.studentCode}</span>
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-400 block">Lớp niên khóa</span>
-              <span className="text-xs sm:text-sm font-bold text-slate-800">{summary.className}</span>
+              <span className="text-[11px] font-medium text-slate-400 block">Ngày sinh / Giới tính</span>
+              <span className="text-xs sm:text-sm font-bold text-slate-800">
+                {summary.dateOfBirth || "15/10/2009"} ({summary.gender || "Nam"})
+              </span>
             </div>
             <div>
-              <span className="text-[11px] font-medium text-slate-400 block">Học kỳ áp dụng</span>
-              <span className="text-xs sm:text-sm font-bold text-slate-800">{summary.semester}</span>
+              <span className="text-[11px] font-medium text-slate-400 block">Lớp niên khóa</span>
+              <span className="text-xs sm:text-sm font-bold text-slate-800">
+                {summary.className} • {summary.semester}
+              </span>
             </div>
           </div>
 
+          {/* Thông tin cha mẹ / người giám hộ */}
+          {summary.parentInfo && (
+            <div className="mb-4 p-3.5 rounded-xl border border-slate-200/80 bg-white space-y-2.5">
+              <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wide">
+                <Icon name="userCheck" size={14} className="text-purple-600" />
+                Thông tin Cha Mẹ / Người giám hộ học sinh
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                  <span className="text-slate-400 text-[11px] block">Họ tên Bố & Nghề nghiệp:</span>
+                  <span className="font-bold text-slate-800 block">
+                    {summary.parentInfo.fatherName} — {summary.parentInfo.fatherJob}
+                  </span>
+                  <span className="text-slate-600 flex items-center gap-1">
+                    <Icon name="phone" size={12} className="text-slate-400" />
+                    {summary.parentInfo.fatherPhone}
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                  <span className="text-slate-400 text-[11px] block">Họ tên Mẹ & Nghề nghiệp:</span>
+                  <span className="font-bold text-slate-800 block">
+                    {summary.parentInfo.motherName} — {summary.parentInfo.motherJob}
+                  </span>
+                  <span className="text-slate-600 flex items-center gap-1">
+                    <Icon name="phone" size={12} className="text-slate-400" />
+                    {summary.parentInfo.motherPhone}
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-[11px] text-slate-500 pt-1 flex items-start gap-1.5">
+                <Icon name="home" size={13} className="text-slate-400 shrink-0 mt-0.5" />
+                <span>Hộ khẩu thường trú: <strong>{summary.parentInfo.address}</strong></span>
+              </div>
+            </div>
+          )}
+
+          {/* Đánh giá toàn diện */}
           <div className="space-y-3">
             <div className="flex items-start gap-3 p-3.5 bg-blue-50/50 rounded-xl border border-blue-100">
               <span className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
@@ -59,7 +108,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               </span>
               <div className="space-y-1">
                 <span className="text-xs font-bold text-blue-900 block">
-                  Đánh giá toàn diện từ Giáo viên Chủ nhiệm
+                  Đánh giá kết quả học tập & rèn luyện từ Giáo viên Chủ nhiệm
                 </span>
                 <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-0">
                   {summary.latestTeacherComment}
@@ -117,7 +166,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                   {summary.homeroomTeacher.subject}
                 </span>
                 <span className="text-[11px] text-slate-400 block">
-                  Phụ trách Lớp {summary.className}
+                  Chủ nhiệm Lớp {summary.className}
                 </span>
               </div>
             </div>
@@ -126,7 +175,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
                   <Icon name="phone" size={13} className="text-slate-400" />
-                  Điện thoại:
+                  Số điện thoại:
                 </span>
                 <a
                   href={`tel:${summary.homeroomTeacher.phone}`}
@@ -138,7 +187,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
                   <Icon name="mail" size={13} className="text-slate-400" />
-                  Email:
+                  Email liên hệ:
                 </span>
                 <span className="font-medium text-slate-700 truncate max-w-44">
                   {summary.homeroomTeacher.email}
@@ -147,10 +196,18 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
                   <Icon name="clock" size={13} className="text-slate-400" />
-                  Giờ liên hệ:
+                  Tiếp nhận liên lạc:
                 </span>
                 <span className="font-medium text-slate-700">17:00 - 19:30 các ngày</span>
               </div>
+            </div>
+
+            {/* Quy định sử dụng sổ */}
+            <div className="mt-3.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
+              <span className="font-bold text-slate-800 block">Quy định Sổ liên lạc:</span>
+              <p className="mb-0 leading-relaxed text-slate-500">
+                Sổ liên lạc là phương tiện phối hợp chính thức giữa gia đình và nhà trường. Phụ huynh định kỳ theo dõi nhận xét từng tuần và ký xác nhận vào sổ.
+              </p>
             </div>
           </div>
 
@@ -160,8 +217,8 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               onClick={() => onSelectTab("feedback")}
               className="w-full justify-center text-xs font-semibold"
             >
-              <Icon name="mail" size={14} />
-              <span>Trao đổi với giáo viên</span>
+              <Icon name="fileText" size={14} />
+              <span>Xem sổ ý kiến phụ huynh</span>
             </Button>
             <Button
               variant="primary"
@@ -169,13 +226,13 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               className="w-full justify-center text-xs font-semibold"
             >
               <Icon name="edit" size={14} />
-              <span>Gửi ý kiến phụ huynh</span>
+              <span>Ghi ý kiến vào sổ liên lạc</span>
             </Button>
           </div>
         </Card>
       </div>
 
-      {/* 2. Attendance & Discipline Breakdown */}
+      {/* 2. Attendance & Signature Status */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Attendance Breakdown */}
         <Card className="rounded-xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5">
@@ -183,7 +240,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-4 bg-amber-500 rounded-full inline-block" />
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-0">
-                Chi tiết chuyên cần học kỳ
+                Theo dõi chuyên cần học kỳ
               </h3>
             </div>
             <Tag color="warning" className="m-0 font-semibold text-xs">
@@ -234,7 +291,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 bg-emerald-600 rounded-full inline-block" />
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-0">
-                  Xác nhận & Ký số điện tử
+                  Xác nhận & Chữ ký số Sổ liên lạc
                 </h3>
               </div>
               <Tag color="success" className="m-0 font-semibold text-xs">
@@ -271,10 +328,10 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                   </span>
                   <div>
                     <span className="text-xs font-bold text-slate-800 block">
-                      Phụ huynh học sinh đã xác nhận
+                      Cha Mẹ học sinh đã ký xác nhận
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      Người ký: Nguyễn Văn Bình (Bố) • 28/09/2026
+                      Người ký: {summary.parentInfo?.fatherName || "Nguyễn Văn Bình"} (Bố) • 28/09/2026
                     </span>
                   </div>
                 </div>
@@ -286,8 +343,8 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
           </div>
 
           <div className="pt-4 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 mt-3">
-            <span>Tổng số lần gửi ý kiến phản hồi:</span>
-            <span className="font-bold text-blue-600">{summary.parentFeedbackCount} lượt đóng góp</span>
+            <span>Tổng số lần Cha Mẹ ghi ý kiến vào sổ:</span>
+            <span className="font-bold text-blue-600">{summary.parentFeedbackCount} phiếu ghi</span>
           </div>
         </Card>
       </div>
@@ -300,10 +357,10 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
           </span>
           <div>
             <h4 className="text-sm font-bold text-slate-900 mb-0.5">
-              Theo dõi chi tiết đánh giá từng tuần và từng môn học
+              Theo dõi chi tiết nhận xét từng tuần và bảng điểm các môn
             </h4>
             <p className="text-xs text-slate-500 mb-0">
-              Xem chi tiết nhận xét từng tuần của GVCN hoặc tra cứu bảng điểm đánh giá từng môn
+              Tra cứu đầy đủ phiếu liên lạc từng tuần của GVCN và bảng điểm nhận xét của từng thầy cô bộ môn
             </p>
           </div>
         </div>

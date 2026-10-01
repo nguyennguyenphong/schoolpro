@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
   ContactBookSkeleton,
-  ContactBookSummaryCards,
   ContactBookFilterBar,
   OverviewTabView,
   WeeklyReportListView,
@@ -27,11 +26,11 @@ export const ContactBookPage: React.FC = () => {
     summary,
     weeklyReports,
     subjectFeedbacks,
-    messages,
+    parentNotes,
     loading,
     submitting,
     handleConfirmReport,
-    handleSendMessage,
+    handleAddParentNote,
   } = useContactBook();
 
   // Feedback / Confirmation modal state
@@ -62,9 +61,9 @@ export const ContactBookPage: React.FC = () => {
   const hasFilters = Boolean(searchQuery.trim() || selectedWeek !== "all");
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-10">
-      {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+    <div className="flex flex-col gap-5 sm:gap-6 pb-12 w-full">
+      {/* 1. Page Header with integrated Breadcrumb & Key Metrics */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col gap-3.5">
         <Breadcrumb
           items={[
             {
@@ -87,9 +86,9 @@ export const ContactBookPage: React.FC = () => {
           ]}
         />
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
                 Sổ Liên Lạc Điện Tử
@@ -105,42 +104,42 @@ export const ContactBookPage: React.FC = () => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              Kênh thông tin kết nối chính thức giữa Nhà trường, Giáo viên chủ nhiệm và Quý phụ huynh học sinh
+              Sổ theo dõi kết quả rèn luyện, học tập và phối hợp giáo dục giữa Nhà trường, Giáo viên chủ nhiệm và Cha Mẹ học sinh
             </p>
           </div>
 
-          {/* Action buttons */}
-          <div className="flex items-center gap-2.5 shrink-0 self-start md:self-center">
+          {/* Quick status badges & Action buttons */}
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {summary && (
+              <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
+                <span className="text-slate-500">GPA: <strong className="text-blue-600">{summary.currentGpa.toFixed(1)}</strong></span>
+                <span className="text-slate-300">•</span>
+                <span className="text-slate-500">Hạnh kiểm: <strong className="text-emerald-600">{summary.conduct}</strong></span>
+                <span className="text-slate-300">•</span>
+                <span className="text-slate-500">Chuyên cần: <strong className="text-amber-600">{summary.attendanceRate}%</strong></span>
+              </div>
+            )}
             <Button
               variant="outline"
               onClick={handleExportPdf}
-              className="text-slate-700 font-semibold"
+              className="text-slate-700 font-semibold text-xs"
             >
-              <Icon name="download" size={15} />
-              <span>In sổ liên lạc</span>
+              <Icon name="download" size={14} />
+              <span>In sổ</span>
             </Button>
             <Button
               variant="primary"
               onClick={handleOpenFeedbackModal}
-              className="font-semibold"
+              className="font-semibold text-xs"
             >
-              <Icon name="edit" size={15} />
-              <span>Gửi ý kiến phụ huynh</span>
+              <Icon name="edit" size={14} />
+              <span>Ghi ý kiến vào sổ</span>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* 2. Top Summary Metric Cards */}
-      {summary && (
-        <ContactBookSummaryCards
-          summary={summary}
-          activeTab={activeTab}
-          onSelectTab={setActiveTab}
-        />
-      )}
-
-      {/* 3. Search & Filter Bar */}
+      {/* 2. Search & Filter Bar */}
       <ContactBookFilterBar
         activeTab={activeTab}
         onTabChange={setActiveTab}
@@ -153,9 +152,9 @@ export const ContactBookPage: React.FC = () => {
         onOpenFeedbackModal={handleOpenFeedbackModal}
       />
 
-      {/* 4. Tab Content Views */}
+      {/* 3. Tab Content Views */}
       {summary && (
-        <div>
+        <div className="pt-1">
           {activeTab === "overview" && (
             <OverviewTabView
               summary={summary}
@@ -183,8 +182,8 @@ export const ContactBookPage: React.FC = () => {
 
           {activeTab === "feedback" && (
             <ParentExchangeView
-              messages={messages}
-              onSendMessage={handleSendMessage}
+              parentNotes={parentNotes}
+              onAddParentNote={handleAddParentNote}
               onOpenFeedbackModal={handleOpenFeedbackModal}
               submitting={submitting}
             />
@@ -192,13 +191,13 @@ export const ContactBookPage: React.FC = () => {
         </div>
       )}
 
-      {/* 5. Parent Feedback & Confirmation Modal */}
+      {/* 4. Parent Feedback & Confirmation Modal */}
       <ParentFeedbackModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         targetWeek={targetWeek}
         onConfirmWeeklyReport={handleConfirmReport}
-        onSendMessage={handleSendMessage}
+        onSendMessage={handleAddParentNote}
         submitting={submitting}
       />
     </div>

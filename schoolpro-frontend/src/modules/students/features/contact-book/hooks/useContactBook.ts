@@ -6,7 +6,7 @@ import type {
   ContactBookSummary,
   WeeklyReportItem,
   SubjectFeedbackItem,
-  ParentMessage,
+  ParentNoteItem,
   SendFeedbackPayload,
 } from "@/modules/students/features/contact-book/types";
 import { contactBookService } from "@/modules/students/features/contact-book/services";
@@ -40,7 +40,7 @@ export const useContactBook = () => {
   const [summary, setSummary] = useState<ContactBookSummary | null>(null);
   const [weeklyReports, setWeeklyReports] = useState<WeeklyReportItem[]>([]);
   const [subjectFeedbacks, setSubjectFeedbacks] = useState<SubjectFeedbackItem[]>([]);
-  const [messages, setMessages] = useState<ParentMessage[]>([]);
+  const [parentNotes, setParentNotes] = useState<ParentNoteItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -94,16 +94,16 @@ export const useContactBook = () => {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const [sum, weekly, subjects, msgs] = await Promise.all([
+      const [sum, weekly, subjects, notes] = await Promise.all([
         contactBookService.getSummary(),
         contactBookService.getWeeklyReports(selectedWeek),
         contactBookService.getSubjectFeedbacks(),
-        contactBookService.getParentMessages(),
+        contactBookService.getParentNotes(),
       ]);
       setSummary(sum);
       setWeeklyReports(weekly);
       setSubjectFeedbacks(subjects);
-      setMessages(msgs);
+      setParentNotes(notes);
     } catch {
       message.error("Không thể tải thông tin sổ liên lạc điện tử.");
     } finally {
@@ -116,17 +116,17 @@ export const useContactBook = () => {
     async function fetchData() {
       try {
         setLoading(true);
-        const [sum, weekly, subjects, msgs] = await Promise.all([
+        const [sum, weekly, subjects, notes] = await Promise.all([
           contactBookService.getSummary(),
           contactBookService.getWeeklyReports(selectedWeek),
           contactBookService.getSubjectFeedbacks(),
-          contactBookService.getParentMessages(),
+          contactBookService.getParentNotes(),
         ]);
         if (!ignore) {
           setSummary(sum);
           setWeeklyReports(weekly);
           setSubjectFeedbacks(subjects);
-          setMessages(msgs);
+          setParentNotes(notes);
         }
       } catch {
         if (!ignore) {
@@ -154,26 +154,26 @@ export const useContactBook = () => {
     try {
       setSubmitting(true);
       await contactBookService.confirmWeeklyReport(weekNumber, feedback, parentName);
-      message.success("Đã gửi phản hồi và ký xác nhận phiếu liên lạc tuần!");
+      message.success("Đã ghi ý kiến và ký xác nhận vào sổ liên lạc tuần thành công!");
       await loadData();
       return true;
     } catch {
-      message.error("Gửi phản hồi thất bại, vui lòng thử lại.");
+      message.error("Ký xác nhận thất bại, vui lòng thử lại.");
       return false;
     } finally {
       setSubmitting(false);
     }
   };
 
-  const handleSendMessage = async (payload: SendFeedbackPayload) => {
+  const handleAddParentNote = async (payload: SendFeedbackPayload) => {
     try {
       setSubmitting(true);
-      await contactBookService.sendMessage(payload);
-      message.success("Tin nhắn đã được gửi tới Giáo viên chủ nhiệm!");
+      await contactBookService.addParentNote(payload);
+      message.success("Đã ghi ý kiến của Cha Mẹ học sinh vào Sổ liên lạc thành công!");
       await loadData();
       return true;
     } catch {
-      message.error("Không thể gửi tin nhắn, vui lòng thử lại.");
+      message.error("Không thể lưu ý kiến, vui lòng thử lại.");
       return false;
     } finally {
       setSubmitting(false);
@@ -209,6 +209,25 @@ export const useContactBook = () => {
     return list;
   }, [weeklyReports, selectedWeek, searchQuery]);
 
+  const filteredParentNotes = useMemo(() => {
+    let list = parentNotes;
+    if (selectedWeek !== "all") {
+      list = list.filter((n) => n.weekNumber === selectedWeek);
+    }
+    if (searchQuery.trim()) {
+      const lower = searchQuery.toLowerCase();
+      list = list.filter(
+        (n) =>
+          n.homeStudyComment.toLowerCase().includes(lower) ||
+          n.generalOpinion.toLowerCase().includes(lower) ||
+          n.parentName.toLowerCase().includes(lower) ||
+          (n.teacherResponse &&
+            n.teacherResponse.content.toLowerCase().includes(lower))
+      );
+    }
+    return list;
+  }, [parentNotes, selectedWeek, searchQuery]);
+
   return {
     activeTab,
     setActiveTab,
@@ -221,11 +240,15 @@ export const useContactBook = () => {
     weeklyReports: filteredWeeklyReports,
     allWeeklyReports: weeklyReports,
     subjectFeedbacks: filteredSubjects,
-    messages,
+    parentNotes: filteredParentNotes,
+    // Alias tương thích
+    messages: filteredParentNotes,
     loading,
     submitting,
     handleConfirmReport,
-    handleSendMessage,
+    handleAddParentNote,
+    // Alias tương thích
+    handleSendMessage: handleAddParentNote,
     reload: loadData,
   };
 };

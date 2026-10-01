@@ -122,7 +122,7 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
         </div>
       </Card>
 
-      {/* 4. Giáo viên chủ nhiệm & Phụ huynh */}
+      {/* 4. Xác nhận của Cha Mẹ học sinh */}
       <Card
         onClick={() => onSelectTab?.("feedback")}
         className={`rounded-xl shadow-2xs transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5 ${
@@ -135,16 +135,16 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
       >
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            GVCN & Phụ huynh
+            Xác nhận của Gia đình
           </span>
           <span className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center shrink-0">
-            <Icon name="user" size={17} />
+            <Icon name="userCheck" size={17} />
           </span>
         </div>
 
         <div className="flex items-baseline gap-2 mb-2">
           <span className="text-base sm:text-lg font-bold text-slate-900 tracking-tight truncate">
-            {summary.homeroomTeacher.name}
+            {summary.parentInfo?.fatherName || "Nguyễn Văn Bình"}
           </span>
           <Tag color="purple" className="ml-auto m-0 font-semibold shrink-0">
             Đã ký sổ
@@ -152,9 +152,9 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-          <span className="truncate">SĐT: <strong className="text-slate-700">{summary.homeroomTeacher.phone}</strong></span>
+          <span className="truncate">SĐT: <strong className="text-slate-700">{summary.parentInfo?.fatherPhone || "0912.345.678"}</strong></span>
           <span className="text-purple-600 font-medium shrink-0">
-            {summary.parentFeedbackCount} trao đổi
+            {summary.parentFeedbackCount} phiếu ghi ý kiến
           </span>
         </div>
       </Card>

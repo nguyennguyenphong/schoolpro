@@ -8,13 +8,26 @@ export interface HomeroomTeacherInfo {
   avatar?: string;
 }
 
+export interface ParentContactInfo {
+  fatherName: string;
+  fatherPhone: string;
+  fatherJob: string;
+  motherName: string;
+  motherPhone: string;
+  motherJob: string;
+  address: string;
+}
+
 export interface ContactBookSummary {
   studentName: string;
   studentCode: string;
+  dateOfBirth?: string;
+  gender?: "Nam" | "Nữ";
   className: string;
   academicYear: string;
   semester: string;
   homeroomTeacher: HomeroomTeacherInfo;
+  parentInfo: ParentContactInfo;
   currentGpa: number;
   conduct: "Tốt" | "Khá" | "Đạt" | "Chưa đạt";
   ranking: number;
@@ -66,15 +79,25 @@ export interface WeeklyReportItem {
   };
 }
 
-export interface ParentMessage {
+export interface ParentNoteItem {
   id: string;
-  senderRole: "parent" | "teacher";
-  senderName: string;
-  content: string;
-  createdAt: string;
-  weekNumber?: number;
-  isRead: boolean;
+  weekNumber: number;
+  parentName: string;
+  parentRole: string; // "Bố học sinh" | "Mẹ học sinh" | "Người giám hộ"
+  phone: string;
+  homeStudyComment: string; // Tình hình học tập & sinh hoạt tại nhà
+  generalOpinion: string; // Ý kiến đóng góp hoặc đề xuất với nhà trường & GVCN
+  signedAt: string;
+  isConfirmed: boolean;
+  teacherResponse?: {
+    teacherName: string;
+    content: string;
+    respondedAt: string;
+  };
 }
+
+// Giữ lại alias để tương thích ngược nếu cần
+export type ParentMessage = ParentNoteItem;
 
 export interface ContactBookFilter {
   tab: ContactBookTab;
@@ -85,7 +108,10 @@ export interface ContactBookFilter {
 
 export interface SendFeedbackPayload {
   weekNumber?: number;
-  content: string;
   parentName: string;
+  parentRole?: string;
   phone: string;
+  homeStudyComment?: string;
+  generalOpinion?: string;
+  content?: string;
 }

@@ -35,8 +35,9 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
         parentName: "Nguyễn Văn Bình",
         phone: "0912.345.678",
         relationship: "Bố học sinh",
-        content: "",
-        confirmed: Boolean(targetWeek),
+        homeStudyComment: "Cháu tự giác ngồi vào bàn học đúng giờ, hoàn thành bài tập trước khi ngủ.",
+        generalOpinion: "",
+        confirmed: true,
       });
     }
   }, [isOpen, targetWeek, form]);
@@ -44,24 +45,35 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      const content = values.content.trim();
       const parentName = values.parentName.trim();
       const weekNumber = values.weekNumber;
+      const homeStudy = values.homeStudyComment?.trim() || "";
+      const generalOpinion = values.generalOpinion?.trim() || "";
+      const fullFeedback = homeStudy
+        ? `${homeStudy} — Ý kiến gia đình: ${generalOpinion}`
+        : generalOpinion;
 
       if (targetWeek && onConfirmWeeklyReport) {
         // Confirm weekly report action
-        const ok = await onConfirmWeeklyReport(weekNumber, content, `${parentName} (${values.relationship})`);
+        const ok = await onConfirmWeeklyReport(
+          weekNumber,
+          fullFeedback,
+          `${parentName} (${values.relationship})`
+        );
         if (ok) {
           form.resetFields();
           onClose();
         }
       } else if (onSendMessage) {
-        // Send general message
+        // Send / Add parent note action
         const ok = await onSendMessage({
           weekNumber,
-          content,
-          parentName: `${parentName} (${values.relationship})`,
+          parentName,
+          parentRole: values.relationship,
           phone: values.phone,
+          homeStudyComment: homeStudy,
+          generalOpinion: generalOpinion,
+          content: fullFeedback,
         });
         if (ok) {
           form.resetFields();
@@ -87,30 +99,30 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
       footer={null}
       destroyOnClose
       centered
-      width={560}
+      width={600}
       title={
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-          <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-            <Icon name="edit" size={16} />
+        <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-200 shadow-2xs">
+            <Icon name="fileText" size={17} />
           </span>
           <div>
             <h3 className="text-base font-bold text-slate-900 mb-0">
               {targetWeek
-                ? `Ký xác nhận & Ý kiến Tuần ${targetWeek}`
-                : "Gửi ý kiến đóng góp của Phụ huynh"}
+                ? `Ký xác nhận & Ghi ý kiến Sổ liên lạc Tuần ${targetWeek}`
+                : "Mục ghi ý kiến của Cha Mẹ học sinh vào Sổ liên lạc"}
             </h3>
             <span className="text-xs text-slate-500 font-normal">
-              Ý kiến sẽ được chuyển trực tiếp tới Giáo viên chủ nhiệm lớp 11A1
+              Ý kiến và chữ ký của Cha Mẹ học sinh được lưu chính thức trong sổ liên lạc điện tử
             </span>
           </div>
         </div>
       }
     >
       <Form form={form} layout="vertical" className="pt-3 space-y-2">
-        {/* Week selection */}
+        {/* Tuần liên lạc */}
         <Form.Item
           name="weekNumber"
-          label={<span className="text-xs font-bold text-slate-700">Tuần báo cáo liên hệ:</span>}
+          label={<span className="text-xs font-bold text-slate-700">Tuần ghi nhận xét trong sổ:</span>}
           rules={[{ required: true, message: "Vui lòng chọn tuần học" }]}
         >
           <Select
@@ -121,20 +133,20 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
         </Form.Item>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Parent Name */}
+          {/* Người ghi ý kiến */}
           <Form.Item
             name="parentName"
-            label={<span className="text-xs font-bold text-slate-700">Họ và tên phụ huynh:</span>}
-            rules={[{ required: true, message: "Vui lòng nhập họ tên phụ huynh" }]}
+            label={<span className="text-xs font-bold text-slate-700">Họ và tên Cha Mẹ / Người ký:</span>}
+            rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
           >
             <AntInput placeholder="Ví dụ: Nguyễn Văn Bình" className="rounded-lg text-xs" />
           </Form.Item>
 
-          {/* Relationship */}
+          {/* Vai trò */}
           <Form.Item
             name="relationship"
             label={<span className="text-xs font-bold text-slate-700">Quan hệ với học sinh:</span>}
-            rules={[{ required: true, message: "Vui lòng chọn hoặc nhập quan hệ" }]}
+            rules={[{ required: true, message: "Vui lòng chọn quan hệ" }]}
           >
             <Select
               options={[
@@ -147,36 +159,55 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
           </Form.Item>
         </div>
 
-        {/* Phone */}
+        {/* Số điện thoại */}
         <Form.Item
           name="phone"
-          label={<span className="text-xs font-bold text-slate-700">Số điện thoại liên hệ:</span>}
+          label={<span className="text-xs font-bold text-slate-700">Số điện thoại liên lạc:</span>}
           rules={[{ required: true, message: "Vui lòng nhập số điện thoại" }]}
         >
           <AntInput placeholder="0912.xxx.xxx" className="rounded-lg text-xs" />
         </Form.Item>
 
-        {/* Feedback Content */}
+        {/* 1. Tình hình học tập ở nhà */}
         <Form.Item
-          name="content"
+          name="homeStudyComment"
           label={
             <span className="text-xs font-bold text-slate-700">
-              Nội dung ý kiến phản hồi / Góp ý với nhà trường:
+              1. Tình hình tự học & sinh hoạt tại nhà của học sinh:
             </span>
           }
           rules={[
-            { required: true, message: "Vui lòng nhập nội dung ý kiến phản hồi" },
-            { min: 10, message: "Nội dung phản hồi tối thiểu 10 ký tự" },
+            { required: true, message: "Vui lòng ghi nhận tình hình học ở nhà của học sinh" },
           ]}
         >
           <AntInput.TextArea
-            rows={4}
-            placeholder="Ví dụ: Gia đình đã xem tình hình học tập của cháu. Ở nhà cháu học bài nghiêm túc, cảm ơn cô giáo đã luôn quan tâm sát sao..."
+            rows={2}
+            placeholder="Ví dụ: Ở nhà cháu tự giác học bài đúng giờ, chuẩn bị bài đầy đủ, sức khỏe và tinh thần tốt..."
             className="rounded-lg text-xs"
           />
         </Form.Item>
 
-        {/* Consent check */}
+        {/* 2. Ý kiến đề xuất của gia đình */}
+        <Form.Item
+          name="generalOpinion"
+          label={
+            <span className="text-xs font-bold text-slate-700">
+              2. Ý kiến, đề xuất của Cha Mẹ học sinh gửi tới Nhà trường & GVCN:
+            </span>
+          }
+          rules={[
+            { required: true, message: "Vui lòng nhập ý kiến của gia đình" },
+            { min: 10, message: "Nội dung ý kiến tối thiểu 10 ký tự" },
+          ]}
+        >
+          <AntInput.TextArea
+            rows={3}
+            placeholder="Ví dụ: Gia đình rất mừng trước sự tiến bộ của cháu. Kính nhờ cô giáo tiếp tục rèn giũa và bồi dưỡng thêm cho cháu môn Tiếng Anh và Tin học..."
+            className="rounded-lg text-xs"
+          />
+        </Form.Item>
+
+        {/* Checkbox cam kết & ký sổ */}
         <Form.Item
           name="confirmed"
           valuePropName="checked"
@@ -186,12 +217,12 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
               validator: (_, value) =>
                 value
                   ? Promise.resolve()
-                  : Promise.reject(new Error("Vui lòng tích xác nhận đồng ý")),
+                  : Promise.reject(new Error("Vui lòng tích xác nhận đồng ý ký sổ")),
             },
           ]}
         >
           <Checkbox className="text-xs text-slate-600">
-            Tôi xác nhận đã xem và đồng ý với nội dung kết quả học tập & rèn luyện của học sinh.
+            Tôi xác nhận đã xem toàn bộ kết quả học tập & rèn luyện trong tuần của học sinh và ký tên vào sổ liên lạc.
           </Checkbox>
         </Form.Item>
 
@@ -207,7 +238,7 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
             className="font-semibold"
           >
             <Icon name="check" size={14} />
-            <span>{submitting ? "Đang gửi..." : "Ký xác nhận & Gửi ý kiến"}</span>
+            <span>{submitting ? "Đang lưu..." : "Ký tên & Ghi vào sổ liên lạc"}</span>
           </Button>
         </div>
       </Form>
