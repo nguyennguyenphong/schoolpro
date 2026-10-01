@@ -54,7 +54,7 @@
     {
       "label": "exe check",
       "type": "shell",
-      "command": "echo \"\n=======================================================\n🔍 BẮT ĐẦU KIỂM TRA CÚ PHÁP TOÀN BỘ DỰ ÁN SCHOOLPRO\n=======================================================\n\" && echo \"[1/4] ⚡ Frontend: Chạy Oxlint...\" && (cd schoolpro-frontend && npm run lint) && echo \"--> ✅ Frontend Oxlint: PASS!\n\" && echo \"[2/4] ⚡ Frontend: Chạy TypeScript Type-check (tsc -b)...\" && (cd schoolpro-frontend && npx tsc -b) && echo \"--> ✅ Frontend TypeScript: PASS!\n\" && echo \"[3/4] ⚡ Backend: Chạy Django System Check...\" && (cd schoolpro-backend && source .venv/bin/activate && python manage.py check) && echo \"--> ✅ Backend Django System Check: PASS!\n\" && echo \"[4/4] ⚡ Backend: Chạy Ruff Linting...\" && (cd schoolpro-backend && source .venv/bin/activate && ruff check apps/ config/ common/) && echo \"--> ✅ Backend Ruff Lint: PASS!\n\" && echo \"=======================================================\n🎉 CHÚC MỪNG: TOÀN BỘ CÚ PHÁP DỰ ÁN ĐỀU HOÀN TOÀN HỢP LỆ!\n=======================================================\n\"",
+      "command": "bash scripts/exe-check.sh",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -70,7 +70,7 @@
     {
       "label": "exe db:stop",
       "type": "shell",
-      "command": "docker compose -f schoolpro-db/docker-compose.yml down && echo '🛑 Đã dừng container PostgreSQL & pgAdmin.'",
+      "command": "docker compose -f schoolpro-db/docker-compose.yml down && echo 'Stopped PostgreSQL & pgAdmin containers.'",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

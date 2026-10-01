@@ -118,14 +118,14 @@ jobs:
           POSTGRES_DB: schoolpro
         run: |
           chmod +x ./schoolpro-db/docker/init-db.sh
-          # Chạy test kết nối
+          # Test database connection
           pg_isready -h localhost -p 5432 -U postgres -d schoolpro
-          # Thực thi toàn bộ script SQL
+          # Execute database schema scripts
           SQL_DIR="./schoolpro-db/sql"
           export SQL_DIR
           sed -i 's|/docker-entrypoint-initdb.d/sql|./schoolpro-db/sql|g' ./schoolpro-db/docker/init-db.sh
           psql -h localhost -p 5432 -U postgres -d schoolpro -f ./schoolpro-db/sql/00_schemas.sql
-          echo "✅ Đã xác minh khởi tạo schema PostgreSQL thành công!"
+          echo "Verified PostgreSQL schemas and tables initialized successfully!"
 
   # ============================================================================
   # 4. DOCKER BUILD VERIFICATION
