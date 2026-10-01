@@ -14,8 +14,10 @@ if ! docker info >/dev/null 2>&1; then
   printf "\033[1;32m[+] Docker Desktop is ready!\033[0m\r\n"
 fi
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # 2. Start PostgreSQL & pgAdmin containers
-docker compose -f schoolpro-db/docker-compose.yml up -d
+docker compose -f "$REPO_ROOT/schoolpro-db/docker-compose.yml" up -d
 
 # 3. Print beautifully aligned summary box
 printf "\r\n"

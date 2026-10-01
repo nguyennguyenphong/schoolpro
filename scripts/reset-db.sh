@@ -4,9 +4,11 @@
 # ==============================================================================
 set -e
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 # 1. Reset containers and volumes
-docker compose -f schoolpro-db/docker-compose.yml down -v
-docker compose -f schoolpro-db/docker-compose.yml up -d
+docker compose -f "$REPO_ROOT/schoolpro-db/docker-compose.yml" down -v
+docker compose -f "$REPO_ROOT/schoolpro-db/docker-compose.yml" up -d
 
 # 2. Print confirmation
 printf "\r\n"
