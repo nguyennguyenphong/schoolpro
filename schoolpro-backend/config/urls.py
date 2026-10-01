@@ -23,6 +23,12 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+from apps.core.views.auth_views import (
+    AuthLoginView,
+    AuthLogoutView,
+    AuthMeView,
+)
+
 
 def health_check(request):
     """
@@ -35,9 +41,6 @@ def health_check(request):
             "version": "1.0.0",
         }
     )
-
-
-from apps.core.views.auth_views import AuthLoginView, AuthLogoutView, AuthMeView
 
 urlpatterns = [
     # Administration

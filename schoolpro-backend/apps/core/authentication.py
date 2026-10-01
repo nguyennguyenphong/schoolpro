@@ -4,6 +4,7 @@ Overrides SimpleJWT authentication to resolve against SchoolPro's core.User doma
 """
 
 from typing import Any
+
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
 
@@ -27,11 +28,17 @@ class SchoolProJWTAuthentication(JWTAuthentication):
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
-            raise AuthenticationFailed("User not found", code="user_not_found")
+            raise AuthenticationFailed(
+                "User not found",
+                code="user_not_found",
+            ) from None
 
         # Check account activity
         if user.status_code and user.status_code.upper() in ["INACTIVE", "LOCKED", "SUSPENDED"]:
-            raise AuthenticationFailed("User account is inactive or suspended", code="user_inactive")
+            raise AuthenticationFailed(
+                "User account is inactive or suspended",
+                code="user_inactive",
+            ) from None
 
         # Injected session metadata
         user.is_authenticated = True
