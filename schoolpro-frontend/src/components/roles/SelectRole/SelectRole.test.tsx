@@ -6,31 +6,31 @@ import type { RoleItem } from "@/components/roles/SelectRole/types";
 
 const TEST_ROLES: RoleItem[] = [
   {
-    id: "role-1",
+    id: "d96c271e-0b8d-4727-b2e9-a4f164a7c8d5",
     code: "R_ADMIN_839201",
     name: "Quản trị viên hệ thống",
     description: "System Admin role",
-    badge_color: "#DC2626",
+    badge_color: "#1E293B",
     is_active: true,
-    user_count: 3,
+    user_count: 1,
   },
   {
-    id: "role-2",
-    code: "R_TEACHER_729481",
-    name: "Giáo viên bộ môn",
+    id: "296ecfb4-1435-41bd-a674-8e068465dc8a",
+    code: "R_TCH_659183",
+    name: "Giáo viên",
     description: "Teacher role",
     badge_color: "#2563EB",
     is_active: true,
-    user_count: 20,
+    user_count: 9,
   },
   {
-    id: "role-3",
-    code: "R_STUDENT_382910",
+    id: "9e12103a-09f5-4d61-9c8d-88b6309ed3cb",
+    code: "R_STU_568294",
     name: "Học sinh",
     description: "Student role",
     badge_color: "#059669",
     is_active: true,
-    user_count: 500,
+    user_count: 6,
   },
 ];
 
@@ -40,8 +40,13 @@ describe("SelectRole Component", () => {
   });
 
   describe("Rendering", () => {
-    it("renders correctly with default placeholder", () => {
-      render(<SelectRole customRoles={TEST_ROLES} />);
+    it("renders correctly with default placeholder when defaultToStudent is false", () => {
+      render(
+        <SelectRole
+          customRoles={TEST_ROLES}
+          defaultToStudent={false}
+        />,
+      );
       expect(screen.getByText("Chọn vai trò")).toBeInTheDocument();
     });
 
@@ -50,6 +55,7 @@ describe("SelectRole Component", () => {
         <SelectRole
           placeholder="Vui lòng chọn chức vụ"
           customRoles={TEST_ROLES}
+          defaultToStudent={false}
         />,
       );
       expect(screen.getByText("Vui lòng chọn chức vụ")).toBeInTheDocument();
@@ -73,16 +79,27 @@ describe("SelectRole Component", () => {
     });
   });
 
-  describe("Single selection", () => {
-    it("selects a role by ID and triggers callbacks", async () => {
+  describe("Default Student Role & Slug Resolution", () => {
+    it("defaults to 'Học sinh' role by default", () => {
+      render(<SelectRole customRoles={TEST_ROLES} />);
+      expect(screen.getByText("Học sinh")).toBeInTheDocument();
+    });
+
+    it("resolves slug 'student' to 'Học sinh' role label", () => {
+      render(<SelectRole value="student" customRoles={TEST_ROLES} />);
+      expect(screen.getByText("Học sinh")).toBeInTheDocument();
+    });
+  });
+
+  describe("Selection", () => {
+    it("selects a role and triggers onChange", async () => {
       const handleChange = vi.fn();
-      const handleRoleChange = vi.fn();
 
       render(
         <SelectRole
           customRoles={TEST_ROLES}
+          defaultToStudent={false}
           onChange={handleChange}
-          onRoleChange={handleRoleChange}
         />,
       );
 
@@ -92,66 +109,27 @@ describe("SelectRole Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByTitle("Quản trị viên hệ thống (R_ADMIN_839201)"),
+          screen.getByTitle("Quản trị viên hệ thống"),
         ).toBeInTheDocument();
       });
 
-      fireEvent.click(
-        screen.getByTitle("Quản trị viên hệ thống (R_ADMIN_839201)"),
-      );
+      fireEvent.click(screen.getByTitle("Quản trị viên hệ thống"));
 
       expect(handleChange).toHaveBeenCalledWith(
-        "role-1",
+        "d96c271e-0b8d-4727-b2e9-a4f164a7c8d5",
         expect.anything(),
       );
-      expect(handleRoleChange).toHaveBeenCalledWith(TEST_ROLES[0]);
     });
 
-    it("selects a role by CODE when valueField is 'code'", async () => {
-      const handleChange = vi.fn();
-      const handleRoleChange = vi.fn();
-
-      render(
-        <SelectRole
-          valueField="code"
-          customRoles={TEST_ROLES}
-          onChange={handleChange}
-          onRoleChange={handleRoleChange}
-        />,
-      );
-
-      const combobox = screen.getByRole("combobox");
-      fireEvent.mouseDown(combobox);
-
-      await waitFor(() => {
-        expect(
-          screen.getByTitle("Giáo viên bộ môn (R_TEACHER_729481)"),
-        ).toBeInTheDocument();
-      });
-
-      fireEvent.click(
-        screen.getByTitle("Giáo viên bộ môn (R_TEACHER_729481)"),
-      );
-
-      expect(handleChange).toHaveBeenCalledWith(
-        "R_TEACHER_729481",
-        expect.anything(),
-      );
-      expect(handleRoleChange).toHaveBeenCalledWith(TEST_ROLES[1]);
-    });
-  });
-
-  describe("Multiple selection", () => {
     it("renders in multiple mode and allows selecting multiple roles", async () => {
       const handleChange = vi.fn();
-      const handleRoleChange = vi.fn();
 
       render(
         <SelectRole
           mode="multiple"
           customRoles={TEST_ROLES}
+          defaultToStudent={false}
           onChange={handleChange}
-          onRoleChange={handleRoleChange}
         />,
       );
 
@@ -159,18 +137,15 @@ describe("SelectRole Component", () => {
       fireEvent.mouseDown(combobox);
 
       await waitFor(() => {
-        expect(
-          screen.getByTitle("Học sinh (R_STUDENT_382910)"),
-        ).toBeInTheDocument();
+        expect(screen.getByTitle("Học sinh")).toBeInTheDocument();
       });
 
-      fireEvent.click(screen.getByTitle("Học sinh (R_STUDENT_382910)"));
+      fireEvent.click(screen.getByTitle("Học sinh"));
 
       expect(handleChange).toHaveBeenCalledWith(
-        ["role-3"],
+        ["9e12103a-09f5-4d61-9c8d-88b6309ed3cb"],
         expect.anything(),
       );
-      expect(handleRoleChange).toHaveBeenCalledWith([TEST_ROLES[2]]);
     });
   });
 
@@ -180,7 +155,7 @@ describe("SelectRole Component", () => {
         .spyOn(roleApi, "fetchRoles")
         .mockResolvedValueOnce(TEST_ROLES);
 
-      render(<SelectRole />);
+      render(<SelectRole defaultToStudent={false} />);
 
       await waitFor(() => {
         expect(spy).toHaveBeenCalled();
@@ -191,7 +166,7 @@ describe("SelectRole Component", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByTitle("Quản trị viên hệ thống (R_ADMIN_839201)"),
+          screen.getByTitle("Quản trị viên hệ thống"),
         ).toBeInTheDocument();
       });
 
@@ -203,7 +178,7 @@ describe("SelectRole Component", () => {
         .spyOn(roleApi, "fetchRoles")
         .mockRejectedValueOnce(new Error("Network Error"));
 
-      render(<SelectRole />);
+      render(<SelectRole defaultToStudent={false} />);
 
       await waitFor(() => {
         expect(spy).toHaveBeenCalled();

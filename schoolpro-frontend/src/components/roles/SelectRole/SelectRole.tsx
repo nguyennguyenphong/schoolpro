@@ -1,8 +1,5 @@
-import React, { useMemo, useCallback } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { Select } from "@/components/ui/Select";
-import type { SelectProps } from "@/components/ui/Select";
-import { Tag } from "@/components/ui/Tag";
-import { Spin } from "@/components/ui/Spin";
 import type {
   SelectRoleProps,
   RoleItem,
@@ -10,183 +7,147 @@ import type {
 import { useRoles } from "@/components/roles/SelectRole/hooks/useRoles";
 
 /**
- * Enterprise-grade Select component for choosing roles.
- * Built on top of @/components/ui/Select with dynamic backend loading,
- * search filtering by name/code, color badges, and full accessibility.
+ * Helper to match role by ID, code, or common alias (e.g. "student", "teacher", "admin").
  */
-export const SelectRole: React.FC<SelectRoleProps> = ({
-  valueField = "id",
+const findRoleByValueOrAlias = (
+  val: unknown,
+  roleList: RoleItem[],
+): RoleItem | undefined => {
+  if (!val || typeof val !== "string") return undefined;
+  const lower = val.toLowerCase().trim();
+
+  // 1. Direct ID or Code match
+  const direct = roleList.find(
+    (r) =>
+      r.id === val ||
+      r.code === val ||
+      r.id.toLowerCase() === lower ||
+      r.code.toLowerCase() === lower,
+  );
+  if (direct) return direct;
+
+  // 2. Slug / alias match
+  return roleList.find((r) => {
+    const codeLower = r.code.toLowerCase();
+    const nameLower = r.name.toLowerCase();
+    return (
+      codeLower.includes(lower) ||
+      nameLower === lower ||
+      (lower === "student" &&
+        (codeLower.includes("stu") || nameLower.includes("học sinh"))) ||
+      (lower === "teacher" &&
+        (codeLower.includes("tch") || nameLower.includes("giáo viên"))) ||
+      (lower === "admin" &&
+        (codeLower.includes("admin") || nameLower.includes("quản trị"))) ||
+      (lower === "parent" &&
+        (codeLower.includes("par") || nameLower.includes("phụ huynh"))) ||
+      (lower === "staff" &&
+        (codeLower.includes("stf") || nameLower.includes("nhân viên"))) ||
+      (lower === "principal" &&
+        (codeLower.includes("prin") || nameLower.includes("hiệu trưởng"))) ||
+      (lower === "supervisor" &&
+        (codeLower.includes("sup") || nameLower.includes("giám thị")))
+    );
+  });
+};
+
+/**
+ * Standard Role Select component built on top of Ant Design Select.
+ * Automatically defaults to 'Học sinh' role and handles 'student' slug resolution.
+ */
+export const SelectRole = ({
   filterActiveOnly = true,
-  showBadge = true,
-  showDescription = false,
-  showUserCount = false,
   customRoles,
-  onRoleChange,
+  defaultToStudent = true,
   placeholder = "Chọn vai trò",
   allowClear = true,
   showSearch = true,
   disabled = false,
+  value,
   onChange,
-  className = "",
-  style,
-  mode,
-  ...restProps
-}) => {
+  ...props
+}: SelectRoleProps) => {
   const { roles, isLoading } = useRoles({
     filterActiveOnly,
     initialRoles: customRoles,
     enabled: !customRoles || customRoles.length === 0,
   });
 
-  // Map roles to select options
-  const options = useMemo(() => {
-    return roles.map((role) => {
-      const val = valueField === "code" ? role.code : role.id;
-      return {
-        value: val,
-        title: `${role.name} (${role.code})`,
-        role,
-        label: (
-          <div className="flex flex-col py-0.5">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 overflow-hidden">
-                {showBadge && (
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: role.badge_color || "#3B82F6" }}
-                    aria-hidden="true"
-                  />
-                )}
-                <span className="font-medium text-gray-850 truncate">
-                  {role.name}
-                </span>
-                <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-mono shrink-0">
-                  {role.code}
-                </span>
-              </div>
-              {showUserCount && role.user_count !== undefined && (
-                <span className="text-xs text-gray-400 shrink-0 ml-1">
-                  {role.user_count} users
-                </span>
-              )}
-            </div>
-            {showDescription && role.description && (
-              <span className="text-xs text-gray-400 truncate mt-0.5">
-                {role.description}
-              </span>
-            )}
-          </div>
-        ),
-      };
-    });
-  }, [roles, valueField, showBadge, showDescription, showUserCount]);
+  // Find the student role in the loaded roles list
+  const studentRole = useMemo(() => {
+    return findRoleByValueOrAlias("student", roles);
+  }, [roles]);
 
-  // Search filter across role name, code, and description
-  const handleFilterOption = useCallback(
-    (input: string, option?: (typeof options)[number]) => {
-      if (!option?.role) return false;
-      const query = input.toLowerCase().trim();
-      const role: RoleItem = option.role;
-      return (
-        role.name.toLowerCase().includes(query) ||
-        role.code.toLowerCase().includes(query) ||
-        Boolean(
-          role.description && role.description.toLowerCase().includes(query),
-        )
-      );
-    },
-    [],
-  );
-
-  // Tag renderer for multi-select mode with badge colors
-  const customTagRender: NonNullable<SelectProps["tagRender"]> = (props) => {
-    const { label, value, closable, onClose } = props;
-    const role = roles.find((r) =>
-      valueField === "code" ? r.code === value : r.id === value,
-    );
-    const color = role?.badge_color || "#3B82F6";
-
-    const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-
-    return (
-      <Tag
-        color={color}
-        onMouseDown={onPreventMouseDown}
-        closable={closable}
-        onClose={onClose}
-        style={{
-          marginRight: 4,
-          display: "inline-flex",
-          alignItems: "center",
-          borderRadius: 4,
-        }}
-      >
-        {role ? role.name : label}
-      </Tag>
-    );
-  };
-
-  // Change handler to invoke standard onChange and entity onRoleChange
-  const handleChange = (val: any, opt: any) => {
-    if (onChange) {
-      onChange(val, opt);
-    }
-
-    if (onRoleChange) {
-      if (Array.isArray(val)) {
-        const selected = val
-          .map((v) =>
-            roles.find((r) =>
-              valueField === "code" ? r.code === v : r.id === v,
-            ),
-          )
-          .filter(Boolean) as RoleItem[];
-        onRoleChange(selected);
-      } else if (val !== undefined && val !== null) {
-        const selected = roles.find((r) =>
-          valueField === "code" ? r.code === val : r.id === val,
-        );
-        onRoleChange(selected || null);
-      } else {
-        onRoleChange(null);
+  // Resolve incoming value: if value is "student" or slug, map to role.id
+  const resolvedValue = useMemo(() => {
+    if (value !== undefined && value !== null && value !== "") {
+      const matched = findRoleByValueOrAlias(value, roles);
+      if (matched) {
+        return matched.id;
       }
+      return value;
     }
-  };
 
-  // Resolve search configuration using non-deprecated showSearch object syntax
-  const resolvedShowSearch = useMemo(() => {
-    if (!showSearch) return false;
-    return {
-      filterOption: handleFilterOption,
-      ...(typeof showSearch === "object" ? showSearch : {}),
-    };
-  }, [showSearch, handleFilterOption]);
+    // If no value provided and defaultToStudent is enabled, default to student role ID
+    if (defaultToStudent && studentRole) {
+      return studentRole.id;
+    }
+
+    return value;
+  }, [value, roles, defaultToStudent, studentRole]);
+
+  // Synchronize initial default value to parent/form if value was empty or slug "student"
+  const syncedRef = useRef<boolean>(false);
+  useEffect(() => {
+    if (syncedRef.current || isLoading || !onChange) return;
+
+    if (value === "student" && studentRole) {
+      syncedRef.current = true;
+      onChange(studentRole.id, {
+        label: studentRole.name,
+        value: studentRole.id,
+        role: studentRole,
+      });
+    } else if (value === undefined && defaultToStudent && studentRole) {
+      syncedRef.current = true;
+      onChange(studentRole.id, {
+        label: studentRole.name,
+        value: studentRole.id,
+        role: studentRole,
+      });
+    }
+  }, [value, studentRole, defaultToStudent, isLoading, onChange]);
+
+  // Map roles to standard Ant Design select options
+  const options = useMemo(() => {
+    return roles.map((role) => ({
+      label: role.name,
+      value: role.id,
+      key: role.id,
+      role,
+    }));
+  }, [roles]);
 
   return (
     <Select
-      {...restProps}
-      mode={mode}
+      placeholder={placeholder}
+      allowClear={allowClear}
+      showSearch={
+        showSearch
+          ? {
+              filterOption: (input, option) =>
+                String(option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase()),
+            }
+          : false
+      }
       disabled={disabled || isLoading}
       loading={isLoading}
-      showSearch={resolvedShowSearch}
-      allowClear={allowClear}
-      placeholder={placeholder}
       options={options}
-      tagRender={mode ? customTagRender : undefined}
-      onChange={handleChange}
-      className={`schoolpro-select-role w-full ${className}`.trim()}
-      style={style}
-      notFoundContent={
-        isLoading ? (
-          <div className="flex items-center justify-center p-3 text-gray-500 gap-2">
-            <Spin size="small" />
-            <span className="text-xs">Đang tải dữ liệu vai trò...</span>
-          </div>
-        ) : undefined
-      }
+      value={resolvedValue}
+      onChange={onChange}
+      {...props}
     />
   );
 };

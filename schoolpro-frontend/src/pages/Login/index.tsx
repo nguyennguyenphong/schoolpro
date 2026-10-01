@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from "react";
-import { Form, Select, message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Form } from "antd";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
 import { Input, Password } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
-import { useAuthStore } from "@/shared/store/useAuthStore";
+import { SelectRole } from "@/components/roles/SelectRole";
 
 interface LoginFormValues {
   role: string;
@@ -20,39 +20,10 @@ export const LoginPage: React.FC = () => {
   const { t } = useTranslation(["auth", "common", "validation"]);
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const { login } = useAuthStore();
 
-  const onFinish = (values: LoginFormValues) => {
+  const onFinish = (_values: LoginFormValues) => {
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      login(values.role, "mock-auth-token-2026");
-
-      message.success({
-        content: t("auth:login.successMessage", {
-          role: values.role.toUpperCase(),
-        }),
-        duration: 3,
-      });
-
-      if (values.role === "student" || values.role === "parent") {
-        navigate("/student/home");
-      }
-    }, 1200);
   };
-
-  const optionRole = useMemo(
-    () => [
-      { id: 1, value: "admin", label: t("auth:roles.admin") },
-      { id: 2, value: "teacher", label: t("auth:roles.teacher") },
-      { id: 3, value: "student", label: t("auth:roles.student") },
-      { id: 4, value: "parent", label: t("auth:roles.parent") },
-      { id: 5, value: "staff", label: t("auth:roles.staff") },
-    ],
-    [t]
-  );
 
   return (
     <AuthLayout
@@ -76,11 +47,7 @@ export const LoginPage: React.FC = () => {
           }
           rules={[{ required: true, message: t("validation:roleRequired") }]}
         >
-          <Select
-            placeholder={t("auth:login.rolePlaceholder")}
-            className="w-full"
-            options={optionRole}
-          />
+          <SelectRole />
         </Form.Item>
 
         <Form.Item
@@ -100,7 +67,6 @@ export const LoginPage: React.FC = () => {
             prefix={<Icon name="user" size={15} className="text-slate-400 mr-1" />}
             placeholder={t("auth:login.codePlaceholder")}
             className="rounded-lg"
-            typeItem="form"
           />
         </Form.Item>
 
@@ -118,7 +84,6 @@ export const LoginPage: React.FC = () => {
             prefix={<Icon name="password" size={15} className="text-slate-400 mr-1" />}
             placeholder={t("auth:login.passwordPlaceholder")}
             className="rounded-lg"
-            typeItem="form"
           />
         </Form.Item>
 

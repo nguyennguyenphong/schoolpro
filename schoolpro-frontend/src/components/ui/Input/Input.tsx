@@ -11,9 +11,11 @@ import type {
 } from "@/components/ui/Input/types";
 import { inputStyles } from "@/components/ui/Input/styles";
 
-export const Input = (
-  props: InputProps,
-) => {
+export const Input = ({
+  typeItem: _typeItem,
+  formItemProps: _formItemProps,
+  ...props
+}: InputProps) => {
   return (
     <AntInput
       {...props}
@@ -26,9 +28,11 @@ export const Input = (
 
 Input.displayName = "Input";
 
-export const Password = (
-  props: PasswordProps,
-) => {
+export const Password = ({
+  typeItem: _typeItem,
+  formItemProps: _formItemProps,
+  ...props
+}: PasswordProps) => {
   return (
     <AntInput.Password
       {...props}
@@ -41,9 +45,11 @@ export const Password = (
 
 Password.displayName = "Password";
 
-export const Search = (
-  props: SearchProps,
-) => {
+export const Search = ({
+  typeItem: _typeItem,
+  formItemProps: _formItemProps,
+  ...props
+}: SearchProps) => {
   return (
     <AntInput.Search
       {...props}
@@ -56,9 +62,11 @@ export const Search = (
 
 Search.displayName = "Search";
 
-export const TextArea = (
-  props: TextAreaProps,
-) => {
+export const TextArea = ({
+  typeItem: _typeItem,
+  formItemProps: _formItemProps,
+  ...props
+}: TextAreaProps) => {
   return (
     <AntInput.TextArea
       {...props}
@@ -71,9 +79,11 @@ export const TextArea = (
 
 TextArea.displayName = "TextArea";
 
-export const OTP = (
-  props: OTPProps,
-) => {
+export const OTP = ({
+  typeItem: _typeItem,
+  formItemProps: _formItemProps,
+  ...props
+}: OTPProps) => {
   return (
     <AntInput.OTP
       {...props}

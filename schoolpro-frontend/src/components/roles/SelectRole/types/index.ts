@@ -33,6 +33,16 @@ export interface RoleApiResponse {
         previous: string | null;
         results: RoleItem[];
       };
+  meta?: {
+    pagination?: {
+      page: number;
+      page_size: number;
+      total_items: number;
+      total_pages: number;
+      has_next: boolean;
+      has_previous: boolean;
+    };
+  };
 }
 
 /**
@@ -46,16 +56,10 @@ export interface RoleQueryParams {
 }
 
 /**
- * Props for SelectRole component.
+ * Props for SelectRole component extending standard SelectProps.
  */
 export interface SelectRoleProps
-  extends Omit<SelectProps<any>, "options" | "loading"> {
-  /**
-   * Field to use as value in onChange/value: "id" or "code"
-   * @default "id"
-   */
-  valueField?: "id" | "code";
-
+  extends Omit<SelectProps, "options" | "loading"> {
   /**
    * Filter only active roles
    * @default true
@@ -63,30 +67,13 @@ export interface SelectRoleProps
   filterActiveOnly?: boolean;
 
   /**
-   * Whether to display color badge or tag dot
-   * @default true
-   */
-  showBadge?: boolean;
-
-  /**
-   * Whether to display role description in option subtitle
-   * @default false
-   */
-  showDescription?: boolean;
-
-  /**
-   * Whether to display user count tag
-   * @default false
-   */
-  showUserCount?: boolean;
-
-  /**
    * Optional manual roles list to override remote fetch
    */
   customRoles?: RoleItem[];
 
   /**
-   * Callback when selection changes, providing full role object(s)
+   * Automatically default to student role if no value or slug 'student' is passed
+   * @default true
    */
-  onRoleChange?: (selected: RoleItem | RoleItem[] | null) => void;
+  defaultToStudent?: boolean;
 }
