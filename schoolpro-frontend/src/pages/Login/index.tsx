@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form } from "antd";
-import { Link } from "react-router-dom";
+import { Form, message } from "antd";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
@@ -8,21 +8,73 @@ import { Input, Password } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { SelectRole } from "@/components/roles/SelectRole";
+import { useAuthStore } from "@/shared/store/useAuthStore";
+import { authService } from "@/shared/services/authService";
+import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
 
 interface LoginFormValues {
   role: string;
   code: string;
-  password_: string;
+  password: string;
   remember: boolean;
 }
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation(["auth", "common", "validation"]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated, role, setAuth } = useAuthStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const onFinish = (_values: LoginFormValues) => {
-    setLoading(true);
+  // If already authenticated, redirect immediately to role home
+  if (isAuthenticated) {
+    const target = getRoleHomeRoute(role);
+    return <Navigate to={target} replace />;
+  }
+
+  const onFinish = async (values: LoginFormValues) => {
+    try {
+      setLoading(true);
+
+      const result = await authService.login({
+        code: values.code,
+        password: values.password,
+        role: values.role,
+        remember: values.remember,
+      });
+
+      // Update global authentication state and persistence
+      setAuth({
+        access: result.access,
+        refresh: result.refresh,
+        user: result.user,
+        role: result.role,
+        remember: values.remember,
+      });
+
+      const roleDisplayName = result.role?.name || "Học sinh";
+      message.success(
+        t("auth:login.successMessage", { role: roleDisplayName })
+      );
+
+      // Determine redirect target: return to requested route or role default space
+      const stateFrom = (location.state as { from?: { pathname?: string } })?.from?.pathname;
+      const targetDestination =
+        stateFrom && stateFrom !== "/login" && stateFrom !== "/"
+          ? stateFrom
+          : getRoleHomeRoute(result.role?.code || values.role);
+
+      navigate(targetDestination, { replace: true });
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.";
+      message.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

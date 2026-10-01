@@ -37,6 +37,8 @@ def health_check(request):
     )
 
 
+from apps.core.views.auth_views import AuthLoginView, AuthLogoutView, AuthMeView
+
 urlpatterns = [
     # Administration
     path("admin/", admin.site.urls),
@@ -55,7 +57,11 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
-    # JWT Authentication Endpoints
+    # Authentication Endpoints
+    path("api/v1/auth/login/", AuthLoginView.as_view(), name="auth-login-direct"),
+    path("api/v1/auth/me/", AuthMeView.as_view(), name="auth-me-direct"),
+    path("api/v1/auth/logout/", AuthLogoutView.as_view(), name="auth-logout-direct"),
+    # JWT Authentication Endpoints (SimpleJWT compatibility)
     path("api/v1/auth/token/", TokenObtainPairView.as_view(), name="token-obtain-pair"),
     path("api/v1/auth/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("api/v1/auth/token/verify/", TokenVerifyView.as_view(), name="token-verify"),

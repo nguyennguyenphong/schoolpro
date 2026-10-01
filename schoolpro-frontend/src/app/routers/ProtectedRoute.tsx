@@ -1,21 +1,37 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuthStore } from "@/shared/store/useAuthStore";
+import { isRoleAuthorized } from "@/shared/utils/roleRoutes";
 
 interface ProtectedRouteProps {
   allowedRoles?: string[];
+  children?: React.ReactNode;
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
+/**
+ * Standard enterprise route guard.
+ * Blocks unauthenticated users and redirects them to /login with backlink state.
+ * Enforces role-based authorization when allowedRoles is specified.
+ */
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  allowedRoles,
+  children,
+}) => {
   const { isAuthenticated, role } = useAuthStore();
+  const location = useLocation();
 
+  // If user is not authenticated, always redirect to /login
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (allowedRoles && role && !allowedRoles.includes(role)) {
-    return <Navigate to="/unauthorized" replace />;
+  // If roles are specified, check permissions
+  if (allowedRoles && allowedRoles.length > 0) {
+    const authorized = isRoleAuthorized(role, allowedRoles);
+    if (!authorized) {
+      return <Navigate to="/unauthorized" replace />;
+    }
   }
 
-  return <Outlet />;
+  return children ? <>{children}</> : <Outlet />;
 };
