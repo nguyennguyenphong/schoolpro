@@ -1,4 +1,5 @@
-from typing import Any, Optional
+from typing import Any
+
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -14,8 +15,8 @@ class APIResponse:
         data: Any = None,
         message: str = "Thành công",
         code: int = status.HTTP_200_OK,
-        meta: Optional[dict] = None,
-        headers: Optional[dict] = None,
+        meta: dict | None = None,
+        headers: dict | None = None,
     ) -> Response:
         payload = {
             "success": True,
@@ -31,8 +32,8 @@ class APIResponse:
     def created(
         data: Any = None,
         message: str = "Tạo mới thành công",
-        meta: Optional[dict] = None,
-        headers: Optional[dict] = None,
+        meta: dict | None = None,
+        headers: dict | None = None,
     ) -> Response:
         return APIResponse.success(
             data=data,
@@ -47,7 +48,7 @@ class APIResponse:
         message: str = "Đã xảy ra lỗi",
         code: int = status.HTTP_400_BAD_REQUEST,
         errors: Any = None,
-        error_code: Optional[str] = None,
+        error_code: str | None = None,
     ) -> Response:
         payload = {
             "success": False,

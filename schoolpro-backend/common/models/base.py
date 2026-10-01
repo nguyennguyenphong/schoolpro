@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 from django.utils import timezone
 
@@ -30,6 +31,7 @@ class SoftDeleteManager(models.Manager):
 
 class TimeStampedModel(models.Model):
     """Abstract model for tracking creation and modification timestamps."""
+
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,6 +41,7 @@ class TimeStampedModel(models.Model):
 
 class UUIDModel(models.Model):
     """Abstract model using UUID as primary key."""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
@@ -47,6 +50,7 @@ class UUIDModel(models.Model):
 
 class SoftDeleteModel(models.Model):
     """Abstract model supporting soft-delete pattern."""
+
     is_deleted = models.BooleanField(default=False, db_index=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
@@ -72,6 +76,7 @@ class SoftDeleteModel(models.Model):
 
 class AuditableModel(models.Model):
     """Abstract model for tracking audit authors."""
+
     created_by_id = models.UUIDField(null=True, blank=True)
     updated_by_id = models.UUIDField(null=True, blank=True)
 
@@ -84,5 +89,6 @@ class BaseModel(UUIDModel, TimeStampedModel, SoftDeleteModel, AuditableModel):
     Standard Enterprise Base Model for all SchoolPro database entities.
     Combines UUID primary key, timestamps, soft-delete, and audit actor fields.
     """
+
     class Meta:
         abstract = True

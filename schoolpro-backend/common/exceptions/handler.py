@@ -1,8 +1,14 @@
 import logging
-from rest_framework.views import exception_handler
-from rest_framework.exceptions import APIException, ValidationError, AuthenticationFailed, NotAuthenticated, PermissionDenied
-from rest_framework.response import Response
+
 from rest_framework import status
+from rest_framework.exceptions import (
+    AuthenticationFailed,
+    NotAuthenticated,
+    PermissionDenied,
+    ValidationError,
+)
+from rest_framework.response import Response
+from rest_framework.views import exception_handler
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +46,7 @@ def custom_exception_handler(exc, context):
         }
     else:
         # Unhandled 500 server errors
-        logger.exception("Unhandled server exception: %s", exc, exc_info=True)
+        logger.exception("Unhandled server exception: %s", exc)
         response = Response(
             {
                 "success": False,

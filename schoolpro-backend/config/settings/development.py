@@ -1,5 +1,6 @@
 import os
-from config.settings.base import *  # noqa: F403
+
+from config.settings.base import *
 
 DEBUG = True
 SECRET_KEY = os.environ.get(
@@ -16,13 +17,15 @@ CORS_ALLOW_CREDENTIALS = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
 # Celery local memory or redis fallback
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get(
+    "CELERY_RESULT_BACKEND", "redis://localhost:6379/0"
+)
 
 # Axes configuration in dev
 AXES_ENABLED = False

@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "exe db",
+      "type": "shell",
+      "command": "docker compose -f schoolpro-db/docker-compose.yml up -d && echo \"\n=======================================================\n🚀 PostgreSQL & pgAdmin đã được khởi động thành công!\n=======================================================\n📌 THÔNG TIN KẾT NỐI TRÊN PGADMIN / DBEAVER:\n   • Host name / address : localhost (hoặc 'postgres' nếu trong docker)\n   • Port                : 5432\n   • Maintenance database: schoolpro\n   • Username            : postgres\n   • Password            : password123\n-------------------------------------------------------\n🌐 PGADMIN WEB UI (Mở trên trình duyệt):\n   • URL                 : http://localhost:5050\n   • Email đăng nhập     : admin@schoolpro.edu.vn\n   • Mật khẩu            : admin\n   • Server sẵn có       : Đã tự động cấu hình sẵn server 'SchoolPro'\n=======================================================\n\"",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "exe backend",
+      "type": "shell",
+      "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py runserver 0.0.0.0:8000",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": false
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "exe frontend",
+      "type": "shell",
+      "command": "cd schoolpro-frontend && npm run dev",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": false
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "exe check",
+      "type": "shell",
+      "command": "echo \"\n=======================================================\n🔍 BẮT ĐẦU KIỂM TRA CÚ PHÁP TOÀN BỘ DỰ ÁN SCHOOLPRO\n=======================================================\n\" && echo \"[1/4] ⚡ Frontend: Chạy Oxlint...\" && (cd schoolpro-frontend && npm run lint) && echo \"--> ✅ Frontend Oxlint: PASS!\n\" && echo \"[2/4] ⚡ Frontend: Chạy TypeScript Type-check (tsc -b)...\" && (cd schoolpro-frontend && npx tsc -b) && echo \"--> ✅ Frontend TypeScript: PASS!\n\" && echo \"[3/4] ⚡ Backend: Chạy Django System Check...\" && (cd schoolpro-backend && source .venv/bin/activate && python manage.py check) && echo \"--> ✅ Backend Django System Check: PASS!\n\" && echo \"[4/4] ⚡ Backend: Chạy Ruff Linting...\" && (cd schoolpro-backend && source .venv/bin/activate && ruff check apps/ config/ common/) && echo \"--> ✅ Backend Ruff Lint: PASS!\n\" && echo \"=======================================================\n🎉 CHÚC MỪNG: TOÀN BỘ CÚ PHÁP DỰ ÁN ĐỀU HOÀN TOÀN HỢP LỆ!\n=======================================================\n\"",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "exe db:stop",
+      "type": "shell",
+      "command": "docker compose -f schoolpro-db/docker-compose.yml down && echo '🛑 Đã dừng container PostgreSQL & pgAdmin.'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "exe db:reset",
+      "type": "shell",
+      "command": "docker compose -f schoolpro-db/docker-compose.yml down -v && docker compose -f schoolpro-db/docker-compose.yml up -d && echo '🔄 Đã reset và nạp lại toàn bộ 67 bảng CSDL thành công!'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}
