@@ -3,8 +3,16 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project: BASE_DIR is root 'schoolpro-backend'
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# Load environment variables from backend .env or root monorepo .env
+env = environ.Env()
+for env_path in [BASE_DIR / ".env", BASE_DIR.parent / ".env"]:
+    if env_path.exists():
+        environ.Env.read_env(str(env_path))
 
 # Add apps/ to sys.path so we can import apps directly or via apps.xxx
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
@@ -17,7 +25,11 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
 ]
+
+# Silence W342 for unmanaged composite PK junction tables (role_permissions, announcement_reads)
+SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 
 THIRD_PARTY_APPS = [
     "rest_framework",
