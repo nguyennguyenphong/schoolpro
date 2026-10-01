@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Empty, Pagination } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -10,9 +10,11 @@ import {
   MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
+  MaterialDetailModal,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
 import { useSubjectMaterials } from "@/modules/students/features/materials/hooks";
+import type { MaterialItem } from "@/modules/students/features/materials/types";
 
 export const SubjectMaterialsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -40,6 +42,19 @@ export const SubjectMaterialsPage: React.FC = () => {
     downloadSelected,
     toggleBookmark,
   } = useSubjectMaterials();
+
+  const [selectedMaterial, setSelectedMaterial] = useState<MaterialItem | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  const handleOpenDetail = (item: MaterialItem) => {
+    setSelectedMaterial(item);
+    setIsDetailOpen(true);
+  };
+
+  const handleCloseDetail = () => {
+    setIsDetailOpen(false);
+    setSelectedMaterial(null);
+  };
 
   const hasActiveFilters = Boolean(
     filter.searchQuery.trim() ||
@@ -137,7 +152,7 @@ export const SubjectMaterialsPage: React.FC = () => {
             className="text-slate-700 font-medium self-start md:self-center"
           >
             <Icon name="arrow-left" size={14} />
-            Đổi môn học khác
+            <span>Đổi môn học khác</span>
           </Button>
         </div>
 
@@ -164,9 +179,10 @@ export const SubjectMaterialsPage: React.FC = () => {
         )}
       </div>
 
-      {/* 2. Filter Bar (BỎ field Định dạng, có search, category, semester, sort, viewMode) */}
+      {/* 2. Filter Bar */}
       <MaterialFilterBar
         filter={filter}
+        summary={summary}
         onSearchChange={setSearchQuery}
         onCategoryChange={setCategory}
         onSemesterChange={setSemester}
@@ -186,7 +202,7 @@ export const SubjectMaterialsPage: React.FC = () => {
         onDownloadSelected={downloadSelected}
       />
 
-      {/* 4. Results Area (NO MODAL, direct download) */}
+      {/* 4. Results Area */}
       {materials.length === 0 ? (
         <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
           <Empty
@@ -224,6 +240,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
+              onClick={handleOpenDetail}
             />
           ))}
         </div>
@@ -237,6 +254,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
+              onClick={handleOpenDetail}
             />
           ))}
         </div>
@@ -260,7 +278,17 @@ export const SubjectMaterialsPage: React.FC = () => {
           />
         </div>
       )}
+
+      {/* 6. Detail Modal */}
+      <MaterialDetailModal
+        item={selectedMaterial}
+        isOpen={isDetailOpen}
+        onClose={handleCloseDetail}
+        onDownload={downloadMaterial}
+        onToggleBookmark={toggleBookmark}
+      />
     </div>
   );
 };
+
 export default SubjectMaterialsPage;

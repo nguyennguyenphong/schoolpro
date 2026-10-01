@@ -56,19 +56,54 @@ export function useMaterials() {
   // Subjects list
   const subjects = useMemo(() => materialsService.getSubjectsList(), []);
 
-  // Sync state to URL (only non-default values)
-  const updateUrlParams = useCallback((newFilter: MaterialFilter) => {
-    const params = new URLSearchParams();
-    if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
-    if (newFilter.subject !== "all") params.set("subject", newFilter.subject);
-    if (newFilter.category !== "all") params.set("category", newFilter.category);
-    if (newFilter.semester !== "all") params.set("semester", newFilter.semester);
-    if (newFilter.sortBy !== "newest") params.set("sort", newFilter.sortBy);
-    if (newFilter.viewMode !== "grid") params.set("view", newFilter.viewMode);
-    if (newFilter.page > 1) params.set("page", newFilter.page.toString());
-    if (newFilter.pageSize !== 9) params.set("pageSize", newFilter.pageSize.toString());
-    return params;
-  }, []);
+  // Sync state to URL (preserving existing params like 'tab')
+  const updateUrlParams = useCallback(
+    (newFilter: MaterialFilter) => {
+      const params = new URLSearchParams(searchParams);
+      if (newFilter.searchQuery.trim()) {
+        params.set("q", newFilter.searchQuery.trim());
+      } else {
+        params.delete("q");
+      }
+      if (newFilter.subject !== "all") {
+        params.set("subject", newFilter.subject);
+      } else {
+        params.delete("subject");
+      }
+      if (newFilter.category !== "all") {
+        params.set("category", newFilter.category);
+      } else {
+        params.delete("category");
+      }
+      if (newFilter.semester !== "all") {
+        params.set("semester", newFilter.semester);
+      } else {
+        params.delete("semester");
+      }
+      if (newFilter.sortBy !== "newest") {
+        params.set("sort", newFilter.sortBy);
+      } else {
+        params.delete("sort");
+      }
+      if (newFilter.viewMode !== "grid") {
+        params.set("view", newFilter.viewMode);
+      } else {
+        params.delete("view");
+      }
+      if (newFilter.page > 1) {
+        params.set("page", newFilter.page.toString());
+      } else {
+        params.delete("page");
+      }
+      if (newFilter.pageSize !== 9) {
+        params.set("pageSize", newFilter.pageSize.toString());
+      } else {
+        params.delete("pageSize");
+      }
+      return params;
+    },
+    [searchParams],
+  );
 
   // Fetch materials
   useEffect(() => {

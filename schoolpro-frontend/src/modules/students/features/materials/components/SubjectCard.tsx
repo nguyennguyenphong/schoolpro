@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -10,7 +10,6 @@ interface SubjectCardProps {
 }
 
 export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
-  const navigate = useNavigate();
 
   const getColorStyles = (scheme: SubjectItem["colorScheme"]) => {
     switch (scheme) {
@@ -74,35 +73,28 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
 
   const style = getColorStyles(item.colorScheme);
 
-  const handleCardClick = () => {
-    navigate(`/student/materials/${item.code}`);
-  };
-
   return (
-    <div
-      onClick={handleCardClick}
-      className={`p-5 bg-white border border-slate-200 ${style.accentHover} rounded-2xl shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between cursor-pointer group`}
-    >
+    <Card className="rounded-xl border border-slate-200 shadow-2xs">
       <div>
         {/* Header: Icon + Code + Semester */}
-        <div className="flex items-center justify-between gap-3 mb-3.5">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3 min-w-0">
             <div
-              className={`w-11 h-11 rounded-xl flex items-center justify-center border shadow-2xs ${style.iconBg}`}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center border shadow-2xs shrink-0 ${style.iconBg}`}
             >
-              <Icon name="book" size={22} />
+              <Icon name="book" size={20} />
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
                 {item.code}
               </span>
-              <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-base mb-0 leading-tight">
+              <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-sm sm:text-base mb-0 leading-tight truncate">
                 {item.name}
               </h3>
             </div>
           </div>
 
-          <Tag color="default" className="text-[11px] font-medium border-slate-200 m-0">
+          <Tag color="default" className="text-[11px] font-medium border-slate-200 m-0 shrink-0">
             {item.semester}
           </Tag>
         </div>
@@ -116,12 +108,12 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         </div>
 
         {/* Description */}
-        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-3.5 h-10">
           {item.description}
         </p>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-2 py-2.5 px-3 bg-slate-50/60 rounded-xl border border-slate-100 mb-4 text-center">
+        <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-slate-50/60 rounded-xl border border-slate-100 mb-3 text-center">
           <div>
             <div className="text-sm font-bold text-slate-800">{item.lecturesCount}</div>
             <div className="text-[10px] text-slate-400 font-medium">Bài giảng</div>
@@ -137,8 +129,8 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         </div>
       </div>
 
-      {/* Footer Action: Button standard size */}
-      <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-3">
+      {/* Footer Action */}
+      <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
         <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
           <Icon name="download" size={13} className="text-slate-400" />
           {item.totalDownloads} lượt tải
@@ -146,16 +138,16 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
 
         <Button
           variant="outline"
-          className="text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all font-semibold"
+          className="text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all font-semibold text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            handleCardClick();
           }}
+          href={`/student/materials/${item.code}`}
         >
           <Icon name="fileText" size={14} />
-          Xem tài liệu ({item.totalMaterials})
+          <span>Xem tài liệu ({item.totalMaterials})</span>
         </Button>
       </div>
-    </div>
+    </Card>
   );
 };

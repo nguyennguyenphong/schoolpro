@@ -4,8 +4,12 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
-import { Checkbox } from "antd";
-import type { MaterialItem, MaterialFormat, MaterialCategory } from "@/modules/students/features/materials/types";
+import { Checkbox } from "@/components/ui/Checkbox";
+import type {
+  MaterialItem,
+  MaterialFormat,
+  MaterialCategory,
+} from "@/modules/students/features/materials/types";
 
 interface MaterialCardProps {
   item: MaterialItem;
@@ -13,6 +17,7 @@ interface MaterialCardProps {
   onToggleSelect?: (id: string) => void;
   onDownload: (item: MaterialItem) => void;
   onToggleBookmark: (id: string) => void;
+  onClick?: (item: MaterialItem) => void;
 }
 
 export const MaterialCard: React.FC<MaterialCardProps> = ({
@@ -21,6 +26,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   onToggleSelect,
   onDownload,
   onToggleBookmark,
+  onClick,
 }) => {
   const navigate = useNavigate();
 
@@ -28,6 +34,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
     e.stopPropagation();
     navigate(`/student/materials/${item.subjectCode}`);
   };
+
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
     switch (fmt) {
       case "pdf":
@@ -112,7 +119,8 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
 
   return (
     <Card
-      className={`h-full rounded-xl shadow-2xs transition-all group [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between ${
+      onClick={() => onClick?.(item)}
+      className={`h-full rounded-xl shadow-2xs transition-all cursor-pointer group [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : "hover:border-blue-300"
@@ -195,7 +203,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
         )}
       </div>
 
-      {/* Row 5 & 6: Metadata + Direct Download Button (NO MODAL) */}
+      {/* Row 5 & 6: Metadata + Direct Download Button */}
       <div className="mt-3.5 pt-3 border-t border-slate-100 space-y-3">
         <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
           <div className="flex items-center gap-1.5 min-w-0">
@@ -226,7 +234,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
             }}
           >
             <Icon name="download" size={14} />
-            Tải về ({item.fileSize})
+            <span>Tải về ({item.fileSize})</span>
           </Button>
         </div>
       </div>

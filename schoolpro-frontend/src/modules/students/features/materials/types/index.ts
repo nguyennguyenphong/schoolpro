@@ -80,6 +80,7 @@ export interface SubjectFilter {
   searchQuery: string;
   semester: string;
   sortBy: "name_asc" | "most_materials" | "most_downloads";
+  viewMode?: MaterialViewMode;
   page: number;
   pageSize: number;
 }

@@ -10,8 +10,10 @@ import {
   SubjectFilterBar,
   MaterialSelectionBar,
   SubjectCard,
+  SubjectListItem,
   MaterialCard,
   MaterialListItem,
+  MaterialDetailModal,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
 import { useMaterials, useSubjects } from "@/modules/students/features/materials/hooks";
@@ -29,6 +31,7 @@ export const MaterialsPage: React.FC = () => {
     setSearchQuery: setSubjectSearch,
     setSemester: setSubjectSemester,
     setSortBy: setSubjectSortBy,
+    setViewMode: setSubjectViewMode,
     setPage: setSubjectPage,
     resetFilters: resetSubjectFilters,
   } = useSubjects();
@@ -40,6 +43,8 @@ export const MaterialsPage: React.FC = () => {
     subjects: availableSubjects,
     loading: materialsLoading,
     filter: materialFilter,
+    selectedMaterial,
+    isDetailOpen,
     selectedIds,
     isAllCurrentPageSelected,
     setSearchQuery: setMaterialSearch,
@@ -47,7 +52,7 @@ export const MaterialsPage: React.FC = () => {
     setCategory: setMaterialCategory,
     setSemester: setMaterialSemester,
     setSortBy: setMaterialSortBy,
-    setViewMode,
+    setViewMode: setMaterialViewMode,
     setPage: setMaterialPage,
     resetFilters: resetMaterialFilters,
     toggleSelect,
@@ -56,6 +61,8 @@ export const MaterialsPage: React.FC = () => {
     downloadSelected,
     downloadMaterial,
     toggleBookmark,
+    openDetail,
+    closeDetail,
   } = useMaterials();
 
   const handleTabChange = (tab: "subjects" | "all") => {
@@ -91,7 +98,7 @@ export const MaterialsPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
@@ -114,84 +121,90 @@ export const MaterialsPage: React.FC = () => {
           ]}
         />
 
-        <div className="pt-1">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-              Kho tài liệu & Bài giảng số
-            </h1>
-            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-              Lớp 11A1
-            </span>
-            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
-              HK1 • 2025-2026
-            </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
+                Kho tài liệu & Bài giảng số
+              </h1>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 mb-0">
+              Tra cứu và tải xuống sách giáo khoa, đề cương ôn tập, bài giảng điện tử và đề thi của các bộ môn
+            </p>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            Tra cứu và tải xuống sách giáo khoa, đề cương ôn tập, bài giảng điện tử và đề thi của các bộ môn
-          </p>
-        </div>
-
-        {/* Tab switchers: Theo môn học vs Tất cả tài liệu */}
-        <div className="flex items-center gap-2 border-t border-slate-100 pt-3">
-          <button
-            type="button"
-            onClick={() => handleTabChange("subjects")}
-            className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
-              currentTab === "subjects"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <Icon name="book" size={15} />
-            <span>Danh mục theo môn học</span>
-            <span
-              className={`text-[11px] px-2 py-0.5 rounded-full ${
-                currentTab === "subjects"
-                  ? "bg-blue-100 text-blue-700 font-bold"
-                  : "bg-slate-100 text-slate-600"
-              }`}
-            >
-              10 môn
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleTabChange("all")}
-            className={`pb-2 px-3 text-xs sm:text-sm font-semibold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
-              currentTab === "all"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-slate-500 hover:text-slate-800"
-            }`}
-          >
-            <Icon name="fileText" size={15} />
-            <span>Tất cả tài liệu</span>
-            <span
-              className={`text-[11px] px-2 py-0.5 rounded-full ${
-                currentTab === "all"
-                  ? "bg-blue-100 text-blue-700 font-bold"
-                  : "bg-slate-100 text-slate-600"
-              }`}
-            >
-              {materialsTotal} tài liệu
-            </span>
-          </button>
         </div>
       </div>
 
       {/* 2. Summary Metric Cards (Dashboard style) */}
       {summary && <MaterialSummaryCards summary={summary} />}
 
-      {/* 3. Content Area based on Tab */}
+      {/* 3. Navigation View Switcher (Theo môn học vs Tất cả tài liệu) */}
+      <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => handleTabChange("subjects")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+            currentTab === "subjects"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          }`}
+        >
+          <Icon
+            name="book"
+            size={14}
+            className={currentTab === "subjects" ? "text-white" : "text-slate-400"}
+          />
+          <span>Danh mục theo môn học</span>
+          <span
+            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
+              currentTab === "subjects"
+                ? "bg-white/20 text-white"
+                : "bg-slate-100 text-slate-600 border border-slate-200"
+            }`}
+          >
+            {subjectsTotal || 10} môn
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleTabChange("all")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+            currentTab === "all"
+              ? "bg-blue-600 text-white shadow-xs"
+              : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          }`}
+        >
+          <Icon
+            name="fileText"
+            size={14}
+            className={currentTab === "all" ? "text-white" : "text-slate-400"}
+          />
+          <span>Tất cả tài liệu</span>
+          <span
+            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
+              currentTab === "all"
+                ? "bg-white/20 text-white"
+                : "bg-slate-100 text-slate-600 border border-slate-200"
+            }`}
+          >
+            {materialsTotal} tài liệu
+          </span>
+        </button>
+      </div>
+
+      {/* 4. Content Area based on Tab */}
       {currentTab === "subjects" ? (
-        /* TAB 1: DANH MỤC THEO MÔN HỌC (Click vào môn học -> Mở trang chi tiết tài liệu môn đó) */
+        /* TAB 1: DANH MỤC THEO MÔN HỌC */
         <div className="space-y-4 sm:space-y-5">
           <SubjectFilterBar
             filter={subjectFilter}
+            totalSubjects={subjectsTotal}
             onSearchChange={setSubjectSearch}
             onSemesterChange={setSubjectSemester}
             onSortByChange={setSubjectSortBy}
+            onViewModeChange={setSubjectViewMode}
             onResetFilters={resetSubjectFilters}
             hasActiveFilters={hasActiveSubjectFilters}
           />
@@ -222,6 +235,12 @@ export const MaterialsPage: React.FC = () => {
                   </Button>
                 )}
               </Empty>
+            </div>
+          ) : subjectFilter.viewMode === "list" ? (
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              {subjects.map((item) => (
+                <SubjectListItem key={item.id} item={item} />
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -256,13 +275,14 @@ export const MaterialsPage: React.FC = () => {
           {/* Multi-criteria Filter Bar */}
           <MaterialFilterBar
             filter={materialFilter}
+            summary={summary}
             subjects={availableSubjects}
             onSearchChange={setMaterialSearch}
             onSubjectChange={setMaterialSubject}
             onCategoryChange={setMaterialCategory}
             onSemesterChange={setMaterialSemester}
             onSortByChange={setMaterialSortBy}
-            onViewModeChange={setViewMode}
+            onViewModeChange={setMaterialViewMode}
             onResetFilters={resetMaterialFilters}
             hasActiveFilters={hasActiveMaterialFilters}
           />
@@ -315,6 +335,7 @@ export const MaterialsPage: React.FC = () => {
                   onToggleSelect={toggleSelect}
                   onDownload={downloadMaterial}
                   onToggleBookmark={toggleBookmark}
+                  onClick={openDetail}
                 />
               ))}
             </div>
@@ -328,6 +349,7 @@ export const MaterialsPage: React.FC = () => {
                   onToggleSelect={toggleSelect}
                   onDownload={downloadMaterial}
                   onToggleBookmark={toggleBookmark}
+                  onClick={openDetail}
                 />
               ))}
             </div>
@@ -353,7 +375,17 @@ export const MaterialsPage: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* 5. Detail Modal */}
+      <MaterialDetailModal
+        item={selectedMaterial}
+        isOpen={isDetailOpen}
+        onClose={closeDetail}
+        onDownload={downloadMaterial}
+        onToggleBookmark={toggleBookmark}
+      />
     </div>
   );
 };
+
 export default MaterialsPage;

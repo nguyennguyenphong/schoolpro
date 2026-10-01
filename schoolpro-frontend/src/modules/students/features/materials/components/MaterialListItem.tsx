@@ -4,8 +4,12 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Checkbox } from "antd";
-import type { MaterialItem, MaterialFormat, MaterialCategory } from "@/modules/students/features/materials/types";
+import { Checkbox } from "@/components/ui/Checkbox";
+import type {
+  MaterialItem,
+  MaterialFormat,
+  MaterialCategory,
+} from "@/modules/students/features/materials/types";
 
 interface MaterialListItemProps {
   item: MaterialItem;
@@ -13,6 +17,7 @@ interface MaterialListItemProps {
   onToggleSelect?: (id: string) => void;
   onDownload: (item: MaterialItem) => void;
   onToggleBookmark: (id: string) => void;
+  onClick?: (item: MaterialItem) => void;
 }
 
 export const MaterialListItem: React.FC<MaterialListItemProps> = ({
@@ -21,6 +26,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   onToggleSelect,
   onDownload,
   onToggleBookmark,
+  onClick,
 }) => {
   const navigate = useNavigate();
 
@@ -28,6 +34,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
     e.stopPropagation();
     navigate(`/student/materials/${item.subjectCode}`);
   };
+
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
     switch (fmt) {
       case "pdf":
@@ -112,7 +119,8 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
 
   return (
     <Card
-      className={`rounded-xl shadow-2xs transition-all w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
+      onClick={() => onClick?.(item)}
+      className={`rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : "hover:border-blue-300"
@@ -150,7 +158,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
               </span>
             </div>
 
-            <h3 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors text-base line-clamp-1 mb-0">
+            <h3 className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors text-base line-clamp-1 mb-0">
               {item.title}
             </h3>
 
@@ -175,7 +183,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
           </div>
         </div>
 
-        {/* Action buttons (No size prop, direct download, no modal) */}
+        {/* Action buttons */}
         <div
           onClick={(e) => e.stopPropagation()}
           className="flex items-center gap-2 shrink-0 md:self-center border-t md:border-t-0 pt-3 md:pt-0 border-slate-100 justify-end"
@@ -194,12 +202,21 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
           </button>
 
           <Button
+            variant="ghost"
+            onClick={() => onClick?.(item)}
+            className="text-blue-600 hover:text-blue-700 font-semibold"
+          >
+            <span>Chi tiết</span>
+            <Icon name="arrow-right" size={13} />
+          </Button>
+
+          <Button
             variant="primary"
             onClick={() => onDownload(item)}
             className="font-semibold"
           >
             <Icon name="download" size={14} />
-            Tải về ({item.fileSize})
+            <span>Tải về ({item.fileSize})</span>
           </Button>
         </div>
       </div>

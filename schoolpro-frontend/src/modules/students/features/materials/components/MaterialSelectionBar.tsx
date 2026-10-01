@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "antd";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
@@ -23,24 +23,28 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
   if (selectedCount === 0) return null;
 
   return (
-    <div className="bg-blue-50 border border-blue-200 p-3 sm:p-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-150">
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 bg-blue-50/90 border border-blue-200 rounded-xl shadow-2xs transition-all animate-fadeIn">
+      {/* Left: Select all checkbox + count */}
       <div className="flex items-center gap-3">
         <Checkbox
           checked={isAllSelected}
           indeterminate={selectedCount > 0 && selectedCount < totalOnPage}
           onChange={onSelectAll}
         >
-          <span className="text-xs font-semibold text-blue-900">
+          <span className="text-xs font-semibold text-slate-800">
             Chọn tất cả ({totalOnPage} tài liệu trên trang)
           </span>
         </Checkbox>
-        <div className="hidden sm:block h-4 w-px bg-blue-200" />
-        <span className="text-xs font-bold text-blue-800 bg-white px-2.5 py-0.5 rounded-md border border-blue-200">
+
+        <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
+
+        <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-md border border-blue-200">
           Đã chọn: {selectedCount} tài liệu
-        </span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Right: Actions */}
+      <div className="flex items-center gap-2 flex-wrap">
         <Button
           variant="primary"
           onClick={onDownloadSelected}
@@ -50,11 +54,9 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
         </Button>
 
         <Button
-          variant="outline"
+          variant="ghost"
           onClick={onClearSelection}
-          className="bg-white text-slate-700"
         >
-          <Icon name="close" size={13} />
           <span>Bỏ chọn</span>
         </Button>
       </div>

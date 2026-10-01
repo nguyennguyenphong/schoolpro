@@ -3,32 +3,37 @@ import { Select } from "antd";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { SubjectFilter } from "@/modules/students/features/materials/types";
+import type { SubjectFilter, MaterialViewMode } from "@/modules/students/features/materials/types";
 
 interface SubjectFilterBarProps {
   filter: SubjectFilter;
+  totalSubjects?: number;
   onSearchChange: (value: string) => void;
   onSemesterChange: (value: string) => void;
   onSortByChange: (value: SubjectFilter["sortBy"]) => void;
+  onViewModeChange?: (mode: MaterialViewMode) => void;
   onResetFilters: () => void;
   hasActiveFilters: boolean;
 }
 
 export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
   filter,
+  totalSubjects,
   onSearchChange,
   onSemesterChange,
   onSortByChange,
+  onViewModeChange,
   onResetFilters,
   hasActiveFilters,
 }) => {
-  const { searchQuery, semester, sortBy } = filter;
+  const { searchQuery, semester, sortBy, viewMode = "grid" } = filter;
 
   useEffect(() => {
-    const input = document.getElementById("subject-search-input");
-    if (input) {
-      input.focus();
-    }
+    const timer = setTimeout(() => {
+      const input = document.getElementById("subject-search-input");
+      input?.focus();
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
 
   const semesterOptions = [
@@ -44,24 +49,55 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
-      {/* Search Input */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        <div className="relative flex-1">
+    <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+      {/* 1. Search Input & View Mode Toggle */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="flex-1 w-full sm:w-auto">
           <Input
             id="subject-search-input"
+            autoFocus
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm kiếm môn học, giáo viên phụ trách, chuyên đề..."
-            prefix={<Icon name="search" size={16} className="text-slate-400" />}
-            className="w-full"
+            prefix={<Icon name="search" size={14} className="text-slate-400" />}
             allowClear
+            className="rounded-lg text-xs w-full"
           />
         </div>
+
+        {/* View Mode Toggle: Grid vs List */}
+        {onViewModeChange && (
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg shrink-0 self-end sm:self-auto">
+            <button
+              type="button"
+              onClick={() => onViewModeChange("grid")}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+                viewMode === "grid"
+                  ? "bg-white text-blue-600 shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Icon name="chart" size={13} />
+              <span>Lưới thẻ</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange("list")}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+                viewMode === "list"
+                  ? "bg-white text-blue-600 shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Icon name="menu" size={13} />
+              <span>Danh sách</span>
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Dropdown Filters */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
+      {/* 2. Dropdown Filters */}
+      <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
@@ -84,16 +120,22 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
               className="w-44 sm:w-52"
             />
           </div>
+
+          {totalSubjects !== undefined && (
+            <span className="text-xs text-slate-400 font-medium hidden md:inline-block">
+              Tổng số {totalSubjects} môn học
+            </span>
+          )}
         </div>
 
         {hasActiveFilters && (
           <Button
             variant="outline"
             onClick={onResetFilters}
-            className="text-slate-600 hover:text-blue-600"
+            title="Đặt lại tất cả bộ lọc"
           >
-            <Icon name="refresh" size={12} className="mr-1" />
-            Đặt lại bộ lọc
+            <Icon name="check" size={13} className="text-rose-500" />
+            <span>Đặt lại</span>
           </Button>
         )}
       </div>

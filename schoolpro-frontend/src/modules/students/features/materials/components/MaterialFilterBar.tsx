@@ -7,10 +7,12 @@ import type {
   MaterialFilter,
   MaterialViewMode,
   MaterialCategory,
+  MaterialSummary,
 } from "@/modules/students/features/materials/types";
 
 interface MaterialFilterBarProps {
   filter: MaterialFilter;
+  summary?: MaterialSummary | null;
   subjects?: { code: string; name: string }[];
   onSearchChange: (value: string) => void;
   onSubjectChange?: (value: string) => void;
@@ -24,6 +26,7 @@ interface MaterialFilterBarProps {
 
 export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   filter,
+  summary,
   subjects = [],
   onSearchChange,
   onSubjectChange,
@@ -38,9 +41,50 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
 
   useEffect(() => {
     // Auto focus search input on mount
-    const inputEl = document.getElementById("material-search-input");
-    inputEl?.focus();
+    const timer = setTimeout(() => {
+      const inputEl = document.getElementById("material-search-input");
+      inputEl?.focus();
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
+
+  const tabs: Array<{
+    key: MaterialCategory | "all";
+    label: string;
+    icon: "file" | "presentation" | "book" | "fileText";
+    count?: number;
+  }> = [
+    {
+      key: "all",
+      label: "Tất cả danh mục",
+      icon: "file",
+      count: summary?.total,
+    },
+    {
+      key: "lecture",
+      label: "Bài giảng & Slide",
+      icon: "presentation",
+      count: summary?.lecturesCount,
+    },
+    {
+      key: "outline",
+      label: "Đề cương ôn tập",
+      icon: "book",
+      count: summary?.outlinesCount,
+    },
+    {
+      key: "exam_prep",
+      label: "Đề thi & Đáp án",
+      icon: "fileText",
+      count: summary?.examPrepsCount,
+    },
+    {
+      key: "textbook",
+      label: "Sách giáo khoa",
+      icon: "book",
+      count: summary?.textbooksCount,
+    },
+  ];
 
   const subjectOptions = [
     { label: "Tất cả môn học", value: "all" },
@@ -70,28 +114,66 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-      {/* Top row: Search input & View mode toggle (Identical to AssignmentFilterBar) */}
+    <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+      {/* 1. Bộ lọc trạng thái / danh mục ở trên (Status Filter Tabs) */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        {tabs.map((tab) => {
+          const isActive = category === tab.key;
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => onCategoryChange(tab.key)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <Icon
+                name={tab.icon}
+                size={14}
+                className={isActive ? "text-white shrink-0" : "text-slate-400 shrink-0"}
+              />
+              <span>{tab.label}</span>
+              {tab.count !== undefined && (
+                <span
+                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "bg-slate-100 text-slate-600 border border-slate-200"
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 2. Dưới đó là input search và chế độ xem (Search Input + View Mode Toggle) */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div className="relative flex-1">
+        {/* Input Search - luôn focus */}
+        <div className="flex-1 w-full sm:w-auto">
           <Input
             id="material-search-input"
             autoFocus
-            placeholder="Tìm kiếm tài liệu theo tên, chuyên đề, giáo viên..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            prefix={<Icon name="search" size={15} className="text-slate-400" />}
+            placeholder="Tìm kiếm tài liệu theo tên, chuyên đề, giáo viên..."
+            prefix={<Icon name="search" size={14} className="text-slate-400" />}
             allowClear
-            className="w-full"
+            className="rounded-lg text-xs w-full"
           />
         </div>
 
-        {/* View Mode Toggle: Grid vs List with 'Lưới thẻ' and 'Danh sách' */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0 self-end sm:self-auto">
+        {/* View Mode Toggle: Grid vs List */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg shrink-0 self-end sm:self-auto">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -103,7 +185,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -115,10 +197,10 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
         </div>
       </div>
 
-      {/* Bottom row: Filter Dropdowns (NO 'Bộ lọc' text, identical to AssignmentFilterBar) */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+      {/* 3. Bên dưới là các bộ lọc dropdown (Dropdown Filters) */}
+      <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* 1. Môn học */}
+          {/* Môn học */}
           {onSubjectChange && subjects.length > 0 && (
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Môn học:</span>
@@ -126,23 +208,23 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
                 value={subject}
                 onChange={onSubjectChange}
                 options={subjectOptions}
-                className="w-36 sm:w-40"
+                className="w-40 sm:w-44"
               />
             </div>
           )}
 
-          {/* 2. Danh mục */}
+          {/* Danh mục chi tiết */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Danh mục:</span>
             <Select
               value={category}
               onChange={(val: string) => onCategoryChange(val as MaterialCategory)}
               options={categoryOptions}
-              className="w-36 sm:w-40"
+              className="w-40 sm:w-44"
             />
           </div>
 
-          {/* 3. Học kỳ */}
+          {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Học kỳ:</span>
             <Select
@@ -153,27 +235,27 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             />
           </div>
 
-          {/* 4. Sắp xếp */}
+          {/* Sắp xếp */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Sắp xếp:</span>
             <Select
               value={sortBy}
               onChange={onSortByChange}
               options={sortOptions}
-              className="w-36 sm:w-40"
+              className="w-38 sm:w-42"
             />
           </div>
         </div>
 
-        {/* Reset filter button */}
+        {/* Reset button */}
         {hasActiveFilters && (
           <Button
             variant="outline"
             onClick={onResetFilters}
-            className="text-slate-600 hover:text-blue-600"
+            title="Đặt lại tất cả bộ lọc"
           >
-            <Icon name="refresh" size={12} className="mr-1" />
-            Đặt lại bộ lọc
+            <Icon name="check" size={13} className="text-rose-500" />
+            <span>Đặt lại</span>
           </Button>
         )}
       </div>

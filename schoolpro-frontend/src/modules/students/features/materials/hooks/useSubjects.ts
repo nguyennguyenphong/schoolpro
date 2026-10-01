@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { message } from "antd";
-import type { SubjectItem, SubjectFilter } from "@/modules/students/features/materials/types";
+import type { SubjectItem, SubjectFilter, MaterialViewMode } from "@/modules/students/features/materials/types";
 import { materialsService } from "@/modules/students/features/materials/services";
 import { mockMaterialsData } from "@/modules/students/features/materials/services/mock/mockMaterialsData";
 
@@ -14,6 +14,7 @@ export const useSubjects = () => {
       searchQuery: searchParams.get("q") || "",
       semester: searchParams.get("semester") || "all",
       sortBy: (searchParams.get("sort") as SubjectFilter["sortBy"]) || "name_asc",
+      viewMode: (searchParams.get("view") as MaterialViewMode) || "grid",
       page: Number(searchParams.get("page")) || 1,
       pageSize: Number(searchParams.get("pageSize")) || 9,
     };
@@ -29,16 +30,44 @@ export const useSubjects = () => {
     return materialsService.calculateSummary(mockMaterialsData);
   }, []);
 
-  // Sync state to URL
-  const updateUrlParams = useCallback((newFilter: SubjectFilter) => {
-    const params = new URLSearchParams();
-    if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
-    if (newFilter.semester !== "all") params.set("semester", newFilter.semester);
-    if (newFilter.sortBy !== "name_asc") params.set("sort", newFilter.sortBy);
-    if (newFilter.page > 1) params.set("page", newFilter.page.toString());
-    if (newFilter.pageSize !== 9) params.set("pageSize", newFilter.pageSize.toString());
-    return params;
-  }, []);
+  // Sync state to URL (preserving existing params like 'tab')
+  const updateUrlParams = useCallback(
+    (newFilter: SubjectFilter) => {
+      const params = new URLSearchParams(searchParams);
+      if (newFilter.searchQuery.trim()) {
+        params.set("q", newFilter.searchQuery.trim());
+      } else {
+        params.delete("q");
+      }
+      if (newFilter.semester !== "all") {
+        params.set("semester", newFilter.semester);
+      } else {
+        params.delete("semester");
+      }
+      if (newFilter.sortBy !== "name_asc") {
+        params.set("sort", newFilter.sortBy);
+      } else {
+        params.delete("sort");
+      }
+      if (newFilter.viewMode && newFilter.viewMode !== "grid") {
+        params.set("view", newFilter.viewMode);
+      } else {
+        params.delete("view");
+      }
+      if (newFilter.page > 1) {
+        params.set("page", newFilter.page.toString());
+      } else {
+        params.delete("page");
+      }
+      if (newFilter.pageSize !== 9) {
+        params.set("pageSize", newFilter.pageSize.toString());
+      } else {
+        params.delete("pageSize");
+      }
+      return params;
+    },
+    [searchParams],
+  );
 
   // Fetch subjects
   useEffect(() => {
@@ -85,6 +114,7 @@ export const useSubjects = () => {
   const setSearchQuery = (query: string) => updateFilter({ searchQuery: query });
   const setSemester = (sem: string) => updateFilter({ semester: sem });
   const setSortBy = (sort: SubjectFilter["sortBy"]) => updateFilter({ sortBy: sort });
+  const setViewMode = (mode: MaterialViewMode) => updateFilter({ viewMode: mode });
   const setPage = (page: number, pageSize?: number) =>
     updateFilter({ page, ...(pageSize ? { pageSize } : {}) });
 
@@ -93,12 +123,13 @@ export const useSubjects = () => {
       searchQuery: "",
       semester: "all",
       sortBy: "name_asc",
+      viewMode: filter.viewMode || "grid",
       page: 1,
       pageSize: 9,
     };
     setFilter(reset);
-    setSearchParams(new URLSearchParams(), { replace: true });
-  }, [setSearchParams]);
+    setSearchParams(updateUrlParams(reset), { replace: true });
+  }, [filter.viewMode, setSearchParams, updateUrlParams]);
 
   return {
     subjects,
@@ -109,6 +140,7 @@ export const useSubjects = () => {
     setSearchQuery,
     setSemester,
     setSortBy,
+    setViewMode,
     setPage,
     resetFilters,
   };

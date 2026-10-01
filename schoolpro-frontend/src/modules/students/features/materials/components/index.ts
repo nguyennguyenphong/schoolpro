@@ -3,6 +3,7 @@ export { MaterialFilterBar } from "@/modules/students/features/materials/compone
 export { SubjectFilterBar } from "@/modules/students/features/materials/components/SubjectFilterBar";
 export { MaterialSelectionBar } from "@/modules/students/features/materials/components/MaterialSelectionBar";
 export { SubjectCard } from "@/modules/students/features/materials/components/SubjectCard";
+export { SubjectListItem } from "@/modules/students/features/materials/components/SubjectListItem";
 export { MaterialCard } from "@/modules/students/features/materials/components/MaterialCard";
 export { MaterialListItem } from "@/modules/students/features/materials/components/MaterialListItem";
 export { MaterialDetailModal } from "@/modules/students/features/materials/components/MaterialDetailModal";

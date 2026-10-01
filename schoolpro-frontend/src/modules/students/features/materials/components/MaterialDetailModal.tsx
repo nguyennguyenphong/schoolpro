@@ -151,7 +151,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               variant="primary"
               onClick={() => onDownload(item)}
             >
-              <Icon name="download" size={15} className="mr-1.5" />
+              <Icon name="download" size={15} />
               Tải tài liệu
             </Button>
           </div>
@@ -185,7 +185,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
     >
       <div className="space-y-5 pt-2">
         {/* Row 1: Badges & Semester */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-slate-100 pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             {getFormatBadge(item.format)}
             <Tag color="blue" className="font-medium">
@@ -263,7 +263,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             variant="primary"
             onClick={() => onDownload(item)}
           >
-            <Icon name="download" size={15} className="mr-1.5" />
+            <Icon name="download" size={15} />
             Tải tệp tin về máy
           </Button>
         </div>
