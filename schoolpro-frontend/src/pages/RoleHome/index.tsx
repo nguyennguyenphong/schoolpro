@@ -74,7 +74,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
       {/* Main Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8">
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-md">
+        <div className="bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-md">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-medium tracking-wide">

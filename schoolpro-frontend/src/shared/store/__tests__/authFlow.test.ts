@@ -111,3 +111,18 @@ describe("Auth Store Session Management", () => {
     expect(useAuthStore.getState().user).toBeNull();
   });
 });
+
+describe("AuthService Login Rejection", () => {
+  it("rejects login when backend returns error and throws message", async () => {
+    const { authService } = await import("@/shared/services/authService");
+
+    // Attempting login with completely wrong password or unresolvable connection must fail
+    await expect(
+      authService.login({
+        code: "invalid_user",
+        password: "wrong_password",
+        role: "student",
+      })
+    ).rejects.toThrow();
+  });
+});

@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import { httpClient } from "@/shared/api/httpClient";
 import type {
   ApiResponse,
@@ -10,7 +11,7 @@ import { normalizeRoleSlug } from "@/shared/utils/roleRoutes";
 
 /**
  * Enterprise Authentication Service.
- * Communicates with Django SimpleJWT backend, with fallback for offline local testing.
+ * Validates credentials against Django backend and enforces strict error reporting.
  */
 class AuthService {
   /**
@@ -19,7 +20,7 @@ class AuthService {
   async login(payload: LoginPayload): Promise<LoginResponseData> {
     try {
       const response = await httpClient.post<ApiResponse<LoginResponseData>>(
-        "/api/v1/core/auth/login/",
+        "/core/auth/login/",
         payload
       );
 
@@ -28,14 +29,94 @@ class AuthService {
       }
       throw new Error(response.data?.message || "Đăng nhập thất bại");
     } catch (error: unknown) {
-      // If error is an actual 400 or 401 from backend with a custom message, throw it
-      const axiosErr = error as { response?: { data?: ApiResponse } };
-      if (axiosErr.response?.data?.message) {
-        throw new Error(axiosErr.response.data.message);
+      const axiosErr = error as AxiosError<{
+        message?: string;
+        errors?: Record<string, string | string[]> | string[] | string;
+        error_code?: string;
+        detail?: string;
+      }>;
+
+      // 1. If backend responded with 400, 401, 403, 500: extract exact server error message
+      if (axiosErr.response?.data) {
+        const data = axiosErr.response.data;
+
+        // Check if errors object has detail (e.g. {"errors": {"detail": "Tài khoản hoặc mã định danh..."}})
+        if (data.errors && typeof data.errors === "object" && !Array.isArray(data.errors)) {
+          const errObj = data.errors as Record<string, unknown>;
+          if (typeof errObj.detail === "string" && errObj.detail) {
+            throw new Error(errObj.detail);
+          }
+          if (typeof errObj.password === "string" && errObj.password) {
+            throw new Error(errObj.password);
+          }
+          if (typeof errObj.code === "string" && errObj.code) {
+            throw new Error(errObj.code);
+          }
+        }
+
+        // Check DRF top-level detail
+        if (typeof data.detail === "string" && data.detail) {
+          throw new Error(data.detail);
+        }
+
+        // Check field errors array or string
+        if (data.errors) {
+          if (typeof data.errors === "string" && data.errors) {
+            throw new Error(data.errors);
+          }
+          if (Array.isArray(data.errors) && data.errors.length > 0) {
+            throw new Error(String(data.errors[0]));
+          }
+          if (typeof data.errors === "object" && !Array.isArray(data.errors)) {
+            const errObj = data.errors as Record<string, unknown>;
+            const firstKey = Object.keys(errObj)[0];
+            if (firstKey) {
+              const firstVal = errObj[firstKey];
+              if (Array.isArray(firstVal) && firstVal.length > 0) {
+                throw new Error(String(firstVal[0]));
+              }
+              if (typeof firstVal === "string" && firstVal) {
+                throw new Error(firstVal);
+              }
+            }
+          }
+        }
+
+        // Check explicit non-generic message from APIResponse
+        const genericMessages = [
+          "An error occurred",
+          "Invalid request",
+          "Authentication credentials were not provided or have expired.",
+          "Validation error: payload contains invalid or missing required fields.",
+        ];
+        if (data.message && !genericMessages.includes(data.message)) {
+          throw new Error(data.message);
+        }
+
+        if (data.message) {
+          throw new Error(data.message);
+        }
       }
 
-      // If backend is not running or network request failed, provide local development mock fallback
-      return this.mockLoginFallback(payload);
+      // 2. If network error / backend is offline
+      if (
+        axiosErr.code === "ERR_NETWORK" ||
+        axiosErr.message === "Network Error" ||
+        !axiosErr.response
+      ) {
+        // Only run mock login if explicit mock environment variable is set
+        if (import.meta.env.VITE_ENABLE_MOCK === "true") {
+          return this.mockLoginStrict(payload);
+        }
+
+        throw new Error(
+          "Không thể kết nối đến máy chủ backend (Cổng 8000). Vui lòng kiểm tra lại dịch vụ máy chủ."
+        );
+      }
+
+      throw new Error(
+        axiosErr.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản và mật khẩu."
+      );
     }
   }
 
@@ -46,7 +127,7 @@ class AuthService {
     try {
       const response = await httpClient.get<
         ApiResponse<{ user: AuthUser; active_role?: AuthRole }>
-      >("/api/v1/core/auth/me/");
+      >("/core/auth/me/");
       return response.data.data;
     } catch {
       throw new Error("Không thể tải thông tin người dùng");
@@ -59,7 +140,7 @@ class AuthService {
   async logout(refreshToken?: string | null): Promise<void> {
     try {
       if (refreshToken) {
-        await httpClient.post("/api/v1/core/auth/logout/", { refresh: refreshToken });
+        await httpClient.post("/core/auth/logout/", { refresh: refreshToken });
       }
     } catch {
       // Ignore network errors on logout
@@ -67,9 +148,20 @@ class AuthService {
   }
 
   /**
-   * Realistic offline mock generator for local development when backend server is stopped.
+   * Strict offline mock validator when VITE_ENABLE_MOCK=true is explicitly configured.
+   * Enforces credentials check so incorrect passwords will NOT log in.
    */
-  private mockLoginFallback(payload: LoginPayload): LoginResponseData {
+  private mockLoginStrict(payload: LoginPayload): LoginResponseData {
+    const validDemoPasswords = ["123456", "password123", "admin123", "schoolpro123"];
+
+    if (!payload.password || !validDemoPasswords.includes(payload.password)) {
+      throw new Error("Mật khẩu không chính xác. Vui lòng kiểm tra lại.");
+    }
+
+    if (!payload.code || payload.code.trim().length < 3) {
+      throw new Error("Mã định danh không hợp lệ. Vui lòng nhập tối thiểu 3 ký tự.");
+    }
+
     const roleSlug = normalizeRoleSlug(payload.role);
 
     const roleMap: Record<string, { code: string; name: string; id: string }> = {

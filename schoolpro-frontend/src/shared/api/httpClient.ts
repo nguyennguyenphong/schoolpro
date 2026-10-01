@@ -1,6 +1,12 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const rawBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:8000/api/v1";
+
+// Normalize baseURL without trailing slash
+export const API_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 
 /**
  * Enterprise Axios HTTP client with auto-injected bearer tokens and centralized 401 redirection.
@@ -13,9 +19,14 @@ export const httpClient = axios.create({
   },
 });
 
-// Request interceptor: Attach JWT authorization token
+// Request interceptor: Attach JWT authorization token and prevent path duplication
 httpClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // If baseURL already includes "/api/v1" and request URL starts with "/api/v1/", strip it to prevent duplication
+    if (API_BASE_URL.endsWith("/api/v1") && config.url?.startsWith("/api/v1/")) {
+      config.url = config.url.replace(/^\/api\/v1/, "");
+    }
+
     const token =
       localStorage.getItem("schoolpro_access_token") ||
       sessionStorage.getItem("schoolpro_access_token");
