@@ -1,13 +1,20 @@
 # Export domain models for Django ORM discovery
 
-from .activity import ExtracurricularActivity, ActivityParticipation
+from .activity import ActivityParticipation, ExtracurricularActivity
 from .assignment import Assignment, AssignmentSubmission
 from .attendance import Attendance
 from .curriculum import CurriculumTrack, CurriculumTrackSubject, StudentTrackEnrollment
 from .exam import Exam, ExamQuestion, ExamSubmission, ExamSubmissionAnswer, QuestionBank
 from .fee import FeeItem, StudentFeeBill
-from .grading import ScoreType, ConductEvaluation, SubjectExemption, StudentScore, StudentTermSummary, ReportCard
-from .infrastructure import Room, Period
+from .grading import (
+    ConductEvaluation,
+    ReportCard,
+    ScoreType,
+    StudentScore,
+    StudentTermSummary,
+    SubjectExemption,
+)
+from .infrastructure import Period, Room
 from .journal import ClassJournalEntry
 from .material import CurriculumMaterial, MaterialAttachment
 from .timetable import Timetable, TimetableChange

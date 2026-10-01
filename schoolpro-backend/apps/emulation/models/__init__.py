@@ -1,7 +1,7 @@
 # Export domain models for Django ORM discovery
 
 from .award import EmulationAward
-from .criteria import Criteria, ClassCustomCriteria
+from .criteria import ClassCustomCriteria, Criteria
 from .disciplinary import DisciplinaryRecord
 from .duty_log import SupervisorDutyLog
 from .period import EmulationPeriod

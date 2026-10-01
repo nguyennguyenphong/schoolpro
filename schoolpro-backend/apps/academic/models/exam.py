@@ -1,6 +1,7 @@
 import uuid
-from django.db import models
+
 from django.contrib.postgres.fields import ArrayField
+from django.db import models
 
 
 class Exam(models.Model):
@@ -20,16 +21,23 @@ class Exam(models.Model):
         related_name="+",
         db_comment="score_type_id foreign key",
     )
-    title = models.CharField(max_length=255, )
+    title = models.CharField(
+        max_length=255,
+    )
     exam_date = models.DateField()
     duration_minutes = models.SmallIntegerField()
-    max_score = models.DecimalField(max_digits=4, decimal_places=2, )
+    max_score = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+    )
     room = models.ForeignKey(
         "academic.Room",
         on_delete=models.SET_NULL,
         db_column="room_id",
         related_name="+",
-        null=True, blank=True, db_comment="room_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="room_id foreign key",
     )
     description = models.TextField(null=True, blank=True)
     created_by = models.UUIDField(null=True, blank=True)
@@ -69,7 +77,10 @@ class ExamQuestion(models.Model):
         db_comment="question_id foreign key",
     )
     order_no = models.SmallIntegerField()
-    score_weight = models.DecimalField(max_digits=4, decimal_places=2, )
+    score_weight = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+    )
     paper_code = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField()
 
@@ -106,7 +117,9 @@ class ExamSubmission(models.Model):
     auto_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     manual_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     total_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     teacher_feedback = models.TextField(null=True, blank=True)
     graded_by = models.UUIDField(null=True, blank=True)
     graded_at = models.DateTimeField(null=True, blank=True)
@@ -176,13 +189,20 @@ class QuestionBank(models.Model):
     subject_id = models.UUIDField()
     grade_id = models.UUIDField()
     chapter_name = models.CharField(max_length=150, null=True, blank=True)
-    difficulty_level = models.CharField(max_length=30, )
-    question_type = models.CharField(max_length=30, )
+    difficulty_level = models.CharField(
+        max_length=30,
+    )
+    question_type = models.CharField(
+        max_length=30,
+    )
     content = models.TextField()
     options = models.JSONField(null=True, blank=True)
     correct_answers = models.JSONField(null=True, blank=True)
     solution_explanation = models.TextField(null=True, blank=True)
-    default_score = models.DecimalField(max_digits=4, decimal_places=2, )
+    default_score = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+    )
     author_id = models.UUIDField(null=True, blank=True)
     is_shared = models.BooleanField(default=False)
     tags = ArrayField(models.TextField(), null=True, blank=True)

@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,8 +13,12 @@ class AuditLog(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField(null=True, blank=True)
-    action = models.CharField(max_length=50, )
-    table_name = models.CharField(max_length=150, )
+    action = models.CharField(
+        max_length=50,
+    )
+    table_name = models.CharField(
+        max_length=150,
+    )
     record_id = models.UUIDField(null=True, blank=True)
     old_data = models.JSONField(null=True, blank=True)
     new_data = models.JSONField(null=True, blank=True)

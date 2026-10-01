@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -19,9 +20,13 @@ class Attendance(models.Model):
         on_delete=models.SET_NULL,
         db_column="period_id",
         related_name="+",
-        null=True, blank=True, db_comment="period_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="period_id foreign key",
     )
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     note = models.TextField(null=True, blank=True)
     recorded_by = models.UUIDField()
     recorded_at = models.DateTimeField()

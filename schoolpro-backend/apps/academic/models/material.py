@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -13,10 +14,14 @@ class CurriculumMaterial(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_subject_teacher_id = models.UUIDField(null=True, blank=True)
     subject_id = models.UUIDField()
-    title = models.CharField(max_length=255, )
+    title = models.CharField(
+        max_length=255,
+    )
     chapter_name = models.CharField(max_length=150, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    material_type = models.CharField(max_length=20, )
+    material_type = models.CharField(
+        max_length=20,
+    )
     target_grade_id = models.UUIDField(null=True, blank=True)
     is_shared_all_classes = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
@@ -51,7 +56,9 @@ class MaterialAttachment(models.Model):
         related_name="+",
         db_comment="material_id foreign key",
     )
-    file_name = models.CharField(max_length=255, )
+    file_name = models.CharField(
+        max_length=255,
+    )
     file_url = models.TextField()
     file_type = models.CharField(max_length=50, null=True, blank=True)
     file_size_bytes = models.BigIntegerField(null=True, blank=True)

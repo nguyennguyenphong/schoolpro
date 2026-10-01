@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,11 +12,22 @@ class Criteria(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=60, )
-    name = models.CharField(max_length=255, )
-    category = models.CharField(max_length=50, )
-    scope_type = models.CharField(max_length=50, )
-    points = models.DecimalField(max_digits=6, decimal_places=2, )
+    code = models.CharField(
+        max_length=60,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    category = models.CharField(
+        max_length=50,
+    )
+    scope_type = models.CharField(
+        max_length=50,
+    )
+    points = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
     is_violation = models.BooleanField(default=False)
     applicable_role_id = models.UUIDField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -42,11 +54,20 @@ class ClassCustomCriteria(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_id = models.UUIDField()
-    code = models.CharField(max_length=50, )
-    name = models.CharField(max_length=255, )
-    points = models.DecimalField(max_digits=6, decimal_places=2, )
+    code = models.CharField(
+        max_length=50,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    points = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
     is_violation = models.BooleanField(default=False)
-    target_scope = models.CharField(max_length=20, )
+    target_scope = models.CharField(
+        max_length=20,
+    )
     created_by = models.UUIDField()
     is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField()

@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -14,8 +15,12 @@ class ContactBookNote(models.Model):
     student_id = models.UUIDField()
     class_id = models.UUIDField()
     semester_id = models.UUIDField()
-    period_type = models.CharField(max_length=20, )
-    period_label = models.CharField(max_length=50, )
+    period_type = models.CharField(
+        max_length=20,
+    )
+    period_label = models.CharField(
+        max_length=50,
+    )
     academic_digest = models.JSONField(null=True, blank=True)
     attendance_digest = models.JSONField(null=True, blank=True)
     emulation_digest = models.JSONField(null=True, blank=True)

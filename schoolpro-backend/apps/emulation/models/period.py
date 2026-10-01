@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,9 +13,15 @@ class EmulationPeriod(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     academic_year_id = models.UUIDField()
-    code = models.CharField(max_length=30, )
-    name = models.CharField(max_length=150, )
-    period_type = models.CharField(max_length=20, )
+    code = models.CharField(
+        max_length=30,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
+    period_type = models.CharField(
+        max_length=20,
+    )
     start_date = models.DateField()
     end_date = models.DateField()
     is_closed = models.BooleanField(default=False)

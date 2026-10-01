@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,12 +13,19 @@ class Assignment(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_subject_teacher_id = models.UUIDField()
-    title = models.CharField(max_length=255, )
+    title = models.CharField(
+        max_length=255,
+    )
     description = models.TextField(null=True, blank=True)
-    assignment_type = models.CharField(max_length=20, )
+    assignment_type = models.CharField(
+        max_length=20,
+    )
     assigned_date = models.DateField()
     due_date = models.DateTimeField()
-    max_score = models.DecimalField(max_digits=4, decimal_places=2, )
+    max_score = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+    )
     attachments = models.JSONField(null=True, blank=True)
     is_published = models.BooleanField(default=False)
     created_by = models.UUIDField()
@@ -56,7 +64,9 @@ class AssignmentSubmission(models.Model):
     attachments = models.JSONField(null=True, blank=True)
     score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     feedback = models.TextField(null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     graded_by = models.UUIDField(null=True, blank=True)
     graded_at = models.DateTimeField(null=True, blank=True)
 

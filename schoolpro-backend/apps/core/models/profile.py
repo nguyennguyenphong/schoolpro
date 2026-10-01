@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -18,18 +19,26 @@ class Teacher(models.Model):
         related_name="+",
         db_comment="user_id foreign key",
     )
-    teacher_code = models.CharField(max_length=30, )
+    teacher_code = models.CharField(
+        max_length=30,
+    )
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
         related_name="+",
-        null=True, blank=True, db_comment="department_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="department_id foreign key",
     )
     qualification = models.CharField(max_length=100, null=True, blank=True)
-    subject_major = models.CharField(max_length=150, )
+    subject_major = models.CharField(
+        max_length=150,
+    )
     hire_date = models.DateField()
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     created_at = models.DateTimeField()
 
     class Meta:
@@ -58,12 +67,16 @@ class Student(models.Model):
         related_name="+",
         db_comment="user_id foreign key",
     )
-    student_code = models.CharField(max_length=30, )
+    student_code = models.CharField(
+        max_length=30,
+    )
     admission_date = models.DateField()
     graduation_date = models.DateField(null=True, blank=True)
     ethnicity = models.CharField(max_length=50, null=True, blank=True)
     religion = models.CharField(max_length=50, null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     created_at = models.DateTimeField()
 
     class Meta:
@@ -92,17 +105,25 @@ class Staff(models.Model):
         related_name="+",
         db_comment="user_id foreign key",
     )
-    staff_code = models.CharField(max_length=30, )
+    staff_code = models.CharField(
+        max_length=30,
+    )
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
         related_name="+",
-        null=True, blank=True, db_comment="department_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="department_id foreign key",
     )
-    job_title = models.CharField(max_length=150, )
+    job_title = models.CharField(
+        max_length=150,
+    )
     hire_date = models.DateField()
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     created_at = models.DateTimeField()
 
     class Meta:
@@ -136,11 +157,19 @@ class Guardian(models.Model):
         on_delete=models.SET_NULL,
         db_column="user_id",
         related_name="+",
-        null=True, blank=True, db_comment="user_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="user_id foreign key",
     )
-    full_name = models.CharField(max_length=255, )
-    relationship = models.CharField(max_length=50, )
-    phone = models.CharField(max_length=20, )
+    full_name = models.CharField(
+        max_length=255,
+    )
+    relationship = models.CharField(
+        max_length=50,
+    )
+    phone = models.CharField(
+        max_length=20,
+    )
     email = models.CharField(max_length=255, null=True, blank=True)
     job = models.CharField(max_length=150, null=True, blank=True)
     is_primary_contact = models.BooleanField(default=False)

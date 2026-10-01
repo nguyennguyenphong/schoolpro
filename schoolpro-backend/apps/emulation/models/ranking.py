@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -18,15 +19,29 @@ class EmulationRanking(models.Model):
         related_name="+",
         db_comment="period_id foreign key",
     )
-    scope_type = models.CharField(max_length=50, )
+    scope_type = models.CharField(
+        max_length=50,
+    )
     student_id = models.UUIDField(null=True, blank=True)
     class_group_id = models.UUIDField(null=True, blank=True)
     class_id = models.UUIDField(null=True, blank=True)
     grade_id = models.UUIDField(null=True, blank=True)
-    base_score = models.DecimalField(max_digits=8, decimal_places=2, )
-    bonus_score = models.DecimalField(max_digits=8, decimal_places=2, )
-    penalty_score = models.DecimalField(max_digits=8, decimal_places=2, )
-    final_score = models.DecimalField(max_digits=8, decimal_places=2, )
+    base_score = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
+    bonus_score = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
+    penalty_score = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
+    final_score = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+    )
     rank_position = models.SmallIntegerField(null=True, blank=True)
     awarded_flag = models.CharField(max_length=50, null=True, blank=True)
     computed_at = models.DateTimeField()

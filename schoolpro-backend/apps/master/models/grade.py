@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -18,8 +19,12 @@ class Grade(models.Model):
         related_name="+",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=10, )
-    name = models.CharField(max_length=50, )
+    code = models.CharField(
+        max_length=10,
+    )
+    name = models.CharField(
+        max_length=50,
+    )
     order_no = models.SmallIntegerField()
     supervisor_id = models.UUIDField(null=True, blank=True)
 

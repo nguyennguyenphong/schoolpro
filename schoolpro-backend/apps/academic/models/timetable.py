@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -27,7 +28,9 @@ class Timetable(models.Model):
         on_delete=models.SET_NULL,
         db_column="room_id",
         related_name="+",
-        null=True, blank=True, db_comment="room_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="room_id foreign key",
     )
     effective_from = models.DateField()
     effective_to = models.DateField(null=True, blank=True)
@@ -59,18 +62,24 @@ class TimetableChange(models.Model):
         db_comment="timetable_id foreign key",
     )
     change_date = models.DateField()
-    change_type = models.CharField(max_length=20, )
+    change_type = models.CharField(
+        max_length=20,
+    )
     new_teacher_id = models.UUIDField(null=True, blank=True)
     new_room = models.ForeignKey(
         "academic.Room",
         on_delete=models.SET_NULL,
         db_column="new_room_id",
         related_name="+",
-        null=True, blank=True, db_comment="new_room_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="new_room_id foreign key",
     )
     reason = models.TextField(null=True, blank=True)
     approved_by = models.UUIDField(null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     created_at = models.DateTimeField()
 
     class Meta:

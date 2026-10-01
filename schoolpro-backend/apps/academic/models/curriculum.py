@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -13,8 +14,12 @@ class CurriculumTrack(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     grade_id = models.UUIDField()
-    code = models.CharField(max_length=50, )
-    name = models.CharField(max_length=255, )
+    code = models.CharField(
+        max_length=50,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
     career_orientation = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
@@ -82,7 +87,9 @@ class StudentTrackEnrollment(models.Model):
     )
     academic_year_id = models.UUIDField()
     enrolled_date = models.DateField()
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     change_reason = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()

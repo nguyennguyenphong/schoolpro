@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,8 +12,12 @@ class ScoreType(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=30, )
-    name = models.CharField(max_length=100, )
+    code = models.CharField(
+        max_length=30,
+    )
+    name = models.CharField(
+        max_length=100,
+    )
     coefficient = models.SmallIntegerField()
     min_evaluations = models.SmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
@@ -41,11 +46,17 @@ class ConductEvaluation(models.Model):
     self_rating = models.CharField(max_length=20, null=True, blank=True)
     class_vote_rating = models.CharField(max_length=20, null=True, blank=True)
     emulation_demerit_points = models.SmallIntegerField()
-    homeroom_teacher_rating = models.CharField(max_length=20, )
-    final_rating = models.CharField(max_length=20, )
+    homeroom_teacher_rating = models.CharField(
+        max_length=20,
+    )
+    final_rating = models.CharField(
+        max_length=20,
+    )
     homeroom_comments = models.TextField(null=True, blank=True)
     principal_approved = models.BooleanField(default=False)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     evaluated_by = models.UUIDField()
     evaluated_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -72,7 +83,9 @@ class SubjectExemption(models.Model):
     student_id = models.UUIDField()
     subject_id = models.UUIDField()
     semester_id = models.UUIDField()
-    exemption_type = models.CharField(max_length=30, )
+    exemption_type = models.CharField(
+        max_length=30,
+    )
     reason = models.TextField()
     certificate_name = models.CharField(max_length=100, null=True, blank=True)
     certificate_score = models.CharField(max_length=50, null=True, blank=True)
@@ -117,7 +130,9 @@ class StudentScore(models.Model):
         on_delete=models.SET_NULL,
         db_column="exam_id",
         related_name="+",
-        null=True, blank=True, db_comment="exam_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="exam_id foreign key",
     )
     score_value = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     comment_result = models.CharField(max_length=20, null=True, blank=True)
@@ -149,10 +164,16 @@ class StudentTermSummary(models.Model):
     student_id = models.UUIDField()
     semester_id = models.UUIDField(null=True, blank=True)
     academic_year_id = models.UUIDField()
-    term_type = models.CharField(max_length=20, )
+    term_type = models.CharField(
+        max_length=20,
+    )
     gpa_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    academic_rating = models.CharField(max_length=20, )
-    conduct_rating = models.CharField(max_length=20, )
+    academic_rating = models.CharField(
+        max_length=20,
+    )
+    conduct_rating = models.CharField(
+        max_length=20,
+    )
     honor_title = models.CharField(max_length=50, null=True, blank=True)
     rank_in_class = models.SmallIntegerField(null=True, blank=True)
     rank_in_grade = models.SmallIntegerField(null=True, blank=True)

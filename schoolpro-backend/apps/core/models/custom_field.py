@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,10 +12,18 @@ class CustomFieldDefinition(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    entity_type = models.CharField(max_length=50, )
-    field_code = models.CharField(max_length=60, )
-    field_label = models.CharField(max_length=150, )
-    data_type = models.CharField(max_length=30, )
+    entity_type = models.CharField(
+        max_length=50,
+    )
+    field_code = models.CharField(
+        max_length=60,
+    )
+    field_label = models.CharField(
+        max_length=150,
+    )
+    data_type = models.CharField(
+        max_length=30,
+    )
     options = models.JSONField(null=True, blank=True)
     is_required = models.BooleanField(default=False)
     default_value = models.TextField(null=True, blank=True)

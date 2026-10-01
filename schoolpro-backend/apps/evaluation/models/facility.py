@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -13,10 +14,18 @@ class Facility(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     room_id = models.UUIDField(null=True, blank=True)
-    code = models.CharField(max_length=40, )
-    name = models.CharField(max_length=255, )
-    category = models.CharField(max_length=100, )
-    status = models.CharField(max_length=20, )
+    code = models.CharField(
+        max_length=40,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    category = models.CharField(
+        max_length=100,
+    )
+    status = models.CharField(
+        max_length=20,
+    )
     location = models.CharField(max_length=150, null=True, blank=True)
     installed_date = models.DateField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
@@ -45,14 +54,22 @@ class FacilityIncidentReport(models.Model):
         on_delete=models.SET_NULL,
         db_column="facility_id",
         related_name="+",
-        null=True, blank=True, db_comment="facility_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="facility_id foreign key",
     )
     room_id = models.UUIDField(null=True, blank=True)
-    title = models.CharField(max_length=255, )
+    title = models.CharField(
+        max_length=255,
+    )
     description = models.TextField(null=True, blank=True)
     image_urls = models.JSONField(null=True, blank=True)
-    priority = models.CharField(max_length=10, )
-    status = models.CharField(max_length=20, )
+    priority = models.CharField(
+        max_length=10,
+    )
+    status = models.CharField(
+        max_length=20,
+    )
     reported_by = models.UUIDField()
     handled_by = models.UUIDField(null=True, blank=True)
     resolution_note = models.TextField(null=True, blank=True)

@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -13,9 +14,15 @@ class ExtracurricularActivity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     semester_id = models.UUIDField()
-    title = models.CharField(max_length=255, )
-    activity_type = models.CharField(max_length=30, )
-    organizer_unit = models.CharField(max_length=150, )
+    title = models.CharField(
+        max_length=255,
+    )
+    activity_type = models.CharField(
+        max_length=30,
+    )
+    organizer_unit = models.CharField(
+        max_length=150,
+    )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     location = models.CharField(max_length=255, null=True, blank=True)
@@ -53,8 +60,12 @@ class ActivityParticipation(models.Model):
         db_comment="activity_id foreign key",
     )
     student_id = models.UUIDField()
-    role = models.CharField(max_length=50, )
-    attendance_status = models.CharField(max_length=20, )
+    role = models.CharField(
+        max_length=50,
+    )
+    attendance_status = models.CharField(
+        max_length=20,
+    )
     bonus_points_awarded = models.SmallIntegerField()
     achievement_note = models.CharField(max_length=255, null=True, blank=True)
     certificate_url = models.TextField(null=True, blank=True)

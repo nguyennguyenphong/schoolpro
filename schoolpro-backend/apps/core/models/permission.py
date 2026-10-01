@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,9 +12,15 @@ class Permission(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=100, )
-    name = models.CharField(max_length=255, )
-    group_code = models.CharField(max_length=50, )
+    code = models.CharField(
+        max_length=100,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    group_code = models.CharField(
+        max_length=50,
+    )
     description = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -39,7 +46,8 @@ class RolePermission(models.Model):
         on_delete=models.CASCADE,
         db_column="role_id",
         related_name="+",
-        primary_key=True, db_comment="role_id foreign key",
+        primary_key=True,
+        db_comment="role_id foreign key",
     )
     permission = models.ForeignKey(
         "core.Permission",
@@ -54,7 +62,7 @@ class RolePermission(models.Model):
         db_table = '"core"."role_permissions"'
         verbose_name = "Role Permission"
         verbose_name_plural = "Role Permissions"
-        unique_together = (('role', 'permission'),)
+        unique_together = (("role", "permission"),)
 
     def __str__(self) -> str:
         return f"RolePermission ({self.pk})"

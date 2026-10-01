@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,7 +13,9 @@ class Reminder(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField()
-    title = models.CharField(max_length=255, )
+    title = models.CharField(
+        max_length=255,
+    )
     content = models.TextField(null=True, blank=True)
     remind_at = models.DateTimeField()
     related_entity = models.CharField(max_length=80, null=True, blank=True)

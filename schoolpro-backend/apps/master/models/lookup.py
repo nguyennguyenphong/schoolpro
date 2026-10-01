@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,8 +12,12 @@ class LookupType(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=60, )
-    name = models.CharField(max_length=150, )
+    code = models.CharField(
+        max_length=60,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
     description = models.TextField(null=True, blank=True)
     is_system = models.BooleanField(default=False)
     created_at = models.DateTimeField()
@@ -43,8 +48,12 @@ class LookupValue(models.Model):
         related_name="+",
         db_comment="lookup_type_id foreign key",
     )
-    code = models.CharField(max_length=60, )
-    name = models.CharField(max_length=150, )
+    code = models.CharField(
+        max_length=60,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
     order_no = models.SmallIntegerField()
     badge_color = models.CharField(max_length=30, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)

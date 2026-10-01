@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,7 +13,9 @@ class SupervisorDutyLog(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     duty_date = models.DateField()
-    shift = models.CharField(max_length=10, )
+    shift = models.CharField(
+        max_length=10,
+    )
     supervisor_id = models.UUIDField()
     class_id = models.UUIDField()
     cleanliness_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)

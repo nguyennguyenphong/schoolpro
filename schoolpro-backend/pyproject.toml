@@ -34,6 +34,7 @@ ignore = [
     "F403",   # star imports in settings
     "F405",   # undefined names from star imports in settings
     "DJ012",  # model field vs manager ordering
+    "DJ001",  # avoid null=True on string fields (schema DDL allows NULL)
 ]
 
 [tool.ruff.lint.isort]

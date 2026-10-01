@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,12 +12,20 @@ class SettingsDefinition(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=80, )
-    name = models.CharField(max_length=150, )
-    data_type = models.CharField(max_length=20, )
+    code = models.CharField(
+        max_length=80,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
+    data_type = models.CharField(
+        max_length=20,
+    )
     default_value = models.TextField()
     allowed_values = models.JSONField(null=True, blank=True)
-    scope = models.CharField(max_length=20, )
+    scope = models.CharField(
+        max_length=20,
+    )
     category = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=False)

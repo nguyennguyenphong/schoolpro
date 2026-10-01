@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,9 +12,15 @@ class EvaluationForm(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=60, )
-    name = models.CharField(max_length=255, )
-    target_type = models.CharField(max_length=30, )
+    code = models.CharField(
+        max_length=60,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    target_type = models.CharField(
+        max_length=30,
+    )
     description = models.TextField(null=True, blank=True)
     is_anonymous = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)

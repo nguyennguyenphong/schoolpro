@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,11 +12,17 @@ class EventOutbox(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    event_type = models.CharField(max_length=100, )
-    aggregate_type = models.CharField(max_length=80, )
+    event_type = models.CharField(
+        max_length=100,
+    )
+    aggregate_type = models.CharField(
+        max_length=80,
+    )
     aggregate_id = models.UUIDField()
     payload = models.JSONField(null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     retry_count = models.SmallIntegerField(null=True, blank=True)
     created_at = models.DateTimeField()
     processed_at = models.DateTimeField(null=True, blank=True)

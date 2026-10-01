@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -12,9 +13,15 @@ class DisciplinaryRecord(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
-    record_type = models.CharField(max_length=20, )
-    level = models.CharField(max_length=50, )
-    title = models.CharField(max_length=255, )
+    record_type = models.CharField(
+        max_length=20,
+    )
+    level = models.CharField(
+        max_length=50,
+    )
+    title = models.CharField(
+        max_length=255,
+    )
     decision_no = models.CharField(max_length=100, null=True, blank=True)
     decision_date = models.DateField()
     conduct_impact = models.CharField(max_length=50, null=True, blank=True)

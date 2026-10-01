@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -15,11 +16,15 @@ class ClassJournalEntry(models.Model):
     class_subject_teacher_id = models.UUIDField()
     session_date = models.DateField()
     period_no = models.SmallIntegerField()
-    lesson_title = models.CharField(max_length=255, )
+    lesson_title = models.CharField(
+        max_length=255,
+    )
     present_count = models.SmallIntegerField()
     absent_count = models.SmallIntegerField()
     absent_names = models.TextField(null=True, blank=True)
-    lesson_rating = models.CharField(max_length=5, )
+    lesson_rating = models.CharField(
+        max_length=5,
+    )
     teacher_feedback = models.TextField(null=True, blank=True)
     teacher_signature_time = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField()

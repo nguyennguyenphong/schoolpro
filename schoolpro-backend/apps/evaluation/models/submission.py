@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -25,7 +26,9 @@ class EvaluationSubmission(models.Model):
         on_delete=models.SET_NULL,
         db_column="target_facility_id",
         related_name="+",
-        null=True, blank=True, db_comment="target_facility_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="target_facility_id foreign key",
     )
     semester_id = models.UUIDField(null=True, blank=True)
     submitted_at = models.DateTimeField()

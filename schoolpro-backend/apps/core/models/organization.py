@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -25,8 +26,12 @@ class SchoolClass(models.Model):
         related_name="+",
         db_comment="grade_id foreign key",
     )
-    code = models.CharField(max_length=20, )
-    name = models.CharField(max_length=100, )
+    code = models.CharField(
+        max_length=20,
+    )
+    name = models.CharField(
+        max_length=100,
+    )
     room_name = models.CharField(max_length=50, null=True, blank=True)
     class_stream_code = models.CharField(max_length=30, null=True, blank=True)
     max_students = models.SmallIntegerField(null=True, blank=True)
@@ -60,8 +65,12 @@ class ClassGroup(models.Model):
         related_name="+",
         db_comment="class_id foreign key",
     )
-    code = models.CharField(max_length=20, )
-    name = models.CharField(max_length=100, )
+    code = models.CharField(
+        max_length=20,
+    )
+    name = models.CharField(
+        max_length=100,
+    )
     order_no = models.SmallIntegerField(null=True, blank=True)
 
     class Meta:
@@ -102,11 +111,15 @@ class StudentClassEnrollment(models.Model):
         on_delete=models.SET_NULL,
         db_column="class_group_id",
         related_name="+",
-        null=True, blank=True, db_comment="class_group_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="class_group_id foreign key",
     )
     enroll_date = models.DateField()
     leave_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
 
     class Meta:
         managed = False
@@ -198,41 +211,53 @@ class PositionAssignment(models.Model):
         related_name="+",
         db_comment="academic_year_id foreign key",
     )
-    scope_type = models.CharField(max_length=50, )
+    scope_type = models.CharField(
+        max_length=50,
+    )
     school = models.ForeignKey(
         "master.School",
         on_delete=models.SET_NULL,
         db_column="school_id",
         related_name="+",
-        null=True, blank=True, db_comment="school_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="school_id foreign key",
     )
     grade = models.ForeignKey(
         "master.Grade",
         on_delete=models.SET_NULL,
         db_column="grade_id",
         related_name="+",
-        null=True, blank=True, db_comment="grade_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="grade_id foreign key",
     )
     school_class = models.ForeignKey(
         "core.SchoolClass",
         on_delete=models.SET_NULL,
         db_column="class_id",
         related_name="+",
-        null=True, blank=True, db_comment="class_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="class_id foreign key",
     )
     class_group = models.ForeignKey(
         "core.ClassGroup",
         on_delete=models.SET_NULL,
         db_column="class_group_id",
         related_name="+",
-        null=True, blank=True, db_comment="class_group_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="class_group_id foreign key",
     )
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
         related_name="+",
-        null=True, blank=True, db_comment="department_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="department_id foreign key",
     )
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
@@ -243,7 +268,9 @@ class PositionAssignment(models.Model):
         on_delete=models.SET_NULL,
         db_column="created_by",
         related_name="+",
-        null=True, blank=True, db_comment="created_by foreign key",
+        null=True,
+        blank=True,
+        db_comment="created_by foreign key",
     )
     created_at = models.DateTimeField()
 

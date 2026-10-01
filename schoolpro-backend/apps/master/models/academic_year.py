@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -18,8 +19,12 @@ class AcademicYear(models.Model):
         related_name="+",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=20, )
-    name = models.CharField(max_length=100, )
+    code = models.CharField(
+        max_length=20,
+    )
+    name = models.CharField(
+        max_length=100,
+    )
     start_date = models.DateField()
     end_date = models.DateField()
     is_current = models.BooleanField(default=False)

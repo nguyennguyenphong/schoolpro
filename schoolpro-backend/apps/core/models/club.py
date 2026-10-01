@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -18,22 +19,32 @@ class Club(models.Model):
         related_name="+",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=50, )
-    name = models.CharField(max_length=150, )
-    category = models.CharField(max_length=30, )
+    code = models.CharField(
+        max_length=50,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
+    category = models.CharField(
+        max_length=30,
+    )
     advisor_teacher = models.ForeignKey(
         "core.Teacher",
         on_delete=models.SET_NULL,
         db_column="advisor_teacher_id",
         related_name="+",
-        null=True, blank=True, db_comment="advisor_teacher_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="advisor_teacher_id foreign key",
     )
     president_student = models.ForeignKey(
         "core.Student",
         on_delete=models.SET_NULL,
         db_column="president_student_id",
         related_name="+",
-        null=True, blank=True, db_comment="president_student_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="president_student_id foreign key",
     )
     description = models.TextField(null=True, blank=True)
     logo_url = models.TextField(null=True, blank=True)
@@ -75,9 +86,13 @@ class ClubMember(models.Model):
         related_name="+",
         db_comment="student_id foreign key",
     )
-    role_title = models.CharField(max_length=50, )
+    role_title = models.CharField(
+        max_length=50,
+    )
     joined_date = models.DateField()
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     contribution_notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField()
 

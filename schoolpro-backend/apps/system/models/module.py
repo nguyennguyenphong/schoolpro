@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,14 +12,26 @@ class Module(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=80, )
-    name = models.CharField(max_length=150, )
+    code = models.CharField(
+        max_length=80,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
     short_name = models.CharField(max_length=80, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    icon = models.CharField(max_length=100, )
-    route = models.CharField(max_length=255, )
-    module_type = models.CharField(max_length=20, )
-    category = models.CharField(max_length=50, )
+    icon = models.CharField(
+        max_length=100,
+    )
+    route = models.CharField(
+        max_length=255,
+    )
+    module_type = models.CharField(
+        max_length=20,
+    )
+    category = models.CharField(
+        max_length=50,
+    )
     default_color = models.CharField(max_length=30, null=True, blank=True)
     default_badge = models.CharField(max_length=50, null=True, blank=True)
     component_name = models.CharField(max_length=100, null=True, blank=True)
@@ -27,7 +40,9 @@ class Module(models.Model):
         on_delete=models.SET_NULL,
         db_column="parent_module_id",
         related_name="+",
-        null=True, blank=True, db_comment="parent_module_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="parent_module_id foreign key",
     )
     default_order_no = models.SmallIntegerField()
     is_active = models.BooleanField(default=False)

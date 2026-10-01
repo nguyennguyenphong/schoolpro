@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -19,7 +20,9 @@ class EvaluationQuestion(models.Model):
         db_comment="form_id foreign key",
     )
     question_text = models.TextField()
-    question_type = models.CharField(max_length=20, )
+    question_type = models.CharField(
+        max_length=20,
+    )
     options = models.JSONField(null=True, blank=True)
     order_no = models.SmallIntegerField()
     is_required = models.BooleanField(default=False)

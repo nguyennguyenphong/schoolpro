@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -13,10 +14,18 @@ class EmulationAward(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     academic_year_id = models.UUIDField()
-    award_category = models.CharField(max_length=30, )
-    level = models.CharField(max_length=20, )
-    prize = models.CharField(max_length=30, )
-    title = models.CharField(max_length=255, )
+    award_category = models.CharField(
+        max_length=30,
+    )
+    level = models.CharField(
+        max_length=20,
+    )
+    prize = models.CharField(
+        max_length=30,
+    )
+    title = models.CharField(
+        max_length=255,
+    )
     decision_number = models.CharField(max_length=100, null=True, blank=True)
     decision_date = models.DateField()
     reward_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

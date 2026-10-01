@@ -2,9 +2,15 @@
 
 from .club import Club, ClubMember
 from .custom_field import CustomFieldDefinition, CustomFieldValue
-from .organization import SchoolClass, ClassGroup, StudentClassEnrollment, ClassSubjectTeacher, PositionAssignment
+from .organization import (
+    ClassGroup,
+    ClassSubjectTeacher,
+    PositionAssignment,
+    SchoolClass,
+    StudentClassEnrollment,
+)
 from .permission import Permission, RolePermission
-from .profile import Teacher, Student, Staff, Guardian, StudentHealthRecord
+from .profile import Guardian, Staff, Student, StudentHealthRecord, Teacher
 from .role import Role, UserRole
 from .user import User
 

@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,9 +12,15 @@ class School(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=30, )
-    name = models.CharField(max_length=255, )
-    educational_stage = models.CharField(max_length=30, )
+    code = models.CharField(
+        max_length=30,
+    )
+    name = models.CharField(
+        max_length=255,
+    )
+    educational_stage = models.CharField(
+        max_length=30,
+    )
     established_year = models.SmallIntegerField(null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     province_code = models.CharField(max_length=20, null=True, blank=True)

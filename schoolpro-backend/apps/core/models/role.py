@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -11,8 +12,12 @@ class Role(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=50, )
-    name = models.CharField(max_length=150, )
+    code = models.CharField(
+        max_length=50,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
     description = models.TextField(null=True, blank=True)
     badge_color = models.CharField(max_length=30, null=True, blank=True)
     icon = models.CharField(max_length=50, null=True, blank=True)
@@ -57,7 +62,9 @@ class UserRole(models.Model):
     is_primary = models.BooleanField(default=False)
     effective_from = models.DateField()
     effective_to = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, )
+    status = models.CharField(
+        max_length=20,
+    )
     created_at = models.DateTimeField()
 
     class Meta:

@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -23,22 +24,31 @@ class EmulationRecord(models.Model):
         on_delete=models.SET_NULL,
         db_column="criteria_id",
         related_name="+",
-        null=True, blank=True, db_comment="criteria_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="criteria_id foreign key",
     )
     class_criteria = models.ForeignKey(
         "emulation.ClassCustomCriteria",
         on_delete=models.SET_NULL,
         db_column="class_criteria_id",
         related_name="+",
-        null=True, blank=True, db_comment="class_criteria_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="class_criteria_id foreign key",
     )
-    scope_type = models.CharField(max_length=50, )
+    scope_type = models.CharField(
+        max_length=50,
+    )
     student_id = models.UUIDField(null=True, blank=True)
     class_group_id = models.UUIDField(null=True, blank=True)
     class_id = models.UUIDField(null=True, blank=True)
     grade_id = models.UUIDField(null=True, blank=True)
     school_id = models.UUIDField(null=True, blank=True)
-    points = models.DecimalField(max_digits=6, decimal_places=2, )
+    points = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
     evidence_url = models.TextField(null=True, blank=True)
     note = models.TextField(null=True, blank=True)
     recorded_by = models.UUIDField()

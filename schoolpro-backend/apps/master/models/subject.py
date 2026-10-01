@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 
@@ -23,12 +24,20 @@ class Subject(models.Model):
         on_delete=models.SET_NULL,
         db_column="department_id",
         related_name="+",
-        null=True, blank=True, db_comment="department_id foreign key",
+        null=True,
+        blank=True,
+        db_comment="department_id foreign key",
     )
-    code = models.CharField(max_length=20, )
-    name = models.CharField(max_length=150, )
+    code = models.CharField(
+        max_length=20,
+    )
+    name = models.CharField(
+        max_length=150,
+    )
     grade_level = models.SmallIntegerField(null=True, blank=True)
-    evaluation_type = models.CharField(max_length=20, )
+    evaluation_type = models.CharField(
+        max_length=20,
+    )
     is_compulsory = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     metadata = models.JSONField(null=True, blank=True)
