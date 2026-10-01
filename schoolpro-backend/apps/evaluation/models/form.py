@@ -32,7 +32,7 @@ class EvaluationForm(UUIDModel):
         db_table = '"evaluation"."forms"'
         verbose_name = "Evaluation Form"
         verbose_name_plural = "Evaluation Forms"
-        ordering = ["title"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

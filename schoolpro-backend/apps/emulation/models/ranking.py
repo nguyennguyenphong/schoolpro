@@ -50,7 +50,6 @@ class EmulationRanking(UUIDModel):
         db_table = '"emulation"."rankings"'
         verbose_name = "Emulation Ranking"
         verbose_name_plural = "Emulation Rankings"
-        ordering = ["rank_order"]
 
     def __str__(self) -> str:
         return f"EmulationRanking ({self.pk})"

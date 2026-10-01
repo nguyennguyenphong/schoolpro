@@ -79,7 +79,7 @@ class ClassCustomCriteria(UUIDModel):
         db_table = '"emulation"."class_custom_criteria"'
         verbose_name = "Class Custom Criterion"
         verbose_name_plural = "Class Custom Criteria"
-        ordering = ["-created_at"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

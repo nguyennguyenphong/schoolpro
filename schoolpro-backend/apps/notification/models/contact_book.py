@@ -36,7 +36,7 @@ class ContactBookNote(UUIDModel):
         db_table = '"notification"."contact_book_notes"'
         verbose_name = "Contact Book Note"
         verbose_name_plural = "Contact Book Notes"
-        ordering = ["-entry_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ContactBookNote ({self.pk})"

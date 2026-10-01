@@ -104,7 +104,7 @@ class StudentFeeBill(UUIDModel):
         db_table = '"academic"."student_fee_bills"'
         verbose_name = "Student Fee Bill"
         verbose_name_plural = "Student Fee Bills"
-        ordering = ["-bill_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"StudentFeeBill ({self.pk})"

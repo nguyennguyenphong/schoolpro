@@ -35,7 +35,7 @@ class AcademicYear(UUIDModel):
         db_table = '"core"."academic_years"'
         verbose_name = "Academic Year"
         verbose_name_plural = "Academic Years"
-        ordering = ["-start_date"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

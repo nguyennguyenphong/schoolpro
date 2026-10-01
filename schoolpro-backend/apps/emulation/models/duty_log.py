@@ -28,7 +28,7 @@ class SupervisorDutyLog(UUIDModel):
         db_table = '"emulation"."supervisor_duty_logs"'
         verbose_name = "Supervisor Duty Log"
         verbose_name_plural = "Supervisor Duty Logs"
-        ordering = ["-duty_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"SupervisorDutyLog ({self.pk})"

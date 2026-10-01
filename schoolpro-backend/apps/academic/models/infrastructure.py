@@ -63,7 +63,6 @@ class Period(UUIDModel):
         db_table = '"academic"."periods"'
         verbose_name = "Period"
         verbose_name_plural = "Periods"
-        ordering = ["period_number"]
 
     def __str__(self) -> str:
         return f"Period ({self.pk})"

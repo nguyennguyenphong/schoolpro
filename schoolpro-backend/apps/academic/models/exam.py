@@ -47,7 +47,7 @@ class Exam(UUIDModel):
         db_table = '"academic"."exams"'
         verbose_name = "Exam"
         verbose_name_plural = "Exams"
-        ordering = ["-exam_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)
@@ -91,7 +91,7 @@ class ExamQuestion(UUIDModel):
         db_table = '"academic"."exam_questions"'
         verbose_name = "Exam Question"
         verbose_name_plural = "Exam Questions"
-        ordering = ["question_order"]
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return f"ExamQuestion ({self.pk})"
@@ -136,7 +136,7 @@ class ExamSubmission(UUIDModel):
         db_table = '"academic"."exam_submissions"'
         verbose_name = "Exam Submission"
         verbose_name_plural = "Exam Submissions"
-        ordering = ["-submitted_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ExamSubmission ({self.pk})"
@@ -180,6 +180,7 @@ class ExamSubmissionAnswer(UUIDModel):
         db_table = '"academic"."exam_submission_answers"'
         verbose_name = "Exam Submission Answer"
         verbose_name_plural = "Exam Submission Answers"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ExamSubmissionAnswer ({self.pk})"

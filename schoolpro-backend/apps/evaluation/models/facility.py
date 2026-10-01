@@ -83,7 +83,7 @@ class FacilityIncidentReport(UUIDModel):
         db_table = '"evaluation"."facility_incident_reports"'
         verbose_name = "Facility Incident Report"
         verbose_name_plural = "Facility Incident Reports"
-        ordering = ["-reported_at"]
+        ordering = ["title"]
 
     def __str__(self) -> str:
         return str(self.title)

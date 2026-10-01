@@ -36,7 +36,7 @@ class Assignment(UUIDModel):
         db_table = '"academic"."assignments"'
         verbose_name = "Assignment"
         verbose_name_plural = "Assignments"
-        ordering = ["-due_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)
@@ -77,7 +77,6 @@ class AssignmentSubmission(UUIDModel):
         db_table = '"academic"."assignment_submissions"'
         verbose_name = "Assignment Submission"
         verbose_name_plural = "Assignment Submissions"
-        ordering = ["-submitted_at"]
 
     def __str__(self) -> str:
         return f"AssignmentSubmission ({self.pk})"

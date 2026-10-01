@@ -58,7 +58,6 @@ class EmulationRecord(UUIDModel):
         db_table = '"emulation"."records"'
         verbose_name = "Emulation Record"
         verbose_name_plural = "Emulation Records"
-        ordering = ["-record_date"]
 
     def __str__(self) -> str:
         return f"EmulationRecord ({self.pk})"

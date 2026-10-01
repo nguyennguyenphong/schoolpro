@@ -40,7 +40,7 @@ class Announcement(UUIDModel):
         db_table = '"notification"."announcements"'
         verbose_name = "Announcement"
         verbose_name_plural = "Announcements"
-        ordering = ["-created_at"]
+        ordering = ["title"]
 
     def __str__(self) -> str:
         return str(self.title)
@@ -73,7 +73,6 @@ class AnnouncementRead(models.Model):
         db_table = '"notification"."announcement_reads"'
         verbose_name = "Announcement Read Receipt"
         verbose_name_plural = "Announcement Read Receipts"
-        ordering = ["-read_at"]
         unique_together = (("announcement", "user_id"),)
 
     def __str__(self) -> str:

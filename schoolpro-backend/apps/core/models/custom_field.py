@@ -35,7 +35,7 @@ class CustomFieldDefinition(UUIDModel):
         db_table = '"core"."custom_field_definitions"'
         verbose_name = "Custom Field Definition"
         verbose_name_plural = "Custom Field Definitions"
-        ordering = ["field_code"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"CustomFieldDefinition ({self.pk})"
@@ -69,7 +69,6 @@ class CustomFieldValue(UUIDModel):
         db_table = '"core"."custom_field_values"'
         verbose_name = "Custom Field Value"
         verbose_name_plural = "Custom Field Values"
-        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"CustomFieldValue ({self.pk})"

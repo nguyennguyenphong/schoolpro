@@ -103,7 +103,7 @@ class ClubMember(UUIDModel):
         db_table = '"core"."club_members"'
         verbose_name = "Club Member"
         verbose_name_plural = "Club Members"
-        ordering = ["-joined_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ClubMember ({self.pk})"

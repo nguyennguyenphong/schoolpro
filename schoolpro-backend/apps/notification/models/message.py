@@ -26,7 +26,7 @@ class ParentTeacherMessage(UUIDModel):
         db_table = '"notification"."parent_teacher_messages"'
         verbose_name = "Parent Teacher Message"
         verbose_name_plural = "Parent Teacher Messages"
-        ordering = ["-sent_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ParentTeacherMessage ({self.pk})"

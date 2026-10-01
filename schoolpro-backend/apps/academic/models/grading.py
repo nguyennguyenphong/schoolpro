@@ -68,7 +68,6 @@ class ConductEvaluation(UUIDModel):
         db_table = '"academic"."conduct_evaluations"'
         verbose_name = "Conduct Evaluation"
         verbose_name_plural = "Conduct Evaluations"
-        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ConductEvaluation ({self.pk})"
@@ -155,7 +154,6 @@ class StudentScore(UUIDModel):
         db_table = '"academic"."student_scores"'
         verbose_name = "Student Score"
         verbose_name_plural = "Student Scores"
-        ordering = ["-score_date"]
 
     def __str__(self) -> str:
         return f"StudentScore ({self.pk})"
@@ -239,7 +237,6 @@ class ReportCard(UUIDModel):
         db_table = '"academic"."report_cards"'
         verbose_name = "Report Card"
         verbose_name_plural = "Report Cards"
-        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ReportCard ({self.pk})"

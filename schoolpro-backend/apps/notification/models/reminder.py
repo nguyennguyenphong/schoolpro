@@ -27,7 +27,7 @@ class Reminder(UUIDModel):
         db_table = '"notification"."reminders"'
         verbose_name = "Reminder"
         verbose_name_plural = "Reminders"
-        ordering = ["remind_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)

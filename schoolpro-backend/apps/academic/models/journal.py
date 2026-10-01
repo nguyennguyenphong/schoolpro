@@ -33,7 +33,7 @@ class ClassJournalEntry(UUIDModel):
         db_table = '"academic"."class_journal_entries"'
         verbose_name = "Class Journal Entry"
         verbose_name_plural = "Class Journal Entries"
-        ordering = ["-entry_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ClassJournalEntry ({self.pk})"

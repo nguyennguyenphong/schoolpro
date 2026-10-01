@@ -69,7 +69,7 @@ class LookupValue(UUIDModel):
         db_table = '"core"."lookup_values"'
         verbose_name = "Lookup Value"
         verbose_name_plural = "Lookup Values"
-        ordering = ["order_no", "code"]
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return str(self.name)

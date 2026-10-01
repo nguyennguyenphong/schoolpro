@@ -52,7 +52,7 @@ class Module(UUIDModel):
         db_table = '"sys"."modules"'
         verbose_name = "System Module"
         verbose_name_plural = "System Modules"
-        ordering = ["order_no", "code"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

@@ -32,7 +32,7 @@ class Grade(UUIDModel):
         db_table = '"core"."grades"'
         verbose_name = "Grade Level"
         verbose_name_plural = "Grade Levels"
-        ordering = ["level"]
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return str(self.name)

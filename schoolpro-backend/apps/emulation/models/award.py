@@ -38,7 +38,7 @@ class EmulationAward(UUIDModel):
         db_table = '"emulation"."awards"'
         verbose_name = "Emulation Award"
         verbose_name_plural = "Emulation Awards"
-        ordering = ["-awarded_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)

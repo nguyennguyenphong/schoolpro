@@ -104,7 +104,7 @@ class StudentTrackEnrollment(UUIDModel):
         db_table = '"academic"."student_track_enrollments"'
         verbose_name = "Student Track Enrollment"
         verbose_name_plural = "Student Track Enrollments"
-        ordering = ["-enrolled_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"StudentTrackEnrollment ({self.pk})"

@@ -49,7 +49,7 @@ class SchoolClass(UUIDModel):
         return str(self.name)
 
     def __repr__(self) -> str:
-        return f"<SchoolClass {self.pk}>"
+        return f"<SchoolClass {self.code}: {self.name}>"
 
 
 class ClassGroup(UUIDModel):
@@ -80,7 +80,7 @@ class ClassGroup(UUIDModel):
         db_table = '"core"."class_groups"'
         verbose_name = "Class Group"
         verbose_name_plural = "Class Groups"
-        ordering = ["order_no", "code"]
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return str(self.name)
@@ -131,7 +131,6 @@ class StudentClassEnrollment(UUIDModel):
         db_table = '"core"."student_class_enrollments"'
         verbose_name = "Student Class Enrollment"
         verbose_name_plural = "Student Class Enrollments"
-        ordering = ["-enrolled_at"]
 
     def __str__(self) -> str:
         return f"StudentClassEnrollment ({self.pk})"
@@ -184,7 +183,6 @@ class ClassSubjectTeacher(UUIDModel):
         db_table = '"core"."class_subject_teachers"'
         verbose_name = "Class Subject Teacher Assignment"
         verbose_name_plural = "Class Subject Teacher Assignments"
-        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ClassSubjectTeacher ({self.pk})"
@@ -290,7 +288,7 @@ class PositionAssignment(UUIDModel):
         db_table = '"core"."position_assignments"'
         verbose_name = "Position Assignment"
         verbose_name_plural = "Position Assignments"
-        ordering = ["-start_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"PositionAssignment ({self.pk})"

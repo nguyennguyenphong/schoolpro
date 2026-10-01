@@ -35,7 +35,6 @@ class Attendance(UUIDModel):
         db_table = '"academic"."attendance"'
         verbose_name = "Attendance Record"
         verbose_name_plural = "Attendance Records"
-        ordering = ["-attendance_date"]
 
     def __str__(self) -> str:
         return f"Attendance ({self.pk})"

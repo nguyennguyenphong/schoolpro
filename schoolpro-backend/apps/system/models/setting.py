@@ -34,7 +34,7 @@ class SettingsDefinition(UUIDModel):
         db_table = '"sys"."settings_definitions"'
         verbose_name = "Settings Definition"
         verbose_name_plural = "Settings Definitions"
-        ordering = ["key"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
@@ -68,7 +68,6 @@ class SystemSetting(UUIDModel):
         db_table = '"sys"."system_settings"'
         verbose_name = "System Setting"
         verbose_name_plural = "System Settings"
-        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"SystemSetting ({self.pk})"
@@ -100,7 +99,6 @@ class RoleSettingsDefault(UUIDModel):
         db_table = '"sys"."role_settings_defaults"'
         verbose_name = "Role Settings Default"
         verbose_name_plural = "Role Settings Defaults"
-        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"RoleSettingsDefault ({self.pk})"
@@ -133,7 +131,6 @@ class UserSetting(UUIDModel):
         db_table = '"sys"."user_settings"'
         verbose_name = "User Setting"
         verbose_name_plural = "User Settings"
-        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"UserSetting ({self.pk})"

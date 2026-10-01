@@ -39,7 +39,7 @@ class School(UUIDModel):
         db_table = '"core"."schools"'
         verbose_name = "School"
         verbose_name_plural = "Schools"
-        ordering = ["name"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

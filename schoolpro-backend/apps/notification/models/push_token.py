@@ -21,7 +21,7 @@ class PushToken(UUIDModel):
         db_table = '"notification"."push_tokens"'
         verbose_name = "Push Token"
         verbose_name_plural = "Push Tokens"
-        ordering = ["-last_active_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"PushToken ({self.pk})"

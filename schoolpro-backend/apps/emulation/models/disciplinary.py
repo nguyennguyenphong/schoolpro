@@ -34,7 +34,7 @@ class DisciplinaryRecord(UUIDModel):
         db_table = '"emulation"."disciplinary_records"'
         verbose_name = "Disciplinary Record"
         verbose_name_plural = "Disciplinary Records"
-        ordering = ["-incident_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)

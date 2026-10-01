@@ -46,7 +46,7 @@ class User(UUIDModel):
         db_table = '"core"."users"'
         verbose_name = "User"
         verbose_name_plural = "Users"
-        ordering = ["username"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.full_name)

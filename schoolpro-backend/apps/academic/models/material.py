@@ -34,7 +34,7 @@ class CurriculumMaterial(UUIDModel):
         db_table = '"academic"."curriculum_materials"'
         verbose_name = "Curriculum Material"
         verbose_name_plural = "Curriculum Materials"
-        ordering = ["title"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)
@@ -72,7 +72,7 @@ class MaterialAttachment(UUIDModel):
         db_table = '"academic"."material_attachments"'
         verbose_name = "Material Attachment"
         verbose_name_plural = "Material Attachments"
-        ordering = ["file_name"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"MaterialAttachment ({self.pk})"

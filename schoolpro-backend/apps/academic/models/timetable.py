@@ -39,7 +39,6 @@ class Timetable(UUIDModel):
         db_table = '"academic"."timetables"'
         verbose_name = "Timetable"
         verbose_name_plural = "Timetables"
-        ordering = ["day_of_week", "period"]
 
     def __str__(self) -> str:
         return f"Timetable ({self.pk})"
@@ -89,7 +88,7 @@ class TimetableChange(UUIDModel):
         db_table = '"academic"."timetable_changes"'
         verbose_name = "Timetable Change"
         verbose_name_plural = "Timetable Changes"
-        ordering = ["-change_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"TimetableChange ({self.pk})"

@@ -35,7 +35,7 @@ class Semester(UUIDModel):
         db_table = '"core"."semesters"'
         verbose_name = "Semester"
         verbose_name_plural = "Semesters"
-        ordering = ["-start_date"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

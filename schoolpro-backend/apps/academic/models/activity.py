@@ -37,7 +37,7 @@ class ExtracurricularActivity(UUIDModel):
         db_table = '"academic"."extracurricular_activities"'
         verbose_name = "Extracurricular Activity"
         verbose_name_plural = "Extracurricular Activities"
-        ordering = ["-start_date"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)
@@ -79,7 +79,7 @@ class ActivityParticipation(UUIDModel):
         db_table = '"academic"."activity_participations"'
         verbose_name = "Activity Participation"
         verbose_name_plural = "Activity Participations"
-        ordering = ["-registered_at"]
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ActivityParticipation ({self.pk})"

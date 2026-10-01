@@ -30,7 +30,7 @@ class EmulationPeriod(UUIDModel):
         db_table = '"emulation"."periods"'
         verbose_name = "Emulation Period"
         verbose_name_plural = "Emulation Periods"
-        ordering = ["-start_date"]
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)

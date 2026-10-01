@@ -45,13 +45,28 @@ class Teacher(UUIDModel):
         db_table = '"core"."teachers"'
         verbose_name = "Teacher Profile"
         verbose_name_plural = "Teacher Profiles"
-        ordering = ["teacher_code"]
+        ordering = ["-created_at"]
+
+    @property
+    def full_name(self) -> str:
+        """Convenience accessor to related User full name."""
+        return self.user.full_name if self.user else ""
+
+    @property
+    def email(self) -> str:
+        """Convenience accessor to related User email."""
+        return self.user.email if self.user else ""
+
+    @property
+    def phone(self) -> str:
+        """Convenience accessor to related User phone."""
+        return self.user.phone if self.user else ""
 
     def __str__(self) -> str:
-        return f"Teacher ({self.pk})"
+        return f"{self.teacher_code} - {self.full_name}" if self.full_name else self.teacher_code
 
     def __repr__(self) -> str:
-        return f"<Teacher {self.pk}>"
+        return f"<Teacher {self.teacher_code}: {self.full_name}>"
 
 
 class Student(UUIDModel):
@@ -86,13 +101,28 @@ class Student(UUIDModel):
         db_table = '"core"."students"'
         verbose_name = "Student Profile"
         verbose_name_plural = "Student Profiles"
-        ordering = ["student_code"]
+        ordering = ["-created_at"]
+
+    @property
+    def full_name(self) -> str:
+        """Convenience accessor to related User full name."""
+        return self.user.full_name if self.user else ""
+
+    @property
+    def email(self) -> str:
+        """Convenience accessor to related User email."""
+        return self.user.email if self.user else ""
+
+    @property
+    def phone(self) -> str:
+        """Convenience accessor to related User phone."""
+        return self.user.phone if self.user else ""
 
     def __str__(self) -> str:
-        return f"Student ({self.pk})"
+        return f"{self.student_code} - {self.full_name}" if self.full_name else self.student_code
 
     def __repr__(self) -> str:
-        return f"<Student {self.pk}>"
+        return f"<Student {self.student_code}: {self.full_name}>"
 
 
 class Staff(UUIDModel):
@@ -136,13 +166,23 @@ class Staff(UUIDModel):
         db_table = '"core"."staff"'
         verbose_name = "Staff Profile"
         verbose_name_plural = "Staff Profiles"
-        ordering = ["staff_code"]
+        ordering = ["-created_at"]
+
+    @property
+    def full_name(self) -> str:
+        """Convenience accessor to related User full name."""
+        return self.user.full_name if self.user else ""
+
+    @property
+    def email(self) -> str:
+        """Convenience accessor to related User email."""
+        return self.user.email if self.user else ""
 
     def __str__(self) -> str:
-        return f"Staff ({self.pk})"
+        return f"{self.staff_code} - {self.full_name}" if self.full_name else self.staff_code
 
     def __repr__(self) -> str:
-        return f"<Staff {self.pk}>"
+        return f"<Staff {self.staff_code}: {self.full_name}>"
 
 
 class Guardian(UUIDModel):
@@ -188,7 +228,6 @@ class Guardian(UUIDModel):
         db_table = '"core"."guardians"'
         verbose_name = "Guardian Profile"
         verbose_name_plural = "Guardian Profiles"
-        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.full_name)
@@ -229,7 +268,6 @@ class StudentHealthRecord(UUIDModel):
         db_table = '"core"."student_health_records"'
         verbose_name = "Student Health Record"
         verbose_name_plural = "Student Health Records"
-        ordering = ["-recorded_at"]
 
     def __str__(self) -> str:
         return f"StudentHealthRecord ({self.pk})"

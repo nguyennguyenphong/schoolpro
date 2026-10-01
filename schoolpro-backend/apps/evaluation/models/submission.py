@@ -37,7 +37,6 @@ class EvaluationSubmission(UUIDModel):
         db_table = '"evaluation"."submissions"'
         verbose_name = "Evaluation Submission"
         verbose_name_plural = "Evaluation Submissions"
-        ordering = ["-submitted_at"]
 
     def __str__(self) -> str:
         return f"EvaluationSubmission ({self.pk})"
