@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Room(models.Model):
+
+class Room(UUIDModel):
     """
     Room Model.
 
@@ -11,7 +11,6 @@ class Room(models.Model):
     Description: Master physical spaces, classrooms, laboratories, and specialized facilities
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     code = models.CharField(
         max_length=30,
@@ -32,14 +31,18 @@ class Room(models.Model):
     class Meta:
         managed = False
         db_table = '"academic"."rooms"'
-        verbose_name = "Classroom / Hall"
-        verbose_name_plural = "Classroom / Halls"
+        verbose_name = "Room"
+        verbose_name_plural = "Rooms"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Room {self.pk}>"
 
-class Period(models.Model):
+
+class Period(UUIDModel):
     """
     Period Model.
 
@@ -47,7 +50,6 @@ class Period(models.Model):
     Description: Master daily bell schedule periods and shift time intervals for high school
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     period_no = models.SmallIntegerField()
     shift = models.CharField(
@@ -59,8 +61,12 @@ class Period(models.Model):
     class Meta:
         managed = False
         db_table = '"academic"."periods"'
-        verbose_name = "Class Period / Bell Schedule"
-        verbose_name_plural = "Class Period / Bell Schedules"
+        verbose_name = "Period"
+        verbose_name_plural = "Periods"
+        ordering = ["period_number"]
 
     def __str__(self) -> str:
         return f"Period ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<Period {self.pk}>"

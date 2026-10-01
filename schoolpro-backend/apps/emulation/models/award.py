@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EmulationAward(models.Model):
+
+class EmulationAward(UUIDModel):
     """
     EmulationAward Model.
 
@@ -11,7 +11,6 @@ class EmulationAward(models.Model):
     Description: Golden book of student accolades, Olympiad laureates, and state honors
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     academic_year_id = models.UUIDField()
     award_category = models.CharField(
@@ -39,6 +38,10 @@ class EmulationAward(models.Model):
         db_table = '"emulation"."awards"'
         verbose_name = "Emulation Award"
         verbose_name_plural = "Emulation Awards"
+        ordering = ["-awarded_date"]
 
     def __str__(self) -> str:
         return str(self.title)
+
+    def __repr__(self) -> str:
+        return f"<EmulationAward {self.pk}>"

@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class SchoolClass(models.Model):
+
+class SchoolClass(UUIDModel):
     """
     SchoolClass Model.
 
@@ -11,19 +11,18 @@ class SchoolClass(models.Model):
     Description: Annual high school class rooms grouped by grade level and academic track
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     academic_year = models.ForeignKey(
         "master.AcademicYear",
         on_delete=models.CASCADE,
         db_column="academic_year_id",
-        related_name="+",
+        related_name="classes",
         db_comment="academic_year_id foreign key",
     )
     grade = models.ForeignKey(
         "master.Grade",
         on_delete=models.CASCADE,
         db_column="grade_id",
-        related_name="+",
+        related_name="classes",
         db_comment="grade_id foreign key",
     )
     code = models.CharField(
@@ -43,13 +42,17 @@ class SchoolClass(models.Model):
         managed = False
         db_table = '"core"."classes"'
         verbose_name = "Class"
-        verbose_name_plural = "Classs"
+        verbose_name_plural = "Classes"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<SchoolClass {self.pk}>"
 
-class ClassGroup(models.Model):
+
+class ClassGroup(UUIDModel):
     """
     ClassGroup Model.
 
@@ -57,12 +60,11 @@ class ClassGroup(models.Model):
     Description: Class internal squads/teams (Tổ học tập & trực nhật) for granular emulation
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_class = models.ForeignKey(
         "core.SchoolClass",
         on_delete=models.CASCADE,
         db_column="class_id",
-        related_name="+",
+        related_name="groups",
         db_comment="class_id foreign key",
     )
     code = models.CharField(
@@ -78,12 +80,16 @@ class ClassGroup(models.Model):
         db_table = '"core"."class_groups"'
         verbose_name = "Class Group"
         verbose_name_plural = "Class Groups"
+        ordering = ["order_no", "code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<ClassGroup {self.pk}>"
 
-class StudentClassEnrollment(models.Model):
+
+class StudentClassEnrollment(UUIDModel):
     """
     StudentClassEnrollment Model.
 
@@ -91,19 +97,18 @@ class StudentClassEnrollment(models.Model):
     Description: Annual official class roster memberships and internal squad placements
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student = models.ForeignKey(
         "core.Student",
         on_delete=models.CASCADE,
         db_column="student_id",
-        related_name="+",
+        related_name="enrollments",
         db_comment="student_id foreign key",
     )
     school_class = models.ForeignKey(
         "core.SchoolClass",
         on_delete=models.CASCADE,
         db_column="class_id",
-        related_name="+",
+        related_name="enrollments",
         db_comment="class_id foreign key",
     )
     class_group = models.ForeignKey(
@@ -126,12 +131,16 @@ class StudentClassEnrollment(models.Model):
         db_table = '"core"."student_class_enrollments"'
         verbose_name = "Student Class Enrollment"
         verbose_name_plural = "Student Class Enrollments"
+        ordering = ["-enrolled_at"]
 
     def __str__(self) -> str:
         return f"StudentClassEnrollment ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<StudentClassEnrollment {self.pk}>"
 
-class ClassSubjectTeacher(models.Model):
+
+class ClassSubjectTeacher(UUIDModel):
     """
     ClassSubjectTeacher Model.
 
@@ -139,12 +148,11 @@ class ClassSubjectTeacher(models.Model):
     Description: Semester teaching assignments linking teachers to specific subject classes
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_class = models.ForeignKey(
         "core.SchoolClass",
         on_delete=models.CASCADE,
         db_column="class_id",
-        related_name="+",
+        related_name="subject_teachers",
         db_comment="class_id foreign key",
     )
     subject = models.ForeignKey(
@@ -158,7 +166,7 @@ class ClassSubjectTeacher(models.Model):
         "core.Teacher",
         on_delete=models.CASCADE,
         db_column="teacher_id",
-        related_name="+",
+        related_name="teaching_assignments",
         db_comment="teacher_id foreign key",
     )
     semester = models.ForeignKey(
@@ -176,12 +184,16 @@ class ClassSubjectTeacher(models.Model):
         db_table = '"core"."class_subject_teachers"'
         verbose_name = "Class Subject Teacher Assignment"
         verbose_name_plural = "Class Subject Teacher Assignments"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ClassSubjectTeacher ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<ClassSubjectTeacher {self.pk}>"
 
-class PositionAssignment(models.Model):
+
+class PositionAssignment(UUIDModel):
     """
     PositionAssignment Model.
 
@@ -189,7 +201,6 @@ class PositionAssignment(models.Model):
     Description: Temporal polymorphic history of positions held by users in classes, groups, departments, or grades
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         "core.User",
         on_delete=models.CASCADE,
@@ -279,6 +290,10 @@ class PositionAssignment(models.Model):
         db_table = '"core"."position_assignments"'
         verbose_name = "Position Assignment"
         verbose_name_plural = "Position Assignments"
+        ordering = ["-start_date"]
 
     def __str__(self) -> str:
         return f"PositionAssignment ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<PositionAssignment {self.pk}>"

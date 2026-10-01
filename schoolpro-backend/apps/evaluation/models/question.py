@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EvaluationQuestion(models.Model):
+
+class EvaluationQuestion(UUIDModel):
     """
     EvaluationQuestion Model.
 
@@ -11,7 +11,6 @@ class EvaluationQuestion(models.Model):
     Description: Itemized survey questions for rating teaching methods, fairness, and clarity
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     form = models.ForeignKey(
         "evaluation.EvaluationForm",
         on_delete=models.CASCADE,
@@ -32,6 +31,10 @@ class EvaluationQuestion(models.Model):
         db_table = '"evaluation"."questions"'
         verbose_name = "Evaluation Question"
         verbose_name_plural = "Evaluation Questions"
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return f"EvaluationQuestion ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<EvaluationQuestion {self.pk}>"

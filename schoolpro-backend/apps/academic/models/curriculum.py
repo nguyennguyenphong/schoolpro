@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class CurriculumTrack(models.Model):
+
+class CurriculumTrack(UUIDModel):
     """
     CurriculumTrack Model.
 
@@ -11,7 +11,6 @@ class CurriculumTrack(models.Model):
     Description: Elective subject tracks and career orientation clusters under GDPT 2018 curriculum
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     grade_id = models.UUIDField()
     code = models.CharField(
@@ -31,12 +30,16 @@ class CurriculumTrack(models.Model):
         db_table = '"academic"."curriculum_tracks"'
         verbose_name = "Curriculum Track"
         verbose_name_plural = "Curriculum Tracks"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<CurriculumTrack {self.pk}>"
 
-class CurriculumTrackSubject(models.Model):
+
+class CurriculumTrackSubject(UUIDModel):
     """
     CurriculumTrackSubject Model.
 
@@ -44,7 +47,6 @@ class CurriculumTrackSubject(models.Model):
     Description: Subject composition and specialized learning clusters per academic track
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     track = models.ForeignKey(
         "academic.CurriculumTrack",
         on_delete=models.CASCADE,
@@ -63,12 +65,16 @@ class CurriculumTrackSubject(models.Model):
         db_table = '"academic"."curriculum_track_subjects"'
         verbose_name = "Curriculum Track Subject"
         verbose_name_plural = "Curriculum Track Subjects"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"CurriculumTrackSubject ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<CurriculumTrackSubject {self.pk}>"
 
-class StudentTrackEnrollment(models.Model):
+
+class StudentTrackEnrollment(UUIDModel):
     """
     StudentTrackEnrollment Model.
 
@@ -76,7 +82,6 @@ class StudentTrackEnrollment(models.Model):
     Description: Annual student subject combination and career track assignment
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     track = models.ForeignKey(
         "academic.CurriculumTrack",
@@ -99,6 +104,10 @@ class StudentTrackEnrollment(models.Model):
         db_table = '"academic"."student_track_enrollments"'
         verbose_name = "Student Track Enrollment"
         verbose_name_plural = "Student Track Enrollments"
+        ordering = ["-enrolled_at"]
 
     def __str__(self) -> str:
         return f"StudentTrackEnrollment ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<StudentTrackEnrollment {self.pk}>"

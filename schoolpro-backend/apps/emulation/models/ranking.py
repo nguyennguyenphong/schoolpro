@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EmulationRanking(models.Model):
+
+class EmulationRanking(UUIDModel):
     """
     EmulationRanking Model.
 
@@ -11,7 +11,6 @@ class EmulationRanking(models.Model):
     Description: Periodic leaderboard standings and award flag determinations
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     period = models.ForeignKey(
         "emulation.EmulationPeriod",
         on_delete=models.CASCADE,
@@ -51,6 +50,10 @@ class EmulationRanking(models.Model):
         db_table = '"emulation"."rankings"'
         verbose_name = "Emulation Ranking"
         verbose_name_plural = "Emulation Rankings"
+        ordering = ["rank_order"]
 
     def __str__(self) -> str:
         return f"EmulationRanking ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<EmulationRanking {self.pk}>"

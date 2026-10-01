@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class PushToken(models.Model):
+
+class PushToken(UUIDModel):
     """
     PushToken Model.
 
@@ -11,7 +11,6 @@ class PushToken(models.Model):
     Description: Registered FCM/APNs push notification endpoints per device
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField()
     device_token = models.TextField()
     platform = models.CharField(max_length=20, null=True, blank=True)
@@ -22,6 +21,10 @@ class PushToken(models.Model):
         db_table = '"notification"."push_tokens"'
         verbose_name = "Push Token"
         verbose_name_plural = "Push Tokens"
+        ordering = ["-last_active_at"]
 
     def __str__(self) -> str:
         return f"PushToken ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<PushToken {self.pk}>"

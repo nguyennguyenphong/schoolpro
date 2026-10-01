@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class School(models.Model):
+
+class School(UUIDModel):
     """
     School Model.
 
@@ -11,7 +11,6 @@ class School(models.Model):
     Description: Master high school campus profile, administrative metadata, and contacts
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=30,
     )
@@ -40,6 +39,10 @@ class School(models.Model):
         db_table = '"core"."schools"'
         verbose_name = "School"
         verbose_name_plural = "Schools"
+        ordering = ["name"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<School {self.pk}>"

@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EmulationPeriod(models.Model):
+
+class EmulationPeriod(UUIDModel):
     """
     EmulationPeriod Model.
 
@@ -11,7 +11,6 @@ class EmulationPeriod(models.Model):
     Description: Configured tracking intervals for point accumulation and leaderboard calculation
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     academic_year_id = models.UUIDField()
     code = models.CharField(
         max_length=30,
@@ -31,6 +30,10 @@ class EmulationPeriod(models.Model):
         db_table = '"emulation"."periods"'
         verbose_name = "Emulation Period"
         verbose_name_plural = "Emulation Periods"
+        ordering = ["-start_date"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<EmulationPeriod {self.pk}>"

@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Attendance(models.Model):
+
+class Attendance(UUIDModel):
     """
     Attendance Model.
 
@@ -11,7 +11,6 @@ class Attendance(models.Model):
     Description: Daily student attendance roll-call tracking excuses and tardiness
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     class_id = models.UUIDField()
     attendance_date = models.DateField()
@@ -34,8 +33,12 @@ class Attendance(models.Model):
     class Meta:
         managed = False
         db_table = '"academic"."attendance"'
-        verbose_name = "Attendance"
-        verbose_name_plural = "Attendances"
+        verbose_name = "Attendance Record"
+        verbose_name_plural = "Attendance Records"
+        ordering = ["-attendance_date"]
 
     def __str__(self) -> str:
         return f"Attendance ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<Attendance {self.pk}>"

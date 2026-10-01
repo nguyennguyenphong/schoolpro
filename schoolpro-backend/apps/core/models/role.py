@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Role(models.Model):
+
+class Role(UUIDModel):
     """
     Role Model.
 
@@ -11,7 +11,6 @@ class Role(models.Model):
     Description: Dynamic role definitions allowing new administrative or student roles at any time
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=50,
     )
@@ -31,12 +30,16 @@ class Role(models.Model):
         db_table = '"core"."roles"'
         verbose_name = "Role"
         verbose_name_plural = "Roles"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Role {self.pk}>"
 
-class UserRole(models.Model):
+
+class UserRole(UUIDModel):
     """
     UserRole Model.
 
@@ -44,19 +47,18 @@ class UserRole(models.Model):
     Description: User-to-role assignment with primary role flag and expiration dates
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         "core.User",
         on_delete=models.CASCADE,
         db_column="user_id",
-        related_name="+",
+        related_name="user_roles",
         db_comment="user_id foreign key",
     )
     role = models.ForeignKey(
         "core.Role",
         on_delete=models.CASCADE,
         db_column="role_id",
-        related_name="+",
+        related_name="user_roles",
         db_comment="role_id foreign key",
     )
     is_primary = models.BooleanField(default=False)
@@ -72,6 +74,10 @@ class UserRole(models.Model):
         db_table = '"core"."user_roles"'
         verbose_name = "User Role"
         verbose_name_plural = "User Roles"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"UserRole ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<UserRole {self.pk}>"

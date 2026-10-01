@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EventOutbox(models.Model):
+
+class EventOutbox(UUIDModel):
     """
     EventOutbox Model.
 
@@ -11,7 +11,6 @@ class EventOutbox(models.Model):
     Description: Reliable outbox queue for event-driven message brokers (Kafka/RabbitMQ) and webhook deliveries
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     event_type = models.CharField(
         max_length=100,
     )
@@ -31,7 +30,11 @@ class EventOutbox(models.Model):
         managed = False
         db_table = '"sys"."event_outbox"'
         verbose_name = "Event Outbox"
-        verbose_name_plural = "Event Outboxs"
+        verbose_name_plural = "Event Outboxes"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"EventOutbox ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<EventOutbox {self.pk}>"

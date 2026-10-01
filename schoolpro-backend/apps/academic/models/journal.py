@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class ClassJournalEntry(models.Model):
+
+class ClassJournalEntry(UUIDModel):
     """
     ClassJournalEntry Model.
 
@@ -11,7 +11,6 @@ class ClassJournalEntry(models.Model):
     Description: Official electronic class journal recording syllabus progress, attendance, and period rating
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_id = models.UUIDField()
     class_subject_teacher_id = models.UUIDField()
     session_date = models.DateField()
@@ -33,7 +32,11 @@ class ClassJournalEntry(models.Model):
         managed = False
         db_table = '"academic"."class_journal_entries"'
         verbose_name = "Class Journal Entry"
-        verbose_name_plural = "Class Journal Entrys"
+        verbose_name_plural = "Class Journal Entries"
+        ordering = ["-entry_date"]
 
     def __str__(self) -> str:
         return f"ClassJournalEntry ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<ClassJournalEntry {self.pk}>"

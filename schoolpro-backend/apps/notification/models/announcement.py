@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Announcement(models.Model):
+
+class Announcement(UUIDModel):
     """
     Announcement Model.
 
@@ -11,7 +11,6 @@ class Announcement(models.Model):
     Description: Official school news bulletins, grade circulars, and class notices
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     title = models.CharField(
         max_length=255,
@@ -41,9 +40,13 @@ class Announcement(models.Model):
         db_table = '"notification"."announcements"'
         verbose_name = "Announcement"
         verbose_name_plural = "Announcements"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.title)
+
+    def __repr__(self) -> str:
+        return f"<Announcement {self.pk}>"
 
 
 class AnnouncementRead(models.Model):
@@ -68,9 +71,13 @@ class AnnouncementRead(models.Model):
     class Meta:
         managed = False
         db_table = '"notification"."announcement_reads"'
-        verbose_name = "Announcement Read"
-        verbose_name_plural = "Announcement Reads"
+        verbose_name = "Announcement Read Receipt"
+        verbose_name_plural = "Announcement Read Receipts"
+        ordering = ["-read_at"]
         unique_together = (("announcement", "user_id"),)
 
     def __str__(self) -> str:
         return f"AnnouncementRead ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<AnnouncementRead {self.pk}>"

@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Department(models.Model):
+
+class Department(UUIDModel):
     """
     Department Model.
 
@@ -11,12 +11,11 @@ class Department(models.Model):
     Description: Master educational subject departments and administrative divisions
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.CASCADE,
         db_column="school_id",
-        related_name="+",
+        related_name="departments",
         db_comment="school_id foreign key",
     )
     code = models.CharField(
@@ -54,6 +53,10 @@ class Department(models.Model):
         db_table = '"core"."departments"'
         verbose_name = "Department"
         verbose_name_plural = "Departments"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Department {self.pk}>"

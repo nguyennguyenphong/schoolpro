@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Permission(models.Model):
+
+class Permission(UUIDModel):
     """
     Permission Model.
 
@@ -11,7 +11,6 @@ class Permission(models.Model):
     Description: Atomic permission privileges for endpoint and UI access control
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=100,
     )
@@ -28,9 +27,13 @@ class Permission(models.Model):
         db_table = '"core"."permissions"'
         verbose_name = "Permission"
         verbose_name_plural = "Permissions"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Permission {self.pk}>"
 
 
 class RolePermission(models.Model):
@@ -45,7 +48,7 @@ class RolePermission(models.Model):
         "core.Role",
         on_delete=models.CASCADE,
         db_column="role_id",
-        related_name="+",
+        related_name="role_permissions",
         primary_key=True,
         db_comment="role_id foreign key",
     )
@@ -53,7 +56,7 @@ class RolePermission(models.Model):
         "core.Permission",
         on_delete=models.CASCADE,
         db_column="permission_id",
-        related_name="+",
+        related_name="role_permissions",
         db_comment="permission_id foreign key",
     )
 
@@ -66,3 +69,6 @@ class RolePermission(models.Model):
 
     def __str__(self) -> str:
         return f"RolePermission ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<RolePermission {self.pk}>"

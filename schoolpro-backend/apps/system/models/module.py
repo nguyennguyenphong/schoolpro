@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Module(models.Model):
+
+class Module(UUIDModel):
     """
     Module Model.
 
@@ -11,7 +11,6 @@ class Module(models.Model):
     Description: Master functional card modules available for personalized role-based dashboards
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=80,
     )
@@ -53,12 +52,16 @@ class Module(models.Model):
         db_table = '"sys"."modules"'
         verbose_name = "System Module"
         verbose_name_plural = "System Modules"
+        ordering = ["order_no", "code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Module {self.pk}>"
 
-class RoleModule(models.Model):
+
+class RoleModule(UUIDModel):
     """
     RoleModule Model.
 
@@ -66,7 +69,6 @@ class RoleModule(models.Model):
     Description: Default dashboard functional card layout and accessibility mapped per user role
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role_id = models.UUIDField()
     module = models.ForeignKey(
         "system.Module",
@@ -86,7 +88,11 @@ class RoleModule(models.Model):
         managed = False
         db_table = '"sys"."role_modules"'
         verbose_name = "Role Module Access"
-        verbose_name_plural = "Role Module Accesss"
+        verbose_name_plural = "Role Module Accesses"
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return f"RoleModule ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<RoleModule {self.pk}>"

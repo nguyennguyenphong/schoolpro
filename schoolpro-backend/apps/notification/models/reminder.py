@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Reminder(models.Model):
+
+class Reminder(UUIDModel):
     """
     Reminder Model.
 
@@ -11,7 +11,6 @@ class Reminder(models.Model):
     Description: Personal task reminders for upcoming homework deadlines, exam dates, and cleaning duty
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField()
     title = models.CharField(
         max_length=255,
@@ -26,8 +25,12 @@ class Reminder(models.Model):
     class Meta:
         managed = False
         db_table = '"notification"."reminders"'
-        verbose_name = "Student Reminder"
-        verbose_name_plural = "Student Reminders"
+        verbose_name = "Reminder"
+        verbose_name_plural = "Reminders"
+        ordering = ["remind_at"]
 
     def __str__(self) -> str:
         return str(self.title)
+
+    def __repr__(self) -> str:
+        return f"<Reminder {self.pk}>"

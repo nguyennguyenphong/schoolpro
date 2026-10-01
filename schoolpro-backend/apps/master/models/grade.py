@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Grade(models.Model):
+
+class Grade(UUIDModel):
     """
     Grade Model.
 
@@ -11,12 +11,11 @@ class Grade(models.Model):
     Description: Master high school grade tiers (Grade 10, 11, 12) and assigned grade supervisor
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.CASCADE,
         db_column="school_id",
-        related_name="+",
+        related_name="grades",
         db_comment="school_id foreign key",
     )
     code = models.CharField(
@@ -33,6 +32,10 @@ class Grade(models.Model):
         db_table = '"core"."grades"'
         verbose_name = "Grade Level"
         verbose_name_plural = "Grade Levels"
+        ordering = ["level"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Grade {self.pk}>"

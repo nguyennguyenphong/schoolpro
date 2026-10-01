@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class DisciplinaryRecord(models.Model):
+
+class DisciplinaryRecord(UUIDModel):
     """
     DisciplinaryRecord Model.
 
@@ -11,7 +11,6 @@ class DisciplinaryRecord(models.Model):
     Description: Formal disciplinary decisions and honorary citations
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     record_type = models.CharField(
         max_length=20,
@@ -35,6 +34,10 @@ class DisciplinaryRecord(models.Model):
         db_table = '"emulation"."disciplinary_records"'
         verbose_name = "Disciplinary Record"
         verbose_name_plural = "Disciplinary Records"
+        ordering = ["-incident_date"]
 
     def __str__(self) -> str:
         return str(self.title)
+
+    def __repr__(self) -> str:
+        return f"<DisciplinaryRecord {self.pk}>"

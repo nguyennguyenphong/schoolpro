@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Subject(models.Model):
+
+class Subject(UUIDModel):
     """
     Subject Model.
 
@@ -11,19 +11,18 @@ class Subject(models.Model):
     Description: Master subjects directory aligned with Vietnamese high school curriculum (GDPT 2018)
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.CASCADE,
         db_column="school_id",
-        related_name="+",
+        related_name="subjects",
         db_comment="school_id foreign key",
     )
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
-        related_name="+",
+        related_name="subjects",
         null=True,
         blank=True,
         db_comment="department_id foreign key",
@@ -47,6 +46,10 @@ class Subject(models.Model):
         db_table = '"core"."subjects"'
         verbose_name = "Subject"
         verbose_name_plural = "Subjects"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Subject {self.pk}>"

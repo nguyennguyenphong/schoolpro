@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class FeeItem(models.Model):
+
+class FeeItem(UUIDModel):
     """
     FeeItem Model.
 
@@ -11,7 +11,6 @@ class FeeItem(models.Model):
     Description: Master fee schedule for tuition and statutory student fees
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     academic_year_id = models.UUIDField()
     semester_id = models.UUIDField(null=True, blank=True)
@@ -41,12 +40,16 @@ class FeeItem(models.Model):
         db_table = '"academic"."fee_items"'
         verbose_name = "Fee Item"
         verbose_name_plural = "Fee Items"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<FeeItem {self.pk}>"
 
-class StudentFeeBill(models.Model):
+
+class StudentFeeBill(UUIDModel):
     """
     StudentFeeBill Model.
 
@@ -54,7 +57,6 @@ class StudentFeeBill(models.Model):
     Description: Student fee accounts, payment reconciliation records, and social welfare subsidies
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     fee_item = models.ForeignKey(
         "academic.FeeItem",
@@ -102,6 +104,10 @@ class StudentFeeBill(models.Model):
         db_table = '"academic"."student_fee_bills"'
         verbose_name = "Student Fee Bill"
         verbose_name_plural = "Student Fee Bills"
+        ordering = ["-bill_date"]
 
     def __str__(self) -> str:
         return f"StudentFeeBill ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<StudentFeeBill {self.pk}>"

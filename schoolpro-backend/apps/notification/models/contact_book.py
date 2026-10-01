@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class ContactBookNote(models.Model):
+
+class ContactBookNote(UUIDModel):
     """
     ContactBookNote Model.
 
@@ -11,7 +11,6 @@ class ContactBookNote(models.Model):
     Description: Structured electronic communication logbook between homeroom teachers and parents
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     class_id = models.UUIDField()
     semester_id = models.UUIDField()
@@ -37,6 +36,10 @@ class ContactBookNote(models.Model):
         db_table = '"notification"."contact_book_notes"'
         verbose_name = "Contact Book Note"
         verbose_name_plural = "Contact Book Notes"
+        ordering = ["-entry_date"]
 
     def __str__(self) -> str:
         return f"ContactBookNote ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<ContactBookNote {self.pk}>"

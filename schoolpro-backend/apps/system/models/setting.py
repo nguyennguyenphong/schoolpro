@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class SettingsDefinition(models.Model):
+
+class SettingsDefinition(UUIDModel):
     """
     SettingsDefinition Model.
 
@@ -11,7 +11,6 @@ class SettingsDefinition(models.Model):
     Description: Master registry of customizable application settings and appearance parameters
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=80,
     )
@@ -35,12 +34,16 @@ class SettingsDefinition(models.Model):
         db_table = '"sys"."settings_definitions"'
         verbose_name = "Settings Definition"
         verbose_name_plural = "Settings Definitions"
+        ordering = ["key"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<SettingsDefinition {self.pk}>"
 
-class SystemSetting(models.Model):
+
+class SystemSetting(UUIDModel):
     """
     SystemSetting Model.
 
@@ -48,7 +51,6 @@ class SystemSetting(models.Model):
     Description: School-wide default configuration parameters
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField(null=True, blank=True)
     setting = models.ForeignKey(
         "system.SettingsDefinition",
@@ -66,12 +68,16 @@ class SystemSetting(models.Model):
         db_table = '"sys"."system_settings"'
         verbose_name = "System Setting"
         verbose_name_plural = "System Settings"
+        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"SystemSetting ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<SystemSetting {self.pk}>"
 
-class RoleSettingsDefault(models.Model):
+
+class RoleSettingsDefault(UUIDModel):
     """
     RoleSettingsDefault Model.
 
@@ -79,7 +85,6 @@ class RoleSettingsDefault(models.Model):
     Description: Default setting values automatically inherited by members of a specific role
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role_id = models.UUIDField()
     setting = models.ForeignKey(
         "system.SettingsDefinition",
@@ -95,12 +100,16 @@ class RoleSettingsDefault(models.Model):
         db_table = '"sys"."role_settings_defaults"'
         verbose_name = "Role Settings Default"
         verbose_name_plural = "Role Settings Defaults"
+        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"RoleSettingsDefault ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<RoleSettingsDefault {self.pk}>"
 
-class UserSetting(models.Model):
+
+class UserSetting(UUIDModel):
     """
     UserSetting Model.
 
@@ -108,7 +117,6 @@ class UserSetting(models.Model):
     Description: Top-priority user personalized setting values (theme, color, date format, notifications)
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField()
     setting = models.ForeignKey(
         "system.SettingsDefinition",
@@ -125,6 +133,10 @@ class UserSetting(models.Model):
         db_table = '"sys"."user_settings"'
         verbose_name = "User Setting"
         verbose_name_plural = "User Settings"
+        ordering = ["-updated_at"]
 
     def __str__(self) -> str:
         return f"UserSetting ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<UserSetting {self.pk}>"

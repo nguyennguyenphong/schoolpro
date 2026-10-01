@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Timetable(models.Model):
+
+class Timetable(UUIDModel):
     """
     Timetable Model.
 
@@ -11,7 +11,6 @@ class Timetable(models.Model):
     Description: Weekly recurring timetable schedule slots by class, day of week, period, and venue
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_id = models.UUIDField()
     semester_id = models.UUIDField()
     day_of_week = models.SmallIntegerField()
@@ -40,12 +39,16 @@ class Timetable(models.Model):
         db_table = '"academic"."timetables"'
         verbose_name = "Timetable"
         verbose_name_plural = "Timetables"
+        ordering = ["day_of_week", "period"]
 
     def __str__(self) -> str:
         return f"Timetable ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<Timetable {self.pk}>"
 
-class TimetableChange(models.Model):
+
+class TimetableChange(UUIDModel):
     """
     TimetableChange Model.
 
@@ -53,7 +56,6 @@ class TimetableChange(models.Model):
     Description: Daily operational substitutions and room change logs
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     timetable = models.ForeignKey(
         "academic.Timetable",
         on_delete=models.CASCADE,
@@ -87,6 +89,10 @@ class TimetableChange(models.Model):
         db_table = '"academic"."timetable_changes"'
         verbose_name = "Timetable Change"
         verbose_name_plural = "Timetable Changes"
+        ordering = ["-change_date"]
 
     def __str__(self) -> str:
         return f"TimetableChange ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<TimetableChange {self.pk}>"

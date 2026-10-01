@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class AcademicYear(models.Model):
+
+class AcademicYear(UUIDModel):
     """
     AcademicYear Model.
 
@@ -11,12 +11,11 @@ class AcademicYear(models.Model):
     Description: Master academic school years with active term indicators
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.CASCADE,
         db_column="school_id",
-        related_name="+",
+        related_name="academic_years",
         db_comment="school_id foreign key",
     )
     code = models.CharField(
@@ -36,6 +35,10 @@ class AcademicYear(models.Model):
         db_table = '"core"."academic_years"'
         verbose_name = "Academic Year"
         verbose_name_plural = "Academic Years"
+        ordering = ["-start_date"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<AcademicYear {self.pk}>"

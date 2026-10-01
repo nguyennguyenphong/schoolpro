@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class SupervisorDutyLog(models.Model):
+
+class SupervisorDutyLog(UUIDModel):
     """
     SupervisorDutyLog Model.
 
@@ -11,7 +11,6 @@ class SupervisorDutyLog(models.Model):
     Description: Daily supervisor and red-flag brigade inspection evaluation checklists
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     duty_date = models.DateField()
     shift = models.CharField(
         max_length=10,
@@ -29,6 +28,10 @@ class SupervisorDutyLog(models.Model):
         db_table = '"emulation"."supervisor_duty_logs"'
         verbose_name = "Supervisor Duty Log"
         verbose_name_plural = "Supervisor Duty Logs"
+        ordering = ["-duty_date"]
 
     def __str__(self) -> str:
         return f"SupervisorDutyLog ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<SupervisorDutyLog {self.pk}>"

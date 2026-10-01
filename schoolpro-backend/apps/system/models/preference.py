@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class UserModulePreference(models.Model):
+
+class UserModulePreference(UUIDModel):
     """
     UserModulePreference Model.
 
@@ -11,7 +11,6 @@ class UserModulePreference(models.Model):
     Description: User-specific personalized overrides for dashboard card arrangement and visibility
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField()
     module = models.ForeignKey(
         "system.Module",
@@ -31,6 +30,10 @@ class UserModulePreference(models.Model):
         db_table = '"sys"."user_module_preferences"'
         verbose_name = "User Module Preference"
         verbose_name_plural = "User Module Preferences"
+        ordering = ["order_no"]
 
     def __str__(self) -> str:
         return f"UserModulePreference ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<UserModulePreference {self.pk}>"

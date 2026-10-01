@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class LookupType(models.Model):
+
+class LookupType(UUIDModel):
     """
     LookupType Model.
 
@@ -11,7 +11,6 @@ class LookupType(models.Model):
     Description: Master definition table for dynamic extensible enum categories
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=60,
     )
@@ -27,12 +26,16 @@ class LookupType(models.Model):
         db_table = '"core"."lookup_types"'
         verbose_name = "Lookup Type"
         verbose_name_plural = "Lookup Types"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<LookupType {self.pk}>"
 
-class LookupValue(models.Model):
+
+class LookupValue(UUIDModel):
     """
     LookupValue Model.
 
@@ -40,12 +43,11 @@ class LookupValue(models.Model):
     Description: Master dynamic values for lookup dropdowns, badges, and validation rules
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     lookup_type = models.ForeignKey(
         "master.LookupType",
         on_delete=models.CASCADE,
         db_column="lookup_type_id",
-        related_name="+",
+        related_name="values",
         db_comment="lookup_type_id foreign key",
     )
     code = models.CharField(
@@ -67,6 +69,10 @@ class LookupValue(models.Model):
         db_table = '"core"."lookup_values"'
         verbose_name = "Lookup Value"
         verbose_name_plural = "Lookup Values"
+        ordering = ["order_no", "code"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<LookupValue {self.pk}>"

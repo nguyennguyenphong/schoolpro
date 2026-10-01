@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class ExtracurricularActivity(models.Model):
+
+class ExtracurricularActivity(UUIDModel):
     """
     ExtracurricularActivity Model.
 
@@ -11,7 +11,6 @@ class ExtracurricularActivity(models.Model):
     Description: Experiential and vocational orientation activities under GDPT 2018
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     semester_id = models.UUIDField()
     title = models.CharField(
@@ -37,13 +36,17 @@ class ExtracurricularActivity(models.Model):
         managed = False
         db_table = '"academic"."extracurricular_activities"'
         verbose_name = "Extracurricular Activity"
-        verbose_name_plural = "Extracurricular Activitys"
+        verbose_name_plural = "Extracurricular Activities"
+        ordering = ["-start_date"]
 
     def __str__(self) -> str:
         return str(self.title)
 
+    def __repr__(self) -> str:
+        return f"<ExtracurricularActivity {self.pk}>"
 
-class ActivityParticipation(models.Model):
+
+class ActivityParticipation(UUIDModel):
     """
     ActivityParticipation Model.
 
@@ -51,7 +54,6 @@ class ActivityParticipation(models.Model):
     Description: Individual student participation logs in experiential and extracurricular activities
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     activity = models.ForeignKey(
         "academic.ExtracurricularActivity",
         on_delete=models.CASCADE,
@@ -77,6 +79,10 @@ class ActivityParticipation(models.Model):
         db_table = '"academic"."activity_participations"'
         verbose_name = "Activity Participation"
         verbose_name_plural = "Activity Participations"
+        ordering = ["-registered_at"]
 
     def __str__(self) -> str:
         return f"ActivityParticipation ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<ActivityParticipation {self.pk}>"

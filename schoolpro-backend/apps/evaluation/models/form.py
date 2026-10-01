@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EvaluationForm(models.Model):
+
+class EvaluationForm(UUIDModel):
     """
     EvaluationForm Model.
 
@@ -11,7 +11,6 @@ class EvaluationForm(models.Model):
     Description: Survey questionnaires for confidential pedagogical reviews and campus satisfaction
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=60,
     )
@@ -33,6 +32,10 @@ class EvaluationForm(models.Model):
         db_table = '"evaluation"."forms"'
         verbose_name = "Evaluation Form"
         verbose_name_plural = "Evaluation Forms"
+        ordering = ["title"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<EvaluationForm {self.pk}>"

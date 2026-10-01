@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EvaluationSubmission(models.Model):
+
+class EvaluationSubmission(UUIDModel):
     """
     EvaluationSubmission Model.
 
@@ -11,7 +11,6 @@ class EvaluationSubmission(models.Model):
     Description: Header record for submitted survey responses
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     form = models.ForeignKey(
         "evaluation.EvaluationForm",
         on_delete=models.CASCADE,
@@ -38,6 +37,10 @@ class EvaluationSubmission(models.Model):
         db_table = '"evaluation"."submissions"'
         verbose_name = "Evaluation Submission"
         verbose_name_plural = "Evaluation Submissions"
+        ordering = ["-submitted_at"]
 
     def __str__(self) -> str:
         return f"EvaluationSubmission ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<EvaluationSubmission {self.pk}>"

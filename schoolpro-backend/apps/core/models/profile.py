@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Teacher(models.Model):
+
+class Teacher(UUIDModel):
     """
     Teacher Model.
 
@@ -11,12 +11,11 @@ class Teacher(models.Model):
     Description: Academic teaching staff profiles and department assignments
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         "core.User",
         on_delete=models.CASCADE,
         db_column="user_id",
-        related_name="+",
+        related_name="teacher_profile",
         db_comment="user_id foreign key",
     )
     teacher_code = models.CharField(
@@ -26,7 +25,7 @@ class Teacher(models.Model):
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
-        related_name="+",
+        related_name="teachers",
         null=True,
         blank=True,
         db_comment="department_id foreign key",
@@ -46,12 +45,16 @@ class Teacher(models.Model):
         db_table = '"core"."teachers"'
         verbose_name = "Teacher Profile"
         verbose_name_plural = "Teacher Profiles"
+        ordering = ["teacher_code"]
 
     def __str__(self) -> str:
         return f"Teacher ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<Teacher {self.pk}>"
 
-class Student(models.Model):
+
+class Student(UUIDModel):
     """
     Student Model.
 
@@ -59,12 +62,11 @@ class Student(models.Model):
     Description: Comprehensive student educational lifecycle dossier
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         "core.User",
         on_delete=models.CASCADE,
         db_column="user_id",
-        related_name="+",
+        related_name="student_profile",
         db_comment="user_id foreign key",
     )
     student_code = models.CharField(
@@ -84,12 +86,16 @@ class Student(models.Model):
         db_table = '"core"."students"'
         verbose_name = "Student Profile"
         verbose_name_plural = "Student Profiles"
+        ordering = ["student_code"]
 
     def __str__(self) -> str:
         return f"Student ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<Student {self.pk}>"
 
-class Staff(models.Model):
+
+class Staff(UUIDModel):
     """
     Staff Model.
 
@@ -97,12 +103,11 @@ class Staff(models.Model):
     Description: Non-teaching administrative staff, supervisors, and auxiliary professionals
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         "core.User",
         on_delete=models.CASCADE,
         db_column="user_id",
-        related_name="+",
+        related_name="staff_profile",
         db_comment="user_id foreign key",
     )
     staff_code = models.CharField(
@@ -112,7 +117,7 @@ class Staff(models.Model):
         "master.Department",
         on_delete=models.SET_NULL,
         db_column="department_id",
-        related_name="+",
+        related_name="staff",
         null=True,
         blank=True,
         db_comment="department_id foreign key",
@@ -131,12 +136,16 @@ class Staff(models.Model):
         db_table = '"core"."staff"'
         verbose_name = "Staff Profile"
         verbose_name_plural = "Staff Profiles"
+        ordering = ["staff_code"]
 
     def __str__(self) -> str:
         return f"Staff ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<Staff {self.pk}>"
 
-class Guardian(models.Model):
+
+class Guardian(UUIDModel):
     """
     Guardian Model.
 
@@ -144,19 +153,18 @@ class Guardian(models.Model):
     Description: Parent and guardian directory for home-school omnichannel communications
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student = models.ForeignKey(
         "core.Student",
         on_delete=models.CASCADE,
         db_column="student_id",
-        related_name="+",
+        related_name="guardians",
         db_comment="student_id foreign key",
     )
     user = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
         db_column="user_id",
-        related_name="+",
+        related_name="guardian_profile",
         null=True,
         blank=True,
         db_comment="user_id foreign key",
@@ -180,12 +188,16 @@ class Guardian(models.Model):
         db_table = '"core"."guardians"'
         verbose_name = "Guardian Profile"
         verbose_name_plural = "Guardian Profiles"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.full_name)
 
+    def __repr__(self) -> str:
+        return f"<Guardian {self.pk}>"
 
-class StudentHealthRecord(models.Model):
+
+class StudentHealthRecord(UUIDModel):
     """
     StudentHealthRecord Model.
 
@@ -193,12 +205,11 @@ class StudentHealthRecord(models.Model):
     Description: Campus medical clinic records and physical growth tracking per student
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student = models.ForeignKey(
         "core.Student",
         on_delete=models.CASCADE,
         db_column="student_id",
-        related_name="+",
+        related_name="health_records",
         db_comment="student_id foreign key",
     )
     height_cm = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
@@ -218,6 +229,10 @@ class StudentHealthRecord(models.Model):
         db_table = '"core"."student_health_records"'
         verbose_name = "Student Health Record"
         verbose_name_plural = "Student Health Records"
+        ordering = ["-recorded_at"]
 
     def __str__(self) -> str:
         return f"StudentHealthRecord ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<StudentHealthRecord {self.pk}>"

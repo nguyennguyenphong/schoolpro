@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Facility(models.Model):
+
+class Facility(UUIDModel):
     """
     Facility Model.
 
@@ -11,7 +11,6 @@ class Facility(models.Model):
     Description: Tracked campus assets, classroom projectors, fans, and laboratory kits
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school_id = models.UUIDField()
     room_id = models.UUIDField(null=True, blank=True)
     code = models.CharField(
@@ -34,13 +33,17 @@ class Facility(models.Model):
         managed = False
         db_table = '"evaluation"."facilities"'
         verbose_name = "Campus Facility"
-        verbose_name_plural = "Campus Facilitys"
+        verbose_name_plural = "Campus Facilities"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Facility {self.pk}>"
 
-class FacilityIncidentReport(models.Model):
+
+class FacilityIncidentReport(UUIDModel):
     """
     FacilityIncidentReport Model.
 
@@ -48,7 +51,6 @@ class FacilityIncidentReport(models.Model):
     Description: Maintenance trouble tickets for repairing lighting, desks, or electronics
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     facility = models.ForeignKey(
         "evaluation.Facility",
         on_delete=models.SET_NULL,
@@ -81,6 +83,10 @@ class FacilityIncidentReport(models.Model):
         db_table = '"evaluation"."facility_incident_reports"'
         verbose_name = "Facility Incident Report"
         verbose_name_plural = "Facility Incident Reports"
+        ordering = ["-reported_at"]
 
     def __str__(self) -> str:
         return str(self.title)
+
+    def __repr__(self) -> str:
+        return f"<FacilityIncidentReport {self.pk}>"

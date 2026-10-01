@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Club(models.Model):
+
+class Club(UUIDModel):
     """
     Club Model.
 
@@ -11,12 +11,11 @@ class Club(models.Model):
     Description: Extracurricular student clubs, sports teams, and volunteer societies
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.CASCADE,
         db_column="school_id",
-        related_name="+",
+        related_name="clubs",
         db_comment="school_id foreign key",
     )
     code = models.CharField(
@@ -58,12 +57,16 @@ class Club(models.Model):
         db_table = '"core"."clubs"'
         verbose_name = "Extracurricular Club"
         verbose_name_plural = "Extracurricular Clubs"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Club {self.pk}>"
 
-class ClubMember(models.Model):
+
+class ClubMember(UUIDModel):
     """
     ClubMember Model.
 
@@ -71,7 +74,6 @@ class ClubMember(models.Model):
     Description: Roster of student club participants, leaders, and executive positions
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     club = models.ForeignKey(
         "core.Club",
         on_delete=models.CASCADE,
@@ -101,6 +103,10 @@ class ClubMember(models.Model):
         db_table = '"core"."club_members"'
         verbose_name = "Club Member"
         verbose_name_plural = "Club Members"
+        ordering = ["-joined_at"]
 
     def __str__(self) -> str:
         return f"ClubMember ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<ClubMember {self.pk}>"

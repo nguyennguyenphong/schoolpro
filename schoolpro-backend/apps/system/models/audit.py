@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class AuditLog(models.Model):
+
+class AuditLog(UUIDModel):
     """
     AuditLog Model.
 
@@ -11,7 +11,6 @@ class AuditLog(models.Model):
     Description: System audit trail tracking transactional changes for security compliance and governance
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.UUIDField(null=True, blank=True)
     action = models.CharField(
         max_length=50,
@@ -31,6 +30,10 @@ class AuditLog(models.Model):
         db_table = '"sys"."audit_logs"'
         verbose_name = "Audit Log"
         verbose_name_plural = "Audit Logs"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.action)
+
+    def __repr__(self) -> str:
+        return f"<AuditLog {self.pk}>"

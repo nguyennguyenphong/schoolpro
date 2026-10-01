@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Assignment(models.Model):
+
+class Assignment(UUIDModel):
     """
     Assignment Model.
 
@@ -11,7 +11,6 @@ class Assignment(models.Model):
     Description: Homework tasks and group projects assigned by subject teachers
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_subject_teacher_id = models.UUIDField()
     title = models.CharField(
         max_length=255,
@@ -35,14 +34,18 @@ class Assignment(models.Model):
     class Meta:
         managed = False
         db_table = '"academic"."assignments"'
-        verbose_name = "Homework Assignment"
-        verbose_name_plural = "Homework Assignments"
+        verbose_name = "Assignment"
+        verbose_name_plural = "Assignments"
+        ordering = ["-due_date"]
 
     def __str__(self) -> str:
         return str(self.title)
 
+    def __repr__(self) -> str:
+        return f"<Assignment {self.pk}>"
 
-class AssignmentSubmission(models.Model):
+
+class AssignmentSubmission(UUIDModel):
     """
     AssignmentSubmission Model.
 
@@ -50,7 +53,6 @@ class AssignmentSubmission(models.Model):
     Description: Student homework answers, uploaded files, and graded feedback
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     assignment = models.ForeignKey(
         "academic.Assignment",
         on_delete=models.CASCADE,
@@ -75,6 +77,10 @@ class AssignmentSubmission(models.Model):
         db_table = '"academic"."assignment_submissions"'
         verbose_name = "Assignment Submission"
         verbose_name_plural = "Assignment Submissions"
+        ordering = ["-submitted_at"]
 
     def __str__(self) -> str:
         return f"AssignmentSubmission ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<AssignmentSubmission {self.pk}>"

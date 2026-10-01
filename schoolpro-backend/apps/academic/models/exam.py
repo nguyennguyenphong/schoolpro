@@ -1,10 +1,10 @@
-import uuid
-
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Exam(models.Model):
+
+class Exam(UUIDModel):
     """
     Exam Model.
 
@@ -12,7 +12,6 @@ class Exam(models.Model):
     Description: Formal examination events (15-min tests, mid-term, final term exams)
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_subject_teacher_id = models.UUIDField(null=True, blank=True)
     score_type = models.ForeignKey(
         "academic.ScoreType",
@@ -46,14 +45,18 @@ class Exam(models.Model):
     class Meta:
         managed = False
         db_table = '"academic"."exams"'
-        verbose_name = "Exam / Test"
-        verbose_name_plural = "Exam / Tests"
+        verbose_name = "Exam"
+        verbose_name_plural = "Exams"
+        ordering = ["-exam_date"]
 
     def __str__(self) -> str:
         return str(self.title)
 
+    def __repr__(self) -> str:
+        return f"<Exam {self.pk}>"
 
-class ExamQuestion(models.Model):
+
+class ExamQuestion(UUIDModel):
     """
     ExamQuestion Model.
 
@@ -61,7 +64,6 @@ class ExamQuestion(models.Model):
     Description: Examination paper structure linking tests to question repository items
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     exam = models.ForeignKey(
         "academic.Exam",
         on_delete=models.CASCADE,
@@ -89,12 +91,16 @@ class ExamQuestion(models.Model):
         db_table = '"academic"."exam_questions"'
         verbose_name = "Exam Question"
         verbose_name_plural = "Exam Questions"
+        ordering = ["question_order"]
 
     def __str__(self) -> str:
         return f"ExamQuestion ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<ExamQuestion {self.pk}>"
 
-class ExamSubmission(models.Model):
+
+class ExamSubmission(UUIDModel):
     """
     ExamSubmission Model.
 
@@ -102,7 +108,6 @@ class ExamSubmission(models.Model):
     Description: Student examination attempts and final test grading status
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     exam = models.ForeignKey(
         "academic.Exam",
         on_delete=models.CASCADE,
@@ -131,12 +136,16 @@ class ExamSubmission(models.Model):
         db_table = '"academic"."exam_submissions"'
         verbose_name = "Exam Submission"
         verbose_name_plural = "Exam Submissions"
+        ordering = ["-submitted_at"]
 
     def __str__(self) -> str:
         return f"ExamSubmission ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<ExamSubmission {self.pk}>"
 
-class ExamSubmissionAnswer(models.Model):
+
+class ExamSubmissionAnswer(UUIDModel):
     """
     ExamSubmissionAnswer Model.
 
@@ -144,7 +153,6 @@ class ExamSubmissionAnswer(models.Model):
     Description: Individual question answers submitted by students with evaluation results
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     submission = models.ForeignKey(
         "academic.ExamSubmission",
         on_delete=models.CASCADE,
@@ -176,8 +184,11 @@ class ExamSubmissionAnswer(models.Model):
     def __str__(self) -> str:
         return f"ExamSubmissionAnswer ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<ExamSubmissionAnswer {self.pk}>"
 
-class QuestionBank(models.Model):
+
+class QuestionBank(UUIDModel):
     """
     QuestionBank Model.
 
@@ -185,7 +196,6 @@ class QuestionBank(models.Model):
     Description: Centralized educational question repository categorized by Bloom cognitive taxonomy
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     subject_id = models.UUIDField()
     grade_id = models.UUIDField()
     chapter_name = models.CharField(max_length=150, null=True, blank=True)
@@ -214,6 +224,10 @@ class QuestionBank(models.Model):
         db_table = '"academic"."question_bank"'
         verbose_name = "Question Bank Item"
         verbose_name_plural = "Question Bank Items"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"QuestionBank ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<QuestionBank {self.pk}>"

@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class CurriculumMaterial(models.Model):
+
+class CurriculumMaterial(UUIDModel):
     """
     CurriculumMaterial Model.
 
@@ -11,7 +11,6 @@ class CurriculumMaterial(models.Model):
     Description: Online learning resources, slides, and syllabus documents
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_subject_teacher_id = models.UUIDField(null=True, blank=True)
     subject_id = models.UUIDField()
     title = models.CharField(
@@ -35,12 +34,16 @@ class CurriculumMaterial(models.Model):
         db_table = '"academic"."curriculum_materials"'
         verbose_name = "Curriculum Material"
         verbose_name_plural = "Curriculum Materials"
+        ordering = ["title"]
 
     def __str__(self) -> str:
         return str(self.title)
 
+    def __repr__(self) -> str:
+        return f"<CurriculumMaterial {self.pk}>"
 
-class MaterialAttachment(models.Model):
+
+class MaterialAttachment(UUIDModel):
     """
     MaterialAttachment Model.
 
@@ -48,7 +51,6 @@ class MaterialAttachment(models.Model):
     Description: Binary attachment references (PDF, DOCX, MP4) for materials
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     material = models.ForeignKey(
         "academic.CurriculumMaterial",
         on_delete=models.CASCADE,
@@ -70,6 +72,10 @@ class MaterialAttachment(models.Model):
         db_table = '"academic"."material_attachments"'
         verbose_name = "Material Attachment"
         verbose_name_plural = "Material Attachments"
+        ordering = ["file_name"]
 
     def __str__(self) -> str:
         return f"MaterialAttachment ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<MaterialAttachment {self.pk}>"

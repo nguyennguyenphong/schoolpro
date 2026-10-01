@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class ScoreType(models.Model):
+
+class ScoreType(UUIDModel):
     """
     ScoreType Model.
 
@@ -11,7 +11,6 @@ class ScoreType(models.Model):
     Description: Master evaluation score columns and calculation coefficients per MOET Circular 22
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=30,
     )
@@ -27,12 +26,16 @@ class ScoreType(models.Model):
         db_table = '"academic"."score_types"'
         verbose_name = "Score Type"
         verbose_name_plural = "Score Types"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<ScoreType {self.pk}>"
 
-class ConductEvaluation(models.Model):
+
+class ConductEvaluation(UUIDModel):
     """
     ConductEvaluation Model.
 
@@ -40,7 +43,6 @@ class ConductEvaluation(models.Model):
     Description: Official student moral and behavioral conduct evaluation workflow (Tốt, Khá, Đạt, Chưa đạt)
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     semester_id = models.UUIDField()
     self_rating = models.CharField(max_length=20, null=True, blank=True)
@@ -66,12 +68,16 @@ class ConductEvaluation(models.Model):
         db_table = '"academic"."conduct_evaluations"'
         verbose_name = "Conduct Evaluation"
         verbose_name_plural = "Conduct Evaluations"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ConductEvaluation ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<ConductEvaluation {self.pk}>"
 
-class SubjectExemption(models.Model):
+
+class SubjectExemption(UUIDModel):
     """
     SubjectExemption Model.
 
@@ -79,7 +85,6 @@ class SubjectExemption(models.Model):
     Description: Authorized medical waivers, military drill exemptions, and international certificate conversions
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     subject_id = models.UUIDField()
     semester_id = models.UUIDField()
@@ -102,12 +107,16 @@ class SubjectExemption(models.Model):
         db_table = '"academic"."subject_exemptions"'
         verbose_name = "Subject Exemption"
         verbose_name_plural = "Subject Exemptions"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"SubjectExemption ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<SubjectExemption {self.pk}>"
 
-class StudentScore(models.Model):
+
+class StudentScore(UUIDModel):
     """
     StudentScore Model.
 
@@ -115,7 +124,6 @@ class StudentScore(models.Model):
     Description: Granular evaluation marks per score category (oral, 15m, mid-term, end-term)
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     class_subject_teacher_id = models.UUIDField()
     score_type = models.ForeignKey(
@@ -147,12 +155,16 @@ class StudentScore(models.Model):
         db_table = '"academic"."student_scores"'
         verbose_name = "Student Score"
         verbose_name_plural = "Student Scores"
+        ordering = ["-score_date"]
 
     def __str__(self) -> str:
         return f"StudentScore ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<StudentScore {self.pk}>"
 
-class StudentTermSummary(models.Model):
+
+class StudentTermSummary(UUIDModel):
     """
     StudentTermSummary Model.
 
@@ -160,7 +172,6 @@ class StudentTermSummary(models.Model):
     Description: Comprehensive official student transcript and honor roll summaries per term and school year
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     semester_id = models.UUIDField(null=True, blank=True)
     academic_year_id = models.UUIDField()
@@ -192,13 +203,17 @@ class StudentTermSummary(models.Model):
         managed = False
         db_table = '"academic"."student_term_summaries"'
         verbose_name = "Student Term Summary"
-        verbose_name_plural = "Student Term Summarys"
+        verbose_name_plural = "Student Term Summaries"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"StudentTermSummary ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<StudentTermSummary {self.pk}>"
 
-class ReportCard(models.Model):
+
+class ReportCard(UUIDModel):
     """
     ReportCard Model.
 
@@ -206,7 +221,6 @@ class ReportCard(models.Model):
     Description: Official academic report transcripts complying with MOET high school grading norms
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student_id = models.UUIDField()
     subject_id = models.UUIDField()
     semester_id = models.UUIDField()
@@ -225,6 +239,10 @@ class ReportCard(models.Model):
         db_table = '"academic"."report_cards"'
         verbose_name = "Report Card"
         verbose_name_plural = "Report Cards"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"ReportCard ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<ReportCard {self.pk}>"

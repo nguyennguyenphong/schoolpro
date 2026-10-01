@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Criteria(models.Model):
+
+class Criteria(UUIDModel):
     """
     Criteria Model.
 
@@ -11,7 +11,6 @@ class Criteria(models.Model):
     Description: Master emulation point criteria for weekly discipline, academics, and activities
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=60,
     )
@@ -37,14 +36,18 @@ class Criteria(models.Model):
     class Meta:
         managed = False
         db_table = '"emulation"."criteria"'
-        verbose_name = "Emulation Criteria"
-        verbose_name_plural = "Emulation Criterias"
+        verbose_name = "Emulation Criterion"
+        verbose_name_plural = "Emulation Criteria"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
+    def __repr__(self) -> str:
+        return f"<Criteria {self.pk}>"
 
-class ClassCustomCriteria(models.Model):
+
+class ClassCustomCriteria(UUIDModel):
     """
     ClassCustomCriteria Model.
 
@@ -52,7 +55,6 @@ class ClassCustomCriteria(models.Model):
     Description: Custom internal class emulation rules tailored for individual classrooms
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_id = models.UUIDField()
     code = models.CharField(
         max_length=50,
@@ -75,8 +77,12 @@ class ClassCustomCriteria(models.Model):
     class Meta:
         managed = False
         db_table = '"emulation"."class_custom_criteria"'
-        verbose_name = "Class Custom Criteria"
-        verbose_name_plural = "Class Custom Criterias"
+        verbose_name = "Class Custom Criterion"
+        verbose_name_plural = "Class Custom Criteria"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<ClassCustomCriteria {self.pk}>"

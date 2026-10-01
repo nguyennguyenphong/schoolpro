@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Position(models.Model):
+
+class Position(UUIDModel):
     """
     Position Model.
 
@@ -11,7 +11,6 @@ class Position(models.Model):
     Description: Master catalog of positions held by teachers, staff, or students across organizational scopes
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(
         max_length=60,
     )
@@ -40,6 +39,10 @@ class Position(models.Model):
         db_table = '"core"."positions"'
         verbose_name = "Position"
         verbose_name_plural = "Positions"
+        ordering = ["code"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Position {self.pk}>"

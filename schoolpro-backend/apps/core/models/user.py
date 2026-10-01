@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class User(models.Model):
+
+class User(UUIDModel):
     """
     User Model.
 
@@ -11,12 +11,11 @@ class User(models.Model):
     Description: Unified identity authentication and personal profile table
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     school = models.ForeignKey(
         "master.School",
         on_delete=models.SET_NULL,
         db_column="school_id",
-        related_name="+",
+        related_name="users",
         null=True,
         blank=True,
         db_comment="school_id foreign key",
@@ -47,6 +46,10 @@ class User(models.Model):
         db_table = '"core"."users"'
         verbose_name = "User"
         verbose_name_plural = "Users"
+        ordering = ["username"]
 
     def __str__(self) -> str:
         return str(self.full_name)
+
+    def __repr__(self) -> str:
+        return f"<User {self.pk}>"

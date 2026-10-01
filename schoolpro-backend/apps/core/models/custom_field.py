@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class CustomFieldDefinition(models.Model):
+
+class CustomFieldDefinition(UUIDModel):
     """
     CustomFieldDefinition Model.
 
@@ -11,7 +11,6 @@ class CustomFieldDefinition(models.Model):
     Description: Registry for dynamic entity custom fields without altering relational table schemas
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     entity_type = models.CharField(
         max_length=50,
     )
@@ -36,12 +35,16 @@ class CustomFieldDefinition(models.Model):
         db_table = '"core"."custom_field_definitions"'
         verbose_name = "Custom Field Definition"
         verbose_name_plural = "Custom Field Definitions"
+        ordering = ["field_code"]
 
     def __str__(self) -> str:
         return f"CustomFieldDefinition ({self.pk})"
 
+    def __repr__(self) -> str:
+        return f"<CustomFieldDefinition {self.pk}>"
 
-class CustomFieldValue(models.Model):
+
+class CustomFieldValue(UUIDModel):
     """
     CustomFieldValue Model.
 
@@ -49,7 +52,6 @@ class CustomFieldValue(models.Model):
     Description: Values stored for custom dynamic attributes per individual entity record
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     field = models.ForeignKey(
         "core.CustomFieldDefinition",
         on_delete=models.CASCADE,
@@ -67,6 +69,10 @@ class CustomFieldValue(models.Model):
         db_table = '"core"."custom_field_values"'
         verbose_name = "Custom Field Value"
         verbose_name_plural = "Custom Field Values"
+        ordering = ["-created_at"]
 
     def __str__(self) -> str:
         return f"CustomFieldValue ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<CustomFieldValue {self.pk}>"

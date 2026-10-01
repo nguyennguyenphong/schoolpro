@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class EmulationRecord(models.Model):
+
+class EmulationRecord(UUIDModel):
     """
     EmulationRecord Model.
 
@@ -11,7 +11,6 @@ class EmulationRecord(models.Model):
     Description: Granular point journal for commendations and violations across all scopes
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     period = models.ForeignKey(
         "emulation.EmulationPeriod",
         on_delete=models.CASCADE,
@@ -59,6 +58,10 @@ class EmulationRecord(models.Model):
         db_table = '"emulation"."records"'
         verbose_name = "Emulation Record"
         verbose_name_plural = "Emulation Records"
+        ordering = ["-record_date"]
 
     def __str__(self) -> str:
         return f"EmulationRecord ({self.pk})"
+
+    def __repr__(self) -> str:
+        return f"<EmulationRecord {self.pk}>"

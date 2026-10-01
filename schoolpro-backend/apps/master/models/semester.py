@@ -1,9 +1,9 @@
-import uuid
-
 from django.db import models
 
+from common.models.base import UUIDModel
 
-class Semester(models.Model):
+
+class Semester(UUIDModel):
     """
     Semester Model.
 
@@ -11,12 +11,11 @@ class Semester(models.Model):
     Description: Master academic semesters (Term 1, Term 2, Summer) with date boundaries
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     academic_year = models.ForeignKey(
         "master.AcademicYear",
         on_delete=models.CASCADE,
         db_column="academic_year_id",
-        related_name="+",
+        related_name="semesters",
         db_comment="academic_year_id foreign key",
     )
     code = models.CharField(
@@ -36,6 +35,10 @@ class Semester(models.Model):
         db_table = '"core"."semesters"'
         verbose_name = "Semester"
         verbose_name_plural = "Semesters"
+        ordering = ["-start_date"]
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def __repr__(self) -> str:
+        return f"<Semester {self.pk}>"
