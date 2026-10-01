@@ -89,6 +89,15 @@ describe("SelectRole Component", () => {
       render(<SelectRole value="student" customRoles={TEST_ROLES} />);
       expect(screen.getByText("Học sinh")).toBeInTheDocument();
     });
+
+    it("distinguishes between 'Phụ huynh học sinh' and 'Học sinh' and selects 'Học sinh'", async () => {
+      // In MOCK_ROLES, 'Phụ huynh học sinh' appears at index 1, before 'Học sinh' at index 4
+      render(<SelectRole />);
+      await waitFor(() => {
+        expect(screen.getByText("Học sinh")).toBeInTheDocument();
+      });
+      expect(screen.queryByText("Phụ huynh học sinh")).not.toBeInTheDocument();
+    });
   });
 
   describe("Selection", () => {
