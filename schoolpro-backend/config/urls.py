@@ -57,9 +57,7 @@ urlpatterns = [
     ),
     # JWT Authentication Endpoints
     path("api/v1/auth/token/", TokenObtainPairView.as_view(), name="token-obtain-pair"),
-    path(
-        "api/v1/auth/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"
-    ),
+    path("api/v1/auth/token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("api/v1/auth/token/verify/", TokenVerifyView.as_view(), name="token-verify"),
     # Domain APIs (v1)
     path("api/v1/core/", include("apps.core.urls", namespace="core")),

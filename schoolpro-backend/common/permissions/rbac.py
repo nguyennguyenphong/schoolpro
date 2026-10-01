@@ -15,9 +15,7 @@ class IsSchoolAdmin(BasePermission):
             return True
         return (
             hasattr(request.user, "roles")
-            and request.user.roles.filter(
-                code__in=[RoleCode.ADMIN, RoleCode.PRINCIPAL]
-            ).exists()
+            and request.user.roles.filter(code__in=[RoleCode.ADMIN, RoleCode.PRINCIPAL]).exists()
         )
 
 
