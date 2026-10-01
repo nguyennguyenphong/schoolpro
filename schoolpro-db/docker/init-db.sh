@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # =====================================================================
 # DOCKER DATABASE INITIALIZATION RUNNER
 # Executes all schema definitions, tables, triggers, views, and seed data

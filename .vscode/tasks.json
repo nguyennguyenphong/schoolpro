@@ -4,7 +4,7 @@
     {
       "label": "exe db",
       "type": "shell",
-      "command": "docker compose -f schoolpro-db/docker-compose.yml up -d && echo \"\n=======================================================\n🚀 PostgreSQL & pgAdmin đã được khởi động thành công!\n=======================================================\n📌 THÔNG TIN KẾT NỐI TRÊN PGADMIN / DBEAVER:\n   • Host name / address : localhost (hoặc 'postgres' nếu trong docker)\n   • Port                : 5432\n   • Maintenance database: schoolpro\n   • Username            : postgres\n   • Password            : password123\n-------------------------------------------------------\n🌐 PGADMIN WEB UI (Mở trên trình duyệt):\n   • URL                 : http://localhost:5050\n   • Email đăng nhập     : admin@schoolpro.edu.vn\n   • Mật khẩu            : admin\n   • Server sẵn có       : Đã tự động cấu hình sẵn server 'SchoolPro'\n=======================================================\n\"",
+      "command": "bash scripts/exe-db.sh",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -80,7 +80,7 @@
     {
       "label": "exe db:reset",
       "type": "shell",
-      "command": "docker compose -f schoolpro-db/docker-compose.yml down -v && docker compose -f schoolpro-db/docker-compose.yml up -d && echo '🔄 Đã reset và nạp lại toàn bộ 67 bảng CSDL thành công!'",
+      "command": "bash scripts/exe-db-reset.sh",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
