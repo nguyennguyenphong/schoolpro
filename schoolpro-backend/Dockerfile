@@ -57,7 +57,7 @@ EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8000/admin/ || exit 1
+    CMD curl -f http://localhost:8000/api/health/ || exit 1
 
 # Default entrypoint for web API
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--threads", "2", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-"]

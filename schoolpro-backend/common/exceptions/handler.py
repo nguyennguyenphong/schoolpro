@@ -22,17 +22,17 @@ def custom_exception_handler(exc, context):
 
     if response is not None:
         errors = response.data
-        message = "Yêu cầu không hợp lệ"
+        message = "Invalid request"
         error_code = "VALIDATION_ERROR"
 
         if isinstance(exc, ValidationError):
-            message = "Dữ liệu gửi lên không đúng định dạng hoặc thiếu trường bắt buộc."
+            message = "Validation error: payload contains invalid or missing required fields."
             error_code = "VALIDATION_ERROR"
         elif isinstance(exc, (AuthenticationFailed, NotAuthenticated)):
-            message = "Phiên đăng nhập không hợp lệ hoặc đã hết hạn."
+            message = "Authentication credentials were not provided or have expired."
             error_code = "UNAUTHORIZED"
         elif isinstance(exc, PermissionDenied):
-            message = "Bạn không có quyền thực hiện hành động này."
+            message = "You do not have permission to perform this action."
             error_code = "FORBIDDEN"
         elif hasattr(exc, "detail") and isinstance(exc.detail, str):
             message = exc.detail
@@ -52,7 +52,7 @@ def custom_exception_handler(exc, context):
                 "success": False,
                 "code": status.HTTP_500_INTERNAL_SERVER_ERROR,
                 "error_code": "INTERNAL_SERVER_ERROR",
-                "message": "Hệ thống gặp sự cố trong quá trình xử lý. Vui lòng thử lại sau.",
+                "message": "An internal server error occurred. Please try again later.",
                 "errors": [str(exc)] if hasattr(exc, "__str__") else [],
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,

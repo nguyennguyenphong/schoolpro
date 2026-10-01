@@ -13,7 +13,7 @@ class APIResponse:
     @staticmethod
     def success(
         data: Any = None,
-        message: str = "Thành công",
+        message: str = "Success",
         code: int = status.HTTP_200_OK,
         meta: dict | None = None,
         headers: dict | None = None,
@@ -31,7 +31,7 @@ class APIResponse:
     @staticmethod
     def created(
         data: Any = None,
-        message: str = "Tạo mới thành công",
+        message: str = "Created successfully",
         meta: dict | None = None,
         headers: dict | None = None,
     ) -> Response:
@@ -45,7 +45,7 @@ class APIResponse:
 
     @staticmethod
     def error(
-        message: str = "Đã xảy ra lỗi",
+        message: str = "An error occurred",
         code: int = status.HTTP_400_BAD_REQUEST,
         errors: Any = None,
         error_code: str | None = None,
