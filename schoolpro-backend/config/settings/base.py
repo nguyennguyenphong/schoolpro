@@ -131,7 +131,7 @@ SIMPLE_JWT = {
 # DRF Spectacular (OpenAPI 3 / Swagger)
 SPECTACULAR_SETTINGS = {
     "TITLE": "SchoolPro Management API",
-    "DESCRIPTION": "Hệ thống quản lý trường học toàn diện SchoolPro (Modular Monolith)",
+    "DESCRIPTION": "Comprehensive School Management Platform (Modular Monolith API)",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,

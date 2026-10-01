@@ -1,2 +1,27 @@
-.venv
+# Python & Django environment
+.venv/
+venv/
+env/
 .env
+.env.*
+!.env.example
+
+# Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# SQLite & Media
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+staticfiles/
+media/
+
+# OS & Editor
+.DS_Store
+*.log
