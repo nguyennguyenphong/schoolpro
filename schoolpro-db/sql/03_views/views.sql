@@ -131,7 +131,7 @@ SELECT
   t.name AS track_name,
   t.career_orientation,
   homeroom_u.full_name AS homeroom_teacher_name,
-  homeroom_t.phone AS homeroom_teacher_phone,
+  homeroom_u.phone AS homeroom_teacher_phone,
   (SELECT COUNT(*) FROM core.club_members cm WHERE cm.student_id = s.id AND cm.status = 'ACTIVE') AS active_clubs_count,
   (SELECT COUNT(*) FROM emulation.awards aw WHERE aw.student_id = s.id) AS awards_count,
   (SELECT COUNT(*) FROM academic.student_fee_bills fb WHERE fb.student_id = s.id AND fb.payment_status = 'UNPAID') AS unpaid_fee_bills_count

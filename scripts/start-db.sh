@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Runner script for 'exe db' task in SchoolPro
+# Starts PostgreSQL 16 & pgAdmin 4 in Docker containers
 # ==============================================================================
 set -e
 

@@ -2,9 +2,14 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "exe db",
+      "label": "🗄️ Database: Start PostgreSQL & pgAdmin",
       "type": "shell",
-      "command": "bash scripts/exe-db.sh",
+      "command": "bash scripts/start-db.sh",
+      "detail": "Starts PostgreSQL 16 on port 5433 and pgAdmin 4 on port 5050 in background Docker containers",
+      "icon": {
+        "id": "database",
+        "color": "terminal.ansiCyan"
+      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -18,9 +23,14 @@
       }
     },
     {
-      "label": "exe backend",
+      "label": "🚀 Backend: Start Django API Server",
       "type": "shell",
       "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py runserver 0.0.0.0:8000",
+      "detail": "Activates Python 3.13 venv and boots Django development server on http://localhost:8000",
+      "icon": {
+        "id": "server-process",
+        "color": "terminal.ansiGreen"
+      },
       "problemMatcher": [],
       "isBackground": true,
       "presentation": {
@@ -35,9 +45,14 @@
       }
     },
     {
-      "label": "exe frontend",
+      "label": "🎨 Frontend: Start Vite React Dev Server",
       "type": "shell",
       "command": "cd schoolpro-frontend && npm run dev",
+      "detail": "Starts Vite React 19 development server on http://localhost:5173",
+      "icon": {
+        "id": "browser",
+        "color": "terminal.ansiYellow"
+      },
       "problemMatcher": [],
       "isBackground": true,
       "presentation": {
@@ -52,9 +67,14 @@
       }
     },
     {
-      "label": "exe check",
+      "label": "🔍 Quality: Run Full System Check",
       "type": "shell",
-      "command": "bash scripts/exe-check.sh",
+      "command": "bash scripts/check-all.sh",
+      "detail": "Runs Oxlint, TypeScript (tsc -b), Django system check, and Ruff linting",
+      "icon": {
+        "id": "check-all",
+        "color": "terminal.ansiBlue"
+      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -68,9 +88,14 @@
       }
     },
     {
-      "label": "exe db:stop",
+      "label": "🛑 Database: Stop Services",
       "type": "shell",
       "command": "docker compose -f schoolpro-db/docker-compose.yml down && echo 'Stopped PostgreSQL & pgAdmin containers.'",
+      "detail": "Gracefully stops and removes PostgreSQL & pgAdmin Docker containers",
+      "icon": {
+        "id": "debug-stop",
+        "color": "terminal.ansiRed"
+      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -78,9 +103,14 @@
       }
     },
     {
-      "label": "exe db:reset",
+      "label": "🔄 Database: Reset & Re-seed Tables",
       "type": "shell",
-      "command": "bash scripts/exe-db-reset.sh",
+      "command": "bash scripts/reset-db.sh",
+      "detail": "Clears persistent volumes and re-initializes all 90 tables and initial seed data",
+      "icon": {
+        "id": "refresh",
+        "color": "terminal.ansiMagenta"
+      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

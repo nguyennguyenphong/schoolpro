@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Runner script for 'exe db:reset' task in SchoolPro
+# Wipes database volumes and re-seeds all schemas and initial data
 # ==============================================================================
 set -e
 

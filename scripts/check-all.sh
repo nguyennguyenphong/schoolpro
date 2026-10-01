@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Runner script for 'exe check' task in SchoolPro
-# Performs end-to-end linting, typing, and validation across all projects
+# Full repository syntax, typing, and system verification runner
 # ==============================================================================
 set -e
 

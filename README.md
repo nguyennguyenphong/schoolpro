@@ -32,14 +32,14 @@ schoolpro/
 
 Press `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS) -> Select **Tasks: Run Task**:
 
-| Task Name | Description | Command Under the Hood |
+| Task | Description | Command Under the Hood |
 | :--- | :--- | :--- |
-| **`exe db`** | Starts PostgreSQL 16 & pgAdmin 4 with auto-mounted tables | `docker compose up -d postgres pgadmin` |
-| **`exe backend`** | Activates `.venv` and boots Django development server | `python manage.py runserver 0.0.0.0:8000` |
-| **`exe frontend`** | Starts Vite development server at `http://localhost:5173` | `npm run dev` |
-| **`exe check`** | Runs full static analysis for backend (Ruff & Django) & frontend (Oxlint & TSC) | Automated multi-project validation |
-| **`exe db:stop`** | Gracefully stops database containers | `docker compose stop postgres pgadmin` |
-| **`exe db:reset`** | Clears persistent volumes & re-initializes all 67 tables | `docker compose down -v && docker compose up -d` |
+| **`🗄️ Database: Start PostgreSQL & pgAdmin`** | Starts PostgreSQL 16 & pgAdmin 4 in Docker containers on port 5433 | `bash scripts/start-db.sh` |
+| **`🚀 Backend: Start Django API Server`** | Activates `.venv` and boots Django development server | `python manage.py runserver 0.0.0.0:8000` |
+| **`🎨 Frontend: Start Vite React Dev Server`** | Starts Vite development server at `http://localhost:5173` | `npm run dev` |
+| **`🔍 Quality: Run Full System Check`** | Runs full static analysis for backend (Ruff & Django) & frontend (Oxlint & TSC) | `bash scripts/check-all.sh` |
+| **`🛑 Database: Stop Services`** | Gracefully stops database containers | `docker compose -f schoolpro-db/docker-compose.yml down` |
+| **`🔄 Database: Reset & Re-seed Tables`** | Clears persistent volumes & re-initializes all 90 tables & seed data | `bash scripts/reset-db.sh` |
 
 ---
 
