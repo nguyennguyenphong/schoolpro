@@ -2,10 +2,11 @@
 Repository layer for Modules, Role Modules, and User Module Preferences.
 """
 
-from typing import Any
 import uuid
+from typing import Any
 
 from django.db.models import QuerySet
+from django.utils import timezone
 
 from apps.system.models.module import Module, RoleModule
 from apps.system.models.preference import UserModulePreference
@@ -29,7 +30,6 @@ class ModuleRepository(BaseRepository[Module]):
     def create_module(self, **data) -> Module:
         if "id" not in data:
             data["id"] = uuid.uuid4()
-        from django.utils import timezone
         if "created_at" not in data:
             data["created_at"] = timezone.now()
         return Module.objects.create(**data)
@@ -53,11 +53,7 @@ class RoleModuleRepository(BaseRepository[RoleModule]):
         super().__init__(RoleModule)
 
     def get_modules_by_role_id(self, role_id: str | uuid.UUID) -> QuerySet[RoleModule]:
-        return (
-            self.filter(role_id=role_id)
-            .select_related("module")
-            .order_by("order_no")
-        )
+        return self.filter(role_id=role_id).select_related("module").order_by("order_no")
 
     def get_by_role_and_module(
         self, role_id: str | uuid.UUID, module_id: str | uuid.UUID

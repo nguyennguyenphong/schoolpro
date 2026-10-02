@@ -4,11 +4,10 @@ Views for System Modules, Dynamic Dashboard Cards, and Admin Module Management.
 
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import permissions, status, viewsets
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.core.authentication import SchoolProJWTAuthentication
-from apps.system.models.module import Module, RoleModule
+from apps.system.models.module import Module
 from apps.system.serializers.module_serializers import (
     ModuleCreateUpdateSerializer,
     ModuleSerializer,
@@ -241,7 +240,9 @@ class AdminRoleModuleViewSet(viewsets.ViewSet):
     @extend_schema(
         summary="Admin: List role module mappings",
         parameters=[
-            OpenApiParameter(name="role_id", type=str, description="Filter by role UUID", required=False)
+            OpenApiParameter(
+                name="role_id", type=str, description="Filter by role UUID", required=False
+            )
         ],
         responses={200: RoleModuleDetailSerializer(many=True)},
     )

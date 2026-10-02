@@ -4,13 +4,11 @@ Full CRUD & Management support.
 """
 
 from typing import Any
-import uuid
 
 from rest_framework import serializers
 
 from apps.core.models.role import Role
 from apps.system.models.module import Module, RoleModule
-from apps.system.models.preference import UserModulePreference
 
 
 class ModuleSerializer(serializers.ModelSerializer):
@@ -73,7 +71,9 @@ class ModuleCreateUpdateSerializer(serializers.ModelSerializer):
         if instance:
             qs = qs.exclude(id=instance.id)
         if qs.exists():
-            raise serializers.ValidationError(f"Mã module '{clean_code}' đã tồn tại trong hệ thống.")
+            raise serializers.ValidationError(
+                f"Mã module '{clean_code}' đã tồn tại trong hệ thống."
+            )
         return clean_code
 
     def validate_module_type(self, value: str) -> str:
@@ -83,9 +83,18 @@ class ModuleCreateUpdateSerializer(serializers.ModelSerializer):
         return value
 
     def validate_category(self, value: str) -> str:
-        valid_cats = ["ACADEMIC", "EMULATION", "EVALUATION", "COMMUNICATION", "MANAGEMENT", "UTILITY"]
+        valid_cats = [
+            "ACADEMIC",
+            "EMULATION",
+            "EVALUATION",
+            "COMMUNICATION",
+            "MANAGEMENT",
+            "UTILITY",
+        ]
         if value not in valid_cats:
-            raise serializers.ValidationError(f"Danh mục module phải thuộc: {', '.join(valid_cats)}")
+            raise serializers.ValidationError(
+                f"Danh mục module phải thuộc: {', '.join(valid_cats)}"
+            )
         return value
 
 
@@ -135,7 +144,9 @@ class RoleModuleAssignSerializer(serializers.Serializer):
     is_pinned_default = serializers.BooleanField(required=False, default=False)
     order_no = serializers.IntegerField(required=False, default=0, min_value=0)
     grid_col_span = serializers.IntegerField(required=False, default=1, min_value=1, max_value=12)
-    custom_badge = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=50)
+    custom_badge = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=50
+    )
     config = serializers.JSONField(required=False, default=dict)
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
@@ -186,7 +197,9 @@ class UpdateUserModulePreferenceSerializer(serializers.Serializer):
     is_pinned = serializers.BooleanField(required=False, default=None)
     is_hidden = serializers.BooleanField(required=False, default=None)
     order_no = serializers.IntegerField(required=False, default=None, min_value=0)
-    custom_config = serializers.DictField(required=False, default=None, child=serializers.CharField())
+    custom_config = serializers.DictField(
+        required=False, default=None, child=serializers.CharField()
+    )
 
 
 class ReorderUserModulesSerializer(serializers.Serializer):

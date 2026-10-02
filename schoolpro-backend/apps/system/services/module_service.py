@@ -3,8 +3,8 @@ Business Logic Service for System Modules and Role-based Dynamic Dashboard Cards
 """
 
 import logging
-from typing import Any
 import uuid
+from typing import Any
 
 from django.db import connection
 
@@ -107,7 +107,9 @@ class ModuleService:
     # ADMIN CRUD OPERATIONS FOR MODULES (sys.modules)
     # -------------------------------------------------------------------------
 
-    def list_all_modules(self, category: str | None = None, is_active: bool | None = None) -> list[Module]:
+    def list_all_modules(
+        self, category: str | None = None, is_active: bool | None = None
+    ) -> list[Module]:
         """Admin list of all registered modules."""
         qs = self.module_repo.get_queryset()
         if category:
@@ -210,18 +212,12 @@ class ModuleService:
 
         # Fallback to user's assigned primary role in core.user_roles
         primary_ur = (
-            UserRole.objects.filter(user=user, is_primary=True)
-            .select_related("role")
-            .first()
+            UserRole.objects.filter(user=user, is_primary=True).select_related("role").first()
         )
         if primary_ur and primary_ur.role:
             return primary_ur.role
 
-        first_ur = (
-            UserRole.objects.filter(user=user)
-            .select_related("role")
-            .first()
-        )
+        first_ur = UserRole.objects.filter(user=user).select_related("role").first()
         if first_ur and first_ur.role:
             return first_ur.role
 
@@ -329,8 +325,7 @@ class ModuleService:
 
         # Get user personalized overrides
         user_prefs = {
-            pref.module_id: pref
-            for pref in UserModulePreference.objects.filter(user_id=user_id)
+            pref.module_id: pref for pref in UserModulePreference.objects.filter(user_id=user_id)
         }
 
         cards = []
@@ -345,9 +340,7 @@ class ModuleService:
                 continue
 
             is_pinned = (
-                pref.is_pinned
-                if pref and pref.is_pinned is not None
-                else rm.is_pinned_default
+                pref.is_pinned if pref and pref.is_pinned is not None else rm.is_pinned_default
             )
             order_no = (
                 pref.order_no

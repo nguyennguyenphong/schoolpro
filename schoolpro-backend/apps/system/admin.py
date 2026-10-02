@@ -7,13 +7,25 @@ from django.contrib import admin
 
 from apps.system.models.module import Module, RoleModule
 from apps.system.models.preference import UserModulePreference
-from apps.system.models.setting import RoleSettingsDefault, SettingsDefinition, SystemSetting, UserSetting
+from apps.system.models.setting import (
+    RoleSettingsDefault,
+    SettingsDefinition,
+    SystemSetting,
+    UserSetting,
+)
 
 
 class RoleModuleInline(admin.TabularInline):
     model = RoleModule
     extra = 1
-    fields = ["role_id", "is_visible", "is_pinned_default", "order_no", "grid_col_span", "custom_badge"]
+    fields = [
+        "role_id",
+        "is_visible",
+        "is_pinned_default",
+        "order_no",
+        "grid_col_span",
+        "custom_badge",
+    ]
 
 
 @admin.register(Module)

@@ -2,8 +2,8 @@
 Unit tests for ModuleService and dynamic role card resolution.
 """
 
-from unittest.mock import MagicMock, patch
 import uuid
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -80,12 +80,16 @@ class TestModuleService:
         sample_mod.id = uuid.uuid4()
         sample_mod.code = "MOD_TEST_001"
 
-        with patch.object(service.module_repo, "create_module", return_value=sample_mod) as mock_create:
+        with patch.object(
+            service.module_repo, "create_module", return_value=sample_mod
+        ) as mock_create:
             created = service.create_module(code="MOD_TEST_001", name="Test Module")
             assert created.code == "MOD_TEST_001"
             mock_create.assert_called_once()
 
-        with patch.object(service, "get_module_by_id", return_value=sample_mod), \
-             patch.object(service.module_repo, "delete_module") as mock_del:
+        with (
+            patch.object(service, "get_module_by_id", return_value=sample_mod),
+            patch.object(service.module_repo, "delete_module") as mock_del,
+        ):
             service.delete_module(sample_mod.id)
             mock_del.assert_called_once_with(sample_mod)
