@@ -42,6 +42,10 @@ def custom_exception_handler(exc, context):
                 else "You do not have permission to perform this action."
             )
             error_code = "FORBIDDEN"
+        elif hasattr(exc, "default_code"):
+            error_code = str(exc.default_code).upper()
+            if hasattr(exc, "detail") and isinstance(exc.detail, str):
+                message = exc.detail
         elif hasattr(exc, "detail") and isinstance(exc.detail, str):
             message = exc.detail
 
