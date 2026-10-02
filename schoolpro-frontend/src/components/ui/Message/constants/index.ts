@@ -1,0 +1,3 @@
+export const DEFAULT_MESSAGE_DURATION = 3;
+export const DEFAULT_MESSAGE_MAX_COUNT = 3;
+export const DEFAULT_MESSAGE_TOP = 24;

@@ -1,0 +1,4 @@
+export const DEFAULT_NOTIFICATION_DURATION = 4.5;
+export const DEFAULT_NOTIFICATION_PLACEMENT = "topRight" as const;
+export const DEFAULT_NOTIFICATION_TOP = 24;
+export const DEFAULT_NOTIFICATION_BOTTOM = 24;

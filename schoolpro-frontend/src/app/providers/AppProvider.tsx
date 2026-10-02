@@ -23,6 +23,9 @@ export const AppProvider: React.FC = () => {
           Dropdown: {
             borderRadiusLG: 6,
           },
+          Modal: {
+            borderRadiusLG: 8,
+          },
         },
       }}
     >

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import { Avatar, message } from "antd";
+import { Avatar, message, Modal } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
@@ -31,9 +31,24 @@ export const StudentLayout: React.FC = () => {
   const studentFaculty = "Khoa CNTT • KTPM K23";
 
   const handleLogout = () => {
-    logout();
-    message.success(t("common:status.success"));
-    navigate("/login");
+    Modal.confirm({
+      title: "Xác nhận đăng xuất",
+      content: "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?",
+      onOk: () => {
+        logout();
+        message.success(t("common:status.success"));
+        navigate("/login");
+      },
+      onCancel: () => {
+        console.log('Cancel');
+      },
+      footer: (_, { OkBtn, CancelBtn }) => (
+        <>
+          <CancelBtn />
+          <OkBtn />
+        </>
+      ),
+    });
   };
 
   const navItems: StudentNavItem[] = [
