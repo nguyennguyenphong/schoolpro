@@ -121,6 +121,17 @@ class AuthService {
   }
 
   /**
+   * Refreshes access token using an active refresh token.
+   */
+  async refreshToken(refreshToken: string): Promise<string> {
+    const response = await httpClient.post<ApiResponse<{ access: string; expires_in?: number }>>(
+      "/core/auth/refresh/",
+      { refresh: refreshToken }
+    );
+    return response.data.data.access;
+  }
+
+  /**
    * Fetch current authenticated user profile and active role.
    */
   async getCurrentUser(): Promise<{ user: AuthUser; active_role?: AuthRole }> {

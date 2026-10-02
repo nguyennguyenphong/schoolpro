@@ -2,6 +2,7 @@ import React from "react";
 import { ConfigProvider } from "antd";
 import { AppRouter } from "@/app/routers/AppRouter";
 import { useLanguage } from "@/i18n";
+import { IdleTimerWatcher } from "@/shared/components/IdleTimerWatcher";
 
 export const AppProvider: React.FC = () => {
   const { antdLocale, dir } = useLanguage();
@@ -29,6 +30,7 @@ export const AppProvider: React.FC = () => {
         },
       }}
     >
+      <IdleTimerWatcher />
       <AppRouter />
     </ConfigProvider>
   );

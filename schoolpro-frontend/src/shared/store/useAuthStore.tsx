@@ -26,6 +26,7 @@ interface AuthState {
     role?: AuthRole | null;
     remember?: boolean;
   }) => void;
+  setAccessToken: (token: string) => void;
   // Backward compatibility method
   login: (role: string, token: string) => void;
   logout: () => void;
@@ -108,6 +109,18 @@ export const useAuthStore = create<AuthState>((set) => ({
       },
       isInitialized: true,
     });
+  },
+
+  setAccessToken: (token: string) => {
+    // Determine whether token was stored in local or session storage
+    const isSession = !!sessionStorage.getItem(STORAGE_KEYS.ACCESS);
+    if (isSession) {
+      sessionStorage.setItem(STORAGE_KEYS.ACCESS, token);
+    } else {
+      localStorage.setItem(STORAGE_KEYS.ACCESS, token);
+    }
+
+    set({ accessToken: token });
   },
 
   login: (role, token) => {
