@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Form, message } from "antd";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
 import { OTP } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { message } from "@/components/ui/Message";
+import { Form } from "antd/lib";
 
 interface VerifyOtpFormValues {
   otp: string;

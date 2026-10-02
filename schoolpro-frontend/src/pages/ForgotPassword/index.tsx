@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Form, message } from "antd";
+import { Form } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { message } from "@/components/ui/Message";
 
 interface ForgotPasswordFormValues {
   identifier: string;

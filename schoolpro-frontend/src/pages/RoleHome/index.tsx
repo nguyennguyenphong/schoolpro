@@ -1,10 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Card, Tag, message } from "antd";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon";
+import { Card } from "@/components/ui/Card";
+import { Tag } from "@/components/ui/Tag";
+import { message } from "@/components/ui/Message";
+import { Avatar } from "@/components/ui/Avatar";
 
 interface RoleHomeProps {
   roleTitle: string;

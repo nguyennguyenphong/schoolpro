@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, message } from "antd";
+import { Form } from "antd";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
@@ -11,6 +11,7 @@ import { SelectRole } from "@/components/roles/SelectRole";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { authService } from "@/shared/services/authService";
 import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
+import { message } from "@/components/ui/Message";
 
 interface LoginFormValues {
   role: string;
