@@ -1,3 +1,5 @@
+import type { IconName } from "@/components/ui/Icon/types";
+
 export interface StudentProfile {
   id: string;
   code: string;
@@ -12,42 +14,48 @@ export interface StudentProfile {
   avatarUrl: string;
 }
 
-export type FeatureIconName =
-  | "info"
-  | "check"
-  | "edit"
-  | "file"
-  | "settings"
-  | "user"
-  | "book"
-  | "download"
-  | "calendar"
-  | "clock"
-  | "chart";
+export type FeatureIconName = IconName | (string & {});
+
+export interface BackendDashboardCard {
+  id: string;
+  module_id: string;
+  code: string;
+  name: string;
+  short_name?: string | null;
+  description?: string | null;
+  icon: string;
+  icon_name: string;
+  icon_bg_color?: string | null;
+  icon_color?: string | null;
+  route: string;
+  module_type: string;
+  category: string;
+  translation_key?: string | null;
+  badge_count?: number | null;
+  badge_color?: string | null;
+  badge_text?: string | null;
+  is_pinned: boolean;
+  is_hidden: boolean;
+  order_no: number;
+  config?: Record<string, unknown> | null;
+}
 
 export interface FeatureItem {
   id: string;
-  translationKey:
-    | "announcements"
-    | "reminders"
-    | "timetable"
-    | "assignments"
-    | "exams"
-    | "gradebook"
-    | "materials"
-    | "attendance"
-    | "contactBook"
-    | "emulation"
-    | "fees"
-    | "evaluations"
-    | "discussions";
+  code?: string;
+  name?: string;
+  description?: string;
+  translationKey?: string;
   iconName: FeatureIconName;
   iconBgColor: string;
   iconColor: string;
   badgeKey?: string;
   badgeCount?: number;
-  badgeColor?: "blue" | "green" | "gold" | "red" | "purple" | "cyan";
+  badgeColor?: "blue" | "green" | "gold" | "red" | "purple" | "cyan" | string;
+  badgeText?: string;
   route?: string;
+  isPinned?: boolean;
+  orderNo?: number;
 }
 
 export interface HomeData {

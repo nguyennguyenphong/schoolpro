@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
+import { iconMap } from "@/components/ui/Icon/icons";
+import type { IconName } from "@/components/ui/Icon/types";
 import type { FeatureItem } from "@/modules/students/features/home/types";
 
 interface FunctionalCardItemProps {
@@ -14,26 +17,55 @@ export const FunctionalCardItem: React.FC<FunctionalCardItemProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation(["student"]);
+  const navigate = useNavigate();
 
-  const title = (t as (key: string) => string)(
-    `student:features.${item.translationKey}.title`,
-  );
-  const description = (t as (key: string) => string)(
-    `student:features.${item.translationKey}.description`,
-  );
+  const fallbackTitle = item.name || item.code || "";
+  const fallbackDesc = item.description || "";
+
+  const title = item.translationKey
+    ? (t as (key: string, options?: { defaultValue: string }) => string)(
+        `student:features.${item.translationKey}.title`,
+        { defaultValue: fallbackTitle }
+      )
+    : fallbackTitle;
+
+  const description = item.translationKey
+    ? (t as (key: string, options?: { defaultValue: string }) => string)(
+        `student:features.${item.translationKey}.description`,
+        { defaultValue: fallbackDesc }
+      )
+    : fallbackDesc;
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    }
+    if (item.route && item.route.startsWith("/")) {
+      e.preventDefault();
+      navigate(item.route);
+    }
+  };
+
+  // Safely resolve valid IconName, fallback to 'info'
+  const resolvedIconName: IconName =
+    item.iconName && item.iconName in iconMap
+      ? (item.iconName as IconName)
+      : "info";
 
   return (
-    <a href={item.route} rel="noopener noreferrer" className="block h-full">
-      <Card
-        onClick={onClick}
-        className="h-full border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all duration-200 cursor-pointer group bg-white relative overflow-hidden rounded-xl [&>.ant-card-body]:p-5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between"
-      >
+    <a
+      href={item.route || "#"}
+      onClick={handleCardClick}
+      rel="noopener noreferrer"
+      className="block h-full no-underline"
+    >
+      <Card className="h-full border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all duration-200 cursor-pointer group bg-white relative overflow-hidden rounded-xl [&>.ant-card-body]:p-5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between">
         <div>
           <div className="flex items-start justify-between gap-3 mb-3">
             <div
               className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs ${item.iconBgColor} ${item.iconColor}`}
             >
-              <Icon name={item.iconName} size={21} />
+              <Icon name={resolvedIconName} size={21} />
             </div>
           </div>
 
