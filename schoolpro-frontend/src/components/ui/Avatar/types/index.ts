@@ -1,8 +1,11 @@
 import type { AvatarProps as AntAvatarProps } from "antd";
-import type { AvatarGroupProps as AntAvatarGroupProps } from "antd/es/avatar";
+import type {
+  AvatarGroupProps as AntAvatarGroupProps,
+  AvatarGroupRef,
+} from "antd/es/avatar/AvatarGroup";
 import type { AvatarShape } from "@/components/ui/Avatar/constants";
 
-export type { AvatarGroupRef } from "antd/es/avatar";
+export type { AvatarGroupRef };
 export type { AvatarShape } from "@/components/ui/Avatar/constants";
 
 export interface AvatarProps extends AntAvatarProps {

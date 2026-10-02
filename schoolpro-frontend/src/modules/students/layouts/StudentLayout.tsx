@@ -197,6 +197,8 @@ export const StudentLayout: React.FC = () => {
             <Input
               prefix={<Icon name="search" size={15} className="text-slate-400 mr-1.5" />}
               placeholder={t("student:header.searchPlaceholder")}
+              name="search"
+              allowClear
               className="rounded-lg bg-slate-50/80 border-slate-200 hover:border-blue-400 focus:bg-white w-full text-xs"
             />
           </div>
