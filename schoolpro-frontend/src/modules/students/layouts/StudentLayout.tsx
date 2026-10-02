@@ -1,10 +1,9 @@
 import React from "react";
-import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { Avatar, message, Modal } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
-import type { IconName } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
@@ -12,18 +11,10 @@ import { Tag } from "@/components/ui/Tag";
 import { LanguageSwitcher } from "@/i18n";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 
-interface StudentNavItem {
-  key: string;
-  label: string;
-  path: string;
-  icon: IconName;
-  onClick?: () => void;
-}
 
 export const StudentLayout: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, logout } = useAuthStore();
 
   const studentName = user?.name || "Nguyễn Văn An";
@@ -50,75 +41,6 @@ export const StudentLayout: React.FC = () => {
       ),
     });
   };
-
-  const navItems: StudentNavItem[] = [
-    {
-      key: "home",
-      label: t("student:home.title"),
-      path: "/student/home",
-      icon: "book" as const,
-    },
-    {
-      key: "dashboard",
-      label: t("student:dashboard.title"),
-      path: "/student/dashboard",
-      icon: "chart" as const,
-    },
-    {
-      key: "timetable",
-      label: t("student:features.timetable.title"),
-      path: "/student/timetable",
-      icon: "calendar" as const,
-    },
-    {
-      key: "attendance",
-      label: t("student:features.attendance.title"),
-      path: "/student/attendance",
-      icon: "userCheck" as const,
-    },
-    {
-      key: "contactBook",
-      label: t("student:features.contactBook.title", "Sổ liên lạc"),
-      path: "/student/contact-book",
-      icon: "fileText" as const,
-    },
-    {
-      key: "notices",
-      label: t("student:features.announcements.title"),
-      path: "/student/notices",
-      icon: "info" as const,
-    },
-    {
-      key: "assignments",
-      label: t("student:features.assignments.title"),
-      path: "/student/assignments",
-      icon: "edit" as const,
-    },
-    {
-      key: "materials",
-      label: t("student:features.materials.title"),
-      path: "/student/materials",
-      icon: "download" as const,
-    },
-    {
-      key: "gradebook",
-      label: t("student:features.gradebook.title"),
-      path: "/student/gradebook",
-      icon: "chart" as const,
-    },
-    {
-      key: "exams",
-      label: t("student:features.exams.title", "Khảo thí & Đề thi"),
-      path: "/student/exams",
-      icon: "fileText" as const,
-    },
-    {
-      key: "evaluations",
-      label: t("student:features.evaluations.title"),
-      path: "/student/evaluations",
-      icon: "checkCircle" as const,
-    },
-  ];
 
   const userMenuItems: MenuProps["items"] = [
     {
@@ -253,54 +175,12 @@ export const StudentLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* 2. Sub-Navigation Bar (Bordered) */}
-      <nav aria-label="Student portal navigation" className="bg-white border-b border-slate-200 overflow-x-auto shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-1.5 py-2">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-
-            if (item.onClick) {
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={item.onClick}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all border border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50 cursor-pointer"
-                >
-                  <Icon name={item.icon} size={14} className="text-slate-400" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            }
-
-            return (
-              <Link
-                key={item.key}
-                to={item.path}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all no-underline ${
-                  isActive
-                    ? "border border-blue-300 bg-blue-50 text-blue-700 shadow-2xs"
-                    : "border border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50"
-                }`}
-              >
-                <Icon
-                  name={item.icon}
-                  size={14}
-                  className={isActive ? "text-blue-600" : "text-slate-400"}
-                />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      {/* 3. Main Content Area */}
+      {/* 2. Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Outlet />
       </main>
 
-      {/* 4. Footer (Bordered) */}
+      {/* 3. Footer (Bordered) */}
       <footer className="bg-white border-t border-slate-200 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
           <div className="flex items-center gap-2">
