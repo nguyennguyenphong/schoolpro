@@ -365,7 +365,7 @@ class Student(models.Model):
 
 ### 5.3 API URL Naming
 
-```python
+```text
 # ✅ ĐÚNG - Plural nouns, lowercase
 GET    /api/v1/students/                          # List
 POST   /api/v1/students/                          # Create

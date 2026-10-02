@@ -29,10 +29,18 @@ def custom_exception_handler(exc, context):
             message = "Validation error: payload contains invalid or missing required fields."
             error_code = "VALIDATION_ERROR"
         elif isinstance(exc, (AuthenticationFailed, NotAuthenticated)):
-            message = str(exc.detail) if hasattr(exc, "detail") and exc.detail else "Authentication credentials were not provided or have expired."
+            message = (
+                str(exc.detail)
+                if hasattr(exc, "detail") and exc.detail
+                else "Authentication credentials were not provided or have expired."
+            )
             error_code = "UNAUTHORIZED"
         elif isinstance(exc, PermissionDenied):
-            message = str(exc.detail) if hasattr(exc, "detail") and exc.detail else "You do not have permission to perform this action."
+            message = (
+                str(exc.detail)
+                if hasattr(exc, "detail") and exc.detail
+                else "You do not have permission to perform this action."
+            )
             error_code = "FORBIDDEN"
         elif hasattr(exc, "detail") and isinstance(exc.detail, str):
             message = exc.detail

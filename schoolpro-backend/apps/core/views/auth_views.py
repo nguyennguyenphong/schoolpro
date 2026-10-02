@@ -81,6 +81,7 @@ class AuthMeView(APIView):
         role_code = getattr(user, "active_role_code", None)
 
         from apps.core.models.role import Role
+
         active_role = Role.objects.filter(code=role_code).first() if role_code else None
 
         data = {

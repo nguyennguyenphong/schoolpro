@@ -936,19 +936,20 @@ ON CONFLICT (user_id, setting_id) DO UPDATE SET
 -- Codes: MOD_STT_839201, MOD_SMA_748292...
 -- ---------------------------------------------------------------------
 INSERT INTO sys.modules (code, name, short_name, description, icon, route, module_type, category, default_color, default_badge) VALUES
-  ('MOD_STT_839201', 'Thời khóa biểu 360',        'TKB',        'Tra cứu lịch học tuần, ca sáng/chiều, phòng học và giảng viên', 'calendar',   '/student/timetable',    'CARD', 'ACADEMIC',      '#3B82F6', 'Hôm nay'),
-  ('MOD_SMA_748292', 'Tài liệu môn học',          'Tài liệu',   'Giáo trình điện tử, slide bài giảng, đề cương ôn tập tải về',   'download',   '/student/materials',    'CARD', 'ACADEMIC',      '#10B981', 'Mới'),
-  ('MOD_SAS_659183', 'Bài tập & Đồ án',           'Bài tập',    'Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét GV',    'edit',       '/student/assignments',  'CARD', 'ACADEMIC',      '#F59E0B', 'Đến hạn'),
-  ('MOD_SEX_568294', 'Bài kiểm tra & Phòng thi',  'Kiểm tra',   'Lịch thi định kỳ, trắc nghiệm trực tuyến, số báo danh',         'file',       '/student/exams',        'CARD', 'ACADEMIC',      '#EC4899', 'Sắp tới'),
-  ('MOD_SRC_479105', 'Bảng điểm & Học bạ',        'Bảng điểm',  'Xem điểm thường xuyên, giữa kỳ, cuối kỳ và xếp loại học lực',   'chart',      '/student/dashboard',    'CARD', 'ACADEMIC',      '#8B5CF6', 'GPA'),
-  ('MOD_SRM_389216', 'Nhắc nhở học tập',          'Nhắc nhở',   'Hạn nộp bài, lịch trực nhật, lịch họp chi đoàn',                'clock',      '/student/reminders',    'CARD', 'COMMUNICATION', '#06B6D4', 'Việc cần làm'),
-  ('MOD_SAN_298307', 'Thông báo nhà trường',      'Thông báo',  'Tin tức chính thức từ BGH, Đoàn trường và Giáo viên chủ nhiệm', 'bell',       '/student/announcements','CARD', 'COMMUNICATION', '#EF4444', 'Tin mới'),
-  ('MOD_TEV_187498', 'Đánh giá Giáo viên',        'Đánh giá GV','Khảo sát chất lượng giờ dạy cuối kỳ (hoàn toàn ẩn danh)',       'star',       '/student/evaluations/teacher', 'CARD', 'EVALUATION', '#F97316', 'Khảo sát'),
+  ('MOD_STT_839201', 'Thời khóa biểu 360',        'TKB',        'Tra cứu lịch học tuần, ca sáng/chiều, phòng học và giảng viên', 'calendar',   '/student/timetable',    'CARD', 'ACADEMIC',      '#10B981', 'Hôm nay'),
+  ('MOD_SMA_748292', 'Tài liệu môn học',          'Tài liệu',   'Giáo trình điện tử, slide bài giảng, đề cương ôn tập tải về',   'download',   '/student/materials',    'CARD', 'ACADEMIC',      '#9333EA', '18'),
+  ('MOD_SAS_659183', 'Bài tập & Đồ án',           'Bài tập',    'Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét GV',    'edit',       '/student/assignments',  'CARD', 'ACADEMIC',      '#E11D48', '3'),
+  ('MOD_SEX_568294', 'Bài kiểm tra & Phòng thi',  'Kiểm tra',   'Lịch thi định kỳ, trắc nghiệm trực tuyến, số báo danh',         'file',       '/student/exams',        'CARD', 'ACADEMIC',      '#DB2777', 'Sắp tới'),
+  ('MOD_SRC_479105', 'Bảng điểm & Học bạ',        'Bảng điểm',  'Xem điểm thường xuyên, giữa kỳ, cuối kỳ và xếp loại học lực',   'chart',      '/student/gradebook',    'CARD', 'ACADEMIC',      '#7C3AED', 'GPA'),
+  ('MOD_SRM_389216', 'Nhắc nhở học tập',          'Nhắc nhở',   'Hạn nộp bài, lịch trực nhật, lịch họp chi đoàn',                'clock',      '/student/reminders',    'CARD', 'COMMUNICATION', '#CA8A04', '4'),
+  ('MOD_SAN_298307', 'Thông báo nhà trường',      'Thông báo',  'Tin tức chính thức từ BGH, Đoàn trường và Giáo viên chủ nhiệm', 'info',        '/student/notices',      'CARD', 'COMMUNICATION', '#3B82F6', '10'),
+  ('MOD_TEV_187498', 'Khảo sát & Đánh giá',       'Đánh giá',   'Khảo sát chất lượng giờ dạy cuối kỳ và đánh giá CSVC',          'edit',       '/student/evaluations',  'CARD', 'EVALUATION',    '#EA580C', 'Khảo sát'),
   ('MOD_FEV_976589', 'Đánh giá & Báo hỏng CSVC',  'Báo hỏng',   'Phản ánh tình trạng máy chiếu, quạt, bàn ghế phòng học',         'tool',       '/student/evaluations/facility','CARD', 'EVALUATION', '#64748B', 'Sửa chữa'),
-  ('MOD_EMU_865490', 'Thi đua cá nhân & Tổ lớp',  'Thi đua',    'Điểm nề nếp, điểm cộng học tập, xếp hạng thi đua trong lớp',    'award',      '/student/emulation',    'CARD', 'EMULATION',     '#EAB308', 'Hạng'),
-  ('MOD_SCB_754381', 'Sổ liên lạc điện tử',       'Sổ liên lạc','Xem phiếu nhận xét định kỳ từ GVCN và ký xác nhận',          'book-open',  '/student/contact-book', 'CARD', 'COMMUNICATION', '#0284C7', 'Mới'),
+  ('MOD_EMU_865490', 'Thi đua cá nhân & Tổ lớp',  'Thi đua',    'Điểm nề nếp, điểm cộng học tập, xếp hạng thi đua trong lớp',    'user',       '/student/emulation',    'CARD', 'EMULATION',     '#D97706', 'Hạng'),
+  ('MOD_SCB_754381', 'Sổ liên lạc điện tử',       'Sổ liên lạc','Xem phiếu nhận xét định kỳ từ GVCN và ký xác nhận',          'book',       '/student/contact-book', 'CARD', 'COMMUNICATION', '#0284C7', 'Mới'),
   ('MOD_SCL_643272', 'Câu lạc bộ & Ngoại khóa',   'CLB Đoàn',   'Đăng ký tham gia CLB, hoạt động tình nguyện, ngày hội STEM', 'users',      '/student/clubs',        'CARD', 'EMULATION',     '#8B5CF6', 'Hoạt động'),
-  ('MOD_SFE_532163', 'Học phí & Khoản thu',       'Học phí',    'Tra cứu hóa đơn học phí, bảo hiểm y tế và thanh toán online', 'credit-card','/student/fees',         'CARD', 'MANAGEMENT',    '#10B981', 'Học phí'),
+  ('MOD_SFE_532163', 'Học phí & Khoản thu',       'Học phí',    'Tra cứu hóa đơn học phí, bảo hiểm y tế và thanh toán online', 'settings',   '/student/fees',         'CARD', 'MANAGEMENT',    '#0D9488', 'Học phí'),
+  ('MOD_SAT_482910', 'Điểm danh chuyên cần',      'Điểm danh',  'Theo dõi tình trạng chuyên cần, vắng có phép, vắng không phép', 'check',      '/student/attendance',   'CARD', 'ACADEMIC',      '#06B6D4', 'Điểm danh'),
   ('MOD_STR_421054', 'Tổ hợp môn GDPT 2018',      'Tổ hợp môn', 'Thông tin ban học tập, cụm chuyên đề lựa chọn',               'layers',     '/student/track',        'CARD', 'ACADEMIC',      '#6366F1', 'Tổ hợp'),
   ('MOD_SOT_310945', 'Khảo thí Trắc nghiệm',      'Thi online', 'Làm bài kiểm tra trực tuyến, trắc nghiệm tính giờ',           'check-circle','/student/online-test', 'CARD', 'ACADEMIC',      '#F43F5E', 'Online'),
   ('MOD_TJR_209836', 'Sổ đầu bài điện tử',        'Sổ đầu bài', 'Ghi nhận bài học, sĩ số, nhận xét và xếp loại tiết học A/B/C/D','book',       '/teacher/journal',      'CARD', 'ACADEMIC',      '#10B981', 'Ký sổ'),
@@ -968,24 +969,48 @@ ON CONFLICT (code) DO UPDATE SET
 -- 37. SYS: Role - Module Mappings (sys.role_modules)
 -- ---------------------------------------------------------------------
 -- Student Role
+INSERT INTO sys.role_modules (role_id, module_id, is_visible, is_pinned_default, order_no, grid_col_span, custom_badge, config)
+SELECT
+  r.id,
+  m.id,
+  f.is_visible,
+  f.is_pinned,
+  f.order_no,
+  1,
+  f.custom_badge,
+  f.config
+FROM (
+  VALUES
+    ('MOD_SAN_298307', 1::smallint,  TRUE, TRUE,  '10', '{"id": "feat-notices", "translationKey": "announcements", "iconName": "info", "iconBgColor": "bg-blue-50 border border-blue-200", "iconColor": "text-blue-600", "badgeCount": 10, "badgeColor": "blue", "route": "/student/notices"}'::jsonb),
+    ('MOD_STT_839201', 2::smallint,  TRUE, TRUE,  NULL, '{"id": "feat-timetable", "translationKey": "timetable", "iconName": "calendar", "iconBgColor": "bg-emerald-50 border border-emerald-200", "iconColor": "text-emerald-600", "badgeColor": "green", "route": "/student/timetable"}'::jsonb),
+    ('MOD_SAS_659183', 3::smallint,  TRUE, TRUE,  '3',  '{"id": "feat-assignments", "translationKey": "assignments", "iconName": "edit", "iconBgColor": "bg-rose-50 border border-rose-200", "iconColor": "text-rose-600", "badgeCount": 3, "badgeColor": "red", "route": "/student/assignments"}'::jsonb),
+    ('MOD_SEX_568294', 4::smallint,  TRUE, TRUE,  NULL, '{"id": "feat-exams", "translationKey": "exams", "iconName": "file", "iconBgColor": "bg-pink-50 border border-pink-200", "iconColor": "text-pink-600", "badgeColor": "red", "route": "/student/exams"}'::jsonb),
+    ('MOD_SRC_479105', 5::smallint,  TRUE, TRUE,  NULL, '{"id": "feat-gradebook", "translationKey": "gradebook", "iconName": "chart", "iconBgColor": "bg-violet-50 border border-violet-200", "iconColor": "text-violet-600", "badgeColor": "purple", "route": "/student/gradebook"}'::jsonb),
+    ('MOD_SMA_748292', 6::smallint,  TRUE, TRUE,  '18', '{"id": "feat-materials", "translationKey": "materials", "iconName": "download", "iconBgColor": "bg-purple-50 border border-purple-200", "iconColor": "text-purple-600", "badgeCount": 18, "badgeColor": "purple", "route": "/student/materials"}'::jsonb),
+    ('MOD_SAT_482910', 7::smallint,  TRUE, FALSE, NULL, '{"id": "feat-attendance", "translationKey": "attendance", "iconName": "check", "iconBgColor": "bg-cyan-50 border border-cyan-200", "iconColor": "text-cyan-600", "badgeColor": "cyan", "route": "/student/attendance"}'::jsonb),
+    ('MOD_SCB_754381', 8::smallint,  TRUE, FALSE, NULL, '{"id": "feat-contact-book", "translationKey": "contactBook", "iconName": "book", "iconBgColor": "bg-sky-50 border border-sky-200", "iconColor": "text-sky-600", "badgeColor": "blue", "route": "/student/contact-book"}'::jsonb),
+    ('MOD_EMU_865490', 9::smallint,  TRUE, FALSE, NULL, '{"id": "feat-emulation", "translationKey": "emulation", "iconName": "user", "iconBgColor": "bg-amber-50 border border-amber-200", "iconColor": "text-amber-600", "badgeColor": "gold", "route": "/student/emulation"}'::jsonb),
+    ('MOD_SFE_532163', 10::smallint, TRUE, FALSE, NULL, '{"id": "feat-fees", "translationKey": "fees", "iconName": "settings", "iconBgColor": "bg-teal-50 border border-teal-200", "iconColor": "text-teal-600", "badgeColor": "green", "route": "/student/fees"}'::jsonb),
+    ('MOD_SRM_389216', 11::smallint, TRUE, FALSE, '4',  '{"id": "feat-reminders", "translationKey": "reminders", "iconName": "clock", "iconBgColor": "bg-yellow-50 border border-yellow-200", "iconColor": "text-yellow-600", "badgeCount": 4, "badgeColor": "gold", "route": "/student/reminders"}'::jsonb),
+    ('MOD_TEV_187498', 12::smallint, TRUE, FALSE, NULL, '{"id": "feat-evaluations", "translationKey": "evaluations", "iconName": "edit", "iconBgColor": "bg-orange-50 border border-orange-200", "iconColor": "text-orange-600", "badgeColor": "cyan", "route": "/student/evaluations"}'::jsonb),
+    ('MOD_SCL_643272', 13::smallint, TRUE, FALSE, NULL, '{"id": "feat-clubs", "translationKey": "clubs", "iconName": "users", "route": "/student/clubs"}'::jsonb),
+    ('MOD_STR_421054', 14::smallint, TRUE, FALSE, NULL, '{"id": "feat-track", "translationKey": "track", "iconName": "layers", "route": "/student/track"}'::jsonb),
+    ('MOD_SOT_310945', 15::smallint, TRUE, FALSE, NULL, '{"id": "feat-online-test", "translationKey": "onlineTest", "iconName": "check-circle", "route": "/student/online-test"}'::jsonb)
+) AS f(code, order_no, is_visible, is_pinned, custom_badge, config)
+JOIN sys.modules m ON m.code = f.code
+CROSS JOIN core.roles r
+WHERE r.code = 'R_STU_568294' OR r.code = 'STUDENT'
+ON CONFLICT (role_id, module_id) DO UPDATE SET
+  is_visible        = EXCLUDED.is_visible,
+  is_pinned_default = EXCLUDED.is_pinned_default,
+  order_no          = EXCLUDED.order_no,
+  custom_badge      = EXCLUDED.custom_badge,
+  config            = EXCLUDED.config;
+
+-- Teacher, Supervisor, Principal Roles
 INSERT INTO sys.role_modules (role_id, module_id, is_visible, is_pinned_default, order_no)
-SELECT r.id, m.id, TRUE, TRUE, 1 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_STT_839201'
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 2 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SAS_659183'
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 3 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SMA_748292'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 4 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SEX_568294'
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 5 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SRC_479105'
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 6 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SRM_389216'
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 7 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SAN_298307'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 8 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_TEV_187498'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 9 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_FEV_976589'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 10 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_EMU_865490'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 11 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SCB_754381'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 12 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SCL_643272'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 13 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SFE_532163'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 14 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_STR_421054'
-UNION ALL SELECT r.id, m.id, TRUE, FALSE, 15 FROM core.roles r, sys.modules m WHERE r.code = 'R_STU_568294' AND m.code = 'MOD_SOT_310945'
 -- Teacher Role
-UNION ALL SELECT r.id, m.id, TRUE, TRUE, 1 FROM core.roles r, sys.modules m WHERE r.code = 'R_TCH_659183' AND m.code = 'MOD_TJR_209836'
+SELECT r.id, m.id, TRUE, TRUE, 1 FROM core.roles r, sys.modules m WHERE r.code = 'R_TCH_659183' AND m.code = 'MOD_TJR_209836'
 UNION ALL SELECT r.id, m.id, TRUE, TRUE, 2 FROM core.roles r, sys.modules m WHERE r.code = 'R_TCH_659183' AND m.code = 'MOD_TGE_198725'
 UNION ALL SELECT r.id, m.id, TRUE, TRUE, 3 FROM core.roles r, sys.modules m WHERE r.code = 'R_TCH_659183' AND m.code = 'MOD_TAT_087614'
 UNION ALL SELECT r.id, m.id, TRUE, TRUE, 4 FROM core.roles r, sys.modules m WHERE r.code = 'R_TCH_659183' AND m.code = 'MOD_THM_976503'

@@ -43,7 +43,9 @@ class AuthService(BaseService):
 
         # 2. Verify account status
         if user.status_code and user.status_code.upper() in ["INACTIVE", "LOCKED", "SUSPENDED"]:
-            raise AuthenticationFailed("Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị.")
+            raise AuthenticationFailed(
+                "Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị."
+            )
 
         # 3. Verify Password
         if not self._verify_password(password, user.password_hash):
@@ -113,12 +115,16 @@ class AuthService(BaseService):
             return user
 
         # Secondary lookup by student profile code
-        student = Student.objects.filter(student_code__iexact=identifier).select_related("user").first()
+        student = (
+            Student.objects.filter(student_code__iexact=identifier).select_related("user").first()
+        )
         if student and student.user:
             return student.user
 
         # Tertiary lookup by teacher profile code
-        teacher = Teacher.objects.filter(teacher_code__iexact=identifier).select_related("user").first()
+        teacher = (
+            Teacher.objects.filter(teacher_code__iexact=identifier).select_related("user").first()
+        )
         if teacher and teacher.user:
             return teacher.user
 
@@ -143,6 +149,7 @@ class AuthService(BaseService):
         if stored_hash.startswith(("$2a$", "$2b$", "$2y$")):
             try:
                 from django.db import connection
+
                 with connection.cursor() as cursor:
                     cursor.execute(
                         "SELECT (crypt(%s, %s) = %s)",
@@ -175,7 +182,9 @@ class AuthService(BaseService):
         """
         if not role_identifier:
             # If no role explicitly requested, pick primary role or first role
-            primary_ur = UserRole.objects.filter(user=user, is_primary=True).select_related("role").first()
+            primary_ur = (
+                UserRole.objects.filter(user=user, is_primary=True).select_related("role").first()
+            )
             if primary_ur and primary_ur.role:
                 return primary_ur.role
             if assigned_roles:

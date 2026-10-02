@@ -42,6 +42,7 @@ def health_check(request):
         }
     )
 
+
 urlpatterns = [
     # Administration
     path("admin/", admin.site.urls),
