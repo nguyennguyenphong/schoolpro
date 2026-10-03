@@ -38,6 +38,8 @@ class Teacher(UUIDModel):
     status = models.CharField(
         max_length=20,
     )
+    is_homeroom = models.BooleanField(default=False)
+    employment_type = models.CharField(max_length=30, default="FULL_TIME")
     created_at = models.DateTimeField()
 
     class Meta:
@@ -94,6 +96,17 @@ class Student(UUIDModel):
     status = models.CharField(
         max_length=20,
     )
+    current_class = models.ForeignKey(
+        "core.SchoolClass",
+        on_delete=models.SET_NULL,
+        db_column="current_class_id",
+        related_name="current_students",
+        null=True,
+        blank=True,
+        db_comment="current_class_id foreign key",
+    )
+    birth_place = models.CharField(max_length=100, null=True, blank=True)
+    is_boarder = models.BooleanField(default=False)
     created_at = models.DateTimeField()
 
     class Meta:

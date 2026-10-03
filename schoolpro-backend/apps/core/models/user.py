@@ -36,7 +36,17 @@ class User(UUIDModel):
     address = models.TextField(null=True, blank=True)
     status_code = models.CharField(max_length=20, null=True, blank=True)
     must_change_password = models.BooleanField(default=False)
+    failed_login_attempts = models.IntegerField(default=0)
+    locked_at = models.DateTimeField(null=True, blank=True)
+    locked_until = models.DateTimeField(null=True, blank=True)
+    lock_reason = models.CharField(max_length=255, null=True, blank=True)
+    password_changed_at = models.DateTimeField(null=True, blank=True)
+    email_verified_at = models.DateTimeField(null=True, blank=True)
+    phone_verified_at = models.DateTimeField(null=True, blank=True)
+    is_2fa_enabled = models.BooleanField(default=False)
+    two_factor_secret = models.CharField(max_length=255, null=True, blank=True)
     last_login_at = models.DateTimeField(null=True, blank=True)
+    last_login_ip = models.GenericIPAddressField(null=True, blank=True)
     metadata = models.JSONField(null=True, blank=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -47,6 +57,19 @@ class User(UUIDModel):
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ["-created_at"]
+
+    @property
+    def is_locked(self) -> bool:
+        """Determines whether the account is currently locked out."""
+        from django.utils import timezone
+
+        if self.status_code and self.status_code.upper() in ["LOCKED", "SUSPENDED"]:
+            return True
+        if self.locked_until and self.locked_until > timezone.now():
+            return True
+        if self.locked_at and not self.locked_until:
+            return True
+        return False
 
     def __str__(self) -> str:
         return str(self.full_name)

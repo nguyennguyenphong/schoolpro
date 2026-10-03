@@ -33,8 +33,14 @@ class SchoolProJWTAuthentication(JWTAuthentication):
                 code="user_not_found",
             ) from None
 
-        # Check account activity
-        if user.status_code and user.status_code.upper() in ["INACTIVE", "LOCKED", "SUSPENDED"]:
+        # Check account activity and lock status
+        if user.is_locked:
+            raise AuthenticationFailed(
+                "Tài khoản của bạn đang bị khóa. Vui lòng liên hệ ban quản trị.",
+                code="user_locked",
+            ) from None
+
+        if user.status_code and user.status_code.upper() in ["INACTIVE", "SUSPENDED"]:
             raise AuthenticationFailed(
                 "User account is inactive or suspended",
                 code="user_inactive",

@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS core.students (
   religion        VARCHAR(50) DEFAULT 'Không',
   status          VARCHAR(20) NOT NULL DEFAULT 'STUDYING'
                     CHECK (status IN ('STUDYING', 'GRADUATED', 'TRANSFERRED_OUT', 'RESERVED', 'DROPPED_OUT', 'SUSPENDED')),
+  current_class_id UUID REFERENCES core.classes(id) ON DELETE SET NULL,
+  birth_place     VARCHAR(100),                      -- Place of birth per MOET standard
+  is_boarder      BOOLEAN NOT NULL DEFAULT FALSE,    -- Boarding / day-boarding flag
   created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

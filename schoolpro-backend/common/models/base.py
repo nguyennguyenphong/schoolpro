@@ -1,5 +1,4 @@
-import uuid
-
+import uuid6
 from django.db import models
 from django.utils import timezone
 
@@ -42,7 +41,7 @@ class TimeStampedModel(models.Model):
 class UUIDModel(models.Model):
     """Abstract model using UUID as primary key."""
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid6.uuid7, editable=False)
 
     class Meta:
         abstract = True

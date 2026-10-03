@@ -18,7 +18,17 @@ CREATE TABLE IF NOT EXISTS core.users (
   address              TEXT,
   status_code          VARCHAR(20) DEFAULT 'ACTIVE', -- References core.lookup_values ('ACCOUNT_STATUS')
   must_change_password BOOLEAN NOT NULL DEFAULT FALSE,
+  failed_login_attempts INTEGER NOT NULL DEFAULT 0,
+  locked_at            TIMESTAMPTZ,
+  locked_until         TIMESTAMPTZ,
+  lock_reason          VARCHAR(255),
+  password_changed_at  TIMESTAMPTZ,
+  email_verified_at    TIMESTAMPTZ,
+  phone_verified_at    TIMESTAMPTZ,
+  is_2fa_enabled       BOOLEAN NOT NULL DEFAULT FALSE,
+  two_factor_secret    VARCHAR(255),
   last_login_at        TIMESTAMPTZ,
+  last_login_ip        VARCHAR(45),
   metadata             JSONB DEFAULT '{}'::jsonb,    -- Flexible JSON payload without DDL locks
   created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()

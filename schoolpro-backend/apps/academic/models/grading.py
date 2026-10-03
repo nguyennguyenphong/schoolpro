@@ -148,6 +148,9 @@ class StudentScore(UUIDModel):
     entered_by = models.UUIDField()
     entered_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+    is_locked = models.BooleanField(default=False)
+    locked_at = models.DateTimeField(null=True, blank=True)
+    locked_by = models.UUIDField(null=True, blank=True)
 
     class Meta:
         managed = False

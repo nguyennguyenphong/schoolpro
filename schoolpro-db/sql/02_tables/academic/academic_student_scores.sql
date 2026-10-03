@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS academic.student_scores (
   note            TEXT,
   entered_by      UUID NOT NULL REFERENCES core.users(id),
   entered_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  is_locked       BOOLEAN NOT NULL DEFAULT FALSE,    -- Lock mark status to prevent modification
+  locked_at       TIMESTAMPTZ,
+  locked_by       UUID REFERENCES core.users(id)
 );
 
 CREATE INDEX IF NOT EXISTS ix_scores_student ON academic.student_scores(student_id);

@@ -45,6 +45,8 @@ class AuthUserResponseSerializer(serializers.ModelSerializer):
     Public profile of an authenticated user.
     """
 
+    is_locked = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -56,6 +58,11 @@ class AuthUserResponseSerializer(serializers.ModelSerializer):
             "avatar_url",
             "status_code",
             "must_change_password",
+            "is_locked",
+            "locked_until",
+            "is_2fa_enabled",
+            "email_verified_at",
+            "phone_verified_at",
         ]
 
 

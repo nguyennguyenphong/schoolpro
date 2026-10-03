@@ -11,6 +11,12 @@ export interface AuthUser {
   avatar_url?: string;
   status_code?: string;
   must_change_password?: boolean;
+  is_locked?: boolean;
+  locked_until?: string | null;
+  failed_login_attempts?: number;
+  is_2fa_enabled?: boolean;
+  email_verified_at?: string | null;
+  phone_verified_at?: string | null;
 }
 
 export interface AuthRole {

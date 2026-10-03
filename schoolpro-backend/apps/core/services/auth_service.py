@@ -4,6 +4,7 @@ Handles credential verification, role-based authentication, and JWT token issuan
 """
 
 import uuid
+from datetime import timedelta
 from typing import Any
 
 from django.contrib.auth.hashers import check_password
@@ -41,15 +42,57 @@ class AuthService(BaseService):
         if not user:
             raise AuthenticationFailed("Tài khoản hoặc mã định danh không tồn tại trong hệ thống.")
 
-        # 2. Verify account status
-        if user.status_code and user.status_code.upper() in ["INACTIVE", "LOCKED", "SUSPENDED"]:
+        # 2. Verify account status and lock status
+        if user.is_locked:
+            if user.locked_until and user.locked_until > timezone.now():
+                time_str = user.locked_until.strftime("%H:%M %d/%m/%Y")
+                raise AuthenticationFailed(
+                    f"Tài khoản của bạn tạm thời bị khóa đến {time_str} do nhập sai mật khẩu quá 5 lần.",
+                    code="user_locked",
+                )
             raise AuthenticationFailed(
-                "Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị."
+                "Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị.",
+                code="user_locked",
             )
 
-        # 3. Verify Password
+        if user.status_code and user.status_code.upper() in ["INACTIVE", "SUSPENDED"]:
+            raise AuthenticationFailed(
+                "Tài khoản của bạn đã ngừng hoạt động. Vui lòng liên hệ ban quản trị.",
+                code="user_inactive",
+            )
+
+        # 3. Verify Password with brute-force protection
         if not self._verify_password(password, user.password_hash):
-            raise AuthenticationFailed("Mật khẩu không chính xác. Vui lòng kiểm tra lại.")
+            user.failed_login_attempts = (user.failed_login_attempts or 0) + 1
+            if user.failed_login_attempts >= 5:
+                user.locked_at = timezone.now()
+                user.locked_until = timezone.now() + timedelta(minutes=15)
+                user.lock_reason = "EXCEEDED_LOGIN_ATTEMPTS"
+                try:
+                    user.save(
+                        update_fields=[
+                            "failed_login_attempts",
+                            "locked_at",
+                            "locked_until",
+                            "lock_reason",
+                        ]
+                    )
+                except Exception:
+                    pass
+                raise AuthenticationFailed(
+                    "Bạn đã nhập sai mật khẩu 5 lần. Tài khoản tạm thời bị khóa trong 15 phút.",
+                    code="user_locked",
+                )
+            else:
+                remaining = 5 - user.failed_login_attempts
+                try:
+                    user.save(update_fields=["failed_login_attempts"])
+                except Exception:
+                    pass
+                raise AuthenticationFailed(
+                    f"Mật khẩu không chính xác. Bạn còn {remaining} lần thử trước khi tài khoản bị khóa tạm thời.",
+                    code="invalid_credentials",
+                )
 
         # 4. Resolve User Roles
         user_roles_qs = UserRole.objects.filter(user=user).select_related("role")
@@ -77,10 +120,19 @@ class AuthService(BaseService):
             refresh["role_code"] = "STUDENT"
             refresh["role_name"] = "Học sinh"
 
-        # Update last_login_at
+        # Update last_login_at and reset failed attempts
         try:
+            update_fields = ["last_login_at"]
             user.last_login_at = timezone.now()
-            user.save(update_fields=["last_login_at"])
+            if (user.failed_login_attempts or 0) > 0 or user.locked_at or user.locked_until:
+                user.failed_login_attempts = 0
+                user.locked_at = None
+                user.locked_until = None
+                user.lock_reason = None
+                update_fields.extend(
+                    ["failed_login_attempts", "locked_at", "locked_until", "lock_reason"]
+                )
+            user.save(update_fields=update_fields)
         except Exception:
             # Model may be unmanaged or table read-only in some configurations
             pass
