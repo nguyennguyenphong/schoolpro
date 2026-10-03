@@ -1,5 +1,12 @@
 import { create } from "zustand";
-import type { AuthRole, AuthUser } from "@/shared/types/auth";
+import { httpClient } from "@/shared/api/httpClient";
+import type {
+  AcademicContext,
+  ApiResponse,
+  AuthRole,
+  AuthUser,
+  UserProfileContext,
+} from "@/shared/types/auth";
 import { normalizeRoleSlug } from "@/shared/utils/roleRoutes";
 
 interface ExtendedUser {
@@ -18,15 +25,20 @@ interface AuthState {
   role: string | null;
   roleDetail: AuthRole | null;
   user: ExtendedUser | null;
+  academicContext: AcademicContext | null;
+  profileContext: UserProfileContext | null;
   isInitialized: boolean;
   setAuth: (payload: {
     access: string;
     refresh: string;
     user: AuthUser;
     role?: AuthRole | null;
+    academic_context?: AcademicContext;
+    profile?: UserProfileContext;
     remember?: boolean;
   }) => void;
   setAccessToken: (token: string) => void;
+  syncSession: () => Promise<void>;
   // Backward compatibility method
   login: (role: string, token: string) => void;
   logout: () => void;
@@ -39,6 +51,8 @@ const STORAGE_KEYS = {
   USER: "schoolpro_user",
   ROLE: "schoolpro_role",
   ROLE_DETAIL: "schoolpro_role_detail",
+  ACADEMIC_CONTEXT: "schoolpro_academic_context",
+  PROFILE_CONTEXT: "schoolpro_profile_context",
 };
 
 const getStorage = (type: "local" | "session"): Storage | null => {
@@ -72,16 +86,26 @@ const safeRemoveItem = (key: string) => {
   getStorage("session")?.removeItem(key);
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthenticated: false,
   accessToken: null,
   refreshToken: null,
   role: null,
   roleDetail: null,
   user: null,
+  academicContext: null,
+  profileContext: null,
   isInitialized: false,
 
-  setAuth: ({ access, refresh, user, role, remember = true }) => {
+  setAuth: ({
+    access,
+    refresh,
+    user,
+    role,
+    academic_context,
+    profile,
+    remember = true,
+  }) => {
     safeSetItem(STORAGE_KEYS.ACCESS, access, remember);
     safeSetItem(STORAGE_KEYS.REFRESH, refresh, remember);
     safeSetItem(STORAGE_KEYS.USER, JSON.stringify(user), remember);
@@ -92,6 +116,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (role) {
       safeSetItem(STORAGE_KEYS.ROLE_DETAIL, JSON.stringify(role), remember);
     }
+    if (academic_context) {
+      safeSetItem(STORAGE_KEYS.ACADEMIC_CONTEXT, JSON.stringify(academic_context), remember);
+    }
+    if (profile) {
+      safeSetItem(STORAGE_KEYS.PROFILE_CONTEXT, JSON.stringify(profile), remember);
+    }
 
     set({
       isAuthenticated: true,
@@ -99,6 +129,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       refreshToken: refresh,
       role: roleSlug,
       roleDetail: role || null,
+      academicContext: academic_context || null,
+      profileContext: profile || null,
       user: {
         id: user.id,
         name: user.full_name || user.username,
@@ -121,6 +153,59 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
 
     set({ accessToken: token });
+  },
+
+  syncSession: async () => {
+    const token = get().accessToken || safeGetItem(STORAGE_KEYS.ACCESS);
+    if (!token) return;
+
+    try {
+      const response = await httpClient.get<
+        ApiResponse<{
+          user: AuthUser;
+          active_role?: AuthRole;
+          academic_context?: AcademicContext;
+          profile?: UserProfileContext;
+        }>
+      >("/core/auth/me/");
+
+      const data = response.data?.data;
+      if (data) {
+        const isSession = !localStorage.getItem(STORAGE_KEYS.ACCESS);
+        const remember = !isSession;
+
+        if (data.user) {
+          safeSetItem(STORAGE_KEYS.USER, JSON.stringify(data.user), remember);
+        }
+        if (data.active_role) {
+          safeSetItem(STORAGE_KEYS.ROLE_DETAIL, JSON.stringify(data.active_role), remember);
+        }
+        if (data.academic_context) {
+          safeSetItem(STORAGE_KEYS.ACADEMIC_CONTEXT, JSON.stringify(data.academic_context), remember);
+        }
+        if (data.profile) {
+          safeSetItem(STORAGE_KEYS.PROFILE_CONTEXT, JSON.stringify(data.profile), remember);
+        }
+
+        set((state) => ({
+          roleDetail: data.active_role || state.roleDetail,
+          academicContext: data.academic_context || state.academicContext,
+          profileContext: data.profile || state.profileContext,
+          user: data.user
+            ? {
+                id: data.user.id,
+                name: data.user.full_name || data.user.username,
+                email: data.user.email || `${data.user.username}@schoolpro.edu.vn`,
+                username: data.user.username,
+                full_name: data.user.full_name,
+                avatar_url: data.user.avatar_url,
+              }
+            : state.user,
+        }));
+      }
+    } catch {
+      // Ignore background sync network failures
+    }
   },
 
   login: (role, token) => {
@@ -148,6 +233,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       role: null,
       roleDetail: null,
       user: null,
+      academicContext: null,
+      profileContext: null,
       isInitialized: true,
     });
   },
@@ -158,12 +245,20 @@ export const useAuthStore = create<AuthState>((set) => ({
     const rawUser = safeGetItem(STORAGE_KEYS.USER);
     const role = safeGetItem(STORAGE_KEYS.ROLE);
     const rawRoleDetail = safeGetItem(STORAGE_KEYS.ROLE_DETAIL);
+    const rawAcademicContext = safeGetItem(STORAGE_KEYS.ACADEMIC_CONTEXT);
+    const rawProfileContext = safeGetItem(STORAGE_KEYS.PROFILE_CONTEXT);
 
     if (access && rawUser) {
       try {
         const parsedUser: AuthUser = JSON.parse(rawUser);
         const parsedRoleDetail: AuthRole | null = rawRoleDetail
           ? JSON.parse(rawRoleDetail)
+          : null;
+        const parsedAcademicContext: AcademicContext | null = rawAcademicContext
+          ? JSON.parse(rawAcademicContext)
+          : null;
+        const parsedProfileContext: UserProfileContext | null = rawProfileContext
+          ? JSON.parse(rawProfileContext)
           : null;
 
         set({
@@ -172,6 +267,8 @@ export const useAuthStore = create<AuthState>((set) => ({
           refreshToken: refresh || null,
           role: role || (parsedRoleDetail?.code ? normalizeRoleSlug(parsedRoleDetail.code) : "student"),
           roleDetail: parsedRoleDetail,
+          academicContext: parsedAcademicContext,
+          profileContext: parsedProfileContext,
           user: {
             id: parsedUser.id,
             name: parsedUser.full_name || parsedUser.username,
@@ -182,6 +279,12 @@ export const useAuthStore = create<AuthState>((set) => ({
           },
           isInitialized: true,
         });
+
+        // Automatically sync latest academic & profile context in background if missing
+        if (!parsedAcademicContext || !parsedProfileContext) {
+          get().syncSession();
+        }
+
         return;
       } catch {
         // Corrupted storage fallback
@@ -195,6 +298,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       role: null,
       roleDetail: null,
       user: null,
+      academicContext: null,
+      profileContext: null,
       isInitialized: true,
     });
   },

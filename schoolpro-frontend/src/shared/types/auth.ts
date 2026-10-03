@@ -36,6 +36,33 @@ export interface LoginPayload {
   remember?: boolean;
 }
 
+export interface AcademicContext {
+  academic_year_id?: string | null;
+  academic_year: string;
+  academic_year_code?: string;
+  semester_id?: string | null;
+  semester: string;
+  semester_code?: string;
+  current_week: number;
+}
+
+export interface UserProfileContext {
+  type: "student" | "teacher" | "staff" | "user" | string;
+  student_id?: string;
+  student_code?: string;
+  class_id?: string | null;
+  class_name?: string;
+  class_code?: string;
+  teacher_id?: string;
+  teacher_code?: string;
+  department_name?: string;
+  subject_major?: string;
+  is_homeroom?: boolean;
+  birth_place?: string | null;
+  status?: string;
+  [key: string]: unknown;
+}
+
 export interface LoginResponseData {
   access: string;
   refresh: string;
@@ -44,6 +71,8 @@ export interface LoginResponseData {
   user: AuthUser;
   role: AuthRole;
   assigned_roles?: AuthRole[];
+  academic_context?: AcademicContext;
+  profile?: UserProfileContext;
 }
 
 export interface ApiResponse<T = unknown> {

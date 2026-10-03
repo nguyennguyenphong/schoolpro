@@ -1,11 +1,13 @@
 import type { AxiosError } from "axios";
 import { httpClient } from "@/shared/api/httpClient";
 import type {
+  AcademicContext,
   ApiResponse,
   AuthRole,
   AuthUser,
   LoginPayload,
   LoginResponseData,
+  UserProfileContext,
 } from "@/shared/types/auth";
 import { normalizeRoleSlug } from "@/shared/utils/roleRoutes";
 
@@ -134,10 +136,20 @@ class AuthService {
   /**
    * Fetch current authenticated user profile and active role.
    */
-  async getCurrentUser(): Promise<{ user: AuthUser; active_role?: AuthRole }> {
+  async getCurrentUser(): Promise<{
+    user: AuthUser;
+    active_role?: AuthRole;
+    academic_context?: AcademicContext;
+    profile?: UserProfileContext;
+  }> {
     try {
       const response = await httpClient.get<
-        ApiResponse<{ user: AuthUser; active_role?: AuthRole }>
+        ApiResponse<{
+          user: AuthUser;
+          active_role?: AuthRole;
+          academic_context?: AcademicContext;
+          profile?: UserProfileContext;
+        }>
       >("/core/auth/me/");
       return response.data.data;
     } catch {

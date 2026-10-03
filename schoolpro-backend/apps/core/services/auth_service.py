@@ -143,6 +143,9 @@ class AuthService(BaseService):
             selected_role.code if selected_role else "UNKNOWN",
         )
 
+        academic_context = self._get_academic_context(user)
+        profile_context = self._get_profile_context(user, selected_role)
+
         return {
             "access": str(refresh.access_token),
             "refresh": str(refresh),
@@ -151,6 +154,113 @@ class AuthService(BaseService):
             "user": user,
             "role": selected_role,
             "assigned_roles": assigned_roles,
+            "academic_context": academic_context,
+            "profile": profile_context,
+        }
+
+    def _get_academic_context(self, user: User) -> dict[str, Any]:
+        """
+        Retrieves active academic year, semester, and current week index for user's school.
+        """
+        from apps.master.models.academic_year import AcademicYear
+        from apps.master.models.semester import Semester
+
+        active_year = (
+            AcademicYear.objects.filter(is_current=True).first()
+            or AcademicYear.objects.order_by("-start_date").first()
+        )
+        active_semester = (
+            Semester.objects.filter(is_current=True).first()
+            or Semester.objects.order_by("-start_date").first()
+        )
+
+        current_week = 1
+        if active_semester and active_semester.start_date:
+            today = timezone.now().date()
+            if today >= active_semester.start_date:
+                diff_days = (today - active_semester.start_date).days
+                current_week = max(1, (diff_days // 7) + 1)
+
+        return {
+            "academic_year_id": str(active_year.id) if active_year else None,
+            "academic_year": active_year.name if active_year else "Năm học 2026 - 2027",
+            "academic_year_code": active_year.code if active_year else "2026-2027",
+            "semester_id": str(active_semester.id) if active_semester else None,
+            "semester": active_semester.name if active_semester else "Học kỳ 1",
+            "semester_code": active_semester.code if active_semester else "HK1",
+            "current_week": current_week,
+        }
+
+    def _get_profile_context(self, user: User, selected_role: Role | None) -> dict[str, Any]:
+        """
+        Retrieves specialized role profile attributes (Student, Teacher, Staff).
+        """
+        role_code = selected_role.code.upper() if selected_role and selected_role.code else ""
+
+        # 1. Student profile
+        student = Student.objects.filter(user=user).select_related("current_class").first()
+        if student or "STU" in role_code:
+            class_id = None
+            class_name = None
+            class_code = None
+
+            if student and student.current_class:
+                class_id = str(student.current_class.id)
+                class_name = student.current_class.name
+                class_code = student.current_class.code
+            elif student:
+                from apps.core.models.organization import StudentClassEnrollment
+
+                enrollment = (
+                    StudentClassEnrollment.objects.filter(student=student, status="ACTIVE")
+                    .select_related("school_class")
+                    .first()
+                )
+                if enrollment and enrollment.school_class:
+                    class_id = str(enrollment.school_class.id)
+                    class_name = enrollment.school_class.name
+                    class_code = enrollment.school_class.code
+
+            student_code = student.student_code if student else user.username
+            return {
+                "type": "student",
+                "student_id": str(student.id) if student else str(user.id),
+                "student_code": student_code,
+                "class_id": class_id,
+                "class_name": class_name or "10A1",
+                "class_code": class_code or "10A1",
+                "birth_place": student.birth_place if student else None,
+                "status": student.status if student else "STUDYING",
+            }
+
+        # 2. Teacher profile
+        teacher = Teacher.objects.filter(user=user).select_related("department").first()
+        if teacher or "TCH" in role_code:
+            dept_name = teacher.department.name if teacher and teacher.department else "Tổ Tự Nhiên"
+            return {
+                "type": "teacher",
+                "teacher_id": str(teacher.id) if teacher else str(user.id),
+                "teacher_code": teacher.teacher_code if teacher else user.username,
+                "department_name": dept_name,
+                "subject_major": teacher.subject_major if teacher else "Toán học",
+                "is_homeroom": teacher.is_homeroom if teacher else False,
+                "status": teacher.status if teacher else "ACTIVE",
+            }
+
+        # 3. Staff profile
+        staff = Staff.objects.filter(user=user).select_related("department").first()
+        if staff:
+            return {
+                "type": "staff",
+                "staff_id": str(staff.id),
+                "staff_code": staff.staff_code,
+                "job_title": staff.job_title,
+                "department_name": staff.department.name if staff.department else None,
+            }
+
+        return {
+            "type": "user",
+            "full_name": user.full_name,
         }
 
     def _find_user_by_identifier(self, identifier: str) -> User | None:

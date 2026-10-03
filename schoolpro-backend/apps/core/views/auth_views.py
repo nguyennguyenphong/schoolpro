@@ -54,6 +54,8 @@ class AuthLoginView(APIView):
             "user": AuthUserResponseSerializer(result["user"]).data,
             "role": RoleSimpleSerializer(result["role"]).data if result["role"] else None,
             "assigned_roles": RoleSimpleSerializer(result["assigned_roles"], many=True).data,
+            "academic_context": result.get("academic_context"),
+            "profile": result.get("profile"),
         }
 
         return APIResponse.success(
@@ -84,9 +86,15 @@ class AuthMeView(APIView):
 
         active_role = Role.objects.filter(code=role_code).first() if role_code else None
 
+        auth_service = AuthService()
+        academic_context = auth_service._get_academic_context(user)
+        profile_context = auth_service._get_profile_context(user, active_role)
+
         data = {
             "user": AuthUserResponseSerializer(user).data,
             "active_role": RoleSimpleSerializer(active_role).data if active_role else None,
+            "academic_context": academic_context,
+            "profile": profile_context,
         }
 
         return APIResponse.success(

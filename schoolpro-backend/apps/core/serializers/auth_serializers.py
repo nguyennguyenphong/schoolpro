@@ -105,6 +105,40 @@ class RoleSimpleSerializer(serializers.ModelSerializer):
         return "student"
 
 
+class AcademicContextSerializer(serializers.Serializer):
+    """
+    Current academic term and calendar week context.
+    """
+
+    academic_year_id = serializers.CharField(allow_null=True, required=False)
+    academic_year = serializers.CharField()
+    academic_year_code = serializers.CharField(required=False)
+    semester_id = serializers.CharField(allow_null=True, required=False)
+    semester = serializers.CharField()
+    semester_code = serializers.CharField(required=False)
+    current_week = serializers.IntegerField(default=1)
+
+
+class UserProfileContextSerializer(serializers.Serializer):
+    """
+    Role-specific domain profile context (Student, Teacher, Staff).
+    """
+
+    type = serializers.CharField()
+    student_id = serializers.CharField(required=False, allow_null=True)
+    student_code = serializers.CharField(required=False, allow_null=True)
+    class_id = serializers.CharField(required=False, allow_null=True)
+    class_name = serializers.CharField(required=False, allow_null=True)
+    class_code = serializers.CharField(required=False, allow_null=True)
+    teacher_id = serializers.CharField(required=False, allow_null=True)
+    teacher_code = serializers.CharField(required=False, allow_null=True)
+    department_name = serializers.CharField(required=False, allow_null=True)
+    subject_major = serializers.CharField(required=False, allow_null=True)
+    is_homeroom = serializers.BooleanField(required=False, default=False)
+    birth_place = serializers.CharField(required=False, allow_null=True)
+    status = serializers.CharField(required=False, allow_null=True)
+
+
 class LoginResponseDataSerializer(serializers.Serializer):
     """
     Payload returned upon successful authentication.
@@ -117,6 +151,8 @@ class LoginResponseDataSerializer(serializers.Serializer):
     user = AuthUserResponseSerializer()
     role = RoleSimpleSerializer()
     assigned_roles = RoleSimpleSerializer(many=True)
+    academic_context = AcademicContextSerializer(required=False, allow_null=True)
+    profile = UserProfileContextSerializer(required=False, allow_null=True)
 
 
 class TokenRefreshRequestSerializer(serializers.Serializer):

@@ -51,6 +51,8 @@ export const LoginPage: React.FC = () => {
         refresh: result.refresh,
         user: result.user,
         role: result.role,
+        academic_context: result.academic_context,
+        profile: result.profile,
         remember: values.remember,
       });
 

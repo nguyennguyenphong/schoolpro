@@ -15,8 +15,8 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
   const { t, i18n } = useTranslation(["common", "student"]);
 
   const studentName = profile?.fullName || "Nguyễn Văn An";
-  const currentWeek = profile?.currentWeek || 4;
-  const major = profile?.major || "Kỹ thuật Phần mềm";
+  const currentWeek = profile?.currentWeek || 1;
+  const major = profile?.major;
 
   const todayFormatted = formatDate(
     new Date(),
@@ -40,14 +40,16 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md border border-white/30">
-              {t("student:home.currentSemester")} • {t("student:home.academicYear")}
+              {profile?.currentSemester || t("student:home.currentSemester")} • {profile?.academicYear || t("student:home.academicYear")}
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/25 text-emerald-100 backdrop-blur-md border border-emerald-400/40">
               Tuần học thứ {currentWeek}
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md border border-white/20 hidden sm:inline-block">
-              {major}
-            </span>
+            {major && (
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md border border-white/20 hidden sm:inline-block">
+                {major}
+              </span>
+            )}
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-0">

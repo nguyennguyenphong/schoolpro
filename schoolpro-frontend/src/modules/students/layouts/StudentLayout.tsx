@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { Avatar, message, Modal } from "antd";
 import type { MenuProps } from "antd";
@@ -15,11 +15,35 @@ import { useAuthStore } from "@/shared/store/useAuthStore";
 export const StudentLayout: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, logout, academicContext, profileContext, roleDetail, syncSession } = useAuthStore();
 
-  const studentName = user?.name || "Nguyễn Văn An";
-  const studentCode = "SV202688";
-  const studentFaculty = "Khoa CNTT • KTPM K23";
+  useEffect(() => {
+    if (!academicContext || !profileContext) {
+      syncSession();
+    }
+  }, [academicContext, profileContext, syncSession]);
+
+  const studentName = user?.full_name || user?.name || "Học sinh";
+  const studentCode = profileContext?.student_code || user?.username || "Chưa có mã HS";
+  const studentClass = profileContext?.class_name
+    ? `Lớp ${profileContext.class_name}`
+    : profileContext?.class_code
+    ? `Lớp ${profileContext.class_code}`
+    : "Trường THPT SchoolPro";
+  const studentRoleTag = roleDetail?.name === "Học sinh" ? "HS" : (roleDetail?.name || "HS");
+
+  const semesterText = academicContext?.semester
+    ? academicContext.semester.includes("Học kỳ 1")
+      ? "HK1"
+      : academicContext.semester.includes("Học kỳ 2")
+      ? "HK2"
+      : academicContext.semester
+    : "HK1";
+  const academicYearText = academicContext?.academic_year
+    ? academicContext.academic_year.replace("Năm học ", "")
+    : "2026 - 2027";
+  const currentWeekText = `Tuần ${academicContext?.current_week ?? 1}`;
+  const academicBadgeString = `${semesterText} • ${academicYearText} • ${currentWeekText}`;
 
   const handleLogout = () => {
     Modal.confirm({
@@ -51,13 +75,13 @@ export const StudentLayout: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <span className="font-bold text-slate-800 text-sm">{studentName}</span>
             <Tag color="blue" className="text-[10px] font-bold px-1.5 py-0 mr-0">
-              SV
+              {studentRoleTag}
             </Tag>
           </div>
           <p className="text-xs text-slate-500 mb-0.5">
             {t("student:header.studentId")}: <strong>{studentCode}</strong>
           </p>
-          <p className="text-[11px] text-slate-400 mb-0">{studentFaculty}</p>
+          <p className="text-[11px] text-slate-400 mb-0">{studentClass}</p>
         </div>
       ),
     },
@@ -110,7 +134,7 @@ export const StudentLayout: React.FC = () => {
             {/* Academic Semester Badge (Bordered) */}
             <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-lg border border-blue-200 bg-blue-50/60 text-blue-700 text-xs font-semibold ml-2">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span>HK1 • 2026-2027 • Tuần 4</span>
+              <span>{academicBadgeString}</span>
             </div>
           </div>
 
@@ -153,9 +177,11 @@ export const StudentLayout: React.FC = () => {
               <div className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-slate-50/80 transition-all cursor-pointer select-none group bg-white">
                 <Avatar
                   size={32}
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                  className="border border-slate-200 shadow-2xs"
-                />
+                  src={user?.avatar_url}
+                  className="border border-slate-200 shadow-2xs bg-blue-50 text-blue-600 font-bold"
+                >
+                  {studentName.charAt(0).toUpperCase()}
+                </Avatar>
                 <div className="hidden md:block text-left">
                   <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors block leading-tight">
                     {studentName}

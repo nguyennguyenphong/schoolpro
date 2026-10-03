@@ -37,19 +37,32 @@ class HomeService {
    * Resolves student profile from active user session or user profile service
    */
   async getProfile(): Promise<StudentProfile> {
-    const user = useAuthStore.getState().user;
+    const authState = useAuthStore.getState();
+    const user = authState.user;
+    let academic = authState.academicContext;
+    let profile = authState.profileContext;
+
+    // Refresh from /core/auth/me/ if not yet populated in store
+    if (!academic || !profile) {
+      await authState.syncSession();
+      const updatedState = useAuthStore.getState();
+      academic = updatedState.academicContext;
+      profile = updatedState.profileContext;
+    }
+
+    const className = profile?.class_name ? `Lớp ${profile.class_name}` : "Lớp 10A1";
 
     return {
-      id: user?.id || "student-profile-id",
-      code: user?.username || "SV202688",
+      id: (profile?.student_id as string) || user?.id || "student-profile-id",
+      code: (profile?.student_code as string) || user?.username || "SV202688",
       fullName: user?.full_name || user?.name || "Học sinh SchoolPro",
       email: user?.email || "student@schoolpro.edu.vn",
-      major: "Kỹ thuật Phần mềm",
-      faculty: "Khoa Công nghệ Thông tin",
-      cohort: "Khóa 2023 - 2027",
-      academicYear: "2026 - 2027",
-      currentSemester: "Học kỳ 1",
-      currentWeek: 4,
+      major: className,
+      faculty: "Trường THPT SchoolPro",
+      cohort: "Niên khóa 2026 - 2027",
+      academicYear: academic?.academic_year || "Năm học 2026 - 2027",
+      currentSemester: academic?.semester || "Học kỳ 1",
+      currentWeek: academic?.current_week || 1,
       avatarUrl:
         user?.avatar_url ||
         "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
