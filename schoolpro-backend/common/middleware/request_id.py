@@ -3,6 +3,8 @@ from collections.abc import Callable
 
 from django.http import HttpRequest, HttpResponse
 
+from common.logging_filters import request_id_ctx
+
 
 class RequestIDMiddleware:
     """
@@ -18,6 +20,11 @@ class RequestIDMiddleware:
         request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         request.request_id = request_id
 
-        response = self.get_response(request)
-        response["X-Request-ID"] = request_id
-        return response
+        # Bind to logging context
+        token = request_id_ctx.set(request_id)
+        try:
+            response = self.get_response(request)
+            response["X-Request-ID"] = request_id
+            return response
+        finally:
+            request_id_ctx.reset(token)

@@ -25,3 +25,4 @@ media/
 # OS & Editor
 .DS_Store
 *.log
+logs/
