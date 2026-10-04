@@ -1,32 +1,15 @@
-import { useEffect, useState } from "react";
-import { announcementService } from "@/modules/students/features/announcements/services";
+import { useEffect } from "react";
+import { useNotificationStore } from "@/shared/store/useNotificationStore";
 
 export const useUnreadAnnouncements = () => {
-  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(0);
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const fetchUnreadCount = useNotificationStore((state) => state.fetchUnreadCount);
 
   useEffect(() => {
-    let ignore = false;
-
-    const fetchUnreadCount = async () => {
-      try {
-        const result = await announcementService.getUnreadCount();
-
-        if (!ignore) {
-          setUnreadNotificationsCount(result);
-        }
-      } catch {
-        // Keep current count
-      }
-    };
-
     fetchUnreadCount();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
+  }, [fetchUnreadCount]);
 
   return {
-    unreadNotificationsCount: unreadNotificationsCount,
+    unreadNotificationsCount: unreadCount,
   };
 };

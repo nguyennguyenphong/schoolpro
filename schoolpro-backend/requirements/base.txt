@@ -53,7 +53,7 @@ urllib3==2.8.0
 
 uvicorn==0.54.0
 
-uuid==2025.0.1
+uuid6==2025.0.1
 
 vine==5.1.0
 websocket-client==1.9.2

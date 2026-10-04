@@ -10,9 +10,12 @@ import type {
   AnnouncementSortOption,
 } from "@/modules/students/features/announcements/types";
 import { announcementService } from "@/modules/students/features/announcements/services";
+import { useNotificationStore } from "@/shared/store/useNotificationStore";
 
 export const useAnnouncements = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { setUnreadCount, decrementUnreadCount, incrementUnreadCount, fetchUnreadCount } =
+    useNotificationStore();
 
   // Initialize filter state from URL params
   const initialFilter: AnnouncementFilter = useMemo(() => {
@@ -109,6 +112,7 @@ export const useAnnouncements = () => {
           setTotal(listResult.total);
           setTotalPages(listResult.totalPages);
           setSummary(summaryData);
+          setUnreadCount(summaryData.unreadCount);
           setDepartments(deptData);
           setLoading(false);
         }
@@ -125,7 +129,7 @@ export const useAnnouncements = () => {
     return () => {
       ignore = true;
     };
-  }, [filter]);
+  }, [filter, setUnreadCount]);
 
   // Actions that update filter & sync URL
   const setSearchQuery = (query: string) => {
@@ -237,24 +241,38 @@ export const useAnnouncements = () => {
 
   const markSelectedAsRead = async () => {
     if (selectedIds.length === 0) return;
+    const unreadSelectedCount = announcements.filter(
+      (item) => selectedIds.includes(item.id) && !item.isRead
+    ).length;
+    decrementUnreadCount(unreadSelectedCount);
+
     await announcementService.markMultipleAsRead(selectedIds);
     setAnnouncements((prev) =>
       prev.map((item) => (selectedIds.includes(item.id) ? { ...item, isRead: true } : item)),
     );
     const summaryData = await announcementService.getSummary();
     setSummary(summaryData);
+    setUnreadCount(summaryData.unreadCount);
+    fetchUnreadCount();
     message.success(`Đã đánh dấu ${selectedIds.length} thông báo là đã đọc`);
     setSelectedIds([]);
   };
 
   const markSelectedAsUnread = async () => {
     if (selectedIds.length === 0) return;
+    const readSelectedCount = announcements.filter(
+      (item) => selectedIds.includes(item.id) && item.isRead
+    ).length;
+    incrementUnreadCount(readSelectedCount);
+
     await announcementService.markMultipleAsUnread(selectedIds);
     setAnnouncements((prev) =>
       prev.map((item) => (selectedIds.includes(item.id) ? { ...item, isRead: false } : item)),
     );
     const summaryData = await announcementService.getSummary();
     setSummary(summaryData);
+    setUnreadCount(summaryData.unreadCount);
+    fetchUnreadCount();
     message.success(`Đã đánh dấu ${selectedIds.length} thông báo là chưa đọc`);
     setSelectedIds([]);
   };
@@ -263,6 +281,7 @@ export const useAnnouncements = () => {
     setSelectedAnnouncement(item);
     setIsDetailOpen(true);
     if (!item.isRead) {
+      decrementUnreadCount(1);
       await announcementService.markAsRead(item.id);
       setAnnouncements((prev) =>
         prev.map((ann) => (ann.id === item.id ? { ...ann, isRead: true } : ann)),
@@ -273,6 +292,7 @@ export const useAnnouncements = () => {
           unreadCount: Math.max(0, summary.unreadCount - 1),
         });
       }
+      fetchUnreadCount();
     }
   };
 
@@ -282,6 +302,7 @@ export const useAnnouncements = () => {
   };
 
   const markAllAsRead = async () => {
+    setUnreadCount(0);
     await announcementService.markAllAsRead();
     setAnnouncements((prev) => prev.map((ann) => ({ ...ann, isRead: true })));
     if (summary) {
@@ -290,6 +311,7 @@ export const useAnnouncements = () => {
         unreadCount: 0,
       });
     }
+    fetchUnreadCount();
     message.success("Đã đánh dấu tất cả thông báo là đã đọc!");
   };
 

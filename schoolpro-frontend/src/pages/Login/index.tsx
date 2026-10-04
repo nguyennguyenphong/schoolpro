@@ -16,6 +16,12 @@ export const LoginPage: React.FC = () => {
   const { t } = useTranslation(["auth", "common", "validation"]);
   const { isAuthenticated, role } = useAuthStore();
 
+  const {
+    loading,
+    form,
+    onFinish,
+  } = useLogin();
+
   /**
    * If the user is already authenticated, redirect them to their respective home route based on their role.
    */
@@ -23,12 +29,6 @@ export const LoginPage: React.FC = () => {
     const target = getRoleHomeRoute(role);
     return <Navigate to={target} replace />;
   }
-
-  const {
-    loading,
-    form,
-    onFinish,
-  } = useLogin();
 
   return (
     <AuthLayout
