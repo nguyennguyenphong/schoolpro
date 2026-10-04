@@ -97,3 +97,46 @@ export const isRoleAuthorized = (
     return normalizeRoleSlug(allowedLower) === userSlug;
   });
 };
+
+/**
+ * Validates whether a redirect path is safe and matches the user's role workspace.
+ * Prevents open redirect attacks and cross-role navigation mismatches.
+ */
+export const validateRedirectForRole = (
+  redirectUrl?: string | null,
+  roleIdentifier?: string | null
+): string | null => {
+  if (!redirectUrl) return null;
+
+  try {
+    const decoded = decodeURIComponent(redirectUrl).trim();
+    // Must be a relative path and start with single slash, not double slash (open redirect prevention)
+    if (!decoded.startsWith("/") || decoded.startsWith("//") || decoded.startsWith("/login")) {
+      return null;
+    }
+
+    const roleSlug = normalizeRoleSlug(roleIdentifier);
+    const rolePrefixes: Record<RoleType, string[]> = {
+      student: ["/student"],
+      teacher: ["/teacher"],
+      staff: ["/staff"],
+      admin: ["/admin"],
+      principal: ["/admin"],
+      parent: ["/parent"],
+      supervisor: ["/supervisor"],
+    };
+
+    const allowedPrefixes = rolePrefixes[roleSlug] || ["/student"];
+    const isMatchingRolePrefix = allowedPrefixes.some((prefix) =>
+      decoded === prefix || decoded.startsWith(`${prefix}/`) || decoded.startsWith(`${prefix}?`)
+    );
+
+    if (isMatchingRolePrefix) {
+      return decoded;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+};

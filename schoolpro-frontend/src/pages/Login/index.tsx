@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "antd";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
@@ -9,12 +9,13 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { SelectRole } from "@/components/roles/SelectRole";
 import { useAuthStore } from "@/shared/store/useAuthStore";
-import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
+import { getRoleHomeRoute, validateRedirectForRole } from "@/shared/utils/roleRoutes";
 import { useLogin } from "@/hooks/useLogin";
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation(["auth", "common", "validation"]);
   const { isAuthenticated, role } = useAuthStore();
+  const location = useLocation();
 
   const {
     loading,
@@ -23,18 +24,33 @@ export const LoginPage: React.FC = () => {
   } = useLogin();
 
   /**
-   * If the user is already authenticated, redirect them to their respective home route based on their role.
+   * If the user is already authenticated, redirect them to the intended redirect target or their respective role home route.
    */
   if (isAuthenticated) {
-    const target = getRoleHomeRoute(role);
+    const searchParams = new URLSearchParams(location.search);
+    const redirectParam = searchParams.get("redirect");
+    const validRedirect = validateRedirectForRole(redirectParam, role);
+    const target = validRedirect || getRoleHomeRoute(role);
     return <Navigate to={target} replace />;
   }
+
+  const searchParams = new URLSearchParams(location.search);
+  const isIdleTimeout = searchParams.get("reason") === "idle_timeout";
 
   return (
     <AuthLayout
       title={t("auth:login.title")}
       subtitle={t("auth:login.subtitle")}
     >
+      {isIdleTimeout && (
+        <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm flex items-center gap-2.5">
+          <Icon name="clock" size={16} className="text-amber-600 shrink-0" />
+          <span>
+            Phiên làm việc đã hết hạn do không có thao tác trong thời gian dài. Vui lòng đăng nhập lại để tiếp tục.
+          </span>
+        </div>
+      )}
+
       <Form
         form={form}
         name="education_login_form"

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { authService } from "@/shared/services/authService";
-import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
+import { getRoleHomeRoute, validateRedirectForRole } from "@/shared/utils/roleRoutes";
 import { message } from "@/components/ui/Message";
 import type { LoginFormValues } from "@/types";
 
@@ -48,15 +48,28 @@ export const useLogin = () => {
 
       /**
        * Determine the target destination after login
-       * If the user was redirected to the login page from another page, navigate back to that page.
-       * Otherwise, navigate to the home route based on the user's role.
+       * Priority:
+       * 1. Query parameter `redirect` from URL (e.g. /login?redirect=/student/notices?pageSize=10)
+       * 2. React Router location.state.from (from ProtectedRoute)
+       * 3. Fallback to default role home route (e.g. /student/home)
        */
-      const stateFrom = (location.state as { from?: { pathname?: string } })
-        ?.from?.pathname;
+      const searchParams = new URLSearchParams(location.search);
+      const queryRedirect = searchParams.get("redirect");
+
+      const stateLocation = (location.state as { from?: { pathname?: string; search?: string } })
+        ?.from;
+      const stateRedirect = stateLocation
+        ? `${stateLocation.pathname || ""}${stateLocation.search || ""}`
+        : null;
+
+      const userRole = result.role?.code || values.role;
+      const validQueryRedirect = validateRedirectForRole(queryRedirect, userRole);
+      const validStateRedirect = validateRedirectForRole(stateRedirect, userRole);
+
       const targetDestination =
-        stateFrom && stateFrom !== "/login" && stateFrom !== "/"
-          ? stateFrom
-          : getRoleHomeRoute(result.role?.code || values.role);
+        validQueryRedirect ||
+        validStateRedirect ||
+        getRoleHomeRoute(userRole);
 
       navigate(targetDestination, { replace: true });
     } catch (err: unknown) {
