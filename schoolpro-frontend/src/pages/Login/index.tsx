@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "antd";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Icon } from "@/components/ui/Icon";
@@ -9,76 +9,26 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { SelectRole } from "@/components/roles/SelectRole";
 import { useAuthStore } from "@/shared/store/useAuthStore";
-import { authService } from "@/shared/services/authService";
 import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
-import { message } from "@/components/ui/Message";
-
-interface LoginFormValues {
-  role: string;
-  code: string;
-  password: string;
-  remember: boolean;
-}
+import { useLogin } from "@/hooks/useLogin";
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation(["auth", "common", "validation"]);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { isAuthenticated, role, setAuth } = useAuthStore();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [form] = Form.useForm();
+  const { isAuthenticated, role } = useAuthStore();
 
-  // If already authenticated, redirect immediately to role home
+  /**
+   * If the user is already authenticated, redirect them to their respective home route based on their role.
+   */
   if (isAuthenticated) {
     const target = getRoleHomeRoute(role);
     return <Navigate to={target} replace />;
   }
 
-  const onFinish = async (values: LoginFormValues) => {
-    try {
-      setLoading(true);
-
-      const result = await authService.login({
-        code: values.code,
-        password: values.password,
-        role: values.role,
-        remember: values.remember,
-      });
-
-      // Update global authentication state and persistence
-      setAuth({
-        access: result.access,
-        refresh: result.refresh,
-        user: result.user,
-        role: result.role,
-        academic_context: result.academic_context,
-        profile: result.profile,
-        remember: values.remember,
-      });
-
-      const roleDisplayName = result.role?.name || "Học sinh";
-      message.success(
-        t("auth:login.successMessage", { role: roleDisplayName })
-      );
-
-      // Determine redirect target: return to requested route or role default space
-      const stateFrom = (location.state as { from?: { pathname?: string } })?.from?.pathname;
-      const targetDestination =
-        stateFrom && stateFrom !== "/login" && stateFrom !== "/"
-          ? stateFrom
-          : getRoleHomeRoute(result.role?.code || values.role);
-
-      navigate(targetDestination, { replace: true });
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.";
-      message.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    loading,
+    form,
+    onFinish,
+  } = useLogin();
 
   return (
     <AuthLayout
@@ -89,7 +39,7 @@ export const LoginPage: React.FC = () => {
         form={form}
         name="education_login_form"
         layout="vertical"
-        initialValues={{ remember: true, role: "student" }}
+        initialValues={{ remember: true, role: "student", code: "hs_pham_minh_khoi", password: "SchoolPro@2026" }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -121,7 +71,6 @@ export const LoginPage: React.FC = () => {
           <Input
             prefix={<Icon name="user" size={15} className="text-slate-400 mr-1" />}
             placeholder={t("auth:login.codePlaceholder")}
-            className="rounded-lg"
             autoFocus
           />
         </Form.Item>
@@ -139,7 +88,6 @@ export const LoginPage: React.FC = () => {
           <Password
             prefix={<Icon name="password" size={15} className="text-slate-400 mr-1" />}
             placeholder={t("auth:login.passwordPlaceholder")}
-            className="rounded-lg"
           />
         </Form.Item>
 
