@@ -71,6 +71,26 @@ class User(UUIDModel):
             return True
         return False
 
+    @property
+    def is_authenticated(self) -> bool:
+        """Always return True for loaded database User entity instances."""
+        return getattr(self, "_is_authenticated", True)
+
+    @is_authenticated.setter
+    def is_authenticated(self, value: bool) -> None:
+        self._is_authenticated = bool(value)
+
+    @property
+    def is_anonymous(self) -> bool:
+        """Always return False for database User entity instances."""
+        return False
+
+    @property
+    def is_staff(self) -> bool:
+        """Check if user has staff/admin privileges."""
+        active_role_code = getattr(self, "active_role_code", "") or ""
+        return "ADMIN" in str(active_role_code).upper() or "PRINCIPAL" in str(active_role_code).upper()
+
     def __str__(self) -> str:
         return str(self.full_name)
 

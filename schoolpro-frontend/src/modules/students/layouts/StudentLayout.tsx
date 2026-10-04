@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { Avatar, message, Modal } from "antd";
 import type { MenuProps } from "antd";
@@ -10,18 +10,38 @@ import { Badge } from "@/components/ui/Badge";
 import { Tag } from "@/components/ui/Tag";
 import { LanguageSwitcher } from "@/i18n";
 import { useAuthStore } from "@/shared/store/useAuthStore";
+import { announcementService } from "@/modules/students/features/announcements/services";
 
 
 export const StudentLayout: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
   const navigate = useNavigate();
   const { user, logout, academicContext, profileContext, roleDetail, syncSession } = useAuthStore();
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(0);
 
   useEffect(() => {
     if (!academicContext || !profileContext) {
       syncSession();
     }
   }, [academicContext, profileContext, syncSession]);
+
+  useEffect(() => {
+    let ignore = false;
+    async function fetchUnreadCount() {
+      try {
+        const count = await announcementService.getUnreadCount();
+        if (!ignore) {
+          setUnreadNotificationsCount(count);
+        }
+      } catch {
+        // Keep initial count
+      }
+    }
+    fetchUnreadCount();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const studentName = user?.full_name || user?.name || "Học sinh";
   const studentCode = profileContext?.student_code || user?.username || "Chưa có mã HS";
@@ -163,7 +183,7 @@ export const StudentLayout: React.FC = () => {
               className="w-9 h-9 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center justify-center transition-all text-slate-600 relative cursor-pointer"
               aria-label={t("student:header.notifications")}
             >
-              <Badge count={3} offset={[-2, 2]}>
+              <Badge count={unreadNotificationsCount} overflowCount={99} offset={[-2, 2]}>
                 <Icon name="info" size={17} />
               </Badge>
             </button>

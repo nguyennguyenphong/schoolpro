@@ -122,6 +122,7 @@ export const LoginPage: React.FC = () => {
             prefix={<Icon name="user" size={15} className="text-slate-400 mr-1" />}
             placeholder={t("auth:login.codePlaceholder")}
             className="rounded-lg"
+            autoFocus
           />
         </Form.Item>
 

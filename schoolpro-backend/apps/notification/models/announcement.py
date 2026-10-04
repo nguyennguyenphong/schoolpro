@@ -30,6 +30,9 @@ class Announcement(UUIDModel):
     priority = models.CharField(
         max_length=10,
     )
+    is_pinned = models.BooleanField(default=False)
+    views_count = models.IntegerField(default=0)
+    department = models.CharField(max_length=100, null=True, blank=True)
     attachments = models.JSONField(null=True, blank=True)
     published_by = models.UUIDField()
     published_at = models.DateTimeField()
@@ -40,7 +43,7 @@ class Announcement(UUIDModel):
         db_table = '"notification"."announcements"'
         verbose_name = "Announcement"
         verbose_name_plural = "Announcements"
-        ordering = ["title"]
+        ordering = ["-is_pinned", "-published_at"]
 
     def __str__(self) -> str:
         return str(self.title)
