@@ -89,7 +89,9 @@ class User(UUIDModel):
     def is_staff(self) -> bool:
         """Check if user has staff/admin privileges."""
         active_role_code = getattr(self, "active_role_code", "") or ""
-        return "ADMIN" in str(active_role_code).upper() or "PRINCIPAL" in str(active_role_code).upper()
+        return (
+            "ADMIN" in str(active_role_code).upper() or "PRINCIPAL" in str(active_role_code).upper()
+        )
 
     def __str__(self) -> str:
         return str(self.full_name)

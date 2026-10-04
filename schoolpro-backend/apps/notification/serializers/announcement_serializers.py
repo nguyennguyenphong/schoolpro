@@ -24,9 +24,7 @@ class AnnouncementItemResponseSerializer(serializers.ModelSerializer):
     Announcement item representation formatted to match frontend client schema.
     """
 
-    publishDate = serializers.DateTimeField(
-        source="published_at", format="%Y-%m-%d %H:%M:%S"
-    )
+    publishDate = serializers.DateTimeField(source="published_at", format="%Y-%m-%d %H:%M:%S")
     author = serializers.SerializerMethodField()
     department = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()

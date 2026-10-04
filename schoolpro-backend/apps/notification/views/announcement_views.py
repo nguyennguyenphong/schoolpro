@@ -43,11 +43,25 @@ class AnnouncementPagination(PageNumberPagination):
         summary="List user announcements",
         description="Retrieve filtered and paginated list of official bulletins and class notices for the authenticated user.",
         parameters=[
-            OpenApiParameter("search", str, description="Search keyword in title, summary, content, or department"),
-            OpenApiParameter("category", str, description="Filter by category (general, academic, exam, tuition, activity, homeroom, all)"),
-            OpenApiParameter("priority", str, description="Filter by priority level (urgent, high, normal, all)"),
-            OpenApiParameter("readStatus", str, description="Filter by read status (all, unread, read)"),
-            OpenApiParameter("sortBy", str, description="Sorting mode (newest, oldest, views, priority)"),
+            OpenApiParameter(
+                "search",
+                str,
+                description="Search keyword in title, summary, content, or department",
+            ),
+            OpenApiParameter(
+                "category",
+                str,
+                description="Filter by category (general, academic, exam, tuition, activity, homeroom, all)",
+            ),
+            OpenApiParameter(
+                "priority", str, description="Filter by priority level (urgent, high, normal, all)"
+            ),
+            OpenApiParameter(
+                "readStatus", str, description="Filter by read status (all, unread, read)"
+            ),
+            OpenApiParameter(
+                "sortBy", str, description="Sorting mode (newest, oldest, views, priority)"
+            ),
             OpenApiParameter("page", int, description="Page number"),
             OpenApiParameter("pageSize", int, description="Number of items per page"),
         ],
@@ -80,7 +94,9 @@ class AnnouncementViewSet(viewsets.ViewSet):
         search_query = request.query_params.get("search") or request.query_params.get("q")
         category = request.query_params.get("category")
         priority = request.query_params.get("priority")
-        read_status = request.query_params.get("readStatus") or request.query_params.get("read_status")
+        read_status = request.query_params.get("readStatus") or request.query_params.get(
+            "read_status"
+        )
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
 
         queryset = self.service.list_announcements(

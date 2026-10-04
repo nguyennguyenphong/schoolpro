@@ -45,9 +45,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
         qs = (
             self.get_queryset()
             .annotate(is_read=Exists(read_subquery))
-            .filter(
-                Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now())
-            )
+            .filter(Q(expires_at__isnull=True) | Q(expires_at__gt=timezone.now()))
         )
 
         # 1. Target Audience filtering
@@ -164,9 +162,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
 
     def increment_views(self, announcement_id: UUID | str) -> None:
         """Increment announcement views count atomically."""
-        self.get_queryset().filter(id=announcement_id).update(
-            views_count=F("views_count") + 1
-        )
+        self.get_queryset().filter(id=announcement_id).update(views_count=F("views_count") + 1)
 
     def mark_as_read(self, announcement_id: UUID | str, user_id: UUID | str) -> bool:
         """
