@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import { Avatar, message, Modal } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
@@ -9,82 +8,29 @@ import { Dropdown } from "@/components/ui/Dropdown";
 import { Badge } from "@/components/ui/Badge";
 import { Tag } from "@/components/ui/Tag";
 import { LanguageSwitcher } from "@/i18n";
-import { useAuthStore } from "@/shared/store/useAuthStore";
-import { announcementService } from "@/modules/students/features/announcements/services";
+import { useStudentLayout } from "@/modules/students/hooks/useStudentLayout";
+import { useUnreadAnnouncements } from "@/modules/students/features/announcements/hooks/useUnreadAnnouncements";
+import { useLogout } from "@/hooks/useLogout";
+import { message } from "@/components/ui/Message";
+import { Avatar } from "@/components/ui/Avatar";
 
 
 export const StudentLayout: React.FC = () => {
   const { t } = useTranslation(["common", "student"]);
   const navigate = useNavigate();
-  const { user, logout, academicContext, profileContext, roleDetail, syncSession } = useAuthStore();
-  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(0);
 
-  useEffect(() => {
-    if (!academicContext || !profileContext) {
-      syncSession();
-    }
-  }, [academicContext, profileContext, syncSession]);
+  const {
+    user,
+    studentName,
+    studentCode,
+    studentClass,
+    studentRoleTag,
+    academicBadgeString,
+  } = useStudentLayout();
 
-  useEffect(() => {
-    let ignore = false;
-    async function fetchUnreadCount() {
-      try {
-        const count = await announcementService.getUnreadCount();
-        if (!ignore) {
-          setUnreadNotificationsCount(count);
-        }
-      } catch {
-        // Keep initial count
-      }
-    }
-    fetchUnreadCount();
-    return () => {
-      ignore = true;
-    };
-  }, []);
+  const { unreadNotificationsCount } = useUnreadAnnouncements();
 
-  const studentName = user?.full_name || user?.name || "Học sinh";
-  const studentCode = profileContext?.student_code || user?.username || "Chưa có mã HS";
-  const studentClass = profileContext?.class_name
-    ? `Lớp ${profileContext.class_name}`
-    : profileContext?.class_code
-    ? `Lớp ${profileContext.class_code}`
-    : "Trường THPT SchoolPro";
-  const studentRoleTag = roleDetail?.name === "Học sinh" ? "HS" : (roleDetail?.name || "HS");
-
-  const semesterText = academicContext?.semester
-    ? academicContext.semester.includes("Học kỳ 1")
-      ? "HK1"
-      : academicContext.semester.includes("Học kỳ 2")
-      ? "HK2"
-      : academicContext.semester
-    : "HK1";
-  const academicYearText = academicContext?.academic_year
-    ? academicContext.academic_year.replace("Năm học ", "")
-    : "2026 - 2027";
-  const currentWeekText = `Tuần ${academicContext?.current_week ?? 1}`;
-  const academicBadgeString = `${semesterText} • ${academicYearText} • ${currentWeekText}`;
-
-  const handleLogout = () => {
-    Modal.confirm({
-      title: "Xác nhận đăng xuất",
-      content: "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?",
-      onOk: () => {
-        logout();
-        message.success(t("common:status.success"));
-        navigate("/login");
-      },
-      onCancel: () => {
-        console.log('Cancel');
-      },
-      footer: (_, { OkBtn, CancelBtn }) => (
-        <>
-          <CancelBtn />
-          <OkBtn />
-        </>
-      ),
-    });
-  };
+  const { logout } = useLogout();
 
   const userMenuItems: MenuProps["items"] = [
     {
@@ -125,7 +71,7 @@ export const StudentLayout: React.FC = () => {
       icon: <Icon name="close" size={15} className="text-red-500" />,
       danger: true,
       label: t("student:header.logout"),
-      onClick: handleLogout,
+      onClick: logout,
     },
   ];
 
