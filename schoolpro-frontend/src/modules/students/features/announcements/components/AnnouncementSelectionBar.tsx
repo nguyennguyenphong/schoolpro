@@ -30,11 +30,12 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
       <div className="flex items-center gap-3">
         <Checkbox
           checked={isAllSelected}
-          indeterminate={selectedCount > 0 && selectedCount < totalOnPage}
+          indeterminate={selectedCount > 0 && !isAllSelected}
           onChange={onSelectAll}
+          disabled={totalOnPage === 0}
         >
           <span className="text-xs font-semibold text-slate-800">
-            Chọn tất cả ({totalOnPage} tin trên trang)
+            Chọn tất cả ({totalOnPage} tin chưa đọc trên trang)
           </span>
         </Checkbox>
 

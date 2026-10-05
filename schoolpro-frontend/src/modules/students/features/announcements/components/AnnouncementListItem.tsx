@@ -89,7 +89,7 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-start gap-3 flex-1 min-w-0">
           {/* Checkbox */}
-          {onToggleSelect && (
+          {onToggleSelect && !item.isRead && (
             <div onClick={handleCheckboxClick} className="pt-1 shrink-0 flex items-center">
               <Checkbox
                 checked={isSelected}

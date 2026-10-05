@@ -3,6 +3,7 @@ import { Modal, Tag, message } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
+import { printAnnouncement } from "@/modules/students/features/announcements/utils";
 
 interface AnnouncementDetailModalProps {
   item: AnnouncementItem | null;
@@ -22,7 +23,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
   };
 
   const handlePrint = () => {
-    window.print();
+    printAnnouncement(item);
   };
 
   return (
@@ -35,7 +36,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
     >
       <div className="space-y-5 pt-2">
         {/* Header tags & date */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-slate-100 pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             <Tag color="blue" className="m-0 font-medium">
               {item.department}
@@ -132,7 +133,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
             variant="outline"
             onClick={handlePrint}
           >
-            <Icon name="file" size={14} className="mr-1.5" />
+            <Icon name="file" size={14} />
             In văn bản
           </Button>
 

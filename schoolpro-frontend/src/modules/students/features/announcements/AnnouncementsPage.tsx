@@ -27,6 +27,7 @@ export const AnnouncementsPage: React.FC = () => {
     isDetailOpen,
     selectedIds,
     isAllCurrentPageSelected,
+    unreadOnPageCount,
     setSearchQuery,
     setCategory,
     setDepartment,
@@ -126,7 +127,7 @@ export const AnnouncementsPage: React.FC = () => {
       {/* 4. Multi-selection Bar (Shows when items are checked) */}
       <AnnouncementSelectionBar
         selectedCount={selectedIds.length}
-        totalOnPage={announcements.length}
+        totalOnPage={unreadOnPageCount}
         isAllSelected={isAllCurrentPageSelected}
         onSelectAll={selectAll}
         onClearSelection={clearSelection}

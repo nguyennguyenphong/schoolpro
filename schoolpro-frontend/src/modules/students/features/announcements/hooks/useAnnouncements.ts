@@ -220,21 +220,29 @@ export const useAnnouncements = () => {
   };
 
   // Selection handlers
+  const unreadCurrentPageIds = announcements
+    .filter((item) => !item.isRead)
+    .map((item) => item.id);
+
   const toggleSelect = (id: string) => {
+    // Only allow selecting unread announcements
+    const target = announcements.find((item) => item.id === id);
+    if (target?.isRead) return;
+
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const selectAll = () => {
-    const currentPageIds = announcements.map((item) => item.id);
-    const allSelected = currentPageIds.every((id) => selectedIds.includes(id));
+    if (unreadCurrentPageIds.length === 0) return;
+    const allSelected = unreadCurrentPageIds.every((id) => selectedIds.includes(id));
     if (allSelected) {
-      // Deselect current page items
-      setSelectedIds((prev) => prev.filter((id) => !currentPageIds.includes(id)));
+      // Deselect unread current page items
+      setSelectedIds((prev) => prev.filter((id) => !unreadCurrentPageIds.includes(id)));
     } else {
-      // Select all current page items
-      const newSelected = Array.from(new Set([...selectedIds, ...currentPageIds]));
+      // Select all unread current page items
+      const newSelected = Array.from(new Set([...selectedIds, ...unreadCurrentPageIds]));
       setSelectedIds(newSelected);
     }
   };
@@ -320,7 +328,8 @@ export const useAnnouncements = () => {
   };
 
   const isAllCurrentPageSelected =
-    announcements.length > 0 && announcements.every((item) => selectedIds.includes(item.id));
+    unreadCurrentPageIds.length > 0 &&
+    unreadCurrentPageIds.every((id) => selectedIds.includes(id));
 
   return {
     announcements,
@@ -335,6 +344,7 @@ export const useAnnouncements = () => {
     isDetailOpen,
     selectedIds,
     isAllCurrentPageSelected,
+    unreadOnPageCount: unreadCurrentPageIds.length,
     setSearchQuery,
     setCategory,
     setDepartment,

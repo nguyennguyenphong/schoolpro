@@ -88,7 +88,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
       <div>
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-1.5 min-w-0">
-            {onToggleSelect && (
+            {onToggleSelect && !item.isRead && (
               <div onClick={handleCheckboxClick} className="shrink-0 flex items-center">
                 <Checkbox
                   checked={isSelected}
