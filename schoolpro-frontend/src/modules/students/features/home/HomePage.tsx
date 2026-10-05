@@ -11,7 +11,7 @@ import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
 
 export const HomePage: React.FC = () => {
-  const { t } = useTranslation(["common", "student"]);
+  const { t } = useTranslation(["message", "button", "common"]);
   const { data, loading, error, refetch } = useHome();
 
   if (loading && !data) {
@@ -26,10 +26,11 @@ export const HomePage: React.FC = () => {
         </div>
         <div className="space-y-1">
           <h3 className="text-base font-bold text-slate-800">
-            Không thể tải dữ liệu Trang chủ
+            {t("message:failedToLoadHome")}
           </h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto">
-            {error.message || "Đã xảy ra lỗi khi kết nối máy chủ. Vui lòng thử lại sau."}
+            {error.message ||
+              t("message:serverConnectionError")}
           </p>
         </div>
         <Button
@@ -37,7 +38,7 @@ export const HomePage: React.FC = () => {
           onClick={() => refetch()}
           className="rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700"
         >
-          {t("common:actions.retry", { defaultValue: "Thử lại" })}
+          {t("button:retry")}
         </Button>
       </Card>
     );

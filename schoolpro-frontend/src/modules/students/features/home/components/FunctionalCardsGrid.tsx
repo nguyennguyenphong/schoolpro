@@ -13,19 +13,15 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
   features = [],
   onFeatureClick,
 }) => {
-  const { t } = useTranslation(["student"]);
+  const { t, i18n } = useTranslation(["card", "message"]);
 
   const handleClick = (item: FeatureItem) => {
     if (onFeatureClick) {
       onFeatureClick(item);
     } else if (!item.route) {
       const fallbackTitle = item.name || item.code || "";
-      const title = item.translationKey
-        ? (t as (key: string, options?: { defaultValue: string }) => string)(
-            `student:features.${item.translationKey}.title`,
-            { defaultValue: fallbackTitle }
-          )
-        : fallbackTitle;
+      const transKey = item.translationKey ? `card:features.${item.translationKey}.title` : "";
+      const title = transKey && i18n.exists(transKey) ? t(transKey as any) : fallbackTitle;
       message.info(`${title}`);
     }
   };
@@ -39,9 +35,7 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
             id="functional-cards-title"
             className="text-base sm:text-lg font-bold text-slate-900 mb-0"
           >
-            {t("student:home.quickActions", {
-              defaultValue: "Chức năng hệ thống",
-            })}
+            {t("card:quickActionsTitle")}
           </h2>
         </div>
       </div>
@@ -49,7 +43,7 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
       {features.length === 0 ? (
         <div className="p-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-xl">
           <p className="text-sm text-slate-500 mb-0">
-            Chưa có chức năng nào được cấu hình cho tài khoản của bạn.
+            {t("message:empty.noFeatures")}
           </p>
         </div>
       ) : (

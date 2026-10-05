@@ -1,0 +1,11 @@
+{
+  "targetAudience": "Audience: {{audience}}",
+  "authorLabel": "Author:",
+  "viewsLabel": "Views:",
+  "attachmentsCount": "Attached Files ({{count}})",
+  "officialNumber": "Document No.:",
+  "department": "Issuing Department:",
+  "publishDate": "Published Date:",
+  "logoutConfirmTitle": "Confirm Logout",
+  "logoutConfirmContent": "Are you sure you want to log out of the system?"
+}

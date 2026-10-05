@@ -1,0 +1,25 @@
+{
+  "success": "Thao tác thành công",
+  "error": "Đã có lỗi xảy ra, vui lòng thử lại sau.",
+  "warning": "Cảnh báo hệ thống",
+  "info": "Thông báo thông tin",
+  "loading": "Đang tải dữ liệu...",
+  "processing": "Đang xử lý...",
+  "failedToLoadHome": "Không thể tải dữ liệu Trang chủ",
+  "serverConnectionError": "Đã xảy ra lỗi khi kết nối máy chủ. Vui lòng thử lại sau.",
+  "downloading": "Đang tải xuống tệp: {{name}}",
+  "downloadSuccess": "Tải xuống tệp thành công",
+  "downloadError": "Tải xuống tệp thất bại",
+  "printing": "Đang chuẩn bị in...",
+  "printError": "Có lỗi xảy ra khi chuẩn bị văn bản in",
+  "printSuccess": "Chuẩn bị văn bản in thành công",
+  "markReadSuccess": "Đã đánh dấu thông báo là đã đọc",
+  "markUnreadSuccess": "Đã đánh dấu thông báo là chưa đọc",
+  "logoutSuccess": "Đã đăng xuất thành công!",
+  "empty": {
+    "noData": "Hiện tại chưa có thông báo nào trong hệ thống.",
+    "noFilteredResults": "Không tìm thấy thông báo phù hợp",
+    "noFilteredDescription": "Không có thông báo nào khớp với các bộ lọc đã chọn. Vui lòng thử lại với từ khóa hoặc điều kiện khác.",
+    "noFeatures": "Chưa có chức năng nào được cấu hình cho tài khoản của bạn."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "success": "Operation successful",
+  "error": "An error occurred, please try again later.",
+  "warning": "System warning",
+  "info": "Information notice",
+  "loading": "Loading data...",
+  "processing": "Processing...",
+  "failedToLoadHome": "Unable to load Home data",
+  "serverConnectionError": "An error occurred while connecting to server. Please try again later.",
+  "downloading": "Downloading file: {{name}}",
+  "downloadSuccess": "File downloaded successfully",
+  "downloadError": "Failed to download file",
+  "printing": "Preparing to print...",
+  "printError": "An error occurred while preparing print document",
+  "printSuccess": "Print document prepared successfully",
+  "markReadSuccess": "Notices marked as read",
+  "markUnreadSuccess": "Notices marked as unread",
+  "logoutSuccess": "Logged out successfully!",
+  "empty": {
+    "noData": "There are currently no notices in the system.",
+    "noFilteredResults": "No matching notices found",
+    "noFilteredDescription": "No notices match the selected filter criteria. Please try again with different keywords or conditions.",
+    "noFeatures": "No features have been configured for your account yet."
+  }
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type {
@@ -68,6 +69,8 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
   onSortByChange,
   onResetFilters,
 }) => {
+  const { t } = useTranslation(["input", "button"]);
+
   const isFilterActive =
     hasActiveFilters ||
     Boolean(
@@ -84,7 +87,9 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Chuyên mục */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Chuyên mục:</span>
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("input:filter.category")}
+          </span>
           <AnnouncementCategorySelect
             value={filter.category}
             onChange={onCategoryChange}
@@ -95,11 +100,13 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
 
         {/* Đơn vị ban hành */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Đơn vị:</span>
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("input:filter.department")}
+          </span>
           <SelectDepartment
             value={filter.department || "all"}
             includeAllOption={true}
-            allOptionLabel="Tất cả đơn vị"
+            allOptionLabel={t("input:filter.allDepartments")}
             allOptionValue="all"
             onChange={(val, opt) => {
               if (!val || val === "all") {
@@ -110,7 +117,7 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
               const deptName = optRecord?.title || optRecord?.label || String(val);
               onDepartmentChange(deptName || "all");
             }}
-            placeholder="Tất cả đơn vị"
+            placeholder={t("input:placeholder.department")}
             allowClear={true}
             className="w-60"
           />
@@ -118,7 +125,9 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
 
         {/* Mức độ */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Mức độ:</span>
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("input:filter.priority")}
+          </span>
           <SelectPriority
             value={filter.priority}
             onChange={onPriorityChange}
@@ -128,7 +137,9 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
 
         {/* Sắp xếp */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Sắp xếp:</span>
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("input:filter.sort")}
+          </span>
           <SelectSort
             value={filter.sortBy}
             onChange={onSortByChange}
@@ -142,10 +153,10 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
         <Button
           variant="outline"
           onClick={onResetFilters}
-          title="Đặt lại tất cả bộ lọc"
+          title={t("input:filter.resetTooltip")}
         >
           <Icon name="refresh" size={13} />
-          Đặt lại
+          {t("button:reset")}
         </Button>
       )}
     </div>

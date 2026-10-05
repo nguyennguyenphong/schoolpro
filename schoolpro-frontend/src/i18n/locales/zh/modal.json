@@ -1,0 +1,11 @@
+{
+  "targetAudience": "对象: {{audience}}",
+  "authorLabel": "发布人:",
+  "viewsLabel": "浏览次数:",
+  "attachmentsCount": "附件文件 ({{count}})",
+  "officialNumber": "公文编号:",
+  "department": "发布部门:",
+  "publishDate": "发布日期:",
+  "logoutConfirmTitle": "确认退出",
+  "logoutConfirmContent": "您确定要退出系统吗？"
+}

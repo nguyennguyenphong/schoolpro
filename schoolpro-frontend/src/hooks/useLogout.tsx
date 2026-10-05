@@ -5,19 +5,24 @@ import { useAuthStore } from "@/shared/store/useAuthStore";
 
 export const useLogout = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation(["common"]);
+  const { t } = useTranslation(["modal", "button", "message", "common"]);
   const { logout } = useAuthStore();
 
   const logoutWithConfirm = () => {
     Modal.confirm({
-      title: "Xác nhận đăng xuất",
-      content: "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?",
+      title: t("modal:logoutConfirmTitle"),
+      content: t("modal:logoutConfirmContent"),
+      okText: t("button:logout"),
+      cancelText: t("button:cancel"),
+      okButtonProps: {
+        danger: true,
+      },
 
       onOk: () => {
         logout();
 
         message.success(
-          t("common:status.success"),
+          t("message:logoutSuccess"),
         );
 
         navigate("/login", {

@@ -1,0 +1,29 @@
+{
+  "breadcrumb": {
+    "home": "首页",
+    "announcements": "通知公告"
+  },
+  "pageTitle": {
+    "home": "首页",
+    "announcements": "教务通知与公告"
+  },
+  "pageSubtitle": {
+    "home": "School Pro 教学管理与学生服务系统",
+    "announcements": "关注全校官方指导文件、考试安排、学费账单与学生活动通知"
+  },
+  "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
+  "welcomeUser": "你好，{{name}}！",
+  "workspace": "工作空间",
+  "currentSemester": "第1学期",
+  "academicYear": "2026 - 2027学年",
+  "currentWeek": "第 {{week}} 周",
+  "header": {
+    "searchPlaceholder": "搜索课程、讲义、资料...",
+    "profile": "个人档案",
+    "settings": "账户设置",
+    "changePassword": "修改密码",
+    "logout": "退出登录",
+    "notifications": "通知",
+    "studentId": "学号"
+  }
+}

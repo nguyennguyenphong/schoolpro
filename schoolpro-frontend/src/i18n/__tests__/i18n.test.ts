@@ -95,13 +95,48 @@ describe("i18next Translation Execution", () => {
   it("should support parameter interpolation", async () => {
     await i18n.changeLanguage("vi");
     expect(
-      i18n.t("auth:login.successMessage", { role: "ADMIN" })
-    ).toBe("Đăng nhập thành công với tư cách [ADMIN]! Đang chuyển hướng...");
+      i18n.t("auth:verifyOtp.subtitle", { identifier: "test@example.com" })
+    ).toBe("Nhập mã OTP gồm 6 chữ số vừa được gửi đến test@example.com.");
 
     await i18n.changeLanguage("en");
     expect(
-      i18n.t("auth:login.successMessage", { role: "TEACHER" })
-    ).toBe("Signed in successfully as [TEACHER]! Redirecting...");
+      i18n.t("message:downloading", { name: "test.pdf" })
+    ).toBe("Downloading file: test.pdf");
+  });
+
+  it("should translate separated button, input, message, card, modal, and navigation namespaces", async () => {
+    await i18n.changeLanguage("vi");
+    expect(i18n.t("button:print")).toBe("In văn bản");
+    expect(i18n.t("button:reset")).toBe("Đặt lại");
+    expect(i18n.t("input:filter.allDepartments")).toBe("Tất cả đơn vị");
+    expect(i18n.t("message:printing")).toBe("Đang chuẩn bị in...");
+    expect(i18n.t("card:summary.total")).toBe("Tổng số thông báo");
+    expect(i18n.t("navigation:breadcrumb.announcements")).toBe("Bảng tin & Thông báo");
+    expect(i18n.t("modal:officialNumber")).toBe("Số hiệu văn bản:");
+
+    await i18n.changeLanguage("en");
+    expect(i18n.t("button:print")).toBe("Print Document");
+    expect(i18n.t("input:filter.allDepartments")).toBe("All departments");
+    expect(i18n.t("message:printing")).toBe("Preparing to print...");
+    expect(i18n.t("card:summary.total")).toBe("Total announcements");
+    expect(i18n.t("navigation:breadcrumb.announcements")).toBe("News & Announcements");
+    expect(i18n.t("modal:officialNumber")).toBe("Document No.:");
+  });
+
+  it("should translate priority, sort options and logout confirmation modal across languages", async () => {
+    await i18n.changeLanguage("vi");
+    expect(i18n.t("card:priority.urgent")).toBe("Khẩn cấp");
+    expect(i18n.t("input:filter.allPriorities")).toBe("Tất cả mức độ");
+    expect(i18n.t("input:sortOptions.newest")).toBe("Mới nhất trước");
+    expect(i18n.t("modal:logoutConfirmTitle")).toBe("Xác nhận đăng xuất");
+    expect(i18n.t("message:logoutSuccess")).toBe("Đã đăng xuất thành công!");
+
+    await i18n.changeLanguage("en");
+    expect(i18n.t("card:priority.urgent")).toBe("Urgent");
+    expect(i18n.t("input:filter.allPriorities")).toBe("All priorities");
+    expect(i18n.t("input:sortOptions.newest")).toBe("Newest first");
+    expect(i18n.t("modal:logoutConfirmTitle")).toBe("Confirm Logout");
+    expect(i18n.t("message:logoutSuccess")).toBe("Logged out successfully!");
   });
 
   it("should sync dayjs locale when switching language", async () => {

@@ -45,7 +45,13 @@
   },
   "brand": {
     "title": "School Pro",
-    "tagline": "教育管理システム"
+    "tagline": "教育管理システム",
+    "portalTagline": "教育管理ポータル"
+  },
+  "pagination": {
+    "showing": "表示中",
+    "of": "全",
+    "items": "件"
   },
   "footer": {
     "copyright": "© 2026 School Pro. All rights reserved.",

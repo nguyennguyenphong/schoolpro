@@ -1,0 +1,29 @@
+{
+  "breadcrumb": {
+    "home": "ホーム",
+    "announcements": "お知らせ一覧"
+  },
+  "pageTitle": {
+    "home": "ホーム",
+    "announcements": "教務お知らせ・連絡事項"
+  },
+  "pageSubtitle": {
+    "home": "School Pro 学習・教務管理システム",
+    "announcements": "学校からの指示文書、試験日程、学費、課外活動の情報を確認できます"
+  },
+  "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
+  "welcomeUser": "こんにちは、{{name}}さん！",
+  "workspace": "ワークスペース",
+  "currentSemester": "第1学期",
+  "academicYear": "2026 - 2027年度",
+  "currentWeek": "第{{week}}週",
+  "header": {
+    "searchPlaceholder": "科目、講義、教材を検索...",
+    "profile": "プロフィール",
+    "settings": "アカウント設定",
+    "changePassword": "パスワード変更",
+    "logout": "ログアウト",
+    "notifications": "通知",
+    "studentId": "学籍番号"
+  }
+}

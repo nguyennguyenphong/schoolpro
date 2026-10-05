@@ -1,0 +1,25 @@
+{
+  "success": "操作成功",
+  "error": "发生错误，请稍后重试。",
+  "warning": "系统警告",
+  "info": "通知信息",
+  "loading": "正在加载数据...",
+  "processing": "正在处理...",
+  "failedToLoadHome": "无法加载首页数据",
+  "serverConnectionError": "连接服务器时发生错误，请稍后重试。",
+  "downloading": "正在下载文件: {{name}}",
+  "downloadSuccess": "文件下载成功",
+  "downloadError": "文件下载失败",
+  "printing": "正在准备打印...",
+  "printError": "准备打印文件时发生错误",
+  "printSuccess": "准备打印文件成功",
+  "markReadSuccess": "通知已标记为已读",
+  "markUnreadSuccess": "通知已标记为未读",
+  "logoutSuccess": "已成功退出登录！",
+  "empty": {
+    "noData": "系统中暂无通知公告。",
+    "noFilteredResults": "未找到符合条件的通知",
+    "noFilteredDescription": "没有与所选筛选条件匹配的通知，请更换关键词或调整筛选条件。",
+    "noFeatures": "您的账户暂未配置任何系统功能。"
+  }
+}

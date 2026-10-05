@@ -12,7 +12,7 @@ interface WelcomeBannerProps {
 export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
   profile,
 }) => {
-  const { t, i18n } = useTranslation(["common", "student"]);
+  const { t, i18n } = useTranslation(["navigation", "button", "common"]);
 
   const studentName = profile?.fullName || "Nguyễn Văn An";
   const currentWeek = profile?.currentWeek || 1;
@@ -32,7 +32,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
   const navigate = useNavigate();
   const onViewSchedule = () => {
     navigate("/student/timetable");
-  }
+  };
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-blue-700 via-blue-600 to-indigo-700 text-white p-6 sm:p-8 shadow-md shadow-blue-500/15 border border-blue-500/40">
@@ -40,10 +40,11 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md border border-white/30">
-              {profile?.currentSemester || t("student:home.currentSemester")} • {profile?.academicYear || t("student:home.academicYear")}
+              {profile?.currentSemester || t("navigation:currentSemester")} •{" "}
+              {profile?.academicYear || t("navigation:academicYear")}
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/25 text-emerald-100 backdrop-blur-md border border-emerald-400/40">
-              Tuần học thứ {currentWeek}
+              {t("navigation:currentWeek", { week: currentWeek })}
             </span>
             {major && (
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md border border-white/20 hidden sm:inline-block">
@@ -53,7 +54,9 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-0">
-            {t("student:home.welcome", { name: studentName })}
+            {t("navigation:welcome", {
+              name: studentName,
+            })}
           </h1>
 
           <p className="text-blue-100 text-xs sm:text-sm mb-0 flex items-center gap-2 font-medium">
@@ -68,7 +71,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
             onClick={onViewSchedule}
             className="bg-white/10! hover:bg-white/20! border-white/40! text-white! font-semibold rounded-xl h-11 px-5 shadow-xs transition-all cursor-pointer text-xs sm:text-sm"
           >
-            {t("student:schedule.viewFullSchedule")}
+            {t("button:viewSchedule")}
           </Button>
         </div>
       </div>

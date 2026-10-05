@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Select } from "@/components/ui/Select";
 import type {
   PriorityLevel,
@@ -13,26 +14,32 @@ export const SelectPriority = <T extends string = PriorityLevel>({
   value,
   onChange,
   includeAllOption = true,
-  allOptionLabel = "Tất cả mức độ",
+  allOptionLabel,
   allOptionValue = "all" as T,
   customPriorities,
   showBadgeDot: _showBadgeDot = false,
-  placeholder = "Chọn mức độ",
+  placeholder,
   allowClear = false,
   disabled = false,
   className,
   ...props
 }: SelectPriorityProps<T>) => {
+  const { t } = useTranslation(["input", "card"]);
+  const effectiveAllOptionLabel =
+    allOptionLabel ?? t("input:filter.allPriorities");
+  const effectivePlaceholder =
+    placeholder ?? t("input:placeholder.priority");
+
   const { options, isLoading } = usePriority({
     initialPriorities: customPriorities,
     includeAllOption,
-    allOptionLabel,
+    allOptionLabel: effectiveAllOptionLabel,
     allOptionValue,
   });
 
   return (
     <Select
-      placeholder={placeholder}
+      placeholder={effectivePlaceholder}
       allowClear={allowClear}
       disabled={disabled || isLoading}
       loading={isLoading}

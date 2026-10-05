@@ -1,0 +1,61 @@
+{
+  "placeholder": {
+    "default": "请输入...",
+    "select": "请选择...",
+    "search": "搜索...",
+    "searchAnnouncements": "按标题、公文、部门、发布人搜索通知...",
+    "department": "所有部门",
+    "category": "所有分类",
+    "priority": "所有优先级",
+    "sort": "排序方式",
+    "date": "选择日期..."
+  },
+  "filter": {
+    "category": "分类:",
+    "department": "部门:",
+    "priority": "优先级:",
+    "sort": "排序:",
+    "all": "全部",
+    "allDepartments": "所有部门",
+    "allCategories": "所有分类",
+    "allPriorities": "所有优先级",
+    "resetTooltip": "重置所有筛选"
+  },
+  "categories": {
+    "all": "所有分类",
+    "exam": "考务与日程",
+    "academic": "教学与教务",
+    "tuition": "学费与收费",
+    "activity": "团委与课外活动",
+    "emulation": "竞赛与评优",
+    "homeroom": "班级与班主任",
+    "general": "综合通知"
+  },
+  "sortOptions": {
+    "newest": "最新优先",
+    "oldest": "最早优先",
+    "views": "浏览最多",
+    "priority": "紧急优先",
+    "name_asc": "名称 (A - Z)",
+    "name_desc": "名称 (Z - A)",
+    "asc": "升序 (A - Z)",
+    "desc": "降序 (Z - A)"
+  },
+  "tabs": {
+    "all": "所有通知",
+    "unread": "未读",
+    "read": "已读",
+    "pinned": "置顶"
+  },
+  "viewMode": {
+    "grid": "网格视图",
+    "list": "列表视图"
+  },
+  "selection": {
+    "selectAllUnread": "全选 (当前页未读 {{count}} 条)"
+  },
+  "tooltip": {
+    "previewPdf": "预览PDF文件",
+    "download": "下载文件"
+  }
+}

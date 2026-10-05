@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import { Icon } from "@/components/ui/Icon";
 
@@ -37,8 +38,13 @@ export const AnnouncementSearchAndView: React.FC<AnnouncementSearchAndViewProps>
   viewMode,
   onSearchChange,
   onViewModeChange,
-  placeholder = "Tìm kiếm thông báo theo tiêu đề, văn bản, phòng ban, tác giả...",
+  placeholder,
 }) => {
+  const { t } = useTranslation(["input"]);
+  const effectivePlaceholder =
+    placeholder ||
+    t("input:placeholder.searchAnnouncements");
+
   // Always auto-focus into the search input when mounted
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,7 +63,7 @@ export const AnnouncementSearchAndView: React.FC<AnnouncementSearchAndViewProps>
           autoFocus
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder={placeholder}
+          placeholder={effectivePlaceholder}
           prefix={<Icon name="search" size={14} className="text-slate-400" />}
           allowClear
           className="rounded-lg text-xs w-full"
@@ -76,7 +82,7 @@ export const AnnouncementSearchAndView: React.FC<AnnouncementSearchAndViewProps>
           }`}
         >
           <Icon name="chart" size={13} />
-          <span>Lưới thẻ</span>
+          <span>{t("input:viewMode.grid")}</span>
         </button>
         <button
           type="button"
@@ -88,7 +94,7 @@ export const AnnouncementSearchAndView: React.FC<AnnouncementSearchAndViewProps>
           }`}
         >
           <Icon name="menu" size={13} />
-          <span>Danh sách</span>
+          <span>{t("input:viewMode.list")}</span>
         </button>
       </div>
     </div>

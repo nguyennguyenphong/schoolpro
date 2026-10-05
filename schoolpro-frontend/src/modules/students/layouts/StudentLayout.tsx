@@ -16,7 +16,7 @@ import { Avatar } from "@/components/ui/Avatar";
 
 
 export const StudentLayout: React.FC = () => {
-  const { t } = useTranslation(["common", "student"]);
+  const { t } = useTranslation(["common", "navigation", "button"]);
   const navigate = useNavigate();
 
   const {
@@ -45,7 +45,7 @@ export const StudentLayout: React.FC = () => {
             </Tag>
           </div>
           <p className="text-xs text-slate-500 mb-0.5">
-            {t("student:header.studentId")}: <strong>{studentCode}</strong>
+            {t("navigation:header.studentId")}: <strong>{studentCode}</strong>
           </p>
           <p className="text-[11px] text-slate-400 mb-0">{studentClass}</p>
         </div>
@@ -54,14 +54,20 @@ export const StudentLayout: React.FC = () => {
     {
       key: "profile",
       icon: <Icon name="user" size={15} />,
-      label: t("student:header.profile"),
-      onClick: () => message.info(t("student:header.profile")),
+      label: t("navigation:header.profile"),
+      onClick: () => message.info(t("navigation:header.profile")),
     },
     {
       key: "changePassword",
       icon: <Icon name="password" size={15} />,
-      label: t("student:header.changePassword"),
+      label: t("navigation:header.changePassword"),
       onClick: () => navigate("/forgot-password"),
+    },
+    {
+      key: "settings",
+      icon: <Icon name="settings" size={15} />,
+      label: t("navigation:header.settings"),
+      onClick: () => navigate("/settings"),
     },
     {
       type: "divider",
@@ -70,7 +76,7 @@ export const StudentLayout: React.FC = () => {
       key: "logout",
       icon: <Icon name="close" size={15} className="text-red-500" />,
       danger: true,
-      label: t("student:header.logout"),
+      label: t("navigation:header.logout"),
       onClick: logout,
     },
   ];
@@ -108,7 +114,7 @@ export const StudentLayout: React.FC = () => {
           <div className="hidden lg:flex items-center flex-1 max-w-sm mx-4">
             <Input
               prefix={<Icon name="search" size={15} className="text-slate-400 mr-1.5" />}
-              placeholder={t("student:header.searchPlaceholder")}
+              placeholder={t("navigation:header.searchPlaceholder")}
               name="search"
               allowClear
               className="rounded-lg bg-slate-50/80 border-slate-200 hover:border-blue-400 focus:bg-white w-full text-xs"
@@ -127,7 +133,7 @@ export const StudentLayout: React.FC = () => {
               type="button"
               onClick={() => navigate("/student/notices")}
               className="w-9 h-9 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center justify-center transition-all text-slate-600 relative cursor-pointer"
-              aria-label={t("student:header.notifications")}
+              aria-label={t("navigation:header.notifications")}
             >
               <Badge count={unreadNotificationsCount} overflowCount={99} offset={[-2, 2]}>
                 <Icon name="info" size={17} />

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Select } from "@/components/ui/Select";
 import type { SelectSortProps } from "@/components/sort/SelectSort/types";
 import { useSortOptions } from "@/components/sort/SelectSort/hooks/useSortOptions";
@@ -11,12 +12,16 @@ export const SelectSort = <T extends string = string>({
   onChange,
   options,
   preset = "announcements",
-  placeholder = "Sắp xếp theo",
+  placeholder,
   allowClear = false,
   disabled = false,
   className,
   ...props
 }: SelectSortProps<T>) => {
+  const { t } = useTranslation(["input"]);
+  const effectivePlaceholder =
+    placeholder ?? t("input:placeholder.sort");
+
   const { options: sortOptions } = useSortOptions({
     options,
     preset,
@@ -24,7 +29,7 @@ export const SelectSort = <T extends string = string>({
 
   return (
     <Select
-      placeholder={placeholder}
+      placeholder={effectivePlaceholder}
       allowClear={allowClear}
       disabled={disabled}
       options={sortOptions}

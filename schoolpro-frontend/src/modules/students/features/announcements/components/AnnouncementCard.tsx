@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -16,52 +17,84 @@ interface AnnouncementCardProps {
   onClick: (item: AnnouncementItem) => void;
 }
 
-const getCategoryConfig = (
-  cat: AnnouncementCategory,
-): { label: string; color: string } => {
-  const normalized = (cat || "").toLowerCase();
-  switch (normalized) {
-    case "exam":
-      return { label: "Khảo thí & Lịch thi", color: "red" };
-    case "academic":
-      return { label: "Đào tạo & Học vụ", color: "blue" };
-    case "tuition":
-    case "fees":
-      return { label: "Học phí & Khoản thu", color: "green" };
-    case "activity":
-    case "events":
-      return { label: "Đoàn & Ngoại khóa", color: "purple" };
-    case "emulation":
-      return { label: "Thi đua & Khen thưởng", color: "orange" };
-    case "homeroom":
-      return { label: "Lớp & GVCN", color: "cyan" };
-    default:
-      return { label: cat || "Thông báo chung", color: "default" };
-  }
-};
-
-const getPriorityConfig = (
-  priority: AnnouncementPriority,
-  isPinned: boolean,
-): { label: string; color: string } | null => {
-  if (isPinned) {
-    return { label: "Ghim đầu trang", color: "gold" };
-  }
-  if (priority === "urgent") {
-    return { label: "Khẩn cấp", color: "red" };
-  }
-  if (priority === "high") {
-    return { label: "Quan trọng", color: "orange" };
-  }
-  return null;
-};
-
 export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
   item,
   isSelected = false,
   onToggleSelect,
   onClick,
 }) => {
+  const { t } = useTranslation(["input", "card"]);
+
+  const getCategoryConfig = (
+    cat: AnnouncementCategory,
+  ): { label: string; color: string } => {
+    const normalized = (cat || "").toLowerCase();
+    switch (normalized) {
+      case "exam":
+        return {
+          label: t("input:categories.exam"),
+          color: "red",
+        };
+      case "academic":
+        return {
+          label: t("input:categories.academic"),
+          color: "blue",
+        };
+      case "tuition":
+      case "fees":
+        return {
+          label: t("input:categories.tuition"),
+          color: "green",
+        };
+      case "activity":
+      case "events":
+        return {
+          label: t("input:categories.activity"),
+          color: "purple",
+        };
+      case "emulation":
+        return {
+          label: t("input:categories.emulation"),
+          color: "orange",
+        };
+      case "homeroom":
+        return {
+          label: t("input:categories.homeroom"),
+          color: "cyan",
+        };
+      default:
+        return {
+          label: cat || t("input:categories.general"),
+          color: "default",
+        };
+    }
+  };
+
+  const getPriorityConfig = (
+    priority: AnnouncementPriority,
+    isPinned: boolean,
+  ): { label: string; color: string } | null => {
+    if (isPinned) {
+      return {
+        label: t("card:priority.pinned"),
+        color: "gold",
+      };
+    }
+    if (priority === "urgent") {
+      return {
+        label: t("card:priority.urgent"),
+        color: "red",
+      };
+    }
+    if (priority === "high") {
+      return {
+        label: t("card:priority.high"),
+        color: "orange",
+      };
+    }
+    return null;
+  };
+
   const categoryConfig = getCategoryConfig(item.category);
   const priorityConfig = getPriorityConfig(item.priority, item.isPinned);
 
@@ -114,57 +147,67 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
             )}
           </div>
 
-            {!item.isRead && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                Mới
-              </span>
-            )}
-          </div>
-
-          <h3
-            className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-1.5 line-clamp-2 h-12 leading-6"
-            title={item.title}
-          >
-            {item.title}
-          </h3>
-
-          <p
-            className="text-xs text-slate-500 mb-0 leading-5 line-clamp-2 h-10 font-normal"
-            title={item.summary}
-          >
-            {item.summary}
-          </p>
+          {!item.isRead && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+              {t("card:badge.unread")}
+            </span>
+          )}
         </div>
 
-        <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
-            <div className="flex items-center gap-1.5 min-w-0">
-              <Icon name="user" size={13} className="text-slate-400 shrink-0" />
-              <span className="truncate text-slate-600 font-medium text-[11px] sm:text-xs" title={item.department}>
-                {item.department}
+        <h3
+          className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-1.5 line-clamp-2 h-12 leading-6"
+          title={item.title}
+        >
+          {item.title}
+        </h3>
+
+        <p
+          className="text-xs text-slate-500 mb-0 leading-5 line-clamp-2 h-10 font-normal"
+          title={item.summary}
+        >
+          {item.summary}
+        </p>
+      </div>
+
+      <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5">
+        <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Icon name="user" size={13} className="text-slate-400 shrink-0" />
+            <span className="truncate text-slate-600 font-medium text-[11px] sm:text-xs" title={item.department}>
+              {item.department}
+            </span>
+          </div>
+
+          {item.attachments && item.attachments.length > 0 && (
+            <div
+              className="flex items-center gap-1 text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100 shrink-0 font-medium"
+              title={t("card:meta.attachments", {
+                count: item.attachments.length,
+              })}
+            >
+              <Icon name="download" size={11} />
+              <span>
+                {t("card:meta.attachmentsBadge", {
+                  count: item.attachments.length,
+                })}
               </span>
             </div>
-
-            {item.attachments && item.attachments.length > 0 && (
-              <div
-                className="flex items-center gap-1 text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100 shrink-0 font-medium"
-                title={`${item.attachments.length} tệp đính kèm`}
-              >
-                <Icon name="download" size={11} />
-                <span>{item.attachments.length} tệp</span>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between text-[11px] text-slate-400">
-            <div className="flex items-center gap-1">
-              <Icon name="clock" size={11} />
-              <span>{item.publishDate}</span>
-            </div>
-            <span>{item.viewsCount} lượt xem</span>
-          </div>
+          )}
         </div>
-      </Card>
+
+        <div className="flex items-center justify-between text-[11px] text-slate-400">
+          <div className="flex items-center gap-1">
+            <Icon name="clock" size={11} />
+            <span>{item.publishDate}</span>
+          </div>
+          <span>
+            {t("card:meta.views", {
+              count: item.viewsCount,
+            })}
+          </span>
+        </div>
+      </div>
+    </Card>
   );
 };

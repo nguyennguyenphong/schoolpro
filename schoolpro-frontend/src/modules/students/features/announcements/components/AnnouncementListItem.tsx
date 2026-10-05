@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
@@ -17,52 +18,84 @@ interface AnnouncementListItemProps {
   onClick: (item: AnnouncementItem) => void;
 }
 
-const getCategoryConfig = (
-  cat: AnnouncementCategory,
-): { label: string; color: string } => {
-  const normalized = (cat || "").toLowerCase();
-  switch (normalized) {
-    case "exam":
-      return { label: "Khảo thí", color: "red" };
-    case "academic":
-      return { label: "Đào tạo", color: "blue" };
-    case "tuition":
-    case "fees":
-      return { label: "Học phí", color: "green" };
-    case "activity":
-    case "events":
-      return { label: "Ngoại khóa", color: "purple" };
-    case "emulation":
-      return { label: "Thi đua", color: "orange" };
-    case "homeroom":
-      return { label: "Lớp & GVCN", color: "cyan" };
-    default:
-      return { label: cat || "Chung", color: "default" };
-  }
-};
-
-const getPriorityConfig = (
-  priority: AnnouncementPriority,
-  isPinned: boolean,
-): { label: string; color: string } | null => {
-  if (isPinned) {
-    return { label: "Ghim", color: "gold" };
-  }
-  if (priority === "urgent") {
-    return { label: "Khẩn", color: "red" };
-  }
-  if (priority === "high") {
-    return { label: "Quan trọng", color: "orange" };
-  }
-  return null;
-};
-
 export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
   item,
   isSelected = false,
   onToggleSelect,
   onClick,
 }) => {
+  const { t } = useTranslation(["button", "input", "card"]);
+
+  const getCategoryConfig = (
+    cat: AnnouncementCategory,
+  ): { label: string; color: string } => {
+    const normalized = (cat || "").toLowerCase();
+    switch (normalized) {
+      case "exam":
+        return {
+          label: t("input:categories.exam"),
+          color: "red",
+        };
+      case "academic":
+        return {
+          label: t("input:categories.academic"),
+          color: "blue",
+        };
+      case "tuition":
+      case "fees":
+        return {
+          label: t("input:categories.tuition"),
+          color: "green",
+        };
+      case "activity":
+      case "events":
+        return {
+          label: t("input:categories.activity"),
+          color: "purple",
+        };
+      case "emulation":
+        return {
+          label: t("input:categories.emulation"),
+          color: "orange",
+        };
+      case "homeroom":
+        return {
+          label: t("input:categories.homeroom"),
+          color: "cyan",
+        };
+      default:
+        return {
+          label: cat || t("input:categories.general"),
+          color: "default",
+        };
+    }
+  };
+
+  const getPriorityConfig = (
+    priority: AnnouncementPriority,
+    isPinned: boolean,
+  ): { label: string; color: string } | null => {
+    if (isPinned) {
+      return {
+        label: t("card:priority.pinned"),
+        color: "gold",
+      };
+    }
+    if (priority === "urgent") {
+      return {
+        label: t("card:priority.urgent"),
+        color: "red",
+      };
+    }
+    if (priority === "high") {
+      return {
+        label: t("card:priority.high"),
+        color: "orange",
+      };
+    }
+    return null;
+  };
+
   const categoryConfig = getCategoryConfig(item.category);
   const priorityConfig = getPriorityConfig(item.priority, item.isPinned);
 
@@ -137,7 +170,11 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
               <span>•</span>
               <span>{item.author}</span>
               <span>•</span>
-              <span>{item.viewsCount} lượt xem</span>
+              <span>
+                {t("card:meta.views", {
+                  count: item.viewsCount,
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -147,16 +184,19 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
           {item.attachments && item.attachments.length > 0 && (
             <div className="flex items-center gap-1 text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 font-medium">
               <Icon name="download" size={12} />
-              <span>{item.attachments.length} tệp</span>
+              <span>
+                {t("card:meta.attachmentsBadge", {
+                  count: item.attachments.length,
+                })}
+              </span>
             </div>
           )}
 
           <Button
             variant="ghost"
-  
             className="text-blue-600 hover:text-blue-700"
           >
-            <span>Chi tiết</span>
+            <span>{t("button:viewDetail")}</span>
             <Icon name="arrow-right" size={13} />
           </Button>
         </div>

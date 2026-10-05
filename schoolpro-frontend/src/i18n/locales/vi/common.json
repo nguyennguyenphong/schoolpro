@@ -45,7 +45,13 @@
   },
   "brand": {
     "title": "School Pro",
-    "tagline": "Hệ thống Quản lý Giáo dục"
+    "tagline": "Hệ thống Quản lý Giáo dục",
+    "portalTagline": "Cổng thông tin quản lý giáo dục"
+  },
+  "pagination": {
+    "showing": "Hiển thị",
+    "of": "trên tổng số",
+    "items": "mục"
   },
   "footer": {
     "copyright": "© 2026 School Pro. Bảo lưu mọi quyền.",

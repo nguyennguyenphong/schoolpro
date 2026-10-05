@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 
 export interface AnnouncementStatusTabsProps {
@@ -32,6 +33,7 @@ export const AnnouncementStatusTabs: React.FC<AnnouncementStatusTabsProps> = ({
   unreadCount = 0,
   onStatusChange,
 }) => {
+  const { t } = useTranslation(["input"]);
   const readCount = Math.max(0, totalCount - unreadCount);
 
   const tabs: Array<{
@@ -42,19 +44,19 @@ export const AnnouncementStatusTabs: React.FC<AnnouncementStatusTabsProps> = ({
   }> = [
     {
       key: "all",
-      label: "Tất cả thông báo",
+      label: t("input:tabs.all"),
       icon: "file",
       count: totalCount,
     },
     {
       key: "unread",
-      label: "Chưa đọc",
+      label: t("input:tabs.unread"),
       icon: "clock",
       count: unreadCount,
     },
     {
       key: "read",
-      label: "Đã đọc",
+      label: t("input:tabs.read"),
       icon: "checkCircle",
       count: readCount,
     },

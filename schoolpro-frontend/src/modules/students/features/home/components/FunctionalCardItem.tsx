@@ -16,25 +16,17 @@ export const FunctionalCardItem: React.FC<FunctionalCardItemProps> = ({
   item,
   onClick,
 }) => {
-  const { t } = useTranslation(["student"]);
+  const { t, i18n } = useTranslation(["card"]);
   const navigate = useNavigate();
 
   const fallbackTitle = item.name || item.code || "";
   const fallbackDesc = item.description || "";
 
-  const title = item.translationKey
-    ? (t as (key: string, options?: { defaultValue: string }) => string)(
-        `student:features.${item.translationKey}.title`,
-        { defaultValue: fallbackTitle }
-      )
-    : fallbackTitle;
+  const titleKey = item.translationKey ? `card:features.${item.translationKey}.title` : "";
+  const title = titleKey && i18n.exists(titleKey) ? t(titleKey as any) : fallbackTitle;
 
-  const description = item.translationKey
-    ? (t as (key: string, options?: { defaultValue: string }) => string)(
-        `student:features.${item.translationKey}.description`,
-        { defaultValue: fallbackDesc }
-      )
-    : fallbackDesc;
+  const descKey = item.translationKey ? `card:features.${item.translationKey}.description` : "";
+  const description = descKey && i18n.exists(descKey) ? t(descKey as any) : fallbackDesc;
 
   const handleCardClick = (e: React.MouseEvent) => {
     if (onClick) {

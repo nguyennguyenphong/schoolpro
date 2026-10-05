@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Tag, message } from "antd";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AnnouncementItem, AnnouncementAttachment } from "@/modules/students/features/announcements/types";
@@ -17,6 +18,8 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation(["button", "message", "input", "card", "modal"]);
+
   const [previewPdf, setPreviewPdf] = React.useState<{
     url: string;
     name: string;
@@ -28,7 +31,11 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
   if (!item) return null;
 
   const handleDownload = (fileName: string) => {
-    message.success(`Đang tải xuống tệp: ${fileName}`);
+    message.success(
+      t("message:downloading", {
+        name: fileName,
+      })
+    );
   };
 
   const handleAttachmentClick = (att: AnnouncementAttachment) => {
@@ -49,7 +56,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
       setIsPrinting(true);
       await printAnnouncement(item);
     } catch {
-      message.error("Có lỗi xảy ra khi chuẩn bị văn bản in");
+      message.error(t("message:printError"));
     } finally {
       setIsPrinting(false);
     }
@@ -72,17 +79,19 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
             </Tag>
             {item.isPinned && (
               <Tag color="gold" className="m-0 font-semibold">
-                Ghim đầu trang
+                {t("card:priority.pinned")}
               </Tag>
             )}
             {item.priority === "urgent" && (
               <Tag color="red" className="m-0 font-semibold">
-                Khẩn cấp
+                {t("card:priority.urgent")}
               </Tag>
             )}
             {item.targetAudience && (
               <Tag color="default" className="m-0">
-                Đối tượng: {item.targetAudience}
+                {t("modal:targetAudience", {
+                  audience: item.targetAudience,
+                })}
               </Tag>
             )}
           </div>
@@ -99,9 +108,15 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
             {item.title}
           </h2>
           <div className="flex items-center gap-4 text-xs text-slate-500">
-            <span>Người đăng: <strong className="text-slate-700">{item.author}</strong></span>
+            <span>
+              {t("modal:authorLabel")}{" "}
+              <strong className="text-slate-700">{item.author}</strong>
+            </span>
             <span>•</span>
-            <span>Lượt xem: <strong className="text-slate-700">{item.viewsCount}</strong></span>
+            <span>
+              {t("modal:viewsLabel")}{" "}
+              <strong className="text-slate-700">{item.viewsCount}</strong>
+            </span>
           </div>
         </div>
 
@@ -120,7 +135,11 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
           <div className="space-y-2 pt-3 border-t border-slate-100">
             <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
               <Icon name="download" size={14} className="text-blue-600" />
-              <span>Tài liệu đính kèm ({item.attachments.length})</span>
+              <span>
+                {t("modal:attachmentsCount", {
+                  count: item.attachments.length,
+                })}
+              </span>
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -161,9 +180,9 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
                       {isPdf && (
                         <span
                           className="text-[11px] font-semibold text-blue-600 group-hover:underline px-1.5 py-0.5"
-                          title="Xem trước tài liệu PDF"
+                          title={t("input:tooltip.previewPdf")}
                         >
-                          Xem
+                          {t("button:view")}
                         </span>
                       )}
                       <Button
@@ -173,7 +192,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
                           e.stopPropagation();
                           handleDownload(att.name);
                         }}
-                        title="Tải tệp xuống"
+                        title={t("input:tooltip.download")}
                       >
                         <Icon name="download" size={14} />
                       </Button>
@@ -197,14 +216,16 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
               size={14}
               className={isPrinting ? "animate-spin" : ""}
             />
-            {isPrinting ? "Đang chuẩn bị in..." : "In văn bản"}
+            {isPrinting
+              ? t("message:printing")
+              : t("button:print")}
           </Button>
 
           <Button
             variant="primary"
             onClick={onClose}
           >
-            Đóng
+            {t("button:close")}
           </Button>
         </div>
       </div>

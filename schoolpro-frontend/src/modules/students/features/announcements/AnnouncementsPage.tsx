@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Empty, Pagination } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +16,7 @@ import {
 import { useAnnouncements } from "@/modules/students/features/announcements/hooks";
 
 export const AnnouncementsPage: React.FC = () => {
+  const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
   const {
     announcements,
     total,
@@ -70,7 +72,7 @@ export const AnnouncementsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("navigation:breadcrumb.home")}</span>
                 </span>
               ),
             },
@@ -78,7 +80,7 @@ export const AnnouncementsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                   <Icon name="info" size={13} className="text-blue-600 shrink-0" />
-                  <span>Bảng tin & Thông báo</span>
+                  <span>{t("navigation:breadcrumb.announcements")}</span>
                 </span>
               ),
             },
@@ -90,11 +92,11 @@ export const AnnouncementsPage: React.FC = () => {
             <div className="flex items-center gap-2 mb-1">
               <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-                Bảng tin & Thông báo học vụ
+                {t("navigation:pageTitle.announcements")}
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường
+              {t("navigation:pageSubtitle.announcements")}
             </p>
           </div>
         </div>
@@ -142,12 +144,14 @@ export const AnnouncementsPage: React.FC = () => {
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
-                  Không tìm thấy thông báo phù hợp
+                  {hasActiveFilters
+                    ? t("message:empty.noFilteredResults")
+                    : t("message:empty.noData")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
-                    ? "Không có thông báo nào khớp với các bộ lọc đã chọn. Vui lòng thử lại với từ khóa hoặc điều kiện khác."
-                    : "Hiện tại chưa có thông báo nào trong hệ thống."}
+                    ? t("message:empty.noFilteredDescription")
+                    : t("message:empty.noData")}
                 </p>
               </div>
             }
@@ -158,7 +162,7 @@ export const AnnouncementsPage: React.FC = () => {
                 onClick={resetFilters}
                 className="mt-3"
               >
-                Đặt lại tất cả bộ lọc
+                {t("button:reset")}
               </Button>
             )}
           </Empty>
@@ -193,8 +197,11 @@ export const AnnouncementsPage: React.FC = () => {
       {total > 0 && (
         <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-500">
-            Hiển thị <strong className="text-slate-800">{announcements.length}</strong> trên tổng số{" "}
-            <strong className="text-slate-800">{total}</strong> thông báo
+            {t("common:pagination.showing")}{" "}
+            <strong className="text-slate-800">{announcements.length}</strong>{" "}
+            {t("common:pagination.of")}{" "}
+            <strong className="text-slate-800">{total}</strong>{" "}
+            {t("card:announcementUnit")}
           </div>
 
           <Pagination

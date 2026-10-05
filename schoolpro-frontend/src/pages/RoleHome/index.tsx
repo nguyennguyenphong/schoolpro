@@ -1,13 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
-import { message } from "@/components/ui/Message";
 import { Avatar } from "@/components/ui/Avatar";
+import { useLogout } from "@/hooks/useLogout";
 
 interface RoleHomeProps {
   roleTitle: string;
@@ -22,14 +22,9 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
   roleBadgeColor,
   roleIcon,
 }) => {
-  const navigate = useNavigate();
-  const { user, roleDetail, logout } = useAuthStore();
-
-  const handleLogout = () => {
-    logout();
-    message.success("Đã đăng xuất thành công!");
-    navigate("/login");
-  };
+  const { t } = useTranslation(["common", "navigation", "button", "card"]);
+  const { user, roleDetail } = useAuthStore();
+  const { logout } = useLogout();
 
   const displayName = user?.name || "Người dùng SchoolPro";
   const displayEmail = user?.email || "user@schoolpro.edu.vn";
@@ -44,8 +39,12 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
             SP
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-800 leading-tight">SchoolPro</h1>
-            <p className="text-xs text-slate-400 font-medium leading-none">Cổng thông tin quản lý giáo dục</p>
+            <h1 className="text-base font-bold text-slate-800 leading-tight">
+              {t("common:brand.title")}
+            </h1>
+            <p className="text-xs text-slate-400 font-medium leading-none">
+              {t("common:brand.portalTagline")}
+            </p>
           </div>
         </div>
 
@@ -65,11 +64,13 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
           <Button
             variant="outline"
             size="small"
-            onClick={handleLogout}
+            onClick={logout}
             className="flex items-center gap-1.5 text-rose-600 hover:text-rose-700 hover:border-rose-300"
           >
             <Icon name="arrow-right" size={14} />
-            <span className="hidden sm:inline">Đăng xuất</span>
+            <span className="hidden sm:inline">
+              {t("button:logout")}
+            </span>
           </Button>
         </div>
       </header>
@@ -82,10 +83,12 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-medium tracking-wide">
                 <Icon name={roleIcon} size={14} />
-                <span>Không gian làm việc</span>
+                <span>{t("navigation:workspace")}</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                Xin chào, {displayName}!
+                {t("navigation:welcomeUser", {
+                  name: displayName,
+                })}
               </h2>
               <p className="text-blue-100 text-sm max-w-xl">
                 {roleSubtitle}
@@ -96,7 +99,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
                 variant="outline"
                 className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-sm rounded-xl h-11 px-5"
               >
-                Xem hướng dẫn
+                {t("button:viewGuide")}
               </Button>
             </div>
           </div>
@@ -110,12 +113,14 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
                 <Icon name="calendar" size={24} />
               </div>
               <div>
-                <h3 className="font-semibold text-slate-800 text-base mb-1">Lịch biểu & Kế hoạch</h3>
+                <h3 className="font-semibold text-slate-800 text-base mb-1">
+                  {t("card:roleCards.calendarTitle")}
+                </h3>
                 <p className="text-slate-500 text-xs leading-relaxed mb-3">
-                  Theo dõi lịch làm việc, giảng dạy và các sự kiện được phân công trong tuần.
+                  {t("card:roleCards.calendarDesc")}
                 </p>
                 <span className="text-blue-600 text-xs font-semibold hover:underline cursor-pointer">
-                  Khám phá ngay →
+                  {t("card:roleCards.exploreNow")}
                 </span>
               </div>
             </div>
@@ -127,12 +132,14 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
                 <Icon name="mail" size={24} />
               </div>
               <div>
-                <h3 className="font-semibold text-slate-800 text-base mb-1">Thông báo & Tin nhắn</h3>
+                <h3 className="font-semibold text-slate-800 text-base mb-1">
+                  {t("card:roleCards.noticeTitle")}
+                </h3>
                 <p className="text-slate-500 text-xs leading-relaxed mb-3">
-                  Cập nhật các thông báo mới nhất từ nhà trường và bộ môn liên quan.
+                  {t("card:roleCards.noticeDesc")}
                 </p>
                 <span className="text-emerald-600 text-xs font-semibold hover:underline cursor-pointer">
-                  Xem 3 tin mới →
+                  {t("card:roleCards.viewNewNotices")}
                 </span>
               </div>
             </div>
@@ -144,12 +151,14 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
                 <Icon name="file" size={24} />
               </div>
               <div>
-                <h3 className="font-semibold text-slate-800 text-base mb-1">Hồ sơ & Tài liệu</h3>
+                <h3 className="font-semibold text-slate-800 text-base mb-1">
+                  {t("card:roleCards.recordsTitle")}
+                </h3>
                 <p className="text-slate-500 text-xs leading-relaxed mb-3">
-                  Quản lý hồ sơ công tác, biểu mẫu điện tử và báo cáo định kỳ.
+                  {t("card:roleCards.recordsDesc")}
                 </p>
                 <span className="text-purple-600 text-xs font-semibold hover:underline cursor-pointer">
-                  Tra cứu hồ sơ →
+                  {t("card:roleCards.lookupRecords")}
                 </span>
               </div>
             </div>

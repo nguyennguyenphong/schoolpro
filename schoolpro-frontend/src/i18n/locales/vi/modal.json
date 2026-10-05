@@ -1,0 +1,11 @@
+{
+  "targetAudience": "Đối tượng: {{audience}}",
+  "authorLabel": "Người đăng:",
+  "viewsLabel": "Lượt xem:",
+  "attachmentsCount": "Tài liệu đính kèm ({{count}})",
+  "officialNumber": "Số hiệu văn bản:",
+  "department": "Đơn vị ban hành:",
+  "publishDate": "Ngày đăng:",
+  "logoutConfirmTitle": "Xác nhận đăng xuất",
+  "logoutConfirmContent": "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?"
+}

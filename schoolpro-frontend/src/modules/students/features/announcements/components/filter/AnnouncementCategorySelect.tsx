@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Select } from "antd";
+import { useTranslation } from "react-i18next";
 import type {
   AnnouncementCategory,
   AnnouncementCategoryOption,
@@ -36,9 +37,11 @@ export const AnnouncementCategorySelect: React.FC<AnnouncementCategorySelectProp
   categories,
   className = "w-44",
 }) => {
+  const { t } = useTranslation(["input"]);
+
   const categoryOptions = useMemo(() => {
     const allOption: { label: string; value: AnnouncementCategory } = {
-      label: "Tất cả chuyên mục",
+      label: t("input:filter.allCategories"),
       value: "all",
     };
 
@@ -53,14 +56,14 @@ export const AnnouncementCategorySelect: React.FC<AnnouncementCategorySelectProp
     // Fallback options before API loads
     return [
       allOption,
-      { label: "Khảo thí & Lịch thi", value: "exam" },
-      { label: "Đào tạo & Học vụ", value: "academic" },
-      { label: "Học phí & Khoản thu", value: "tuition" },
-      { label: "Đoàn trường & Ngoại khóa", value: "activity" },
-      { label: "Lớp & GVCN", value: "homeroom" },
-      { label: "Thông báo chung", value: "general" },
+      { label: t("input:categories.exam"), value: "exam" },
+      { label: t("input:categories.academic"), value: "academic" },
+      { label: t("input:categories.tuition"), value: "tuition" },
+      { label: t("input:categories.activity"), value: "activity" },
+      { label: t("input:categories.homeroom"), value: "homeroom" },
+      { label: t("input:categories.general"), value: "general" },
     ];
-  }, [categories]);
+  }, [categories, t]);
 
   return (
     <Select

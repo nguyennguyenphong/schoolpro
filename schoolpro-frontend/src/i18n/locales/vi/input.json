@@ -1,0 +1,61 @@
+{
+  "placeholder": {
+    "default": "Vui lòng nhập...",
+    "select": "Vui lòng chọn...",
+    "search": "Tìm kiếm...",
+    "searchAnnouncements": "Tìm kiếm thông báo theo tiêu đề, văn bản, phòng ban, tác giả...",
+    "department": "Tất cả đơn vị",
+    "category": "Tất cả chuyên mục",
+    "priority": "Tất cả mức độ",
+    "sort": "Sắp xếp theo",
+    "date": "Chọn ngày..."
+  },
+  "filter": {
+    "category": "Chuyên mục:",
+    "department": "Đơn vị:",
+    "priority": "Mức độ:",
+    "sort": "Sắp xếp:",
+    "all": "Tất cả",
+    "allDepartments": "Tất cả đơn vị",
+    "allCategories": "Tất cả chuyên mục",
+    "allPriorities": "Tất cả mức độ",
+    "resetTooltip": "Đặt lại tất cả bộ lọc"
+  },
+  "categories": {
+    "all": "Tất cả chuyên mục",
+    "exam": "Khảo thí & Lịch thi",
+    "academic": "Đào tạo & Học vụ",
+    "tuition": "Học phí & Khoản thu",
+    "activity": "Đoàn trường & Ngoại khóa",
+    "emulation": "Thi đua & Khen thưởng",
+    "homeroom": "Lớp & GVCN",
+    "general": "Thông báo chung"
+  },
+  "sortOptions": {
+    "newest": "Mới nhất trước",
+    "oldest": "Cũ nhất trước",
+    "views": "Xem nhiều nhất",
+    "priority": "Ưu tiên khẩn cấp",
+    "name_asc": "Tên (A - Z)",
+    "name_desc": "Tên (Z - A)",
+    "asc": "Tăng dần (A - Z)",
+    "desc": "Giảm dần (Z - A)"
+  },
+  "tabs": {
+    "all": "Tất cả thông báo",
+    "unread": "Chưa đọc",
+    "read": "Đã đọc",
+    "pinned": "Ghim"
+  },
+  "viewMode": {
+    "grid": "Lưới thẻ",
+    "list": "Danh sách"
+  },
+  "selection": {
+    "selectAllUnread": "Chọn tất cả ({{count}} tin chưa đọc trên trang)"
+  },
+  "tooltip": {
+    "previewPdf": "Xem trước tài liệu PDF",
+    "download": "Tải tệp xuống"
+  }
+}

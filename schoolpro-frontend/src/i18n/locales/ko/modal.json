@@ -1,0 +1,11 @@
+{
+  "targetAudience": "대상: {{audience}}",
+  "authorLabel": "게시자:",
+  "viewsLabel": "조회수:",
+  "attachmentsCount": "첨부 파일 ({{count}})",
+  "officialNumber": "문서 번호:",
+  "department": "발행 부서:",
+  "publishDate": "게시일:",
+  "logoutConfirmTitle": "로그아웃 확인",
+  "logoutConfirmContent": "시스템에서 로그아웃하시겠습니까?"
+}

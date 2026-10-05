@@ -1,0 +1,61 @@
+{
+  "placeholder": {
+    "default": "Please enter...",
+    "select": "Please select...",
+    "search": "Search...",
+    "searchAnnouncements": "Search notices by title, document, department, author...",
+    "department": "All departments",
+    "category": "All categories",
+    "priority": "All priorities",
+    "sort": "Sort by",
+    "date": "Select date..."
+  },
+  "filter": {
+    "category": "Category:",
+    "department": "Department:",
+    "priority": "Priority:",
+    "sort": "Sort:",
+    "all": "All",
+    "allDepartments": "All departments",
+    "allCategories": "All categories",
+    "allPriorities": "All priorities",
+    "resetTooltip": "Reset all filters"
+  },
+  "categories": {
+    "all": "All categories",
+    "exam": "Exams & Timetable",
+    "academic": "Academics & Affairs",
+    "tuition": "Tuition & Fees",
+    "activity": "Youth Union & Activities",
+    "emulation": "Emulation & Awards",
+    "homeroom": "Class & Homeroom Teacher",
+    "general": "General Notices"
+  },
+  "sortOptions": {
+    "newest": "Newest first",
+    "oldest": "Oldest first",
+    "views": "Most viewed",
+    "priority": "Urgent priority",
+    "name_asc": "Name (A - Z)",
+    "name_desc": "Name (Z - A)",
+    "asc": "Ascending (A - Z)",
+    "desc": "Descending (Z - A)"
+  },
+  "tabs": {
+    "all": "All notices",
+    "unread": "Unread",
+    "read": "Read",
+    "pinned": "Pinned"
+  },
+  "viewMode": {
+    "grid": "Grid view",
+    "list": "List view"
+  },
+  "selection": {
+    "selectAllUnread": "Select all ({{count}} unread on page)"
+  },
+  "tooltip": {
+    "previewPdf": "Preview PDF document",
+    "download": "Download file"
+  }
+}

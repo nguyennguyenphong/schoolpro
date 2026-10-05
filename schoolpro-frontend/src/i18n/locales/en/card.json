@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "total": "Total announcements",
+    "unread": "Unread announcements",
+    "urgent": "Urgent & Important",
+    "examAcademic": "Exams & Academics"
+  },
+  "priority": {
+    "pinned": "Pinned to Top",
+    "urgent": "Urgent",
+    "high": "High Priority",
+    "normal": "Normal",
+    "low": "Low"
+  },
+  "badge": {
+    "unread": "New"
+  },
+  "meta": {
+    "views": "{{count}} views",
+    "attachments": "{{count}} attachments",
+    "attachmentsBadge": "{{count}} files"
+  },
+  "selection": {
+    "selectedCount": "Selected: {{count}} announcements"
+  },
+  "quickActionsTitle": "System Features",
+  "announcementUnit": "announcements",
+  "features": {
+    "announcements": {
+      "title": "Announcements",
+      "description": "Notices from school, departments, and instructors"
+    },
+    "timetable": {
+      "title": "Timetable",
+      "description": "Weekly class schedule, periods, classrooms, and teachers"
+    },
+    "assignments": {
+      "title": "Assignments & Projects",
+      "description": "Submit homework, course projects, and online quizzes"
+    },
+    "exams": {
+      "title": "Exams & Assessments",
+      "description": "Periodic exam schedules and timed online tests"
+    },
+    "gradebook": {
+      "title": "Gradebook & Transcripts",
+      "description": "Academic records, test scores, and GPA metrics"
+    },
+    "materials": {
+      "title": "Course Materials",
+      "description": "Digital syllabus, presentation slides, and lecture notes"
+    },
+    "attendance": {
+      "title": "Attendance & Absence",
+      "description": "Track check-in history and submit absence requests"
+    },
+    "contactBook": {
+      "title": "Digital Contact Book",
+      "description": "Periodic teacher evaluations and parent feedback"
+    },
+    "emulation": {
+      "title": "Emulation & Conduct",
+      "description": "Discipline scoring, achievement stars, and rankings"
+    },
+    "fees": {
+      "title": "Tuition & Fees",
+      "description": "Tuition bills, medical insurance, and receipts"
+    },
+    "reminders": {
+      "title": "Study Reminders",
+      "description": "Class reminders, attendance check, and fee deadlines"
+    },
+    "evaluations": {
+      "title": "Surveys & Evaluations",
+      "description": "Teacher and course quality feedback surveys"
+    },
+    "discussions": {
+      "title": "Discussions & Q&A",
+      "description": "Academic forums and collaborative group exchanges"
+    }
+  },
+  "roleCards": {
+    "calendarTitle": "Schedule & Planning",
+    "calendarDesc": "Track work shifts, teaching schedules, and assigned events throughout the week.",
+    "noticeTitle": "Notices & Messages",
+    "noticeDesc": "Stay updated with the latest notices from the school and relevant faculties.",
+    "recordsTitle": "Records & Documents",
+    "recordsDesc": "Manage work portfolios, digital forms, and periodic administrative reports.",
+    "exploreNow": "Explore now →",
+    "viewNewNotices": "View new notices →",
+    "lookupRecords": "Look up records →"
+  }
+}

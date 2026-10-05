@@ -1,0 +1,61 @@
+{
+  "placeholder": {
+    "default": "入力してください...",
+    "select": "選択してください...",
+    "search": "検索...",
+    "searchAnnouncements": "タイトル、文書、部門、作成者でお知らせを検索...",
+    "department": "すべての部門",
+    "category": "すべてのカテゴリー",
+    "priority": "すべての優先度",
+    "sort": "並び替え",
+    "date": "日付を選択..."
+  },
+  "filter": {
+    "category": "カテゴリー:",
+    "department": "部門:",
+    "priority": "優先度:",
+    "sort": "並び替え:",
+    "all": "すべて",
+    "allDepartments": "すべての部門",
+    "allCategories": "すべてのカテゴリー",
+    "allPriorities": "すべての優先度",
+    "resetTooltip": "すべてのフィルターをリセット"
+  },
+  "categories": {
+    "all": "すべてのカテゴリー",
+    "exam": "試験 & 時間割",
+    "academic": "教育 & 教務",
+    "tuition": "学費 & 諸費用",
+    "activity": "課外活動 & 行事",
+    "emulation": "表彰 & 評価",
+    "homeroom": "学級 & 担任",
+    "general": "一般のお知らせ"
+  },
+  "sortOptions": {
+    "newest": "新しい順",
+    "oldest": "古い順",
+    "views": "閲覧数順",
+    "priority": "緊急度順",
+    "name_asc": "名前順 (A - Z)",
+    "name_desc": "名前順 (Z - A)",
+    "asc": "昇順 (A - Z)",
+    "desc": "降順 (Z - A)"
+  },
+  "tabs": {
+    "all": "すべてのお知らせ",
+    "unread": "未読",
+    "read": "既読",
+    "pinned": "ピン留め"
+  },
+  "viewMode": {
+    "grid": "グリッド表示",
+    "list": "リスト表示"
+  },
+  "selection": {
+    "selectAllUnread": "すべて選択 (ページ内未読 {{count}} 件)"
+  },
+  "tooltip": {
+    "previewPdf": "PDFプレビュー",
+    "download": "ダウンロード"
+  }
+}

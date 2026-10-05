@@ -45,7 +45,13 @@
   },
   "brand": {
     "title": "School Pro",
-    "tagline": "Education Management System"
+    "tagline": "Education Management System",
+    "portalTagline": "Education Management Portal"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "items": "items"
   },
   "footer": {
     "copyright": "© 2026 School Pro. All rights reserved.",

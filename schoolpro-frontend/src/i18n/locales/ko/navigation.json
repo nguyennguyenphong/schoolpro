@@ -1,0 +1,29 @@
+{
+  "breadcrumb": {
+    "home": "홈",
+    "announcements": "공지사항"
+  },
+  "pageTitle": {
+    "home": "홈",
+    "announcements": "학사 공지 및 알림"
+  },
+  "pageSubtitle": {
+    "home": "School Pro 학사 정보 및 학습 관리 시스템",
+    "announcements": "공문, 시험 일정, 등록금 및 교내 활동 소식을 확인하세요"
+  },
+  "welcome": "안녕하세요, {{name}}님! 활기찬 하루 되세요.",
+  "welcomeUser": "안녕하세요, {{name}}님!",
+  "workspace": "워크스페이스",
+  "currentSemester": "1학기",
+  "academicYear": "2026 - 2027 학년도",
+  "currentWeek": "{{week}}주차",
+  "header": {
+    "searchPlaceholder": "과목, 강의, 학습 자료 검색...",
+    "profile": "내 프로필",
+    "settings": "계정 설정",
+    "changePassword": "비밀번호 변경",
+    "logout": "로그아웃",
+    "notifications": "알림",
+    "studentId": "학번"
+  }
+}

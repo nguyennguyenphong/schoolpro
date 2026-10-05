@@ -1,0 +1,25 @@
+{
+  "success": "処理が完了しました",
+  "error": "エラーが発生しました。しばらくしてから再度お試しください。",
+  "warning": "システム警告",
+  "info": "お知らせ情報",
+  "loading": "データを読み込み中...",
+  "processing": "処理中...",
+  "failedToLoadHome": "ホームデータの読み込みに失敗しました",
+  "serverConnectionError": "サーバー接続中にエラーが発生しました。後でもう一度お試しください。",
+  "downloading": "ダウンロード中: {{name}}",
+  "downloadSuccess": "ファイルのダウンロードに成功しました",
+  "downloadError": "ファイルのダウンロードに失敗しました",
+  "printing": "印刷準備中...",
+  "printError": "印刷文書の準備中にエラーが発生しました",
+  "printSuccess": "印刷文書の準備が完了しました",
+  "markReadSuccess": "お知らせを既読にしました",
+  "markUnreadSuccess": "お知らせを未読にしました",
+  "logoutSuccess": "正常にログアウトしました！",
+  "empty": {
+    "noData": "現在システムにお知らせはありません。",
+    "noFilteredResults": "該当するお知らせがありません",
+    "noFilteredDescription": "選択した条件に一致するお知らせはありません。別のキーワードや条件でお試しください。",
+    "noFeatures": "あなたのアカウントにはまだ機能が設定されていません。"
+  }
+}

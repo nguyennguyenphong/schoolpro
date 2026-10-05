@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "total": "Tổng số thông báo",
+    "unread": "Bản tin chưa đọc",
+    "urgent": "Khẩn & Quan trọng",
+    "examAcademic": "Khảo thí & Học vụ"
+  },
+  "priority": {
+    "pinned": "Ghim đầu trang",
+    "urgent": "Khẩn cấp",
+    "high": "Quan trọng",
+    "normal": "Bình thường",
+    "low": "Thấp"
+  },
+  "badge": {
+    "unread": "Mới"
+  },
+  "meta": {
+    "views": "{{count}} lượt xem",
+    "attachments": "{{count}} tệp đính kèm",
+    "attachmentsBadge": "{{count}} tệp"
+  },
+  "selection": {
+    "selectedCount": "Đã chọn: {{count}} thông báo"
+  },
+  "quickActionsTitle": "Chức năng hệ thống",
+  "announcementUnit": "thông báo",
+  "features": {
+    "announcements": {
+      "title": "Thông báo",
+      "description": "Tin tức từ nhà trường, khoa và giảng viên"
+    },
+    "timetable": {
+      "title": "Thời khóa biểu",
+      "description": "Tra cứu lịch học tuần, ca học, phòng học và giáo viên"
+    },
+    "assignments": {
+      "title": "Bài tập & Đồ án",
+      "description": "Nộp bài tập về nhà, đồ án và trắc nghiệm"
+    },
+    "exams": {
+      "title": "Khảo thí & Đề thi",
+      "description": "Lịch kiểm tra định kỳ, trắc nghiệm trực tuyến tính giờ"
+    },
+    "gradebook": {
+      "title": "Bảng điểm & Học bạ",
+      "description": "Kết quả học tập, điểm kiểm tra thường xuyên và GPA"
+    },
+    "materials": {
+      "title": "Tài liệu học tập",
+      "description": "Giáo trình điện tử, slide và bài giảng số"
+    },
+    "attendance": {
+      "title": "Chuyên cần & Điểm danh",
+      "description": "Theo dõi lịch sử điểm danh và gửi đơn xin nghỉ học"
+    },
+    "contactBook": {
+      "title": "Sổ liên lạc điện tử",
+      "description": "Phiếu nhận xét định kỳ từ GVCN và phản hồi phụ huynh"
+    },
+    "emulation": {
+      "title": "Thi đua & Nề nếp",
+      "description": "Điểm nề nếp cờ đỏ, hoa điểm mười và xếp hạng tổ lớp"
+    },
+    "fees": {
+      "title": "Học phí & Khoản thu",
+      "description": "Tra cứu hóa đơn học phí, bảo hiểm y tế và biên lai"
+    },
+    "reminders": {
+      "title": "Nhắc nhở học tập",
+      "description": "Lịch học, điểm danh và hạn học phí"
+    },
+    "evaluations": {
+      "title": "Đánh giá & Khảo sát",
+      "description": "Khảo sát chất lượng giảng dạy và môn học"
+    },
+    "discussions": {
+      "title": "Thảo luận & Hỏi đáp",
+      "description": "Diễn đàn học tập, trao đổi nhóm"
+    }
+  },
+  "roleCards": {
+    "calendarTitle": "Lịch biểu & Kế hoạch",
+    "calendarDesc": "Theo dõi lịch làm việc, giảng dạy và các sự kiện được phân công trong tuần.",
+    "noticeTitle": "Thông báo & Tin nhắn",
+    "noticeDesc": "Cập nhật các thông báo mới nhất từ nhà trường và bộ môn liên quan.",
+    "recordsTitle": "Hồ sơ & Tài liệu",
+    "recordsDesc": "Quản lý hồ sơ công tác, biểu mẫu điện tử và báo cáo định kỳ.",
+    "exploreNow": "Khám phá ngay →",
+    "viewNewNotices": "Xem tin mới →",
+    "lookupRecords": "Tra cứu hồ sơ →"
+  }
+}

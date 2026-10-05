@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   PriorityItem,
   PriorityLevel,
@@ -31,11 +32,15 @@ export interface UsePriorityReturn {
 export const usePriority = ({
   initialPriorities,
   includeAllOption = true,
-  allOptionLabel = "Tất cả mức độ",
+  allOptionLabel,
   allOptionValue = "all",
 }: UsePriorityOptions = {}): UsePriorityReturn => {
+  const { t, i18n } = useTranslation(["input", "card"]);
   const [priorities, setPriorities] = useState<PriorityItem[]>(MOCK_PRIORITIES);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const effectiveAllOptionLabel =
+    allOptionLabel ?? t("input:filter.allPriorities");
 
   const effectivePriorities = useMemo(() => {
     if (initialPriorities && initialPriorities.length > 0) {
@@ -80,21 +85,23 @@ export const usePriority = ({
 
     if (includeAllOption) {
       list.push({
-        label: allOptionLabel,
+        label: effectiveAllOptionLabel,
         value: allOptionValue,
       });
     }
 
     effectivePriorities.forEach((p) => {
+      const transKey = `card:priority.${p.id}`;
+      const label = i18n.exists(transKey) ? t(transKey as any) : (p.name || p.id);
       list.push({
-        label: p.name,
+        label,
         value: p.id,
         priority: p,
       });
     });
 
     return list;
-  }, [effectivePriorities, includeAllOption, allOptionLabel, allOptionValue]);
+  }, [effectivePriorities, includeAllOption, effectiveAllOptionLabel, allOptionValue, t, i18n]);
 
   return {
     priorities: effectivePriorities,

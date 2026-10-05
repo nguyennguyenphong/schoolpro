@@ -1,0 +1,61 @@
+{
+  "placeholder": {
+    "default": "입력해 주세요...",
+    "select": "선택해 주세요...",
+    "search": "검색...",
+    "searchAnnouncements": "제목, 문서, 부서, 작성자로 공지사항 검색...",
+    "department": "모든 부서",
+    "category": "모든 카테고리",
+    "priority": "모든 우선순위",
+    "sort": "정렬 기준",
+    "date": "날짜 선택..."
+  },
+  "filter": {
+    "category": "카테고리:",
+    "department": "부서:",
+    "priority": "우선순위:",
+    "sort": "정렬:",
+    "all": "전체",
+    "allDepartments": "모든 부서",
+    "allCategories": "모든 카테고리",
+    "allPriorities": "모든 우선순위",
+    "resetTooltip": "모든 필터 초기화"
+  },
+  "categories": {
+    "all": "모든 카테고리",
+    "exam": "시험 및 시간표",
+    "academic": "학사 및 교육",
+    "tuition": "등록금 및 수납",
+    "activity": "과외활동 및 행사",
+    "emulation": "모범 및 포상",
+    "homeroom": "학급 및 담임",
+    "general": "일반 공지"
+  },
+  "sortOptions": {
+    "newest": "최신순",
+    "oldest": "오래된순",
+    "views": "조회수순",
+    "priority": "긴급도순",
+    "name_asc": "이름순 (A - Z)",
+    "name_desc": "이름순 (Z - A)",
+    "asc": "오름차순 (A - Z)",
+    "desc": "내림차순 (Z - A)"
+  },
+  "tabs": {
+    "all": "모든 공지사항",
+    "unread": "읽지 않음",
+    "read": "읽음",
+    "pinned": "고정"
+  },
+  "viewMode": {
+    "grid": "그리드 보기",
+    "list": "목록 보기"
+  },
+  "selection": {
+    "selectAllUnread": "모두 선택 (페이지 내 읽지 않은 공지 {{count}}개)"
+  },
+  "tooltip": {
+    "previewPdf": "PDF 미리보기",
+    "download": "파일 다운로드"
+  }
+}

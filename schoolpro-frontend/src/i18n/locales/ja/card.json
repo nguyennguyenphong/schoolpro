@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "total": "全お知らせ数",
+    "unread": "未読お知らせ",
+    "urgent": "緊急・重要",
+    "examAcademic": "試験・教務"
+  },
+  "priority": {
+    "pinned": "トップに固定",
+    "urgent": "緊急",
+    "high": "重要",
+    "normal": "通常",
+    "low": "低"
+  },
+  "badge": {
+    "unread": "新着"
+  },
+  "meta": {
+    "views": "{{count}} 閲覧",
+    "attachments": "{{count}} 添付ファイル",
+    "attachmentsBadge": "{{count}} 件"
+  },
+  "selection": {
+    "selectedCount": "選択済み: {{count}} 件"
+  },
+  "quickActionsTitle": "システム機能",
+  "announcementUnit": "件",
+  "features": {
+    "announcements": {
+      "title": "お知らせ",
+      "description": "学校、学部、教員からの最新情報"
+    },
+    "timetable": {
+      "title": "時間割",
+      "description": "週間スケジュール、教室、担当教員の確認"
+    },
+    "assignments": {
+      "title": "課題・レポート",
+      "description": "宿題提出、プロジェクト、オンラインテスト"
+    },
+    "exams": {
+      "title": "試験日程・評価",
+      "description": "定期試験の日程、オンライン試験"
+    },
+    "gradebook": {
+      "title": "成績・通知表",
+      "description": "学習成果、テスト結果、GPAの確認"
+    },
+    "materials": {
+      "title": "学習教材",
+      "description": "シラバス、講義スライド、電子資料"
+    },
+    "attendance": {
+      "title": "出欠・出席管理",
+      "description": "出席履歴の確認、欠席届の提出"
+    },
+    "contactBook": {
+      "title": "連絡帳",
+      "description": "担任からの評価、保護者との連絡"
+    },
+    "emulation": {
+      "title": "表彰・生活態度",
+      "description": "規律評価、表彰、学級ランキング"
+    },
+    "fees": {
+      "title": "学費・諸費用",
+      "description": "学費明細、保険料、領収書"
+    },
+    "reminders": {
+      "title": "学習リマインダー",
+      "description": "授業予定、出欠確認、納付期限"
+    },
+    "evaluations": {
+      "title": "評価・アンケート",
+      "description": "授業・教員アンケートの回答"
+    },
+    "discussions": {
+      "title": "ディスカッション",
+      "description": "学習フォーラム、グループでの質疑応答"
+    }
+  },
+  "roleCards": {
+    "calendarTitle": "スケジュール & 計画",
+    "calendarDesc": "週間の業務、授業日程、割り当てられた行事予定を確認できます。",
+    "noticeTitle": "お知らせ & メッセージ",
+    "noticeDesc": "学校や所属部署からの最新のお知らせを確認できます。",
+    "recordsTitle": "書類 & ファイル",
+    "recordsDesc": "業務記録、電子申請書、定期報告書の管理を行えます。",
+    "exploreNow": "今すぐ確認 →",
+    "viewNewNotices": "新着通知を見る →",
+    "lookupRecords": "書類を照会 →"
+  }
+}

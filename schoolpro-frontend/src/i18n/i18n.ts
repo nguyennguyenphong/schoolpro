@@ -14,27 +14,52 @@ import "dayjs/locale/zh-cn";
 import viCommon from "@/i18n/locales/vi/common.json";
 import viAuth from "@/i18n/locales/vi/auth.json";
 import viValidation from "@/i18n/locales/vi/validation.json";
-import viStudent from "@/i18n/locales/vi/student.json";
+import viButton from "@/i18n/locales/vi/button.json";
+import viInput from "@/i18n/locales/vi/input.json";
+import viMessage from "@/i18n/locales/vi/message.json";
+import viCard from "@/i18n/locales/vi/card.json";
+import viModal from "@/i18n/locales/vi/modal.json";
+import viNavigation from "@/i18n/locales/vi/navigation.json";
 
 import enCommon from "@/i18n/locales/en/common.json";
 import enAuth from "@/i18n/locales/en/auth.json";
 import enValidation from "@/i18n/locales/en/validation.json";
-import enStudent from "@/i18n/locales/en/student.json";
+import enButton from "@/i18n/locales/en/button.json";
+import enInput from "@/i18n/locales/en/input.json";
+import enMessage from "@/i18n/locales/en/message.json";
+import enCard from "@/i18n/locales/en/card.json";
+import enModal from "@/i18n/locales/en/modal.json";
+import enNavigation from "@/i18n/locales/en/navigation.json";
 
 import jaCommon from "@/i18n/locales/ja/common.json";
 import jaAuth from "@/i18n/locales/ja/auth.json";
 import jaValidation from "@/i18n/locales/ja/validation.json";
-import jaStudent from "@/i18n/locales/ja/student.json";
+import jaButton from "@/i18n/locales/ja/button.json";
+import jaInput from "@/i18n/locales/ja/input.json";
+import jaMessage from "@/i18n/locales/ja/message.json";
+import jaCard from "@/i18n/locales/ja/card.json";
+import jaModal from "@/i18n/locales/ja/modal.json";
+import jaNavigation from "@/i18n/locales/ja/navigation.json";
 
 import koCommon from "@/i18n/locales/ko/common.json";
 import koAuth from "@/i18n/locales/ko/auth.json";
 import koValidation from "@/i18n/locales/ko/validation.json";
-import koStudent from "@/i18n/locales/ko/student.json";
+import koButton from "@/i18n/locales/ko/button.json";
+import koInput from "@/i18n/locales/ko/input.json";
+import koMessage from "@/i18n/locales/ko/message.json";
+import koCard from "@/i18n/locales/ko/card.json";
+import koModal from "@/i18n/locales/ko/modal.json";
+import koNavigation from "@/i18n/locales/ko/navigation.json";
 
 import zhCommon from "@/i18n/locales/zh/common.json";
 import zhAuth from "@/i18n/locales/zh/auth.json";
 import zhValidation from "@/i18n/locales/zh/validation.json";
-import zhStudent from "@/i18n/locales/zh/student.json";
+import zhButton from "@/i18n/locales/zh/button.json";
+import zhInput from "@/i18n/locales/zh/input.json";
+import zhMessage from "@/i18n/locales/zh/message.json";
+import zhCard from "@/i18n/locales/zh/card.json";
+import zhModal from "@/i18n/locales/zh/modal.json";
+import zhNavigation from "@/i18n/locales/zh/navigation.json";
 
 import {
   DEFAULT_LANGUAGE,
@@ -49,31 +74,56 @@ export const resources = {
     common: viCommon,
     auth: viAuth,
     validation: viValidation,
-    student: viStudent,
+    button: viButton,
+    input: viInput,
+    message: viMessage,
+    card: viCard,
+    modal: viModal,
+    navigation: viNavigation,
   },
   en: {
     common: enCommon,
     auth: enAuth,
     validation: enValidation,
-    student: enStudent,
+    button: enButton,
+    input: enInput,
+    message: enMessage,
+    card: enCard,
+    modal: enModal,
+    navigation: enNavigation,
   },
   ja: {
     common: jaCommon,
     auth: jaAuth,
     validation: jaValidation,
-    student: jaStudent,
+    button: jaButton,
+    input: jaInput,
+    message: jaMessage,
+    card: jaCard,
+    modal: jaModal,
+    navigation: jaNavigation,
   },
   ko: {
     common: koCommon,
     auth: koAuth,
     validation: koValidation,
-    student: koStudent,
+    button: koButton,
+    input: koInput,
+    message: koMessage,
+    card: koCard,
+    modal: koModal,
+    navigation: koNavigation,
   },
   zh: {
     common: zhCommon,
     auth: zhAuth,
     validation: zhValidation,
-    student: zhStudent,
+    button: zhButton,
+    input: zhInput,
+    message: zhMessage,
+    card: zhCard,
+    modal: zhModal,
+    navigation: zhNavigation,
   },
 } as const;
 
@@ -85,7 +135,17 @@ i18n
     fallbackLng: DEFAULT_LANGUAGE,
     supportedLngs: ["vi", "en", "ja", "ko", "zh"],
     defaultNS: "common",
-    ns: ["common", "auth", "validation", "student"],
+    ns: [
+      "common",
+      "auth",
+      "validation",
+      "button",
+      "input",
+      "message",
+      "card",
+      "modal",
+      "navigation",
+    ],
     debug: false,
     interpolation: {
       escapeValue: false, // React already escapes values

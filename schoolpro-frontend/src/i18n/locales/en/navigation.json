@@ -1,0 +1,29 @@
+{
+  "breadcrumb": {
+    "home": "Home",
+    "announcements": "News & Announcements"
+  },
+  "pageTitle": {
+    "home": "Home",
+    "announcements": "Academic Notices & Announcements"
+  },
+  "pageSubtitle": {
+    "home": "School Pro Academic Management System",
+    "announcements": "Track official school directives, exam schedules, tuition fees, and campus activities"
+  },
+  "welcome": "Hello, {{name}}! Have a productive study day.",
+  "welcomeUser": "Welcome, {{name}}!",
+  "workspace": "Workspace",
+  "currentSemester": "Semester 1",
+  "academicYear": "Academic Year 2026 - 2027",
+  "currentWeek": "Academic Week {{week}}",
+  "header": {
+    "searchPlaceholder": "Search courses, lectures, materials...",
+    "profile": "Profile",
+    "settings": "Settings",
+    "changePassword": "Change Password",
+    "logout": "Sign Out",
+    "notifications": "Notifications",
+    "studentId": "Student ID"
+  }
+}

@@ -46,7 +46,7 @@ export const LoginPage: React.FC = () => {
         <div className="mb-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm flex items-center gap-2.5">
           <Icon name="clock" size={16} className="text-amber-600 shrink-0" />
           <span>
-            Phiên làm việc đã hết hạn do không có thao tác trong thời gian dài. Vui lòng đăng nhập lại để tiếp tục.
+            {t("auth:login.idleTimeout")}
           </span>
         </div>
       )}

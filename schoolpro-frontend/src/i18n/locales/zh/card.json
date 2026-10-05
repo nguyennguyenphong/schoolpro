@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "total": "通知总数",
+    "unread": "未读通知",
+    "urgent": "紧急与重要",
+    "examAcademic": "考务与教务"
+  },
+  "priority": {
+    "pinned": "置顶",
+    "urgent": "紧急",
+    "high": "重要",
+    "normal": "普通",
+    "low": "低"
+  },
+  "badge": {
+    "unread": "最新"
+  },
+  "meta": {
+    "views": "{{count}} 浏览",
+    "attachments": "{{count}} 个附件",
+    "attachmentsBadge": "{{count}} 个"
+  },
+  "selection": {
+    "selectedCount": "已选: {{count}} 条通知"
+  },
+  "quickActionsTitle": "系统功能",
+  "announcementUnit": "条通知",
+  "features": {
+    "announcements": {
+      "title": "通知公告",
+      "description": "来自学校、院系和教师的最新通知"
+    },
+    "timetable": {
+      "title": "课程表",
+      "description": "查询每周课表、节次、教室和授课教师"
+    },
+    "assignments": {
+      "title": "作业与项目",
+      "description": "提交课后作业、课程设计与在线测验"
+    },
+    "exams": {
+      "title": "考务与测验",
+      "description": "定期考试日程、在线计时测验"
+    },
+    "gradebook": {
+      "title": "成绩与档案",
+      "description": "学习成绩、各科测验分数与绩点 GPA"
+    },
+    "materials": {
+      "title": "课程资料",
+      "description": "电子教材、授课课件与数字资料"
+    },
+    "attendance": {
+      "title": "考勤与签到",
+      "description": "查询考勤签到记录与提交请假申请"
+    },
+    "contactBook": {
+      "title": "家校联络簿",
+      "description": "班主任定期评语与家长意见反馈"
+    },
+    "emulation": {
+      "title": "评优与德育",
+      "description": "德育考评积分、优秀表彰与班级排名"
+    },
+    "fees": {
+      "title": "学费与缴费",
+      "description": "查询学费账单、医保费用与缴费凭证"
+    },
+    "reminders": {
+      "title": "学习提醒",
+      "description": "上课日程、出勤签到与缴费截止提醒"
+    },
+    "evaluations": {
+      "title": "评教与问卷",
+      "description": "教学质量评价与课程满意度问卷"
+    },
+    "discussions": {
+      "title": "答疑与讨论",
+      "description": "课程学习论坛、小组交流互动"
+    }
+  },
+  "roleCards": {
+    "calendarTitle": "日程与工作规划",
+    "calendarDesc": "查看本周的工作安排、授课课表以及分配的校园活动事项。",
+    "noticeTitle": "通知与消息",
+    "noticeDesc": "及时获取学校及所属部门发布的最新通知公告。",
+    "recordsTitle": "档案与公文材料",
+    "recordsDesc": "集中管理工作档案、电子表单以及各类周期性工作报告。",
+    "exploreNow": "立即查看 →",
+    "viewNewNotices": "查看新消息 →",
+    "lookupRecords": "检索档案 →"
+  }
+}

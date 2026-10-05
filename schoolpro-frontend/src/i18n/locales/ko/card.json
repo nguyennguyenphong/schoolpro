@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "total": "전체 공지사항",
+    "unread": "읽지 않은 공지",
+    "urgent": "긴급 및 중요",
+    "examAcademic": "시험 및 학사"
+  },
+  "priority": {
+    "pinned": "상단 고정",
+    "urgent": "긴급",
+    "high": "중요",
+    "normal": "일반",
+    "low": "낮음"
+  },
+  "badge": {
+    "unread": "신규"
+  },
+  "meta": {
+    "views": "{{count}}회 조회",
+    "attachments": "{{count}}개 첨부파일",
+    "attachmentsBadge": "{{count}}개"
+  },
+  "selection": {
+    "selectedCount": "선택됨: {{count}}건"
+  },
+  "quickActionsTitle": "시스템 기능",
+  "announcementUnit": "건",
+  "features": {
+    "announcements": {
+      "title": "공지사항",
+      "description": "학교, 학과, 교수진의 주요 공지"
+    },
+    "timetable": {
+      "title": "시간표",
+      "description": "주간 수업 일정, 강의실, 담당 교사 조회"
+    },
+    "assignments": {
+      "title": "과제 및 프로젝트",
+      "description": "과제 제출, 프로젝트 과제 및 퀴즈"
+    },
+    "exams": {
+      "title": "시험 및 평가",
+      "description": "정기 시험 일정, 온라인 시험"
+    },
+    "gradebook": {
+      "title": "성적 및 학생부",
+      "description": "학습 성과, 시험 점수 및 GPA 조회"
+    },
+    "materials": {
+      "title": "학습 자료",
+      "description": "전자 교재, 강의 슬라이드, 학습 문서"
+    },
+    "attendance": {
+      "title": "출결 및 근태",
+      "description": "출결 이력 확인 및 결석계 제출"
+    },
+    "contactBook": {
+      "title": "알림장",
+      "description": "담임 교사 평가 및 학부모 소통"
+    },
+    "emulation": {
+      "title": "상벌 및 품행",
+      "description": "규율 점수, 표창, 학급 순위"
+    },
+    "fees": {
+      "title": "등록금 및 수납",
+      "description": "등록금 청구서, 보험료 및 영수증"
+    },
+    "reminders": {
+      "title": "학습 알림",
+      "description": "수업 알림, 출석 확인, 납부 마감"
+    },
+    "evaluations": {
+      "title": "평가 및 설문",
+      "description": "수업 및 강의 만족도 설문조사"
+    },
+    "discussions": {
+      "title": "토론 및 Q&A",
+      "description": "학습 포럼, 그룹 스터디 질의응답"
+    }
+  },
+  "roleCards": {
+    "calendarTitle": "일정 및 계획",
+    "calendarDesc": "주간 근무, 수업 시간표 및 배정된 교내 행사를 확인하세요.",
+    "noticeTitle": "공지 및 메시지",
+    "noticeDesc": "학교 및 담당 부서의 최신 공지사항을 확인하세요.",
+    "recordsTitle": "문서 및 파일",
+    "recordsDesc": "업무 서류, 전자 양식 및 정기 보고서를 관리하세요.",
+    "exploreNow": "지금 둘러보기 →",
+    "viewNewNotices": "새 소식 보기 →",
+    "lookupRecords": "문서 조회 →"
+  }
+}

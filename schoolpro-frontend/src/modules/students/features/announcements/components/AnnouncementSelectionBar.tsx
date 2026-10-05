@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -22,6 +23,8 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
   onMarkAsRead,
   onMarkAsUnread,
 }) => {
+  const { t } = useTranslation(["button", "input", "card"]);
+
   if (selectedCount === 0) return null;
 
   return (
@@ -35,14 +38,18 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           disabled={totalOnPage === 0}
         >
           <span className="text-xs font-semibold text-slate-800">
-            Chọn tất cả ({totalOnPage} tin chưa đọc trên trang)
+            {t("input:selection.selectAllUnread", {
+              count: totalOnPage,
+            })}
           </span>
         </Checkbox>
 
         <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
 
         <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-md border border-blue-200">
-          Đã chọn: {selectedCount} thông báo
+          {t("card:selection.selectedCount", {
+            count: selectedCount,
+          })}
         </div>
       </div>
 
@@ -53,7 +60,7 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           onClick={onMarkAsRead}
         >
           <Icon name="check" size={13} />
-          Đánh dấu đã đọc
+          {t("button:markAsRead")}
         </Button>
 
         <Button
@@ -61,14 +68,14 @@ export const AnnouncementSelectionBar: React.FC<AnnouncementSelectionBarProps> =
           onClick={onMarkAsUnread}
         >
           <Icon name="clock" size={13} />
-          Đánh dấu chưa đọc
+          {t("button:markAsUnread")}
         </Button>
 
         <Button
           variant="ghost"
           onClick={onClearSelection}
         >
-          Bỏ chọn
+          {t("button:clearSelection")}
         </Button>
       </div>
     </div>

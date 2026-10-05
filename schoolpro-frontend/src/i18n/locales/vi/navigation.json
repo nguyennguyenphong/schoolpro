@@ -1,0 +1,29 @@
+{
+  "breadcrumb": {
+    "home": "Trang chủ",
+    "announcements": "Bảng tin & Thông báo"
+  },
+  "pageTitle": {
+    "home": "Trang chủ",
+    "announcements": "Bảng tin & Thông báo học vụ"
+  },
+  "pageSubtitle": {
+    "home": "Hệ thống quản lý thông tin học tập và đào tạo School Pro",
+    "announcements": "Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường"
+  },
+  "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
+  "welcomeUser": "Xin chào, {{name}}!",
+  "workspace": "Không gian làm việc",
+  "currentSemester": "Học kỳ 1",
+  "academicYear": "Năm học 2026 - 2027",
+  "currentWeek": "Tuần học thứ {{week}}",
+  "header": {
+    "searchPlaceholder": "Tìm kiếm môn học, bài giảng, tài liệu...",
+    "profile": "Hồ sơ cá nhân",
+    "settings": "Cài đặt tài khoản",
+    "changePassword": "Đổi mật khẩu",
+    "logout": "Đăng xuất",
+    "notifications": "Thông báo",
+    "studentId": "MSSV"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "targetAudience": "対象: {{audience}}",
+  "authorLabel": "投稿者:",
+  "viewsLabel": "閲覧数:",
+  "attachmentsCount": "添付ファイル ({{count}})",
+  "officialNumber": "文書番号:",
+  "department": "発行部門:",
+  "publishDate": "公開日:",
+  "logoutConfirmTitle": "ログアウトの確認",
+  "logoutConfirmContent": "システムからログアウトしてもよろしいですか？"
+}
