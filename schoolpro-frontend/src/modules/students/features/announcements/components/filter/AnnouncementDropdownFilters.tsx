@@ -97,9 +97,12 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Đơn vị:</span>
           <SelectDepartment
-            value={filter.department === "all" ? undefined : filter.department}
+            value={filter.department || "all"}
+            includeAllOption={true}
+            allOptionLabel="Tất cả đơn vị"
+            allOptionValue="all"
             onChange={(val, opt) => {
-              if (!val) {
+              if (!val || val === "all") {
                 onDepartmentChange("all");
                 return;
               }
@@ -108,8 +111,8 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
               onDepartmentChange(deptName || "all");
             }}
             placeholder="Tất cả đơn vị"
-            allowClear
-            className="w-40"
+            allowClear={true}
+            className="w-60"
           />
         </div>
 

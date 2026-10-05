@@ -2,8 +2,9 @@ import React from "react";
 import { Modal, Tag, message } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
+import type { AnnouncementItem, AnnouncementAttachment } from "@/modules/students/features/announcements/types";
 import { printAnnouncement } from "@/modules/students/features/announcements/utils";
+import { PdfViewerModal } from "@/components/pdf";
 
 interface AnnouncementDetailModalProps {
   item: AnnouncementItem | null;
@@ -16,10 +17,29 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
   isOpen,
   onClose,
 }) => {
+  const [previewPdf, setPreviewPdf] = React.useState<{
+    url: string;
+    name: string;
+    size: string;
+  } | null>(null);
+
   if (!item) return null;
 
   const handleDownload = (fileName: string) => {
     message.success(`Đang tải xuống tệp: ${fileName}`);
+  };
+
+  const handleAttachmentClick = (att: AnnouncementAttachment) => {
+    const isPdf = att.fileType === "pdf" || att.name.toLowerCase().endsWith(".pdf");
+    if (isPdf) {
+      setPreviewPdf({
+        url: att.url,
+        name: att.name,
+        size: att.size,
+      });
+    } else {
+      handleDownload(att.name);
+    }
   };
 
   const handlePrint = () => {
@@ -95,34 +115,63 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {item.attachments.map((att) => (
-                <div
-                  key={att.id}
-                  onClick={() => handleDownload(att.name)}
-                  className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 rounded-lg cursor-pointer transition-all group"
-                >
-                  <div className="flex items-center gap-2 min-w-0 pr-2">
-                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0 group-hover:border-blue-400">
-                      <Icon name="file" size={16} />
+              {item.attachments.map((att) => {
+                const isPdf = att.fileType === "pdf" || att.name.toLowerCase().endsWith(".pdf");
+                return (
+                  <div
+                    key={att.id}
+                    onClick={() => handleAttachmentClick(att)}
+                    className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 rounded-lg cursor-pointer transition-all group"
+                  >
+                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                      <div
+                        className={`w-8 h-8 rounded-lg bg-white border flex items-center justify-center shrink-0 ${
+                          isPdf
+                            ? "border-rose-200 text-rose-600 group-hover:border-rose-400"
+                            : "border-slate-200 text-blue-600 group-hover:border-blue-400"
+                        }`}
+                      >
+                        <Icon name="file" size={16} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-slate-800 group-hover:text-blue-600 truncate mb-0">
+                          {att.name}
+                        </p>
+                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-medium">
+                          <span>{att.size}</span>
+                          {isPdf && (
+                            <span className="text-rose-600 font-semibold bg-rose-50 px-1 rounded">
+                              PDF
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold text-slate-800 group-hover:text-blue-600 truncate mb-0">
-                        {att.name}
-                      </p>
-                      <span className="text-[10px] text-slate-400 font-medium">
-                        {att.size}
-                      </span>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      {isPdf && (
+                        <span
+                          className="text-[11px] font-semibold text-blue-600 group-hover:underline px-1.5 py-0.5"
+                          title="Xem trước tài liệu PDF"
+                        >
+                          Xem
+                        </span>
+                      )}
+                      <Button
+                        variant="ghost"
+                        className="p-1 h-auto text-slate-400 group-hover:text-blue-600"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(att.name);
+                        }}
+                        title="Tải tệp xuống"
+                      >
+                        <Icon name="download" size={14} />
+                      </Button>
                     </div>
                   </div>
-
-                  <Button
-                    variant="ghost"                    
-                    className="p-1 h-auto text-slate-400 group-hover:text-blue-600"
-                  >
-                    <Icon name="download" size={14} />
-                  </Button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -145,6 +194,17 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
           </Button>
         </div>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {previewPdf && (
+        <PdfViewerModal
+          isOpen={Boolean(previewPdf)}
+          onClose={() => setPreviewPdf(null)}
+          fileUrl={previewPdf.url}
+          fileName={previewPdf.name}
+          fileSize={previewPdf.size}
+        />
+      )}
     </Modal>
   );
 };

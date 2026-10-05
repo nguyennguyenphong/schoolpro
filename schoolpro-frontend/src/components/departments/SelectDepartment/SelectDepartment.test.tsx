@@ -141,6 +141,18 @@ describe("SelectDepartment Component", () => {
         expect.anything(),
       );
     });
+
+    it("renders 'Tất cả đơn vị' option when includeAllOption is true", () => {
+      render(
+        <SelectDepartment
+          customDepartments={TEST_DEPARTMENTS}
+          includeAllOption
+          value="all"
+        />,
+      );
+
+      expect(screen.getByText("Tất cả đơn vị")).toBeInTheDocument();
+    });
   });
 
   describe("API integration", () => {

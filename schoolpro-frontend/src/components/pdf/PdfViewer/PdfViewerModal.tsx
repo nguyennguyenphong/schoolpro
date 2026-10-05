@@ -1,0 +1,95 @@
+import React from "react";
+import { Modal } from "antd";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import { PdfViewer } from "./PdfViewer";
+import type { PdfViewerModalProps } from "./types";
+
+const FALLBACK_PDF_URL = "/sample-notice.pdf";
+
+/**
+ * Responsive modal for previewing PDF files in announcements and academic records.
+ */
+export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
+  isOpen,
+  onClose,
+  fileUrl,
+  fileName = "Tài liệu đính kèm.pdf",
+  fileSize,
+}) => {
+  // Use fallback sample document if fileUrl is dummy '#' or empty
+  const resolvedUrl =
+    !fileUrl || fileUrl.trim() === "#" || fileUrl.trim() === ""
+      ? FALLBACK_PDF_URL
+      : fileUrl;
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = resolvedUrl;
+    link.download = fileName;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <Modal
+      open={isOpen}
+      onCancel={onClose}
+      footer={null}
+      width={1000}
+      centered
+      className="pdf-viewer-modal"
+      title={
+        <div className="flex items-center justify-between gap-3 pr-6 py-1">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center shrink-0">
+              <Icon name="file" size={16} />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-sm font-bold text-slate-800 truncate mb-0" title={fileName}>
+                {fileName}
+              </h3>
+              {fileSize && (
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Dung lượng: {fileSize}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="small"
+              onClick={handleDownload}
+              className="text-xs"
+            >
+              <Icon name="download" size={13} />
+              Tải xuống
+            </Button>
+          </div>
+        </div>
+      }
+    >
+      <div className="py-2">
+        {isOpen && (
+          <PdfViewer
+            fileUrl={resolvedUrl}
+            className="h-[72vh] w-full"
+          />
+        )}
+      </div>
+
+      <div className="flex items-center justify-end pt-3 border-t border-slate-100">
+        <Button variant="primary" onClick={onClose}>
+          Đóng
+        </Button>
+      </div>
+    </Modal>
+  );
+};
+
+PdfViewerModal.displayName = "PdfViewerModal";

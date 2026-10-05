@@ -48,6 +48,9 @@ export const SelectDepartment = ({
   schoolId,
   customDepartments,
   showCodePrefix = false,
+  includeAllOption = false,
+  allOptionLabel = "Tất cả đơn vị",
+  allOptionValue = "all",
   placeholder = "Chọn phòng / tổ chuyên môn",
   allowClear = true,
   showSearch = true,
@@ -67,6 +70,9 @@ export const SelectDepartment = ({
 
   // Resolve incoming value: if value is department code or slug, resolve to department.id
   const resolvedValue = useMemo(() => {
+    if (includeAllOption && value === allOptionValue) {
+      return allOptionValue;
+    }
     if (value !== undefined && value !== null && value !== "") {
       const matched = findDepartmentByValueOrCode(value, departments);
       if (matched) {
@@ -75,11 +81,11 @@ export const SelectDepartment = ({
       return value;
     }
     return value;
-  }, [value, departments]);
+  }, [value, departments, includeAllOption, allOptionValue]);
 
   // Map departments to standard Ant Design select options
   const options = useMemo(() => {
-    return departments.map((dept) => {
+    const deptOptions = departments.map((dept) => {
       const displayLabel = showCodePrefix
         ? `[${dept.code}] ${dept.name}`
         : dept.name;
@@ -92,7 +98,21 @@ export const SelectDepartment = ({
         department: dept,
       };
     });
-  }, [departments, showCodePrefix]);
+
+    if (includeAllOption) {
+      return [
+        {
+          label: allOptionLabel,
+          value: allOptionValue,
+          key: allOptionValue,
+          title: allOptionLabel,
+        },
+        ...deptOptions,
+      ];
+    }
+
+    return deptOptions;
+  }, [departments, showCodePrefix, includeAllOption, allOptionLabel, allOptionValue]);
 
   return (
     <Select

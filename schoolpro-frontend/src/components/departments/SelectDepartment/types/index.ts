@@ -100,4 +100,22 @@ export interface SelectDepartmentProps
    * @default false
    */
   showCodePrefix?: boolean;
+
+  /**
+   * Include "All departments" option (useful for filter bars)
+   * @default false
+   */
+  includeAllOption?: boolean;
+
+  /**
+   * Label for the "All departments" option
+   * @default "Tất cả đơn vị"
+   */
+  allOptionLabel?: string;
+
+  /**
+   * Value for the "All departments" option
+   * @default "all"
+   */
+  allOptionValue?: string;
 }
