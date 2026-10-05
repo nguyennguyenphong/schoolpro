@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from common.models.base import UUIDModel
 
@@ -26,12 +27,13 @@ class Department(UUIDModel):
     )
     department_type = models.CharField(
         max_length=30,
+        default="SUBJECT",
     )
     leader_teacher = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
         db_column="leader_teacher_id",
-        related_name="+",
+        related_name="led_departments",
         null=True,
         blank=True,
         db_comment="leader_teacher_id foreign key",
@@ -40,13 +42,13 @@ class Department(UUIDModel):
         "core.User",
         on_delete=models.SET_NULL,
         db_column="vice_leader_id",
-        related_name="+",
+        related_name="vice_led_departments",
         null=True,
         blank=True,
         db_comment="vice_leader_id foreign key",
     )
-    is_active = models.BooleanField(default=False)
-    created_at = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         managed = False
@@ -59,4 +61,4 @@ class Department(UUIDModel):
         return str(self.name)
 
     def __repr__(self) -> str:
-        return f"<Department {self.pk}>"
+        return f"<Department {self.pk}: {self.code} - {self.name}>"
