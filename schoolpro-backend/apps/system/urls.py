@@ -5,6 +5,7 @@ URL routing configuration for System & Audit domain.
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
+from apps.system.views.export_template_view import ExportTemplateViewSet
 from apps.system.views.module_views import (
     AdminModuleViewSet,
     AdminRoleModuleViewSet,
@@ -20,6 +21,8 @@ router = DefaultRouter()
 router.register(r"admin/modules", AdminModuleViewSet, basename="admin-modules")
 # Admin Role-Module Assignments: /api/v1/system/admin/role-modules/
 router.register(r"admin/role-modules", AdminRoleModuleViewSet, basename="admin-role-modules")
+# Document & Export Templates: /api/v1/system/export-templates/
+router.register(r"export-templates", ExportTemplateViewSet, basename="export-templates")
 
 urlpatterns = [
     # User Dynamic Dashboard Cards & Preferences

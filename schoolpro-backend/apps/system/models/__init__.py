@@ -1,6 +1,7 @@
 # Export domain models for Django ORM discovery
 
 from .audit import AuditLog
+from .export_template import ExportTemplate, FileFormat, TemplateType
 from .module import Module, RoleModule
 from .outbox import EventOutbox
 from .preference import UserModulePreference
@@ -8,6 +9,9 @@ from .setting import RoleSettingsDefault, SettingsDefinition, SystemSetting, Use
 
 __all__ = [
     "AuditLog",
+    "ExportTemplate",
+    "TemplateType",
+    "FileFormat",
     "Module",
     "RoleModule",
     "EventOutbox",

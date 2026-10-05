@@ -5,6 +5,7 @@ Allows full CRUD operations via Django Admin UI (http://localhost:8000/admin/).
 
 from django.contrib import admin
 
+from apps.system.models.export_template import ExportTemplate
 from apps.system.models.module import Module, RoleModule
 from apps.system.models.preference import UserModulePreference
 from apps.system.models.setting import (
@@ -99,3 +100,77 @@ class UserSettingAdmin(admin.ModelAdmin):
     list_display = ["user_id", "setting", "value", "updated_at"]
     search_fields = ["user_id", "setting__code", "setting__name"]
     autocomplete_fields = ["setting"]
+
+
+@admin.register(ExportTemplate)
+class ExportTemplateAdmin(admin.ModelAdmin):
+    list_display = [
+        "code",
+        "name",
+        "template_type",
+        "file_format",
+        "school",
+        "department",
+        "is_default",
+        "is_active",
+        "updated_at",
+    ]
+    list_filter = ["template_type", "file_format", "is_default", "is_active", "school"]
+    search_fields = ["code", "name", "description"]
+    ordering = ["-is_default", "name"]
+    raw_id_fields = ["school", "department", "created_by", "updated_by"]
+    fieldsets = [
+        (
+            "Thông tin cơ bản",
+            {
+                "fields": (
+                    "code",
+                    "name",
+                    "description",
+                    "template_type",
+                    "file_format",
+                    "school",
+                    "department",
+                    "is_default",
+                    "is_active",
+                )
+            },
+        ),
+        (
+            "Cấu hình trang & In ấn",
+            {
+                "fields": (
+                    "page_size",
+                    "page_orientation",
+                    "margins",
+                    "style_content",
+                )
+            },
+        ),
+        (
+            "Nội dung biểu mẫu",
+            {
+                "fields": (
+                    "header_content",
+                    "content",
+                    "footer_content",
+                )
+            },
+        ),
+        (
+            "Cấu hình biến & Xem trước",
+            {
+                "fields": (
+                    "placeholders_schema",
+                    "sample_data",
+                )
+            },
+        ),
+        (
+            "Thông tin kiểm toán",
+            {
+                "fields": ("created_by", "updated_by"),
+                "classes": ("collapse",),
+            },
+        ),
+    ]

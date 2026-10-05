@@ -1,3 +1,4 @@
+from .export_template_view import ExportTemplateViewSet
 from .module_views import (
     AdminModuleViewSet,
     AdminRoleModuleViewSet,
@@ -12,4 +13,5 @@ __all__ = [
     "ReorderUserModulesView",
     "AdminModuleViewSet",
     "AdminRoleModuleViewSet",
+    "ExportTemplateViewSet",
 ]

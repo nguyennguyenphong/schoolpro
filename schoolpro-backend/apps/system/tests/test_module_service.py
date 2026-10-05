@@ -90,6 +90,14 @@ class TestModuleService:
         with (
             patch.object(service, "get_module_by_id", return_value=sample_mod),
             patch.object(service.module_repo, "delete_module") as mock_del,
+            patch(
+                "apps.system.services.module_service.RoleModule.objects.filter"
+            ) as mock_rm_filter,
+            patch(
+                "apps.system.services.module_service.UserModulePreference.objects.filter"
+            ) as mock_ump_filter,
         ):
             service.delete_module(sample_mod.id)
             mock_del.assert_called_once_with(sample_mod)
+            mock_rm_filter.assert_called_once()
+            mock_ump_filter.assert_called_once()
