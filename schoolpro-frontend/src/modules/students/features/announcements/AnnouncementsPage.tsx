@@ -20,6 +20,7 @@ export const AnnouncementsPage: React.FC = () => {
     total,
     summary,
     departments,
+    categories,
     loading,
     filter,
     selectedAnnouncement,
@@ -110,6 +111,7 @@ export const AnnouncementsPage: React.FC = () => {
         filter={filter}
         summary={summary}
         departments={departments}
+        categories={categories}
         onSearchChange={setSearchQuery}
         onCategoryChange={setCategory}
         onDepartmentChange={setDepartment}

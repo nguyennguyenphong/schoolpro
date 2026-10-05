@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { message } from "antd";
 import type {
+  AnnouncementCategoryOption,
   AnnouncementItem,
   AnnouncementFilter,
   AnnouncementSummary,
@@ -50,6 +51,7 @@ export const useAnnouncements = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [summary, setSummary] = useState<AnnouncementSummary | null>(null);
   const [departments, setDepartments] = useState<string[]>([]);
+  const [categories, setCategories] = useState<AnnouncementCategoryOption[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Detail Modal
@@ -102,10 +104,11 @@ export const useAnnouncements = () => {
 
     async function loadData() {
       try {
-        const [listResult, summaryData, deptData] = await Promise.all([
+        const [listResult, summaryData, deptData, catData] = await Promise.all([
           announcementService.getAnnouncements(filter),
           announcementService.getSummary(),
           announcementService.getDepartments(),
+          announcementService.getCategories(),
         ]);
         if (!ignore) {
           setAnnouncements(listResult.items);
@@ -114,6 +117,7 @@ export const useAnnouncements = () => {
           setSummary(summaryData);
           setUnreadCount(summaryData.unreadCount);
           setDepartments(deptData);
+          setCategories(catData);
           setLoading(false);
         }
       } catch {
@@ -324,6 +328,7 @@ export const useAnnouncements = () => {
     totalPages,
     summary,
     departments,
+    categories,
     loading,
     filter,
     selectedAnnouncement,

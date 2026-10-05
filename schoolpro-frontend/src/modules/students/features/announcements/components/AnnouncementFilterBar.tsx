@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Select } from "antd";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -6,15 +6,18 @@ import { Icon } from "@/components/ui/Icon";
 import type {
   AnnouncementFilter,
   AnnouncementCategory,
+  AnnouncementCategoryOption,
   AnnouncementPriority,
   AnnouncementSortOption,
   AnnouncementSummary,
 } from "@/modules/students/features/announcements/types";
+import { SelectDepartment } from "@/components/departments/SelectDepartment";
 
 interface AnnouncementFilterBarProps {
   filter: AnnouncementFilter;
   summary?: AnnouncementSummary | null;
   departments: string[];
+  categories?: AnnouncementCategoryOption[];
   onSearchChange: (query: string) => void;
   onCategoryChange: (category: AnnouncementCategory) => void;
   onDepartmentChange: (dept: string) => void;
@@ -29,7 +32,8 @@ interface AnnouncementFilterBarProps {
 export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
   filter,
   summary,
-  departments,
+  departments: _departments,
+  categories,
   onSearchChange,
   onCategoryChange,
   onDepartmentChange,
@@ -77,15 +81,30 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
     },
   ];
 
-  const categoryOptions: { label: string; value: AnnouncementCategory }[] = [
-    { label: "Tất cả chuyên mục", value: "all" },
-    { label: "Khảo thí & Lịch thi", value: "exam" },
-    { label: "Đào tạo & Học vụ", value: "academic" },
-    { label: "Học phí & Khoản thu", value: "tuition" },
-    { label: "Đoàn trường & Ngoại khóa", value: "activity" },
-    { label: "Lớp & GVCN", value: "homeroom" },
-    { label: "Thông báo chung", value: "general" },
-  ];
+  const categoryOptions = useMemo(() => {
+    const allOption: { label: string; value: AnnouncementCategory } = {
+      label: "Tất cả chuyên mục",
+      value: "all",
+    };
+
+    if (categories && categories.length > 0) {
+      const dynamicList = categories.map((c) => ({
+        label: c.count !== undefined && c.count > 0 ? `${c.label} (${c.count})` : c.label,
+        value: c.value as AnnouncementCategory,
+      }));
+      return [allOption, ...dynamicList];
+    }
+
+    return [
+      allOption,
+      { label: "Khảo thí & Lịch thi", value: "exam" },
+      { label: "Đào tạo & Học vụ", value: "academic" },
+      { label: "Học phí & Khoản thu", value: "tuition" },
+      { label: "Đoàn trường & Ngoại khóa", value: "activity" },
+      { label: "Lớp & GVCN", value: "homeroom" },
+      { label: "Thông báo chung", value: "general" },
+    ];
+  }, [categories]);
 
   const sortOptions: { label: string; value: AnnouncementSortOption }[] = [
     { label: "Mới nhất trước", value: "newest" },
@@ -195,13 +214,19 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
           {/* Đơn vị ban hành */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Đơn vị:</span>
-            <Select
-              value={filter.department}
-              onChange={onDepartmentChange}
-              options={[
-                { label: "Tất cả đơn vị", value: "all" },
-                ...departments.map((d) => ({ label: d, value: d })),
-              ]}
+            <SelectDepartment
+              value={filter.department === "all" ? undefined : filter.department}
+              onChange={(val, opt) => {
+                if (!val) {
+                  onDepartmentChange("all");
+                  return;
+                }
+                const optRecord = opt as { title?: string; label?: string } | undefined;
+                const deptName = optRecord?.title || optRecord?.label || String(val);
+                onDepartmentChange(deptName || "all");
+              }}
+              placeholder="Tất cả đơn vị"
+              allowClear
               className="w-40"
             />
           </div>
@@ -235,7 +260,15 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
         </div>
 
         {/* Reset button */}
-        {hasActiveFilters && (
+        {(hasActiveFilters ||
+          Boolean(
+            filter.searchQuery.trim() ||
+              filter.category !== "all" ||
+              (filter.department && filter.department !== "all") ||
+              filter.readStatus !== "all" ||
+              filter.priority !== "all" ||
+              filter.sortBy !== "newest",
+          )) && (
           <Button
             variant="outline"
             onClick={onResetFilters}

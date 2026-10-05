@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from apps.core.authentication import SchoolProJWTAuthentication
 from apps.notification.serializers.announcement_serializers import (
+    AnnouncementCategoryItemSerializer,
     AnnouncementItemResponseSerializer,
     AnnouncementSummaryResponseSerializer,
     MarkReadResponseSerializer,
@@ -51,7 +52,12 @@ class AnnouncementPagination(PageNumberPagination):
             OpenApiParameter(
                 "category",
                 str,
-                description="Filter by category (general, academic, exam, tuition, activity, homeroom, all)",
+                description="Filter by category (exam, academic, tuition, activity, emulation, general, or custom category, or all)",
+            ),
+            OpenApiParameter(
+                "department",
+                str,
+                description="Filter by issuing department (UUID, department code, or department name)",
             ),
             OpenApiParameter(
                 "priority", str, description="Filter by priority level (urgent, high, normal, all)"
@@ -93,6 +99,7 @@ class AnnouncementViewSet(viewsets.ViewSet):
         user = request.user
         search_query = request.query_params.get("search") or request.query_params.get("q")
         category = request.query_params.get("category")
+        department = request.query_params.get("department") or request.query_params.get("dept")
         priority = request.query_params.get("priority")
         read_status = request.query_params.get("readStatus") or request.query_params.get(
             "read_status"
@@ -103,6 +110,7 @@ class AnnouncementViewSet(viewsets.ViewSet):
             user=user,
             search_query=search_query,
             category=category,
+            department=department,
             priority=priority,
             read_status=read_status,
             sort_by=sort_by,
@@ -227,3 +235,36 @@ class AnnouncementViewSet(viewsets.ViewSet):
             data={"unreadCount": count},
             message="Số thông báo chưa đọc",
         )
+
+    @extend_schema(
+        summary="Get available announcement categories",
+        description="Get distinct active announcement categories for user's school with item counts and localized labels.",
+        responses={200: AnnouncementCategoryItemSerializer(many=True)},
+    )
+    @action(detail=False, methods=["get"], url_path="categories")
+    def categories(self, request):
+        """
+        Retrieve dynamic announcement categories for user's school.
+        """
+        categories_data = self.service.get_categories(user=request.user)
+        serializer = AnnouncementCategoryItemSerializer(categories_data, many=True)
+        return APIResponse.success(
+            data=serializer.data,
+            message="Danh sách chuyên mục thông báo",
+        )
+
+    @extend_schema(
+        summary="Get issuing departments for announcements",
+        description="Get distinct issuing departments present in announcements for current school.",
+    )
+    @action(detail=False, methods=["get"], url_path="departments")
+    def departments(self, request):
+        """
+        Retrieve distinct departments issuing announcements.
+        """
+        departments_data = self.service.get_departments(user=request.user)
+        return APIResponse.success(
+            data=departments_data,
+            message="Danh sách đơn vị ban hành thông báo",
+        )
+

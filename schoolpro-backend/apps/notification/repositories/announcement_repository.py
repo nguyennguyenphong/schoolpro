@@ -6,7 +6,7 @@ Encapsulates data access and ORM queries for school announcements and read recei
 from typing import Any
 from uuid import UUID
 
-from django.db.models import Case, Exists, F, OuterRef, Q, QuerySet, Value, When
+from django.db.models import Case, Count, Exists, F, OuterRef, Q, QuerySet, Value, When
 from django.utils import timezone
 
 from apps.core.models.profile import Student
@@ -28,6 +28,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
         user: User,
         search_query: str | None = None,
         category: str | None = None,
+        department: str | None = None,
         priority: str | None = None,
         read_status: str | None = None,
         sort_by: str | None = None,
@@ -86,6 +87,10 @@ class AnnouncementRepository(BaseRepository[Announcement]):
 
             qs = qs.filter(target_filter)
 
+        # Multi-tenancy guard: restrict to user's school if available
+        if getattr(user, "school_id", None):
+            qs = qs.filter(school_id=user.school_id)
+
         # 2. Search query
         if search_query and search_query.strip():
             sq = search_query.strip()
@@ -97,7 +102,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             )
 
         # 3. Category filter
-        # Mapping frontend categories to backend categories
+        # Mapping frontend category slugs to backend enum categories while allowing dynamic categories
         category_map = {
             "general": "GENERAL",
             "academic": "ACADEMIC",
@@ -106,21 +111,47 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             "activity": "EVENTS",
             "homeroom": "ACADEMIC",
         }
-        if category and category.lower() != "all":
-            mapped_cat = category_map.get(category.lower(), category.upper())
-            qs = qs.filter(category=mapped_cat)
+        if category and category.strip() and category.lower() != "all":
+            cat_clean = category.strip()
+            mapped_cat = category_map.get(cat_clean.lower(), cat_clean.upper())
+            qs = qs.filter(Q(category__iexact=cat_clean) | Q(category__iexact=mapped_cat))
 
-        # 4. Priority filter
+        # 4. Department filter
+        if department and department.strip() and department.lower() != "all":
+            dept_val = department.strip()
+            # Check if department matches ID, code, or name from Master Department
+            dept_names_to_match = [dept_val]
+            try:
+                from apps.master.models.department import Department
+
+                # Match by UUID
+                dept_obj = Department.objects.filter(id=dept_val).first()
+                if dept_obj and dept_obj.name:
+                    dept_names_to_match.append(dept_obj.name)
+
+                # Match by code
+                dept_by_code = Department.objects.filter(code__iexact=dept_val).first()
+                if dept_by_code and dept_by_code.name:
+                    dept_names_to_match.append(dept_by_code.name)
+            except Exception:
+                pass
+
+            dept_query = Q()
+            for d_name in set(dept_names_to_match):
+                dept_query |= Q(department__icontains=d_name)
+            qs = qs.filter(dept_query)
+
+        # 5. Priority filter
         if priority and priority.lower() != "all":
             qs = qs.filter(priority=priority.upper())
 
-        # 5. Read status filter
+        # 6. Read status filter
         if read_status == "unread":
             qs = qs.filter(is_read=False)
         elif read_status == "read":
             qs = qs.filter(is_read=True)
 
-        # 6. Sorting
+        # 7. Sorting
         priority_weight = Case(
             When(priority="URGENT", then=Value(3)),
             When(priority="HIGH", then=Value(2)),
@@ -226,3 +257,54 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             "exam_count": exam_count,
             "activity_count": activity_count,
         }
+
+    def get_categories_for_user(self, user: User) -> list[dict[str, Any]]:
+        """
+        Retrieve distinct announcement categories available for user/school,
+        including item counts and human-readable Vietnamese labels.
+        """
+        all_eligible = self.get_announcements_for_user(user)
+        cat_counts = (
+            all_eligible.values("category")
+            .annotate(count=Count("id"))
+            .order_by("-count")
+        )
+
+        label_map = {
+            "ACADEMIC": "Đào tạo & Học vụ",
+            "EXAM": "Khảo thí & Lịch thi",
+            "FEES": "Học phí & Khoản thu",
+            "EVENTS": "Đoàn trường & Ngoại khóa",
+            "ACTIVITY": "Hoạt động & Ngoại khóa",
+            "EMULATION": "Thi đua & Khen thưởng",
+            "GENERAL": "Thông báo chung",
+            "HOMEROOM": "Lớp & GVCN",
+            "ADMISSION": "Tuyển sinh",
+        }
+
+        results = []
+        for row in cat_counts:
+            raw_cat = row["category"] or "GENERAL"
+            upper_cat = raw_cat.upper()
+            label = label_map.get(upper_cat, raw_cat.capitalize())
+            results.append({
+                "value": raw_cat.lower(),
+                "code": upper_cat,
+                "label": label,
+                "count": row["count"],
+            })
+        return results
+
+    def get_departments_for_user(self, user: User) -> list[str]:
+        """
+        Retrieve distinct issuing departments for user's eligible announcements.
+        """
+        all_eligible = self.get_announcements_for_user(user)
+        departments = list(
+            all_eligible.exclude(department__isnull=True)
+            .exclude(department="")
+            .values_list("department", flat=True)
+            .distinct()
+        )
+        return sorted(departments)
+

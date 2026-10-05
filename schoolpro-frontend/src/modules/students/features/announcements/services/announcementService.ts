@@ -1,6 +1,7 @@
 import { httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 import type {
+  AnnouncementCategoryOption,
   AnnouncementFilter,
   AnnouncementItem,
   AnnouncementListResult,
@@ -25,6 +26,9 @@ class AnnouncementService {
       if (filter.category && filter.category !== "all") {
         params.category = filter.category;
       }
+      if (filter.department && filter.department !== "all") {
+        params.department = filter.department;
+      }
       if (filter.priority && filter.priority !== "all") {
         params.priority = filter.priority;
       }
@@ -41,19 +45,7 @@ class AnnouncementService {
       );
 
       if (response.data?.data) {
-        let result = response.data.data;
-        // Client-side department filter if specified
-        if (filter.department && filter.department !== "all") {
-          const filteredItems = result.items.filter(
-            (item) => item.department === filter.department
-          );
-          result = {
-            ...result,
-            items: filteredItems,
-            total: filteredItems.length,
-          };
-        }
-        return result;
+        return response.data.data;
       }
 
       throw new Error("Không có dữ liệu thông báo trả về từ máy chủ.");
@@ -192,18 +184,64 @@ class AnnouncementService {
   }
 
   /**
+   * Get dynamic list of announcement categories for current school.
+   */
+  async getCategories(): Promise<AnnouncementCategoryOption[]> {
+    try {
+      const response = await httpClient.get<ApiResponse<AnnouncementCategoryOption[]>>(
+        "/notification/announcements/categories/"
+      );
+      if (response.data?.data && Array.isArray(response.data.data)) {
+        return response.data.data;
+      }
+      throw new Error("Không có dữ liệu chuyên mục trả về.");
+    } catch {
+      // Mock fallback: distinct categories from mockAnnouncements
+      const catCountMap = new Map<string, number>();
+      mockAnnouncements.forEach((item) => {
+        catCountMap.set(item.category, (catCountMap.get(item.category) ?? 0) + 1);
+      });
+
+      const labelMap: Record<string, string> = {
+        exam: "Khảo thí & Lịch thi",
+        academic: "Đào tạo & Học vụ",
+        tuition: "Học phí & Khoản thu",
+        activity: "Đoàn trường & Ngoại khóa",
+        homeroom: "Lớp & GVCN",
+        general: "Thông báo chung",
+      };
+
+      return Array.from(catCountMap.entries()).map(([cat, count]) => ({
+        value: cat,
+        label: labelMap[cat] ?? cat.toUpperCase(),
+        count,
+      }));
+    }
+  }
+
+  /**
    * Get list of issuing school departments.
    */
   async getDepartments(): Promise<string[]> {
-    return [
-      "Ban Giám Hiệu",
-      "Phòng Đào Tạo",
-      "Đoàn Thanh Niên",
-      "Phòng Tài Vụ",
-      "Ban Giám Thị",
-      "Phòng Công Tác Học Sinh",
-      "Tổ Thể Dục - Giáo Dục Quốc Phòng",
-    ];
+    try {
+      const response = await httpClient.get<ApiResponse<string[]>>(
+        "/notification/announcements/departments/"
+      );
+      if (response.data?.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        return response.data.data;
+      }
+      throw new Error("Không có dữ liệu phòng ban trả về.");
+    } catch {
+      return [
+        "Ban Giám Hiệu",
+        "Phòng Đào Tạo",
+        "Đoàn Thanh Niên",
+        "Phòng Tài Vụ",
+        "Ban Giám Thị",
+        "Phòng Công Tác Học Sinh",
+        "Tổ Thể Dục - Giáo Dục Quốc Phòng",
+      ];
+    }
   }
 
   /**

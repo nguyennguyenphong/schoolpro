@@ -29,6 +29,7 @@ class AnnouncementService(BaseService):
         user: User,
         search_query: str | None = None,
         category: str | None = None,
+        department: str | None = None,
         priority: str | None = None,
         read_status: str | None = None,
         sort_by: str | None = None,
@@ -40,6 +41,7 @@ class AnnouncementService(BaseService):
             user=user,
             search_query=search_query,
             category=category,
+            department=department,
             priority=priority,
             read_status=read_status,
             sort_by=sort_by,
@@ -98,3 +100,16 @@ class AnnouncementService(BaseService):
         """
         summary = self.repository.get_user_announcement_summary(user=user)
         return summary.get("unread_count", 0)
+
+    def get_categories(self, user: User) -> list[dict[str, Any]]:
+        """
+        Get dynamic categories available for user/school.
+        """
+        return self.repository.get_categories_for_user(user=user)
+
+    def get_departments(self, user: User) -> list[str]:
+        """
+        Get distinct departments issuing announcements for user/school.
+        """
+        return self.repository.get_departments_for_user(user=user)
+

@@ -20,19 +20,24 @@ interface AnnouncementListItemProps {
 const getCategoryConfig = (
   cat: AnnouncementCategory,
 ): { label: string; color: string } => {
-  switch (cat) {
+  const normalized = (cat || "").toLowerCase();
+  switch (normalized) {
     case "exam":
       return { label: "Khảo thí", color: "red" };
     case "academic":
       return { label: "Đào tạo", color: "blue" };
     case "tuition":
+    case "fees":
       return { label: "Học phí", color: "green" };
     case "activity":
+    case "events":
       return { label: "Ngoại khóa", color: "purple" };
+    case "emulation":
+      return { label: "Thi đua", color: "orange" };
     case "homeroom":
       return { label: "Lớp & GVCN", color: "cyan" };
     default:
-      return { label: "Chung", color: "default" };
+      return { label: cat || "Chung", color: "default" };
   }
 };
 

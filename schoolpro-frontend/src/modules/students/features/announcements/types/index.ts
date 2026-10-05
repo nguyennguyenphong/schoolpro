@@ -5,7 +5,16 @@ export type AnnouncementCategory =
   | "exam"
   | "tuition"
   | "activity"
-  | "homeroom";
+  | "homeroom"
+  | (string & {});
+
+export interface AnnouncementCategoryOption {
+  value: string;
+  label: string;
+  code?: string;
+  count?: number;
+}
+
 
 export type AnnouncementPriority = "urgent" | "high" | "normal";
 

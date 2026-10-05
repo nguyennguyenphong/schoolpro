@@ -67,16 +67,22 @@ class AnnouncementItemResponseSerializer(serializers.ModelSerializer):
         return obj.department or "Phòng Đào Tạo"
 
     def get_category(self, obj: Announcement) -> str:
-        """Map backend enum to frontend category slugs."""
+        """Map backend enum to frontend category slugs while preserving dynamic categories."""
+        if not obj.category:
+            return "general"
+        cat_lower = obj.category.lower()
         cat_map = {
-            "ACADEMIC": "academic",
-            "EXAM": "exam",
-            "EMULATION": "activity",
-            "FEES": "tuition",
-            "EVENTS": "activity",
-            "GENERAL": "general",
+            "academic": "academic",
+            "exam": "exam",
+            "emulation": "emulation",
+            "fees": "tuition",
+            "tuition": "tuition",
+            "events": "activity",
+            "activity": "activity",
+            "general": "general",
+            "homeroom": "homeroom",
         }
-        return cat_map.get(obj.category, "general")
+        return cat_map.get(cat_lower, cat_lower)
 
     def get_priority(self, obj: Announcement) -> str:
         """Map backend enum to frontend priority strings."""
@@ -137,3 +143,13 @@ class MarkReadResponseSerializer(serializers.Serializer):
 
     success = serializers.BooleanField()
     markedCount = serializers.IntegerField(required=False)
+
+
+class AnnouncementCategoryItemSerializer(serializers.Serializer):
+    """Announcement category option metadata."""
+
+    value = serializers.CharField()
+    code = serializers.CharField()
+    label = serializers.CharField()
+    count = serializers.IntegerField()
+

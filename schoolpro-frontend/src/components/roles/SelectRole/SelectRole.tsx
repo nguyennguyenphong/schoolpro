@@ -246,7 +246,16 @@ export const SelectRole = ({
     <Select
       placeholder={placeholder}
       allowClear={allowClear}
-      showSearch={showSearch}
+      showSearch={
+        showSearch
+          ? {
+              filterOption: (input, option) =>
+                String(option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase()),
+            }
+          : false
+      }
       optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}

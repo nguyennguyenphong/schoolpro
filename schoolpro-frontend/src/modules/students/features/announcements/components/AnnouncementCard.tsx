@@ -19,19 +19,24 @@ interface AnnouncementCardProps {
 const getCategoryConfig = (
   cat: AnnouncementCategory,
 ): { label: string; color: string } => {
-  switch (cat) {
+  const normalized = (cat || "").toLowerCase();
+  switch (normalized) {
     case "exam":
       return { label: "Khảo thí & Lịch thi", color: "red" };
     case "academic":
       return { label: "Đào tạo & Học vụ", color: "blue" };
     case "tuition":
+    case "fees":
       return { label: "Học phí & Khoản thu", color: "green" };
     case "activity":
+    case "events":
       return { label: "Đoàn & Ngoại khóa", color: "purple" };
+    case "emulation":
+      return { label: "Thi đua & Khen thưởng", color: "orange" };
     case "homeroom":
       return { label: "Lớp & GVCN", color: "cyan" };
     default:
-      return { label: "Thông báo chung", color: "default" };
+      return { label: cat || "Thông báo chung", color: "default" };
   }
 };
 
