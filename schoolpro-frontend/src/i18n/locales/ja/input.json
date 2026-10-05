@@ -99,6 +99,9 @@
     "vision": "視力 (左 / 右)",
     "insuranceCode": "健康保険証番号",
     "lastCheckup": "最終健康診断日",
-    "healthNotes": "健康に関する備考"
+    "healthNotes": "健康に関する備考",
+    "language": "システム言語",
+    "theme": "テーマ設定",
+    "density": "表示密度"
   }
 }

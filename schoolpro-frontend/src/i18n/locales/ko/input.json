@@ -99,6 +99,9 @@
     "vision": "시력 (좌 / 우)",
     "insuranceCode": "건강보험증 번호",
     "lastCheckup": "최근 건강검진일",
-    "healthNotes": "건강 특이사항"
+    "healthNotes": "건강 특이사항",
+    "language": "시스템 언어",
+    "theme": "화면 테마",
+    "density": "표시 밀도"
   }
 }

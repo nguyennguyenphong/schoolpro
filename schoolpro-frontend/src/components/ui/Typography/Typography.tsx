@@ -20,7 +20,7 @@ import type {
   TypographyProps,
 } from "@/components/ui/Typography/types";
 
-export const Typography = forwardRef<
+const BaseTypography = forwardRef<
   HTMLElement,
   TypographyProps
 >(
@@ -84,4 +84,18 @@ export const Typography = forwardRef<
   },
 );
 
-Typography.displayName = "Typography";
+type CompoundedTypography = typeof BaseTypography & {
+  Title: typeof AntTypography.Title;
+  Text: typeof AntTypography.Text;
+  Paragraph: typeof AntTypography.Paragraph;
+  Link: typeof AntTypography.Link;
+};
+
+const Compounded = BaseTypography as CompoundedTypography;
+Compounded.displayName = "Typography";
+Compounded.Title = AntTypography.Title;
+Compounded.Text = AntTypography.Text;
+Compounded.Paragraph = AntTypography.Paragraph;
+Compounded.Link = AntTypography.Link;
+
+export { Compounded as Typography };

@@ -106,39 +106,84 @@
   "settings": {
     "title": "システム設定",
     "subtitle": "外観、言語、通知設定、アカウントセキュリティの管理",
+    "tabs": {
+      "appearance": "外観",
+      "notifications": "通知",
+      "security": "セキュリティ",
+      "loginHistory": "ログイン履歴"
+    },
     "sections": {
       "appearance": "外観と表示",
       "appearanceDesc": "テーマ（ライト/ダーク）、使用言語、表示密度のカスタマイズ",
       "notifications": "通知設定",
       "notificationsDesc": "学校からの通知の受信チャンネルと種別の管理",
       "security": "セキュリティとセッション",
-      "securityDesc": "2段階認証、アイドル自動ログアウト、ログイン端末の管理"
+      "securityDesc": "2段階認証、アイドル自動ログアウト、ログイン端末の管理",
+      "sessions": "ログインセッション",
+      "sessionsDesc": "現在ログイン中の端末とセッション一覧"
     },
     "theme": {
+      "title": "テーマモード",
       "light": "ライトテーマ",
       "dark": "ダークテーマ",
       "system": "システム連動"
     },
-    "twoFactor": "2段階認証 (2FA)",
-    "twoFactorDesc": "新しい端末からのログイン時にメールまたはアプリへのOTP確認コードを要求します",
-    "idleTimeout": "無操作時の自動ログアウト",
-    "activeSessions": "ログイン中の端末一覧"
+    "density": {
+      "title": "表示密度",
+      "compact": "コンパクト",
+      "normal": "標準",
+      "comfortable": "ゆったり"
+    },
+    "twoFactor": {
+      "title": "2段階認証 (2FA)",
+      "desc": "新しい端末からのログイン時にメールまたはアプリへのOTP確認コードを要求します",
+      "enabled": "有効",
+      "disabled": "無効"
+    },
+    "notifications": {
+      "email": "メール通知",
+      "emailDesc": "週次ダイジェスト、保護者会案内、まとめレポートを受信",
+      "push": "ブラウザプッシュ通知",
+      "pushDesc": "端末へのリアルタイムメッセージとリマインダー通知",
+      "sms": "SMSメッセージ",
+      "smsDesc": "出欠や安全に関する緊急メッセージを受信",
+      "gradeAlerts": "新着成績通知",
+      "gradeAlertsDesc": "教員がテスト成績を登録した直後に通知",
+      "examReminders": "試験リマインダー",
+      "examRemindersDesc": "試験やテストの24時間前に事前通知",
+      "assignmentDeadlines": "課題提出期限",
+      "assignmentDeadlinesDesc": "提出期限の6時間前にリマインド通知",
+      "sound": "通知音",
+      "soundDesc": "新着通知受信時にチャイム音を再生"
+    },
+    "sessions": {
+      "title": "ログインセッション",
+      "desc": "現在アカウントにログインしている端末の一覧",
+      "currentDevice": "この端末",
+      "idleTimeout": "無操作時の自動ログアウト"
+    }
   },
   "password": {
     "title": "パスワード変更",
     "subtitle": "セキュリティ基準を満たす強力なパスワードでアカウントを保護します",
+    "revokeOtherSessions": "パスワード変更後に他のすべての端末からログアウトする",
     "strength": {
+      "title": "パスワード強度",
       "weak": "強度が低い",
-      "medium": "標準",
+      "fair": "普通",
+      "good": "良好",
       "strong": "強力",
+      "medium": "標準",
       "veryStrong": "非常に安全"
     },
     "requirements": {
-      "minLength": "8文字以上",
+      "title": "セキュリティ要件",
+      "minChars": "8文字以上",
       "uppercase": "英大文字を含む (A-Z)",
       "lowercase": "英小文字を含む (a-z)",
       "number": "数字を含む (0-9)",
-      "special": "記号を含む (!@#$%...)"
+      "specialChar": "記号を含む (!@#$...)",
+      "noMatchOld": "新しいパスワードは現在のパスワードと異なる必要があります"
     }
   }
 }

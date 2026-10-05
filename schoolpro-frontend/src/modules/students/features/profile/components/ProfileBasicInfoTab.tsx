@@ -1,0 +1,181 @@
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Form } from "@/components/ui/Form";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import { Card } from "@/components/ui/Card";
+import type {
+  StudentPersonalInfo,
+  UpdateProfilePayload,
+} from "@/modules/students/features/profile/types";
+
+interface ProfileBasicInfoTabProps {
+  personalInfo: StudentPersonalInfo;
+  onSave: (payload: UpdateProfilePayload) => Promise<boolean>;
+}
+
+export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
+  personalInfo,
+  onSave,
+}) => {
+  const { t } = useTranslation(["input", "button", "validation"]);
+  const [form] = Form.useForm();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const handleSubmit = async (values: {
+    phone: string;
+    email: string;
+    address: string;
+  }) => {
+    try {
+      setIsSubmitting(true);
+      await onSave({
+        phone: values.phone,
+        email: values.email,
+        address: values.address,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-6">
+      <div className="border-b border-slate-100 pb-4">
+        <h3 className="text-base font-bold text-slate-800 mb-1">
+          Thông tin cá nhân & Liên lạc
+        </h3>
+        <p className="text-xs text-slate-400 mb-0">
+          Các thông tin định danh chính thức được đồng bộ từ Cơ sở dữ liệu trường học.
+        </p>
+      </div>
+
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          fullName: personalInfo.fullName,
+          studentCode: personalInfo.studentCode,
+          username: personalInfo.username,
+          dateOfBirth: personalInfo.dateOfBirth,
+          gender: personalInfo.gender === "MALE" ? "Nam" : personalInfo.gender === "FEMALE" ? "Nữ" : "Khác",
+          nationalId: personalInfo.nationalId,
+          ethnicity: personalInfo.ethnicity,
+          religion: personalInfo.religion,
+          birthPlace: personalInfo.birthPlace,
+          phone: personalInfo.phone,
+          email: personalInfo.email,
+          address: personalInfo.address,
+        }}
+        onFinish={handleSubmit}
+        className="space-y-4"
+      >
+        {/* Read-only Identity Information Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Form.Item label={t("input:labels.fullName")} name="fullName">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.studentCode")} name="studentCode">
+            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.username")} name="username">
+            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.dateOfBirth")} name="dateOfBirth">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.gender")} name="gender">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.nationalId")} name="nationalId">
+            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.ethnicity")} name="ethnicity">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.religion")} name="religion">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+
+          <Form.Item label={t("input:labels.birthPlace")} name="birthPlace">
+            <Input disabled className="bg-slate-50! text-slate-700!" />
+          </Form.Item>
+        </div>
+
+        {/* Editable Contact Section */}
+        <div className="pt-4 border-t border-slate-100">
+          <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <Icon name="mail" size={15} className="text-blue-600" />
+            <span>Thông tin liên lạc học sinh (Có thể cập nhật)</span>
+          </h4>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Form.Item
+              label={t("input:labels.phone")}
+              name="phone"
+              rules={[
+                { required: true, message: "Vui lòng nhập số điện thoại liên lạc" },
+                { pattern: /^[0-9+\s-]{9,15}$/, message: "Định dạng số điện thoại không hợp lệ" },
+              ]}
+            >
+              <Input
+                placeholder={t("input:placeholder.phone")}
+                prefix={<Icon name="user" size={14} className="text-slate-400" />}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label={t("input:labels.email")}
+              name="email"
+              rules={[
+                { required: true, message: "Vui lòng nhập địa chỉ email" },
+                { type: "email", message: "Địa chỉ email không hợp lệ" },
+              ]}
+            >
+              <Input
+                placeholder={t("input:placeholder.email")}
+                prefix={<Icon name="mail" size={14} className="text-slate-400" />}
+              />
+            </Form.Item>
+          </div>
+
+          <Form.Item
+            label={t("input:labels.address")}
+            name="address"
+            rules={[{ required: true, message: "Vui lòng nhập địa chỉ thường trú" }]}
+          >
+            <Input.TextArea
+              rows={2}
+              placeholder={t("input:placeholder.address")}
+            />
+          </Form.Item>
+        </div>
+
+        {/* Save button */}
+        <div className="flex items-center justify-end pt-3">
+          <Button
+            htmlType="submit"
+            variant="primary"
+            disabled={isSubmitting}
+            className="px-6"
+          >
+            <Icon
+              name={isSubmitting ? "loading" : "check"}
+              size={14}
+              className={isSubmitting ? "animate-spin" : ""}
+            />
+            {t("button:saveChanges")}
+          </Button>
+        </div>
+      </Form>
+    </Card>
+  );
+};

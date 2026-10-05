@@ -106,39 +106,84 @@
   "settings": {
     "title": "系统设置",
     "subtitle": "自定义系统界面、语言、通知接收偏好与账户安全",
+    "tabs": {
+      "appearance": "界面外观",
+      "notifications": "通知设置",
+      "security": "安全隐私",
+      "loginHistory": "登录历史"
+    },
     "sections": {
       "appearance": "外观与显示",
       "appearanceDesc": "自定义浅色/深色主题、使用语言及界面显示密度",
       "notifications": "通知提醒偏好",
       "notificationsDesc": "管理接收学校各类通知的渠道与提醒类型",
       "security": "安全与活动会话",
-      "securityDesc": "双重验证安全保护、闲置自动登出以及已登录设备管理"
+      "securityDesc": "双重验证安全保护、闲置自动登出以及已登录设备管理",
+      "sessions": "登录会话",
+      "sessionsDesc": "当前登录中的设备与活动会话列表"
     },
     "theme": {
+      "title": "界面主题",
       "light": "浅色模式",
       "dark": "深色模式",
       "system": "跟随系统"
     },
-    "twoFactor": "双重身份验证 (2FA)",
-    "twoFactorDesc": "从新设备登录时需输入发送至邮箱或验证器APP的动态OTP验证码",
-    "idleTimeout": "长时间无操作自动登出",
-    "activeSessions": "当前已登录设备"
+    "density": {
+      "title": "显示密度",
+      "compact": "紧凑",
+      "normal": "标准",
+      "comfortable": "宽松"
+    },
+    "twoFactor": {
+      "title": "双重身份验证 (2FA)",
+      "desc": "从新设备登录时需输入发送至邮箱或验证器APP的动态OTP验证码",
+      "enabled": "已启用",
+      "disabled": "已停用"
+    },
+    "notifications": {
+      "email": "邮件通知",
+      "emailDesc": "接收每周简报、家长会邀请函与汇总报告",
+      "push": "浏览器推送通知",
+      "pushDesc": "在设备上实时接收即时消息与日程提醒",
+      "sms": "短信通知",
+      "smsDesc": "接收关于考勤与校园安全的紧急短信通知",
+      "gradeAlerts": "新成绩录入提醒",
+      "gradeAlertsDesc": "教师录入考试成绩后第一时间发送通知",
+      "examReminders": "考试日程提醒",
+      "examRemindersDesc": "考试和测验前 24 小时提前提醒",
+      "assignmentDeadlines": "作业截止提醒",
+      "assignmentDeadlinesDesc": "作业截止提交前 6 小时自动提醒",
+      "sound": "提示音效",
+      "soundDesc": "接收新通知时播放轻柔提示音"
+    },
+    "sessions": {
+      "title": "登录会话",
+      "desc": "当前登录您账户的设备列表",
+      "currentDevice": "当前设备",
+      "idleTimeout": "长时间无操作自动登出"
+    }
   },
   "password": {
     "title": "修改账户密码",
     "subtitle": "使用符合企业安全标准的高强度密码保护您的账户安全",
+    "revokeOtherSessions": "修改密码后从所有其他设备登出",
     "strength": {
+      "title": "密码强度",
       "weak": "密码强度较弱",
+      "fair": "密码强度一般",
+      "good": "密码强度良好",
+      "strong": "密码强度高",
       "medium": "密码强度中等",
-      "strong": "密码强度较强",
       "veryStrong": "密码非常安全"
     },
     "requirements": {
-      "minLength": "至少包含 8 个字符",
+      "title": "密码安全要求",
+      "minChars": "至少包含 8 个字符",
       "uppercase": "包含至少 1 个大写字母 (A-Z)",
       "lowercase": "包含至少 1 个小写字母 (a-z)",
       "number": "包含至少 1 个数字 (0-9)",
-      "special": "包含至少 1 个特殊符号 (!@#$%...)"
+      "specialChar": "包含至少 1 个特殊符号 (!@#$...)",
+      "noMatchOld": "新密码不能与当前密码相同"
     }
   }
 }

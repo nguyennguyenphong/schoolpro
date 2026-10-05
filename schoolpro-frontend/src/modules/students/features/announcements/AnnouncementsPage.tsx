@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Empty, Pagination } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -14,6 +13,8 @@ import {
   AnnouncementsSkeleton,
 } from "@/modules/students/features/announcements/components";
 import { useAnnouncements } from "@/modules/students/features/announcements/hooks";
+import { Empty } from "@/components/ui/Empty";
+import { Pagination } from "@/components/ui/Pagination";
 
 export const AnnouncementsPage: React.FC = () => {
   const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
@@ -64,7 +65,7 @@ export const AnnouncementsPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
@@ -196,7 +197,7 @@ export const AnnouncementsPage: React.FC = () => {
 
       {/* 6. Pagination with Border Framing (Responsive & Clean) */}
       {total > 0 && (
-        <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-4 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
           <div className="text-xs text-slate-500">
             {t("common:pagination.showing")}{" "}
             <strong className="text-slate-800">{announcements.length}</strong>{" "}

@@ -99,6 +99,9 @@
     "vision": "视力 (左 / 右)",
     "insuranceCode": "医保卡号",
     "lastCheckup": "最近体检日期",
-    "healthNotes": "健康备注"
+    "healthNotes": "健康备注",
+    "language": "系统语言",
+    "theme": "界面主题",
+    "density": "显示密度"
   }
 }

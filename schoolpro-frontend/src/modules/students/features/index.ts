@@ -10,3 +10,6 @@ export * from "@/modules/students/features/materials";
 export * from "@/modules/students/features/gradebook";
 export * from "@/modules/students/features/attendance";
 export * from "@/modules/students/features/contact-book";
+export * from "@/modules/students/features/profile";
+export * from "@/modules/students/features/settings";
+export * from "@/modules/students/features/change-password";

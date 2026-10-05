@@ -63,6 +63,16 @@ import {
   Hash,
   Sparkles,
   Phone,
+  Sun,
+  Moon,
+  Laptop,
+  Bell,
+  Shield,
+  ShieldCheck,
+  Heart,
+  GraduationCap,
+  Users,
+  Circle,
 } from "lucide-react";
 
 export const iconMap = {
@@ -153,4 +163,14 @@ export const iconMap = {
   hash: Hash,
   sparkles: Sparkles,
   phone: Phone,
+  sun: Sun,
+  moon: Moon,
+  device: Laptop,
+  bell: Bell,
+  shield: Shield,
+  "shield-check": ShieldCheck,
+  heart: Heart,
+  academic: GraduationCap,
+  users: Users,
+  circle: Circle,
 } as const;

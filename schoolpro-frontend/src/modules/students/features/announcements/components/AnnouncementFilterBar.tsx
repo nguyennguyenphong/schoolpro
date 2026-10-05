@@ -11,7 +11,7 @@ import {
   AnnouncementStatusTabs,
   AnnouncementSearchAndView,
   AnnouncementDropdownFilters,
-} from "./filter";
+} from "@/modules/students/features/announcements/components/filter";
 
 export interface AnnouncementFilterBarProps {
   filter: AnnouncementFilter;
@@ -50,7 +50,7 @@ export const AnnouncementFilterBar: React.FC<AnnouncementFilterBarProps> = ({
   hasActiveFilters = false,
 }) => {
   return (
-    <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+    <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* 1. Status Tabs */}
       <AnnouncementStatusTabs
         readStatus={filter.readStatus}

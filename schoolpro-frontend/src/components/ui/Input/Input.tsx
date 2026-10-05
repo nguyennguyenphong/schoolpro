@@ -11,7 +11,7 @@ import type {
 } from "@/components/ui/Input/types";
 import { inputStyles } from "@/components/ui/Input/styles";
 
-export const Input = ({
+const BaseInput = ({
   typeItem: _typeItem,
   formItemProps: _formItemProps,
   ...props
@@ -25,8 +25,6 @@ export const Input = ({
     />
   );
 };
-
-Input.displayName = "Input";
 
 export const Password = ({
   typeItem: _typeItem,
@@ -95,3 +93,20 @@ export const OTP = ({
 };
 
 OTP.displayName = "OTP";
+
+type CompoundedInput = typeof BaseInput & {
+  displayName?: string;
+  TextArea: typeof TextArea;
+  Password: typeof Password;
+  Search: typeof Search;
+  OTP: typeof OTP;
+};
+
+const Compounded = BaseInput as CompoundedInput;
+Compounded.displayName = "Input";
+Compounded.TextArea = TextArea;
+Compounded.Password = Password;
+Compounded.Search = Search;
+Compounded.OTP = OTP;
+
+export { Compounded as Input };

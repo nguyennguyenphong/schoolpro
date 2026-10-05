@@ -92,6 +92,24 @@ const ContactBookPage = lazy(() =>
   }))
 );
 
+const ProfilePage = lazy(() =>
+  import("@/modules/students/features/profile").then(({ ProfilePage }) => ({
+    default: ProfilePage,
+  }))
+);
+
+const SettingsPage = lazy(() =>
+  import("@/modules/students/features/settings").then(({ SettingsPage }) => ({
+    default: SettingsPage,
+  }))
+);
+
+const ChangePasswordPage = lazy(() =>
+  import("@/modules/students/features/change-password").then(({ ChangePasswordPage }) => ({
+    default: ChangePasswordPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<StudentLayout />}>
     <Route path="/student/home" element={<HomePage />} />
@@ -109,6 +127,9 @@ export const StudentRoutes = (
     <Route path="/student/gradebook" element={<GradebookPage />} />
     <Route path="/student/evaluations" element={<EvaluationPage />} />
     <Route path="/student/evaluations/:id" element={<SurveyDetailPage />} />
+    <Route path="/student/profile" element={<ProfilePage />} />
+    <Route path="/student/settings" element={<SettingsPage />} />
+    <Route path="/student/change-password" element={<ChangePasswordPage />} />
     <Route path="/student/surveys/:id" element={<SurveyDetailPage />} />
     <Route path="/student/surveys" element={<Navigate to="/student/evaluations" replace />} />
     <Route path="/student/grades" element={<Navigate to="/student/gradebook" replace />} />

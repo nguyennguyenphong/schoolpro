@@ -99,6 +99,9 @@
     "vision": "Thị lực (Trái / Phải)",
     "insuranceCode": "Mã số BHYT",
     "lastCheckup": "Khám sức khỏe gần nhất",
-    "healthNotes": "Ghi chú sức khỏe"
+    "healthNotes": "Ghi chú sức khỏe",
+    "language": "Ngôn ngữ hệ thống",
+    "theme": "Chủ đề giao diện",
+    "density": "Mật độ hiển thị"
   }
 }

@@ -3,7 +3,9 @@ import { Form as AntForm } from "antd";
 import type { FormProps } from "@/components/ui/Form/types";
 import { formStyles } from "@/components/ui/Form/styles";
 
-interface FormComponent extends React.FC<FormProps> {
+export interface FormComponent {
+  <Values = any>(props: FormProps<Values>): React.ReactElement | null;
+  displayName?: string;
   Item: typeof AntForm.Item;
   List: typeof AntForm.List;
   ErrorList: typeof AntForm.ErrorList;
@@ -13,17 +15,21 @@ interface FormComponent extends React.FC<FormProps> {
   Provider: typeof AntForm.Provider;
 }
 
-export const Form: FormComponent = (({ style, ...props }: FormProps) => {
+const FormElement = AntForm as React.ComponentType<any>;
+
+export const Form: FormComponent = (({ style, children, ...props }: FormProps) => {
   return (
-    <AntForm
+    <FormElement
       {...props}
       style={{
         ...formStyles,
         ...style,
       }}
-    />
+    >
+      {children}
+    </FormElement>
   );
-}) as FormComponent;
+}) as unknown as FormComponent;
 
 Form.displayName = "Form";
 Form.Item = AntForm.Item;

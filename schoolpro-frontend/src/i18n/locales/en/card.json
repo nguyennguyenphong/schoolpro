@@ -106,39 +106,84 @@
   "settings": {
     "title": "System Settings",
     "subtitle": "Customize interface, language, notification preferences, and account security",
+    "tabs": {
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "security": "Security",
+      "loginHistory": "Login History"
+    },
     "sections": {
       "appearance": "Appearance & Display",
       "appearanceDesc": "Customize light/dark theme, system language, and display density",
       "notifications": "Notification Preferences",
       "notificationsDesc": "Manage channels and categories of notifications received from the school",
       "security": "Security & Active Sessions",
-      "securityDesc": "Manage two-factor authentication, idle session timeout, and logged-in devices"
+      "securityDesc": "Manage two-factor authentication, idle session timeout, and logged-in devices",
+      "sessions": "Active Sessions",
+      "sessionsDesc": "List of active devices and login sessions"
     },
     "theme": {
+      "title": "Theme Mode",
       "light": "Light Theme",
       "dark": "Dark Theme",
       "system": "Follow System"
     },
-    "twoFactor": "Two-Factor Authentication (2FA)",
-    "twoFactorDesc": "Require OTP security code sent to email or authenticator app when logging in from new devices",
-    "idleTimeout": "Auto logout upon idle timeout",
-    "activeSessions": "Active Logged-in Devices"
+    "density": {
+      "title": "Display Density",
+      "compact": "Compact",
+      "normal": "Normal",
+      "comfortable": "Comfortable"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication (2FA)",
+      "desc": "Require OTP security code sent to email or authenticator app when logging in from new devices",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "notifications": {
+      "email": "Email Notifications",
+      "emailDesc": "Receive weekly digests, meeting invites, and summary reports",
+      "push": "Browser Push Notifications",
+      "pushDesc": "Real-time updates and reminders directly on your device",
+      "sms": "SMS Messages",
+      "smsDesc": "Urgent notifications regarding attendance and campus safety",
+      "gradeAlerts": "New Grade Alerts",
+      "gradeAlertsDesc": "Notify as soon as teachers publish test scores",
+      "examReminders": "Exam Reminders",
+      "examRemindersDesc": "Notify 24 hours prior to exams and tests",
+      "assignmentDeadlines": "Assignment Deadlines",
+      "assignmentDeadlinesDesc": "Remind 6 hours before submission deadlines",
+      "sound": "Notification Sound",
+      "soundDesc": "Play a subtle chime on incoming notifications"
+    },
+    "sessions": {
+      "title": "Active Sessions",
+      "desc": "List of devices currently logged into your account",
+      "currentDevice": "This Device",
+      "idleTimeout": "Auto logout when inactive"
+    }
   },
   "password": {
     "title": "Change Account Password",
     "subtitle": "Protect your account with a strong password meeting security standards",
+    "revokeOtherSessions": "Log out from all other devices after changing password",
     "strength": {
+      "title": "Password Strength",
       "weak": "Weak Password",
-      "medium": "Medium Password",
+      "fair": "Fair Password",
+      "good": "Good Password",
       "strong": "Strong Password",
+      "medium": "Medium Password",
       "veryStrong": "Very Strong Password"
     },
     "requirements": {
-      "minLength": "At least 8 characters",
+      "title": "Password Security Requirements",
+      "minChars": "At least 8 characters",
       "uppercase": "At least 1 uppercase letter (A-Z)",
       "lowercase": "At least 1 lowercase letter (a-z)",
       "number": "At least 1 number (0-9)",
-      "special": "At least 1 special character (!@#$%...)"
+      "specialChar": "At least 1 special character (!@#$...)",
+      "noMatchOld": "New password cannot match your current password"
     }
   }
 }

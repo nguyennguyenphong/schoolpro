@@ -54,19 +54,19 @@ export const StudentLayout: React.FC = () => {
       key: "profile",
       icon: <Icon name="user" size={15} />,
       label: t("navigation:header.profile"),
-      onClick: () => navigate("/profile"),
+      onClick: () => navigate("/student/profile"),
     },
     {
       key: "changePassword",
       icon: <Icon name="password" size={15} />,
       label: t("navigation:header.changePassword"),
-      onClick: () => navigate("/forgot-password"),
+      onClick: () => navigate("/student/change-password"),
     },
     {
       key: "settings",
       icon: <Icon name="settings" size={15} />,
       label: t("navigation:header.settings"),
-      onClick: () => navigate("/settings"),
+      onClick: () => navigate("/student/settings"),
     },
     {
       type: "divider",

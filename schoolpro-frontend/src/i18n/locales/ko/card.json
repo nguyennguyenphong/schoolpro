@@ -106,39 +106,84 @@
   "settings": {
     "title": "시스템 설정",
     "subtitle": "화면 테마, 언어, 알림 설정 및 계정 보안 관리",
+    "tabs": {
+      "appearance": "화면",
+      "notifications": "알림",
+      "security": "보안",
+      "loginHistory": "로그인 기록"
+    },
     "sections": {
       "appearance": "화면 및 표시",
       "appearanceDesc": "다크/라이트 모드, 언어 및 표시 밀도 맞춤 설정",
       "notifications": "알림 환경설정",
       "notificationsDesc": "학교로부터 수신할 알림 채널 및 유형 관리",
       "security": "보안 및 활성 세션",
-      "securityDesc": "2단계 인증, 미활동 자동 로그아웃 및 로그인 기기 관리"
+      "securityDesc": "2단계 인증, 미활동 자동 로그아웃 및 로그인 기기 관리",
+      "sessions": "로그인 세션",
+      "sessionsDesc": "현재 로그인된 기기 및 활성 세션 목록"
     },
     "theme": {
+      "title": "화면 테마",
       "light": "라이트 모드",
       "dark": "다크 모드",
       "system": "시스템 설정 사용"
     },
-    "twoFactor": "2단계 인증 (2FA)",
-    "twoFactorDesc": "새로운 기기에서 로그인할 때 이메일 또는 앱으로 OTP 보안 코드를 요청합니다",
-    "idleTimeout": "미활동 시 자동 로그아웃",
-    "activeSessions": "현재 로그인된 기기"
+    "density": {
+      "title": "표시 밀도",
+      "compact": "좁게",
+      "normal": "표준",
+      "comfortable": "넓게"
+    },
+    "twoFactor": {
+      "title": "2단계 인증 (2FA)",
+      "desc": "새로운 기기에서 로그인할 때 이메일 또는 앱으로 OTP 보안 코드를 요청합니다",
+      "enabled": "사용 중",
+      "disabled": "사용 안 함"
+    },
+    "notifications": {
+      "email": "이메일 알림",
+      "emailDesc": "주간 소식, 학부모 모임 안내 및 종합 보고서 수신",
+      "push": "브라우저 푸시 알림",
+      "pushDesc": "기기에서 실시간 메시지 및 일정 알림 수신",
+      "sms": "SMS 문자 메시지",
+      "smsDesc": "출결 및 안전 관련 긴급 문자 수신",
+      "gradeAlerts": "성적 등록 알림",
+      "gradeAlertsDesc": "교사가 시험 점수를 입력하는 즉시 알림",
+      "examReminders": "시험 일정 알림",
+      "examRemindersDesc": "시험 및 평가 24시간 전 사전 알림",
+      "assignmentDeadlines": "과제 제출 기한",
+      "assignmentDeadlinesDesc": "제출 마감 6시간 전 사전 알림",
+      "sound": "알림음",
+      "soundDesc": "새 알림 수신 시 알림음 재생"
+    },
+    "sessions": {
+      "title": "로그인 세션",
+      "desc": "현재 계정에 로그인된 기기 목록",
+      "currentDevice": "현재 기기",
+      "idleTimeout": "미활동 시 자동 로그아웃"
+    }
   },
   "password": {
     "title": "비밀번호 변경",
     "subtitle": "보안 기준을 충족하는 강력한 비밀번호로 계정을 보호하세요",
+    "revokeOtherSessions": "비밀번호 변경 후 다른 모든 기기에서 로그아웃",
     "strength": {
+      "title": "비밀번호 강도",
       "weak": "보안 취약",
-      "medium": "보통",
+      "fair": "보통",
+      "good": "양호",
       "strong": "안전",
+      "medium": "보통",
       "veryStrong": "매우 안전"
     },
     "requirements": {
-      "minLength": "최소 8자 이상",
+      "title": "비밀번호 보안 요구사항",
+      "minChars": "최소 8자 이상",
       "uppercase": "영문 대문자 포함 (A-Z)",
       "lowercase": "영문 소문자 포함 (a-z)",
       "number": "숫자 포함 (0-9)",
-      "special": "특수문자 포함 (!@#$%...)"
+      "specialChar": "특수문자 포함 (!@#$...)",
+      "noMatchOld": "새 비밀번호는 현재 비밀번호와 달라야 합니다"
     }
   }
 }

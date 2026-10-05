@@ -99,6 +99,9 @@
     "vision": "Vision (Left / Right)",
     "insuranceCode": "Health Insurance Code",
     "lastCheckup": "Last Medical Checkup",
-    "healthNotes": "Health Notes"
+    "healthNotes": "Health Notes",
+    "language": "System Language",
+    "theme": "Theme Mode",
+    "density": "Display Density"
   }
 }

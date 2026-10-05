@@ -106,39 +106,84 @@
   "settings": {
     "title": "Cài đặt hệ thống",
     "subtitle": "Tùy chỉnh giao diện, ngôn ngữ, thông báo và bảo mật tài khoản",
+    "tabs": {
+      "appearance": "Giao diện",
+      "notifications": "Thông báo",
+      "security": "Bảo mật",
+      "loginHistory": "Lịch sử đăng nhập"
+    },
     "sections": {
       "appearance": "Giao diện & Hiển thị",
       "appearanceDesc": "Tùy biến giao diện sáng/tối, ngôn ngữ sử dụng và định dạng hiển thị",
       "notifications": "Cấu hình nhận thông báo",
       "notificationsDesc": "Quản lý kênh và loại thông báo nhận từ nhà trường",
       "security": "Bảo mật & Phiên làm việc",
-      "securityDesc": "Quản lý xác thực 2 yếu tố, tự động đăng xuất và lịch sử thiết bị"
+      "securityDesc": "Quản lý xác thực 2 yếu tố, tự động đăng xuất và lịch sử thiết bị",
+      "sessions": "Phiên đăng nhập",
+      "sessionsDesc": "Danh sách thiết bị và phiên làm việc đang hoạt động"
     },
     "theme": {
+      "title": "Chủ đề giao diện",
       "light": "Giao diện Sáng",
       "dark": "Giao diện Tối",
       "system": "Theo hệ thống"
     },
-    "twoFactor": "Xác thực hai yếu tố (2FA)",
-    "twoFactorDesc": "Yêu cầu mã xác thực OTP gửi qua email/ứng dụng khi đăng nhập từ thiết bị mới",
-    "idleTimeout": "Tự động đăng xuất khi không hoạt động",
-    "activeSessions": "Thiết bị đang đăng nhập"
+    "density": {
+      "title": "Mật độ hiển thị",
+      "compact": "Gọn gàng",
+      "normal": "Tiêu chuẩn",
+      "comfortable": "Rộng rãi"
+    },
+    "twoFactor": {
+      "title": "Xác thực hai yếu tố (2FA)",
+      "desc": "Yêu cầu mã xác thực OTP gửi qua email/ứng dụng khi đăng nhập từ thiết bị mới",
+      "enabled": "Đang bật",
+      "disabled": "Đang tắt"
+    },
+    "notifications": {
+      "email": "Thông báo qua Email",
+      "emailDesc": "Nhận bản tin tuần, thư mời họp và báo cáo tổng hợp",
+      "push": "Thông báo đẩy trình duyệt",
+      "pushDesc": "Cập nhật tức thì tin nhắn và nhắc nhở trên thiết bị",
+      "sms": "Tin nhắn SMS",
+      "smsDesc": "Nhận tin nhắn khẩn cấp về điểm danh và an ninh",
+      "gradeAlerts": "Cảnh báo điểm số mới",
+      "gradeAlertsDesc": "Thông báo ngay khi giáo viên vào điểm kiểm tra",
+      "examReminders": "Nhắc nhở lịch thi",
+      "examRemindersDesc": "Thông báo trước 24h khi có bài thi hoặc kiểm tra",
+      "assignmentDeadlines": "Hạn chót bài tập",
+      "assignmentDeadlinesDesc": "Nhắc nhở nộp bài trước hạn nộp 6 tiếng",
+      "sound": "Âm thanh thông báo",
+      "soundDesc": "Phát âm thanh nhẹ khi có thông báo mới"
+    },
+    "sessions": {
+      "title": "Phiên đăng nhập",
+      "desc": "Danh sách các thiết bị đang đăng nhập tài khoản của bạn",
+      "currentDevice": "Thiết bị này",
+      "idleTimeout": "Tự động đăng xuất khi không hoạt động"
+    }
   },
   "password": {
     "title": "Đổi mật khẩu tài khoản",
     "subtitle": "Bảo vệ tài khoản với mật khẩu mạnh đáp ứng tiêu chuẩn an ninh",
+    "revokeOtherSessions": "Đăng xuất khỏi tất cả thiết bị khác sau khi đổi mật khẩu",
     "strength": {
+      "title": "Độ mạnh mật khẩu",
       "weak": "Mật khẩu yếu",
-      "medium": "Mật khẩu trung bình",
+      "fair": "Mật khẩu trung bình",
+      "good": "Mật khẩu khá",
       "strong": "Mật khẩu mạnh",
+      "medium": "Mật khẩu trung bình",
       "veryStrong": "Mật khẩu rất an toàn"
     },
     "requirements": {
-      "minLength": "Tối thiểu 8 ký tự",
+      "title": "Yêu cầu độ an toàn mật khẩu",
+      "minChars": "Tối thiểu 8 ký tự",
       "uppercase": "Có ít nhất 1 chữ hoa (A-Z)",
       "lowercase": "Có ít nhất 1 chữ thường (a-z)",
       "number": "Có ít nhất 1 chữ số (0-9)",
-      "special": "Có ít nhất 1 ký tự đặc biệt (!@#$%...)"
+      "specialChar": "Có ít nhất 1 ký tự đặc biệt (!@#$...)",
+      "noMatchOld": "Mật khẩu mới không được trùng mật khẩu hiện tại"
     }
   }
 }

@@ -14,7 +14,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
   const { t } = useTranslation(["card"]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
       <Card className="rounded-xl shadow-2xs transition-all">
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -49,7 +49,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
         </div>
       </Card>
 
-      <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all">
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:summary.urgent")}
@@ -67,7 +67,7 @@ export const AnnouncementSummaryCards: React.FC<AnnouncementSummaryCardsProps> =
       </Card>
 
       {/* 4. Khảo thí & Học vụ */}
-      <Card className="rounded-xl shadow-2xs hover:border-purple-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-purple-400 transition-all">
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:summary.examAcademic")}
