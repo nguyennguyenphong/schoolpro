@@ -264,11 +264,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
         including item counts and human-readable Vietnamese labels.
         """
         all_eligible = self.get_announcements_for_user(user)
-        cat_counts = (
-            all_eligible.values("category")
-            .annotate(count=Count("id"))
-            .order_by("-count")
-        )
+        cat_counts = all_eligible.values("category").annotate(count=Count("id")).order_by("-count")
 
         label_map = {
             "ACADEMIC": "Đào tạo & Học vụ",
@@ -287,12 +283,14 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             raw_cat = row["category"] or "GENERAL"
             upper_cat = raw_cat.upper()
             label = label_map.get(upper_cat, raw_cat.capitalize())
-            results.append({
-                "value": raw_cat.lower(),
-                "code": upper_cat,
-                "label": label,
-                "count": row["count"],
-            })
+            results.append(
+                {
+                    "value": raw_cat.lower(),
+                    "code": upper_cat,
+                    "label": label,
+                    "count": row["count"],
+                }
+            )
         return results
 
     def get_departments_for_user(self, user: User) -> list[str]:
@@ -307,4 +305,3 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             .distinct()
         )
         return sorted(departments)
-

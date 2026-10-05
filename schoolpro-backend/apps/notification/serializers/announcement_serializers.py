@@ -152,4 +152,3 @@ class AnnouncementCategoryItemSerializer(serializers.Serializer):
     code = serializers.CharField()
     label = serializers.CharField()
     count = serializers.IntegerField()
-

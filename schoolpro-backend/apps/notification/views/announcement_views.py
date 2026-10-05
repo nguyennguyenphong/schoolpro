@@ -267,4 +267,3 @@ class AnnouncementViewSet(viewsets.ViewSet):
             data=departments_data,
             message="Danh sách đơn vị ban hành thông báo",
         )
-

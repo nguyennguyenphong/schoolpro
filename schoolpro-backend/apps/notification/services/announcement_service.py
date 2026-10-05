@@ -112,4 +112,3 @@ class AnnouncementService(BaseService):
         Get distinct departments issuing announcements for user/school.
         """
         return self.repository.get_departments_for_user(user=user)
-
