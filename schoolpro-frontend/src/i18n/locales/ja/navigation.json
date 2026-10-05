@@ -1,15 +1,24 @@
 {
   "breadcrumb": {
     "home": "ホーム",
-    "announcements": "お知らせ一覧"
+    "announcements": "お知らせ一覧",
+    "profile": "学生プロフィール",
+    "settings": "システム設定",
+    "changePassword": "パスワード変更"
   },
   "pageTitle": {
     "home": "ホーム",
-    "announcements": "教務お知らせ・連絡事項"
+    "announcements": "教務お知らせ・連絡事項",
+    "profile": "学生プロフィール",
+    "settings": "システム設定",
+    "changePassword": "アカウントのパスワード変更"
   },
   "pageSubtitle": {
     "home": "School Pro 学習・教務管理システム",
-    "announcements": "学校からの指示文書、試験日程、学費、課外活動の情報を確認できます"
+    "announcements": "学校からの指示文書、試験日程、学費、課外活動の情報を確認できます",
+    "profile": "基本情報、学籍情報、保護者連絡先、校内健康記録の確認・管理",
+    "settings": "外観、言語、通知チャンネル、アカウントセキュリティのカスタマイズ",
+    "changePassword": "定期的なパスワード変更によりアカウントのセキュリティを高めましょう"
   },
   "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
   "welcomeUser": "こんにちは、{{name}}さん！",

@@ -28,5 +28,10 @@
   "login": "로그인",
   "logout": "로그아웃",
   "viewGuide": "가이드 보기",
-  "exploreNow": "지금 둘러보기"
+  "exploreNow": "지금 둘러보기",
+  "saveChanges": "변경 사항 저장",
+  "changeAvatar": "프로필 사진 변경",
+  "updatePassword": "비밀번호 변경",
+  "revokeSession": "이 기기에서 로그아웃",
+  "logoutAllDevices": "모든 기기에서 로그아웃"
 }

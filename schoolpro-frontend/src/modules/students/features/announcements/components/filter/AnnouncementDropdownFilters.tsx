@@ -94,7 +94,7 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
             value={filter.category}
             onChange={onCategoryChange}
             categories={categories}
-            className="w-44"
+            className="w-60"
           />
         </div>
 
@@ -118,7 +118,7 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
               onDepartmentChange(deptName || "all");
             }}
             placeholder={t("input:placeholder.department")}
-            allowClear={true}
+            allowClear={false}
             className="w-60"
           />
         </div>

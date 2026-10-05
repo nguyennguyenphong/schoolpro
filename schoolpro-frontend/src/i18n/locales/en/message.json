@@ -21,5 +21,12 @@
     "noFilteredResults": "No matching notices found",
     "noFilteredDescription": "No notices match the selected filter criteria. Please try again with different keywords or conditions.",
     "noFeatures": "No features have been configured for your account yet."
-  }
+  },
+  "profileUpdatedSuccess": "Student profile updated successfully",
+  "avatarUpdatedSuccess": "Profile picture updated successfully",
+  "passwordChangedSuccess": "Password changed successfully. Your new password is now active.",
+  "currentPasswordIncorrect": "Current password is incorrect",
+  "passwordMismatch": "Confirm password does not match the new password",
+  "settingsSavedSuccess": "Settings configuration saved successfully",
+  "sessionRevokedSuccess": "Device session has been revoked"
 }

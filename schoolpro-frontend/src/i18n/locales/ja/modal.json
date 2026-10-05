@@ -7,5 +7,13 @@
   "department": "発行部門:",
   "publishDate": "公開日:",
   "logoutConfirmTitle": "ログアウトの確認",
-  "logoutConfirmContent": "システムからログアウトしてもよろしいですか？"
+  "logoutConfirmContent": "システムからログアウトしてもよろしいですか？",
+  "avatarModalTitle": "アバター画像の更新",
+  "avatarModalDesc": "プリセット画像を選択するか、端末から新しい画像をアップロードしてください（JPG、PNG対応、最大2MB）。",
+  "choosePresetAvatar": "プリセットアバター",
+  "uploadCustomAvatar": "端末からアップロード",
+  "passwordSuccessTitle": "パスワードが正常に変更されました！",
+  "passwordSuccessContent": "アカウントのパスワードが安全に更新されました。次回ログイン時は新しいパスワードをご利用ください。",
+  "revokeSessionConfirmTitle": "セッション終了の確認",
+  "revokeSessionConfirmContent": "この端末のログインセッションを終了してもよろしいですか？"
 }

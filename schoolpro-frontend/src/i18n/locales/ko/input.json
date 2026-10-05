@@ -8,7 +8,13 @@
     "category": "모든 카테고리",
     "priority": "모든 우선순위",
     "sort": "정렬 기준",
-    "date": "날짜 선택..."
+    "date": "날짜 선택...",
+    "phone": "연락처 전화번호 입력...",
+    "email": "이메일 주소 입력...",
+    "address": "거주지 주소 입력...",
+    "currentPassword": "현재 비밀번호 입력...",
+    "newPassword": "새 비밀번호 입력 (최소 8자)...",
+    "confirmPassword": "새 비밀번호 다시 입력..."
   },
   "filter": {
     "category": "카테고리:",
@@ -57,5 +63,42 @@
   "tooltip": {
     "previewPdf": "PDF 미리보기",
     "download": "파일 다운로드"
+  },
+  "labels": {
+    "fullName": "성명",
+    "studentCode": "학번",
+    "username": "사용자 ID",
+    "dateOfBirth": "생년월일",
+    "gender": "성별",
+    "nationalId": "주민등록번호",
+    "ethnicity": "민족",
+    "religion": "종교",
+    "birthPlace": "출생지",
+    "phone": "전화번호",
+    "email": "이메일",
+    "address": "거주지 주소",
+    "className": "소속 학급",
+    "academicYear": "학년도",
+    "admissionDate": "입학일",
+    "graduationDate": "졸업 예정일",
+    "status": "학적 상태",
+    "boarding": "통학 형태",
+    "homeroomTeacher": "담임 교사",
+    "teacherPhone": "담임 전화번호",
+    "teacherEmail": "담임 이메일",
+    "classroom": "교실",
+    "currentPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "confirmPassword": "새 비밀번호 확인",
+    "logoutOtherDevices": "다른 모든 기기에서 로그아웃",
+    "height": "신장 (cm)",
+    "weight": "체중 (kg)",
+    "bloodType": "혈액형",
+    "allergies": "알레르기 이력",
+    "chronicIllness": "만성 질환",
+    "vision": "시력 (좌 / 우)",
+    "insuranceCode": "건강보험증 번호",
+    "lastCheckup": "최근 건강검진일",
+    "healthNotes": "건강 특이사항"
   }
 }

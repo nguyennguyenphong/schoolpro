@@ -7,5 +7,13 @@
   "department": "Đơn vị ban hành:",
   "publishDate": "Ngày đăng:",
   "logoutConfirmTitle": "Xác nhận đăng xuất",
-  "logoutConfirmContent": "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?"
+  "logoutConfirmContent": "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?",
+  "avatarModalTitle": "Cập nhật ảnh đại diện",
+  "avatarModalDesc": "Chọn ảnh đại diện có sẵn hoặc tải ảnh mới từ thiết bị của bạn (hỗ trợ JPG, PNG, tối đa 2MB).",
+  "choosePresetAvatar": "Ảnh đại diện có sẵn",
+  "uploadCustomAvatar": "Tải ảnh từ thiết bị",
+  "passwordSuccessTitle": "Đổi mật khẩu thành công!",
+  "passwordSuccessContent": "Mật khẩu của bạn đã được cập nhật thành công. Vui lòng ghi nhớ và sử dụng mật khẩu mới cho các lần đăng nhập tiếp theo.",
+  "revokeSessionConfirmTitle": "Xác nhận kết thúc phiên làm việc",
+  "revokeSessionConfirmContent": "Bạn có chắc chắn muốn đăng xuất phiên làm việc trên thiết bị này không?"
 }

@@ -1,15 +1,24 @@
 {
   "breadcrumb": {
     "home": "首页",
-    "announcements": "通知公告"
+    "announcements": "通知公告",
+    "profile": "学生档案",
+    "settings": "系统设置",
+    "changePassword": "修改密码"
   },
   "pageTitle": {
     "home": "首页",
-    "announcements": "教务通知与公告"
+    "announcements": "教务通知与公告",
+    "profile": "学生档案",
+    "settings": "系统设置",
+    "changePassword": "修改账户密码"
   },
   "pageSubtitle": {
     "home": "School Pro 教学管理与学生服务系统",
-    "announcements": "关注全校官方指导文件、考试安排、学费账单与学生活动通知"
+    "announcements": "关注全校官方指导文件、考试安排、学费账单与学生活动通知",
+    "profile": "学生个人基本资料、学籍、监护人联络与校园医疗记录",
+    "settings": "个性化界面外观、使用语言、通知接收渠道与账户安全",
+    "changePassword": "定期更新密码以维护您的账户安全"
   },
   "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
   "welcomeUser": "你好，{{name}}！",

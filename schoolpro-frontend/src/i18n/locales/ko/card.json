@@ -89,5 +89,56 @@
     "exploreNow": "지금 둘러보기 →",
     "viewNewNotices": "새 소식 보기 →",
     "lookupRecords": "문서 조회 →"
+  },
+  "profile": {
+    "title": "학생 프로필",
+    "subtitle": "기본 신적 정보, 학적 기록, 보호자 연락처 및 교내 건강 기록",
+    "completionRate": "프로필 완성도",
+    "tabs": {
+      "personal": "기본 인적사항",
+      "academic": "학적 및 학급 정보",
+      "guardians": "보호자 정보",
+      "health": "교내 보건 기록"
+    },
+    "primaryContact": "주 연락처",
+    "parentCommittee": "학부모회 임원"
+  },
+  "settings": {
+    "title": "시스템 설정",
+    "subtitle": "화면 테마, 언어, 알림 설정 및 계정 보안 관리",
+    "sections": {
+      "appearance": "화면 및 표시",
+      "appearanceDesc": "다크/라이트 모드, 언어 및 표시 밀도 맞춤 설정",
+      "notifications": "알림 환경설정",
+      "notificationsDesc": "학교로부터 수신할 알림 채널 및 유형 관리",
+      "security": "보안 및 활성 세션",
+      "securityDesc": "2단계 인증, 미활동 자동 로그아웃 및 로그인 기기 관리"
+    },
+    "theme": {
+      "light": "라이트 모드",
+      "dark": "다크 모드",
+      "system": "시스템 설정 사용"
+    },
+    "twoFactor": "2단계 인증 (2FA)",
+    "twoFactorDesc": "새로운 기기에서 로그인할 때 이메일 또는 앱으로 OTP 보안 코드를 요청합니다",
+    "idleTimeout": "미활동 시 자동 로그아웃",
+    "activeSessions": "현재 로그인된 기기"
+  },
+  "password": {
+    "title": "비밀번호 변경",
+    "subtitle": "보안 기준을 충족하는 강력한 비밀번호로 계정을 보호하세요",
+    "strength": {
+      "weak": "보안 취약",
+      "medium": "보통",
+      "strong": "안전",
+      "veryStrong": "매우 안전"
+    },
+    "requirements": {
+      "minLength": "최소 8자 이상",
+      "uppercase": "영문 대문자 포함 (A-Z)",
+      "lowercase": "영문 소문자 포함 (a-z)",
+      "number": "숫자 포함 (0-9)",
+      "special": "특수문자 포함 (!@#$%...)"
+    }
   }
 }

@@ -21,5 +21,12 @@
     "noFilteredResults": "Không tìm thấy thông báo phù hợp",
     "noFilteredDescription": "Không có thông báo nào khớp với các bộ lọc đã chọn. Vui lòng thử lại với từ khóa hoặc điều kiện khác.",
     "noFeatures": "Chưa có chức năng nào được cấu hình cho tài khoản của bạn."
-  }
+  },
+  "profileUpdatedSuccess": "Cập nhật hồ sơ học sinh thành công",
+  "avatarUpdatedSuccess": "Cập nhật ảnh đại diện thành công",
+  "passwordChangedSuccess": "Đổi mật khẩu thành công. Mật khẩu mới đã có hiệu lực.",
+  "currentPasswordIncorrect": "Mật khẩu hiện tại không chính xác",
+  "passwordMismatch": "Mật khẩu xác nhận không khớp với mật khẩu mới",
+  "settingsSavedSuccess": "Đã lưu cấu hình cài đặt thành công",
+  "sessionRevokedSuccess": "Đã đăng xuất phiên làm việc của thiết bị"
 }

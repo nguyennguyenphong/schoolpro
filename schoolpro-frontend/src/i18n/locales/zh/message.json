@@ -21,5 +21,12 @@
     "noFilteredResults": "未找到符合条件的通知",
     "noFilteredDescription": "没有与所选筛选条件匹配的通知，请更换关键词或调整筛选条件。",
     "noFeatures": "您的账户暂未配置任何系统功能。"
-  }
+  },
+  "profileUpdatedSuccess": "学生个人资料更新成功",
+  "avatarUpdatedSuccess": "头像更新成功",
+  "passwordChangedSuccess": "密码修改成功，新密码已生效。",
+  "currentPasswordIncorrect": "当前密码不正确",
+  "passwordMismatch": "确认密码与新密码不一致",
+  "settingsSavedSuccess": "系统设置保存成功",
+  "sessionRevokedSuccess": "已结束该设备的会话"
 }

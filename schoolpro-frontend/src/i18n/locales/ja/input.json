@@ -8,7 +8,13 @@
     "category": "すべてのカテゴリー",
     "priority": "すべての優先度",
     "sort": "並び替え",
-    "date": "日付を選択..."
+    "date": "日付を選択...",
+    "phone": "連絡先電話番号を入力...",
+    "email": "メールアドレスを入力...",
+    "address": "住所を入力...",
+    "currentPassword": "現在のパスワードを入力...",
+    "newPassword": "新しいパスワードを入力 (8文字以上)...",
+    "confirmPassword": "新しいパスワードを再入力..."
   },
   "filter": {
     "category": "カテゴリー:",
@@ -57,5 +63,42 @@
   "tooltip": {
     "previewPdf": "PDFプレビュー",
     "download": "ダウンロード"
+  },
+  "labels": {
+    "fullName": "氏名",
+    "studentCode": "学籍番号",
+    "username": "ユーザー名",
+    "dateOfBirth": "生年月日",
+    "gender": "性別",
+    "nationalId": "身分証明書番号",
+    "ethnicity": "民族",
+    "religion": "宗教",
+    "birthPlace": "出生地",
+    "phone": "電話番号",
+    "email": "メールアドレス",
+    "address": "現住所",
+    "className": "所属クラス",
+    "academicYear": "学年年度",
+    "admissionDate": "入学日",
+    "graduationDate": "卒業予定日",
+    "status": "在籍状況",
+    "boarding": "通学形態",
+    "homeroomTeacher": "担任教員",
+    "teacherPhone": "担任電話番号",
+    "teacherEmail": "担任メール",
+    "classroom": "教室",
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "confirmPassword": "新しいパスワード (確認)",
+    "logoutOtherDevices": "他のすべての端末からログアウト",
+    "height": "身長 (cm)",
+    "weight": "体重 (kg)",
+    "bloodType": "血液型",
+    "allergies": "アレルギー歴",
+    "chronicIllness": "既往歴・持病",
+    "vision": "視力 (左 / 右)",
+    "insuranceCode": "健康保険証番号",
+    "lastCheckup": "最終健康診断日",
+    "healthNotes": "健康に関する備考"
   }
 }

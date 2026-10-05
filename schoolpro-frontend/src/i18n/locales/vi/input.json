@@ -8,7 +8,13 @@
     "category": "Tất cả chuyên mục",
     "priority": "Tất cả mức độ",
     "sort": "Sắp xếp theo",
-    "date": "Chọn ngày..."
+    "date": "Chọn ngày...",
+    "phone": "Nhập số điện thoại liên hệ...",
+    "email": "Nhập địa chỉ email...",
+    "address": "Nhập địa chỉ cư trú...",
+    "currentPassword": "Nhập mật khẩu hiện tại...",
+    "newPassword": "Nhập mật khẩu mới (tối thiểu 8 ký tự)...",
+    "confirmPassword": "Nhập lại mật khẩu mới..."
   },
   "filter": {
     "category": "Chuyên mục:",
@@ -57,5 +63,42 @@
   "tooltip": {
     "previewPdf": "Xem trước tài liệu PDF",
     "download": "Tải tệp xuống"
+  },
+  "labels": {
+    "fullName": "Họ và tên",
+    "studentCode": "Mã học sinh",
+    "username": "Tên đăng nhập",
+    "dateOfBirth": "Ngày sinh",
+    "gender": "Giới tính",
+    "nationalId": "Số CCCD / Mã định danh",
+    "ethnicity": "Dân tộc",
+    "religion": "Tôn giáo",
+    "birthPlace": "Nơi sinh",
+    "phone": "Số điện thoại",
+    "email": "Địa chỉ email",
+    "address": "Địa chỉ thường trú",
+    "className": "Lớp học",
+    "academicYear": "Năm học",
+    "admissionDate": "Ngày nhập học",
+    "graduationDate": "Ngày dự kiến tốt nghiệp",
+    "status": "Trạng thái học tập",
+    "boarding": "Hình thức",
+    "homeroomTeacher": "Giáo viên chủ nhiệm",
+    "teacherPhone": "SĐT GVCN",
+    "teacherEmail": "Email GVCN",
+    "classroom": "Phòng học",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu mới",
+    "logoutOtherDevices": "Đăng xuất khỏi tất cả các thiết bị khác",
+    "height": "Chiều cao (cm)",
+    "weight": "Cân nặng (kg)",
+    "bloodType": "Nhóm máu",
+    "allergies": "Tiền sử dị ứng",
+    "chronicIllness": "Bệnh lý mãn tính",
+    "vision": "Thị lực (Trái / Phải)",
+    "insuranceCode": "Mã số BHYT",
+    "lastCheckup": "Khám sức khỏe gần nhất",
+    "healthNotes": "Ghi chú sức khỏe"
   }
 }

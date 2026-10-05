@@ -8,7 +8,13 @@
     "category": "All categories",
     "priority": "All priorities",
     "sort": "Sort by",
-    "date": "Select date..."
+    "date": "Select date...",
+    "phone": "Enter contact phone number...",
+    "email": "Enter email address...",
+    "address": "Enter residential address...",
+    "currentPassword": "Enter current password...",
+    "newPassword": "Enter new password (min 8 characters)...",
+    "confirmPassword": "Re-enter new password..."
   },
   "filter": {
     "category": "Category:",
@@ -57,5 +63,42 @@
   "tooltip": {
     "previewPdf": "Preview PDF document",
     "download": "Download file"
+  },
+  "labels": {
+    "fullName": "Full Name",
+    "studentCode": "Student Code",
+    "username": "Username",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "nationalId": "National ID / Citizen ID",
+    "ethnicity": "Ethnicity",
+    "religion": "Religion",
+    "birthPlace": "Place of Birth",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "address": "Residential Address",
+    "className": "Class",
+    "academicYear": "Academic Year",
+    "admissionDate": "Admission Date",
+    "graduationDate": "Graduation Date",
+    "status": "Academic Status",
+    "boarding": "Boarding Type",
+    "homeroomTeacher": "Homeroom Teacher",
+    "teacherPhone": "Teacher Phone",
+    "teacherEmail": "Teacher Email",
+    "classroom": "Classroom",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "logoutOtherDevices": "Logout from all other devices",
+    "height": "Height (cm)",
+    "weight": "Weight (kg)",
+    "bloodType": "Blood Type",
+    "allergies": "Allergy History",
+    "chronicIllness": "Chronic Conditions",
+    "vision": "Vision (Left / Right)",
+    "insuranceCode": "Health Insurance Code",
+    "lastCheckup": "Last Medical Checkup",
+    "healthNotes": "Health Notes"
   }
 }

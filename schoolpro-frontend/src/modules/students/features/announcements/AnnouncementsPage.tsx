@@ -162,6 +162,7 @@ export const AnnouncementsPage: React.FC = () => {
                 onClick={resetFilters}
                 className="mt-3"
               >
+                <Icon name="refresh" size={13} />
                 {t("button:reset")}
               </Button>
             )}

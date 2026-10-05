@@ -89,5 +89,56 @@
     "exploreNow": "Khám phá ngay →",
     "viewNewNotices": "Xem tin mới →",
     "lookupRecords": "Tra cứu hồ sơ →"
+  },
+  "profile": {
+    "title": "Hồ sơ học sinh",
+    "subtitle": "Thông tin lý lịch, học vụ, người giám hộ và sức khỏe học đường",
+    "completionRate": "Mức độ hoàn thiện hồ sơ",
+    "tabs": {
+      "personal": "Thông tin cá nhân",
+      "academic": "Học vụ & Lớp học",
+      "guardians": "Người giám hộ",
+      "health": "Y tế học đường"
+    },
+    "primaryContact": "Liên hệ chính",
+    "parentCommittee": "Ban đại diện CMHS"
+  },
+  "settings": {
+    "title": "Cài đặt hệ thống",
+    "subtitle": "Tùy chỉnh giao diện, ngôn ngữ, thông báo và bảo mật tài khoản",
+    "sections": {
+      "appearance": "Giao diện & Hiển thị",
+      "appearanceDesc": "Tùy biến giao diện sáng/tối, ngôn ngữ sử dụng và định dạng hiển thị",
+      "notifications": "Cấu hình nhận thông báo",
+      "notificationsDesc": "Quản lý kênh và loại thông báo nhận từ nhà trường",
+      "security": "Bảo mật & Phiên làm việc",
+      "securityDesc": "Quản lý xác thực 2 yếu tố, tự động đăng xuất và lịch sử thiết bị"
+    },
+    "theme": {
+      "light": "Giao diện Sáng",
+      "dark": "Giao diện Tối",
+      "system": "Theo hệ thống"
+    },
+    "twoFactor": "Xác thực hai yếu tố (2FA)",
+    "twoFactorDesc": "Yêu cầu mã xác thực OTP gửi qua email/ứng dụng khi đăng nhập từ thiết bị mới",
+    "idleTimeout": "Tự động đăng xuất khi không hoạt động",
+    "activeSessions": "Thiết bị đang đăng nhập"
+  },
+  "password": {
+    "title": "Đổi mật khẩu tài khoản",
+    "subtitle": "Bảo vệ tài khoản với mật khẩu mạnh đáp ứng tiêu chuẩn an ninh",
+    "strength": {
+      "weak": "Mật khẩu yếu",
+      "medium": "Mật khẩu trung bình",
+      "strong": "Mật khẩu mạnh",
+      "veryStrong": "Mật khẩu rất an toàn"
+    },
+    "requirements": {
+      "minLength": "Tối thiểu 8 ký tự",
+      "uppercase": "Có ít nhất 1 chữ hoa (A-Z)",
+      "lowercase": "Có ít nhất 1 chữ thường (a-z)",
+      "number": "Có ít nhất 1 chữ số (0-9)",
+      "special": "Có ít nhất 1 ký tự đặc biệt (!@#$%...)"
+    }
   }
 }

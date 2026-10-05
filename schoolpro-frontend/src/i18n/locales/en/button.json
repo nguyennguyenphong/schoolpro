@@ -28,5 +28,10 @@
   "login": "Sign In",
   "logout": "Sign Out",
   "viewGuide": "View Guide",
-  "exploreNow": "Explore Now"
+  "exploreNow": "Explore Now",
+  "saveChanges": "Save Changes",
+  "changeAvatar": "Change Avatar",
+  "updatePassword": "Update Password",
+  "revokeSession": "Revoke Session",
+  "logoutAllDevices": "Logout all devices"
 }

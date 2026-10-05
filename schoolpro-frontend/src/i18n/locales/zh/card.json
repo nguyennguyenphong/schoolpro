@@ -89,5 +89,56 @@
     "exploreNow": "立即查看 →",
     "viewNewNotices": "查看新消息 →",
     "lookupRecords": "检索档案 →"
+  },
+  "profile": {
+    "title": "学生档案",
+    "subtitle": "个人履历、学籍信息、监护人联络与校园健康记录",
+    "completionRate": "档案完整度",
+    "tabs": {
+      "personal": "个人基本信息",
+      "academic": "学籍与班级",
+      "guardians": "监护人与家长",
+      "health": "校园医疗健康"
+    },
+    "primaryContact": "主要联络人",
+    "parentCommittee": "家委会成员"
+  },
+  "settings": {
+    "title": "系统设置",
+    "subtitle": "自定义系统界面、语言、通知接收偏好与账户安全",
+    "sections": {
+      "appearance": "外观与显示",
+      "appearanceDesc": "自定义浅色/深色主题、使用语言及界面显示密度",
+      "notifications": "通知提醒偏好",
+      "notificationsDesc": "管理接收学校各类通知的渠道与提醒类型",
+      "security": "安全与活动会话",
+      "securityDesc": "双重验证安全保护、闲置自动登出以及已登录设备管理"
+    },
+    "theme": {
+      "light": "浅色模式",
+      "dark": "深色模式",
+      "system": "跟随系统"
+    },
+    "twoFactor": "双重身份验证 (2FA)",
+    "twoFactorDesc": "从新设备登录时需输入发送至邮箱或验证器APP的动态OTP验证码",
+    "idleTimeout": "长时间无操作自动登出",
+    "activeSessions": "当前已登录设备"
+  },
+  "password": {
+    "title": "修改账户密码",
+    "subtitle": "使用符合企业安全标准的高强度密码保护您的账户安全",
+    "strength": {
+      "weak": "密码强度较弱",
+      "medium": "密码强度中等",
+      "strong": "密码强度较强",
+      "veryStrong": "密码非常安全"
+    },
+    "requirements": {
+      "minLength": "至少包含 8 个字符",
+      "uppercase": "包含至少 1 个大写字母 (A-Z)",
+      "lowercase": "包含至少 1 个小写字母 (a-z)",
+      "number": "包含至少 1 个数字 (0-9)",
+      "special": "包含至少 1 个特殊符号 (!@#$%...)"
+    }
   }
 }

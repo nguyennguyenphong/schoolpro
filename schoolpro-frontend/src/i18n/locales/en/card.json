@@ -89,5 +89,56 @@
     "exploreNow": "Explore now →",
     "viewNewNotices": "View new notices →",
     "lookupRecords": "Look up records →"
+  },
+  "profile": {
+    "title": "Student Profile",
+    "subtitle": "Personal biographical information, academic records, guardians, and campus healthcare",
+    "completionRate": "Profile Completion Rate",
+    "tabs": {
+      "personal": "Personal Info",
+      "academic": "Academic & Class",
+      "guardians": "Guardians & Parents",
+      "health": "Campus Healthcare"
+    },
+    "primaryContact": "Primary Contact",
+    "parentCommittee": "Parent Committee"
+  },
+  "settings": {
+    "title": "System Settings",
+    "subtitle": "Customize interface, language, notification preferences, and account security",
+    "sections": {
+      "appearance": "Appearance & Display",
+      "appearanceDesc": "Customize light/dark theme, system language, and display density",
+      "notifications": "Notification Preferences",
+      "notificationsDesc": "Manage channels and categories of notifications received from the school",
+      "security": "Security & Active Sessions",
+      "securityDesc": "Manage two-factor authentication, idle session timeout, and logged-in devices"
+    },
+    "theme": {
+      "light": "Light Theme",
+      "dark": "Dark Theme",
+      "system": "Follow System"
+    },
+    "twoFactor": "Two-Factor Authentication (2FA)",
+    "twoFactorDesc": "Require OTP security code sent to email or authenticator app when logging in from new devices",
+    "idleTimeout": "Auto logout upon idle timeout",
+    "activeSessions": "Active Logged-in Devices"
+  },
+  "password": {
+    "title": "Change Account Password",
+    "subtitle": "Protect your account with a strong password meeting security standards",
+    "strength": {
+      "weak": "Weak Password",
+      "medium": "Medium Password",
+      "strong": "Strong Password",
+      "veryStrong": "Very Strong Password"
+    },
+    "requirements": {
+      "minLength": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter (A-Z)",
+      "lowercase": "At least 1 lowercase letter (a-z)",
+      "number": "At least 1 number (0-9)",
+      "special": "At least 1 special character (!@#$%...)"
+    }
   }
 }

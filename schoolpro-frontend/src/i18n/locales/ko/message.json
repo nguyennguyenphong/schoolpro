@@ -21,5 +21,12 @@
     "noFilteredResults": "일치하는 공지사항이 없습니다",
     "noFilteredDescription": "선택한 조건과 일치하는 공지사항이 없습니다. 다른 키워드나 조건으로 다시 시도해 주세요.",
     "noFeatures": "현재 계정에 설정된 기능이 없습니다."
-  }
+  },
+  "profileUpdatedSuccess": "학생 프로필이 성공적으로 업데이트되었습니다",
+  "avatarUpdatedSuccess": "프로필 사진이 성공적으로 업데이트되었습니다",
+  "passwordChangedSuccess": "비밀번호가 성공적으로 변경되었습니다. 새 비밀번호가 적용되었습니다.",
+  "currentPasswordIncorrect": "현재 비밀번호가 올바르지 않습니다",
+  "passwordMismatch": "새 비밀번호와 확인 비밀번호가 일치하지 않습니다",
+  "settingsSavedSuccess": "설정이 성공적으로 저장되었습니다",
+  "sessionRevokedSuccess": "해당 기기의 세션이 종료되었습니다"
 }

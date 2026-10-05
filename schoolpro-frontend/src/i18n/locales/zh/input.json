@@ -8,7 +8,13 @@
     "category": "所有分类",
     "priority": "所有优先级",
     "sort": "排序方式",
-    "date": "选择日期..."
+    "date": "选择日期...",
+    "phone": "输入联系电话...",
+    "email": "输入电子邮箱...",
+    "address": "输入居住地址...",
+    "currentPassword": "输入当前密码...",
+    "newPassword": "输入新密码 (至少8位)...",
+    "confirmPassword": "再次输入新密码..."
   },
   "filter": {
     "category": "分类:",
@@ -57,5 +63,42 @@
   "tooltip": {
     "previewPdf": "预览PDF文件",
     "download": "下载文件"
+  },
+  "labels": {
+    "fullName": "姓名",
+    "studentCode": "学号",
+    "username": "用户名",
+    "dateOfBirth": "出生日期",
+    "gender": "性别",
+    "nationalId": "身份证件号",
+    "ethnicity": "民族",
+    "religion": "宗教",
+    "birthPlace": "出生地",
+    "phone": "联系电话",
+    "email": "电子邮箱",
+    "address": "居住地址",
+    "className": "所属班级",
+    "academicYear": "学年",
+    "admissionDate": "入学日期",
+    "graduationDate": "预计毕业日期",
+    "status": "学籍状态",
+    "boarding": "就读形式",
+    "homeroomTeacher": "班主任",
+    "teacherPhone": "班主任电话",
+    "teacherEmail": "班主任邮箱",
+    "classroom": "教室",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认新密码",
+    "logoutOtherDevices": "从所有其他设备退出登录",
+    "height": "身高 (cm)",
+    "weight": "体重 (kg)",
+    "bloodType": "血型",
+    "allergies": "过敏史",
+    "chronicIllness": "慢性病史",
+    "vision": "视力 (左 / 右)",
+    "insuranceCode": "医保卡号",
+    "lastCheckup": "最近体检日期",
+    "healthNotes": "健康备注"
   }
 }

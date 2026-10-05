@@ -1,15 +1,24 @@
 {
   "breadcrumb": {
     "home": "Home",
-    "announcements": "News & Announcements"
+    "announcements": "News & Announcements",
+    "profile": "Student Profile",
+    "settings": "System Settings",
+    "changePassword": "Change Password"
   },
   "pageTitle": {
     "home": "Home",
-    "announcements": "Academic Notices & Announcements"
+    "announcements": "Academic Notices & Announcements",
+    "profile": "Student Profile",
+    "settings": "System Settings",
+    "changePassword": "Change Password"
   },
   "pageSubtitle": {
     "home": "School Pro Academic Management System",
-    "announcements": "Track official school directives, exam schedules, tuition fees, and campus activities"
+    "announcements": "Track official school directives, exam schedules, tuition fees, and campus activities",
+    "profile": "Student personal records, academic information, guardians, and medical dossier",
+    "settings": "Customize interface, language, notification channels, and account security",
+    "changePassword": "Update your password periodically to maintain high account security"
   },
   "welcome": "Hello, {{name}}! Have a productive study day.",
   "welcomeUser": "Welcome, {{name}}!",

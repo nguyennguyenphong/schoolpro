@@ -11,7 +11,6 @@ import { LanguageSwitcher } from "@/i18n";
 import { useStudentLayout } from "@/modules/students/hooks/useStudentLayout";
 import { useUnreadAnnouncements } from "@/modules/students/features/announcements/hooks/useUnreadAnnouncements";
 import { useLogout } from "@/hooks/useLogout";
-import { message } from "@/components/ui/Message";
 import { Avatar } from "@/components/ui/Avatar";
 
 
@@ -55,7 +54,7 @@ export const StudentLayout: React.FC = () => {
       key: "profile",
       icon: <Icon name="user" size={15} />,
       label: t("navigation:header.profile"),
-      onClick: () => message.info(t("navigation:header.profile")),
+      onClick: () => navigate("/profile"),
     },
     {
       key: "changePassword",

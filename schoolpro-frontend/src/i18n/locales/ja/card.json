@@ -89,5 +89,56 @@
     "exploreNow": "今すぐ確認 →",
     "viewNewNotices": "新着通知を見る →",
     "lookupRecords": "書類を照会 →"
+  },
+  "profile": {
+    "title": "学生プロフィール",
+    "subtitle": "基本情報、学籍情報、保護者連絡先、校内健康記録",
+    "completionRate": "プロフィール完成度",
+    "tabs": {
+      "personal": "基本情報",
+      "academic": "学籍・学級情報",
+      "guardians": "保護者情報",
+      "health": "校内健康管理"
+    },
+    "primaryContact": "主連絡先",
+    "parentCommittee": "PTA役員"
+  },
+  "settings": {
+    "title": "システム設定",
+    "subtitle": "外観、言語、通知設定、アカウントセキュリティの管理",
+    "sections": {
+      "appearance": "外観と表示",
+      "appearanceDesc": "テーマ（ライト/ダーク）、使用言語、表示密度のカスタマイズ",
+      "notifications": "通知設定",
+      "notificationsDesc": "学校からの通知の受信チャンネルと種別の管理",
+      "security": "セキュリティとセッション",
+      "securityDesc": "2段階認証、アイドル自動ログアウト、ログイン端末の管理"
+    },
+    "theme": {
+      "light": "ライトテーマ",
+      "dark": "ダークテーマ",
+      "system": "システム連動"
+    },
+    "twoFactor": "2段階認証 (2FA)",
+    "twoFactorDesc": "新しい端末からのログイン時にメールまたはアプリへのOTP確認コードを要求します",
+    "idleTimeout": "無操作時の自動ログアウト",
+    "activeSessions": "ログイン中の端末一覧"
+  },
+  "password": {
+    "title": "パスワード変更",
+    "subtitle": "セキュリティ基準を満たす強力なパスワードでアカウントを保護します",
+    "strength": {
+      "weak": "強度が低い",
+      "medium": "標準",
+      "strong": "強力",
+      "veryStrong": "非常に安全"
+    },
+    "requirements": {
+      "minLength": "8文字以上",
+      "uppercase": "英大文字を含む (A-Z)",
+      "lowercase": "英小文字を含む (a-z)",
+      "number": "数字を含む (0-9)",
+      "special": "記号を含む (!@#$%...)"
+    }
   }
 }

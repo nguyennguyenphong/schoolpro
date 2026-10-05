@@ -28,5 +28,10 @@
   "login": "Đăng nhập",
   "logout": "Đăng xuất",
   "viewGuide": "Xem hướng dẫn",
-  "exploreNow": "Khám phá ngay"
+  "exploreNow": "Khám phá ngay",
+  "saveChanges": "Lưu thay đổi",
+  "changeAvatar": "Đổi ảnh đại diện",
+  "updatePassword": "Cập nhật mật khẩu",
+  "revokeSession": "Đăng xuất thiết bị này",
+  "logoutAllDevices": "Đăng xuất tất cả thiết bị"
 }

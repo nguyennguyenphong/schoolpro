@@ -28,5 +28,10 @@
   "login": "登录",
   "logout": "退出登录",
   "viewGuide": "查看指南",
-  "exploreNow": "立即查看"
+  "exploreNow": "立即查看",
+  "saveChanges": "保存更改",
+  "changeAvatar": "更换头像",
+  "updatePassword": "更新密码",
+  "revokeSession": "退出此设备",
+  "logoutAllDevices": "退出所有设备"
 }

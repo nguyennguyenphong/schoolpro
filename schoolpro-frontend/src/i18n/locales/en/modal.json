@@ -7,5 +7,13 @@
   "department": "Issuing Department:",
   "publishDate": "Published Date:",
   "logoutConfirmTitle": "Confirm Logout",
-  "logoutConfirmContent": "Are you sure you want to log out of the system?"
+  "logoutConfirmContent": "Are you sure you want to log out of the system?",
+  "avatarModalTitle": "Update Profile Picture",
+  "avatarModalDesc": "Choose an available avatar or upload a new image from your device (JPG, PNG supported, max 2MB).",
+  "choosePresetAvatar": "Available Avatars",
+  "uploadCustomAvatar": "Upload From Device",
+  "passwordSuccessTitle": "Password Changed Successfully!",
+  "passwordSuccessContent": "Your account password has been updated securely. Please use your new password for your next login.",
+  "revokeSessionConfirmTitle": "Confirm Terminating Session",
+  "revokeSessionConfirmContent": "Are you sure you want to log out of this device session?"
 }

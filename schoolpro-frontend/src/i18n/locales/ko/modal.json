@@ -7,5 +7,13 @@
   "department": "발행 부서:",
   "publishDate": "게시일:",
   "logoutConfirmTitle": "로그아웃 확인",
-  "logoutConfirmContent": "시스템에서 로그아웃하시겠습니까?"
+  "logoutConfirmContent": "시스템에서 로그아웃하시겠습니까?",
+  "avatarModalTitle": "프로필 사진 업데이트",
+  "avatarModalDesc": "기본 아바타를 선택하거나 기기에서 새 이미지를 업로드하세요 (JPG, PNG 지원, 최대 2MB).",
+  "choosePresetAvatar": "기본 제공 아바타",
+  "uploadCustomAvatar": "기기에서 사진 업로드",
+  "passwordSuccessTitle": "비밀번호 변경 완료!",
+  "passwordSuccessContent": "계정 비밀번호가 안전하게 변경되었습니다. 다음 로그인부터는 새 비밀번호를 사용해 주세요.",
+  "revokeSessionConfirmTitle": "세션 종료 확인",
+  "revokeSessionConfirmContent": "이 기기의 로그인 세션을 종료하시겠습니까?"
 }

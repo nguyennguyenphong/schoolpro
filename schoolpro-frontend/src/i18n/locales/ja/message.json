@@ -21,5 +21,12 @@
     "noFilteredResults": "該当するお知らせがありません",
     "noFilteredDescription": "選択した条件に一致するお知らせはありません。別のキーワードや条件でお試しください。",
     "noFeatures": "あなたのアカウントにはまだ機能が設定されていません。"
-  }
+  },
+  "profileUpdatedSuccess": "プロフィールを正常に更新しました",
+  "avatarUpdatedSuccess": "アバターを正常に更新しました",
+  "passwordChangedSuccess": "パスワードが正常に変更されました。新しいパスワードが有効です。",
+  "currentPasswordIncorrect": "現在のパスワードが正しくありません",
+  "passwordMismatch": "確認用パスワードが新しいパスワードと一致しません",
+  "settingsSavedSuccess": "設定を正常に保存しました",
+  "sessionRevokedSuccess": "端末のセッションを終了しました"
 }
