@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { printAnnouncement } from "./printAnnouncement";
+import { exportTemplateService } from "@/shared/services/exportTemplateService";
 import type { AnnouncementItem } from "../types";
 
 describe("printAnnouncement", () => {
@@ -41,7 +42,7 @@ describe("printAnnouncement", () => {
     }
   });
 
-  it("creates a hidden iframe with printed document content and triggers print", () => {
+  it("creates a hidden iframe with printed document content and triggers print", async () => {
     const focusSpy = vi.fn();
     const printSpy = vi.fn();
 
@@ -66,7 +67,7 @@ describe("printAnnouncement", () => {
       return el;
     });
 
-    printAnnouncement(mockItem);
+    await printAnnouncement(mockItem);
 
     const iframe = document.getElementById("schoolpro-announcement-print-frame") as HTMLIFrameElement;
     expect(iframe).toBeDefined();
@@ -76,5 +77,15 @@ describe("printAnnouncement", () => {
 
     expect(focusSpy).toHaveBeenCalled();
     expect(printSpy).toHaveBeenCalled();
+  });
+
+  it("resolves template dynamically via exportTemplateService", async () => {
+    const renderSpy = vi
+      .spyOn(exportTemplateService, "renderAnnouncement")
+      .mockResolvedValue("<html><body>Rendered from backend template</body></html>");
+
+    await printAnnouncement(mockItem);
+
+    expect(renderSpy).toHaveBeenCalledWith(mockItem);
   });
 });

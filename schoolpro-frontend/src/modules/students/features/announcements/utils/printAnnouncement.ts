@@ -1,49 +1,16 @@
 import type { AnnouncementItem } from "../types";
+import {
+  exportTemplateService,
+  formatAdminDate,
+  escapeHtml,
+} from "@/shared/services/exportTemplateService";
+
+export { formatAdminDate, escapeHtml };
 
 /**
- * Format date string into Vietnamese administrative date string:
- * "Hà Nội, ngày DD tháng MM năm YYYY"
+ * Legacy local fallback printer for backwards-compatibility or sync usage.
  */
-function formatAdminDate(dateStr?: string): string {
-  let date: Date;
-
-  if (dateStr) {
-    // Check if format is DD/MM/YYYY or YYYY-MM-DD
-    const dmyParts = dateStr.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
-    if (dmyParts) {
-      date = new Date(Number(dmyParts[3]), Number(dmyParts[2]) - 1, Number(dmyParts[1]));
-    } else {
-      const parsed = new Date(dateStr);
-      date = isNaN(parsed.getTime()) ? new Date() : parsed;
-    }
-  } else {
-    date = new Date();
-  }
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `Hà Nội, ngày ${day} tháng ${month} năm ${year}`;
-}
-
-/**
- * Escape HTML special characters to prevent injection
- */
-function escapeHtml(text?: string): string {
-  if (!text) return "";
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-/**
- * Generate standard administrative print template for SchoolPro announcement
- */
-function buildPrintHtml(item: AnnouncementItem): string {
+export function buildPrintHtml(item: AnnouncementItem): string {
   const adminDate = formatAdminDate(item.publishDate);
   const departmentName = (item.department || "BAN GIÁM HIỆU").toUpperCase();
   const noticeNumber = `TB-${item.id.toUpperCase()}`;
@@ -112,7 +79,6 @@ function buildPrintHtml(item: AnnouncementItem): string {
       margin: 0 auto;
       padding: 10px;
     }
-    /* Header layout - 2 columns */
     .header-table {
       width: 100%;
       border-collapse: collapse;
@@ -140,144 +106,116 @@ function buildPrintHtml(item: AnnouncementItem): string {
       font-size: 12.5pt;
       font-weight: bold;
       text-transform: uppercase;
-      margin-bottom: 3px;
     }
-    .doc-number {
-      font-size: 12pt;
-      font-style: normal;
-      margin-top: 4px;
-    }
-    .country-name {
-      font-size: 12pt;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .country-motto {
-      font-size: 13pt;
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
-    .divider-line {
-      display: inline-block;
-      width: 120px;
+    .org-divider {
+      width: 100px;
       height: 1px;
-      background-color: #000;
-      margin: 0 auto 6px auto;
+      background: #000;
+      margin: 4px auto 8px auto;
     }
-    .doc-date {
+    .motto-country {
       font-size: 12pt;
-      font-style: italic;
-    }
-    /* Title */
-    .title-section {
-      text-align: center;
-      margin: 20px 0 24px 0;
-    }
-    .main-title {
-      font-size: 16pt;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin: 0 0 6px 0;
+      margin-bottom: 2px;
     }
-    .sub-title {
+    .motto-ideal {
       font-size: 13pt;
       font-weight: bold;
-      margin: 0;
-      line-height: 1.4;
+    }
+    .motto-divider {
+      width: 140px;
+      height: 1px;
+      background: #000;
+      margin: 4px auto 8px auto;
+    }
+    .doc-meta {
+      font-size: 12pt;
+      font-style: italic;
+      color: #333;
+    }
+    .title-section {
+      text-align: center;
+      margin: 28px 0 20px 0;
+    }
+    .doc-type {
+      font-size: 15pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .doc-subject {
+      font-size: 13.5pt;
+      font-weight: bold;
+      line-height: 1.35;
+      max-width: 85%;
+      margin: 0 auto;
+    }
+    .recipient-section {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 12.5pt;
+      font-style: italic;
+    }
+    .body-section {
+      text-align: justify;
+      font-size: 13pt;
+      line-height: 1.5;
+    }
+    .body-section p {
+      margin: 0 0 12px 0;
+      text-indent: 1.27cm;
+    }
+    .priority-badge {
+      display: inline-block;
+      margin-bottom: 8px;
     }
     .priority-urgent {
       display: inline-block;
-      margin-top: 6px;
-      padding: 2px 8px;
-      font-size: 11pt;
-      font-weight: bold;
-      color: #b91c1c;
       border: 1.5px solid #b91c1c;
+      color: #b91c1c;
+      font-weight: bold;
+      font-size: 10.5pt;
+      padding: 2px 10px;
+      border-radius: 4px;
       text-transform: uppercase;
     }
-    /* Recipient / Kính gửi */
-    .recipient-section {
-      margin-bottom: 18px;
-      font-size: 13pt;
-    }
-    .recipient-title {
-      font-weight: bold;
-    }
-    /* Summary / Căn cứ */
-    .summary-box {
-      font-style: italic;
-      line-height: 1.5;
-      text-align: justify;
-      margin-bottom: 16px;
-      text-indent: 1.25cm;
-    }
-    /* Content */
-    .content-body {
-      font-size: 13pt;
-      line-height: 1.55;
-      text-align: justify;
-      white-space: pre-line;
-      margin-bottom: 24px;
-    }
-    .content-body p {
-      text-indent: 1.25cm;
-      margin: 0 0 8px 0;
-    }
-    /* Attachments */
     .attachments-section {
-      margin-top: 20px;
-      margin-bottom: 24px;
-      font-size: 12pt;
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid #ccc;
     }
     .attachments-title {
       font-weight: bold;
-      margin-bottom: 6px;
+      font-size: 11.5pt;
       text-transform: uppercase;
-      font-size: 11pt;
+      margin-bottom: 8px;
     }
     .attachments-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 11pt;
     }
-    .attachments-table th, .attachments-table td {
-      border: 1px solid #333;
-      padding: 6px 8px;
+    .attachments-table th,
+    .attachments-table td {
+      border: 1px solid #ddd;
+      padding: 6px 10px;
     }
     .attachments-table th {
-      background-color: #f3f4f6;
-      font-weight: bold;
+      background: #f8fafc;
+      font-weight: 600;
     }
-    /* Footer Signatures */
-    .footer-table {
+    .signatures-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 30px;
+      margin-top: 36px;
       page-break-inside: avoid;
     }
-    .footer-table td {
-      vertical-align: top;
+    .signatures-table td {
       padding: 0;
-    }
-    .recipients-col {
-      width: 45%;
-      font-size: 11pt;
-    }
-    .recipients-title {
-      font-weight: bold;
-      font-style: italic;
-      margin-bottom: 4px;
-    }
-    .recipients-list {
-      margin: 0;
-      padding-left: 14px;
-      line-height: 1.4;
-    }
-    .signature-col {
-      width: 55%;
-      text-align: center;
+      vertical-align: top;
     }
     .signer-position {
       font-size: 12pt;
@@ -285,112 +223,89 @@ function buildPrintHtml(item: AnnouncementItem): string {
       text-transform: uppercase;
       margin-bottom: 4px;
     }
-    .signer-hint {
+    .signer-note {
       font-size: 11pt;
       font-style: italic;
-      color: #333;
-      margin-bottom: 50px;
+      color: #444;
+      margin-bottom: 60px;
     }
     .signer-name {
       font-size: 13pt;
       font-weight: bold;
       text-transform: uppercase;
     }
-    .meta-footer {
-      margin-top: 40px;
-      padding-top: 8px;
-      border-top: 1px dashed #999;
-      font-size: 9.5pt;
-      color: #555;
-      display: flex;
-      justify-content: space-between;
-      page-break-inside: avoid;
-    }
   </style>
 </head>
 <body>
   <div class="print-container">
-    <!-- Header -->
     <table class="header-table">
       <tr>
         <td class="org-col">
           <div class="org-parent">HỆ THỐNG GIÁO DỤC SCHOOLPRO</div>
-          <div class="org-name">${departmentName}</div>
-          <div class="divider-line" style="width: 80px;"></div>
-          <div class="doc-number">Số: ${noticeNumber}</div>
+          <div class="org-name">${escapeHtml(departmentName)}</div>
+          <div class="org-divider"></div>
+          <div class="doc-meta">Số: ${escapeHtml(noticeNumber)}</div>
         </td>
         <td class="motto-col">
-          <div class="country-name">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-          <div class="country-motto">Độc lập - Tự do - Hạnh phúc</div>
-          <div class="divider-line"></div>
-          <div class="doc-date">${adminDate}</div>
+          <div class="motto-country">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+          <div class="motto-ideal">Độc lập - Tự do - Hạnh phúc</div>
+          <div class="motto-divider"></div>
+          <div class="doc-meta">${escapeHtml(adminDate)}</div>
         </td>
       </tr>
     </table>
 
-    <!-- Title -->
     <div class="title-section">
-      <div class="main-title">THÔNG BÁO</div>
-      <div class="sub-title">V/v: ${escapeHtml(item.title)}</div>
-      ${priorityBadge}
+      ${priorityBadge ? `<div class="priority-badge">${priorityBadge}</div>` : ""}
+      <div class="doc-type">THÔNG BÁO</div>
+      <div class="doc-subject">${escapeHtml(item.title)}</div>
     </div>
 
-    <!-- Audience -->
     <div class="recipient-section">
-      <span class="recipient-title">Kính gửi: </span>
-      <span>${escapeHtml(audience)}</span>
+      Kính gửi: ${escapeHtml(audience)}
     </div>
 
-    <!-- Summary -->
-    ${
-      item.summary
-        ? `<div class="summary-box">${escapeHtml(item.summary)}</div>`
-        : ""
-    }
+    <div class="body-section">
+      ${item.summary ? `<p style="font-style: italic; font-weight: 500;">${escapeHtml(item.summary)}</p>` : ""}
+      <p>${escapeHtml(item.content).replace(/\n/g, "</p><p>")}</p>
+    </div>
 
-    <!-- Content -->
-    <div class="content-body">${escapeHtml(item.content)}</div>
-
-    <!-- Attachments -->
     ${attachmentsHtml}
 
-    <!-- Signatures -->
-    <table class="footer-table">
+    <table class="signatures-table">
       <tr>
-        <td class="recipients-col">
-          <div class="recipients-title">Nơi nhận:</div>
-          <ul class="recipients-list">
+        <td style="width: 45%; vertical-align: top; font-size: 11pt;">
+          <div style="font-weight: bold; font-style: italic; text-decoration: underline; margin-bottom: 4px;">Nơi nhận:</div>
+          <ul style="margin: 0; padding-left: 18px; line-height: 1.4;">
             <li>Như kính gửi;</li>
             <li>Ban Giám hiệu (để b/c);</li>
-            <li>Lưu: VT, ${escapeHtml(item.department || "SP")}.</li>
+            <li>Lưu: VT, ${escapeHtml(item.department || "BGH")}.</li>
           </ul>
         </td>
-        <td class="signature-col">
-          <div class="signer-position">TM. ${departmentName}</div>
-          <div class="signer-hint">(Đã ký duyệt & xác thực điện tử)</div>
+        <td style="width: 55%; vertical-align: top; text-align: center;">
+          <div class="signer-position">TM. ${escapeHtml(departmentName)}</div>
+          <div class="signer-note">(Đã ký duyệt & xác thực điện tử)</div>
           <div class="signer-name">${escapeHtml(item.author || "BAN GIÁM HIỆU")}</div>
         </td>
       </tr>
     </table>
-
-    <!-- Meta audit footer -->
-    <div class="meta-footer">
-      <span>Mã tra cứu điện tử: #${escapeHtml(item.id)}</span>
-      <span>Hệ thống Quản lý Học vụ SchoolPro - Thời gian ban hành: ${escapeHtml(item.publishDate)}</span>
-    </div>
   </div>
 </body>
 </html>`;
 }
 
 /**
- * Standard enterprise print function for announcements
- * Uses a sandboxed hidden iframe to print cleanly without UI artifacts.
+ * Triggers standard administrative print dialog for the given announcement.
+ * Resolves template dynamically from the backend database (sys.export_templates)
+ * with robust local fallback.
  */
-export function printAnnouncement(item: AnnouncementItem): void {
+export async function printAnnouncement(item: AnnouncementItem): Promise<void> {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
   }
+
+  // Fetch rendered HTML from backend template or fallback
+  const htmlContent = await exportTemplateService.renderAnnouncement(item);
 
   // Remove existing print iframe if any
   const existingFrame = document.getElementById("schoolpro-announcement-print-frame");
@@ -413,12 +328,10 @@ export function printAnnouncement(item: AnnouncementItem): void {
 
   const printDoc = printIframe.contentDocument || printIframe.contentWindow?.document;
   if (!printDoc) {
-    // Fallback if iframe access fails
     window.print();
     return;
   }
 
-  const htmlContent = buildPrintHtml(item);
   printDoc.open();
   printDoc.write(htmlContent);
   printDoc.close();
@@ -441,7 +354,6 @@ export function printAnnouncement(item: AnnouncementItem): void {
     } catch {
       window.print();
     } finally {
-      // Clean up iframe after slight delay to ensure print dialog opened
       setTimeout(cleanup, 1500);
     }
   };

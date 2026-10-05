@@ -83,4 +83,23 @@ describe("AnnouncementDetailModal", () => {
     expect(viewer).toBeInTheDocument();
     expect(viewer).toHaveAttribute("data-url", "/files/lich_thi.pdf");
   });
+
+  it("triggers printAnnouncement when clicking In văn bản button", async () => {
+    const { printAnnouncement } = await import("../utils");
+
+    render(
+      <AnnouncementDetailModal
+        item={mockItem}
+        isOpen={true}
+        onClose={vi.fn()}
+      />
+    );
+
+    const printButton = screen.getByRole("button", { name: /In văn bản/i });
+    expect(printButton).toBeInTheDocument();
+
+    fireEvent.click(printButton);
+
+    expect(printAnnouncement).toHaveBeenCalledWith(mockItem);
+  });
 });

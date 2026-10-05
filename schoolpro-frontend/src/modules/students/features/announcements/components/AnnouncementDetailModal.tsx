@@ -23,6 +23,8 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
     size: string;
   } | null>(null);
 
+  const [isPrinting, setIsPrinting] = React.useState(false);
+
   if (!item) return null;
 
   const handleDownload = (fileName: string) => {
@@ -42,8 +44,15 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
     }
   };
 
-  const handlePrint = () => {
-    printAnnouncement(item);
+  const handlePrint = async () => {
+    try {
+      setIsPrinting(true);
+      await printAnnouncement(item);
+    } catch {
+      message.error("Có lỗi xảy ra khi chuẩn bị văn bản in");
+    } finally {
+      setIsPrinting(false);
+    }
   };
 
   return (
@@ -181,9 +190,14 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
           <Button
             variant="outline"
             onClick={handlePrint}
+            disabled={isPrinting}
           >
-            <Icon name="file" size={14} />
-            In văn bản
+            <Icon
+              name={isPrinting ? "loading" : "file"}
+              size={14}
+              className={isPrinting ? "animate-spin" : ""}
+            />
+            {isPrinting ? "Đang chuẩn bị in..." : "In văn bản"}
           </Button>
 
           <Button
