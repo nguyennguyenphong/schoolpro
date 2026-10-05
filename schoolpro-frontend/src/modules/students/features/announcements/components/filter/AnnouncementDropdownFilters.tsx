@@ -144,7 +144,7 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
           onClick={onResetFilters}
           title="Đặt lại tất cả bộ lọc"
         >
-          <Icon name="check" size={13} className="text-rose-500" />
+          <Icon name="refresh" size={13} />
           Đặt lại
         </Button>
       )}
