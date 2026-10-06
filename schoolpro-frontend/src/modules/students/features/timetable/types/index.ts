@@ -48,6 +48,43 @@ export interface TimetableFilter {
   status?: "all" | ClassStatus;
 }
 
+export interface AcademicYearMeta {
+  id: string | null;
+  name: string;
+  code: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+}
+
+export interface SemesterMeta {
+  id: string | null;
+  name: string;
+  code: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+}
+
+export interface SelectedWeekMeta {
+  startDate: string;
+  endDate: string;
+  selectedDate: string;
+  isOutside: boolean;
+  vacationReason?: string | null;
+}
+
+export interface TimetableMeta {
+  academicYear?: AcademicYearMeta | null;
+  semester?: SemesterMeta | null;
+  selectedWeek?: SelectedWeekMeta | null;
+}
+
+export interface TimetableResponseData {
+  slots: TimetableSlot[];
+  meta?: TimetableMeta | null;
+}
+
 export interface TimetableSummary {
   totalSessions: number;
   totalCredits: number;

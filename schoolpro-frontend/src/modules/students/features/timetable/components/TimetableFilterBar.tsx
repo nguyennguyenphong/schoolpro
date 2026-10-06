@@ -10,6 +10,9 @@ interface TimetableFilterBarProps {
   selectedDate: string;
   viewMode: TimetableViewMode;
   currentWeekLabel: string;
+  semesterLabel?: string;
+  minDate?: string;
+  maxDate?: string;
   hasActiveFilters?: boolean;
   onDateChange: (dateStr: string) => void;
   onViewModeChange: (mode: TimetableViewMode) => void;
@@ -23,6 +26,9 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   selectedDate,
   viewMode,
   currentWeekLabel,
+  semesterLabel,
+  minDate,
+  maxDate,
   hasActiveFilters = false,
   onDateChange,
   onViewModeChange,
@@ -32,6 +38,11 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   onNextWeekClick,
 }) => {
   const currentDayjs = dayjs(selectedDate);
+  const minDayjs = minDate ? dayjs(minDate) : null;
+  const maxDayjs = maxDate ? dayjs(maxDate) : null;
+
+  const isPrevDisabled = minDayjs ? currentDayjs.isBefore(minDayjs) || currentDayjs.isSame(minDayjs, "day") : false;
+  const isNextDisabled = maxDayjs ? currentDayjs.isAfter(maxDayjs) || currentDayjs.isSame(maxDayjs, "day") : false;
 
   const onPreviousDay = onPrevWeekClick;
   const onToday = onTodayClick;
@@ -44,6 +55,13 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
     }
   };
 
+  const disabledDate = (current: Dayjs) => {
+    if (!current) return false;
+    if (minDayjs && current.isBefore(minDayjs, "day")) return true;
+    if (maxDayjs && current.isAfter(maxDayjs, "day")) return true;
+    return false;
+  };
+
   return (
     <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
       {/* 1. Week Navigation & Selector */}
@@ -52,8 +70,13 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={onPreviousDay}
-            className="w-7 h-7 rounded-md flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white transition-all cursor-pointer"
-            title="Ngày trước"
+            disabled={isPrevDisabled}
+            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
+              isPrevDisabled
+                ? "text-slate-300 cursor-not-allowed"
+                : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
+            }`}
+            title={isPrevDisabled ? "Đã chạm giới hạn đầu năm học" : "Ngày trước"}
           >
             <Icon name="chevron-left" size={15} />
           </button>
@@ -74,12 +97,25 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={onNextDay}
-            className="w-7 h-7 rounded-md flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white transition-all cursor-pointer"
-            title="Ngày sau"
+            disabled={isNextDisabled}
+            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
+              isNextDisabled
+                ? "text-slate-300 cursor-not-allowed"
+                : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
+            }`}
+            title={isNextDisabled ? "Đã chạm giới hạn cuối năm học" : "Ngày sau"}
           >
             <Icon name="chevron-right" size={15} />
           </button>
         </div>
+
+        {/* Semester Badge */}
+        {semesterLabel && (
+          <div className="h-8 px-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block" />
+            <span>{semesterLabel}</span>
+          </div>
+        )}
 
         {/* Week Range Display Badge */}
         <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5">
@@ -87,12 +123,13 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <span>Tuần: {currentWeekLabel}</span>
         </div>
 
-        {/* Week Picker for jumping directly to any week */}
+        {/* Week Picker for jumping directly to any week with boundary checking */}
         <div className="w-40 sm:w-44">
           <DatePicker
             picker="week"
             value={currentDayjs}
             onChange={handleDatePickerChange}
+            disabledDate={disabledDate}
             format="[Tuần] w - YYYY"
             allowClear={false}
             className="w-full"

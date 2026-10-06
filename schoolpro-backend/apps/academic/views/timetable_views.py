@@ -75,7 +75,7 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         class_type = request.query_params.get("classType") or request.query_params.get("class_type")
         status_param = request.query_params.get("status")
 
-        slots = TimetableService.get_weekly_slots(
+        schedule_context = TimetableService.get_weekly_schedule_context(
             user=user,
             selected_date_str=selected_date,
             search_query=search_query,
@@ -84,9 +84,10 @@ class TimetableStudentViewSet(viewsets.ViewSet):
             status_filter=status_param,
         )
 
-        serializer = TimetableSlotResponseSerializer(slots, many=True)
+        serializer = TimetableSlotResponseSerializer(schedule_context["slots"], many=True)
         return APIResponse.success(
             data=serializer.data,
+            meta=schedule_context.get("meta"),
             message="Timetable retrieved successfully",
         )
 

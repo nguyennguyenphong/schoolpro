@@ -19,6 +19,11 @@ export const TimetablePage: React.FC = () => {
     error,
     hasActiveFilters,
     currentWeekLabel,
+    semesterLabel,
+    isOutsideSemester,
+    vacationReason,
+    minDate,
+    maxDate,
     setSelectedDate,
     setViewMode,
     resetFilters,
@@ -72,6 +77,9 @@ export const TimetablePage: React.FC = () => {
         selectedDate={filter.selectedDate}
         viewMode={filter.viewMode}
         currentWeekLabel={currentWeekLabel}
+        semesterLabel={semesterLabel}
+        minDate={minDate}
+        maxDate={maxDate}
         hasActiveFilters={hasActiveFilters}
         onDateChange={setSelectedDate}
         onViewModeChange={setViewMode}
@@ -105,21 +113,25 @@ export const TimetablePage: React.FC = () => {
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
-                  Không có lịch học trong tuần này
+                  {isOutsideSemester
+                    ? "Thời gian ngoài khung thời gian học kỳ"
+                    : "Không có lịch học trong tuần này"}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                  Hiện tại chưa có buổi học nào được xếp lịch trong khoảng thời gian đã chọn.
+                  {vacationReason ||
+                    "Hiện tại chưa có buổi học nào được xếp lịch trong khoảng thời gian đã chọn."}
                 </p>
               </div>
             }
           >
             {hasActiveFilters && (
               <Button
-                variant="outline"
-                onClick={resetFilters}
+                variant="primary"
+                onClick={goToToday}
                 className="mt-3"
               >
-                Đặt lại về tuần này
+                <Icon name="calendar" size={14} />
+                Quay về tuần học hiện tại
               </Button>
             )}
           </Empty>

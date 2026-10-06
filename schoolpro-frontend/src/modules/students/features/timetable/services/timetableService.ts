@@ -7,18 +7,27 @@ import type {
   TimetableSlot,
   TimetableFilter,
   TimetableSummary,
+  TimetableMeta,
+  TimetableResponseData,
 } from "@/modules/students/features/timetable/types";
-import { mockTimetableSlots } from "@/modules/students/features/timetable/services/mock/mockTimetableData";
 
 dayjs.extend(isBetween);
 dayjs.extend(isoWeek);
 
+interface TimetableApiResponse {
+  success: boolean;
+  code: number;
+  message: string;
+  data: TimetableSlot[];
+  meta?: TimetableMeta;
+}
+
 class TimetableService {
   /**
    * Retrieves timetable slots filtered by date/week/month/year and criteria.
-   * Tries to fetch live backend data via DRF API, falling back to local mock data.
+   * Directly fetches live backend data via DRF API, returns empty array if no data.
    */
-  async getTimetableSlots(filter: TimetableFilter): Promise<TimetableSlot[]> {
+  async getTimetableSlots(filter: TimetableFilter): Promise<TimetableResponseData> {
     try {
       const params: Record<string, string | number | undefined> = {
         date: filter.selectedDate,
@@ -37,98 +46,23 @@ class TimetableService {
         params.status = filter.status;
       }
 
-      const response = await httpClient.get<ApiResponse<TimetableSlot[]>>(
+      const response = await httpClient.get<TimetableApiResponse>(
         "/academic/timetable/",
         { params }
       );
 
-      if (response.data?.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
-        return response.data.data;
-      }
-
-      // If backend returns empty or unavailable, fallback to mock data
-      return this.mockGetTimetableSlots(filter);
-    } catch {
-      // Fallback to local mock data if backend request fails
-      return this.mockGetTimetableSlots(filter);
-    }
-  }
-
-  /**
-   * Local mock implementation providing realistic fallback schedules for high school students.
-   */
-  private mockGetTimetableSlots(filter: TimetableFilter): Promise<TimetableSlot[]> {
-    return new Promise((resolve) => {
-      const target = dayjs(filter.selectedDate);
-      const weekStart = target.startOf("isoWeek");
-
-      // Dynamically map slots according to target week so all weeks have active high school schedule
-      let filtered = mockTimetableSlots.map((slot, index) => {
-        const slotDate = weekStart.add(slot.dayOfWeek - 2, "day").format("YYYY-MM-DD");
+      if (response.data && Array.isArray(response.data.data)) {
         return {
-          ...slot,
-          id: `${slot.id}-${target.format("YYYY-MM-DD")}-${index}`,
-          date: slotDate,
+          slots: response.data.data,
+          meta: response.data.meta ?? null,
         };
-      });
-
-      // 1. Filter by Week (or Date/Month if specified)
-      if (filter.filterMode === "date") {
-        const targetDateStr = target.format("YYYY-MM-DD");
-        filtered = filtered.filter((s) => s.date === targetDateStr);
-      } else if (filter.filterMode === "month") {
-        filtered = filtered.filter((s) => {
-          const slotDate = dayjs(s.date);
-          return slotDate.year() === target.year() && slotDate.month() === target.month();
-        });
-      } else if (filter.filterMode === "year") {
-        filtered = filtered.filter((s) => {
-          return dayjs(s.date).year() === target.year();
-        });
       }
 
-      // 2. Filter by Course
-      if (filter.courseCode && filter.courseCode !== "all") {
-        filtered = filtered.filter((s) => s.courseCode === filter.courseCode);
-      }
-
-      // 3. Filter by Shift
-      if (filter.shift && filter.shift !== "all") {
-        filtered = filtered.filter((s) => s.shift === filter.shift);
-      }
-
-      // 4. Filter by Class Type
-      if (filter.classType && filter.classType !== "all") {
-        filtered = filtered.filter((s) => s.classType === filter.classType);
-      }
-
-      // 5. Filter by Status
-      if (filter.status && filter.status !== "all") {
-        filtered = filtered.filter((s) => s.status === filter.status);
-      }
-
-      // 6. Search query
-      if (filter.searchQuery && filter.searchQuery.trim()) {
-        const q = filter.searchQuery.toLowerCase().trim();
-        filtered = filtered.filter(
-          (s) =>
-            s.courseName.toLowerCase().includes(q) ||
-            s.courseCode.toLowerCase().includes(q) ||
-            s.room.toLowerCase().includes(q) ||
-            s.instructorName.toLowerCase().includes(q)
-        );
-      }
-
-      // Sort by date, then by startTime
-      filtered.sort((a, b) => {
-        if (a.date !== b.date) {
-          return a.date.localeCompare(b.date);
-        }
-        return a.startTime.localeCompare(b.startTime);
-      });
-
-      resolve(filtered);
-    });
+      return { slots: [], meta: null };
+    } catch {
+      // Return empty if API error or no data
+      return { slots: [], meta: null };
+    }
   }
 
   /**
@@ -185,21 +119,14 @@ class TimetableService {
       const response = await httpClient.get<ApiResponse<{ code: string; name: string }[]>>(
         "/academic/timetable/courses/"
       );
-      if (response.data?.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+      if (response.data?.data && Array.isArray(response.data.data)) {
         return response.data.data;
       }
     } catch {
-      // Fallback
+      // Return empty if API call fails
     }
 
-    const map = new Map<string, string>();
-    mockTimetableSlots.forEach((s) => {
-      if (!map.has(s.courseCode)) {
-        map.set(s.courseCode, s.courseName);
-      }
-    });
-
-    return Array.from(map.entries()).map(([code, name]) => ({ code, name }));
+    return [];
   }
 }
 

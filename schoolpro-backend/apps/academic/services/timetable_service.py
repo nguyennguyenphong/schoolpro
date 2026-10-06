@@ -51,7 +51,7 @@ class TimetableService:
         return None
 
     @classmethod
-    def get_weekly_slots(
+    def get_weekly_schedule_context(
         cls,
         user: Any,
         selected_date_str: str | None = None,
@@ -59,16 +59,17 @@ class TimetableService:
         shift_filter: str | None = None,
         class_type_filter: str | None = None,
         status_filter: str | None = None,
-    ) -> list[dict[str, Any]]:
+    ) -> dict[str, Any]:
         """
-        Retrieves timetable slots dynamically mapped to the week of the selected date.
+        Retrieves timetable slots dynamically mapped to the week of the selected date,
+        along with active academic year and semester boundary metadata.
         """
+        from apps.master.models import AcademicYear, Semester
+
         class_id = cls.get_student_class_id(user)
-        if not class_id:
-            return []
+        today = timezone.localdate()
 
         # Parse selected date or default to today
-        today = timezone.localdate()
         if selected_date_str:
             try:
                 target_date = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
@@ -79,7 +80,67 @@ class TimetableService:
 
         # Calculate Monday of the targeted week (ISO week start)
         week_start = target_date - timedelta(days=target_date.weekday())
+        week_end = week_start + timedelta(days=6)
         now_time = timezone.localtime().time()
+
+        # Resolve academic year matching target date, or current academic year
+        academic_year = (
+            AcademicYear.objects.filter(start_date__lte=target_date, end_date__gte=target_date).first()
+            or AcademicYear.objects.filter(is_current=True).first()
+            or AcademicYear.objects.order_by("-start_date").first()
+        )
+
+        # Resolve semester matching target date, or current semester
+        semester = (
+            Semester.objects.filter(start_date__lte=target_date, end_date__gte=target_date).first()
+            or Semester.objects.filter(is_current=True).first()
+            or Semester.objects.order_by("-start_date").first()
+        )
+
+        # Determine if target week falls outside the semester or academic year
+        is_outside_academic_year = False
+        is_outside_semester = False
+        vacation_reason = None
+
+        if academic_year:
+            if target_date < academic_year.start_date or target_date > academic_year.end_date:
+                is_outside_academic_year = True
+                vacation_reason = "Thời gian đã chọn nằm ngoài năm học hiện tại."
+
+        if semester:
+            if target_date < semester.start_date or target_date > semester.end_date:
+                is_outside_semester = True
+                if not vacation_reason:
+                    vacation_reason = "Thời gian đã chọn nằm ngoài khung thời gian học kỳ (Kỳ nghỉ hè hoặc nghỉ giữa kỳ)."
+
+        meta_info = {
+            "academicYear": {
+                "id": str(academic_year.id),
+                "name": academic_year.name,
+                "code": academic_year.code,
+                "startDate": academic_year.start_date.strftime("%Y-%m-%d"),
+                "endDate": academic_year.end_date.strftime("%Y-%m-%d"),
+                "isCurrent": academic_year.is_current,
+            } if academic_year else None,
+            "semester": {
+                "id": str(semester.id),
+                "name": semester.name,
+                "code": semester.code,
+                "startDate": semester.start_date.strftime("%Y-%m-%d"),
+                "endDate": semester.end_date.strftime("%Y-%m-%d"),
+                "isCurrent": semester.is_current,
+            } if semester else None,
+            "selectedWeek": {
+                "startDate": week_start.strftime("%Y-%m-%d"),
+                "endDate": week_end.strftime("%Y-%m-%d"),
+                "selectedDate": target_date.strftime("%Y-%m-%d"),
+                "isOutside": is_outside_academic_year or is_outside_semester,
+                "vacationReason": vacation_reason,
+            },
+        }
+
+        if not class_id:
+            return {"slots": [], "meta": meta_info}
 
         # Query active recurring slots for the class
         queryset = (
@@ -100,6 +161,17 @@ class TimetableService:
             # Map day of week (2 = Monday -> 8 = Sunday) to target week date
             day_offset = item.day_of_week - 2
             slot_date = week_start + timedelta(days=day_offset)
+
+            # Check if this specific slot date is within timetable effective bounds
+            if item.effective_from and slot_date < item.effective_from:
+                continue
+            if item.effective_to and slot_date > item.effective_to:
+                continue
+
+            # Check if within semester bounds if semester exists
+            if semester and (slot_date < semester.start_date or slot_date > semester.end_date):
+                continue
+
             slot_date_str = slot_date.strftime("%Y-%m-%d")
 
             start_t = item.period.start_time
@@ -176,7 +248,30 @@ class TimetableService:
 
             slots.append(slot_data)
 
-        return slots
+        return {"slots": slots, "meta": meta_info}
+
+    @classmethod
+    def get_weekly_slots(
+        cls,
+        user: Any,
+        selected_date_str: str | None = None,
+        search_query: str | None = None,
+        shift_filter: str | None = None,
+        class_type_filter: str | None = None,
+        status_filter: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """
+        Retrieves timetable slots dynamically mapped to the week of the selected date.
+        """
+        result = cls.get_weekly_schedule_context(
+            user=user,
+            selected_date_str=selected_date_str,
+            search_query=search_query,
+            shift_filter=shift_filter,
+            class_type_filter=class_type_filter,
+            status_filter=status_filter,
+        )
+        return result["slots"]
 
     @classmethod
     def calculate_summary(cls, slots: list[dict[str, Any]]) -> dict[str, Any]:
