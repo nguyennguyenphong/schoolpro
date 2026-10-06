@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS sys.user_settings (
   user_id         UUID NOT NULL REFERENCES core.users(id) ON DELETE CASCADE,
   setting_id      UUID NOT NULL REFERENCES sys.settings_definitions(id) ON DELETE CASCADE,
   value           TEXT NOT NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (user_id, setting_id)
 );

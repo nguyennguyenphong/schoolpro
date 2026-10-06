@@ -135,6 +135,7 @@ execute_sql "$SQL_DIR/02_tables/sys/sys_system_settings.sql"
 execute_sql "$SQL_DIR/02_tables/sys/sys_user_settings.sql"
 execute_sql "$SQL_DIR/02_tables/sys/sys_export_templates.sql"
 execute_sql "$SQL_DIR/02_tables/sys/sys_audit_logs.sql"
+execute_sql "$SQL_DIR/02_tables/sys/sys_login_history.sql"
 execute_sql "$SQL_DIR/02_tables/sys/sys_event_outbox.sql"
 
 # 10. Views
