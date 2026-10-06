@@ -41,7 +41,7 @@ export const TimetableSkeleton: React.FC = () => {
       </Card>
 
       {/* Main Grid Skeleton */}
-      <Card className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-[420px] flex flex-col">
+      <Card className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-105 flex flex-col">
         <div className="h-10 w-full bg-slate-100 rounded mb-3" />
         <div className="grid grid-cols-8 gap-2 flex-1">
           <div className="bg-slate-50 rounded" />
