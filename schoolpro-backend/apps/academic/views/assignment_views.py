@@ -43,10 +43,20 @@ class AssignmentPagination(PageNumberPagination):
         summary="List student assignments",
         description="Retrieve filtered and paginated list of class assignments for authenticated student.",
         parameters=[
-            OpenApiParameter("search", str, description="Search keyword in title, subject, or teacher"),
+            OpenApiParameter(
+                "search", str, description="Search keyword in title, subject, or teacher"
+            ),
             OpenApiParameter("subject", str, description="Filter by subject code (or all)"),
-            OpenApiParameter("status", str, description="Filter by status (pending, submitted, graded, overdue, all)"),
-            OpenApiParameter("type", str, description="Filter by assignment type (homework, quiz, project, essay, all)"),
+            OpenApiParameter(
+                "status",
+                str,
+                description="Filter by status (pending, submitted, graded, overdue, all)",
+            ),
+            OpenApiParameter(
+                "type",
+                str,
+                description="Filter by assignment type (homework, quiz, project, essay, all)",
+            ),
             OpenApiParameter("sortBy", str, description="Sorting mode (newest, due_soon, score)"),
             OpenApiParameter("page", int, description="Page number"),
             OpenApiParameter("pageSize", int, description="Number of items per page"),
