@@ -44,7 +44,10 @@ class AssignmentPagination(PageNumberPagination):
         description="Retrieve filtered and paginated list of class assignments for authenticated student.",
         parameters=[
             OpenApiParameter(
-                "search", str, description="Search keyword in title, subject, or teacher"
+                "q", str, description="Search keyword in title, subject, or teacher"
+            ),
+            OpenApiParameter(
+                "search", str, description="Search keyword in title, subject, or teacher (alias for q)"
             ),
             OpenApiParameter("subject", str, description="Filter by subject code (or all)"),
             OpenApiParameter(
@@ -87,7 +90,7 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
         List assignments with server-side filtering, sorting, and pagination.
         """
         user = request.user
-        search_query = request.query_params.get("search") or request.query_params.get("q")
+        search_query = request.query_params.get("q") or request.query_params.get("search")
         subject = request.query_params.get("subject")
         status_filter = request.query_params.get("status")
         type_filter = request.query_params.get("type")

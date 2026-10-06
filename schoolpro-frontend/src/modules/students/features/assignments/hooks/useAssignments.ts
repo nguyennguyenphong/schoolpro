@@ -41,7 +41,7 @@ export function useAssignments(): UseAssignmentsResult {
     const subject = searchParams.get("subject") || "all";
     const status = searchParams.get("status") || "all";
     const type = searchParams.get("type") || "all";
-    const searchQuery = searchParams.get("search") || "";
+    const q = searchParams.get("q") || searchParams.get("search") || "";
     const sortBy = searchParams.get("sortBy") || "newest";
     const page = parseInt(searchParams.get("page") || "1", 10) || 1;
     const pageSize =
@@ -53,7 +53,7 @@ export function useAssignments(): UseAssignmentsResult {
       subject,
       status,
       type,
-      searchQuery,
+      searchQuery: q,
       sortBy,
       page,
       pageSize,
@@ -84,7 +84,7 @@ export function useAssignments(): UseAssignmentsResult {
         params.set("type", newFilter.type);
       }
       if (newFilter.searchQuery && newFilter.searchQuery.trim()) {
-        params.set("search", newFilter.searchQuery.trim());
+        params.set("q", newFilter.searchQuery.trim());
       }
       if (newFilter.sortBy && newFilter.sortBy !== "newest") {
         params.set("sortBy", newFilter.sortBy);

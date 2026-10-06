@@ -45,8 +45,11 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   const { t } = useTranslation(["card", "button", "common"]);
 
   useEffect(() => {
-    const inputEl = document.getElementById("assignment-search-input");
-    inputEl?.focus();
+    const timer = setTimeout(() => {
+      const inputEl = document.getElementById("assignment-search-input");
+      inputEl?.focus();
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
 
   const defaultSubjectOptions: SubjectOption[] = [

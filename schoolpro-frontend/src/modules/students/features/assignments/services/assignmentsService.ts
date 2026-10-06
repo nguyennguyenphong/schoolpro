@@ -33,6 +33,7 @@ class AssignmentsService {
       }
 
       if (filter?.searchQuery?.trim()) {
+        params.q = filter.searchQuery.trim();
         params.search = filter.searchQuery.trim();
       }
 

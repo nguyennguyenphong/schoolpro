@@ -21,6 +21,7 @@ class AnnouncementService {
       };
 
       if (filter.searchQuery?.trim()) {
+        params.q = filter.searchQuery.trim();
         params.search = filter.searchQuery.trim();
       }
       if (filter.category && filter.category !== "all") {
