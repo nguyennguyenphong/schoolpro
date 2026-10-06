@@ -11,14 +11,20 @@ CREATE TABLE IF NOT EXISTS academic.timetables (
   period_id                UUID NOT NULL REFERENCES academic.periods(id),
   class_subject_teacher_id UUID NOT NULL REFERENCES core.class_subject_teachers(id) ON DELETE CASCADE,
   room_id                  UUID REFERENCES academic.rooms(id) ON DELETE SET NULL,
-  class_type               VARCHAR(20) NOT NULL DEFAULT 'THEORY' CHECK (class_type IN ('THEORY', 'PRACTICE', 'SEMINAR', 'EXAM')),
+  class_type               VARCHAR(20) NOT NULL DEFAULT 'THEORY'
+                             CHECK (class_type IN ('THEORY', 'PRACTICE', 'SEMINAR', 'EXAM', 'EXTRACURRICULAR')),
+  learning_mode            VARCHAR(20) NOT NULL DEFAULT 'OFFLINE'
+                             CHECK (learning_mode IN ('OFFLINE', 'ONLINE', 'HYBRID')),
   is_online                BOOLEAN NOT NULL DEFAULT FALSE,
   online_url               VARCHAR(500),
+  meeting_passcode         VARCHAR(50),
   lesson_topic             VARCHAR(255),
+  curriculum_material_ids  JSONB DEFAULT '[]'::jsonb,
   notes                    TEXT,
   color_theme              VARCHAR(30) DEFAULT 'blue',
   effective_from           DATE NOT NULL,
   effective_to             DATE,
+  settings                 JSONB DEFAULT '{}'::jsonb,
   UNIQUE (class_id, semester_id, day_of_week, period_id, effective_from)
 );
 
@@ -28,3 +34,5 @@ CREATE INDEX IF NOT EXISTS ix_tkb_period ON academic.timetables(period_id);
 CREATE INDEX IF NOT EXISTS ix_tkb_day ON academic.timetables(day_of_week);
 
 COMMENT ON TABLE academic.timetables IS 'Weekly recurring timetable schedule slots by class, day of week, period, and venue';
+COMMENT ON COLUMN academic.timetables.learning_mode IS 'Delivery format: OFFLINE, ONLINE, HYBRID';
+COMMENT ON COLUMN academic.timetables.curriculum_material_ids IS 'Array of curriculum_material UUIDs attached to this lecture/lesson slot';

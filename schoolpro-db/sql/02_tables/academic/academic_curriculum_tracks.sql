@@ -10,7 +10,11 @@ CREATE TABLE IF NOT EXISTS academic.curriculum_tracks (
   code                VARCHAR(50) NOT NULL,               -- E.g. 'TRACK_KHTN_A00', 'TRACK_KHXH_D01'
   name                VARCHAR(255) NOT NULL,              -- E.g. 'Ban Khoa học Tự nhiên A00 (Toán-Lý-Hóa-Tin)'
   career_orientation  VARCHAR(100),                       -- E.g. 'Kỹ thuật - Công nghệ - Y Dược'
+  quota_students      SMALLINT,                           -- Target enrollment quota
+  admission_criteria  TEXT,                               -- Criteria or entrance requirements for track selection
+  color_tag           VARCHAR(30) DEFAULT 'blue',         -- UI badge color
   description         TEXT,
+  settings            JSONB DEFAULT '{}'::jsonb,
   is_active           BOOLEAN NOT NULL DEFAULT TRUE,
   created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
