@@ -1,13 +1,12 @@
 import React from "react";
-import { Empty } from "antd";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
+import { Empty } from "@/components/ui/Empty";
 import { Icon } from "@/components/ui/Icon";
 import {
   TimetableFilterBar,
   WeeklyGridView,
   ListView,
-  ClassDetailModal,
   TimetableSkeleton,
 } from "@/modules/students/features/timetable/components";
 import { useTimetable } from "@/modules/students/features/timetable/hooks";
@@ -18,15 +17,11 @@ export const TimetablePage: React.FC = () => {
     filter,
     loading,
     error,
-    selectedSlot,
-    isDetailOpen,
     hasActiveFilters,
     currentWeekLabel,
     setSelectedDate,
     setViewMode,
     resetFilters,
-    openSlotDetail,
-    closeSlotDetail,
     goToToday,
     goToPreviousDay,
     goToNextDay,
@@ -72,7 +67,7 @@ export const TimetablePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Filter Bar (Select by week and view mode) */}
+      {/* 2. Filter Bar (Select by week and view mode) */}
       <TimetableFilterBar
         selectedDate={filter.selectedDate}
         viewMode={filter.viewMode}
@@ -86,7 +81,7 @@ export const TimetablePage: React.FC = () => {
         onNextWeekClick={goToNextDay}
       />
 
-      {/* 4. Schedule Results View (Grid & List only) */}
+      {/* 3. Schedule Results View (Grid & List) */}
       {loading && slots.length === 0 ? (
         <TimetableSkeleton />
       ) : error ? (
@@ -133,18 +128,10 @@ export const TimetablePage: React.FC = () => {
         <WeeklyGridView
           selectedDate={filter.selectedDate}
           slots={slots}
-          onSlotClick={openSlotDetail}
         />
       ) : (
-        <ListView slots={slots} onSlotClick={openSlotDetail} />
+        <ListView slots={slots} />
       )}
-
-      {/* 5. Class Detail Modal Popup */}
-      <ClassDetailModal
-        slot={selectedSlot}
-        isOpen={isDetailOpen}
-        onClose={closeSlotDetail}
-      />
     </div>
   );
 };

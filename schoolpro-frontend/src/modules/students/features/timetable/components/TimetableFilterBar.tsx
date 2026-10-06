@@ -96,6 +96,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             format="[Tuần] w - YYYY"
             allowClear={false}
             className="w-full"
+            name="timetable-week-picker"
           />
         </div>
       </div>
