@@ -1,18 +1,32 @@
 import React from "react";
+import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
 interface AssignmentCardProps {
-  assignment: AssignmentItem;
-  onClick: (item: AssignmentItem) => void;
+  assignment?: AssignmentItem;
+  loading?: boolean;
+  onClick?: (item: AssignmentItem) => void;
 }
 
 export const AssignmentCard: React.FC<AssignmentCardProps> = ({
   assignment,
+  loading = false,
   onClick,
 }) => {
+  if (loading || !assignment) {
+    return (
+      <Card
+        loading={true}
+        className="h-60 w-full rounded-xl border border-slate-200 shadow-2xs [&>.ant-card-body]:p-4"
+        skeletonProps={{
+          paragraph: { rows: 3 },
+        }}
+      />
+    );
+  }
   const getStatusBadge = () => {
     switch (assignment.status) {
       case "graded":
@@ -108,7 +122,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
             variant={assignment.status === "pending" ? "primary" : "outline"}
             onClick={(e) => {
               e.stopPropagation();
-              onClick(assignment);
+              onClick?.(assignment);
             }}
             href={`/student/assignments/${assignment.id}`}
           >

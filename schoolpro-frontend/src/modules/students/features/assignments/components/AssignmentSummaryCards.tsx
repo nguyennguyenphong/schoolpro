@@ -6,11 +6,32 @@ import { Icon } from "@/components/ui/Icon";
 import type { AssignmentSummary } from "@/modules/students/features/assignments/types";
 
 interface AssignmentSummaryCardsProps {
-  summary: AssignmentSummary;
+  summary?: AssignmentSummary | null;
+  loading?: boolean;
 }
 
-export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({ summary }) => {
+export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({
+  summary,
+  loading = false,
+}) => {
   const { t } = useTranslation(["card", "common"]);
+
+  if (loading || !summary) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <Card
+            key={i}
+            loading={true}
+            className="rounded-xl shadow-2xs border-slate-200 h-[145px]"
+            skeletonProps={{
+              paragraph: { rows: 2 },
+            }}
+          />
+        ))}
+      </div>
+    );
+  }
 
   const completedCount = summary.submittedCount + summary.gradedCount;
   const completionPercentage =

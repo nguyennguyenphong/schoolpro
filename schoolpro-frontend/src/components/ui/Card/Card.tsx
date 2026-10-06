@@ -12,13 +12,14 @@ import type {
 
 export const Card = ({
   loading = false,
+  skeletonProps,
   children,
   ...props
 }: CardProps) => {
   return (
     <AntCard {...props}>
       {loading ? (
-        <Skeleton active />
+        <Skeleton active {...skeletonProps} />
       ) : (
         children
       )}
