@@ -1,4 +1,3 @@
-export { TimetableSummaryCards } from "@/modules/students/features/timetable/components/TimetableSummaryCards";
 export { TimetableFilterBar } from "@/modules/students/features/timetable/components/TimetableFilterBar";
 export { WeeklyGridView } from "@/modules/students/features/timetable/components/WeeklyGridView";
 export { DailyAgendaView } from "@/modules/students/features/timetable/components/DailyAgendaView";

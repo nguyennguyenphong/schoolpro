@@ -33,6 +33,11 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
 }) => {
   const currentDayjs = dayjs(selectedDate);
 
+  const onPreviousDay = onPrevWeekClick;
+  const onToday = onTodayClick;
+  const onNextDay = onNextWeekClick;
+  const isToday = currentDayjs.isSame(dayjs(), "day");
+
   const handleDatePickerChange = (date: Dayjs | Dayjs[] | null) => {
     if (date && !Array.isArray(date)) {
       onDateChange(date.format("YYYY-MM-DD"));
@@ -40,40 +45,44 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   };
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
       {/* 1. Week Navigation & Selector */}
       <div className="flex flex-wrap items-center gap-2">
-        <Button
-          variant="outline"
-
-          onClick={onTodayClick}
-        >
-          Tuần này
-        </Button>
-
-        {/* Prev / Next Week Controls */}
-        <div className="flex items-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+        <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
           <button
             type="button"
-            onClick={onPrevWeekClick}
-            className="px-2.5 py-1.5 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-            title="Tuần trước"
+            onClick={onPreviousDay}
+            className="w-7 h-7 rounded-md flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white transition-all cursor-pointer"
+            title="Ngày trước"
           >
-            <Icon name="chevron-left" size={13} />
+            <Icon name="chevron-left" size={15} />
           </button>
-          <div className="w-px h-4 bg-slate-200" />
+
           <button
             type="button"
-            onClick={onNextWeekClick}
-            className="px-2.5 py-1.5 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-            title="Tuần tiếp theo"
+            onClick={onToday}
+            className={`px-2.5 h-7 rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              isToday
+                ? "bg-blue-600 text-white shadow-2xs"
+                : "text-slate-700 hover:bg-white"
+            }`}
           >
-            <Icon name="chevron-right" size={13} />
+            <Icon name="calendar" size={13} />
+            <span>Hôm nay</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onNextDay}
+            className="w-7 h-7 rounded-md flex items-center justify-center text-slate-600 hover:text-slate-900 hover:bg-white transition-all cursor-pointer"
+            title="Ngày sau"
+          >
+            <Icon name="chevron-right" size={15} />
           </button>
         </div>
 
         {/* Week Range Display Badge */}
-        <div className="px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5">
+        <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5">
           <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
           <span>Tuần: {currentWeekLabel}</span>
         </div>
@@ -100,7 +109,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             onClick={onResetFilters}
             title="Đặt lại về tuần này"
           >
-            <Icon name="check" size={13} className="text-rose-500 mr-1" />
+            <Icon name="refresh" size={13} />
             Về tuần này
           </Button>
         )}

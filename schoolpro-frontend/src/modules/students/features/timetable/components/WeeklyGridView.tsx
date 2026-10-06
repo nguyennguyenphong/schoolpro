@@ -130,11 +130,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                               <div
                                 key={slot.id}
                                 onClick={() => onSlotClick(slot)}
-                                className={`h-46.25 w-full bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer relative group hover:border-blue-400 hover:shadow-xs ${
-                                  isPractice
-                                    ? "border-l-[3.5px] border-l-emerald-600"
-                                    : "border-l-[3.5px] border-l-blue-600"
-                                } ${isOngoing ? "ring-2 ring-blue-500/30" : ""}`}
+                                className="h-46.25 w-full bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer relative group"
                               >
                                 {isOngoing && (
                                   <span className="absolute -top-1.5 -right-1.5 flex h-2.5 w-2.5">

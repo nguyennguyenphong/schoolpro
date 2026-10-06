@@ -37,16 +37,15 @@ class TimetableService {
             return dayjs(s.date).year() === target.year();
           });
         } else {
-          // Default: Filter by week
+          // Default: Filter by week - dynamically map slots according to dayOfWeek in target week
           const weekStart = target.startOf("isoWeek");
-          const weekEnd = target.endOf("isoWeek");
-          filtered = filtered.filter((s) => {
-            const slotDate = dayjs(s.date);
-            return (
-              slotDate.isSame(weekStart, "day") ||
-              slotDate.isSame(weekEnd, "day") ||
-              slotDate.isBetween(weekStart, weekEnd, "day")
-            );
+          filtered = mockTimetableSlots.map((slot, index) => {
+            const slotDate = weekStart.add(slot.dayOfWeek - 2, "day").format("YYYY-MM-DD");
+            return {
+              ...slot,
+              id: `${slot.id}-${target.format("YYYY-MM-DD")}-${index}`,
+              date: slotDate,
+            };
           });
         }
 

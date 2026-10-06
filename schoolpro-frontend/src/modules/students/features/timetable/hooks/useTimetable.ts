@@ -27,12 +27,14 @@ export interface UseTimetableResult {
   goToToday: () => void;
   goToPreviousWeek: () => void;
   goToNextWeek: () => void;
+  goToPreviousDay: () => void;
+  goToNextDay: () => void;
   refetch: () => Promise<void>;
 }
 
-const DEFAULT_DATE = "2026-09-28";
+const getTodayDateStr = () => dayjs().format("YYYY-MM-DD");
 
-export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => {
+export const useTimetable = (initialDate = getTodayDateStr()): UseTimetableResult => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Initialize filter state from URL params
@@ -58,7 +60,7 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
   const updateUrlParams = useCallback(
     (newFilter: TimetableFilter) => {
       const params = new URLSearchParams();
-      if (newFilter.selectedDate !== DEFAULT_DATE) {
+      if (newFilter.selectedDate !== getTodayDateStr()) {
         params.set("date", newFilter.selectedDate);
       }
       if (newFilter.viewMode !== "grid") {
@@ -114,7 +116,7 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
   }, [slots]);
 
   const hasActiveFilters = useMemo(() => {
-    return filter.selectedDate !== DEFAULT_DATE;
+    return filter.selectedDate !== getTodayDateStr();
   }, [filter.selectedDate]);
 
   // Week range label for UI
@@ -151,7 +153,7 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
 
   const resetFilters = useCallback(() => {
     const next: TimetableFilter = {
-      selectedDate: DEFAULT_DATE,
+      selectedDate: getTodayDateStr(),
       viewMode: "grid",
     };
     setFilter(next);
@@ -168,8 +170,28 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
   }, []);
 
   const goToToday = useCallback(() => {
-    setSelectedDate(DEFAULT_DATE);
+    setSelectedDate(getTodayDateStr());
   }, [setSelectedDate]);
+
+  const goToPreviousDay = useCallback(() => {
+    setFilter((prev) => {
+      const current = dayjs(prev.selectedDate);
+      const updated = current.subtract(1, "day");
+      const next = { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      updateUrlParams(next);
+      return next;
+    });
+  }, [updateUrlParams]);
+
+  const goToNextDay = useCallback(() => {
+    setFilter((prev) => {
+      const current = dayjs(prev.selectedDate);
+      const updated = current.add(1, "day");
+      const next = { ...prev, selectedDate: updated.format("YYYY-MM-DD") };
+      updateUrlParams(next);
+      return next;
+    });
+  }, [updateUrlParams]);
 
   const goToPreviousWeek = useCallback(() => {
     setFilter((prev) => {
@@ -209,6 +231,8 @@ export const useTimetable = (initialDate = DEFAULT_DATE): UseTimetableResult => 
     goToToday,
     goToPreviousWeek,
     goToNextWeek,
+    goToPreviousDay,
+    goToNextDay,
     refetch: fetchSlots,
   };
 };

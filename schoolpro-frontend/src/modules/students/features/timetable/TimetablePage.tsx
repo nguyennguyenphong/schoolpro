@@ -4,7 +4,6 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
-  TimetableSummaryCards,
   TimetableFilterBar,
   WeeklyGridView,
   ListView,
@@ -16,7 +15,6 @@ import { useTimetable } from "@/modules/students/features/timetable/hooks";
 export const TimetablePage: React.FC = () => {
   const {
     slots,
-    summary,
     filter,
     loading,
     error,
@@ -30,15 +28,15 @@ export const TimetablePage: React.FC = () => {
     openSlotDetail,
     closeSlotDetail,
     goToToday,
-    goToPreviousWeek,
-    goToNextWeek,
+    goToPreviousDay,
+    goToNextDay,
     refetch,
   } = useTimetable();
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
@@ -67,18 +65,12 @@ export const TimetablePage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               Thời khóa biểu & Lịch học
             </h1>
-            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-              HK1 • 2026-2027
-            </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             Tra cứu lịch học tuần, giảng đường, giảng viên và ca học các môn trong tuần
           </p>
         </div>
       </div>
-
-      {/* 2. Overview Summary Cards (Dashboard style) */}
-      <TimetableSummaryCards summary={summary} />
 
       {/* 3. Filter Bar (Select by week and view mode) */}
       <TimetableFilterBar
@@ -90,8 +82,8 @@ export const TimetablePage: React.FC = () => {
         onViewModeChange={setViewMode}
         onResetFilters={resetFilters}
         onTodayClick={goToToday}
-        onPrevWeekClick={goToPreviousWeek}
-        onNextWeekClick={goToNextWeek}
+        onPrevWeekClick={goToPreviousDay}
+        onNextWeekClick={goToNextDay}
       />
 
       {/* 4. Schedule Results View (Grid & List only) */}
