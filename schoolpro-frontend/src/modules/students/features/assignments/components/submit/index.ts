@@ -4,6 +4,7 @@ export { AssignmentTeacherAttachments } from "@/modules/students/features/assign
 export { AssignmentGradedFeedbackCard } from "@/modules/students/features/assignments/components/submit/AssignmentGradedFeedbackCard";
 export { AssignmentSubmissionView } from "@/modules/students/features/assignments/components/submit/AssignmentSubmissionView";
 export { AssignmentOverdueCard } from "@/modules/students/features/assignments/components/submit/AssignmentOverdueCard";
+export { AssignmentOverdueLog } from "@/modules/students/features/assignments/components/submit/AssignmentOverdueLog";
 export { AssignmentSubmitForm } from "@/modules/students/features/assignments/components/submit/AssignmentSubmitForm";
 export { AssignmentSubmitSidebar } from "@/modules/students/features/assignments/components/submit/AssignmentSubmitSidebar";
 export { AssignmentDeadlineStatusCard } from "@/modules/students/features/assignments/components/submit/AssignmentDeadlineStatusCard";

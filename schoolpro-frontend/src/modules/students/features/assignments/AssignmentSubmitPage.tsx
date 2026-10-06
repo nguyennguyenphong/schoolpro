@@ -23,6 +23,7 @@ import {
   AssignmentGradedFeedbackCard,
   AssignmentSubmissionView,
   AssignmentOverdueCard,
+  AssignmentOverdueLog,
   AssignmentSubmitForm,
   AssignmentSubmitSidebar,
 } from "@/modules/students/features/assignments/components/submit";
@@ -312,6 +313,11 @@ export const AssignmentSubmitPage: React.FC = () => {
               />
             )}
           </div>
+
+          {/* Standalone Event Timeline Log Card below "Khu vực Nộp bài trực tuyến" */}
+          {(isOverdue || Boolean(assignment.reopenRequest)) && (
+            <AssignmentOverdueLog assignment={assignment} />
+          )}
         </div>
 
         {/* Right Column: Deadlines, Guidelines & Academic Info */}
