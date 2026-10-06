@@ -11,26 +11,45 @@ class ExtracurricularActivity(UUIDModel):
     Description: Experiential and vocational orientation activities under GDPT 2018
     """
 
-    school_id = models.UUIDField()
-    semester_id = models.UUIDField()
-    title = models.CharField(
-        max_length=255,
+    school = models.ForeignKey(
+        "master.School",
+        on_delete=models.CASCADE,
+        db_column="school_id",
+        related_name="activities",
     )
-    activity_type = models.CharField(
-        max_length=30,
+    semester = models.ForeignKey(
+        "master.Semester",
+        on_delete=models.CASCADE,
+        db_column="semester_id",
+        related_name="+",
     )
-    organizer_unit = models.CharField(
-        max_length=150,
-    )
+    title = models.CharField(max_length=255)
+    activity_type = models.CharField(max_length=30, default="EXPERIENTIAL")
+    status = models.CharField(max_length=20, default="SCHEDULED")
+    organizer_unit = models.CharField(max_length=150)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    registration_start = models.DateTimeField(null=True, blank=True)
+    registration_deadline = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=255, null=True, blank=True)
+    banner_image_url = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    emulation_bonus_points = models.SmallIntegerField()
+    cost_per_student = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    emulation_bonus_points = models.SmallIntegerField(default=0)
     max_participants = models.IntegerField(null=True, blank=True)
+    target_grades = models.ForeignKey(
+        "master.Grade",
+        on_delete=models.SET_NULL,
+        db_column="target_grades",
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    attachments = models.JSONField(null=True, blank=True)
+    settings = models.JSONField(default=dict, blank=True)
     is_published = models.BooleanField(default=False)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -58,21 +77,36 @@ class ActivityParticipation(UUIDModel):
         "academic.ExtracurricularActivity",
         on_delete=models.CASCADE,
         db_column="activity_id",
-        related_name="+",
+        related_name="participants",
         db_comment="activity_id foreign key",
     )
-    student_id = models.UUIDField()
-    role = models.CharField(
-        max_length=50,
+    student = models.ForeignKey(
+        "core.Student",
+        on_delete=models.CASCADE,
+        db_column="student_id",
+        related_name="activity_participations",
+        db_comment="student_id foreign key",
     )
-    attendance_status = models.CharField(
-        max_length=20,
-    )
-    bonus_points_awarded = models.SmallIntegerField()
+    role = models.CharField(max_length=50, default="PARTICIPANT")
+    attendance_status = models.CharField(max_length=20, default="REGISTERED")
+    check_in_time = models.DateTimeField(null=True, blank=True)
+    check_in_method = models.CharField(max_length=20, null=True, blank=True)
+    bonus_points_awarded = models.SmallIntegerField(default=0)
+    evaluation_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    student_reflection = models.TextField(null=True, blank=True)
+    submission_attachments = models.JSONField(null=True, blank=True)
     achievement_note = models.CharField(max_length=255, null=True, blank=True)
     certificate_url = models.TextField(null=True, blank=True)
-    verified_by = models.UUIDField(null=True, blank=True)
-    created_at = models.DateTimeField()
+    verified_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="verified_by",
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -82,7 +116,7 @@ class ActivityParticipation(UUIDModel):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"ActivityParticipation ({self.pk})"
+        return f"ActivityParticipation ({self.activity_id} - {self.student_id})"
 
     def __repr__(self) -> str:
         return f"<ActivityParticipation {self.pk}>"

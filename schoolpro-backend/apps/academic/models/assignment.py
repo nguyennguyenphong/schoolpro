@@ -194,6 +194,7 @@ class AssignmentSubmission(UUIDModel):
     appeal_resolved_by = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
+        db_column="appeal_resolved_by",
         null=True,
         blank=True,
         related_name="+",
@@ -208,6 +209,7 @@ class AssignmentSubmission(UUIDModel):
     reopen_approved_by = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
+        db_column="reopen_approved_by",
         null=True,
         blank=True,
         related_name="+",
@@ -260,13 +262,14 @@ class AssignmentEventLog(UUIDModel):
     )
     actor = models.ForeignKey(
         "core.User",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         db_column="actor_id",
         related_name="+",
+        null=True,
+        blank=True,
     )
-    actor_role = models.CharField(max_length=50)
     event_type = models.CharField(max_length=50)
-    event_title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     metadata = models.JSONField(null=True, blank=True, default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
