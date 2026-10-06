@@ -43,11 +43,11 @@ class AssignmentPagination(PageNumberPagination):
         summary="List student assignments",
         description="Retrieve filtered and paginated list of class assignments for authenticated student.",
         parameters=[
+            OpenApiParameter("q", str, description="Search keyword in title, subject, or teacher"),
             OpenApiParameter(
-                "q", str, description="Search keyword in title, subject, or teacher"
-            ),
-            OpenApiParameter(
-                "search", str, description="Search keyword in title, subject, or teacher (alias for q)"
+                "search",
+                str,
+                description="Search keyword in title, subject, or teacher (alias for q)",
             ),
             OpenApiParameter("subject", str, description="Filter by subject code (or all)"),
             OpenApiParameter(
