@@ -38,5 +38,7 @@
   "changeAvatar": "Change Avatar",
   "updatePassword": "Update Password",
   "revokeSession": "Revoke Session",
-  "logoutAllDevices": "Logout all devices"
+  "logoutAllDevices": "Logout all devices",
+  "resetFilters": "Reset Filters",
+  "reloadData": "Reload Data"
 }

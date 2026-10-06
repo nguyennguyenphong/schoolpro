@@ -247,5 +247,51 @@
       "status": "Trạng thái",
       "link": "Liên kết"
     }
+  },
+  "assignmentUnit": "bài tập",
+  "assignments": {
+    "summary": {
+      "total": "Tổng số bài tập",
+      "pending": "Chưa hoàn thành",
+      "overdue": "Đã quá hạn",
+      "graded": "Đã chấm điểm",
+      "tasks": "nhiệm vụ",
+      "needSubmit": "Cần nộp",
+      "allDone": "Đã xong hết",
+      "urgent": "Khẩn",
+      "none": "Không có",
+      "avgScore": "ĐTB: {{score}}/10",
+      "waitingGrade": "Đang chờ chấm: {{count}} bài",
+      "completionRate": "Tiến độ hoàn thành: {{rate}}%",
+      "scope": "Phạm vi:",
+      "scopeAll": "Toàn bộ",
+      "all": "Toàn bộ",
+      "goodEval": "Đánh giá tốt",
+      "checkNow": "Kiểm tra ngay",
+      "contactTeacher": "Cần liên hệ: GV bộ môn"
+    },
+    "filters": {
+      "searchPlaceholder": "Tìm kiếm bài tập theo tên, môn học, giáo viên...",
+      "grid": "Lưới thẻ",
+      "list": "Danh sách",
+      "subject": "Môn học:",
+      "status": "Trạng thái:",
+      "type": "Hình thức:",
+      "allSubjects": "Tất cả môn học",
+      "allStatuses": "Tất cả trạng thái",
+      "allTypes": "Tất cả hình thức"
+    },
+    "statusLabels": {
+      "pending": "Chưa hoàn thành",
+      "submitted": "Đã nộp (Chờ chấm)",
+      "graded": "Đã chấm điểm",
+      "overdue": "Đã quá hạn"
+    },
+    "typeLabels": {
+      "homework": "Bài tập về nhà",
+      "quiz": "Trắc nghiệm online",
+      "project": "Báo cáo / Dự án",
+      "essay": "Bài viết / Tự luận"
+    }
   }
 }

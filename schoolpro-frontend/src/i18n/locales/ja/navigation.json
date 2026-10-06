@@ -4,6 +4,7 @@
     "student": "学生",
     "announcements": "お知らせ一覧",
     "timetable": "時間割・授業日程",
+    "assignments": "課題・学習タスク",
     "profile": "学生プロフィール",
     "settings": "システム設定",
     "changePassword": "パスワード変更"
@@ -12,6 +13,7 @@
     "home": "ホーム",
     "announcements": "教務お知らせ・連絡事項",
     "timetable": "時間割・授業日程",
+    "assignments": "課題・学習タスク",
     "profile": "学生プロフィール",
     "settings": "システム設定",
     "changePassword": "アカウントのパスワード変更"
@@ -20,6 +22,7 @@
     "home": "School Pro 学習・教務管理システム",
     "announcements": "学校からの指示文書、試験日程、学費、課外活動の情報を確認できます",
     "timetable": "週次時間割、教室、担当教員、授業コマの確認",
+    "assignments": "宿題、オンライン小テスト、実験レポート、各科目の提出進捗状況を確認します",
     "profile": "基本情報、学籍情報、保護者連絡先、校内健康記録の確認・管理",
     "settings": "外観、言語、通知チャンネル、アカウントセキュリティのカスタマイズ",
     "changePassword": "定期的なパスワード変更によりアカウントのセキュリティを高めましょう"

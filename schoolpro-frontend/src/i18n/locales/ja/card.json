@@ -247,5 +247,51 @@
       "status": "状態",
       "link": "リンク"
     }
+  },
+  "assignmentUnit": "件の課題",
+  "assignments": {
+    "summary": {
+      "total": "総課題数",
+      "pending": "未完了・提出待ち",
+      "overdue": "期限超過",
+      "graded": "採点済み",
+      "tasks": "タスク",
+      "needSubmit": "提出が必要",
+      "allDone": "すべて完了",
+      "urgent": "緊急",
+      "none": "なし",
+      "avgScore": "平均点: {{score}}/10",
+      "waitingGrade": "採点待ち: {{count}}件",
+      "completionRate": "完了率: {{rate}}%",
+      "scope": "対象:",
+      "scopeAll": "全科目",
+      "all": "すべて",
+      "goodEval": "順調",
+      "checkNow": "今すぐ確認",
+      "contactTeacher": "連絡先: 担当教員"
+    },
+    "filters": {
+      "searchPlaceholder": "課題名、科目、教員名で検索...",
+      "grid": "グリッド表示",
+      "list": "リスト表示",
+      "subject": "科目:",
+      "status": "状態:",
+      "type": "形式:",
+      "allSubjects": "すべての科目",
+      "allStatuses": "すべての状態",
+      "allTypes": "すべての形式"
+    },
+    "statusLabels": {
+      "pending": "未完了",
+      "submitted": "提出済み (採点待ち)",
+      "graded": "採点済み",
+      "overdue": "期限超過"
+    },
+    "typeLabels": {
+      "homework": "宿題",
+      "quiz": "オンライン小テスト",
+      "project": "プロジェクト・レポート",
+      "essay": "小論文・エッセイ"
+    }
   }
 }

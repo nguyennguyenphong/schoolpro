@@ -38,5 +38,7 @@
   "changeAvatar": "Đổi ảnh đại diện",
   "updatePassword": "Cập nhật mật khẩu",
   "revokeSession": "Đăng xuất thiết bị này",
-  "logoutAllDevices": "Đăng xuất tất cả thiết bị"
+  "logoutAllDevices": "Đăng xuất tất cả thiết bị",
+  "resetFilters": "Đặt lại bộ lọc",
+  "reloadData": "Tải lại dữ liệu"
 }

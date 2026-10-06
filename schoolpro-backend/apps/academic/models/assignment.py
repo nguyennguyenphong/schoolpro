@@ -11,25 +11,39 @@ class Assignment(UUIDModel):
     Description: Homework tasks and group projects assigned by subject teachers
     """
 
-    class_subject_teacher_id = models.UUIDField()
+    class_subject_teacher = models.ForeignKey(
+        "core.ClassSubjectTeacher",
+        on_delete=models.CASCADE,
+        db_column="class_subject_teacher_id",
+        related_name="assignments",
+        db_comment="class_subject_teacher_id foreign key",
+    )
     title = models.CharField(
         max_length=255,
     )
     description = models.TextField(null=True, blank=True)
     assignment_type = models.CharField(
         max_length=20,
+        default="HOMEWORK",
     )
     assigned_date = models.DateField()
     due_date = models.DateTimeField()
     max_score = models.DecimalField(
         max_digits=4,
         decimal_places=2,
+        default=10.00,
     )
     attachments = models.JSONField(null=True, blank=True)
-    is_published = models.BooleanField(default=False)
-    created_by = models.UUIDField()
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    is_published = models.BooleanField(default=True)
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.CASCADE,
+        db_column="created_by",
+        related_name="+",
+        db_comment="created_by user foreign key",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -57,10 +71,16 @@ class AssignmentSubmission(UUIDModel):
         "academic.Assignment",
         on_delete=models.CASCADE,
         db_column="assignment_id",
-        related_name="+",
+        related_name="submissions",
         db_comment="assignment_id foreign key",
     )
-    student_id = models.UUIDField()
+    student = models.ForeignKey(
+        "core.Student",
+        on_delete=models.CASCADE,
+        db_column="student_id",
+        related_name="assignment_submissions",
+        db_comment="student_id foreign key",
+    )
     submitted_at = models.DateTimeField(null=True, blank=True)
     content_text = models.TextField(null=True, blank=True)
     attachments = models.JSONField(null=True, blank=True)
@@ -68,8 +88,16 @@ class AssignmentSubmission(UUIDModel):
     feedback = models.TextField(null=True, blank=True)
     status = models.CharField(
         max_length=20,
+        default="PENDING",
     )
-    graded_by = models.UUIDField(null=True, blank=True)
+    graded_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="graded_by",
+        null=True,
+        blank=True,
+        related_name="+",
+    )
     graded_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:

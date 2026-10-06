@@ -38,5 +38,7 @@
   "changeAvatar": "アバターを変更",
   "updatePassword": "パスワードを更新",
   "revokeSession": "このセッションを終了",
-  "logoutAllDevices": "すべてのデバイスからログアウト"
+  "logoutAllDevices": "すべてのデバイスからログアウト",
+  "resetFilters": "フィルターをリセット",
+  "reloadData": "データを再読み込み"
 }

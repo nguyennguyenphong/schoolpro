@@ -9,6 +9,7 @@ import { Tag } from "@/components/ui/Tag";
 import type {
   AssignmentItem,
   AssignmentSubmission,
+  AssignmentSummary,
   SubmittedFile,
 } from "@/modules/students/features/assignments/types";
 import { assignmentsService } from "@/modules/students/features/assignments/services";
@@ -28,6 +29,7 @@ export const AssignmentSubmitPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [assignment, setAssignment] = useState<AssignmentItem | null>(null);
+  const [summary, setSummary] = useState<AssignmentSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submissionContent, setSubmissionContent] = useState("");
@@ -49,9 +51,13 @@ export const AssignmentSubmitPage: React.FC = () => {
       if (!id) return;
       try {
         setLoading(true);
-        const item = await assignmentsService.getAssignmentById(id);
+        const [item, sum] = await Promise.all([
+          assignmentsService.getAssignmentById(id),
+          assignmentsService.getSummary(),
+        ]);
         if (!ignore) {
           setAssignment(item);
+          setSummary(sum);
           if (item?.submission) {
             setSubmissionContent(item.submission.content || "");
             if (item.submission.files && item.submission.files.length > 0) {
@@ -728,10 +734,12 @@ export const AssignmentSubmitPage: React.FC = () => {
                 </strong>
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500">Lớp học:</span>
-                <strong className="text-slate-800">11A1</strong>
-              </div>
+              {summary?.className && (
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Lớp học:</span>
+                  <strong className="text-slate-800">{summary.className}</strong>
+                </div>
+              )}
 
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Giáo viên phụ trách:</span>
@@ -746,10 +754,14 @@ export const AssignmentSubmitPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500">Học kỳ:</span>
-                <strong className="text-slate-800">HK1 (2025-2026)</strong>
-              </div>
+              {summary?.semesterName && (
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Học kỳ:</span>
+                  <strong className="text-slate-800">
+                    {summary.semesterName} {summary.academicYear ? `(${summary.academicYear})` : ""}
+                  </strong>
+                </div>
+              )}
             </div>
           </div>
 

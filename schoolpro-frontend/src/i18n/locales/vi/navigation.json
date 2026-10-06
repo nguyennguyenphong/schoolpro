@@ -4,6 +4,7 @@
     "student": "Học sinh",
     "announcements": "Bảng tin & Thông báo",
     "timetable": "Thời khóa biểu & Lịch học",
+    "assignments": "Bài tập & Nhiệm vụ học tập",
     "profile": "Hồ sơ học sinh",
     "settings": "Cài đặt hệ thống",
     "changePassword": "Đổi mật khẩu"
@@ -12,6 +13,7 @@
     "home": "Trang chủ",
     "announcements": "Bảng tin & Thông báo học vụ",
     "timetable": "Thời khóa biểu & Lịch học",
+    "assignments": "Bài tập & Nhiệm vụ Học tập",
     "profile": "Hồ sơ học sinh",
     "settings": "Cài đặt hệ thống",
     "changePassword": "Đổi mật khẩu tài khoản"
@@ -20,6 +22,7 @@
     "home": "Hệ thống quản lý thông tin học tập và đào tạo School Pro",
     "announcements": "Theo dõi văn bản chỉ đạo, lịch khảo thí, học phí và các hoạt động phong trào toàn trường",
     "timetable": "Tra cứu lịch học tuần, phòng học, giáo viên bộ môn và ca học các môn trong tuần",
+    "assignments": "Theo dõi bài tập về nhà, bài kiểm tra trực tuyến, báo cáo thực hành và tiến độ nộp bài các môn học",
     "profile": "Thông tin lý lịch học sinh, học vụ, người giám hộ và sức khỏe học đường",
     "settings": "Tùy chỉnh giao diện, ngôn ngữ, kênh nhận thông báo và bảo mật tài khoản",
     "changePassword": "Cập nhật mật khẩu định kỳ để nâng cao an toàn và bảo mật cho tài khoản"

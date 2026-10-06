@@ -57,11 +57,11 @@ export interface AssignmentItem {
   assignedDate: string; // YYYY-MM-DD
   description: string;
   pointsPossible: number; // Thang điểm (thường là 10)
-  score?: number; // Điểm số đạt được (nếu đã chấm)
-  teacherFeedback?: string; // Nhận xét của giáo viên
+  score?: number | null; // Điểm số đạt được (nếu đã chấm)
+  teacherFeedback?: string | null; // Nhận xét của giáo viên
   attachments?: AssignmentAttachment[];
-  submission?: AssignmentSubmission;
-  reopenRequest?: ReopenRequest;
+  submission?: AssignmentSubmission | null;
+  reopenRequest?: ReopenRequest | null;
 }
 
 export interface AssignmentSummary {
@@ -71,6 +71,9 @@ export interface AssignmentSummary {
   gradedCount: number; // Đã chấm điểm
   overdueCount: number; // Quá hạn
   averageScore: number; // Điểm trung bình bài tập
+  className?: string | null;
+  semesterName?: string | null;
+  academicYear?: string | null;
 }
 
 export interface AssignmentFilter {
@@ -79,4 +82,15 @@ export interface AssignmentFilter {
   type: string; // "all" | AssignmentType
   searchQuery: string;
   viewMode: AssignmentViewMode;
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+}
+
+export interface AssignmentListResult {
+  items: AssignmentItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }

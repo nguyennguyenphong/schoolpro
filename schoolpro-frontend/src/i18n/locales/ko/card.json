@@ -247,5 +247,51 @@
       "status": "상태",
       "link": "링크"
     }
+  },
+  "assignmentUnit": "개 과제",
+  "assignments": {
+    "summary": {
+      "total": "총 과제 수",
+      "pending": "미완료 / 제출 대기",
+      "overdue": "기한 초과",
+      "graded": "채점 완료",
+      "tasks": "과업",
+      "needSubmit": "제출 필요",
+      "allDone": "모두 완료",
+      "urgent": "긴급",
+      "none": "없음",
+      "avgScore": "평균: {{score}}/10",
+      "waitingGrade": "채점 대기: {{count}}개",
+      "completionRate": "완료율: {{rate}}%",
+      "scope": "범위:",
+      "scopeAll": "전체 과목",
+      "all": "전체",
+      "goodEval": "양호",
+      "checkNow": "지금 확인",
+      "contactTeacher": "문의: 담당 교사"
+    },
+    "filters": {
+      "searchPlaceholder": "과제명, 과목, 교사명으로 검색...",
+      "grid": "그리드 보기",
+      "list": "목록 보기",
+      "subject": "과목:",
+      "status": "상태:",
+      "type": "유형:",
+      "allSubjects": "모든 과목",
+      "allStatuses": "모든 상태",
+      "allTypes": "모든 유형"
+    },
+    "statusLabels": {
+      "pending": "미완료",
+      "submitted": "제출됨 (채점 대기)",
+      "graded": "채점 완료",
+      "overdue": "기한 초과"
+    },
+    "typeLabels": {
+      "homework": "숙제",
+      "quiz": "온라인 퀴즈",
+      "project": "프로젝트 / 보고서",
+      "essay": "에세이 / 논술"
+    }
   }
 }

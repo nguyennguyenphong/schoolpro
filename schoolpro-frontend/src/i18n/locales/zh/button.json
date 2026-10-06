@@ -38,5 +38,7 @@
   "changeAvatar": "更换头像",
   "updatePassword": "更新密码",
   "revokeSession": "退出此设备",
-  "logoutAllDevices": "退出所有设备"
+  "logoutAllDevices": "退出所有设备",
+  "resetFilters": "重置筛选",
+  "reloadData": "重新加载数据"
 }

@@ -247,5 +247,51 @@
       "status": "状态",
       "link": "课堂链接"
     }
+  },
+  "assignmentUnit": "项作业",
+  "assignments": {
+    "summary": {
+      "total": "作业总数",
+      "pending": "待完成",
+      "overdue": "已逾期",
+      "graded": "已评分",
+      "tasks": "任务",
+      "needSubmit": "待提交",
+      "allDone": "全部完成",
+      "urgent": "紧急",
+      "none": "无",
+      "avgScore": "平均分: {{score}}/10",
+      "waitingGrade": "待批改: {{count}}份",
+      "completionRate": "完成率: {{rate}}%",
+      "scope": "范围:",
+      "scopeAll": "全部科目",
+      "all": "全部",
+      "goodEval": "良好",
+      "checkNow": "立即检查",
+      "contactTeacher": "联系: 任课老师"
+    },
+    "filters": {
+      "searchPlaceholder": "按作业名称、科目、教师搜索...",
+      "grid": "网格视图",
+      "list": "列表视图",
+      "subject": "科目:",
+      "status": "状态:",
+      "type": "类型:",
+      "allSubjects": "所有科目",
+      "allStatuses": "所有状态",
+      "allTypes": "所有类型"
+    },
+    "statusLabels": {
+      "pending": "未完成",
+      "submitted": "已提交 (待批改)",
+      "graded": "已评分",
+      "overdue": "已逾期"
+    },
+    "typeLabels": {
+      "homework": "课后作业",
+      "quiz": "在线测验",
+      "project": "项目 / 报告",
+      "essay": "小论文 / 问答"
+    }
   }
 }

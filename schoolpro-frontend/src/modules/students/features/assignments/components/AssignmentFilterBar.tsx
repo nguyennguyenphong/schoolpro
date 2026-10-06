@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Select } from "antd";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentViewMode } from "@/modules/students/features/assignments/types";
+
+interface SubjectOption {
+  label: string;
+  value: string;
+}
 
 interface AssignmentFilterBarProps {
   subject: string;
@@ -11,6 +17,7 @@ interface AssignmentFilterBarProps {
   type: string;
   searchQuery: string;
   viewMode: AssignmentViewMode;
+  subjects?: SubjectOption[];
   hasActiveFilters?: boolean;
   onSubjectChange: (val: string) => void;
   onStatusChange: (val: string) => void;
@@ -26,6 +33,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   type,
   searchQuery,
   viewMode,
+  subjects,
   hasActiveFilters = false,
   onSubjectChange,
   onStatusChange,
@@ -34,40 +42,44 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   onViewModeChange,
   onResetFilters,
 }) => {
+  const { t } = useTranslation(["card", "button", "common"]);
+
   useEffect(() => {
-    // Auto focus search input on mount as requested
     const inputEl = document.getElementById("assignment-search-input");
     inputEl?.focus();
   }, []);
 
-  const subjectOptions = [
-    { label: "Tất cả môn học", value: "all" },
-    { label: "Toán học", value: "MATH11" },
-    { label: "Vật lý", value: "PHYS11" },
-    { label: "Hóa học", value: "CHEM11" },
-    { label: "Sinh học", value: "BIO11" },
-    { label: "Tin học", value: "IT11" },
-    { label: "Ngữ văn", value: "LIT11" },
-    { label: "Lịch sử", value: "HIST11" },
-    { label: "Địa lý", value: "GEO11" },
-    { label: "Tiếng Anh", value: "ENG11" },
-    { label: "GDKT & Pháp luật", value: "LAW11" },
+  const defaultSubjectOptions: SubjectOption[] = [
+    { label: t("card:assignments.filters.allSubjects"), value: "all" },
+    { label: "Toán học", value: "M839201" },
+    { label: "Ngữ văn", value: "L928374" },
+    { label: "Tiếng Anh", value: "E837465" },
+    { label: "Tin học", value: "CS643291" },
+    { label: "Vật lý", value: "P298374" },
+    { label: "Hóa học", value: "C187465" },
+    { label: "Sinh học", value: "B976584" },
+    { label: "Lịch sử", value: "H746582" },
   ];
 
+  const subjectOptions =
+    subjects && subjects.length > 0
+      ? [{ label: t("card:assignments.filters.allSubjects"), value: "all" }, ...subjects]
+      : defaultSubjectOptions;
+
   const statusOptions = [
-    { label: "Tất cả trạng thái", value: "all" },
-    { label: "Chưa hoàn thành", value: "pending" },
-    { label: "Đã nộp (Chờ chấm)", value: "submitted" },
-    { label: "Đã chấm điểm", value: "graded" },
-    { label: "Đã quá hạn", value: "overdue" },
+    { label: t("card:assignments.filters.allStatuses"), value: "all" },
+    { label: t("card:assignments.statusLabels.pending"), value: "pending" },
+    { label: t("card:assignments.statusLabels.submitted"), value: "submitted" },
+    { label: t("card:assignments.statusLabels.graded"), value: "graded" },
+    { label: t("card:assignments.statusLabels.overdue"), value: "overdue" },
   ];
 
   const typeOptions = [
-    { label: "Tất cả hình thức", value: "all" },
-    { label: "Bài tập về nhà", value: "homework" },
-    { label: "Trắc nghiệm online", value: "quiz" },
-    { label: "Báo cáo / Dự án", value: "project" },
-    { label: "Bài viết / Tự luận", value: "essay" },
+    { label: t("card:assignments.filters.allTypes"), value: "all" },
+    { label: t("card:assignments.typeLabels.homework"), value: "homework" },
+    { label: t("card:assignments.typeLabels.quiz"), value: "quiz" },
+    { label: t("card:assignments.typeLabels.project"), value: "project" },
+    { label: t("card:assignments.typeLabels.essay"), value: "essay" },
   ];
 
   return (
@@ -78,7 +90,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
           <Input
             id="assignment-search-input"
             autoFocus
-            placeholder="Tìm kiếm bài tập theo tên, môn học, giáo viên..."
+            placeholder={t("card:assignments.filters.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             prefix={<Icon name="search" size={15} className="text-slate-400" />}
@@ -99,7 +111,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             }`}
           >
             <Icon name="chart" size={13} />
-            <span>Lưới thẻ</span>
+            <span>{t("card:assignments.filters.grid")}</span>
           </button>
           <button
             type="button"
@@ -111,7 +123,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             }`}
           >
             <Icon name="menu" size={13} />
-            <span>Danh sách</span>
+            <span>{t("card:assignments.filters.list")}</span>
           </button>
         </div>
       </div>
@@ -121,34 +133,40 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
         <div className="flex flex-wrap items-center gap-2.5">
           {/* 1. Môn học */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Môn học:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:assignments.filters.subject")}
+            </span>
             <Select
               value={subject}
               onChange={onSubjectChange}
               options={subjectOptions}
-              className="w-36 sm:w-40"
+              className="w-36 sm:w-44"
             />
           </div>
 
           {/* 2. Trạng thái */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Trạng thái:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:assignments.filters.status")}
+            </span>
             <Select
               value={status}
               onChange={onStatusChange}
               options={statusOptions}
-              className="w-36 sm:w-40"
+              className="w-36 sm:w-44"
             />
           </div>
 
           {/* 3. Hình thức bài tập */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Hình thức:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:assignments.filters.type")}
+            </span>
             <Select
               value={type}
               onChange={onTypeChange}
               options={typeOptions}
-              className="w-36 sm:w-40"
+              className="w-36 sm:w-44"
             />
           </div>
         </div>
@@ -161,7 +179,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             className="text-slate-600 hover:text-blue-600"
           >
             <Icon name="refresh" size={12} className="mr-1" />
-            Đặt lại bộ lọc
+            {t("button:resetFilters")}
           </Button>
         )}
       </div>

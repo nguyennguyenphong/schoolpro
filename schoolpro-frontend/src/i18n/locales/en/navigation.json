@@ -4,6 +4,7 @@
     "student": "Student",
     "announcements": "News & Announcements",
     "timetable": "Timetable & Class Schedule",
+    "assignments": "Assignments & Tasks",
     "profile": "Student Profile",
     "settings": "System Settings",
     "changePassword": "Change Password"
@@ -12,6 +13,7 @@
     "home": "Home",
     "announcements": "Academic Notices & Announcements",
     "timetable": "Timetable & Class Schedule",
+    "assignments": "Assignments & Learning Tasks",
     "profile": "Student Profile",
     "settings": "System Settings",
     "changePassword": "Change Password"
@@ -20,6 +22,7 @@
     "home": "School Pro Academic Management System",
     "announcements": "Track official school directives, exam schedules, tuition fees, and campus activities",
     "timetable": "View weekly course schedule, classrooms, subject teachers, and shift slots",
+    "assignments": "Track homework assignments, online quizzes, lab reports, and submission deadlines across all subjects",
     "profile": "Student personal records, academic information, guardians, and medical dossier",
     "settings": "Customize interface, language, notification channels, and account security",
     "changePassword": "Update your password periodically to maintain high account security"

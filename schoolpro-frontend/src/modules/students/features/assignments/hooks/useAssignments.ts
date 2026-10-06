@@ -11,7 +11,8 @@ import { assignmentsService } from "@/modules/students/features/assignments/serv
 
 export interface UseAssignmentsResult {
   assignments: AssignmentItem[];
-  summary: AssignmentSummary;
+  total: number;
+  summary: AssignmentSummary | null;
   filter: AssignmentFilter;
   loading: boolean;
   error: Error | null;
@@ -22,7 +23,9 @@ export interface UseAssignmentsResult {
   setStatus: (status: string) => void;
   setType: (type: string) => void;
   setSearchQuery: (query: string) => void;
+  setSortBy: (sortBy: string) => void;
   setViewMode: (mode: AssignmentViewMode) => void;
+  setPage: (page: number, pageSize?: number) => void;
   resetFilters: () => void;
   openDetail: (item: AssignmentItem) => void;
   closeDetail: () => void;
@@ -39,6 +42,10 @@ export function useAssignments(): UseAssignmentsResult {
     const status = searchParams.get("status") || "all";
     const type = searchParams.get("type") || "all";
     const searchQuery = searchParams.get("search") || "";
+    const sortBy = searchParams.get("sortBy") || "newest";
+    const page = parseInt(searchParams.get("page") || "1", 10) || 1;
+    const pageSize =
+      parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "10", 10) || 10;
     const rawView = searchParams.get("view");
     const viewMode: AssignmentViewMode = rawView === "list" ? "list" : "grid";
 
@@ -47,18 +54,23 @@ export function useAssignments(): UseAssignmentsResult {
       status,
       type,
       searchQuery,
+      sortBy,
+      page,
+      pageSize,
       viewMode,
     };
   }, [searchParams]);
 
   const [filter, setFilter] = useState<AssignmentFilter>(initialFilter);
   const [assignments, setAssignments] = useState<AssignmentItem[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [summary, setSummary] = useState<AssignmentSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [selectedAssignment, setSelectedAssignment] = useState<AssignmentItem | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
-  // Sync state to URL params (only set keys with active data)
+  // Sync state to URL params
   const updateUrlParams = useCallback(
     (newFilter: AssignmentFilter) => {
       const params = new URLSearchParams();
@@ -74,6 +86,15 @@ export function useAssignments(): UseAssignmentsResult {
       if (newFilter.searchQuery && newFilter.searchQuery.trim()) {
         params.set("search", newFilter.searchQuery.trim());
       }
+      if (newFilter.sortBy && newFilter.sortBy !== "newest") {
+        params.set("sortBy", newFilter.sortBy);
+      }
+      if (newFilter.page && newFilter.page > 1) {
+        params.set("page", String(newFilter.page));
+      }
+      if (newFilter.pageSize && newFilter.pageSize !== 10) {
+        params.set("pageSize", String(newFilter.pageSize));
+      }
       if (newFilter.viewMode && newFilter.viewMode !== "grid") {
         params.set("view", newFilter.viewMode);
       }
@@ -86,8 +107,13 @@ export function useAssignments(): UseAssignmentsResult {
     try {
       setLoading(true);
       setError(null);
-      const res = await assignmentsService.getAssignments(filter);
-      setAssignments(res);
+      const [res, sumRes] = await Promise.all([
+        assignmentsService.getAssignments(filter),
+        assignmentsService.getSummary(),
+      ]);
+      setAssignments(res.items);
+      setTotal(res.total);
+      setSummary(sumRes);
     } catch (err) {
       setError(err instanceof Error ? err : new Error("Failed to load assignments"));
     } finally {
@@ -101,9 +127,14 @@ export function useAssignments(): UseAssignmentsResult {
     async function load() {
       try {
         setLoading(true);
-        const res = await assignmentsService.getAssignments(filter);
+        const [res, sumRes] = await Promise.all([
+          assignmentsService.getAssignments(filter),
+          assignmentsService.getSummary(),
+        ]);
         if (!ignore) {
-          setAssignments(res);
+          setAssignments(res.items);
+          setTotal(res.total);
+          setSummary(sumRes);
           setLoading(false);
         }
       } catch (err) {
@@ -121,10 +152,6 @@ export function useAssignments(): UseAssignmentsResult {
     };
   }, [filter]);
 
-  const summary = useMemo(() => {
-    return assignmentsService.calculateSummary(assignments);
-  }, [assignments]);
-
   const hasActiveFilters = useMemo(() => {
     return (
       filter.subject !== "all" ||
@@ -137,7 +164,7 @@ export function useAssignments(): UseAssignmentsResult {
   const setSubject = useCallback(
     (subject: string) => {
       setFilter((prev) => {
-        const next = { ...prev, subject };
+        const next = { ...prev, subject, page: 1 };
         updateUrlParams(next);
         return next;
       });
@@ -148,7 +175,7 @@ export function useAssignments(): UseAssignmentsResult {
   const setStatus = useCallback(
     (status: string) => {
       setFilter((prev) => {
-        const next = { ...prev, status };
+        const next = { ...prev, status, page: 1 };
         updateUrlParams(next);
         return next;
       });
@@ -159,7 +186,7 @@ export function useAssignments(): UseAssignmentsResult {
   const setType = useCallback(
     (type: string) => {
       setFilter((prev) => {
-        const next = { ...prev, type };
+        const next = { ...prev, type, page: 1 };
         updateUrlParams(next);
         return next;
       });
@@ -170,7 +197,18 @@ export function useAssignments(): UseAssignmentsResult {
   const setSearchQuery = useCallback(
     (searchQuery: string) => {
       setFilter((prev) => {
-        const next = { ...prev, searchQuery };
+        const next = { ...prev, searchQuery, page: 1 };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
+
+  const setSortBy = useCallback(
+    (sortBy: string) => {
+      setFilter((prev) => {
+        const next = { ...prev, sortBy, page: 1 };
         updateUrlParams(next);
         return next;
       });
@@ -189,14 +227,33 @@ export function useAssignments(): UseAssignmentsResult {
     [updateUrlParams],
   );
 
+  const setPage = useCallback(
+    (page: number, pageSize?: number) => {
+      setFilter((prev) => {
+        const next = {
+          ...prev,
+          page,
+          pageSize: pageSize || prev.pageSize || 10,
+        };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
+
   const resetFilters = useCallback(() => {
-    setFilter({
+    const next: AssignmentFilter = {
       subject: "all",
       status: "all",
       type: "all",
       searchQuery: "",
+      sortBy: "newest",
       viewMode: "grid",
-    });
+      page: 1,
+      pageSize: 10,
+    };
+    setFilter(next);
     setSearchParams(new URLSearchParams(), { replace: true });
   }, [setSearchParams]);
 
@@ -223,6 +280,7 @@ export function useAssignments(): UseAssignmentsResult {
 
   return {
     assignments,
+    total,
     summary,
     filter,
     loading,
@@ -234,7 +292,9 @@ export function useAssignments(): UseAssignmentsResult {
     setStatus,
     setType,
     setSearchQuery,
+    setSortBy,
     setViewMode,
+    setPage,
     resetFilters,
     openDetail,
     closeDetail,

@@ -247,5 +247,51 @@
       "status": "Status",
       "link": "Link"
     }
+  },
+  "assignmentUnit": "assignments",
+  "assignments": {
+    "summary": {
+      "total": "Total Assignments",
+      "pending": "Pending / Due",
+      "overdue": "Overdue",
+      "graded": "Graded",
+      "tasks": "tasks",
+      "needSubmit": "Due Soon",
+      "allDone": "All Done",
+      "urgent": "Urgent",
+      "none": "None",
+      "avgScore": "Avg: {{score}}/10",
+      "waitingGrade": "Waiting for grading: {{count}}",
+      "completionRate": "Completion rate: {{rate}}%",
+      "scope": "Scope:",
+      "scopeAll": "All Subjects",
+      "all": "All",
+      "goodEval": "Good Progress",
+      "checkNow": "Check Now",
+      "contactTeacher": "Contact: Subject Teacher"
+    },
+    "filters": {
+      "searchPlaceholder": "Search assignments by title, subject, teacher...",
+      "grid": "Grid View",
+      "list": "List View",
+      "subject": "Subject:",
+      "status": "Status:",
+      "type": "Type:",
+      "allSubjects": "All Subjects",
+      "allStatuses": "All Statuses",
+      "allTypes": "All Types"
+    },
+    "statusLabels": {
+      "pending": "Pending",
+      "submitted": "Submitted (Waiting)",
+      "graded": "Graded",
+      "overdue": "Overdue"
+    },
+    "typeLabels": {
+      "homework": "Homework",
+      "quiz": "Online Quiz",
+      "project": "Project / Report",
+      "essay": "Essay"
+    }
   }
 }

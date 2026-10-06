@@ -1,137 +1,174 @@
+import { httpClient } from "@/shared/api/httpClient";
+import type { ApiResponse } from "@/shared/types/auth";
 import type {
   AssignmentItem,
   AssignmentSummary,
   AssignmentFilter,
   AssignmentSubmission,
+  AssignmentListResult,
 } from "@/modules/students/features/assignments/types";
-import { mockAssignmentsData } from "@/modules/students/features/assignments/services/mock/mockAssignmentsData";
 
 class AssignmentsService {
-  private assignments: AssignmentItem[] = [...mockAssignmentsData];
-  private latency = 300;
+  /**
+   * Fetch assignments list with server-side filtering and pagination.
+   * If there is no data, returns an empty list without assigning fake mock items.
+   */
+  async getAssignments(filter?: Partial<AssignmentFilter>): Promise<AssignmentListResult> {
+    try {
+      const params: Record<string, string | number | undefined> = {
+        page: filter?.page || 1,
+        pageSize: filter?.pageSize || 10,
+      };
 
-  async getAssignments(filter?: Partial<AssignmentFilter>): Promise<AssignmentItem[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        let result = [...this.assignments];
+      if (filter?.subject && filter.subject !== "all") {
+        params.subject = filter.subject;
+      }
 
-        if (filter?.subject && filter.subject !== "all") {
-          result = result.filter((item) => item.subjectCode === filter.subject);
-        }
+      if (filter?.status && filter.status !== "all") {
+        params.status = filter.status;
+      }
 
-        if (filter?.status && filter.status !== "all") {
-          result = result.filter((item) => item.status === filter.status);
-        }
+      if (filter?.type && filter.type !== "all") {
+        params.type = filter.type;
+      }
 
-        if (filter?.type && filter.type !== "all") {
-          result = result.filter((item) => item.type === filter.type);
-        }
+      if (filter?.searchQuery?.trim()) {
+        params.search = filter.searchQuery.trim();
+      }
 
-        if (filter?.searchQuery && filter.searchQuery.trim()) {
-          const q = filter.searchQuery.toLowerCase().trim();
-          result = result.filter(
-            (item) =>
-              item.title.toLowerCase().includes(q) ||
-              item.subjectName.toLowerCase().includes(q) ||
-              item.teacherName.toLowerCase().includes(q),
-          );
-        }
+      if (filter?.sortBy) {
+        params.sortBy = filter.sortBy;
+      }
 
-        resolve(result);
-      }, this.latency);
-    });
+      const response = await httpClient.get<ApiResponse<AssignmentListResult>>(
+        "/academic/assignments/",
+        { params },
+      );
+
+      if (response.data?.data) {
+        return response.data.data;
+      }
+
+      return {
+        items: [],
+        total: 0,
+        page: filter?.page || 1,
+        pageSize: filter?.pageSize || 10,
+        totalPages: 0,
+      };
+    } catch {
+      // Return clean empty result without mock fallback
+      return {
+        items: [],
+        total: 0,
+        page: filter?.page || 1,
+        pageSize: filter?.pageSize || 10,
+        totalPages: 0,
+      };
+    }
   }
 
-  calculateSummary(items: AssignmentItem[]): AssignmentSummary {
-    const total = items.length;
-    const pendingCount = items.filter((i) => i.status === "pending").length;
-    const submittedCount = items.filter((i) => i.status === "submitted").length;
-    const gradedCount = items.filter((i) => i.status === "graded").length;
-    const overdueCount = items.filter((i) => i.status === "overdue").length;
+  /**
+   * Fetch aggregated statistical counts and summary metrics for student assignments.
+   */
+  async getSummary(): Promise<AssignmentSummary> {
+    try {
+      const response = await httpClient.get<ApiResponse<AssignmentSummary>>(
+        "/academic/assignments/summary/",
+      );
 
-    const gradedItems = items.filter((i) => i.status === "graded" && i.score !== undefined);
-    const averageScore =
-      gradedItems.length > 0
-        ? Math.round(
-            (gradedItems.reduce((acc, cur) => acc + (cur.score || 0), 0) /
-              gradedItems.length) *
-              10,
-          ) / 10
-        : 0;
+      if (response.data?.data) {
+        return response.data.data;
+      }
 
-    return {
-      total,
-      pendingCount,
-      submittedCount,
-      gradedCount,
-      overdueCount,
-      averageScore,
-    };
+      return {
+        total: 0,
+        pendingCount: 0,
+        submittedCount: 0,
+        gradedCount: 0,
+        overdueCount: 0,
+        averageScore: 0,
+        className: null,
+        semesterName: null,
+        academicYear: null,
+      };
+    } catch {
+      return {
+        total: 0,
+        pendingCount: 0,
+        submittedCount: 0,
+        gradedCount: 0,
+        overdueCount: 0,
+        averageScore: 0,
+        className: null,
+        semesterName: null,
+        academicYear: null,
+      };
+    }
   }
 
+  /**
+   * Fetch detailed view of a single assignment item by ID.
+   */
   async getAssignmentById(id: string): Promise<AssignmentItem | null> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const item = this.assignments.find((a) => a.id === id);
-        resolve(item ? { ...item } : null);
-      }, this.latency);
-    });
+    try {
+      const response = await httpClient.get<ApiResponse<AssignmentItem>>(
+        `/academic/assignments/${id}/`,
+      );
+
+      if (response.data?.data) {
+        return response.data.data;
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
   }
 
+  /**
+   * Submit student answers and attachments for an assignment.
+   */
   async submitAssignment(
     assignmentId: string,
     submission: AssignmentSubmission,
   ): Promise<AssignmentItem> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = this.assignments.findIndex((a) => a.id === assignmentId);
-        if (index === -1) {
-          reject(new Error("Không tìm thấy bài tập"));
-          return;
-        }
+    const payload = {
+      content: submission.content || "",
+      files: submission.files || [],
+      fileName: submission.fileName || "",
+      fileUrl: submission.fileUrl || "",
+    };
 
-        const updated: AssignmentItem = {
-          ...this.assignments[index],
-          status: "submitted",
-          submission,
-        };
+    const response = await httpClient.post<ApiResponse<AssignmentItem>>(
+      `/academic/assignments/${assignmentId}/submit/`,
+      payload,
+    );
 
-        this.assignments[index] = updated;
-        resolve(updated);
-      }, this.latency);
-    });
+    if (response.data?.data) {
+      return response.data.data;
+    }
+
+    throw new Error(response.data?.message || "Không thể nộp bài tập");
   }
 
+  /**
+   * Send a reopen request to the subject teacher for an overdue assignment.
+   */
   async requestReopenAssignment(
     assignmentId: string,
     reason: string,
   ): Promise<AssignmentItem> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = this.assignments.findIndex((a) => a.id === assignmentId);
-        if (index === -1) {
-          reject(new Error("Không tìm thấy bài tập"));
-          return;
-        }
+    const response = await httpClient.post<ApiResponse<AssignmentItem>>(
+      `/academic/assignments/${assignmentId}/reopen/`,
+      { reason },
+    );
 
-        const teacherEmail =
-          this.assignments[index].teacherEmail ||
-          `${this.assignments[index].teacherName.toLowerCase().replace(/[^a-z]/g, "")}@schoolpro.edu.vn`;
+    if (response.data?.data) {
+      return response.data.data;
+    }
 
-        const updated: AssignmentItem = {
-          ...this.assignments[index],
-          reopenRequest: {
-            requestedAt: new Date().toISOString().replace("T", " ").substring(0, 16),
-            reason,
-            teacherEmail,
-            status: "pending",
-          },
-        };
-
-        this.assignments[index] = updated;
-        resolve(updated);
-      }, this.latency);
-    });
+    throw new Error(response.data?.message || "Không thể gửi yêu cầu mở lại nộp bài");
   }
 }
 
