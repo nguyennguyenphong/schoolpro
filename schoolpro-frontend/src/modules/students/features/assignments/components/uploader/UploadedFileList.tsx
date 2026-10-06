@@ -32,7 +32,7 @@ export const UploadedFileList: React.FC<UploadedFileListProps> = ({
         </button>
       </div>
 
-      <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+      <div className="space-y-2 max-h-90 overflow-y-auto pr-1">
         {files.map((file) => (
           <FileItemCard
             key={file.id}

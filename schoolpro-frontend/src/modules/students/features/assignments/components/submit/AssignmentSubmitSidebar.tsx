@@ -3,10 +3,10 @@ import type {
   AssignmentItem,
   AssignmentSummary,
 } from "@/modules/students/features/assignments/types";
-import { AssignmentDeadlineStatusCard } from "./AssignmentDeadlineStatusCard";
-import { AssignmentAcademicInfoCard } from "./AssignmentAcademicInfoCard";
-import { AssignmentFileFormatGuidelinesCard } from "./AssignmentFileFormatGuidelinesCard";
-import { AssignmentSubmissionNotesCard } from "./AssignmentSubmissionNotesCard";
+import { AssignmentDeadlineStatusCard } from "@/modules/students/features/assignments/components/submit/AssignmentDeadlineStatusCard";
+import { AssignmentAcademicInfoCard } from "@/modules/students/features/assignments/components/submit/AssignmentAcademicInfoCard";
+import { AssignmentFileFormatGuidelinesCard } from "@/modules/students/features/assignments/components/submit/AssignmentFileFormatGuidelinesCard";
+import { AssignmentSubmissionNotesCard } from "@/modules/students/features/assignments/components/submit/AssignmentSubmissionNotesCard";
 
 interface AssignmentSubmitSidebarProps {
   assignment: AssignmentItem;

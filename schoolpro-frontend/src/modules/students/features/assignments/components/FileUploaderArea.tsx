@@ -11,7 +11,7 @@ import {
   FileCategorySelector,
   FileDropzone,
   UploadedFileList,
-} from "./uploader";
+} from "@/modules/students/features/assignments/components/uploader";
 
 interface FileUploaderAreaProps {
   files: SubmittedFile[];

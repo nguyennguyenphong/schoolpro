@@ -11,7 +11,7 @@ import {
   AssignmentModalFeedback,
   AssignmentModalSubmission,
   AssignmentModalSubmitForm,
-} from "./detail-modal";
+} from "@/modules/students/features/assignments/components/detail-modal";
 
 interface AssignmentDetailModalProps {
   assignment: AssignmentItem | null;
