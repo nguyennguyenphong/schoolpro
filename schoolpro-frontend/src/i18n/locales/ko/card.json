@@ -185,5 +185,67 @@
       "specialChar": "특수문자 포함 (!@#$...)",
       "noMatchOld": "새 비밀번호는 현재 비밀번호와 달라야 합니다"
     }
+  },
+  "timetable": {
+    "weekLabel": "주차",
+    "weekPrefix": "주: {{label}}",
+    "weekPickerFormat": "[제] w [주] - YYYY",
+    "viewGrid": "주간 그리드",
+    "viewList": "목록 보기",
+    "backToCurrentWeek": "이번 주로 돌아가기",
+    "minLimitReached": "학년도 시작 한계에 도달했습니다",
+    "maxLimitReached": "학년도 종료 한계에 도달했습니다",
+    "shiftColumn": "교시 구분",
+    "emptySlot": "비어 있음",
+    "learningMode": "수업 형태:",
+    "teachingMode": "진행 방식:",
+    "notes": "비고:",
+    "otherLinks": "관련 링크:",
+    "noNotes": "비고 없음",
+    "noLink": "없음",
+    "joinOnlineClass": "온라인 강의실 입장",
+    "periodsPerWeek": "주당 {{count}}교시",
+    "classLabel": "{{classCode}} 반",
+    "shifts": {
+      "morning": "오전반",
+      "afternoon": "오후반",
+      "evening": "야간반"
+    },
+    "days": {
+      "mon": "월요일",
+      "tue": "화요일",
+      "wed": "수요일",
+      "thu": "목요일",
+      "fri": "금요일",
+      "sat": "토요일",
+      "sun": "일요일"
+    },
+    "classTypes": {
+      "theory": "이론",
+      "practice": "실습"
+    },
+    "teachingMethods": {
+      "online": "온라인",
+      "inPerson": "대면"
+    },
+    "status": {
+      "ongoing": "진행 중",
+      "completed": "수업 완료",
+      "cancelled": "휴강",
+      "upcoming": "예정"
+    },
+    "tableHeaders": {
+      "date": "수업일자",
+      "timePeriods": "시간 및 교시",
+      "courseCode": "과목코드",
+      "courseName": "과목명",
+      "classType": "수업 형태",
+      "teachingMethod": "진행 방식",
+      "room": "강의실",
+      "teacher": "담당 교사",
+      "notes": "비고",
+      "status": "상태",
+      "link": "링크"
+    }
   }
 }

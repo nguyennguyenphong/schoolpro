@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -10,17 +11,39 @@ interface ListViewProps {
 }
 
 export const ListView: React.FC<ListViewProps> = ({ slots }) => {
+  const { t } = useTranslation(["card", "message"]);
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "ongoing":
-        return <Tag color="processing">Đang học</Tag>;
+        return <Tag color="processing">{t("card:timetable.status.ongoing")}</Tag>;
       case "completed":
-        return <Tag color="default">Đã xong</Tag>;
+        return <Tag color="default">{t("card:timetable.status.completed")}</Tag>;
       case "cancelled":
-        return <Tag color="error">Tạm nghỉ</Tag>;
+        return <Tag color="error">{t("card:timetable.status.cancelled")}</Tag>;
       case "upcoming":
       default:
-        return <Tag color="blue">Sắp tới</Tag>;
+        return <Tag color="blue">{t("card:timetable.status.upcoming")}</Tag>;
+    }
+  };
+
+  const getDayLabel = (dayNum: number) => {
+    switch (dayNum) {
+      case 2:
+        return t("card:timetable.days.mon");
+      case 3:
+        return t("card:timetable.days.tue");
+      case 4:
+        return t("card:timetable.days.wed");
+      case 5:
+        return t("card:timetable.days.thu");
+      case 6:
+        return t("card:timetable.days.fri");
+      case 7:
+        return t("card:timetable.days.sat");
+      case 8:
+      default:
+        return t("card:timetable.days.sun");
     }
   };
 
@@ -31,10 +54,10 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
           <Icon name="search" size={20} />
         </div>
         <h4 className="text-sm font-bold text-slate-800 mb-1">
-          Không tìm thấy buổi học nào
+          {t("message:empty.noFilteredResults")}
         </h4>
         <p className="text-xs text-slate-500 mb-0">
-          Hãy điều chỉnh lại bộ lọc ngày, tháng, năm hoặc học phần để xem thêm.
+          {t("message:empty.noFilteredDescription")}
         </p>
       </div>
     );
@@ -46,24 +69,24 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
         <table className="w-full text-left border-collapse text-xs whitespace-nowrap min-w-[1600px]">
           <thead>
             <tr className="bg-slate-50/80 border-b border-[#f0f0f0] text-slate-500 font-semibold uppercase text-[11px] tracking-wider whitespace-nowrap">
-              <th className="py-3 px-4">Ngày học</th>
-              <th className="py-3 px-4">Giờ học & Tiết</th>
-              <th className="py-3 px-4">Mã môn</th>
-              <th className="py-3 px-4">Tên môn học</th>
-              <th className="py-3 px-4 text-center">Hình thức học</th>
-              <th className="py-3 px-4 text-center">Hình thức dạy</th>
-              <th className="py-3 px-4">Phòng học</th>
-              <th className="py-3 px-4">Giáo viên</th>
-              <th className="py-3 px-4">Ghi chú</th>
-              <th className="py-3 px-4 text-center">Trạng thái</th>
-              <th className="py-3 px-4 text-center">Liên kết</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.date")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.timePeriods")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.courseCode")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.courseName")}</th>
+              <th className="py-3 px-4 text-center">{t("card:timetable.tableHeaders.classType")}</th>
+              <th className="py-3 px-4 text-center">{t("card:timetable.tableHeaders.teachingMethod")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.room")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.teacher")}</th>
+              <th className="py-3 px-4">{t("card:timetable.tableHeaders.notes")}</th>
+              <th className="py-3 px-4 text-center">{t("card:timetable.tableHeaders.status")}</th>
+              <th className="py-3 px-4 text-center">{t("card:timetable.tableHeaders.link")}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {slots.map((slot) => {
               const slotDate = dayjs(slot.date);
               const formattedDate = slotDate.format("DD/MM/YYYY");
-              const dayName = `Thứ ${slot.dayOfWeek === 8 ? "CN" : slot.dayOfWeek}`;
+              const dayName = getDayLabel(slot.dayOfWeek);
               const isPractice = slot.classType === "practice";
               const isOnline = Boolean(slot.onlineUrl);
 
@@ -72,7 +95,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
                   key={slot.id}
                   className="hover:bg-slate-50/70 transition-colors whitespace-nowrap"
                 >
-                  {/* 1. Date Column: single line */}
+                  {/* 1. Date Column */}
                   <td className="py-3 px-4">
                     <span className="font-bold text-slate-800">
                       {formattedDate}
@@ -82,7 +105,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
                     </span>
                   </td>
 
-                  {/* 2. Time & Periods: single line */}
+                  {/* 2. Time & Periods */}
                   <td className="py-3 px-4 font-mono font-medium text-slate-700">
                     <span>{slot.startTime} - {slot.endTime}</span>
                     <span className="text-blue-600 font-sans font-medium ml-1.5">
@@ -95,37 +118,37 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
                     {slot.courseCode}
                   </td>
 
-                  {/* 4. Course Name: single line */}
+                  {/* 4. Course Name */}
                   <td className="py-3 px-4">
                     <span className="font-bold text-slate-900">
                       {slot.courseName}
                     </span>
                     <span className="text-slate-400 text-[11px] ml-1.5">
-                      (Lớp {slot.classCode} • {slot.credits} tiết/tuần)
+                      ({t("card:timetable.classLabel", { classCode: slot.classCode })} • {t("card:timetable.periodsPerWeek", { count: slot.credits })})
                     </span>
                   </td>
 
-                  {/* 5. Hình thức học */}
+                  {/* 5. Class Type */}
                   <td className="py-3 px-4 text-center">
                     <Tag
                       color={isPractice ? "green" : "blue"}
                       className="text-[10px] px-2 py-0.5 m-0 font-semibold inline-block"
                     >
-                      {isPractice ? "Thực hành" : "Lý thuyết"}
+                      {isPractice ? t("card:timetable.classTypes.practice") : t("card:timetable.classTypes.theory")}
                     </Tag>
                   </td>
 
-                  {/* 6. Hình thức dạy */}
+                  {/* 6. Teaching Method */}
                   <td className="py-3 px-4 text-center">
                     <Tag
                       color={isOnline ? "purple" : "cyan"}
                       className="text-[10px] px-2 py-0.5 m-0 font-semibold inline-block"
                     >
-                      {isOnline ? "Trực tuyến" : "Trực tiếp"}
+                      {isOnline ? t("card:timetable.teachingMethods.online") : t("card:timetable.teachingMethods.inPerson")}
                     </Tag>
                   </td>
 
-                  {/* 7. Room & Building: single line */}
+                  {/* 7. Room & Building */}
                   <td className="py-3 px-4">
                     <span className="font-semibold text-slate-800">
                       {slot.room}
@@ -140,7 +163,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
                     {slot.instructorName}
                   </td>
 
-                  {/* 9. Note: single line */}
+                  {/* 9. Note */}
                   <td className="py-3 px-4 text-slate-600 italic text-[11px]">
                     {slot.notes || slot.lessonTopic || "—"}
                   </td>
@@ -160,7 +183,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
                         className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium hover:underline text-xs"
                       >
                         <Icon name="external-link" size={13} className="shrink-0" />
-                        <span>Vào lớp</span>
+                        <span>{t("card:timetable.joinOnlineClass")}</span>
                       </a>
                     ) : (
                       <span className="text-slate-400 italic text-[11px]">—</span>

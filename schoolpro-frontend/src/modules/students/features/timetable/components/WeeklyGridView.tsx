@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -13,28 +14,29 @@ interface WeeklyGridViewProps {
   onSlotClick?: (slot: TimetableSlot) => void;
 }
 
-const DAYS_OF_WEEK = [
-  { dayNum: 2, label: "Thứ Hai", short: "T2" },
-  { dayNum: 3, label: "Thứ Ba", short: "T3" },
-  { dayNum: 4, label: "Thứ Tư", short: "T4" },
-  { dayNum: 5, label: "Thứ Năm", short: "T5" },
-  { dayNum: 6, label: "Thứ Sáu", short: "T6" },
-  { dayNum: 7, label: "Thứ Bảy", short: "T7" },
-  { dayNum: 8, label: "Chủ Nhật", short: "CN" },
-];
-
-const SHIFTS: { key: ClassShift; label: string; timeRange: string }[] = [
-  { key: "morning", label: "Ca Sáng", timeRange: "07:00 - 11:30" },
-  { key: "afternoon", label: "Ca Chiều", timeRange: "12:30 - 17:30" },
-  { key: "evening", label: "Ca Tối", timeRange: "17:45 - 21:00" },
-];
-
 export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
   selectedDate,
   slots,
 }) => {
+  const { t } = useTranslation(["card"]);
   const currentDayjs = dayjs(selectedDate);
   const weekStart = currentDayjs.startOf("isoWeek");
+
+  const DAYS_OF_WEEK = [
+    { dayNum: 2, label: t("card:timetable.days.mon"), short: "T2" },
+    { dayNum: 3, label: t("card:timetable.days.tue"), short: "T3" },
+    { dayNum: 4, label: t("card:timetable.days.wed"), short: "T4" },
+    { dayNum: 5, label: t("card:timetable.days.thu"), short: "T5" },
+    { dayNum: 6, label: t("card:timetable.days.fri"), short: "T6" },
+    { dayNum: 7, label: t("card:timetable.days.sat"), short: "T7" },
+    { dayNum: 8, label: t("card:timetable.days.sun"), short: "CN" },
+  ];
+
+  const SHIFTS: { key: ClassShift; label: string; timeRange: string }[] = [
+    { key: "morning", label: t("card:timetable.shifts.morning"), timeRange: "07:00 - 11:30" },
+    { key: "afternoon", label: t("card:timetable.shifts.afternoon"), timeRange: "12:30 - 17:30" },
+    { key: "evening", label: t("card:timetable.shifts.evening"), timeRange: "17:45 - 21:00" },
+  ];
 
   // Map each day with its specific date in this week
   const weekDays = DAYS_OF_WEEK.map((d, index) => {
@@ -58,7 +60,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
           <thead>
             <tr className="bg-slate-50 border-b border-[#f0f0f0]">
               <th className="w-32 min-w-32 p-3 text-center border-r border-[#f0f0f0] text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Ca học
+                {t("card:timetable.shiftColumn")}
               </th>
               {weekDays.map((d) => (
                 <th
@@ -117,7 +119,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                     >
                       {daySlots.length === 0 ? (
                         <div className="w-full h-full min-h-105 flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-slate-100 rounded-xl bg-slate-50/30 select-none">
-                          <span>Trống</span>
+                          <span>{t("card:timetable.emptySlot")}</span>
                         </div>
                       ) : (
                         <div className="w-full h-full flex flex-col gap-2.5">
@@ -143,7 +145,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                                   {/* 1. Môn học */}
                                   <div className="pb-2 border-b border-slate-100 min-h-14.5">
                                     <div className="text-[11px] font-mono font-medium text-slate-500 mb-0.5 truncate">
-                                      {slot.courseCode} • {slot.classCode}
+                                      {slot.courseCode} • {t("card:timetable.classLabel", { classCode: slot.classCode })}
                                     </div>
                                     <h4 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 mb-0" title={slot.courseName}>
                                       {slot.courseName}
@@ -201,46 +203,46 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                                     </span>
                                   </div>
 
-                                  {/* 5. Hình thức học: Lý thuyết hoặc thực hành */}
+                                  {/* 5. Hình thức học */}
                                   <div className="flex items-center justify-between gap-1.5 text-xs">
                                     <span className="text-slate-500">
-                                      Hình thức học:
+                                      {t("card:timetable.learningMode")}
                                     </span>
                                     <Tag
                                       color={isPractice ? "green" : "blue"}
                                       className="m-0 text-[11px] font-semibold px-2 py-0.5"
                                     >
-                                      {isPractice ? "Thực hành" : "Lý thuyết"}
+                                      {isPractice ? t("card:timetable.classTypes.practice") : t("card:timetable.classTypes.theory")}
                                     </Tag>
                                   </div>
 
-                                  {/* 6. Hình thức dạy: Trực tuyến hay Trực tiếp */}
+                                  {/* 6. Hình thức dạy */}
                                   <div className="flex items-center justify-between gap-1.5 text-xs">
                                     <span className="text-slate-500">
-                                      Hình thức dạy:
+                                      {t("card:timetable.teachingMode")}
                                     </span>
                                     <Tag
                                       color={isOnline ? "purple" : "cyan"}
                                       className="m-0 text-[11px] font-semibold px-2 py-0.5"
                                     >
-                                      {isOnline ? "Trực tuyến" : "Trực tiếp"}
+                                      {isOnline ? t("card:timetable.teachingMethods.online") : t("card:timetable.teachingMethods.inPerson")}
                                     </Tag>
                                   </div>
                                 </div>
 
                                 {/* Bottom Section: Info 7 -> 8 */}
                                 <div className="space-y-2 pt-2.5 border-t border-slate-100">
-                                  {/* 7. Ghi chú: */}
+                                  {/* 7. Ghi chú */}
                                   <div className="text-xs">
                                     <span className="text-slate-500 font-medium block mb-1">
-                                      Ghi chú:
+                                      {t("card:timetable.notes")}
                                     </span>
                                     <div
                                       className="text-slate-700 italic text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-100/80 leading-relaxed min-h-11.5 flex items-center"
                                       title={slot.notes || slot.lessonTopic}
                                     >
                                       <span className="line-clamp-2">
-                                        {slot.notes || slot.lessonTopic || "Không có ghi chú"}
+                                        {slot.notes || slot.lessonTopic || t("card:timetable.noNotes")}
                                       </span>
                                     </div>
                                   </div>
@@ -248,7 +250,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                                   {/* 8. Liên kết khác */}
                                   <div className="text-xs min-h-9.5 flex flex-col justify-end">
                                     <span className="text-slate-500 font-medium block mb-1">
-                                      Liên kết khác:
+                                      {t("card:timetable.otherLinks")}
                                     </span>
                                     {slot.onlineUrl ? (
                                       <a
@@ -262,11 +264,11 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                                           size={13}
                                           className="shrink-0"
                                         />
-                                        <span>Vào lớp học trực tuyến</span>
+                                        <span>{t("card:timetable.joinOnlineClass")}</span>
                                       </a>
                                     ) : (
                                       <span className="text-slate-400 italic text-xs">
-                                        Không có
+                                        {t("card:timetable.noLink")}
                                       </span>
                                     )}
                                   </div>

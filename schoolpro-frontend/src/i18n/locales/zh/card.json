@@ -185,5 +185,67 @@
       "specialChar": "包含至少 1 个特殊符号 (!@#$...)",
       "noMatchOld": "新密码不能与当前密码相同"
     }
+  },
+  "timetable": {
+    "weekLabel": "周次",
+    "weekPrefix": "第 {{label}} 周",
+    "weekPickerFormat": "[第] w [周] - YYYY",
+    "viewGrid": "周课表",
+    "viewList": "列表模式",
+    "backToCurrentWeek": "回到本周",
+    "minLimitReached": "已达到学年起始边界",
+    "maxLimitReached": "已达到学年结束边界",
+    "shiftColumn": "时段节次",
+    "emptySlot": "无课",
+    "learningMode": "修读方式:",
+    "teachingMode": "教学形式:",
+    "notes": "备注:",
+    "otherLinks": "相关链接:",
+    "noNotes": "无备注",
+    "noLink": "暂无",
+    "joinOnlineClass": "进入在线课堂",
+    "periodsPerWeek": "每周 {{count}} 节",
+    "classLabel": "{{classCode}} 班",
+    "shifts": {
+      "morning": "上午时段",
+      "afternoon": "下午时段",
+      "evening": "晚间时段"
+    },
+    "days": {
+      "mon": "星期一",
+      "tue": "星期二",
+      "wed": "星期三",
+      "thu": "星期四",
+      "fri": "星期五",
+      "sat": "星期六",
+      "sun": "星期日"
+    },
+    "classTypes": {
+      "theory": "理论课",
+      "practice": "实验实践"
+    },
+    "teachingMethods": {
+      "online": "线上授课",
+      "inPerson": "线下授课"
+    },
+    "status": {
+      "ongoing": "上课中",
+      "completed": "已结课",
+      "cancelled": "已停课",
+      "upcoming": "待上课"
+    },
+    "tableHeaders": {
+      "date": "上课日期",
+      "timePeriods": "时间与节次",
+      "courseCode": "课程代码",
+      "courseName": "课程名称",
+      "classType": "课程类型",
+      "teachingMethod": "教学形式",
+      "room": "上课教室",
+      "teacher": "授课教师",
+      "notes": "课程备注",
+      "status": "状态",
+      "link": "课堂链接"
+    }
   }
 }

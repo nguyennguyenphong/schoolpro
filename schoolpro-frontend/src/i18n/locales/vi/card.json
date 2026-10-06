@@ -185,5 +185,67 @@
       "specialChar": "Có ít nhất 1 ký tự đặc biệt (!@#$...)",
       "noMatchOld": "Mật khẩu mới không được trùng mật khẩu hiện tại"
     }
+  },
+  "timetable": {
+    "weekLabel": "Tuần",
+    "weekPrefix": "Tuần: {{label}}",
+    "weekPickerFormat": "[Tuần] w - YYYY",
+    "viewGrid": "Lưới tuần",
+    "viewList": "Danh sách",
+    "backToCurrentWeek": "Về tuần này",
+    "minLimitReached": "Đã chạm giới hạn đầu năm học",
+    "maxLimitReached": "Đã chạm giới hạn cuối năm học",
+    "shiftColumn": "Ca học",
+    "emptySlot": "Trống",
+    "learningMode": "Hình thức học:",
+    "teachingMode": "Hình thức dạy:",
+    "notes": "Ghi chú:",
+    "otherLinks": "Liên kết khác:",
+    "noNotes": "Không có ghi chú",
+    "noLink": "Không có",
+    "joinOnlineClass": "Vào lớp học trực tuyến",
+    "periodsPerWeek": "{{count}} tiết/tuần",
+    "classLabel": "Lớp {{classCode}}",
+    "shifts": {
+      "morning": "Ca Sáng",
+      "afternoon": "Ca Chiều",
+      "evening": "Ca Tối"
+    },
+    "days": {
+      "mon": "Thứ Hai",
+      "tue": "Thứ Ba",
+      "wed": "Thứ Tư",
+      "thu": "Thứ Năm",
+      "fri": "Thứ Sáu",
+      "sat": "Thứ Bảy",
+      "sun": "Chủ Nhật"
+    },
+    "classTypes": {
+      "theory": "Lý thuyết",
+      "practice": "Thực hành"
+    },
+    "teachingMethods": {
+      "online": "Trực tuyến",
+      "inPerson": "Trực tiếp"
+    },
+    "status": {
+      "ongoing": "Đang học",
+      "completed": "Đã xong",
+      "cancelled": "Tạm nghỉ",
+      "upcoming": "Sắp tới"
+    },
+    "tableHeaders": {
+      "date": "Ngày học",
+      "timePeriods": "Giờ học & Tiết",
+      "courseCode": "Mã môn",
+      "courseName": "Tên môn học",
+      "classType": "Hình thức học",
+      "teachingMethod": "Hình thức dạy",
+      "room": "Phòng học",
+      "teacher": "Giáo viên",
+      "notes": "Ghi chú",
+      "status": "Trạng thái",
+      "link": "Liên kết"
+    }
   }
 }

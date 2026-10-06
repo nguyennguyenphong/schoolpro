@@ -6,6 +6,7 @@
   "loading": "データを読み込み中...",
   "processing": "処理中...",
   "failedToLoadHome": "ホームデータの読み込みに失敗しました",
+  "failedToLoadTimetable": "時間割の読み込みに失敗しました",
   "serverConnectionError": "サーバー接続中にエラーが発生しました。後でもう一度お試しください。",
   "downloading": "ダウンロード中: {{name}}",
   "downloadSuccess": "ファイルのダウンロードに成功しました",
@@ -20,7 +21,10 @@
     "noData": "現在システムにお知らせはありません。",
     "noFilteredResults": "該当するお知らせがありません",
     "noFilteredDescription": "選択した条件に一致するお知らせはありません。別のキーワードや条件でお試しください。",
-    "noFeatures": "あなたのアカウントにはまだ機能が設定されていません。"
+    "noFeatures": "あなたのアカウントにはまだ機能が設定されていません。",
+    "noTimetable": "今週の授業スケジュールはありません",
+    "noTimetableDesc": "選択された期間に登録されている授業コマはありません。",
+    "outsideSemester": "学期期間外（長期休暇中など）です"
   },
   "profileUpdatedSuccess": "プロフィールを正常に更新しました",
   "avatarUpdatedSuccess": "アバターを正常に更新しました",

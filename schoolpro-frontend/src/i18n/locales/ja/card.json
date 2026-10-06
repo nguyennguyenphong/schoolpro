@@ -185,5 +185,67 @@
       "specialChar": "記号を含む (!@#$...)",
       "noMatchOld": "新しいパスワードは現在のパスワードと異なる必要があります"
     }
+  },
+  "timetable": {
+    "weekLabel": "週",
+    "weekPrefix": "週: {{label}}",
+    "weekPickerFormat": "[第] w [週] - YYYY",
+    "viewGrid": "週間グリッド",
+    "viewList": "リスト形式",
+    "backToCurrentWeek": "今週に戻る",
+    "minLimitReached": "学年度の開始制限に達しました",
+    "maxLimitReached": "学年度の終了制限に達しました",
+    "shiftColumn": "授業コマ",
+    "emptySlot": "空き",
+    "learningMode": "授業形式:",
+    "teachingMode": "指導方法:",
+    "notes": "備考:",
+    "otherLinks": "関連リンク:",
+    "noNotes": "備考なし",
+    "noLink": "なし",
+    "joinOnlineClass": "オンライン授業に参加",
+    "periodsPerWeek": "{{count}} コマ/週",
+    "classLabel": "{{classCode}} 組",
+    "shifts": {
+      "morning": "午前の部",
+      "afternoon": "午後の部",
+      "evening": "夜間の部"
+    },
+    "days": {
+      "mon": "月曜日",
+      "tue": "火曜日",
+      "wed": "水曜日",
+      "thu": "木曜日",
+      "fri": "金曜日",
+      "sat": "土曜日",
+      "sun": "日曜日"
+    },
+    "classTypes": {
+      "theory": "講義",
+      "practice": "演習・実習"
+    },
+    "teachingMethods": {
+      "online": "オンライン",
+      "inPerson": "対面"
+    },
+    "status": {
+      "ongoing": "受講中",
+      "completed": "完了",
+      "cancelled": "休講",
+      "upcoming": "予定"
+    },
+    "tableHeaders": {
+      "date": "受講日",
+      "timePeriods": "時間・時限",
+      "courseCode": "科目コード",
+      "courseName": "科目名",
+      "classType": "授業形式",
+      "teachingMethod": "指導方法",
+      "room": "教室",
+      "teacher": "担当教員",
+      "notes": "備考",
+      "status": "状態",
+      "link": "リンク"
+    }
   }
 }

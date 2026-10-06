@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import { DatePicker } from "@/components/ui/DatePicker";
@@ -37,6 +38,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   onPrevWeekClick,
   onNextWeekClick,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
   const currentDayjs = dayjs(selectedDate);
   const minDayjs = minDate ? dayjs(minDate) : null;
   const maxDayjs = maxDate ? dayjs(maxDate) : null;
@@ -76,7 +78,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 ? "text-slate-300 cursor-not-allowed"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
             }`}
-            title={isPrevDisabled ? "Đã chạm giới hạn đầu năm học" : "Ngày trước"}
+            title={isPrevDisabled ? t("card:timetable.minLimitReached") : t("button:previousDay")}
           >
             <Icon name="chevron-left" size={15} />
           </button>
@@ -91,7 +93,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             }`}
           >
             <Icon name="calendar" size={13} />
-            <span>Hôm nay</span>
+            <span>{t("button:today")}</span>
           </button>
 
           <button
@@ -103,7 +105,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 ? "text-slate-300 cursor-not-allowed"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
             }`}
-            title={isNextDisabled ? "Đã chạm giới hạn cuối năm học" : "Ngày sau"}
+            title={isNextDisabled ? t("card:timetable.maxLimitReached") : t("button:nextDay")}
           >
             <Icon name="chevron-right" size={15} />
           </button>
@@ -120,7 +122,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
         {/* Week Range Display Badge */}
         <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5">
           <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
-          <span>Tuần: {currentWeekLabel}</span>
+          <span>{t("card:timetable.weekPrefix", { label: currentWeekLabel })}</span>
         </div>
 
         {/* Week Picker for jumping directly to any week with boundary checking */}
@@ -130,7 +132,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             value={currentDayjs}
             onChange={handleDatePickerChange}
             disabledDate={disabledDate}
-            format="[Tuần] w - YYYY"
+            format={t("card:timetable.weekPickerFormat")}
             allowClear={false}
             className="w-full"
             name="timetable-week-picker"
@@ -145,10 +147,10 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <Button
             variant="outline"
             onClick={onResetFilters}
-            title="Đặt lại về tuần này"
+            title={t("card:timetable.backToCurrentWeek")}
           >
             <Icon name="refresh" size={13} />
-            Về tuần này
+            {t("card:timetable.backToCurrentWeek")}
           </Button>
         )}
 
@@ -162,10 +164,10 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"
             }`}
-            title="Lưới tuần (Grid View)"
+            title={t("card:timetable.viewGrid")}
           >
             <Icon name="calendar" size={14} />
-            <span>Lưới tuần</span>
+            <span>{t("card:timetable.viewGrid")}</span>
           </button>
           <button
             type="button"
@@ -175,10 +177,10 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"
             }`}
-            title="Danh sách (List View)"
+            title={t("card:timetable.viewList")}
           >
             <Icon name="file" size={14} />
-            <span>Danh sách</span>
+            <span>{t("card:timetable.viewList")}</span>
           </button>
         </div>
       </div>

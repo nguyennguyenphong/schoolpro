@@ -85,7 +85,9 @@ class TimetableService:
 
         # Resolve academic year matching target date, or current academic year
         academic_year = (
-            AcademicYear.objects.filter(start_date__lte=target_date, end_date__gte=target_date).first()
+            AcademicYear.objects.filter(
+                start_date__lte=target_date, end_date__gte=target_date
+            ).first()
             or AcademicYear.objects.filter(is_current=True).first()
             or AcademicYear.objects.order_by("-start_date").first()
         )
@@ -121,7 +123,9 @@ class TimetableService:
                 "startDate": academic_year.start_date.strftime("%Y-%m-%d"),
                 "endDate": academic_year.end_date.strftime("%Y-%m-%d"),
                 "isCurrent": academic_year.is_current,
-            } if academic_year else None,
+            }
+            if academic_year
+            else None,
             "semester": {
                 "id": str(semester.id),
                 "name": semester.name,
@@ -129,7 +133,9 @@ class TimetableService:
                 "startDate": semester.start_date.strftime("%Y-%m-%d"),
                 "endDate": semester.end_date.strftime("%Y-%m-%d"),
                 "isCurrent": semester.is_current,
-            } if semester else None,
+            }
+            if semester
+            else None,
             "selectedWeek": {
                 "startDate": week_start.strftime("%Y-%m-%d"),
                 "endDate": week_end.strftime("%Y-%m-%d"),

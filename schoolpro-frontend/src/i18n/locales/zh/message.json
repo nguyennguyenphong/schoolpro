@@ -6,6 +6,7 @@
   "loading": "正在加载数据...",
   "processing": "正在处理...",
   "failedToLoadHome": "无法加载首页数据",
+  "failedToLoadTimetable": "无法加载课程表数据",
   "serverConnectionError": "连接服务器时发生错误，请稍后重试。",
   "downloading": "正在下载文件: {{name}}",
   "downloadSuccess": "文件下载成功",
@@ -20,7 +21,10 @@
     "noData": "系统中暂无通知公告。",
     "noFilteredResults": "未找到符合条件的通知",
     "noFilteredDescription": "没有与所选筛选条件匹配的通知，请更换关键词或调整筛选条件。",
-    "noFeatures": "您的账户暂未配置任何系统功能。"
+    "noFeatures": "您的账户暂未配置任何系统功能。",
+    "noTimetable": "本周暂无排课与课程安排",
+    "noTimetableDesc": "当前所选的时间范围内未安排任何课程或节次。",
+    "outsideSemester": "当前时间处于学期之外（寒暑假等假期期间）"
   },
   "profileUpdatedSuccess": "学生个人资料更新成功",
   "avatarUpdatedSuccess": "头像更新成功",

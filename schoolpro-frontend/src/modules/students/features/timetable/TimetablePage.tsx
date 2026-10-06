@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Empty } from "@/components/ui/Empty";
@@ -12,6 +13,7 @@ import {
 import { useTimetable } from "@/modules/students/features/timetable/hooks";
 
 export const TimetablePage: React.FC = () => {
+  const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
   const {
     slots,
     filter,
@@ -44,7 +46,7 @@ export const TimetablePage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("navigation:breadcrumb.home")}</span>
                 </span>
               ),
             },
@@ -52,7 +54,7 @@ export const TimetablePage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                   <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
-                  <span>Thời khóa biểu & Lịch học</span>
+                  <span>{t("navigation:breadcrumb.timetable")}</span>
                 </span>
               ),
             },
@@ -63,11 +65,11 @@ export const TimetablePage: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-              Thời khóa biểu & Lịch học
+              {t("navigation:pageTitle.timetable")}
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            Tra cứu lịch học tuần, phòng học, giáo viên bộ môn và ca học các môn trong tuần
+            {t("navigation:pageSubtitle.timetable")}
           </p>
         </div>
       </div>
@@ -98,13 +100,13 @@ export const TimetablePage: React.FC = () => {
             <Icon name="warning" size={24} />
           </div>
           <h3 className="text-base font-bold text-slate-800 mb-1">
-            Không thể tải thời khóa biểu
+            {t("message:failedToLoadTimetable")}
           </h3>
           <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
-            {error.message || "Đã xảy ra lỗi khi tải dữ liệu thời khóa biểu. Vui lòng thử lại."}
+            {error.message || t("message:serverConnectionError")}
           </p>
           <Button variant="primary" onClick={() => refetch()}>
-            Tải lại thời khóa biểu
+            {t("button:reloadTimetable")}
           </Button>
         </div>
       ) : slots.length === 0 ? (
@@ -114,12 +116,11 @@ export const TimetablePage: React.FC = () => {
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
                   {isOutsideSemester
-                    ? "Thời gian ngoài khung thời gian học kỳ"
-                    : "Không có lịch học trong tuần này"}
+                    ? t("message:empty.outsideSemester")
+                    : t("message:empty.noTimetable")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                  {vacationReason ||
-                    "Hiện tại chưa có buổi học nào được xếp lịch trong khoảng thời gian đã chọn."}
+                  {vacationReason || t("message:empty.noTimetableDesc")}
                 </p>
               </div>
             }
@@ -131,7 +132,7 @@ export const TimetablePage: React.FC = () => {
                 className="mt-3"
               >
                 <Icon name="calendar" size={14} />
-                Quay về tuần học hiện tại
+                {t("button:backToCurrentWeek")}
               </Button>
             )}
           </Empty>

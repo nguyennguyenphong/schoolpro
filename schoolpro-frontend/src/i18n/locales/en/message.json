@@ -6,6 +6,7 @@
   "loading": "Loading data...",
   "processing": "Processing...",
   "failedToLoadHome": "Unable to load Home data",
+  "failedToLoadTimetable": "Unable to load timetable",
   "serverConnectionError": "An error occurred while connecting to server. Please try again later.",
   "downloading": "Downloading file: {{name}}",
   "downloadSuccess": "File downloaded successfully",
@@ -20,7 +21,10 @@
     "noData": "There are currently no notices in the system.",
     "noFilteredResults": "No matching notices found",
     "noFilteredDescription": "No notices match the selected filter criteria. Please try again with different keywords or conditions.",
-    "noFeatures": "No features have been configured for your account yet."
+    "noFeatures": "No features have been configured for your account yet.",
+    "noTimetable": "No classes scheduled for this week",
+    "noTimetableDesc": "There are currently no class sessions scheduled in the selected time range.",
+    "outsideSemester": "Time is outside the active semester timeframe"
   },
   "profileUpdatedSuccess": "Student profile updated successfully",
   "avatarUpdatedSuccess": "Profile picture updated successfully",

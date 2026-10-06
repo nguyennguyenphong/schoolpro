@@ -6,6 +6,7 @@
   "loading": "데이터 불러오는 중...",
   "processing": "처리 중...",
   "failedToLoadHome": "홈 데이터를 불러올 수 없습니다",
+  "failedToLoadTimetable": "시간표 데이터를 불러올 수 없습니다",
   "serverConnectionError": "서버 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
   "downloading": "파일 다운로드 중: {{name}}",
   "downloadSuccess": "파일을 성공적으로 다운로드했습니다",
@@ -20,7 +21,10 @@
     "noData": "현재 시스템에 등록된 공지사항이 없습니다.",
     "noFilteredResults": "일치하는 공지사항이 없습니다",
     "noFilteredDescription": "선택한 조건과 일치하는 공지사항이 없습니다. 다른 키워드나 조건으로 다시 시도해 주세요.",
-    "noFeatures": "현재 계정에 설정된 기능이 없습니다."
+    "noFeatures": "현재 계정에 설정된 기능이 없습니다.",
+    "noTimetable": "이번 주에 예정된 수업 일정이 없습니다",
+    "noTimetableDesc": "선택한 기간에 등록된 강의 또는 수업 시간이 없습니다.",
+    "outsideSemester": "학기 운영 기간 외(방학 등)입니다"
   },
   "profileUpdatedSuccess": "학생 프로필이 성공적으로 업데이트되었습니다",
   "avatarUpdatedSuccess": "프로필 사진이 성공적으로 업데이트되었습니다",

@@ -6,6 +6,7 @@
   "loading": "Đang tải dữ liệu...",
   "processing": "Đang xử lý...",
   "failedToLoadHome": "Không thể tải dữ liệu Trang chủ",
+  "failedToLoadTimetable": "Không thể tải thời khóa biểu",
   "serverConnectionError": "Đã xảy ra lỗi khi kết nối máy chủ. Vui lòng thử lại sau.",
   "downloading": "Đang tải xuống tệp: {{name}}",
   "downloadSuccess": "Tải xuống tệp thành công",
@@ -20,7 +21,10 @@
     "noData": "Hiện tại chưa có thông báo nào trong hệ thống.",
     "noFilteredResults": "Không tìm thấy thông báo phù hợp",
     "noFilteredDescription": "Không có thông báo nào khớp với các bộ lọc đã chọn. Vui lòng thử lại với từ khóa hoặc điều kiện khác.",
-    "noFeatures": "Chưa có chức năng nào được cấu hình cho tài khoản của bạn."
+    "noFeatures": "Chưa có chức năng nào được cấu hình cho tài khoản của bạn.",
+    "noTimetable": "Không có lịch học trong tuần này",
+    "noTimetableDesc": "Hiện tại chưa có buổi học nào được xếp lịch trong khoảng thời gian đã chọn.",
+    "outsideSemester": "Thời gian ngoài khung thời gian học kỳ"
   },
   "profileUpdatedSuccess": "Cập nhật hồ sơ học sinh thành công",
   "avatarUpdatedSuccess": "Cập nhật ảnh đại diện thành công",

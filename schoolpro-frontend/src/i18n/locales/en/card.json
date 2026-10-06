@@ -185,5 +185,67 @@
       "specialChar": "At least 1 special character (!@#$...)",
       "noMatchOld": "New password cannot match your current password"
     }
+  },
+  "timetable": {
+    "weekLabel": "Week",
+    "weekPrefix": "Week: {{label}}",
+    "weekPickerFormat": "[Week] w - YYYY",
+    "viewGrid": "Grid View",
+    "viewList": "List View",
+    "backToCurrentWeek": "Back to this week",
+    "minLimitReached": "Reached the beginning limit of the academic year",
+    "maxLimitReached": "Reached the end limit of the academic year",
+    "shiftColumn": "Shift",
+    "emptySlot": "Empty",
+    "learningMode": "Learning mode:",
+    "teachingMode": "Teaching method:",
+    "notes": "Notes:",
+    "otherLinks": "Links:",
+    "noNotes": "No notes",
+    "noLink": "None",
+    "joinOnlineClass": "Join online classroom",
+    "periodsPerWeek": "{{count}} periods/week",
+    "classLabel": "Class {{classCode}}",
+    "shifts": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
+    "days": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday",
+      "sun": "Sunday"
+    },
+    "classTypes": {
+      "theory": "Theory",
+      "practice": "Practice"
+    },
+    "teachingMethods": {
+      "online": "Online",
+      "inPerson": "In-person"
+    },
+    "status": {
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "upcoming": "Upcoming"
+    },
+    "tableHeaders": {
+      "date": "Date",
+      "timePeriods": "Time & Period",
+      "courseCode": "Course Code",
+      "courseName": "Course Name",
+      "classType": "Class Type",
+      "teachingMethod": "Method",
+      "room": "Room",
+      "teacher": "Teacher",
+      "notes": "Notes",
+      "status": "Status",
+      "link": "Link"
+    }
   }
 }
