@@ -26,8 +26,8 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
 
   if (slots.length === 0) {
     return (
-      <div className="p-12 text-center bg-white border border-slate-200 rounded-xl shadow-2xs">
-        <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+      <div className="p-12 text-center bg-white border border-[#f0f0f0] rounded-xl shadow-2xs">
+        <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
           <Icon name="search" size={20} />
         </div>
         <h4 className="text-sm font-bold text-slate-800 mb-1">
@@ -41,22 +41,22 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl shadow-2xs overflow-hidden">
+    <div className="bg-white border border-[#f0f0f0] rounded-xl shadow-2xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse text-xs min-w-[1200px]">
+        <table className="w-full text-left border-collapse text-xs whitespace-nowrap min-w-[1600px]">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[11px] tracking-wider">
-              <th className="py-3 px-3.5">Ngày học</th>
-              <th className="py-3 px-3.5">Giờ học & Tiết</th>
-              <th className="py-3 px-3.5">Mã HP</th>
-              <th className="py-3 px-3.5">Tên học phần</th>
-              <th className="py-3 px-3.5 text-center">Hình thức học</th>
-              <th className="py-3 px-3.5 text-center">Hình thức dạy</th>
-              <th className="py-3 px-3.5">Phòng học</th>
-              <th className="py-3 px-3.5">Giảng viên</th>
-              <th className="py-3 px-3.5">Ghi chú</th>
-              <th className="py-3 px-3.5 text-center">Trạng thái</th>
-              <th className="py-3 px-3.5 text-center">Liên kết</th>
+            <tr className="bg-slate-50/80 border-b border-[#f0f0f0] text-slate-500 font-semibold uppercase text-[11px] tracking-wider whitespace-nowrap">
+              <th className="py-3 px-4">Ngày học</th>
+              <th className="py-3 px-4">Giờ học & Tiết</th>
+              <th className="py-3 px-4">Mã môn</th>
+              <th className="py-3 px-4">Tên môn học</th>
+              <th className="py-3 px-4 text-center">Hình thức học</th>
+              <th className="py-3 px-4 text-center">Hình thức dạy</th>
+              <th className="py-3 px-4">Phòng học</th>
+              <th className="py-3 px-4">Giáo viên</th>
+              <th className="py-3 px-4">Ghi chú</th>
+              <th className="py-3 px-4 text-center">Trạng thái</th>
+              <th className="py-3 px-4 text-center">Liên kết</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -70,92 +70,88 @@ export const ListView: React.FC<ListViewProps> = ({ slots }) => {
               return (
                 <tr
                   key={slot.id}
-                  className="hover:bg-slate-50/70 transition-colors"
+                  className="hover:bg-slate-50/70 transition-colors whitespace-nowrap"
                 >
-                  {/* 1. Date Column */}
-                  <td className="py-3 px-3.5 whitespace-nowrap">
-                    <span className="font-bold text-slate-800 block">
+                  {/* 1. Date Column: single line */}
+                  <td className="py-3 px-4">
+                    <span className="font-bold text-slate-800">
                       {formattedDate}
                     </span>
-                    <span className="text-[11px] text-slate-400 block font-medium">
-                      {dayName}
+                    <span className="text-slate-400 font-medium ml-1.5">
+                      ({dayName})
                     </span>
                   </td>
 
-                  {/* 2. Time & Periods */}
-                  <td className="py-3 px-3.5 whitespace-nowrap">
-                    <span className="font-mono font-semibold text-slate-700 block">
-                      {slot.startTime} - {slot.endTime}
-                    </span>
-                    <span className="text-[11px] text-blue-600 block">
-                      {slot.periods}
+                  {/* 2. Time & Periods: single line */}
+                  <td className="py-3 px-4 font-mono font-medium text-slate-700">
+                    <span>{slot.startTime} - {slot.endTime}</span>
+                    <span className="text-blue-600 font-sans font-medium ml-1.5">
+                      ({slot.periods})
                     </span>
                   </td>
 
                   {/* 3. Course Code */}
-                  <td className="py-3 px-3.5 font-mono font-bold text-slate-700">
+                  <td className="py-3 px-4 font-mono font-bold text-slate-700">
                     {slot.courseCode}
                   </td>
 
-                  {/* 4. Course Name */}
-                  <td className="py-3 px-3.5 max-w-xs">
-                    <span className="font-bold text-slate-900 block truncate">
+                  {/* 4. Course Name: single line */}
+                  <td className="py-3 px-4">
+                    <span className="font-bold text-slate-900">
                       {slot.courseName}
                     </span>
-                    <span className="text-[11px] text-slate-400 block truncate">
-                      Lớp: {slot.classCode} • {slot.credits} TC
+                    <span className="text-slate-400 text-[11px] ml-1.5">
+                      (Lớp {slot.classCode} • {slot.credits} tiết/tuần)
                     </span>
                   </td>
 
                   {/* 5. Hình thức học */}
-                  <td className="py-3 px-3.5 text-center whitespace-nowrap">
+                  <td className="py-3 px-4 text-center">
                     <Tag
                       color={isPractice ? "green" : "blue"}
-                      className="text-[10px] px-2 py-0.5 m-0 font-semibold"
+                      className="text-[10px] px-2 py-0.5 m-0 font-semibold inline-block"
                     >
                       {isPractice ? "Thực hành" : "Lý thuyết"}
                     </Tag>
                   </td>
 
                   {/* 6. Hình thức dạy */}
-                  <td className="py-3 px-3.5 text-center whitespace-nowrap">
+                  <td className="py-3 px-4 text-center">
                     <Tag
                       color={isOnline ? "purple" : "cyan"}
-                      className="text-[10px] px-2 py-0.5 m-0 font-semibold"
+                      className="text-[10px] px-2 py-0.5 m-0 font-semibold inline-block"
                     >
                       {isOnline ? "Trực tuyến" : "Trực tiếp"}
                     </Tag>
                   </td>
 
-                  {/* 7. Room & Building */}
-                  <td className="py-3 px-3.5 whitespace-nowrap">
-                    <span className="font-semibold text-slate-800 block">
+                  {/* 7. Room & Building: single line */}
+                  <td className="py-3 px-4">
+                    <span className="font-semibold text-slate-800">
                       {slot.room}
                     </span>
-                    <span className="text-[11px] text-slate-400 block">
-                      {slot.building}
+                    <span className="text-slate-500">
+                      {" "}• {slot.building}
                     </span>
                   </td>
 
-                  {/* 8. Instructor */}
-                  <td className="py-3 px-3.5 whitespace-nowrap text-slate-600">
+                  {/* 8. Teacher */}
+                  <td className="py-3 px-4 text-slate-700 font-medium">
                     {slot.instructorName}
                   </td>
 
-                  {/* 9. Ghi chú */}
-                  <td className="py-3 px-3.5 max-w-[200px]">
-                    <span className="text-slate-600 text-[11px] line-clamp-2 italic" title={slot.notes || slot.lessonTopic}>
-                      {slot.notes || slot.lessonTopic || "—"}
-                    </span>
+                  {/* 9. Note: single line */}
+                  <td className="py-3 px-4 text-slate-600 italic text-[11px]">
+                    {slot.notes || slot.lessonTopic || "—"}
                   </td>
 
                   {/* 10. Status */}
-                  <td className="py-3 px-3.5 text-center whitespace-nowrap">
+                  <td className="py-3 px-4 text-center">
                     {getStatusBadge(slot.status)}
                   </td>
 
-                  {/* 11. Liên kết khác */}
-                  <td className="py-3 px-3.5 text-center whitespace-nowrap">
+                  {/* 11. Online Link */}
+                  <td className="py-3 px-4 text-center">
                     {slot.onlineUrl ? (
                       <a
                         href={slot.onlineUrl}

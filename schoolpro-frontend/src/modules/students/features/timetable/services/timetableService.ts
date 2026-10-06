@@ -21,7 +21,17 @@ class TimetableService {
     return new Promise((resolve) => {
       setTimeout(() => {
         const target = dayjs(filter.selectedDate);
-        let filtered = [...mockTimetableSlots];
+        const weekStart = target.startOf("isoWeek");
+
+        // Dynamically map slots according to target week so all weeks have active high school schedule
+        let filtered = mockTimetableSlots.map((slot, index) => {
+          const slotDate = weekStart.add(slot.dayOfWeek - 2, "day").format("YYYY-MM-DD");
+          return {
+            ...slot,
+            id: `${slot.id}-${target.format("YYYY-MM-DD")}-${index}`,
+            date: slotDate,
+          };
+        });
 
         // 1. Filter by Week (or Date/Month if specified)
         if (filter.filterMode === "date") {
@@ -35,17 +45,6 @@ class TimetableService {
         } else if (filter.filterMode === "year") {
           filtered = filtered.filter((s) => {
             return dayjs(s.date).year() === target.year();
-          });
-        } else {
-          // Default: Filter by week - dynamically map slots according to dayOfWeek in target week
-          const weekStart = target.startOf("isoWeek");
-          filtered = mockTimetableSlots.map((slot, index) => {
-            const slotDate = weekStart.add(slot.dayOfWeek - 2, "day").format("YYYY-MM-DD");
-            return {
-              ...slot,
-              id: `${slot.id}-${target.format("YYYY-MM-DD")}-${index}`,
-              date: slotDate,
-            };
           });
         }
 

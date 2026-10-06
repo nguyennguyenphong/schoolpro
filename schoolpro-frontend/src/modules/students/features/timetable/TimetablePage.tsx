@@ -62,7 +62,7 @@ export const TimetablePage: React.FC = () => {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            Tra cứu lịch học tuần, giảng đường, giảng viên và ca học các môn trong tuần
+            Tra cứu lịch học tuần, phòng học, giáo viên bộ môn và ca học các môn trong tuần
           </p>
         </div>
       </div>

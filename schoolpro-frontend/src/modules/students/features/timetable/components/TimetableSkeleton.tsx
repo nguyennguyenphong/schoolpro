@@ -4,25 +4,6 @@ import { Card } from "@/components/ui/Card";
 export const TimetableSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 animate-pulse">
-      {/* 4 Summary Cards Skeleton */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <Card
-            key={i}
-            className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-24 flex flex-col justify-between"
-          >
-            <div className="flex justify-between items-start">
-              <div className="space-y-2">
-                <div className="h-3 w-20 bg-slate-200 rounded" />
-                <div className="h-6 w-24 bg-slate-200 rounded" />
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-slate-100" />
-            </div>
-            <div className="h-2 w-32 bg-slate-100 rounded" />
-          </Card>
-        ))}
-      </div>
-
       {/* Filter Bar Skeleton */}
       <Card className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-28 flex flex-col justify-between">
         <div className="flex justify-between items-center">
