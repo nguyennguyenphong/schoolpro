@@ -53,7 +53,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
       }
       width={840}
       title={null}
-      destroyOnClose
+      destroyOnHidden
       centered
     >
       <div className="space-y-4 pt-1 text-slate-800">

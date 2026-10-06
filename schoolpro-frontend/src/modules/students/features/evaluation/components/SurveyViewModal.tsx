@@ -31,7 +31,7 @@ export const SurveyViewModal: React.FC<SurveyViewModalProps> = ({
       }
       width={680}
       title={null}
-      destroyOnClose
+      destroyOnHidden
       centered
     >
       <div className="space-y-4 pt-1 max-h-[75vh] overflow-y-auto pr-1">

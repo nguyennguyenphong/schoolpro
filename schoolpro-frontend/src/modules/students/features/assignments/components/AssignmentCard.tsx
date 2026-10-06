@@ -59,8 +59,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
 
   return (
     <div
-      onClick={() => onClick(assignment)}
-      className="h-60 w-full bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between transition-all cursor-pointer group"
+      className="h-60 w-full bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between transition-all"
     >
       <div>
         <div className="flex items-center justify-between gap-1 mb-2">
@@ -111,6 +110,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
               e.stopPropagation();
               onClick(assignment);
             }}
+            href={`/student/assignments/${assignment.id}`}
           >
             {assignment.status === "pending"
               ? "Nộp bài"

@@ -50,7 +50,7 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
       open={open}
       onCancel={onClose}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
       width={560}
       centered
       title={

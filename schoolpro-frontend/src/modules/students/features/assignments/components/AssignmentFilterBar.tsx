@@ -83,7 +83,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* Top row: Search input & View mode toggle */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">

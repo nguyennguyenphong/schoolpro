@@ -811,7 +811,7 @@ export const SurveyDetailPage: React.FC = () => {
         footer={null}
         width={480}
         centered
-        destroyOnClose
+        destroyOnHidden
       >
         <div className="p-2 space-y-4">
           <div className="flex items-center gap-3">

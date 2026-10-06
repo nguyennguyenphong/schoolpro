@@ -3,6 +3,7 @@ import { Modal, message } from "antd";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { PdfViewerModal } from "@/components/pdf";
 import type {
   AssignmentItem,
   AssignmentSubmission,
@@ -24,6 +25,11 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
   const [submissionContent, setSubmissionContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [previewPdf, setPreviewPdf] = useState<{
+    url: string;
+    name: string;
+    size: string;
+  } | null>(null);
 
   if (!assignment) return null;
 
@@ -122,26 +128,90 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
               Tài liệu & Tệp đính kèm ({assignment.attachments.length})
             </h4>
             <div className="space-y-1.5">
-              {assignment.attachments.map((file, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg text-xs hover:border-blue-400 transition-colors"
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <Icon name="file" size={15} className="text-blue-600 shrink-0" />
-                    <span className="font-medium text-slate-800 truncate">{file.name}</span>
-                    <span className="text-[11px] text-slate-400">({file.size})</span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="text-xs h-7 px-2 shrink-0"
-                    onClick={() => message.info(`Đang tải xuống: ${file.name}`)}
+              {assignment.attachments.map((file, idx) => {
+                const isPdf =
+                  file.name.toLowerCase().endsWith(".pdf") ||
+                  (file.url ? file.url.toLowerCase().endsWith(".pdf") : false);
+
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => {
+                      if (isPdf) {
+                        setPreviewPdf({
+                          url: file.url || "/sample-notice.pdf",
+                          name: file.name,
+                          size: file.size,
+                        });
+                      }
+                    }}
+                    className={`flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg text-xs transition-colors ${
+                      isPdf
+                        ? "hover:border-rose-400 hover:bg-rose-50/30 cursor-pointer group"
+                        : "hover:border-blue-400"
+                    }`}
                   >
-                    <Icon name="download" size={12} />
-                    Tải về
-                  </Button>
-                </div>
-              ))}
+                    <div className="flex items-center gap-2 truncate">
+                      <div
+                        className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${
+                          isPdf
+                            ? "bg-rose-50 text-rose-600 border border-rose-200/60"
+                            : "bg-blue-50 text-blue-600"
+                        }`}
+                      >
+                        <Icon name="file" size={14} />
+                      </div>
+                      <div className="min-w-0 truncate">
+                        <span
+                          className={`font-medium text-slate-800 truncate block ${
+                            isPdf ? "group-hover:text-rose-700" : ""
+                          }`}
+                        >
+                          {file.name}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                          <span>{file.size}</span>
+                          {isPdf && (
+                            <span className="text-rose-600 font-bold bg-rose-50 px-1 rounded">
+                              PDF
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {isPdf && (
+                        <Button
+                          variant="outline"
+                          className="text-xs h-7 px-2 shrink-0 border-rose-200 text-rose-600 hover:bg-rose-50"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setPreviewPdf({
+                              url: file.url || "/sample-notice.pdf",
+                              name: file.name,
+                              size: file.size,
+                            });
+                          }}
+                        >
+                          <Icon name="eye" size={12} className="mr-1" />
+                          Xem trước
+                        </Button>
+                      )}
+                      <Button
+                        variant="outline"
+                        className="text-xs h-7 px-2 shrink-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          message.info(`Đang tải xuống: ${file.name}`);
+                        }}
+                      >
+                        <Icon name="download" size={12} />
+                        Tải về
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -174,9 +244,30 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
               <span className="text-slate-500 font-normal">Thời gian: {assignment.submission.submittedAt}</span>
             </div>
             {assignment.submission.fileName && (
-              <div className="flex items-center gap-1.5 text-slate-700">
-                <Icon name="file" size={13} className="text-blue-600 shrink-0" />
-                <span className="font-medium">{assignment.submission.fileName}</span>
+              <div className="flex items-center justify-between gap-2 text-slate-700 pt-0.5">
+                <div className="flex items-center gap-1.5 min-w-0 truncate">
+                  <Icon name="file" size={13} className="text-blue-600 shrink-0" />
+                  <span className="font-medium truncate">{assignment.submission.fileName}</span>
+                </div>
+                {(assignment.submission.fileName.toLowerCase().endsWith(".pdf") ||
+                  (assignment.submission.fileUrl
+                    ? assignment.submission.fileUrl.toLowerCase().endsWith(".pdf")
+                    : false)) && (
+                  <Button
+                    variant="outline"
+                    className="text-xs h-6 px-2 text-rose-600 border-rose-200 hover:bg-rose-50 shrink-0"
+                    onClick={() => {
+                      setPreviewPdf({
+                        url: assignment.submission?.fileUrl || "/sample-notice.pdf",
+                        name: assignment.submission?.fileName || "Bai_lam.pdf",
+                        size: "Bài làm đã nộp",
+                      });
+                    }}
+                  >
+                    <Icon name="eye" size={11} className="mr-1" />
+                    Xem trước PDF
+                  </Button>
+                )}
               </div>
             )}
             {assignment.submission.content && (
@@ -244,6 +335,17 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
           </div>
         )}
       </div>
+
+      {/* PDF Viewer Modal */}
+      {previewPdf && (
+        <PdfViewerModal
+          isOpen={Boolean(previewPdf)}
+          onClose={() => setPreviewPdf(null)}
+          fileUrl={previewPdf.url}
+          fileName={previewPdf.name}
+          fileSize={previewPdf.size}
+        />
+      )}
     </Modal>
   );
 };

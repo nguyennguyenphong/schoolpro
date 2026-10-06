@@ -38,7 +38,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
       }
       width={680}
       title={null}
-      destroyOnClose
+      destroyOnHidden
       centered
     >
       <div className="space-y-4 pt-1">

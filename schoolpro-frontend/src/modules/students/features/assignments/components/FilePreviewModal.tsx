@@ -2,6 +2,7 @@ import React from "react";
 import { Modal } from "antd";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
+import { PdfViewer } from "@/components/pdf";
 import type { SubmittedFile } from "@/modules/students/features/assignments/types";
 import { FILE_CATEGORIES_META } from "@/modules/students/features/assignments/utils/fileUtils";
 
@@ -25,8 +26,14 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
       open={open}
       onCancel={onClose}
       footer={null}
-      destroyOnClose
-      width={file.type === "video" || file.type === "image" ? 760 : 540}
+      destroyOnHidden      
+      width={
+        file.type === "pdf"
+          ? 960
+          : file.type === "video" || file.type === "image"
+            ? 760
+            : 540
+      }
       centered
       title={
         <div className="flex items-center gap-2.5 pr-6">
@@ -157,23 +164,11 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
         {/* PDF PREVIEW */}
         {file.type === "pdf" && (
-          <div className="p-6 bg-rose-50/50 border border-rose-200 rounded-xl space-y-3 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-rose-600 text-white flex items-center justify-center mx-auto shadow-md shadow-rose-500/20 font-bold text-xl">
-              PDF
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0.5">{file.name}</h4>
-              <p className="text-xs text-rose-700">Tài liệu định dạng PDF ({file.size})</p>
-            </div>
-            <div className="p-3 bg-white rounded-lg border border-rose-100 text-xs text-slate-600 text-left space-y-1">
-              <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                <Icon name="info" size={13} className="text-rose-600" />
-                <span>Định dạng bài làm tiêu chuẩn:</span>
-              </div>
-              <p className="text-[11px] text-slate-500 mb-0">
-                File PDF bảo đảm giữ nguyên định dạng trang in, hình vẽ và công thức toán học.
-              </p>
-            </div>
+          <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-inner">
+            <PdfViewer
+              fileUrl={file.previewUrl || file.url || "/sample-notice.pdf"}
+              className="h-[68vh] w-full"
+            />
           </div>
         )}
 

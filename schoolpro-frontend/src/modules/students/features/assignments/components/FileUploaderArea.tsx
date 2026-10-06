@@ -45,8 +45,8 @@ export const FileUploaderArea: React.FC<FileUploaderAreaProps> = ({
       const category = detectFileType(file.name);
       let previewUrl: string | undefined = undefined;
 
-      // Create preview object URL for multimedia
-      if (category === "image" || category === "video" || category === "audio") {
+      // Create preview object URL for multimedia & PDF documents
+      if (category === "image" || category === "video" || category === "audio" || category === "pdf") {
         try {
           previewUrl = URL.createObjectURL(file);
         } catch {

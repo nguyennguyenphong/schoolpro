@@ -97,7 +97,7 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
       open={isOpen}
       onCancel={onClose}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
       centered
       width={600}
       title={

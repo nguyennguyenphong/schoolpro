@@ -19,7 +19,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({ 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số bài tập */}
-      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:assignments.summary.total")}
@@ -57,7 +57,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({ 
       </Card>
 
       {/* 2. Cần hoàn thành */}
-      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:assignments.summary.pending")}
@@ -95,7 +95,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({ 
       </Card>
 
       {/* 3. Quá hạn / Cần chú ý */}
-      <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:assignments.summary.overdue")}
@@ -130,7 +130,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({ 
       </Card>
 
       {/* 4. Đã chấm & Điểm trung bình */}
-      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t("card:assignments.summary.graded")}
