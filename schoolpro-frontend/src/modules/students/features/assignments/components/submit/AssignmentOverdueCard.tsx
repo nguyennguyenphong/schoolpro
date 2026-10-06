@@ -37,7 +37,7 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
 
       {/* Reopen Request Info if already submitted */}
       {assignment.reopenRequest && (
-        <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs space-y-1.5">
+        <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs space-y-1.5 mt-4">
           <div className="flex items-center justify-between font-bold text-amber-900">
             <span className="flex items-center gap-1.5">
               <Icon name="clock" size={13} className="text-amber-600" />
