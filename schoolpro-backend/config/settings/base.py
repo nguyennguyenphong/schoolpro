@@ -52,7 +52,7 @@ LOCAL_APPS = [
     "apps.system.apps.SystemConfig",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = LOCAL_APPS + DJANGO_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "common.middleware.request_id.RequestIDMiddleware",
