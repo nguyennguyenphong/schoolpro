@@ -11,8 +11,20 @@ class Timetable(UUIDModel):
     Description: Weekly recurring timetable schedule slots by class, day of week, period, and venue
     """
 
-    class_id = models.UUIDField()
-    semester_id = models.UUIDField()
+    school_class = models.ForeignKey(
+        "core.SchoolClass",
+        on_delete=models.CASCADE,
+        db_column="class_id",
+        related_name="timetables",
+        db_comment="class_id foreign key",
+    )
+    semester = models.ForeignKey(
+        "master.Semester",
+        on_delete=models.CASCADE,
+        db_column="semester_id",
+        related_name="+",
+        db_comment="semester_id foreign key",
+    )
     day_of_week = models.SmallIntegerField()
     period = models.ForeignKey(
         "academic.Period",
@@ -21,7 +33,13 @@ class Timetable(UUIDModel):
         related_name="+",
         db_comment="period_id foreign key",
     )
-    class_subject_teacher_id = models.UUIDField()
+    class_subject_teacher = models.ForeignKey(
+        "core.ClassSubjectTeacher",
+        on_delete=models.CASCADE,
+        db_column="class_subject_teacher_id",
+        related_name="timetables",
+        db_comment="class_subject_teacher_id foreign key",
+    )
     room = models.ForeignKey(
         "academic.Room",
         on_delete=models.SET_NULL,
@@ -30,6 +48,33 @@ class Timetable(UUIDModel):
         null=True,
         blank=True,
         db_comment="room_id foreign key",
+    )
+    class_type = models.CharField(
+        max_length=20,
+        default="THEORY",
+    )
+    is_online = models.BooleanField(
+        default=False,
+    )
+    online_url = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True,
+    )
+    lesson_topic = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+    notes = models.TextField(
+        null=True,
+        blank=True,
+    )
+    color_theme = models.CharField(
+        max_length=30,
+        default="blue",
+        null=True,
+        blank=True,
     )
     effective_from = models.DateField()
     effective_to = models.DateField(null=True, blank=True)

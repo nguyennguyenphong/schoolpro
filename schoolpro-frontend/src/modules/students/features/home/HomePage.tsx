@@ -20,11 +20,11 @@ export const HomePage: React.FC = () => {
 
   if (error && !data) {
     return (
-      <Card className="p-8 border-red-200 bg-red-50/20 text-center space-y-4">
+      <Card className="p-8 text-center space-y-4">
         <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
           <Icon name="info" size={24} />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1 mt-2">
           <h3 className="text-base font-bold text-slate-800">
             {t("message:failedToLoadHome")}
           </h3>
@@ -36,7 +36,7 @@ export const HomePage: React.FC = () => {
         <Button
           variant="primary"
           onClick={() => refetch()}
-          className="rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700"
+          className="mt-3"
         >
           {t("button:retry")}
         </Button>

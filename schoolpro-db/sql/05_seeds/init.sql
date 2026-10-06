@@ -917,16 +917,16 @@ ON CONFLICT (school_id, setting_id) DO NOTHING;
 -- 35. SYS: User Personalized Settings (sys.user_settings)
 -- ---------------------------------------------------------------------
 INSERT INTO sys.user_settings (user_id, setting_id, value)
-SELECT 'a31148cb-1471-4c5e-aa66-0848fae24853', s.id, 'dark'
+SELECT 'a31148cb-1471-4c5e-aa66-0848fae24853'::uuid, s.id, 'dark'
 FROM sys.settings_definitions s WHERE s.code = 'theme'
 UNION ALL
-SELECT 'a31148cb-1471-4c5e-aa66-0848fae24853', s.id, '#7C3AED'
+SELECT 'a31148cb-1471-4c5e-aa66-0848fae24853'::uuid, s.id, '#7C3AED'
 FROM sys.settings_definitions s WHERE s.code = 'primary_color'
 UNION ALL
-SELECT '6c95bfb8-1039-4052-8133-cb540bd04d7e', s.id, 'light'
+SELECT '6c95bfb8-1039-4052-8133-cb540bd04d7e'::uuid, s.id, 'light'
 FROM sys.settings_definitions s WHERE s.code = 'theme'
 UNION ALL
-SELECT '6c95bfb8-1039-4052-8133-cb540bd04d7e', s.id, '#2563EB'
+SELECT '6c95bfb8-1039-4052-8133-cb540bd04d7e'::uuid, s.id, '#2563EB'
 FROM sys.settings_definitions s WHERE s.code = 'primary_color'
 ON CONFLICT (user_id, setting_id) DO UPDATE SET
   value = EXCLUDED.value;
@@ -1257,3 +1257,142 @@ ON CONFLICT (id) DO UPDATE SET
   is_pinned = EXCLUDED.is_pinned,
   department = EXCLUDED.department,
   attachments = EXCLUDED.attachments;
+
+
+-- =====================================================================
+-- 40. MASTER & ACADEMIC: Rooms, Periods & Timetable Schedule Seeds
+-- =====================================================================
+
+-- 40.1 Rooms
+INSERT INTO academic.rooms (id, school_id, code, name, room_type, capacity, building, floor, status)
+VALUES
+  ('c1000001-0000-0000-0000-000000000001', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'P301', 'Phòng học 301', 'CLASSROOM', 45, 'Dãy nhà B', 3, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000002', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'P302', 'Phòng học 302', 'CLASSROOM', 45, 'Dãy nhà B', 3, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000003', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'LAB_HOA', 'Phòng Thí nghiệm Hóa học', 'LAB', 40, 'Dãy nhà C (Khu Thí nghiệm)', 2, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000004', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'LAB_LY', 'Phòng Thí nghiệm Vật lý', 'LAB', 40, 'Dãy nhà C (Khu Thí nghiệm)', 2, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000005', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'LAB_TIN', 'Phòng Máy tính 1', 'COMPUTER_ROOM', 45, 'Dãy nhà A (Khu Công nghệ)', 1, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000006', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'SAN_TD', 'Sân Thể thao đa năng', 'GYM', 100, 'Nhà thi đấu trường', 1, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000007', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'SAN_QS', 'Sân tập Quân sự', 'CLASSROOM', 100, 'Khuôn viên trường', 1, 'AVAILABLE'),
+  ('c1000001-0000-0000-0000-000000000008', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'ONLINE', 'Lớp học trực tuyến THPT', 'CLASSROOM', 100, 'Hệ thống E-Learning', 1, 'AVAILABLE')
+ON CONFLICT (school_id, code) DO UPDATE SET
+  name = EXCLUDED.name,
+  building = EXCLUDED.building;
+
+-- 40.2 Ensure all subject teachers exist for 10A1
+INSERT INTO core.class_subject_teachers (
+  id, class_id, subject_id, teacher_id, semester_id, periods_per_week, notes
+) VALUES
+  ('d1000001-0000-0000-0000-000000000001', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'H746582'),  '7f310b6e-bc2a-4542-8a24-2f3e82dbd11a',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 2, 'Giảng dạy Lịch sử lớp 10A1'),
+  ('d1000001-0000-0000-0000-000000000002', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'B976584'),  'a694e801-b76a-4e71-9871-96e7b4275db2',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 2, 'Giảng dạy Sinh học lớp 10A1'),
+  ('d1000001-0000-0000-0000-000000000003', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'EA479281'), 'a694e801-b76a-4e71-9871-96e7b4275db2',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 2, 'Hoạt động trải nghiệm & Sinh hoạt lớp 10A1')
+ON CONFLICT (class_id, subject_id, semester_id) DO NOTHING;
+
+-- 40.3 Timetables for Class 10A1
+INSERT INTO academic.timetables (
+  id, class_id, semester_id, day_of_week, period_id,
+  class_subject_teacher_id, room_id, class_type, is_online,
+  online_url, lesson_topic, notes, color_theme, effective_from, effective_to
+) VALUES
+  -- Thứ 2 Sáng (Day 2, Morning, Tiết 1): Toán học
+  ('e1000001-0000-0000-0000-000000000001', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   2, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'M839201') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Chương 1: Mệnh đề toán học và Tập hợp số thực', 'Làm bài tập trang 32 SGK, mang máy tính bỏ túi Casio và compa',
+   'blue', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 2 Chiều (Day 2, Afternoon, Tiết 1 / Tiết 6 cả ngày): Giáo dục Thể chất
+  ('e1000001-0000-0000-0000-000000000002', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   2, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'PE657483') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000006', 'PRACTICE', FALSE, NULL,
+   'Kỹ thuật dẫn bóng hai bước lên rổ và phối hợp tấn công nhanh', 'Bắt buộc mặc đồng phục thể dục của trường, mang giày thể thao',
+   'emerald', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 3 Sáng (Day 3, Morning, Tiết 1): Ngữ văn
+  ('e1000001-0000-0000-0000-000000000003', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   3, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'L928374') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Chiến thắng Mtao Mxây (Sử thi Đăm Săn) - Vẻ đẹp người anh hùng', 'Soạn bài câu 1-4 trong SGK, chuẩn bị kiểm tra 15 phút đầu giờ',
+   'violet', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 3 Chiều (Day 3, Afternoon, Tiết 1 / Tiết 6 cả ngày): Tin học (Thực hành Python)
+  ('e1000001-0000-0000-0000-000000000004', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   3, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'CS643291') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000005', 'PRACTICE', FALSE, NULL,
+   'Thực hành cấu trúc dữ liệu danh sách (List) và giải thuật sắp xếp', 'Hoàn thiện bài tập thực hành trên máy và nộp trước 17:00',
+   'indigo', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 4 Sáng (Day 4, Morning, Tiết 1): Tiếng Anh (Trực tuyến)
+  ('e1000001-0000-0000-0000-000000000005', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   4, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'E837465') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000008', 'THEORY', TRUE,
+   'https://meet.google.com/sch-thpt-10a1', 'Unit 3: Music & Arts - Ngữ pháp: Compound Sentences & To-infinitive',
+   'Tiết học trực tuyến qua Google Meet để ôn tập chuyên đề trắc nghiệm',
+   'amber', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 4 Chiều (Day 4, Afternoon, Tiết 1 / Tiết 6 cả ngày): Lịch sử
+  ('e1000001-0000-0000-0000-000000000006', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   4, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'H746582') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Hiện thực lịch sử và nhận thức lịch sử - Khái niệm & vai trò', 'Đọc trước tư liệu lịch sử và chuẩn bị bài thuyết trình nhóm',
+   'amber', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 5 Sáng (Day 5, Morning, Tiết 1): Vật lý
+  ('e1000001-0000-0000-0000-000000000007', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   5, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'P298374') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Độ dịch chuyển và Quãng đường đi được - Vận tốc & Tốc độ', 'Ôn lại các công thức chuyển động thẳng biến đổi đều',
+   'cyan', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 5 Chiều (Day 5, Afternoon, Tiết 1 / Tiết 6 cả ngày): Hóa học (Thực hành thí nghiệm)
+  ('e1000001-0000-0000-0000-000000000008', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   5, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'C187465') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000003', 'PRACTICE', FALSE, NULL,
+   'Thí nghiệm khảo sát tính dẫn điện của dung dịch và phản ứng trao đổi ion', 'Bắt buộc mặc áo blouse trắng và tuân thủ nội quy an toàn phòng thí nghiệm',
+   'rose', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 6 Sáng (Day 6, Morning, Tiết 1): Hóa học (Lý thuyết)
+  ('e1000001-0000-0000-0000-000000000009', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   6, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'C187465') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Cấu tạo nguyên tử - Hạt nhân nguyên tử và Lớp vỏ electron', 'Làm bài tập viết cấu hình electron nguyên tử từ Z=1 đến Z=20',
+   'rose', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 6 Chiều (Day 6, Afternoon, Tiết 1 / Tiết 6 cả ngày): Sinh học
+  ('e1000001-0000-0000-0000-000000000010', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   6, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'B976584') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Các cấp độ tổ chức của thế giới sống - Tế bào và cơ thể sinh vật', 'Quan sát mô hình cấu tạo tế bào nhân sơ và nhân thực',
+   'emerald', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 7 Sáng (Day 7, Morning, Tiết 1): Sinh hoạt lớp & Hoạt động Hướng nghiệp
+  ('e1000001-0000-0000-0000-000000000011', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   7, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 1 AND shift = 'MORNING' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'EA479281') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000001', 'THEORY', FALSE, NULL,
+   'Sơ kết thi đua tuần, định hướng kỹ năng tự học và xây dựng kế hoạch cá nhân', 'Ban cán sự lớp chuẩn bị sổ theo dõi nề nếp và phương hướng tuần tiếp theo',
+   'rose', '2026-09-01', '2027-01-15'),
+
+  -- Thứ 7 Chiều (Day 7, Afternoon, Tiết 1 / Tiết 6 cả ngày): Vật lý (Thực hành thí nghiệm)
+  ('e1000001-0000-0000-0000-000000000012', 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea', '53a5dc39-38dc-41bb-a7db-04745fa7d73a',
+   7, (SELECT id FROM academic.periods WHERE school_id = 'b5ebbdb9-a332-4fef-a64a-149c474159e6' AND period_no = 6 AND shift = 'AFTERNOON' LIMIT 1),
+   (SELECT id FROM core.class_subject_teachers WHERE class_id = 'a6a5db50-e0a6-42d3-90ac-8adbd8806fea' AND subject_id = (SELECT id FROM core.subjects WHERE code = 'P298374') LIMIT 1),
+   'c1000001-0000-0000-0000-000000000004', 'PRACTICE', FALSE, NULL,
+   'Thực hành đo gia tốc rơi tự do và sai số trong phép đo vật lý', 'Nộp bài thu hoạch thực hành nhóm ngay cuối buổi thí nghiệm',
+   'cyan', '2026-09-01', '2027-01-15')
+ON CONFLICT (class_id, semester_id, day_of_week, period_id, effective_from) DO UPDATE SET
+  class_type = EXCLUDED.class_type,
+  is_online = EXCLUDED.is_online,
+  online_url = EXCLUDED.online_url,
+  lesson_topic = EXCLUDED.lesson_topic,
+  notes = EXCLUDED.notes,
+  color_theme = EXCLUDED.color_theme;
