@@ -1,6 +1,6 @@
 """
 Master Domain Entities encapsulating reference data and organizational definitions.
-Covers:
+Covers 9 tables:
   - SchoolEntity ("core"."schools")
   - AcademicYearEntity ("core"."academic_years")
   - SemesterEntity ("core"."semesters")
@@ -14,8 +14,10 @@ Covers:
 
 import uuid
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime
 from typing import Any
+
+import uuid6
 
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code
@@ -30,9 +32,15 @@ class SchoolEntity(BaseDomainEntity):
     address: str | None = None
     phone: str | None = None
     email: str | None = None
+    website: str | None = None
+    tax_id: str | None = None
     principal_name: str | None = None
+    establishment_date: date | None = None
+    logo_url: str | None = None
     is_active: bool = True
     metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -40,7 +48,7 @@ class SchoolEntity(BaseDomainEntity):
     ) -> "SchoolEntity":
         school_code = code or generate_entity_code("SCH")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             code=school_code,
             name=name,
             address=address,
@@ -55,6 +63,9 @@ class AcademicYearEntity(BaseDomainEntity):
     start_date: date
     end_date: date
     is_current: bool = False
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -67,7 +78,7 @@ class AcademicYearEntity(BaseDomainEntity):
     ) -> "AcademicYearEntity":
         ay_code = code or generate_entity_code("AY")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             school_id=school_id,
             code=ay_code,
             name=name,
@@ -83,7 +94,11 @@ class SemesterEntity(BaseDomainEntity):
     name: str
     start_date: date
     end_date: date
+    semester_type: str = "SEMESTER_1"
     is_current: bool = False
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -96,7 +111,7 @@ class SemesterEntity(BaseDomainEntity):
     ) -> "SemesterEntity":
         sem_code = code or generate_entity_code("SEM")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             academic_year_id=academic_year_id,
             code=sem_code,
             name=name,
@@ -111,6 +126,9 @@ class GradeEntity(BaseDomainEntity):
     code: str
     name: str
     order_no: int = 1
+    description: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -118,7 +136,7 @@ class GradeEntity(BaseDomainEntity):
     ) -> "GradeEntity":
         grade_code = code or generate_entity_code("G")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             school_id=school_id,
             code=grade_code,
             name=name,
@@ -133,7 +151,11 @@ class DepartmentEntity(BaseDomainEntity):
     name: str
     department_type: str = "SUBJECT"
     leader_teacher_id: uuid.UUID | None = None
+    email: str | None = None
+    phone: str | None = None
     is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -141,7 +163,7 @@ class DepartmentEntity(BaseDomainEntity):
     ) -> "DepartmentEntity":
         dept_code = code or generate_entity_code("DEP")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             school_id=school_id,
             code=dept_code,
             name=name,
@@ -157,6 +179,14 @@ class SubjectEntity(BaseDomainEntity):
     evaluation_type: str = "SCORE"
     is_compulsory: bool = True
     department_id: uuid.UUID | None = None
+    short_name: str | None = None
+    category: str = "GENERAL"
+    credit_hours: int = 0
+    periods_per_week: int = 2
+    metadata: dict[str, Any] = field(default_factory=dict)
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -168,7 +198,7 @@ class SubjectEntity(BaseDomainEntity):
     ) -> "SubjectEntity":
         subject_code = code or generate_entity_code("SUB")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             school_id=school_id,
             code=subject_code,
             name=name,
@@ -180,10 +210,12 @@ class SubjectEntity(BaseDomainEntity):
 class PositionEntity(BaseDomainEntity):
     code: str
     name: str
-    scope_type: str = "CLASS"
-    max_holders: int | None = 1
-    is_leadership: bool = False
+    applicable_scope: str = "CLASS"
+    rank_weight: int = 1
     description: str | None = None
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -192,6 +224,9 @@ class LookupTypeEntity(BaseDomainEntity):
     name: str
     description: str | None = None
     is_system: bool = True
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -201,4 +236,9 @@ class LookupValueEntity(BaseDomainEntity):
     name: str
     order_no: int = 1
     badge_color: str | None = None
+    icon: str | None = None
     is_default: bool = False
+    is_active: bool = True
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)

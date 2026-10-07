@@ -2,10 +2,10 @@
 Unit tests for ExportTemplate Model, Service, and Repository.
 """
 
-import uuid
 from unittest.mock import MagicMock, patch
 
 import pytest
+import uuid6
 
 from apps.system.models.export_template import ExportTemplate, FileFormat, TemplateType
 from apps.system.services.export_template_service import (
@@ -60,8 +60,8 @@ class TestExportTemplateService:
     @pytest.fixture
     def mock_user(self):
         user = MagicMock()
-        user.id = uuid.uuid4()
-        user.school_id = uuid.uuid4()
+        user.id = uuid6.uuid7()
+        user.school_id = uuid6.uuid7()
         user.department_id = None
         user.full_name = "Quản trị viên"
         return user
@@ -69,10 +69,10 @@ class TestExportTemplateService:
     def test_get_or_create_default_announcement_template_creates_new(self):
         """Test that default announcement template is seeded if not existing."""
         service = ExportTemplateService()
-        school_id = uuid.uuid4()
+        school_id = uuid6.uuid7()
 
         mock_created_template = MagicMock(spec=ExportTemplate)
-        mock_created_template.id = uuid.uuid4()
+        mock_created_template.id = uuid6.uuid7()
         mock_created_template.code = DEFAULT_ANNOUNCEMENT_CODE
         mock_created_template.template_type = TemplateType.ANNOUNCEMENT
         mock_created_template.school_id = school_id
@@ -93,7 +93,7 @@ class TestExportTemplateService:
     def test_get_or_create_default_announcement_template_returns_existing(self):
         """Test returning existing default template if already present."""
         service = ExportTemplateService()
-        school_id = uuid.uuid4()
+        school_id = uuid6.uuid7()
 
         mock_existing = MagicMock(spec=ExportTemplate)
         mock_existing.code = DEFAULT_ANNOUNCEMENT_CODE
@@ -105,10 +105,10 @@ class TestExportTemplateService:
     def test_create_and_update_template(self, mock_user):
         """Test creating and modifying a custom export template."""
         service = ExportTemplateService()
-        unique_code = f"CUSTOM_ANN_{uuid.uuid4().hex[:8].upper()}"
+        unique_code = f"CUSTOM_ANN_{uuid6.uuid7().hex[:8].upper()}"
 
         mock_instance = MagicMock(spec=ExportTemplate)
-        mock_instance.id = uuid.uuid4()
+        mock_instance.id = uuid6.uuid7()
         mock_instance.code = unique_code
         mock_instance.name = "Biểu mẫu thông báo tuỳ biến"
         mock_instance.is_default = False
@@ -151,7 +151,7 @@ class TestExportTemplateService:
     def test_render_template_service_call(self):
         """Test rendering via service method delegates to template.render_html."""
         service = ExportTemplateService()
-        template_id = uuid.uuid4()
+        template_id = uuid6.uuid7()
 
         mock_template = MagicMock(spec=ExportTemplate)
         mock_template.id = template_id
@@ -176,13 +176,13 @@ class TestExportTemplateService:
             patch.object(service.repository, "get_by_id", return_value=None),
             pytest.raises(ResourceNotFoundError),
         ):
-            service.render_template(template_id=uuid.uuid4(), context_data={})
+            service.render_template(template_id=uuid6.uuid7(), context_data={})
 
     def test_delete_template(self, mock_user):
         """Test soft deleting an export template."""
         service = ExportTemplateService()
         mock_template = MagicMock(spec=ExportTemplate)
-        mock_template.id = uuid.uuid4()
+        mock_template.id = uuid6.uuid7()
         mock_template.is_default = False
         mock_template.delete = MagicMock()
 

@@ -1,6 +1,6 @@
 """
 Academic Domain Entities encapsulating Timetables, Assignments, Exams, Attendance, Scores, Fees.
-Covers 26 tables:
+Covers 29 tables:
   - TimetableEntity ("academic"."timetables")
   - TimetableChangeEntity ("academic"."timetable_changes")
   - RoomEntity ("academic"."rooms")
@@ -38,6 +38,8 @@ from datetime import date, datetime, time
 from decimal import Decimal
 from typing import Any
 
+import uuid6
+
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code
 
@@ -45,15 +47,17 @@ from common.utils.code_generator import generate_entity_code
 @dataclass
 class TimetableEntity(BaseDomainEntity):
     class_id: uuid.UUID
-    semester_id: uuid.UUID
+    subject_id: uuid.UUID
+    teacher_id: uuid.UUID
     period_id: uuid.UUID
+    semester_id: uuid.UUID
     day_of_week: int
-    class_subject_teacher_id: uuid.UUID
-    effective_from: date
     room_id: uuid.UUID | None = None
-    lesson_topic: str | None = None
-    is_online: bool = False
-    color_theme: str | None = "blue"
+    valid_from: date = field(default_factory=date.today)
+    valid_to: date | None = None
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -62,68 +66,81 @@ class TimetableChangeEntity(BaseDomainEntity):
     change_type: str = "ROOM_CHANGE"
     change_date: date = field(default_factory=date.today)
     substitute_teacher_id: uuid.UUID | None = None
+    new_period_id: uuid.UUID | None = None
     new_room_id: uuid.UUID | None = None
     reason: str | None = None
+    approved_by: uuid.UUID | None = None
     status: str = "PENDING"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class RoomEntity(BaseDomainEntity):
     school_id: uuid.UUID
-    code: str
+    room_code: str
     name: str
-    room_type: str = "CLASSROOM"
+    room_type_code: str = "CLASSROOM"
     capacity: int = 45
     building: str | None = None
     floor: int | None = 1
     status: str = "AVAILABLE"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
-        cls, school_id: uuid.UUID, name: str, room_type: str = "CLASSROOM", code: str | None = None
+        cls, school_id: uuid.UUID, name: str, room_type_code: str = "CLASSROOM", code: str | None = None
     ) -> "RoomEntity":
         room_code = code or generate_entity_code("RM")
         return cls(
-            id=uuid.uuid4(), school_id=school_id, code=room_code, name=name, room_type=room_type
+            id=uuid6.uuid7(), school_id=school_id, room_code=room_code, name=name, room_type_code=room_type_code
         )
 
 
 @dataclass
 class PeriodEntity(BaseDomainEntity):
     school_id: uuid.UUID
-    period_no: int
+    period_number: int
     shift: str = "MORNING"
     start_time: time = field(default_factory=lambda: time(7, 0))
     end_time: time = field(default_factory=lambda: time(7, 45))
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class AssignmentEntity(BaseDomainEntity):
-    class_subject_teacher_id: uuid.UUID
+    class_id: uuid.UUID
+    subject_id: uuid.UUID
+    teacher_id: uuid.UUID
     title: str
     due_date: datetime
-    assignment_type: str = "HOMEWORK"
-    assigned_date: date = field(default_factory=date.today)
-    max_score: Decimal = Decimal("10.00")
+    school_id: uuid.UUID | None = None
+    academic_year_id: uuid.UUID | None = None
+    semester_id: uuid.UUID | None = None
     description: str | None = None
-    attachments: list[dict[str, Any]] = field(default_factory=list)
-    is_published: bool = True
-    submission_format: str = "ANY"
+    assignment_type: str = "HOMEWORK"
+    instructions: str | None = None
+    max_score: Decimal = Decimal("10.00")
+    assigned_date: date = field(default_factory=date.today)
+    extended_due_date: datetime | None = None
+    submission_type: str = "ONLINE_FILE"
     allowed_file_types: list[str] = field(default_factory=lambda: ["pdf", "docx", "zip"])
     max_file_size_mb: int = 50
-    extended_due_date_1: datetime | None = None
-    extended_due_date_2: datetime | None = None
-    extended_due_date_3: datetime | None = None
-    created_by: uuid.UUID | None = None
+    is_group_assignment: bool = False
+    group_size_limit: int | None = None
+    is_published: bool = True
+    status: str = "OPEN"
+    grading_criteria: dict[str, Any] = field(default_factory=dict)
+    attachment_url: str | None = None
+    total_submissions: int = 0
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     def is_past_due(self, current_time: datetime | None = None) -> bool:
         check_time = current_time or datetime.now()
-        effective_deadline = (
-            self.extended_due_date_3
-            or self.extended_due_date_2
-            or self.extended_due_date_1
-            or self.due_date
-        )
+        effective_deadline = self.extended_due_date or self.due_date
         return check_time > effective_deadline
 
 
@@ -132,23 +149,26 @@ class AssignmentSubmissionEntity(BaseDomainEntity):
     assignment_id: uuid.UUID
     student_id: uuid.UUID
     submitted_at: datetime = field(default_factory=datetime.now)
-    content_text: str | None = None
-    attachments: list[dict[str, Any]] = field(default_factory=list)
+    submission_content: str | None = None
+    attachment_url: str | None = None
+    file_size_bytes: int | None = None
+    is_late: bool = False
     score: Decimal | None = None
     feedback: str | None = None
     status: str = "SUBMITTED"
     graded_by: uuid.UUID | None = None
     graded_at: datetime | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class AssignmentEventLogEntity(BaseDomainEntity):
     assignment_id: uuid.UUID
-    event_type: str
-    actor_id: uuid.UUID | None = None
+    action_type: str
     student_id: uuid.UUID | None = None
-    description: str | None = None
-    event_data: dict[str, Any] = field(default_factory=dict)
+    payload: dict[str, Any] = field(default_factory=dict)
+    ip_address: str | None = None
     created_at: datetime = field(default_factory=datetime.now)
 
 
@@ -157,138 +177,209 @@ class AttendanceEntity(BaseDomainEntity):
     class_id: uuid.UUID
     student_id: uuid.UUID
     attendance_date: date
+    status: str = "PRESENT"
+    session: str = "MORNING"
     period_id: uuid.UUID | None = None
-    status_code: str = "PRESENT"
-    reason: str | None = None
+    note: str | None = None
     recorded_by: uuid.UUID | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ExamEntity(BaseDomainEntity):
     school_id: uuid.UUID
-    semester_id: uuid.UUID
     subject_id: uuid.UUID
-    name: str
+    semester_id: uuid.UUID
+    grade_id: uuid.UUID
+    title: str
     exam_type: str = "MIDTERM"
-    exam_date: date = field(default_factory=date.today)
     duration_minutes: int = 60
-    max_score: Decimal = Decimal("10.00")
-    paper_code: str | None = None
+    total_score: Decimal = Decimal("10.00")
+    pass_score: Decimal = Decimal("5.00")
+    start_time: datetime | None = None
+    end_time: datetime | None = None
+    room_id: uuid.UUID | None = None
+    is_published: bool = True
+    status: str = "UPCOMING"
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
         cls,
         school_id: uuid.UUID,
-        semester_id: uuid.UUID,
         subject_id: uuid.UUID,
-        name: str,
-        code: str | None = None,
+        semester_id: uuid.UUID,
+        grade_id: uuid.UUID,
+        title: str,
     ) -> "ExamEntity":
-        paper_code = code or generate_entity_code("EX")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             school_id=school_id,
-            semester_id=semester_id,
             subject_id=subject_id,
-            name=name,
-            paper_code=paper_code,
+            semester_id=semester_id,
+            grade_id=grade_id,
+            title=title,
         )
 
 
 @dataclass
 class ExamQuestionEntity(BaseDomainEntity):
     exam_id: uuid.UUID
-    question_no: int
-    content: str
-    question_type: str = "MULTIPLE_CHOICE"
+    question_id: uuid.UUID
+    question_order: int
     points: Decimal = Decimal("1.00")
-    options: list[dict[str, Any]] = field(default_factory=list)
-    correct_answer: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ExamSubmissionEntity(BaseDomainEntity):
     exam_id: uuid.UUID
     student_id: uuid.UUID
+    score: Decimal | None = None
+    answers_data: dict[str, Any] = field(default_factory=dict)
     started_at: datetime = field(default_factory=datetime.now)
     submitted_at: datetime | None = None
-    total_score: Decimal | None = None
+    is_passed: bool | None = None
     status: str = "SUBMITTED"
+    grader_id: uuid.UUID | None = None
+    feedback: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ExamSubmissionAnswerEntity(BaseDomainEntity):
     submission_id: uuid.UUID
-    question_id: uuid.UUID
-    student_answer: str | None = None
+    exam_question_id: uuid.UUID
+    selected_answers: list[Any] = field(default_factory=list)
+    student_text_response: str | None = None
     is_correct: bool = False
-    awarded_points: Decimal = Decimal("0.00")
+    score_awarded: Decimal = Decimal("0.00")
+    grader_notes: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class QuestionBankEntity(BaseDomainEntity):
+    school_id: uuid.UUID
     subject_id: uuid.UUID
     grade_id: uuid.UUID
     content: str
-    difficulty_level: str = "MEDIUM"
-    question_type: str = "MULTIPLE_CHOICE"
-    options: list[dict[str, Any]] = field(default_factory=list)
-    correct_answer: str | None = None
+    created_by: uuid.UUID | None = None
+    question_type: str = "SINGLE_CHOICE"
+    cognitive_level: str = "KNOWLEDGE"
+    options: list[Any] = field(default_factory=list)
+    correct_answers: list[Any] = field(default_factory=list)
+    explanation: str | None = None
+    media_urls: list[str] = field(default_factory=list)
+    points: Decimal = Decimal("1.00")
+    status: str = "APPROVED"
+    usage_count: int = 0
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ScoreTypeEntity(BaseDomainEntity):
     code: str
     name: str
-    coefficient: int = 1
-    min_evaluations: int = 1
+    school_id: uuid.UUID | None = None
+    coefficient: Decimal = Decimal("1.00")
+    min_required: int = 1
     is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
-    def create(cls, name: str, coefficient: int = 1, code: str | None = None) -> "ScoreTypeEntity":
+    def create(cls, name: str, coefficient: Decimal = Decimal("1.00"), code: str | None = None) -> "ScoreTypeEntity":
         st_code = code or generate_entity_code("ST")
-        return cls(id=uuid.uuid4(), code=st_code, name=name, coefficient=coefficient)
+        return cls(id=uuid6.uuid7(), code=st_code, name=name, coefficient=coefficient)
 
 
 @dataclass
 class StudentScoreEntity(BaseDomainEntity):
     student_id: uuid.UUID
-    class_subject_teacher_id: uuid.UUID
+    subject_id: uuid.UUID
+    class_id: uuid.UUID
+    semester_id: uuid.UUID
+    academic_year_id: uuid.UUID
     score_type_id: uuid.UUID
     score_value: Decimal | None = None
-    score_text: str | None = None
-    evaluated_date: date = field(default_factory=date.today)
+    evaluation_remark: str | None = None
+    entered_by: uuid.UUID | None = None
     is_locked: bool = False
+    locked_at: datetime | None = None
+    locked_by: uuid.UUID | None = None
+    score_history: list[dict[str, Any]] = field(default_factory=list)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class StudentTermSummaryEntity(BaseDomainEntity):
     student_id: uuid.UUID
+    subject_id: uuid.UUID
+    class_id: uuid.UUID
     semester_id: uuid.UUID
-    gpa: Decimal | None = None
-    academic_performance: str | None = None
-    conduct_grade: str | None = None
-    rank_in_class: int | None = None
+    academic_year_id: uuid.UUID
+    term_type: str = "SEMESTER_1"
+    average_score: Decimal | None = None
+    evaluation_result: str | None = "DAT"
+    passed: bool = True
+    calculated_at: datetime = field(default_factory=datetime.now)
+    calculated_by: uuid.UUID | None = None
+    calculation_details: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ReportCardEntity(BaseDomainEntity):
     student_id: uuid.UUID
+    class_id: uuid.UUID
     academic_year_id: uuid.UUID
-    final_gpa: Decimal | None = None
-    final_performance: str | None = None
-    final_conduct: str | None = None
+    semester_id: uuid.UUID | None = None
+    gpa: Decimal | None = None
+    academic_rank: str | None = "KHA"
+    conduct_rank: str | None = "TOT"
+    total_absences: int = 0
+    unexcused_absences: int = 0
+    title: str | None = None
+    rank_position: int | None = None
     is_promoted: bool = True
-    homeroom_comment: str | None = None
+    is_graduated: bool = False
+    homeroom_teacher_feedback: str | None = None
+    principal_approval_status: str = "PENDING"
+    principal_approved_at: datetime | None = None
+    issue_date: date = field(default_factory=date.today)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ConductEvaluationEntity(BaseDomainEntity):
     student_id: uuid.UUID
+    class_id: uuid.UUID
     semester_id: uuid.UUID
+    academic_year_id: uuid.UUID
+    month: int | None = None
+    evaluation_type: str = "TERM"
     conduct_grade: str = "TOT"
-    homeroom_comment: str | None = None
-    principal_approved: bool = False
+    conduct_score: Decimal | None = None
+    infractions_count: int = 0
+    merits_count: int = 0
+    teacher_comments: str | None = None
+    assessed_by: uuid.UUID | None = None
+    status: str = "APPROVED"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -296,59 +387,104 @@ class SubjectExemptionEntity(BaseDomainEntity):
     student_id: uuid.UUID
     subject_id: uuid.UUID
     semester_id: uuid.UUID
-    exemption_type: str = "FULL"
-    reason: str | None = None
+    reason: str
+    academic_year_id: uuid.UUID | None = None
+    exemption_type: str = "FULL_EXEMPTION"
+    certificate_name: str | None = None
+    certificate_score: str | None = None
+    certificate_file_url: str | None = None
+    certificate_issued_date: date | None = None
+    certificate_expiry_date: date | None = None
+    verification_url: str | None = None
+    converted_score: Decimal | None = None
+    decision_number: str | None = None
+    valid_from: date = field(default_factory=date.today)
+    valid_to: date | None = None
+    status: str = "APPROVED"
+    rejection_reason: str | None = None
+    approved_by: uuid.UUID | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class CurriculumTrackEntity(BaseDomainEntity):
     school_id: uuid.UUID
+    grade_id: uuid.UUID
     code: str
     name: str
+    academic_year_id: uuid.UUID | None = None
+    track_category: str = "KHTN"
     description: str | None = None
-
-    @classmethod
-    def create(
-        cls, school_id: uuid.UUID, name: str, code: str | None = None
-    ) -> "CurriculumTrackEntity":
-        tr_code = code or generate_entity_code("TRK")
-        return cls(id=uuid.uuid4(), school_id=school_id, code=tr_code, name=name)
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class CurriculumTrackSubjectEntity(BaseDomainEntity):
     track_id: uuid.UUID
     subject_id: uuid.UUID
-    is_advanced: bool = False
+    is_specialized: bool = False
+    weekly_periods: int = 2
+    is_compulsory: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class StudentTrackEnrollmentEntity(BaseDomainEntity):
     student_id: uuid.UUID
     track_id: uuid.UUID
-    enrolled_date: date = field(default_factory=date.today)
+    academic_year_id: uuid.UUID
+    status: str = "ACTIVE"
+    registration_date: date = field(default_factory=date.today)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ClassJournalEntryEntity(BaseDomainEntity):
     class_id: uuid.UUID
-    period_id: uuid.UUID
-    entry_date: date
-    subject_id: uuid.UUID
     teacher_id: uuid.UUID
-    lesson_content: str
-    attendance_summary: str | None = None
-    conduct_rating: str = "A"
+    subject_id: uuid.UUID
+    entry_date: date = field(default_factory=date.today)
+    period_id: uuid.UUID | None = None
+    timetable_id: uuid.UUID | None = None
+    day_of_week: int | None = None
+    shift: str = "MORNING"
+    period_number: int | None = None
+    lesson_topic: str | None = None
+    homework_assigned: str | None = None
+    total_present: int = 0
+    absent_unexcused: int = 0
+    absent_excused: int = 0
+    student_absent_names: str | None = None
+    discipline_rating: str = "A"
+    teacher_notes: str | None = None
+    signature_confirmed: bool = False
+    signed_at: datetime | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class CurriculumMaterialEntity(BaseDomainEntity):
+    school_id: uuid.UUID
     subject_id: uuid.UUID
     grade_id: uuid.UUID
     title: str
+    teacher_id: uuid.UUID | None = None
     description: str | None = None
-    author_teacher_id: uuid.UUID | None = None
+    material_type: str = "LECTURE_NOTE"
+    file_format: str = "PDF"
+    file_size_mb: Decimal = Decimal("0.00")
+    download_url: str | None = None
     is_public: bool = True
+    views_count: int = 0
+    downloads_count: int = 0
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -357,7 +493,9 @@ class MaterialAttachmentEntity(BaseDomainEntity):
     file_name: str
     file_url: str
     file_size_bytes: int = 0
-    file_type: str = "application/pdf"
+    mime_type: str | None = "application/pdf"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -366,27 +504,15 @@ class FeeItemEntity(BaseDomainEntity):
     academic_year_id: uuid.UUID
     code: str
     name: str
-    amount: Decimal = Decimal("0.00")
-    is_compulsory: bool = True
-
-    @classmethod
-    def create(
-        cls,
-        school_id: uuid.UUID,
-        academic_year_id: uuid.UUID,
-        name: str,
-        amount: Decimal,
-        code: str | None = None,
-    ) -> "FeeItemEntity":
-        fee_code = code or generate_entity_code("FEE")
-        return cls(
-            id=uuid.uuid4(),
-            school_id=school_id,
-            academic_year_id=academic_year_id,
-            code=fee_code,
-            name=name,
-            amount=amount,
-        )
+    amount: Decimal
+    semester_id: uuid.UUID | None = None
+    category: str = "TUITION"
+    due_date: date | None = None
+    is_mandatory: bool = True
+    description: str | None = None
+    is_active: bool = True
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -394,43 +520,52 @@ class StudentFeeBillEntity(BaseDomainEntity):
     student_id: uuid.UUID
     fee_item_id: uuid.UUID
     bill_code: str
-    amount_due: Decimal
-    amount_paid: Decimal = Decimal("0.00")
-    status: str = "UNPAID"
-    due_date: date = field(default_factory=date.today)
+    original_amount: Decimal
+    final_amount: Decimal
+    discount_amount: Decimal = Decimal("0.00")
+    paid_amount: Decimal = Decimal("0.00")
+    payment_status: str = "UNPAID"
+    payment_method: str | None = None
+    transaction_ref: str | None = None
+    paid_at: datetime | None = None
+    receipt_number: str | None = None
+    payer_name: str | None = None
+    notes: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
-    @classmethod
-    def create(
-        cls,
-        student_id: uuid.UUID,
-        fee_item_id: uuid.UUID,
-        amount_due: Decimal,
-        code: str | None = None,
-    ) -> "StudentFeeBillEntity":
-        bill_code = code or generate_entity_code("BILL")
-        return cls(
-            id=uuid.uuid4(),
-            student_id=student_id,
-            fee_item_id=fee_item_id,
-            bill_code=bill_code,
-            amount_due=amount_due,
-        )
+    def is_fully_paid(self) -> bool:
+        return self.paid_amount >= self.final_amount
 
 
 @dataclass
 class ExtracurricularActivityEntity(BaseDomainEntity):
     school_id: uuid.UUID
     title: str
+    academic_year_id: uuid.UUID | None = None
+    semester_id: uuid.UUID | None = None
+    description: str | None = None
     activity_type: str = "VOLUNTEER"
-    start_time: datetime = field(default_factory=datetime.now)
+    location: str | None = None
+    start_time: datetime | None = None
     end_time: datetime | None = None
-    organizer_teacher_id: uuid.UUID | None = None
-    max_participants: int | None = None
+    max_participants: int = 100
+    points_reward: int = 5
+    organizer_name: str | None = None
+    status: str = "UPCOMING"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ActivityParticipationEntity(BaseDomainEntity):
     activity_id: uuid.UUID
     student_id: uuid.UUID
-    status: str = "REGISTERED"
-    awarded_points: Decimal = Decimal("0.00")
+    registration_date: datetime = field(default_factory=datetime.now)
+    attendance_status: str = "REGISTERED"
+    points_earned: int = 0
+    feedback: str | None = None
+    certificate_issued: bool = False
+    verified_by: uuid.UUID | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)

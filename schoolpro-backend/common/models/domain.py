@@ -5,10 +5,11 @@ business rules, and entity-specific behavior.
 """
 
 import uuid
-from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
+
+import uuid6
 
 
 @dataclass
@@ -16,16 +17,17 @@ class DomainEvent:
     """Base Domain Event dispatched when domain state changes occur."""
 
     occurred_at: datetime = field(default_factory=datetime.now)
-    event_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    event_id: str = field(default_factory=lambda: str(uuid6.uuid7()))
 
 
 @dataclass
-class BaseDomainEntity(ABC):
+class BaseDomainEntity:
     """
     Base Domain Entity encapsulating identity, invariants, and domain logic.
+    Defaults to sequential time-ordered UUIDv7 for high-performance database indexing.
     """
 
-    id: uuid.UUID
+    id: uuid.UUID = field(default_factory=uuid6.uuid7)
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, BaseDomainEntity):

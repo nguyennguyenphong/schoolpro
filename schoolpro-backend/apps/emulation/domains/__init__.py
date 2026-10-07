@@ -3,6 +3,7 @@ Emulation Domain package.
 """
 
 from apps.emulation.domains.entities import (
+    AchievementCertificateEntity,
     ClassCustomCriteriaEntity,
     CriteriaEntity,
     DisciplinaryRecordEntity,
@@ -14,6 +15,7 @@ from apps.emulation.domains.entities import (
 )
 
 __all__ = [
+    "AchievementCertificateEntity",
     "CriteriaEntity",
     "ClassCustomCriteriaEntity",
     "EmulationPeriodEntity",

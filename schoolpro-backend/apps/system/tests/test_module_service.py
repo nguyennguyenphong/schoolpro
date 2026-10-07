@@ -2,10 +2,10 @@
 Unit tests for ModuleService and dynamic role card resolution.
 """
 
-import uuid
 from unittest.mock import MagicMock, patch
 
 import pytest
+import uuid6
 
 from apps.system.services.module_service import ModuleService
 
@@ -17,7 +17,7 @@ class TestModuleService:
     @pytest.fixture
     def mock_user(self):
         user = MagicMock()
-        user.id = uuid.uuid4()
+        user.id = uuid6.uuid7()
         user.username = "nam.nguyen"
         user.active_role_code = "STUDENT"
         return user
@@ -28,7 +28,7 @@ class TestModuleService:
         mock_cursor = MagicMock()
         mock_conn.cursor.return_value.__enter__.return_value = mock_cursor
 
-        sample_module_id = uuid.uuid4()
+        sample_module_id = uuid6.uuid7()
         mock_cursor.fetchall.return_value = [
             (
                 sample_module_id,
@@ -77,7 +77,7 @@ class TestModuleService:
         """Test admin CRUD methods on ModuleService."""
         service = ModuleService()
         sample_mod = MagicMock()
-        sample_mod.id = uuid.uuid4()
+        sample_mod.id = uuid6.uuid7()
         sample_mod.code = "MOD_TEST_001"
 
         with patch.object(

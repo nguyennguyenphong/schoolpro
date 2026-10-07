@@ -5,6 +5,7 @@ Repository layer for Modules, Role Modules, and User Module Preferences.
 import uuid
 from typing import Any
 
+import uuid6
 from django.db.models import QuerySet
 from django.utils import timezone
 
@@ -29,7 +30,7 @@ class ModuleRepository(BaseRepository[Module]):
 
     def create_module(self, **data) -> Module:
         if "id" not in data:
-            data["id"] = uuid.uuid4()
+            data["id"] = uuid6.uuid7()
         if "created_at" not in data:
             data["created_at"] = timezone.now()
         return Module.objects.create(**data)
@@ -74,7 +75,7 @@ class RoleModuleRepository(BaseRepository[RoleModule]):
         rm = self.get_by_role_and_module(role_id, module_id)
         if not rm:
             rm = RoleModule(
-                id=uuid.uuid4(),
+                id=uuid6.uuid7(),
                 role_id=role_id,
                 module_id=module_id,
                 is_visible=is_visible,
@@ -132,7 +133,7 @@ class UserModulePreferenceRepository(BaseRepository[UserModulePreference]):
         pref = self.get_user_preference_for_module(user_id, module_id)
         if not pref:
             pref = UserModulePreference(
-                id=uuid.uuid4(),
+                id=uuid6.uuid7(),
                 user_id=user_id,
                 module_id=module_id,
                 is_pinned=is_pinned if is_pinned is not None else False,

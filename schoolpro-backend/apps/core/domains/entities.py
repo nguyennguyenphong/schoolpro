@@ -1,6 +1,6 @@
 """
 Core Domain Entities encapsulating Identity, RBAC, Profiles, and Organization invariants.
-Covers:
+Covers 19 tables:
   - UserEntity ("core"."users")
   - RoleEntity ("core"."roles")
   - PermissionEntity ("core"."permissions")
@@ -25,7 +25,10 @@ Covers:
 import uuid
 from dataclasses import dataclass, field
 from datetime import date, datetime
+from decimal import Decimal
 from typing import Any
+
+import uuid6
 
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code
@@ -34,21 +37,26 @@ from common.utils.code_generator import generate_entity_code
 @dataclass
 class UserEntity(BaseDomainEntity):
     username: str
-    email: str | None
-    phone: str | None
     password_hash: str
     full_name: str
-    status_code: str = "ACTIVE"
+    email: str | None = None
+    phone: str | None = None
     school_id: uuid.UUID | None = None
     first_name: str | None = None
     last_name: str | None = None
     gender_code: str = "MALE"
     date_of_birth: date | None = None
     national_id: str | None = None
+    avatar_url: str | None = None
+    status_code: str = "ACTIVE"
     failed_login_attempts: int = 0
     locked_until: datetime | None = None
     is_2fa_enabled: bool = False
+    two_factor_secret: str | None = None
+    last_login_at: datetime | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     def is_active(self) -> bool:
         return self.status_code.upper() == "ACTIVE"
@@ -66,17 +74,18 @@ class UserEntity(BaseDomainEntity):
 class RoleEntity(BaseDomainEntity):
     code: str
     name: str
+    school_id: uuid.UUID | None = None
     description: str | None = None
     badge_color: str = "#2563EB"
-    icon: str = "user"
     is_system: bool = False
     is_active: bool = True
-    school_id: uuid.UUID | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(cls, name: str, code: str | None = None, is_system: bool = False) -> "RoleEntity":
         generated_code = code or generate_entity_code("R")
-        return cls(id=uuid.uuid4(), code=generated_code, name=name, is_system=is_system)
+        return cls(id=uuid6.uuid7(), code=generated_code, name=name, is_system=is_system)
 
 
 @dataclass
@@ -87,12 +96,15 @@ class PermissionEntity(BaseDomainEntity):
     module: str = "CORE"
     description: str | None = None
     is_dangerous: bool = False
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class RolePermissionEntity(BaseDomainEntity):
     role_id: uuid.UUID
     permission_id: uuid.UUID
+    created_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -103,6 +115,8 @@ class UserRoleEntity(BaseDomainEntity):
     effective_from: date = field(default_factory=date.today)
     effective_to: date | None = None
     status: str = "ACTIVE"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     def is_valid_on(self, target_date: date) -> bool:
         if self.status != "ACTIVE":
@@ -124,6 +138,10 @@ class TeacherEntity(BaseDomainEntity):
     qualification: str | None = None
     status: str = "ACTIVE"
     is_homeroom: bool = False
+    bio: str | None = None
+    achievements_summary: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -131,7 +149,7 @@ class TeacherEntity(BaseDomainEntity):
     ) -> "TeacherEntity":
         teacher_code = code or generate_entity_code("T")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             user_id=user_id,
             teacher_code=teacher_code,
             subject_major=subject_major,
@@ -143,14 +161,33 @@ class TeacherEntity(BaseDomainEntity):
 class StudentEntity(BaseDomainEntity):
     user_id: uuid.UUID
     student_code: str
-    admission_date: date
-    current_class_id: uuid.UUID | None = None
-    status: str = "STUDYING"
+    admission_date: date = field(default_factory=date.today)
+    school_id: uuid.UUID | None = None
+    national_id_number: str | None = None
+    national_id_issued_date: date | None = None
+    national_id_issued_place: str | None = None
     graduation_date: date | None = None
-    ethnicity: str | None = None
-    religion: str | None = None
+    ethnicity: str | None = "Kinh"
+    religion: str | None = "Không"
+    status: str = "STUDYING"
+    current_class_id: uuid.UUID | None = None
     birth_place: str | None = None
+    permanent_address: str | None = None
+    temporary_address: str | None = None
+    household_registration_number: str | None = None
+    insurance_card_number: str | None = None
+    policy_beneficiary: str | None = None
+    blood_type: str | None = None
+    allergies: str | None = None
     is_boarder: bool = False
+    is_pioneer: bool = True
+    pioneer_entry_date: date | None = None
+    is_union_member: bool = False
+    union_entry_date: date | None = None
+    special_notes: str | None = None
+    custom_attributes: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -158,7 +195,7 @@ class StudentEntity(BaseDomainEntity):
     ) -> "StudentEntity":
         student_code = code or generate_entity_code("HS")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             user_id=user_id,
             student_code=student_code,
             admission_date=admission_date,
@@ -171,27 +208,49 @@ class StaffEntity(BaseDomainEntity):
     staff_code: str
     job_title: str
     department_id: uuid.UUID | None = None
+    employment_status: str = "ACTIVE"
     hire_date: date = field(default_factory=date.today)
-    status: str = "ACTIVE"
+    qualification: str | None = None
+    notes: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class GuardianEntity(BaseDomainEntity):
     user_id: uuid.UUID
     student_id: uuid.UUID
-    relationship: str
-    is_primary_contact: bool = True
-    can_pickup: bool = True
+    relationship_type: str = "FATHER"
+    is_emergency_contact: bool = True
+    occupation: str | None = None
+    workplace: str | None = None
+    note: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class StudentHealthRecordEntity(BaseDomainEntity):
     student_id: uuid.UUID
-    blood_type: str | None = None
+    academic_year_id: uuid.UUID | None = None
+    checkup_date: date = field(default_factory=date.today)
+    height: Decimal | None = None
+    weight: Decimal | None = None
+    bmi: Decimal | None = None
+    vision_left: Decimal | None = None
+    vision_right: Decimal | None = None
+    hearing: str | None = "GOOD"
+    dental_status: str | None = "NORMAL"
+    blood_pressure: str | None = None
+    heart_rate: int | None = None
+    medical_history: str | None = None
     allergies: str | None = None
-    chronic_conditions: str | None = None
-    vision_left: float | None = None
-    vision_right: float | None = None
+    chronic_diseases: str | None = None
+    vaccination_records: dict[str, Any] = field(default_factory=dict)
+    doctor_notes: str | None = None
+    health_classification: str = "GRADE_1"
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -200,9 +259,15 @@ class SchoolClassEntity(BaseDomainEntity):
     grade_id: uuid.UUID
     code: str
     name: str
-    room_name: str | None = None
-    class_stream_code: str = "KHTN"
-    max_students: int = 45
+    school_id: uuid.UUID | None = None
+    room_id: uuid.UUID | None = None
+    class_type: str = "STANDARD"
+    track_id: uuid.UUID | None = None
+    max_capacity: int = 45
+    status: str = "ACTIVE"
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
     def create(
@@ -210,7 +275,7 @@ class SchoolClassEntity(BaseDomainEntity):
     ) -> "SchoolClassEntity":
         class_code = code or generate_entity_code("CLS")
         return cls(
-            id=uuid.uuid4(),
+            id=uuid6.uuid7(),
             academic_year_id=academic_year_id,
             grade_id=grade_id,
             code=class_code,
@@ -221,17 +286,22 @@ class SchoolClassEntity(BaseDomainEntity):
 @dataclass
 class ClassGroupEntity(BaseDomainEntity):
     class_id: uuid.UUID
-    code: str
     name: str
     order_no: int = 1
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class StudentClassEnrollmentEntity(BaseDomainEntity):
     student_id: uuid.UUID
     class_id: uuid.UUID
-    enrollment_date: date
+    academic_year_id: uuid.UUID | None = None
+    enrollment_date: date = field(default_factory=date.today)
     status: str = "ACTIVE"
+    transfer_reason: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -239,35 +309,58 @@ class ClassSubjectTeacherEntity(BaseDomainEntity):
     class_id: uuid.UUID
     subject_id: uuid.UUID
     teacher_id: uuid.UUID
-    role_type: str = "SUBJECT_TEACHER"
+    semester_id: uuid.UUID | None = None
     academic_year_id: uuid.UUID | None = None
+    is_primary_instructor: bool = True
+    weekly_periods_allocated: int = 2
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class PositionAssignmentEntity(BaseDomainEntity):
     position_id: uuid.UUID
     user_id: uuid.UUID
-    scope_id: uuid.UUID
-    assigned_date: date = field(default_factory=date.today)
-    is_active: bool = True
+    academic_year_id: uuid.UUID | None = None
+    scope_type: str = "CLASS"
+    class_id: uuid.UUID | None = None
+    grade_id: uuid.UUID | None = None
+    department_id: uuid.UUID | None = None
+    school_id: uuid.UUID | None = None
+    start_date: date = field(default_factory=date.today)
+    end_date: date | None = None
+    is_current: bool = True
+    appointed_by: uuid.UUID | None = None
+    decision_number: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class CustomFieldDefinitionEntity(BaseDomainEntity):
+    school_id: uuid.UUID
     entity_type: str
     field_code: str
-    field_label: str
-    data_type: str
+    field_name: str
+    field_type: str = "TEXT"
     is_required: bool = False
-    options: list[str] | None = None
+    is_searchable: bool = False
+    is_active: bool = True
+    default_value: str | None = None
+    allowed_options: list[Any] = field(default_factory=list)
+    validation_regex: str | None = None
+    display_order: int = 0
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class CustomFieldValueEntity(BaseDomainEntity):
-    field_id: uuid.UUID
+    definition_id: uuid.UUID
     entity_id: uuid.UUID
     field_value: str | None = None
-    json_value: dict[str, Any] | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
@@ -275,15 +368,28 @@ class ClubEntity(BaseDomainEntity):
     school_id: uuid.UUID
     code: str
     name: str
+    academic_year_id: uuid.UUID | None = None
     category: str = "ACADEMIC"
     leader_teacher_id: uuid.UUID | None = None
+    president_student_id: uuid.UUID | None = None
+    description: str | None = None
+    max_members: int = 50
+    meeting_schedule: str | None = None
+    room_id: uuid.UUID | None = None
     is_active: bool = True
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class ClubMemberEntity(BaseDomainEntity):
     club_id: uuid.UUID
     student_id: uuid.UUID
-    role: str = "MEMBER"
+    role_title: str = "MEMBER"
     joined_date: date = field(default_factory=date.today)
-    is_active: bool = True
+    left_date: date | None = None
+    status: str = "ACTIVE"
+    contribution_notes: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
