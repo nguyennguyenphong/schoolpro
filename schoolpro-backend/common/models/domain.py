@@ -14,6 +14,7 @@ import uuid
 @dataclass
 class DomainEvent(ABC):
     """Base Domain Event dispatched when domain state changes occur."""
+
     occurred_at: datetime = field(default_factory=datetime.now)
     event_id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
@@ -23,6 +24,7 @@ class BaseDomainEntity(ABC):
     """
     Base Domain Entity encapsulating identity, invariants, and domain logic.
     """
+
     id: uuid.UUID
 
     def __eq__(self, other: Any) -> bool:

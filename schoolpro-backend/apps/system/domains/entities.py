@@ -134,7 +134,9 @@ class ExportTemplateEntity(BaseDomainEntity):
     is_active: bool = True
 
     @classmethod
-    def create(cls, name: str, template_type: str = "EXCEL", code: str | None = None) -> "ExportTemplateEntity":
+    def create(
+        cls, name: str, template_type: str = "EXCEL", code: str | None = None
+    ) -> "ExportTemplateEntity":
         tpl_code = code or generate_entity_code("TPL")
         return cls(id=uuid.uuid4(), code=tpl_code, name=name, template_type=template_type)
 

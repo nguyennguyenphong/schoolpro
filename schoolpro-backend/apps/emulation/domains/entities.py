@@ -32,9 +32,23 @@ class CriteriaEntity(BaseDomainEntity):
     is_active: bool = True
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, points: Decimal, is_positive: bool = False, code: str | None = None) -> "CriteriaEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        name: str,
+        points: Decimal,
+        is_positive: bool = False,
+        code: str | None = None,
+    ) -> "CriteriaEntity":
         cr_code = code or generate_entity_code("CRI")
-        return cls(id=uuid.uuid4(), school_id=school_id, code=cr_code, name=name, points=points, is_positive=is_positive)
+        return cls(
+            id=uuid.uuid4(),
+            school_id=school_id,
+            code=cr_code,
+            name=name,
+            points=points,
+            is_positive=is_positive,
+        )
 
 
 @dataclass
@@ -56,9 +70,25 @@ class EmulationPeriodEntity(BaseDomainEntity):
     is_closed: bool = False
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, academic_year_id: uuid.UUID, name: str, start_date: date, end_date: date, code: str | None = None) -> "EmulationPeriodEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        academic_year_id: uuid.UUID,
+        name: str,
+        start_date: date,
+        end_date: date,
+        code: str | None = None,
+    ) -> "EmulationPeriodEntity":
         per_code = code or generate_entity_code("PER")
-        return cls(id=uuid.uuid4(), school_id=school_id, academic_year_id=academic_year_id, code=per_code, name=name, start_date=start_date, end_date=end_date)
+        return cls(
+            id=uuid.uuid4(),
+            school_id=school_id,
+            academic_year_id=academic_year_id,
+            code=per_code,
+            name=name,
+            start_date=start_date,
+            end_date=end_date,
+        )
 
 
 @dataclass

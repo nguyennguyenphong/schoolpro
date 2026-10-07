@@ -20,21 +20,22 @@ class User(UUIDModel):
         blank=True,
         db_comment="school_id foreign key",
     )
-    username = models.CharField(
-        max_length=100,
-    )
-    email = models.CharField(max_length=255, null=True, blank=True)
+    username = models.CharField(max_length=100, unique=True)
+    email = models.CharField(max_length=255, unique=True, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
     password_hash = models.TextField()
-    full_name = models.CharField(
-        max_length=255,
-    )
+    full_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    preferred_name = models.CharField(max_length=100, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
-    gender_code = models.CharField(max_length=20, null=True, blank=True)
+    gender_code = models.CharField(max_length=20, default="MALE", null=True, blank=True)
     national_id = models.CharField(max_length=30, null=True, blank=True)
     avatar_url = models.TextField(null=True, blank=True)
     address = models.TextField(null=True, blank=True)
-    status_code = models.CharField(max_length=20, null=True, blank=True)
+    locale = models.CharField(max_length=10, default="vi-VN")
+    timezone = models.CharField(max_length=50, default="Asia/Ho_Chi_Minh")
+    status_code = models.CharField(max_length=20, default="ACTIVE", null=True, blank=True)
     must_change_password = models.BooleanField(default=False)
     failed_login_attempts = models.IntegerField(default=0)
     locked_at = models.DateTimeField(null=True, blank=True)
@@ -43,13 +44,16 @@ class User(UUIDModel):
     password_changed_at = models.DateTimeField(null=True, blank=True)
     email_verified_at = models.DateTimeField(null=True, blank=True)
     phone_verified_at = models.DateTimeField(null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
     is_2fa_enabled = models.BooleanField(default=False)
     two_factor_secret = models.CharField(max_length=255, null=True, blank=True)
     last_login_at = models.DateTimeField(null=True, blank=True)
-    last_login_ip = models.GenericIPAddressField(null=True, blank=True)
-    metadata = models.JSONField(null=True, blank=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    last_login_ip = models.CharField(max_length=45, null=True, blank=True)
+    notification_preferences = models.JSONField(default=dict, blank=True)
+    bio = models.TextField(null=True, blank=True)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -97,4 +101,4 @@ class User(UUIDModel):
         return str(self.full_name)
 
     def __repr__(self) -> str:
-        return f"<User {self.pk}>"
+        return f"<User {self.pk}: {self.username}>"

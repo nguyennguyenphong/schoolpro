@@ -31,9 +31,17 @@ class EvaluationFormEntity(BaseDomainEntity):
     is_anonymous: bool = True
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, title: str, target_role: str = "TEACHER", code: str | None = None) -> "EvaluationFormEntity":
+    def create(
+        cls, school_id: uuid.UUID, title: str, target_role: str = "TEACHER", code: str | None = None
+    ) -> "EvaluationFormEntity":
         form_code = code or generate_entity_code("FRM")
-        return cls(id=uuid.uuid4(), school_id=school_id, code=form_code, title=title, target_role=target_role)
+        return cls(
+            id=uuid.uuid4(),
+            school_id=school_id,
+            code=form_code,
+            title=title,
+            target_role=target_role,
+        )
 
 
 @dataclass
@@ -72,9 +80,13 @@ class FacilityEntity(BaseDomainEntity):
     status: str = "OPERATIONAL"
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, category: str = "EQUIPMENT", code: str | None = None) -> "FacilityEntity":
+    def create(
+        cls, school_id: uuid.UUID, name: str, category: str = "EQUIPMENT", code: str | None = None
+    ) -> "FacilityEntity":
         fac_code = code or generate_entity_code("FAC")
-        return cls(id=uuid.uuid4(), school_id=school_id, code=fac_code, name=name, category=category)
+        return cls(
+            id=uuid.uuid4(), school_id=school_id, code=fac_code, name=name, category=category
+        )
 
 
 @dataclass

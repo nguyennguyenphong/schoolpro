@@ -11,29 +11,26 @@ class Permission(UUIDModel):
     Description: Atomic permission privileges for endpoint and UI access control
     """
 
-    code = models.CharField(
-        max_length=100,
-    )
-    name = models.CharField(
-        max_length=255,
-    )
-    group_code = models.CharField(
-        max_length=50,
-    )
+    code = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=255)
+    group_code = models.CharField(max_length=50)
+    module = models.CharField(max_length=50, default="CORE")
     description = models.TextField(null=True, blank=True)
+    is_dangerous = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
         db_table = '"core"."permissions"'
         verbose_name = "Permission"
         verbose_name_plural = "Permissions"
-        ordering = ["code"]
+        ordering = ["module", "group_code", "code"]
 
     def __str__(self) -> str:
-        return str(self.name)
+        return f"{self.name} ({self.code})"
 
     def __repr__(self) -> str:
-        return f"<Permission {self.pk}>"
+        return f"<Permission {self.code}: {self.name}>"
 
 
 class RolePermission(models.Model):
@@ -68,7 +65,7 @@ class RolePermission(models.Model):
         unique_together = (("role", "permission"),)
 
     def __str__(self) -> str:
-        return f"RolePermission ({self.pk})"
+        return f"RolePermission ({self.role_id} - {self.permission_id})"
 
     def __repr__(self) -> str:
-        return f"<RolePermission {self.pk}>"
+        return f"<RolePermission {self.role_id}:{self.permission_id}>"

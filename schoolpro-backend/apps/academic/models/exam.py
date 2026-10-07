@@ -312,7 +312,9 @@ class QuestionBank(UUIDModel):
     )
     reviewed_at = models.DateTimeField(null=True, blank=True)
     usage_count = models.IntegerField(default=0)
-    discrimination_index = models.DecimalField(max_digits=4, decimal_places=3, null=True, blank=True)
+    discrimination_index = models.DecimalField(
+        max_digits=4, decimal_places=3, null=True, blank=True
+    )
     is_shared = models.BooleanField(default=True)
     tags = ArrayField(models.CharField(max_length=100), default=list, blank=True)
     metadata = models.JSONField(default=dict, blank=True)

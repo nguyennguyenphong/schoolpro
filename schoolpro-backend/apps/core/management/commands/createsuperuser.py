@@ -16,7 +16,9 @@ from apps.core.models.user import User
 
 
 class Command(BaseCommand):
-    help = "Creates or resets default superadmin user for SchoolPro (admin@schoolpro.edu.vn / admin)"
+    help = (
+        "Creates or resets default superadmin user for SchoolPro (admin@schoolpro.edu.vn / admin)"
+    )
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -67,7 +69,10 @@ class Command(BaseCommand):
             RolePermission.objects.get_or_create(role=admin_role, permission=perm)
 
         # 3. Create or update User
-        user = User.objects.filter(username=username).first() or User.objects.filter(email=email).first()
+        user = (
+            User.objects.filter(username=username).first()
+            or User.objects.filter(email=email).first()
+        )
 
         password_hash = make_password(raw_password)
 
@@ -105,7 +110,9 @@ class Command(BaseCommand):
                     "locked_until",
                 ]
             )
-            self.stdout.write(self.style.SUCCESS(f"Updated password and reset lock for Superadmin: {email}"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Updated password and reset lock for Superadmin: {email}")
+            )
 
         # 4. Bind User to Role
         ur, _ = UserRole.objects.get_or_create(

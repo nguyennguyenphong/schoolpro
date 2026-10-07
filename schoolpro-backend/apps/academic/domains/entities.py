@@ -79,9 +79,13 @@ class RoomEntity(BaseDomainEntity):
     status: str = "AVAILABLE"
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, room_type: str = "CLASSROOM", code: str | None = None) -> "RoomEntity":
+    def create(
+        cls, school_id: uuid.UUID, name: str, room_type: str = "CLASSROOM", code: str | None = None
+    ) -> "RoomEntity":
         room_code = code or generate_entity_code("RM")
-        return cls(id=uuid.uuid4(), school_id=school_id, code=room_code, name=name, room_type=room_type)
+        return cls(
+            id=uuid.uuid4(), school_id=school_id, code=room_code, name=name, room_type=room_type
+        )
 
 
 @dataclass
@@ -172,7 +176,14 @@ class ExamEntity(BaseDomainEntity):
     paper_code: str | None = None
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, semester_id: uuid.UUID, subject_id: uuid.UUID, name: str, code: str | None = None) -> "ExamEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        semester_id: uuid.UUID,
+        subject_id: uuid.UUID,
+        name: str,
+        code: str | None = None,
+    ) -> "ExamEntity":
         paper_code = code or generate_entity_code("EX")
         return cls(
             id=uuid.uuid4(),
@@ -297,7 +308,9 @@ class CurriculumTrackEntity(BaseDomainEntity):
     description: str | None = None
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, code: str | None = None) -> "CurriculumTrackEntity":
+    def create(
+        cls, school_id: uuid.UUID, name: str, code: str | None = None
+    ) -> "CurriculumTrackEntity":
         tr_code = code or generate_entity_code("TRK")
         return cls(id=uuid.uuid4(), school_id=school_id, code=tr_code, name=name)
 
@@ -357,9 +370,23 @@ class FeeItemEntity(BaseDomainEntity):
     is_compulsory: bool = True
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, academic_year_id: uuid.UUID, name: str, amount: Decimal, code: str | None = None) -> "FeeItemEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        academic_year_id: uuid.UUID,
+        name: str,
+        amount: Decimal,
+        code: str | None = None,
+    ) -> "FeeItemEntity":
         fee_code = code or generate_entity_code("FEE")
-        return cls(id=uuid.uuid4(), school_id=school_id, academic_year_id=academic_year_id, code=fee_code, name=name, amount=amount)
+        return cls(
+            id=uuid.uuid4(),
+            school_id=school_id,
+            academic_year_id=academic_year_id,
+            code=fee_code,
+            name=name,
+            amount=amount,
+        )
 
 
 @dataclass
@@ -373,9 +400,21 @@ class StudentFeeBillEntity(BaseDomainEntity):
     due_date: date = field(default_factory=date.today)
 
     @classmethod
-    def create(cls, student_id: uuid.UUID, fee_item_id: uuid.UUID, amount_due: Decimal, code: str | None = None) -> "StudentFeeBillEntity":
+    def create(
+        cls,
+        student_id: uuid.UUID,
+        fee_item_id: uuid.UUID,
+        amount_due: Decimal,
+        code: str | None = None,
+    ) -> "StudentFeeBillEntity":
         bill_code = code or generate_entity_code("BILL")
-        return cls(id=uuid.uuid4(), student_id=student_id, fee_item_id=fee_item_id, bill_code=bill_code, amount_due=amount_due)
+        return cls(
+            id=uuid.uuid4(),
+            student_id=student_id,
+            fee_item_id=fee_item_id,
+            bill_code=bill_code,
+            amount_due=amount_due,
+        )
 
 
 @dataclass

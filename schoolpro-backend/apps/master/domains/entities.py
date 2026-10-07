@@ -35,7 +35,9 @@ class SchoolEntity(BaseDomainEntity):
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def create(cls, name: str, code: str | None = None, address: str | None = None) -> "SchoolEntity":
+    def create(
+        cls, name: str, code: str | None = None, address: str | None = None
+    ) -> "SchoolEntity":
         school_code = code or generate_entity_code("SCH")
         return cls(
             id=uuid.uuid4(),
@@ -55,7 +57,14 @@ class AcademicYearEntity(BaseDomainEntity):
     is_current: bool = False
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, start_date: date, end_date: date, code: str | None = None) -> "AcademicYearEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        name: str,
+        start_date: date,
+        end_date: date,
+        code: str | None = None,
+    ) -> "AcademicYearEntity":
         ay_code = code or generate_entity_code("AY")
         return cls(
             id=uuid.uuid4(),
@@ -77,7 +86,14 @@ class SemesterEntity(BaseDomainEntity):
     is_current: bool = False
 
     @classmethod
-    def create(cls, academic_year_id: uuid.UUID, name: str, start_date: date, end_date: date, code: str | None = None) -> "SemesterEntity":
+    def create(
+        cls,
+        academic_year_id: uuid.UUID,
+        name: str,
+        start_date: date,
+        end_date: date,
+        code: str | None = None,
+    ) -> "SemesterEntity":
         sem_code = code or generate_entity_code("SEM")
         return cls(
             id=uuid.uuid4(),
@@ -97,7 +113,9 @@ class GradeEntity(BaseDomainEntity):
     order_no: int = 1
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, order_no: int = 1, code: str | None = None) -> "GradeEntity":
+    def create(
+        cls, school_id: uuid.UUID, name: str, order_no: int = 1, code: str | None = None
+    ) -> "GradeEntity":
         grade_code = code or generate_entity_code("G")
         return cls(
             id=uuid.uuid4(),
@@ -118,7 +136,9 @@ class DepartmentEntity(BaseDomainEntity):
     is_active: bool = True
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, dept_type: str = "SUBJECT", code: str | None = None) -> "DepartmentEntity":
+    def create(
+        cls, school_id: uuid.UUID, name: str, dept_type: str = "SUBJECT", code: str | None = None
+    ) -> "DepartmentEntity":
         dept_code = code or generate_entity_code("DEP")
         return cls(
             id=uuid.uuid4(),
@@ -139,7 +159,13 @@ class SubjectEntity(BaseDomainEntity):
     department_id: uuid.UUID | None = None
 
     @classmethod
-    def create(cls, school_id: uuid.UUID, name: str, evaluation_type: str = "SCORE", code: str | None = None) -> "SubjectEntity":
+    def create(
+        cls,
+        school_id: uuid.UUID,
+        name: str,
+        evaluation_type: str = "SCORE",
+        code: str | None = None,
+    ) -> "SubjectEntity":
         subject_code = code or generate_entity_code("SUB")
         return cls(
             id=uuid.uuid4(),

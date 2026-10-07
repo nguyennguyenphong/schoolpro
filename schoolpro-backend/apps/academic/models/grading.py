@@ -224,7 +224,9 @@ class StudentScore(UUIDModel):
         blank=True,
     )
     score_value = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    previous_score_value = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    previous_score_value = models.DecimalField(
+        max_digits=4, decimal_places=2, null=True, blank=True
+    )
     comment_result = models.CharField(max_length=20, null=True, blank=True)
     score_date = models.DateField()
     note = models.TextField(null=True, blank=True)

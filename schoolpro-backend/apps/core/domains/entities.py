@@ -126,7 +126,9 @@ class TeacherEntity(BaseDomainEntity):
     is_homeroom: bool = False
 
     @classmethod
-    def create(cls, user_id: uuid.UUID, subject_major: str, hire_date: date, code: str | None = None) -> "TeacherEntity":
+    def create(
+        cls, user_id: uuid.UUID, subject_major: str, hire_date: date, code: str | None = None
+    ) -> "TeacherEntity":
         teacher_code = code or generate_entity_code("T")
         return cls(
             id=uuid.uuid4(),
@@ -151,7 +153,9 @@ class StudentEntity(BaseDomainEntity):
     is_boarder: bool = False
 
     @classmethod
-    def create(cls, user_id: uuid.UUID, admission_date: date, code: str | None = None) -> "StudentEntity":
+    def create(
+        cls, user_id: uuid.UUID, admission_date: date, code: str | None = None
+    ) -> "StudentEntity":
         student_code = code or generate_entity_code("HS")
         return cls(
             id=uuid.uuid4(),
@@ -201,7 +205,9 @@ class SchoolClassEntity(BaseDomainEntity):
     max_students: int = 45
 
     @classmethod
-    def create(cls, academic_year_id: uuid.UUID, grade_id: uuid.UUID, name: str, code: str | None = None) -> "SchoolClassEntity":
+    def create(
+        cls, academic_year_id: uuid.UUID, grade_id: uuid.UUID, name: str, code: str | None = None
+    ) -> "SchoolClassEntity":
         class_code = code or generate_entity_code("CLS")
         return cls(
             id=uuid.uuid4(),

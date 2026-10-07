@@ -11,32 +11,39 @@ class Role(UUIDModel):
     Description: Dynamic role definitions allowing new administrative or student roles at any time
     """
 
-    code = models.CharField(
-        max_length=50,
+    school = models.ForeignKey(
+        "master.School",
+        on_delete=models.CASCADE,
+        db_column="school_id",
+        null=True,
+        blank=True,
+        related_name="roles",
+        db_comment="school_id foreign key (NULL for system-wide roles)",
     )
-    name = models.CharField(
-        max_length=150,
-    )
+    code = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
-    badge_color = models.CharField(max_length=30, null=True, blank=True)
-    icon = models.CharField(max_length=50, null=True, blank=True)
+    badge_color = models.CharField(max_length=30, default="#2563EB")
+    icon = models.CharField(max_length=50, default="user")
+    priority = models.SmallIntegerField(default=0)
     is_system = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
         db_table = '"core"."roles"'
         verbose_name = "Role"
         verbose_name_plural = "Roles"
-        ordering = ["code"]
+        ordering = ["-priority", "code"]
 
     def __str__(self) -> str:
         return str(self.name)
 
     def __repr__(self) -> str:
-        return f"<Role {self.pk}>"
+        return f"<Role {self.code}: {self.name}>"
 
 
 class UserRole(UUIDModel):
@@ -64,10 +71,8 @@ class UserRole(UUIDModel):
     is_primary = models.BooleanField(default=False)
     effective_from = models.DateField()
     effective_to = models.DateField(null=True, blank=True)
-    status = models.CharField(
-        max_length=20,
-    )
-    created_at = models.DateTimeField()
+    status = models.CharField(max_length=20, default="ACTIVE")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
