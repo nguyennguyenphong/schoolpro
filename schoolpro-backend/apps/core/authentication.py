@@ -76,11 +76,7 @@ class SchoolProAdminBackend:
         if username == "admin":
             query |= Q(username="admin@schoolpro.edu.vn") | Q(email="admin@schoolpro.edu.vn")
 
-        user = (
-            User.objects.filter(query)
-            .select_related("school")
-            .first()
-        )
+        user = User.objects.filter(query).select_related("school").first()
         if not user:
             return None
 

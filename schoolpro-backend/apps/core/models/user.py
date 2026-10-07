@@ -160,9 +160,7 @@ class User(UUIDModel):
             try:
                 import bcrypt
 
-                if bcrypt.checkpw(
-                    raw_password.encode("utf-8"), self.password_hash.encode("utf-8")
-                ):
+                if bcrypt.checkpw(raw_password.encode("utf-8"), self.password_hash.encode("utf-8")):
                     return True
             except Exception:
                 pass

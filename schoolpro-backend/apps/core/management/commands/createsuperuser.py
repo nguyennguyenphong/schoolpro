@@ -5,8 +5,7 @@ Defaults to:
   Password: admin
 """
 
-import uuid
-
+import uuid6
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -52,7 +51,7 @@ class Command(BaseCommand):
         admin_role, _ = Role.objects.get_or_create(
             code="R_ADMIN_839201",
             defaults={
-                "id": uuid.UUID("d96c271e-0b8d-4727-b2e9-a4f164a7c8d5"),
+                "id": uuid6.uuid7(),
                 "name": "Quản trị viên hệ thống",
                 "description": "Toàn quyền cấu hình, vận hành và quản trị kỹ thuật",
                 "badge_color": "#1E293B",
@@ -79,7 +78,7 @@ class Command(BaseCommand):
 
         if not user:
             user = User.objects.create(
-                id=uuid.UUID("a31148cb-1471-4c5e-aa66-0848fae24853"),
+                id=uuid6.uuid7(),
                 school=None,
                 username=username,
                 email=email,
