@@ -131,6 +131,27 @@
         "reveal": "always",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "🌱 Database: Seed All Data (Python db_seed)",
+      "type": "shell",
+      "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py db_seed",
+      "detail": "Seeds full initial & demo data (Superadmin, Lookups, Infrastructure, Classes, Teachers, Students, Operations)",
+      "icon": {
+        "id": "database",
+        "color": "terminal.ansiGreen"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": false
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
     }
   ]
 }
