@@ -113,7 +113,7 @@ class ExamQuestion(UUIDModel):
     order_no = models.SmallIntegerField()
     section_name = models.CharField(max_length=100, null=True, blank=True)
     score_weight = models.DecimalField(max_digits=4, decimal_places=2, default=0.25)
-    paper_code = models.CharField(max_length=20, default="STANDARD")
+    paper_code = models.CharField(max_length=60, default="STANDARD")
     shuffled_options = models.JSONField(null=True, blank=True)
     sub_questions = models.JSONField(null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)
@@ -155,7 +155,7 @@ class ExamSubmission(UUIDModel):
         related_name="exam_submissions",
         db_comment="student_id foreign key",
     )
-    paper_code = models.CharField(max_length=20, default="STANDARD")
+    paper_code = models.CharField(max_length=60, default="STANDARD")
     attempt_number = models.SmallIntegerField(default=1)
     started_at = models.DateTimeField(auto_now_add=True)
     submitted_at = models.DateTimeField(null=True, blank=True)
@@ -282,7 +282,7 @@ class QuestionBank(UUIDModel):
         db_column="grade_id",
         related_name="questions",
     )
-    code = models.CharField(max_length=50, null=True, blank=True)
+    code = models.CharField(max_length=60, null=True, blank=True)
     chapter_name = models.CharField(max_length=150, null=True, blank=True)
     difficulty_level = models.CharField(max_length=30, default="RECOGNITION")
     question_type = models.CharField(max_length=30, default="SINGLE_CHOICE")

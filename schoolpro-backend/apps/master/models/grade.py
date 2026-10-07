@@ -18,7 +18,7 @@ class Grade(UUIDModel):
         related_name="grades",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=50)
     order_no = models.SmallIntegerField(default=0)
     supervisor = models.ForeignKey(

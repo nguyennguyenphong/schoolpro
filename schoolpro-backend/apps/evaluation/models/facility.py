@@ -27,7 +27,7 @@ class Facility(UUIDModel):
         blank=True,
         db_comment="room_id foreign key",
     )
-    code = models.CharField(max_length=40, unique=True)
+    code = models.CharField(max_length=60, unique=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=100)
     brand_model = models.CharField(max_length=150, null=True, blank=True)
@@ -90,7 +90,7 @@ class FacilityIncidentReport(UUIDModel):
         related_name="facility_incidents",
         db_comment="school_id foreign key",
     )
-    ticket_code = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    ticket_code = models.CharField(max_length=60, unique=True, null=True, blank=True)
     facility = models.ForeignKey(
         "evaluation.Facility",
         on_delete=models.SET_NULL,

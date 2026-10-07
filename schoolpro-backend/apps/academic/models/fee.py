@@ -39,7 +39,7 @@ class FeeItem(UUIDModel):
         blank=True,
         related_name="+",
     )
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=30)
     amount = models.DecimalField(max_digits=12, decimal_places=2)

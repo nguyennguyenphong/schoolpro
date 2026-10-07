@@ -34,7 +34,7 @@ class SchoolClass(UUIDModel):
         related_name="classes",
         db_comment="grade_id foreign key",
     )
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=100)
     homeroom_teacher = models.ForeignKey(
         "core.Teacher",
@@ -92,7 +92,7 @@ class SchoolClass(UUIDModel):
         db_comment="room_id foreign key",
     )
     room_name = models.CharField(max_length=50, null=True, blank=True)
-    class_stream_code = models.CharField(max_length=30, default="KHTN", null=True, blank=True)
+    class_stream_code = models.CharField(max_length=60, default="KHTN", null=True, blank=True)
     max_students = models.SmallIntegerField(default=45, null=True, blank=True)
     slogan = models.CharField(max_length=255, null=True, blank=True)
     avatar_url = models.TextField(null=True, blank=True)
@@ -130,7 +130,7 @@ class ClassGroup(UUIDModel):
         related_name="groups",
         db_comment="class_id foreign key",
     )
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=100)
     leader_student = models.ForeignKey(
         "core.Student",

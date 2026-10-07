@@ -18,7 +18,7 @@ class Club(UUIDModel):
         related_name="clubs",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=50, unique=True)
+    code = models.CharField(max_length=60, unique=True)
     name = models.CharField(max_length=150)
     category = models.CharField(max_length=30, default="ACADEMIC")
     advisor_teacher = models.ForeignKey(

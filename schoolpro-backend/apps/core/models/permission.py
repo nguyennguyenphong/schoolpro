@@ -13,7 +13,7 @@ class Permission(UUIDModel):
 
     code = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
-    group_code = models.CharField(max_length=50)
+    group_code = models.CharField(max_length=60)
     module = models.CharField(max_length=50, default="CORE")
     description = models.TextField(null=True, blank=True)
     is_dangerous = models.BooleanField(default=False)

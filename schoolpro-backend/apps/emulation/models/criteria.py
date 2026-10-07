@@ -73,7 +73,7 @@ class ClassCustomCriteria(UUIDModel):
         related_name="custom_criteria",
         db_comment="class_id foreign key",
     )
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=50, default="BEHAVIOR")
     points = models.DecimalField(max_digits=6, decimal_places=2)

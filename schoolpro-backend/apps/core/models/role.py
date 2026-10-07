@@ -20,7 +20,7 @@ class Role(UUIDModel):
         related_name="roles",
         db_comment="school_id foreign key (NULL for system-wide roles)",
     )
-    code = models.CharField(max_length=50, unique=True)
+    code = models.CharField(max_length=60, unique=True)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     badge_color = models.CharField(max_length=30, default="#2563EB")

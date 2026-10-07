@@ -11,16 +11,16 @@ class School(UUIDModel):
     Description: Master high school campus profile, administrative metadata, and contacts
     """
 
-    code = models.CharField(max_length=30, unique=True)
+    code = models.CharField(max_length=60, unique=True)
     name = models.CharField(max_length=255)
-    moet_code = models.CharField(max_length=50, null=True, blank=True)
+    moet_code = models.CharField(max_length=60, null=True, blank=True)
     educational_stage = models.CharField(max_length=30, default="HIGH_SCHOOL")
     school_type = models.CharField(max_length=30, default="PUBLIC")
     established_year = models.SmallIntegerField(null=True, blank=True)
     address = models.TextField(null=True, blank=True)
-    province_code = models.CharField(max_length=20, null=True, blank=True)
-    district_code = models.CharField(max_length=20, null=True, blank=True)
-    ward_code = models.CharField(max_length=20, null=True, blank=True)
+    province_code = models.CharField(max_length=60, null=True, blank=True)
+    district_code = models.CharField(max_length=60, null=True, blank=True)
+    ward_code = models.CharField(max_length=60, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
     fax = models.CharField(max_length=30, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)

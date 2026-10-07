@@ -27,7 +27,7 @@ class Teacher(UUIDModel):
         related_name="teachers",
         db_comment="school_id foreign key",
     )
-    teacher_code = models.CharField(max_length=30, unique=True)
+    teacher_code = models.CharField(max_length=60, unique=True)
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
@@ -42,7 +42,7 @@ class Teacher(UUIDModel):
     )
     subject_major = models.CharField(max_length=150)
     national_id_number = models.CharField(max_length=20, null=True, blank=True)
-    tax_code = models.CharField(max_length=20, null=True, blank=True)
+    tax_code = models.CharField(max_length=60, null=True, blank=True)
     social_insurance_number = models.CharField(max_length=30, null=True, blank=True)
     academic_rank = models.CharField(max_length=50, null=True, blank=True)
     years_of_experience = models.SmallIntegerField(default=0, null=True, blank=True)
@@ -117,7 +117,7 @@ class Student(UUIDModel):
         related_name="students",
         db_comment="school_id foreign key",
     )
-    student_code = models.CharField(max_length=30, unique=True)
+    student_code = models.CharField(max_length=60, unique=True)
     national_id_number = models.CharField(max_length=20, null=True, blank=True)
     national_id_issued_date = models.DateField(null=True, blank=True)
     national_id_issued_place = models.CharField(max_length=150, null=True, blank=True)
@@ -206,7 +206,7 @@ class Staff(UUIDModel):
         related_name="staff",
         db_comment="school_id foreign key",
     )
-    staff_code = models.CharField(max_length=30, unique=True)
+    staff_code = models.CharField(max_length=60, unique=True)
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
@@ -218,7 +218,7 @@ class Staff(UUIDModel):
     )
     job_title = models.CharField(max_length=150)
     national_id_number = models.CharField(max_length=20, null=True, blank=True)
-    tax_code = models.CharField(max_length=20, null=True, blank=True)
+    tax_code = models.CharField(max_length=60, null=True, blank=True)
     social_insurance_number = models.CharField(max_length=30, null=True, blank=True)
     qualification = models.CharField(max_length=100, null=True, blank=True)
     employment_type = models.CharField(max_length=30, default="FULL_TIME")
@@ -334,7 +334,7 @@ class StudentHealthRecord(UUIDModel):
     allergies = models.TextField(null=True, blank=True)
     chronic_illness = models.TextField(null=True, blank=True)
     health_classification = models.CharField(max_length=20, default="TYPE_1", null=True, blank=True)
-    insurance_code = models.CharField(max_length=50, null=True, blank=True)
+    insurance_code = models.CharField(max_length=60, null=True, blank=True)
     examined_by_nurse = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,

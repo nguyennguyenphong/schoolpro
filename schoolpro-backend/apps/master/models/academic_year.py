@@ -18,7 +18,7 @@ class AcademicYear(UUIDModel):
         related_name="academic_years",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()

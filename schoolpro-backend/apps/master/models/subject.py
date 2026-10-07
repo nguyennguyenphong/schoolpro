@@ -27,14 +27,14 @@ class Subject(UUIDModel):
         blank=True,
         db_comment="department_id foreign key",
     )
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=150)
     short_name = models.CharField(max_length=50, null=True, blank=True)
     grade_level = models.SmallIntegerField(null=True, blank=True)
     evaluation_type = models.CharField(max_length=20, default="SCORE")
     periods_per_year = models.SmallIntegerField(default=105, null=True, blank=True)
     is_compulsory = models.BooleanField(default=True)
-    color_code = models.CharField(max_length=30, default="#3B82F6", null=True, blank=True)
+    color_code = models.CharField(max_length=60, default="#3B82F6", null=True, blank=True)
     icon = models.CharField(max_length=50, default="book", null=True, blank=True)
     order_no = models.SmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)

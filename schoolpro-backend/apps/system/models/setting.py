@@ -11,7 +11,7 @@ class SettingsDefinition(UUIDModel):
     Description: Master registry of customizable application settings and appearance parameters
     """
 
-    code = models.CharField(max_length=80, unique=True)
+    code = models.CharField(max_length=60, unique=True)
     name = models.CharField(max_length=150)
     data_type = models.CharField(max_length=20)
     default_value = models.TextField()
