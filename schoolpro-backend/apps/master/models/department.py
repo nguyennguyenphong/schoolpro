@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 from common.models.base import UUIDModel
 
@@ -19,16 +18,9 @@ class Department(UUIDModel):
         related_name="departments",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(
-        max_length=30,
-    )
-    name = models.CharField(
-        max_length=150,
-    )
-    department_type = models.CharField(
-        max_length=30,
-        default="SUBJECT",
-    )
+    code = models.CharField(max_length=60)
+    name = models.CharField(max_length=150)
+    department_type = models.CharField(max_length=30, default="SUBJECT")
     leader_teacher = models.ForeignKey(
         "core.User",
         on_delete=models.SET_NULL,
@@ -47,15 +39,29 @@ class Department(UUIDModel):
         blank=True,
         db_comment="vice_leader_id foreign key",
     )
+    office_room = models.ForeignKey(
+        "academic.Room",
+        on_delete=models.SET_NULL,
+        db_column="office_room_id",
+        null=True,
+        blank=True,
+        related_name="+",
+        db_comment="office_room_id foreign key",
+    )
+    phone = models.CharField(max_length=20, null=True, blank=True)
+    email = models.CharField(max_length=255, null=True, blank=True)
+    order_no = models.SmallIntegerField(default=0)
+    description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
         db_table = '"core"."departments"'
         verbose_name = "Department"
         verbose_name_plural = "Departments"
-        ordering = ["code"]
+        ordering = ["order_no", "code"]
 
     def __str__(self) -> str:
         return str(self.name)

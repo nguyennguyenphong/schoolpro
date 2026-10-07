@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from common.models.base import UUIDModel
@@ -53,7 +54,11 @@ class LoginHistory(UUIDModel):
     # Security & Anomaly Detection
     is_suspicious = models.BooleanField(default=False)
     risk_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    risk_reasons = models.JSONField(default=list, null=True, blank=True)
+    risk_reasons = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        blank=True,
+    )
 
     # Session Lifecycle & Logout Tracking
     session_id = models.CharField(max_length=128, null=True, blank=True)

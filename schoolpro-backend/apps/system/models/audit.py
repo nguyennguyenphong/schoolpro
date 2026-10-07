@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from common.models.base import UUIDModel
@@ -44,7 +45,11 @@ class AuditLog(UUIDModel):
     old_data = models.JSONField(null=True, blank=True)
     new_data = models.JSONField(null=True, blank=True)
     diff_data = models.JSONField(null=True, blank=True)
-    changed_fields = models.JSONField(default=list, null=True, blank=True)
+    changed_fields = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        blank=True,
+    )
 
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     ip_country = models.CharField(max_length=100, null=True, blank=True)

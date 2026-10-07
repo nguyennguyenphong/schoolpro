@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from common.models.base import UUIDModel
@@ -59,7 +60,11 @@ class Announcement(UUIDModel):
     priority = models.CharField(max_length=10, default="NORMAL")
     is_pinned = models.BooleanField(default=False)
     pinned_until = models.DateTimeField(null=True, blank=True)
-    channels = models.JSONField(default=list, blank=True)
+    channels = ArrayField(
+        models.CharField(max_length=50),
+        default=list,
+        blank=True,
+    )
     send_push = models.BooleanField(default=True)
     send_email = models.BooleanField(default=False)
     send_sms = models.BooleanField(default=False)
@@ -114,6 +119,11 @@ class AnnouncementRead(models.Model):
         related_name="announcement_reads",
         db_comment="user_id foreign key",
     )
+    device_type = models.CharField(max_length=20, null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    reading_duration_seconds = models.IntegerField(default=0)
+    acknowledged = models.BooleanField(default=False)
+    acknowledged_at = models.DateTimeField(null=True, blank=True)
     read_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

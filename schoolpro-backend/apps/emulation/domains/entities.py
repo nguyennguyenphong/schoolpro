@@ -11,11 +11,10 @@ Covers 8 tables:
   - DisciplinaryRecordEntity ("emulation"."disciplinary_records")
 """
 
-from dataclasses import dataclass, field
-from datetime import date, datetime
-from decimal import Decimal
-from typing import Any
 import uuid
+from dataclasses import dataclass, field
+from datetime import date
+from decimal import Decimal
 
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code

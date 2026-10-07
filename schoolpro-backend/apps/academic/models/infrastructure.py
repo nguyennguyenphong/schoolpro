@@ -18,7 +18,7 @@ class Room(UUIDModel):
         related_name="rooms",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=30)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=100)
     room_type = models.CharField(max_length=30, default="CLASSROOM")
     capacity = models.SmallIntegerField(null=True, blank=True)
@@ -31,6 +31,10 @@ class Room(UUIDModel):
     has_camera = models.BooleanField(default=False)
     has_audio_system = models.BooleanField(default=False)
     qr_checkin_code = models.CharField(max_length=100, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    map_embedding_url = models.URLField(max_length=2000, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

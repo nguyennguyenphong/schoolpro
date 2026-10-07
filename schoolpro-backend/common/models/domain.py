@@ -4,15 +4,15 @@ Each database table corresponds to a rich Domain Entity encapsulating domain inv
 business rules, and entity-specific behavior.
 """
 
+import uuid
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
-import uuid
 
 
 @dataclass
-class DomainEvent(ABC):
+class DomainEvent:
     """Base Domain Event dispatched when domain state changes occur."""
 
     occurred_at: datetime = field(default_factory=datetime.now)

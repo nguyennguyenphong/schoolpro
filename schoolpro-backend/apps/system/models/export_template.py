@@ -109,6 +109,24 @@ class ExportTemplate(BaseModel):
         default=FileFormat.HTML_PRINT,
         help_text="Định dạng tệp tin xuất ra",
     )
+    version = models.SmallIntegerField(
+        default=1,
+        help_text="Phiên bản của biểu mẫu",
+    )
+    watermark_text = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Chữ in chìm bảo mật",
+    )
+    include_digital_stamp = models.BooleanField(
+        default=True,
+        help_text="Nhúng con dấu điện tử của nhà trường",
+    )
+    include_qr_verification = models.BooleanField(
+        default=True,
+        help_text="Nhúng mã QR xác thực văn bản",
+    )
 
     # Template Content & Styles
     content = models.TextField(

@@ -14,10 +14,10 @@ Covers 9 tables:
   - EventOutboxEntity ("sys"."event_outbox")
 """
 
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
-import uuid
 
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code

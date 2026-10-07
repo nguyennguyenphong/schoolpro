@@ -11,27 +11,55 @@ class EmulationAward(UUIDModel):
     Description: Golden book of student accolades, Olympiad laureates, and state honors
     """
 
-    student_id = models.UUIDField()
-    academic_year_id = models.UUIDField()
-    award_category = models.CharField(
-        max_length=30,
+    student = models.ForeignKey(
+        "core.Student",
+        on_delete=models.CASCADE,
+        db_column="student_id",
+        related_name="emulation_awards",
+        db_comment="student_id foreign key",
     )
-    level = models.CharField(
-        max_length=20,
+    academic_year = models.ForeignKey(
+        "master.AcademicYear",
+        on_delete=models.CASCADE,
+        db_column="academic_year_id",
+        related_name="emulation_awards",
+        db_comment="academic_year_id foreign key",
     )
-    prize = models.CharField(
-        max_length=30,
+    semester = models.ForeignKey(
+        "master.Semester",
+        on_delete=models.SET_NULL,
+        db_column="semester_id",
+        null=True,
+        blank=True,
+        related_name="emulation_awards",
+        db_comment="semester_id foreign key",
     )
-    title = models.CharField(
-        max_length=255,
+    award_category = models.CharField(max_length=30, default="ACADEMIC")
+    level = models.CharField(max_length=20, default="SCHOOL")
+    prize = models.CharField(max_length=30, default="FIRST_PRIZE")
+    contest_name = models.CharField(max_length=255, null=True, blank=True)
+    organizer_name = models.CharField(max_length=200, null=True, blank=True)
+    coach_teacher = models.ForeignKey(
+        "core.Teacher",
+        on_delete=models.SET_NULL,
+        db_column="coach_teacher_id",
+        null=True,
+        blank=True,
+        related_name="+",
+        db_comment="coach_teacher_id foreign key",
     )
+    title = models.CharField(max_length=255)
     decision_number = models.CharField(max_length=100, null=True, blank=True)
     decision_date = models.DateField()
-    reward_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    bonus_points = models.SmallIntegerField()
+    certificate_code = models.CharField(max_length=100, null=True, blank=True)
+    reward_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    bonus_points = models.SmallIntegerField(default=10)
     signed_by = models.CharField(max_length=150, null=True, blank=True)
+    is_featured = models.BooleanField(default=False)
     certificate_url = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField()
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -44,4 +72,4 @@ class EmulationAward(UUIDModel):
         return str(self.title)
 
     def __repr__(self) -> str:
-        return f"<EmulationAward {self.pk}>"
+        return f"<EmulationAward {self.pk}: {self.title}>"

@@ -18,14 +18,30 @@ class Grade(UUIDModel):
         related_name="grades",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(
-        max_length=10,
+    code = models.CharField(max_length=10)
+    name = models.CharField(max_length=50)
+    order_no = models.SmallIntegerField(default=0)
+    supervisor = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="supervisor_id",
+        null=True,
+        blank=True,
+        related_name="+",
+        db_comment="supervisor_id foreign key",
     )
-    name = models.CharField(
-        max_length=50,
+    head_teacher = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="head_teacher_id",
+        null=True,
+        blank=True,
+        related_name="+",
+        db_comment="head_teacher_id foreign key",
     )
-    order_no = models.SmallIntegerField()
-    supervisor_id = models.UUIDField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -38,4 +54,4 @@ class Grade(UUIDModel):
         return str(self.name)
 
     def __repr__(self) -> str:
-        return f"<Grade {self.pk}>"
+        return f"<Grade {self.code}: {self.name}>"

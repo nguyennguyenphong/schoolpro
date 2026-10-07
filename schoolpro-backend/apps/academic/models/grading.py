@@ -19,7 +19,7 @@ class ScoreType(UUIDModel):
         blank=True,
         related_name="score_types",
     )
-    code = models.CharField(max_length=30)
+    code = models.CharField(max_length=60)
     name = models.CharField(max_length=100)
     coefficient = models.SmallIntegerField(default=1)
     weight_percent = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)

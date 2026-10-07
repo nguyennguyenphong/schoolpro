@@ -6,6 +6,7 @@ Defaults to:
 """
 
 import uuid
+
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.utils import timezone

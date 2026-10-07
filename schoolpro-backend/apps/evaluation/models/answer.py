@@ -8,24 +8,27 @@ class EvaluationAnswer(UUIDModel):
     EvaluationAnswer Model.
 
     Database Table: "evaluation"."answers"
-    Description: Atomic answers provided for survey questions
+    Description: Specific question responses within a survey submission
     """
 
     submission = models.ForeignKey(
         "evaluation.EvaluationSubmission",
         on_delete=models.CASCADE,
         db_column="submission_id",
-        related_name="+",
+        related_name="answers",
         db_comment="submission_id foreign key",
     )
     question = models.ForeignKey(
         "evaluation.EvaluationQuestion",
         on_delete=models.CASCADE,
         db_column="question_id",
-        related_name="+",
+        related_name="answers",
         db_comment="question_id foreign key",
     )
-    answer_value = models.JSONField(null=True, blank=True)
+    numeric_score = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    answer_value = models.JSONField()
+    text_comment = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False

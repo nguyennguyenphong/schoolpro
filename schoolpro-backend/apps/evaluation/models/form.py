@@ -8,24 +8,52 @@ class EvaluationForm(UUIDModel):
     EvaluationForm Model.
 
     Database Table: "evaluation"."forms"
-    Description: Survey questionnaires for confidential pedagogical reviews and campus satisfaction
+    Description: Survey questionnaires for confidential pedagogical reviews, student feedback, and campus satisfaction
     """
 
-    code = models.CharField(
-        max_length=60,
+    school = models.ForeignKey(
+        "master.School",
+        on_delete=models.CASCADE,
+        db_column="school_id",
+        null=True,
+        blank=True,
+        related_name="evaluation_forms",
+        db_comment="school_id foreign key",
     )
-    name = models.CharField(
-        max_length=255,
+    semester = models.ForeignKey(
+        "master.Semester",
+        on_delete=models.SET_NULL,
+        db_column="semester_id",
+        null=True,
+        blank=True,
+        related_name="evaluation_forms",
+        db_comment="semester_id foreign key",
     )
-    target_type = models.CharField(
-        max_length=30,
-    )
+    code = models.CharField(max_length=60, unique=True)
+    name = models.CharField(max_length=255)
+    category = models.CharField(max_length=50, default="PEDAGOGICAL")
+    target_type = models.CharField(max_length=30)
+    target_audience = models.CharField(max_length=30, default="STUDENT")
     description = models.TextField(null=True, blank=True)
-    is_anonymous = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_anonymous = models.BooleanField(default=True)
+    allow_multiple_submissions = models.BooleanField(default=False)
+    pass_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, default=80.00, null=True, blank=True
+    )
+    is_active = models.BooleanField(default=True)
     valid_from = models.DateField(null=True, blank=True)
     valid_to = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField()
+    created_by = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="created_by",
+        null=True,
+        blank=True,
+        related_name="+",
+        db_comment="created_by foreign key",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -38,4 +66,4 @@ class EvaluationForm(UUIDModel):
         return str(self.name)
 
     def __repr__(self) -> str:
-        return f"<EvaluationForm {self.pk}>"
+        return f"<EvaluationForm {self.code}: {self.name}>"

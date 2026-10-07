@@ -9,11 +9,10 @@ Covers 6 tables:
   - FacilityIncidentReportEntity ("evaluation"."facility_incident_reports")
 """
 
+import uuid
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Any
-import uuid
 
 from common.models.domain import BaseDomainEntity
 from common.utils.code_generator import generate_entity_code
