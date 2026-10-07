@@ -67,6 +67,8 @@ MIDDLEWARE = [
     "axes.middleware.AxesMiddleware",
 ]
 
+AUTH_USER_MODEL = "core.User"
+
 AUTHENTICATION_BACKENDS = [
     "apps.core.authentication.SchoolProAdminBackend",
     "axes.backends.AxesStandaloneBackend",

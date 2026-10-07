@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS academic.rooms (
   has_camera            BOOLEAN NOT NULL DEFAULT FALSE,    -- Camera giám sát an ninh / thi cử
   has_audio_system      BOOLEAN NOT NULL DEFAULT FALSE,    -- Loa trợ giảng
   qr_checkin_code       VARCHAR(100),                      -- Mã QR dán cửa phòng
+  longitude             NUMERIC(9,6),                       -- Vĩ độ
+  latitude              NUMERIC(9,6),                       -- Kinh độ
+  map_embedding_url     TEXT,                                 -- Google Maps iframe embed URL
   status                VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE'
                           CHECK (status IN ('AVAILABLE', 'UNDER_MAINTENANCE', 'UNAVAILABLE')),
   notes                 TEXT,

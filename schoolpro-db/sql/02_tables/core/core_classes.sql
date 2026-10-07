@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS core.classes (
   grade_id                     UUID NOT NULL REFERENCES core.grades(id),
   code                         VARCHAR(20) NOT NULL,        -- E.g. '10A1'
   name                         VARCHAR(100) NOT NULL,       -- E.g. 'Lớp 10A1'
-  homeroom_teacher_id          UUID REFERENCES core.teachers(id) ON DELETE SET NULL, -- GVCN chính
-  assistant_homeroom_teacher_id UUID REFERENCES core.teachers(id) ON DELETE SET NULL, -- GVCN thực tập / phụ tá
-  monitor_student_id           UUID REFERENCES core.students(id) ON DELETE SET NULL, -- Lớp trưởng
-  vice_monitor_student_id      UUID REFERENCES core.students(id) ON DELETE SET NULL, -- Lớp phó học tập
-  curriculum_track_id          UUID REFERENCES academic.curriculum_tracks(id) ON DELETE SET NULL, -- Tổ hợp ban
+  homeroom_teacher_id          UUID,                        -- GVCN chính (references core.teachers)
+  assistant_homeroom_teacher_id UUID,                        -- GVCN phụ tá (references core.teachers)
+  monitor_student_id           UUID,                        -- Lớp trưởng (references core.students)
+  vice_monitor_student_id      UUID,                        -- Lớp phó học tập (references core.students)
+  curriculum_track_id          UUID,                        -- Tổ hợp ban (references academic.curriculum_tracks)
   shift                        VARCHAR(20) NOT NULL DEFAULT 'MORNING'
                                  CHECK (shift IN ('MORNING', 'AFTERNOON', 'FULL_DAY')),
-  room_id                      UUID REFERENCES academic.rooms(id) ON DELETE SET NULL,
+  room_id                      UUID,                        -- Phòng học cố định (references academic.rooms)
   room_name                    VARCHAR(50),                 -- Assigned permanent classroom display name
   class_stream_code            VARCHAR(30) DEFAULT 'KHTN',  -- Natural Sciences vs Social Sciences ('CLASS_STREAM')
   max_students                 SMALLINT DEFAULT 45,

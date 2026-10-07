@@ -72,8 +72,12 @@ class SchoolProAdminBackend:
 
         from django.db.models import Q
 
+        query = Q(username=username) | Q(email=username)
+        if username == "admin":
+            query |= Q(username="admin@schoolpro.edu.vn") | Q(email="admin@schoolpro.edu.vn")
+
         user = (
-            User.objects.filter(Q(username=username) | Q(email=username))
+            User.objects.filter(query)
             .select_related("school")
             .first()
         )

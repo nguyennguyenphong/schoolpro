@@ -100,6 +100,25 @@ class User(UUIDModel):
         return False
 
     @property
+    def last_login(self) -> Any:
+        return self.last_login_at
+
+    @last_login.setter
+    def last_login(self, value: Any) -> None:
+        self.last_login_at = value
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        """Remap update_fields from last_login to last_login_at if needed."""
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None:
+            new_fields = set(update_fields)
+            if "last_login" in new_fields:
+                new_fields.remove("last_login")
+                new_fields.add("last_login_at")
+            kwargs["update_fields"] = list(new_fields)
+        super().save(*args, **kwargs)
+
+    @property
     def is_staff(self) -> bool:
         """Check if user has staff/admin privileges."""
         active_role_code = getattr(self, "active_role_code", "") or ""
@@ -124,15 +143,48 @@ class User(UUIDModel):
 
     def check_password(self, raw_password: str) -> bool:
         """Verify candidate raw password against stored password_hash."""
+        if not self.password_hash or not raw_password:
+            return False
+
+        # 1. Try standard Django hashers (PBKDF2, Argon2, Django-bcrypt)
         from django.contrib.auth.hashers import check_password
 
-        return bool(check_password(raw_password, self.password_hash))
+        try:
+            if check_password(raw_password, self.password_hash):
+                return True
+        except Exception:
+            pass
+
+        # 2. Try raw bcrypt / modular crypt hashes (e.g. PostgreSQL pgcrypto $2a$, $2b$, $2y$)
+        if self.password_hash.startswith(("$2a$", "$2b$", "$2y$", "$2x$")):
+            try:
+                import bcrypt
+
+                if bcrypt.checkpw(
+                    raw_password.encode("utf-8"), self.password_hash.encode("utf-8")
+                ):
+                    return True
+            except Exception:
+                pass
+
+        return False
 
     def set_password(self, raw_password: str) -> None:
         """Hash and update password."""
         from django.contrib.auth.hashers import make_password
 
         self.password_hash = make_password(raw_password)
+
+    def get_session_auth_hash(self) -> str:
+        """Return HMAC hash of the password field for Django session management."""
+        from django.utils.crypto import salted_hmac
+
+        key_salt = "apps.core.models.user.User.get_session_auth_hash"
+        return salted_hmac(
+            key_salt,
+            self.password_hash or "",
+            algorithm="sha256",
+        ).hexdigest()
 
     def has_perm(self, perm: str, obj: Any = None) -> bool:
         """Permission check for Django Admin site."""
