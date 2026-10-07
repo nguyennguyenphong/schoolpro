@@ -23,6 +23,7 @@ from apps.system.models.setting import (
     SystemSetting,
     UserSetting,
 )
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 @admin.register(AuditLog)
@@ -120,7 +121,8 @@ class RoleModuleInline(admin.TabularInline):
 
 
 @admin.register(Module)
-class ModuleAdmin(admin.ModelAdmin):
+class ModuleAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -165,7 +167,8 @@ class UserModulePreferenceAdmin(admin.ModelAdmin):
 
 
 @admin.register(SettingsDefinition)
-class SettingsDefinitionAdmin(admin.ModelAdmin):
+class SettingsDefinitionAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = ["code", "name", "data_type", "scope", "category", "is_active"]
     list_filter = ["scope", "category", "data_type", "is_active"]
     search_fields = ["code", "name", "description"]
@@ -193,7 +196,8 @@ class UserSettingAdmin(admin.ModelAdmin):
 
 
 @admin.register(ExportTemplate)
-class ExportTemplateAdmin(admin.ModelAdmin):
+class ExportTemplateAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",

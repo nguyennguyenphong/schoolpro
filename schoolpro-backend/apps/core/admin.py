@@ -28,6 +28,7 @@ from apps.core.models.permission import Permission, RolePermission
 from apps.core.models.profile import Guardian, Staff, Student, StudentHealthRecord, Teacher
 from apps.core.models.role import Role, UserRole
 from apps.core.models.user import User
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 class UserAdminForm(forms.ModelForm):
@@ -179,7 +180,8 @@ class RolePermissionInline(admin.TabularInline):
 
 
 @admin.register(Role)
-class RoleAdmin(admin.ModelAdmin):
+class RoleAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = ["code", "name", "badge_color", "icon", "is_system", "is_active", "created_at"]
     list_filter = ["is_system", "is_active"]
     search_fields = ["code", "name", "description"]
@@ -188,7 +190,8 @@ class RoleAdmin(admin.ModelAdmin):
 
 
 @admin.register(Permission)
-class PermissionAdmin(admin.ModelAdmin):
+class PermissionAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = ["code", "name", "group_code", "module", "is_dangerous", "created_at"]
     list_filter = ["group_code", "module", "is_dangerous"]
     search_fields = ["code", "name", "group_code", "module", "description"]
@@ -213,7 +216,8 @@ class UserRoleAdmin(admin.ModelAdmin):
 
 
 @admin.register(Teacher)
-class TeacherAdmin(admin.ModelAdmin):
+class TeacherAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "teacher_code"
     list_display = [
         "teacher_code",
         "user",
@@ -231,7 +235,8 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 @admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
+class StudentAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "student_code"
     list_display = [
         "student_code",
         "user",
@@ -249,7 +254,8 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Staff)
-class StaffAdmin(admin.ModelAdmin):
+class StaffAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "staff_code"
     list_display = [
         "staff_code",
         "user",
@@ -302,7 +308,8 @@ class StudentHealthRecordAdmin(admin.ModelAdmin):
 
 
 @admin.register(SchoolClass)
-class SchoolClassAdmin(admin.ModelAdmin):
+class SchoolClassAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -321,7 +328,8 @@ class SchoolClassAdmin(admin.ModelAdmin):
 
 
 @admin.register(ClassGroup)
-class ClassGroupAdmin(admin.ModelAdmin):
+class ClassGroupAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = ["name", "school_class", "leader_student", "order_no"]
     search_fields = ["name", "school_class__name"]
     list_filter = ["school_class"]
@@ -394,7 +402,8 @@ class PositionAssignmentAdmin(admin.ModelAdmin):
 
 
 @admin.register(CustomFieldDefinition)
-class CustomFieldDefinitionAdmin(admin.ModelAdmin):
+class CustomFieldDefinitionAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "field_code"
     list_display = [
         "field_code",
         "field_label",
@@ -425,7 +434,8 @@ class CustomFieldValueAdmin(admin.ModelAdmin):
 
 
 @admin.register(Club)
-class ClubAdmin(admin.ModelAdmin):
+class ClubAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",

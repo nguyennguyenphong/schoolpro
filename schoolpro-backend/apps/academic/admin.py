@@ -44,11 +44,13 @@ from apps.academic.models.infrastructure import Period, Room
 from apps.academic.models.journal import ClassJournalEntry
 from apps.academic.models.material import CurriculumMaterial, MaterialAttachment
 from apps.academic.models.timetable import Timetable, TimetableChange
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 # --- Infrastructure ---
 @admin.register(Room)
-class RoomAdmin(admin.ModelAdmin):
+class RoomAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -144,7 +146,8 @@ class AttendanceAdmin(admin.ModelAdmin):
 
 # --- Grading ---
 @admin.register(ScoreType)
-class ScoreTypeAdmin(admin.ModelAdmin):
+class ScoreTypeAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -310,7 +313,8 @@ class ExamAdmin(admin.ModelAdmin):
 
 
 @admin.register(QuestionBank)
-class QuestionBankAdmin(admin.ModelAdmin):
+class QuestionBankAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "subject",
@@ -369,7 +373,8 @@ class CurriculumTrackSubjectInline(admin.TabularInline):
 
 
 @admin.register(CurriculumTrack)
-class CurriculumTrackAdmin(admin.ModelAdmin):
+class CurriculumTrackAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -471,7 +476,8 @@ class MaterialAttachmentAdmin(admin.ModelAdmin):
 
 # --- Fee ---
 @admin.register(FeeItem)
-class FeeItemAdmin(admin.ModelAdmin):
+class FeeItemAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -490,7 +496,8 @@ class FeeItemAdmin(admin.ModelAdmin):
 
 
 @admin.register(StudentFeeBill)
-class StudentFeeBillAdmin(admin.ModelAdmin):
+class StudentFeeBillAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "bill_code"
     list_display = [
         "bill_code",
         "student",

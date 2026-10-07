@@ -19,10 +19,12 @@ from apps.emulation.models.duty_log import SupervisorDutyLog
 from apps.emulation.models.period import EmulationPeriod
 from apps.emulation.models.ranking import EmulationRanking
 from apps.emulation.models.record import EmulationRecord
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 @admin.register(Criteria)
-class CriteriaAdmin(admin.ModelAdmin):
+class CriteriaAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -48,7 +50,8 @@ class CriteriaAdmin(admin.ModelAdmin):
 
 
 @admin.register(ClassCustomCriteria)
-class ClassCustomCriteriaAdmin(admin.ModelAdmin):
+class ClassCustomCriteriaAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -66,7 +69,8 @@ class ClassCustomCriteriaAdmin(admin.ModelAdmin):
 
 
 @admin.register(EmulationPeriod)
-class EmulationPeriodAdmin(admin.ModelAdmin):
+class EmulationPeriodAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "school",
         "academic_year",
@@ -164,7 +168,8 @@ class SupervisorDutyLogAdmin(admin.ModelAdmin):
 
 
 @admin.register(EmulationAward)
-class EmulationAwardAdmin(admin.ModelAdmin):
+class EmulationAwardAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "certificate_code"
     list_display = [
         "title",
         "student",
@@ -218,12 +223,13 @@ class DisciplinaryRecordAdmin(admin.ModelAdmin):
 
 
 @admin.register(AchievementCertificate)
-class AchievementCertificateAdmin(admin.ModelAdmin):
+class AchievementCertificateAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     """
     Quản trị Bảng Vàng & Chứng chỉ Thành tích.
     Dành cho học sinh, giáo viên, nhân viên, lớp, khối, trường công khai.
     """
 
+    auto_code_field = "certificate_code"
     list_display = [
         "certificate_code",
         "title",

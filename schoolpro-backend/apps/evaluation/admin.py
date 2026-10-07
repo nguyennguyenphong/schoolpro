@@ -12,6 +12,7 @@ from apps.evaluation.models.facility import Facility, FacilityIncidentReport
 from apps.evaluation.models.form import EvaluationForm
 from apps.evaluation.models.question import EvaluationQuestion
 from apps.evaluation.models.submission import EvaluationSubmission
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 class EvaluationQuestionInline(admin.StackedInline):
@@ -21,7 +22,8 @@ class EvaluationQuestionInline(admin.StackedInline):
 
 
 @admin.register(EvaluationForm)
-class EvaluationFormAdmin(admin.ModelAdmin):
+class EvaluationFormAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -104,7 +106,8 @@ class EvaluationAnswerAdmin(admin.ModelAdmin):
 
 
 @admin.register(Facility)
-class FacilityAdmin(admin.ModelAdmin):
+class FacilityAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "name",
@@ -123,7 +126,8 @@ class FacilityAdmin(admin.ModelAdmin):
 
 
 @admin.register(FacilityIncidentReport)
-class FacilityIncidentReportAdmin(admin.ModelAdmin):
+class FacilityIncidentReportAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "ticket_code"
     list_display = [
         "ticket_code",
         "title",

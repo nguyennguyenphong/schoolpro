@@ -6,3 +6,6 @@ class CoreConfig(AppConfig):
     name = "apps.core"
     label = "core"
     verbose_name = "Core Identity & Organization"
+
+    def ready(self) -> None:
+        import common.signals  # noqa: F401

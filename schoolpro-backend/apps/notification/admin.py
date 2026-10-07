@@ -15,6 +15,7 @@ from apps.notification.models.contact_book import ContactBookNote
 from apps.notification.models.message import ParentTeacherMessage
 from apps.notification.models.push_token import PushToken
 from apps.notification.models.reminder import Reminder
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 class AnnouncementReadInline(admin.TabularInline):
@@ -61,7 +62,8 @@ class AnnouncementReadAdmin(admin.ModelAdmin):
 
 
 @admin.register(ContactBookNote)
-class ContactBookNoteAdmin(admin.ModelAdmin):
+class ContactBookNoteAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
         "code",
         "student",

@@ -20,6 +20,7 @@ from apps.master.models.position import Position
 from apps.master.models.school import School
 from apps.master.models.semester import Semester
 from apps.master.models.subject import Subject
+from common.admin_mixins import AutoCodeAdminMixin
 
 
 class SemesterInline(admin.TabularInline):
@@ -29,7 +30,7 @@ class SemesterInline(admin.TabularInline):
 
 
 @admin.register(School)
-class SchoolAdmin(admin.ModelAdmin):
+class SchoolAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "code",
         "name",
@@ -47,7 +48,7 @@ class SchoolAdmin(admin.ModelAdmin):
 
 
 @admin.register(AcademicYear)
-class AcademicYearAdmin(admin.ModelAdmin):
+class AcademicYearAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = ["code", "name", "school", "start_date", "end_date", "is_current", "created_at"]
     search_fields = ["code", "name"]
     list_filter = ["school", "is_current"]
@@ -57,7 +58,7 @@ class AcademicYearAdmin(admin.ModelAdmin):
 
 
 @admin.register(Semester)
-class SemesterAdmin(admin.ModelAdmin):
+class SemesterAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "code",
         "name",
@@ -75,7 +76,7 @@ class SemesterAdmin(admin.ModelAdmin):
 
 
 @admin.register(Grade)
-class GradeAdmin(admin.ModelAdmin):
+class GradeAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = ["code", "name", "school", "order_no", "created_at"]
     search_fields = ["code", "name"]
     list_filter = ["school"]
@@ -84,7 +85,7 @@ class GradeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Department)
-class DepartmentAdmin(admin.ModelAdmin):
+class DepartmentAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "code",
         "name",
@@ -108,7 +109,7 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
+class SubjectAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "code",
         "name",
@@ -134,7 +135,7 @@ class SubjectAdmin(admin.ModelAdmin):
 
 
 @admin.register(Position)
-class PositionAdmin(admin.ModelAdmin):
+class PositionAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "code",
         "name",
@@ -157,7 +158,7 @@ class LookupValueInline(admin.TabularInline):
 
 
 @admin.register(LookupType)
-class LookupTypeAdmin(admin.ModelAdmin):
+class LookupTypeAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = ["code", "name", "school", "is_system", "is_hierarchical", "created_at"]
     search_fields = ["code", "name", "description"]
     list_filter = ["is_system", "is_hierarchical", "school"]
@@ -167,7 +168,7 @@ class LookupTypeAdmin(admin.ModelAdmin):
 
 
 @admin.register(LookupValue)
-class LookupValueAdmin(admin.ModelAdmin):
+class LookupValueAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     list_display = [
         "lookup_type",
         "code",
