@@ -1,10 +1,17 @@
 # Export domain models for Django ORM discovery
 
 from .activity import ActivityParticipation, ExtracurricularActivity
-from .assignment import Assignment, AssignmentSubmission
-from .attendance import Attendance
+from .assignment import Assignment, AssignmentEventLog, AssignmentSubmission
+from .attendance import Attendance, AttendanceLog, LeaveRequest
 from .curriculum import CurriculumTrack, CurriculumTrackSubject, StudentTrackEnrollment
-from .exam import Exam, ExamQuestion, ExamSubmission, ExamSubmissionAnswer, QuestionBank
+from .exam import (
+    Exam,
+    ExamEventLog,
+    ExamQuestion,
+    ExamSubmission,
+    ExamSubmissionAnswer,
+    QuestionBank,
+)
 from .fee import FeeItem, StudentFeeBill
 from .grading import (
     ConductEvaluation,
@@ -24,7 +31,10 @@ __all__ = [
     "ActivityParticipation",
     "Assignment",
     "AssignmentSubmission",
+    "AssignmentEventLog",
     "Attendance",
+    "AttendanceLog",
+    "LeaveRequest",
     "CurriculumTrack",
     "CurriculumTrackSubject",
     "StudentTrackEnrollment",
@@ -32,6 +42,7 @@ __all__ = [
     "ExamQuestion",
     "ExamSubmission",
     "ExamSubmissionAnswer",
+    "ExamEventLog",
     "QuestionBank",
     "FeeItem",
     "StudentFeeBill",

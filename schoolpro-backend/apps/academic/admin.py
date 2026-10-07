@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from apps.academic.models.activity import ActivityParticipation, ExtracurricularActivity
 from apps.academic.models.assignment import Assignment, AssignmentEventLog, AssignmentSubmission
-from apps.academic.models.attendance import Attendance
+from apps.academic.models.attendance import Attendance, AttendanceLog, LeaveRequest
 from apps.academic.models.curriculum import (
     CurriculumTrack,
     CurriculumTrackSubject,
@@ -26,6 +26,7 @@ from apps.academic.models.curriculum import (
 )
 from apps.academic.models.exam import (
     Exam,
+    ExamEventLog,
     ExamQuestion,
     ExamSubmission,
     ExamSubmissionAnswer,
@@ -125,6 +126,13 @@ class TimetableChangeAdmin(admin.ModelAdmin):
 
 
 # --- Attendance ---
+class AttendanceLogInline(admin.TabularInline):
+    model = AttendanceLog
+    extra = 0
+    readonly_fields = ["created_at"]
+    can_delete = False
+
+
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
     list_display = [
@@ -142,6 +150,48 @@ class AttendanceAdmin(admin.ModelAdmin):
     list_filter = ["school_class", "status", "attendance_date", "is_parent_notified"]
     autocomplete_fields = ["student", "school_class", "period", "recorded_by"]
     readonly_fields = ["recorded_at"]
+    inlines = [AttendanceLogInline]
+
+
+@admin.register(AttendanceLog)
+class AttendanceLogAdmin(admin.ModelAdmin):
+    list_display = [
+        "student",
+        "attendance",
+        "previous_status",
+        "new_status",
+        "action",
+        "performed_by",
+        "created_at",
+    ]
+    search_fields = ["student__student_code", "student__user__full_name", "reason"]
+    list_filter = ["new_status", "action", "created_at"]
+    autocomplete_fields = ["student", "attendance", "performed_by"]
+    readonly_fields = ["created_at"]
+
+
+@admin.register(LeaveRequest)
+class LeaveRequestAdmin(admin.ModelAdmin):
+    list_display = [
+        "student",
+        "school_class",
+        "leave_type",
+        "start_date",
+        "end_date",
+        "status",
+        "requested_by",
+        "reviewed_by",
+        "created_at",
+    ]
+    search_fields = [
+        "student__student_code",
+        "student__user__full_name",
+        "school_class__name",
+        "reason",
+    ]
+    list_filter = ["status", "leave_type", "school_class", "start_date"]
+    autocomplete_fields = ["student", "school_class", "guardian", "requested_by", "reviewed_by"]
+    readonly_fields = ["created_at", "updated_at"]
 
 
 # --- Grading ---
@@ -340,6 +390,13 @@ class ExamQuestionAdmin(admin.ModelAdmin):
     readonly_fields = ["created_at"]
 
 
+class ExamEventLogInline(admin.TabularInline):
+    model = ExamEventLog
+    extra = 0
+    readonly_fields = ["created_at"]
+    can_delete = False
+
+
 @admin.register(ExamSubmission)
 class ExamSubmissionAdmin(admin.ModelAdmin):
     list_display = [
@@ -355,6 +412,7 @@ class ExamSubmissionAdmin(admin.ModelAdmin):
     list_filter = ["exam", "status", "appeal_status"]
     autocomplete_fields = ["exam", "student", "graded_by", "appeal_resolved_by"]
     readonly_fields = ["created_at", "updated_at"]
+    inlines = [ExamEventLogInline]
 
 
 @admin.register(ExamSubmissionAnswer)
@@ -363,6 +421,24 @@ class ExamSubmissionAnswerAdmin(admin.ModelAdmin):
     list_filter = ["is_correct", "flagged_for_review"]
     autocomplete_fields = ["submission", "exam_question", "graded_by"]
     readonly_fields = ["created_at", "updated_at"]
+
+
+@admin.register(ExamEventLog)
+class ExamEventLogAdmin(admin.ModelAdmin):
+    list_display = [
+        "exam",
+        "student",
+        "submission",
+        "event_type",
+        "title",
+        "severity",
+        "actor",
+        "created_at",
+    ]
+    search_fields = ["title", "description", "event_type", "exam__title"]
+    list_filter = ["severity", "event_type", "created_at"]
+    autocomplete_fields = ["exam", "submission", "student", "actor"]
+    readonly_fields = ["created_at"]
 
 
 # --- Curriculum Tracks ---

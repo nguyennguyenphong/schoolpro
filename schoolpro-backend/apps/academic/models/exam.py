@@ -330,3 +330,65 @@ class QuestionBank(UUIDModel):
 
     def __str__(self) -> str:
         return f"Question ({self.pk})"
+
+
+class ExamEventLog(UUIDModel):
+    """
+    ExamEventLog Model.
+
+    Database Table: "academic"."exam_event_logs"
+    Description: Audit journal tracking exam proctoring events, anti-cheat detection, and lifecycle events
+    """
+
+    exam = models.ForeignKey(
+        "academic.Exam",
+        on_delete=models.CASCADE,
+        db_column="exam_id",
+        related_name="event_logs",
+        db_comment="exam_id foreign key",
+    )
+    submission = models.ForeignKey(
+        "academic.ExamSubmission",
+        on_delete=models.CASCADE,
+        db_column="submission_id",
+        null=True,
+        blank=True,
+        related_name="event_logs",
+        db_comment="submission_id foreign key",
+    )
+    student = models.ForeignKey(
+        "core.Student",
+        on_delete=models.CASCADE,
+        db_column="student_id",
+        null=True,
+        blank=True,
+        related_name="exam_event_logs",
+        db_comment="student_id foreign key",
+    )
+    actor = models.ForeignKey(
+        "core.User",
+        on_delete=models.SET_NULL,
+        db_column="actor_id",
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    event_type = models.CharField(max_length=50)
+    title = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    severity = models.CharField(max_length=20, default="INFO")
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = '"academic"."exam_event_logs"'
+        verbose_name = "Exam Event Log"
+        verbose_name_plural = "Exam Event Logs"
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"ExamEventLog ({self.exam_id}: {self.event_type} - {self.severity})"
+
+    def __repr__(self) -> str:
+        return f"<ExamEventLog {self.pk}>"
