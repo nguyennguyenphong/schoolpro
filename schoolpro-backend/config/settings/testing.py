@@ -35,3 +35,6 @@ CELERY_TASK_EAGER_PROPAGATES = True
 
 # Disable rate limiting / lockout during tests
 AXES_ENABLED = False
+
+# Use standard auth.User in SQLite tests to avoid Postgres schema-qualified foreign keys
+AUTH_USER_MODEL = "auth.User"
