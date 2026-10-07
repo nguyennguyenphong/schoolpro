@@ -110,6 +110,7 @@ class AnnouncementRead(models.Model):
         on_delete=models.CASCADE,
         db_column="announcement_id",
         related_name="read_receipts",
+        primary_key=True,
         db_comment="announcement_id foreign key",
     )
     user = models.ForeignKey(

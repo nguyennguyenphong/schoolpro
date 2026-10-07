@@ -111,7 +111,7 @@ class RoleModuleInline(admin.TabularInline):
     model = RoleModule
     extra = 1
     fields = [
-        "role_id",
+        "role",
         "is_visible",
         "is_pinned_default",
         "order_no",

@@ -54,8 +54,6 @@ ENTITY_CODE_FIELDS_BY_MODEL: dict[str, str] = {
     "evaluation.evaluationform": "code",
     "evaluation.facility": "code",
     "evaluation.facilityincidentreport": "ticket_code",
-    # Notification Domain
-    "notification.contactbooknote": "code",
     # System Domain
     "system.module": "code",
     "system.settingsdefinition": "code",

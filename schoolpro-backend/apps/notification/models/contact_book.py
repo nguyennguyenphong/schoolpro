@@ -52,7 +52,6 @@ class ContactBookNote(UUIDModel):
         db_comment="guardian_id foreign key",
     )
     period_type = models.CharField(max_length=20, default="WEEKLY")
-    code = models.CharField(max_length=60, blank=True)
     period_label = models.CharField(max_length=50)
     academic_digest = models.JSONField(null=True, blank=True)
     attendance_digest = models.JSONField(null=True, blank=True)
