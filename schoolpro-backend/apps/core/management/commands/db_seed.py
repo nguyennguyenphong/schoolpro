@@ -21,7 +21,9 @@ class Command(BaseCommand):
         # Table-level seed commands ordered strictly by Foreign Key DAG
         seed_pipeline = [
             # 1. Identity & Institutional Foundations
-            ("seed_roles", "Core: Roles & System Permissions"),
+            ("seed_roles", "Core: Roles"),
+            ("seed_permissions", "Core: Granular System Permissions"),
+            ("seed_role_permissions", "Core: Role-Permission RBAC Mappings"),
             ("seed_schools", "Master: School Profile"),
             ("seed_academic_years", "Master: Academic Year"),
             ("seed_semesters", "Master: Semesters"),
@@ -37,6 +39,7 @@ class Command(BaseCommand):
             ("seed_score_types", "Academic: Score Types (Đầu điểm TT22)"),
             # 3. Organization, Teaching Assignment & Profiles
             ("seed_teachers", "Core: Teachers & Accounts"),
+            ("seed_staff", "Core: Staff Profiles & Accounts (Cán bộ nhân viên)"),
             ("seed_classes", "Core: Classes (Lớp học)"),
             ("seed_class_subject_teachers", "Core: ClassSubjectTeacher (Phân công giảng dạy)"),
             ("seed_students", "Core: Students & Accounts"),
