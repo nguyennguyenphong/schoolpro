@@ -11,7 +11,7 @@ class Permission(UUIDModel):
     Description: Atomic permission privileges for endpoint and UI access control
     """
 
-    code = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=100, unique=True, blank=True)
     name = models.CharField(max_length=255)
     group_code = models.CharField(max_length=60)
     module = models.CharField(max_length=50, default="CORE")

@@ -11,7 +11,7 @@ class School(UUIDModel):
     Description: Master high school campus profile, administrative metadata, and contacts
     """
 
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=255)
     moet_code = models.CharField(max_length=60, null=True, blank=True)
     educational_stage = models.CharField(max_length=30, default="HIGH_SCHOOL")

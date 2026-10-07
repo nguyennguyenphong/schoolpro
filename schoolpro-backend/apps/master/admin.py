@@ -23,7 +23,8 @@ from apps.master.models.subject import Subject
 from common.admin_mixins import AutoCodeAdminMixin
 
 
-class SemesterInline(admin.TabularInline):
+class SemesterInline(AutoCodeAdminMixin, admin.TabularInline):
+    auto_code_field = "code"
     model = Semester
     extra = 2
     readonly_fields = ["created_at"]
@@ -151,7 +152,8 @@ class PositionAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
     readonly_fields = ["created_at", "updated_at"]
 
 
-class LookupValueInline(admin.TabularInline):
+class LookupValueInline(AutoCodeAdminMixin, admin.TabularInline):
+    auto_code_field = "code"
     model = LookupValue
     extra = 3
     readonly_fields = ["created_at"]

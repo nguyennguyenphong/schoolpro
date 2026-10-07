@@ -27,7 +27,7 @@ class Subject(UUIDModel):
         blank=True,
         db_comment="department_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=150)
     short_name = models.CharField(max_length=50, null=True, blank=True)
     grade_level = models.SmallIntegerField(null=True, blank=True)

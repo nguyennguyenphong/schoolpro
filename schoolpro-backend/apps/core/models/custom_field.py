@@ -21,7 +21,7 @@ class CustomFieldDefinition(UUIDModel):
         db_comment="school_id foreign key (NULL for system-wide)",
     )
     entity_type = models.CharField(max_length=50)
-    field_code = models.CharField(max_length=60)
+    field_code = models.CharField(max_length=60, blank=True)
     field_label = models.CharField(max_length=150)
     data_type = models.CharField(max_length=30)
     options = models.JSONField(null=True, blank=True)

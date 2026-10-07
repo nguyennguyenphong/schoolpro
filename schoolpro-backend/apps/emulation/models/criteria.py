@@ -20,7 +20,7 @@ class Criteria(UUIDModel):
         related_name="emulation_criteria",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=50, default="DISCIPLINE")
     scope_type = models.CharField(max_length=50)
@@ -73,7 +73,7 @@ class ClassCustomCriteria(UUIDModel):
         related_name="custom_criteria",
         db_comment="class_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=50, default="BEHAVIOR")
     points = models.DecimalField(max_digits=6, decimal_places=2)

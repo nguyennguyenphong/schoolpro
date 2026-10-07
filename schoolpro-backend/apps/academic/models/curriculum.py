@@ -23,7 +23,7 @@ class CurriculumTrack(UUIDModel):
         db_column="grade_id",
         related_name="curriculum_tracks",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=255)
     career_orientation = models.CharField(max_length=100, null=True, blank=True)
     quota_students = models.SmallIntegerField(null=True, blank=True)

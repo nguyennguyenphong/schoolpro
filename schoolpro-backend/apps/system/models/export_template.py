@@ -84,6 +84,7 @@ class ExportTemplate(BaseModel):
     # Identifiers & Metadata
     code = models.CharField(
         max_length=100,
+        blank=True,
         db_index=True,
         help_text="Mã định danh duy nhất (VD: ANNOUNCEMENT_OFFICIAL_A4, TRANSCRIPT_SEMESTER_A4)",
     )

@@ -18,7 +18,7 @@ class Room(UUIDModel):
         related_name="rooms",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=100)
     room_type = models.CharField(max_length=30, default="CLASSROOM")
     capacity = models.SmallIntegerField(null=True, blank=True)

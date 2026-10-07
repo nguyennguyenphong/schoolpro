@@ -20,7 +20,7 @@ class LookupType(UUIDModel):
         related_name="lookup_types",
         db_comment="school_id foreign key (NULL for system-wide lookup types)",
     )
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     is_hierarchical = models.BooleanField(default=False)
@@ -66,7 +66,7 @@ class LookupValue(UUIDModel):
         related_name="children",
         db_comment="parent_id foreign key (hierarchical parent item)",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=150)
     short_name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)

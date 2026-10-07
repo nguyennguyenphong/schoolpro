@@ -18,7 +18,7 @@ class Semester(UUIDModel):
         related_name="semesters",
         db_comment="academic_year_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=100)
     order_no = models.SmallIntegerField(default=1)
     weeks_count = models.SmallIntegerField(default=18)

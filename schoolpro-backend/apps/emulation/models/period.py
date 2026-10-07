@@ -27,7 +27,7 @@ class EmulationPeriod(UUIDModel):
         related_name="emulation_periods",
         db_comment="academic_year_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=150)
     week_number = models.SmallIntegerField(null=True, blank=True)
     theme_title = models.CharField(max_length=255, null=True, blank=True)

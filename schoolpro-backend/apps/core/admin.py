@@ -49,7 +49,6 @@ class UserAdminForm(forms.ModelForm):
             "email",
             "phone",
             "raw_password",
-            "password_hash",
             "full_name",
             "first_name",
             "last_name",
@@ -75,7 +74,7 @@ class UserAdminForm(forms.ModelForm):
         raw_pwd = cleaned_data.get("raw_password")
         if raw_pwd:
             cleaned_data["password_hash"] = make_password(raw_pwd)
-        elif not self.instance.pk and not cleaned_data.get("password_hash"):
+        elif not self.instance.pk and not getattr(self.instance, "password_hash", None):
             cleaned_data["password_hash"] = make_password("SchoolPro@123")
         return cleaned_data
 
@@ -108,7 +107,7 @@ class UserAdmin(admin.ModelAdmin):
     ]
     search_fields = ["username", "full_name", "email", "phone", "national_id"]
     list_filter = ["status_code", "gender_code", "school", "is_verified"]
-    readonly_fields = ["created_at", "updated_at", "last_login_at"]
+    readonly_fields = ["created_at", "updated_at", "last_login_at", "failed_login_attempts", "last_login_ip"]
     inlines = [UserRoleInline]
 
     fieldsets = (
@@ -118,7 +117,6 @@ class UserAdmin(admin.ModelAdmin):
                 "fields": (
                     "username",
                     "raw_password",
-                    "password_hash",
                     "email",
                     "phone",
                     "school",

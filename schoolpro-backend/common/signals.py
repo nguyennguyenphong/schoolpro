@@ -39,7 +39,6 @@ ENTITY_CODE_FIELDS_BY_MODEL: dict[str, str] = {
     "core.staff": "staff_code",
     # Academic Domain
     "academic.room": "code",
-    "academic.period": "code",
     "academic.curriculumtrack": "code",
     "academic.questionbank": "code",
     "academic.scoretype": "code",
@@ -49,7 +48,7 @@ ENTITY_CODE_FIELDS_BY_MODEL: dict[str, str] = {
     "emulation.criteria": "code",
     "emulation.classcustomcriteria": "code",
     "emulation.emulationperiod": "code",
-    "emulation.emulationaward": "code",
+    "emulation.emulationaward": "certificate_code",
     "emulation.achievementcertificate": "certificate_code",
     # Evaluation Domain
     "evaluation.evaluationform": "code",

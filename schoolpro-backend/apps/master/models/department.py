@@ -18,7 +18,7 @@ class Department(UUIDModel):
         related_name="departments",
         db_comment="school_id foreign key",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=150)
     department_type = models.CharField(max_length=30, default="SUBJECT")
     leader_teacher = models.ForeignKey(

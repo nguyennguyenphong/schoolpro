@@ -27,7 +27,7 @@ class Teacher(UUIDModel):
         related_name="teachers",
         db_comment="school_id foreign key",
     )
-    teacher_code = models.CharField(max_length=60, unique=True)
+    teacher_code = models.CharField(max_length=60, unique=True, blank=True)
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,
@@ -117,7 +117,7 @@ class Student(UUIDModel):
         related_name="students",
         db_comment="school_id foreign key",
     )
-    student_code = models.CharField(max_length=60, unique=True)
+    student_code = models.CharField(max_length=60, unique=True, blank=True)
     national_id_number = models.CharField(max_length=20, null=True, blank=True)
     national_id_issued_date = models.DateField(null=True, blank=True)
     national_id_issued_place = models.CharField(max_length=150, null=True, blank=True)
@@ -206,7 +206,7 @@ class Staff(UUIDModel):
         related_name="staff",
         db_comment="school_id foreign key",
     )
-    staff_code = models.CharField(max_length=60, unique=True)
+    staff_code = models.CharField(max_length=60, unique=True, blank=True)
     department = models.ForeignKey(
         "master.Department",
         on_delete=models.SET_NULL,

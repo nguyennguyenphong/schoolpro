@@ -39,7 +39,7 @@ class FeeItem(UUIDModel):
         blank=True,
         related_name="+",
     )
-    code = models.CharField(max_length=60)
+    code = models.CharField(max_length=60, blank=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=30)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
@@ -100,7 +100,7 @@ class StudentFeeBill(UUIDModel):
         related_name="bills",
         db_comment="fee_item_id foreign key",
     )
-    bill_code = models.CharField(max_length=60)
+    bill_code = models.CharField(max_length=60, blank=True)
     original_amount = models.DecimalField(max_digits=12, decimal_places=2)
     waiver_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     waiver_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)

@@ -29,7 +29,7 @@ class EvaluationForm(UUIDModel):
         related_name="evaluation_forms",
         db_comment="semester_id foreign key",
     )
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=50, default="PEDAGOGICAL")
     target_type = models.CharField(max_length=30)

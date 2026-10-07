@@ -27,7 +27,7 @@ class Facility(UUIDModel):
         blank=True,
         db_comment="room_id foreign key",
     )
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=100)
     brand_model = models.CharField(max_length=150, null=True, blank=True)

@@ -20,7 +20,7 @@ class Position(UUIDModel):
         related_name="positions",
         db_comment="school_id foreign key (NULL for system positions)",
     )
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=150)
     scope_type = models.CharField(max_length=50)
     applicable_role = models.ForeignKey(

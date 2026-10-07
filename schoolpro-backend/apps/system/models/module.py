@@ -11,7 +11,7 @@ class Module(UUIDModel):
     Description: Master functional card modules available for personalized role-based dashboards
     """
 
-    code = models.CharField(max_length=60, unique=True)
+    code = models.CharField(max_length=60, unique=True, blank=True)
     name = models.CharField(max_length=150)
     short_name = models.CharField(max_length=80, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
