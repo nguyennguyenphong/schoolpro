@@ -107,7 +107,13 @@ class UserAdmin(admin.ModelAdmin):
     ]
     search_fields = ["username", "full_name", "email", "phone", "national_id"]
     list_filter = ["status_code", "gender_code", "school", "is_verified"]
-    readonly_fields = ["created_at", "updated_at", "last_login_at", "failed_login_attempts", "last_login_ip"]
+    readonly_fields = [
+        "created_at",
+        "updated_at",
+        "last_login_at",
+        "failed_login_attempts",
+        "last_login_ip",
+    ]
     inlines = [UserRoleInline]
 
     fieldsets = (
