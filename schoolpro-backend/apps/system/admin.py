@@ -1,12 +1,21 @@
 """
-Django Admin site registration for System module models and preferences.
+Django Admin site registration for System module models, preferences, audit, and settings.
 Allows full CRUD operations via Django Admin UI (http://localhost:8000/admin/).
+Covers 11 models:
+  - AuditLog, LoginHistory
+  - Module, RoleModule, UserModulePreference
+  - SettingsDefinition, SystemSetting, RoleSettingsDefault, UserSetting
+  - ExportTemplate
+  - EventOutbox
 """
 
 from django.contrib import admin
 
+from apps.system.models.audit import AuditLog
 from apps.system.models.export_template import ExportTemplate
+from apps.system.models.login_history import LoginHistory
 from apps.system.models.module import Module, RoleModule
+from apps.system.models.outbox import EventOutbox
 from apps.system.models.preference import UserModulePreference
 from apps.system.models.setting import (
     RoleSettingsDefault,
@@ -14,6 +23,87 @@ from apps.system.models.setting import (
     SystemSetting,
     UserSetting,
 )
+
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "module",
+        "action",
+        "table_name",
+        "severity",
+        "ip_address",
+        "client_type",
+        "created_at",
+    ]
+    search_fields = ["username_snapshot", "target_summary", "action", "table_name"]
+    list_filter = ["module", "severity", "action", "client_type", "created_at"]
+    autocomplete_fields = ["user", "impersonated_by"]
+    readonly_fields = [
+        "user",
+        "impersonated_by",
+        "username_snapshot",
+        "role_code_snapshot",
+        "module",
+        "subsystem",
+        "action",
+        "severity",
+        "table_name",
+        "record_id",
+        "target_summary",
+        "old_data",
+        "new_data",
+        "diff_data",
+        "changed_fields",
+        "ip_address",
+        "ip_country",
+        "user_agent",
+        "client_type",
+        "session_id",
+        "device_id",
+        "created_at",
+    ]
+
+
+@admin.register(LoginHistory)
+class LoginHistoryAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "username_attempt",
+        "login_status",
+        "auth_method",
+        "device_type",
+        "browser_name",
+        "ip_address",
+        "login_at",
+    ]
+    search_fields = ["username_attempt", "ip_address", "failure_reason"]
+    list_filter = ["login_status", "auth_method", "device_type", "login_at"]
+    autocomplete_fields = ["user"]
+    readonly_fields = [
+        "user",
+        "username_attempt",
+        "login_at",
+        "login_status",
+        "failure_reason",
+        "device_name",
+        "device_id",
+        "device_type",
+        "browser_name",
+        "browser_version",
+        "os_name",
+        "os_version",
+        "client_type",
+        "app_version",
+        "auth_method",
+        "ip_address",
+        "user_agent",
+        "request_id",
+        "location_country",
+        "location_country_code",
+        "location_city",
+    ]
 
 
 class RoleModuleInline(admin.TabularInline):
@@ -118,7 +208,7 @@ class ExportTemplateAdmin(admin.ModelAdmin):
     list_filter = ["template_type", "file_format", "is_default", "is_active", "school"]
     search_fields = ["code", "name", "description"]
     ordering = ["-is_default", "name"]
-    raw_id_fields = ["school", "department", "created_by", "updated_by"]
+    autocomplete_fields = ["school", "department", "created_by", "updated_by"]
     fieldsets = [
         (
             "Thông tin cơ bản",
@@ -174,3 +264,19 @@ class ExportTemplateAdmin(admin.ModelAdmin):
             },
         ),
     ]
+
+
+@admin.register(EventOutbox)
+class EventOutboxAdmin(admin.ModelAdmin):
+    list_display = [
+        "aggregate_type",
+        "event_type",
+        "topic",
+        "status",
+        "retry_count",
+        "created_at",
+        "processed_at",
+    ]
+    search_fields = ["event_type", "aggregate_type", "topic", "correlation_id"]
+    list_filter = ["status", "aggregate_type", "event_type", "created_at"]
+    readonly_fields = ["created_at"]

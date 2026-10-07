@@ -90,11 +90,19 @@ class RoomEntity(BaseDomainEntity):
 
     @classmethod
     def create(
-        cls, school_id: uuid.UUID, name: str, room_type_code: str = "CLASSROOM", code: str | None = None
+        cls,
+        school_id: uuid.UUID,
+        name: str,
+        room_type_code: str = "CLASSROOM",
+        code: str | None = None,
     ) -> "RoomEntity":
         room_code = code or generate_entity_code("RM")
         return cls(
-            id=uuid6.uuid7(), school_id=school_id, room_code=room_code, name=name, room_type_code=room_type_code
+            id=uuid6.uuid7(),
+            school_id=school_id,
+            room_code=room_code,
+            name=name,
+            room_type_code=room_type_code,
         )
 
 
@@ -298,7 +306,9 @@ class ScoreTypeEntity(BaseDomainEntity):
     updated_at: datetime = field(default_factory=datetime.now)
 
     @classmethod
-    def create(cls, name: str, coefficient: Decimal = Decimal("1.00"), code: str | None = None) -> "ScoreTypeEntity":
+    def create(
+        cls, name: str, coefficient: Decimal = Decimal("1.00"), code: str | None = None
+    ) -> "ScoreTypeEntity":
         st_code = code or generate_entity_code("ST")
         return cls(id=uuid6.uuid7(), code=st_code, name=name, coefficient=coefficient)
 

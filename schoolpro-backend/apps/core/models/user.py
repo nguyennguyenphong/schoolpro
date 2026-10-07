@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.db import models
 
 from common.models.base import UUIDModel
@@ -62,6 +64,9 @@ class User(UUIDModel):
         verbose_name_plural = "Users"
         ordering = ["-created_at"]
 
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
+
     @property
     def is_locked(self) -> bool:
         """Determines whether the account is currently locked out."""
@@ -74,6 +79,11 @@ class User(UUIDModel):
         if self.locked_at and not self.locked_until:
             return True
         return False
+
+    @property
+    def is_active(self) -> bool:
+        """Required by Django auth backend and admin."""
+        return bool(self.status_code and self.status_code.upper() == "ACTIVE")
 
     @property
     def is_authenticated(self) -> bool:
@@ -93,12 +103,51 @@ class User(UUIDModel):
     def is_staff(self) -> bool:
         """Check if user has staff/admin privileges."""
         active_role_code = getattr(self, "active_role_code", "") or ""
-        return (
-            "ADMIN" in str(active_role_code).upper() or "PRINCIPAL" in str(active_role_code).upper()
-        )
+        if "ADMIN" in str(active_role_code).upper() or "PRINCIPAL" in str(active_role_code).upper():
+            return True
+        # Check database UserRole if not cached in active_role_code
+        try:
+            return self.user_roles.filter(
+                role__code__icontains="ADMIN",
+                status="ACTIVE",
+            ).exists()
+        except Exception:
+            return False
+
+    @property
+    def is_superuser(self) -> bool:
+        """Superuser access for system administrators."""
+        return self.is_staff
+
+    def get_username(self) -> str:
+        return str(self.username)
+
+    def check_password(self, raw_password: str) -> bool:
+        """Verify candidate raw password against stored password_hash."""
+        from django.contrib.auth.hashers import check_password
+
+        return bool(check_password(raw_password, self.password_hash))
+
+    def set_password(self, raw_password: str) -> None:
+        """Hash and update password."""
+        from django.contrib.auth.hashers import make_password
+
+        self.password_hash = make_password(raw_password)
+
+    def has_perm(self, perm: str, obj: Any = None) -> bool:
+        """Permission check for Django Admin site."""
+        return self.is_staff
+
+    def has_perms(self, perm_list: Any, obj: Any = None) -> bool:
+        """Multiple permission check for Django Admin site."""
+        return self.is_staff
+
+    def has_module_perms(self, app_label: str) -> bool:
+        """Module permission check for Django Admin site."""
+        return self.is_staff
 
     def __str__(self) -> str:
-        return str(self.full_name)
+        return f"{self.full_name} ({self.username})"
 
     def __repr__(self) -> str:
         return f"<User {self.pk}: {self.username}>"

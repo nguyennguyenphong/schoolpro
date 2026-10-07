@@ -41,7 +41,11 @@ class EvaluationFormEntity(BaseDomainEntity):
 
     @classmethod
     def create(
-        cls, school_id: uuid.UUID, title: str, form_type: str = "TEACHER_SURVEY", code: str | None = None
+        cls,
+        school_id: uuid.UUID,
+        title: str,
+        form_type: str = "TEACHER_SURVEY",
+        code: str | None = None,
     ) -> "EvaluationFormEntity":
         form_code = code or generate_entity_code("EVF")
         return cls(

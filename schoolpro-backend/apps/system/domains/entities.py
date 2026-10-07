@@ -252,7 +252,9 @@ class ExportTemplateEntity(BaseDomainEntity):
     style_content: str | None = None
     page_size: str = "A4"
     page_orientation: str = "PORTRAIT"
-    margins: dict[str, Any] = field(default_factory=lambda: {"top": "20mm", "right": "15mm", "bottom": "20mm", "left": "20mm"})
+    margins: dict[str, Any] = field(
+        default_factory=lambda: {"top": "20mm", "right": "15mm", "bottom": "20mm", "left": "20mm"}
+    )
     placeholders_schema: list[dict[str, Any]] = field(default_factory=list)
     sample_data: dict[str, Any] = field(default_factory=dict)
     is_default: bool = False
@@ -271,7 +273,9 @@ class ExportTemplateEntity(BaseDomainEntity):
         cls, name: str, template_type: str = "ANNOUNCEMENT", code: str | None = None
     ) -> "ExportTemplateEntity":
         tpl_code = code or generate_entity_code("TPL")
-        return cls(id=uuid6.uuid7(), code=tpl_code, name=name, content="", template_type=template_type)
+        return cls(
+            id=uuid6.uuid7(), code=tpl_code, name=name, content="", template_type=template_type
+        )
 
 
 @dataclass
@@ -306,5 +310,5 @@ class EventOutboxEntity(BaseDomainEntity):
         else:
             self.status = "FAILED"
             # Exponential backoff: 2^retry * 30 seconds
-            backoff_secs = (2 ** self.retry_count) * 30
+            backoff_secs = (2**self.retry_count) * 30
             self.next_retry_at = datetime.now() + timedelta(seconds=backoff_secs)

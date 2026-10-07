@@ -52,3 +52,47 @@ class SchoolProJWTAuthentication(JWTAuthentication):
         user.active_role_id = validated_token.get("role_id")
 
         return user
+
+
+class SchoolProAdminBackend:
+    """
+    Django Authentication Backend enabling SchoolPro core.User credentials
+    to authenticate directly into the Django Admin dashboard (/admin).
+    """
+
+    def authenticate(
+        self,
+        request: Any = None,
+        username: str | None = None,
+        password: str | None = None,
+        **kwargs: Any,
+    ) -> User | None:
+        if not username or not password:
+            return None
+
+        from django.db.models import Q
+
+        user = (
+            User.objects.filter(Q(username=username) | Q(email=username))
+            .select_related("school")
+            .first()
+        )
+        if not user:
+            return None
+
+        if user.is_locked:
+            return None
+
+        if user.check_password(password):
+            user.is_authenticated = True
+            return user
+
+        return None
+
+    def get_user(self, user_id: Any) -> User | None:
+        try:
+            user = User.objects.get(pk=user_id)
+            user.is_authenticated = True
+            return user
+        except (User.DoesNotExist, ValueError):
+            return None
