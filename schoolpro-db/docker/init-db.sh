@@ -105,6 +105,7 @@ execute_sql "$SQL_DIR/02_tables/emulation/emulation_records.sql"
 execute_sql "$SQL_DIR/02_tables/emulation/emulation_rankings.sql"
 execute_sql "$SQL_DIR/02_tables/emulation/emulation_disciplinary_records.sql"
 execute_sql "$SQL_DIR/02_tables/emulation/emulation_awards.sql"
+execute_sql "$SQL_DIR/02_tables/emulation/emulation_achievement_certificates.sql"
 
 # 7. Evaluation & Facility Maintenance Tables
 echo "=== Step 7: Initializing Evaluation & Facility Tables ==="

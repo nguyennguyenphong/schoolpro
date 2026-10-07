@@ -1,5 +1,6 @@
 # Export domain models for Django ORM discovery
 
+from .achievement_certificate import AchievementCertificate
 from .award import EmulationAward
 from .criteria import ClassCustomCriteria, Criteria
 from .disciplinary import DisciplinaryRecord
@@ -9,6 +10,7 @@ from .ranking import EmulationRanking
 from .record import EmulationRecord
 
 __all__ = [
+    "AchievementCertificate",
     "EmulationAward",
     "Criteria",
     "ClassCustomCriteria",
