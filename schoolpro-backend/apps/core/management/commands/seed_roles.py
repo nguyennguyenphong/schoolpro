@@ -73,8 +73,8 @@ class Command(BaseCommand):
                 "metadata": {"group": "LEADERSHIP", "scope": "GOVERNANCE"},
             },
             {
-                "name": "Trưởng ban Thanh tra trường",
-                "description": "Head of School Inspection Board - Supervises institutional compliance, policy adherence, and internal audit",
+                "name": "Trưởng ban Thanh tra nhân dân",
+                "description": "Head of People's Inspection Board - Supervises institutional compliance, policy adherence, and internal audit",
                 "badge_color": "#475569",  # Slate 600
                 "icon": "shield",
                 "priority": 85,

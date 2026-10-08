@@ -22,16 +22,17 @@ class Command(BaseCommand):
         school = School.objects.first()
 
         departments_data = [
-            {"name": "Tổ Toán - Tin học"},
-            {"name": "Tổ Ngữ văn"},
-            {"name": "Tổ Ngoại ngữ"},
-            {"name": "Tổ Vật lý - Công nghệ"},
-            {"name": "Tổ Hóa học - Sinh học"},
-            {"name": "Tổ Lịch sử - Địa lý"},
-            {"name": "Tổ Giáo dục kinh tế và pháp luật"},
-            {"name": "Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh"},
-            {"name": "Tổ Nghệ thuật"},
-            {"name": "Tổ Hoạt động trải nghiệm - Hướng nghiệp"},
+            {"name": "Tổ Toán - Tin học", "type": "SUBJECT"},
+            {"name": "Tổ Ngữ văn", "type": "SUBJECT"},
+            {"name": "Tổ Ngoại ngữ", "type": "SUBJECT"},
+            {"name": "Tổ Vật lý - Công nghệ", "type": "SUBJECT"},
+            {"name": "Tổ Hóa học - Sinh học", "type": "SUBJECT"},
+            {"name": "Tổ Lịch sử - Địa lý", "type": "SUBJECT"},
+            {"name": "Tổ Giáo dục kinh tế và pháp luật", "type": "SUBJECT"},
+            {"name": "Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh", "type": "SUBJECT"},
+            {"name": "Tổ Nghệ thuật", "type": "SUBJECT"},
+            {"name": "Tổ Hoạt động trải nghiệm - Hướng nghiệp", "type": "SUBJECT"},
+            {"name": "Tổ Văn phòng", "type": "ADMINISTRATIVE"},
         ]
 
         with transaction.atomic():
@@ -44,7 +45,7 @@ class Command(BaseCommand):
                         school=school,
                         code=generate_unique_code(Department, "code"),
                         name=d["name"],
-                        department_type="SUBJECT",
+                        department_type=d["type"],
                     )
                     created = True
                 status_msg = "Created" if created else "Already exists"

@@ -34,8 +34,9 @@ class Command(BaseCommand):
             ("seed_academic_years", "Master: Academic Year (Năm học)"),
             ("seed_semesters", "Master: Semesters (Học kỳ)"),
             ("seed_grades", "Master: Grades (Khối 10, 11, 12)"),
-            ("seed_departments", "Master: Departments (Tổ chuyên môn)"),
+            ("seed_departments", "Master: Departments (Tổ chuyên môn & Tổ văn phòng)"),
             ("seed_subjects", "Master: Subjects (Môn học GDPT 2018)"),
+            ("seed_positions", "Master: Positions (Danh mục chức vụ & hệ số phụ cấp)"),
             ("seed_lookup_types", "Master: Lookup Types (Danh mục tra cứu)"),
             ("seed_lookup_values", "Master: Lookup Values (Giá trị tra cứu)"),
             # 3. Academic Physical & Operational Infrastructure
@@ -48,6 +49,7 @@ class Command(BaseCommand):
             ("seed_teachers", "Core: Teacher Profiles (7 Giáo viên & Đoàn trường)"),
             ("seed_classes", "Core: School Classes (4 Lớp học mẫu ban đầu)"),
             ("seed_students", "Core: Student Profiles (10 Học sinh lớp 10A1)"),
+            ("seed_class_groups", "Core: Class Groups (Tổ học tập & trực nhật lớp 10A1)"),
             ("seed_guardians", "Core: Guardian Profiles (3 Phụ huynh học sinh)"),
         ]
 

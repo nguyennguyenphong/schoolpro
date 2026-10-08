@@ -14,6 +14,7 @@ from django.db import transaction
 
 from apps.core.models.profile import Staff
 from apps.core.models.user import User
+from apps.master.models.department import Department
 from apps.master.models.school import School
 from common.utils.code_generator import generate_unique_code
 
@@ -26,6 +27,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE("Seeding Staff Profiles (core.staff)..."))
         school = School.objects.first()
+        dept_admin = Department.objects.filter(name__iexact="Tổ Văn phòng").first()
 
         # Administrative and executive staff mappings based on seeded users
         staff_data = [
@@ -198,6 +200,7 @@ class Command(BaseCommand):
                         id=uuid6.uuid7(),
                         user=user,
                         school=school,
+                        department=dept_admin,
                         staff_code=staff_code,
                         job_title=s_info["job_title"],
                         qualification=s_info["qualification"],
@@ -210,6 +213,7 @@ class Command(BaseCommand):
                     )
                     created = True
                 else:
+                    staff_obj.department = dept_admin
                     staff_obj.job_title = s_info["job_title"]
                     staff_obj.qualification = s_info["qualification"]
                     staff_obj.national_id_number = s_info["national_id"]
@@ -220,6 +224,7 @@ class Command(BaseCommand):
                     staff_obj.status = "ACTIVE"
                     staff_obj.save(
                         update_fields=[
+                            "department",
                             "job_title",
                             "qualification",
                             "national_id_number",

@@ -21,22 +21,26 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE("Seeding Subjects (core.subjects)..."))
         school = School.objects.first()
-        dept_math = Department.objects.filter(name="Tổ Toán - Tin học").first()
-        dept_lit = Department.objects.filter(name="Tổ Ngữ Văn").first()
-        dept_foreign = Department.objects.filter(name="Tổ Ngoại Ngữ").first()
-        dept_history_geo = Department.objects.filter(name="Tổ Lịch sử - Địa lý").first()
+        dept_math = Department.objects.filter(name__iexact="Tổ Toán - Tin học").first()
+        dept_lit = Department.objects.filter(name__iexact="Tổ Ngữ văn").first()
+        dept_foreign = Department.objects.filter(name__iexact="Tổ Ngoại ngữ").first()
+        dept_history_geo = Department.objects.filter(name__iexact="Tổ Lịch sử - Địa lý").first()
         dept_pe_qpan = Department.objects.filter(
-            name="Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh"
+            name__iexact="Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh"
         ).first()
         dept_experience = Department.objects.filter(
-            name="Tổ Hoạt động trải nghiệm - Hướng nghiệp"
+            name__iexact="Tổ Hoạt động trải nghiệm - Hướng nghiệp"
         ).first()
         dept_economics_law = Department.objects.filter(
-            name="Tổ Giáo dục kinh tế và pháp luật"
+            name__iexact="Tổ Giáo dục kinh tế và pháp luật"
         ).first()
-        dept_physics_technology = Department.objects.filter(name="Tổ Vật lý - Công nghệ").first()
-        dept_chemistry_biology = Department.objects.filter(name="Tổ Hóa học - Sinh học").first()
-        dept_art = Department.objects.filter(name="Tổ Nghệ thuật").first()
+        dept_physics_technology = Department.objects.filter(
+            name__iexact="Tổ Vật lý - Công nghệ"
+        ).first()
+        dept_chemistry_biology = Department.objects.filter(
+            name__iexact="Tổ Hóa học - Sinh học"
+        ).first()
+        dept_art = Department.objects.filter(name__iexact="Tổ Nghệ thuật").first()
 
         subjects_data = [
             {

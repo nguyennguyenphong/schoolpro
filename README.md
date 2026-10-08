@@ -60,7 +60,7 @@ docker compose ps
 ```
 
 ### Access Endpoints:
-- **Frontend SPA**: [http://localhost:5173](http://localhost:5173)
+- **Frontend SPA**: [http://localhost:8080](http://localhost:8080)
 - **Backend API**: [http://localhost:8000](http://localhost:8000)
 - **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)
 - **ReDoc**: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)

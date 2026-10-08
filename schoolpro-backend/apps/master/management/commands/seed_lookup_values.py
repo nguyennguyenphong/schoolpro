@@ -101,6 +101,64 @@ class Command(BaseCommand):
                     "order_no": 3,
                 },
             ],
+            "ETHNICITY": [
+                {"code": "KINH", "name": "Kinh", "badge_color": "#2563EB", "order_no": 1},
+                {"code": "TAY", "name": "Tày", "badge_color": "#0284C7", "order_no": 2},
+                {"code": "THAI", "name": "Thái", "badge_color": "#0D9488", "order_no": 3},
+                {"code": "MUONG", "name": "Mường", "badge_color": "#16A34A", "order_no": 4},
+                {"code": "HMONG", "name": "H'Mông", "badge_color": "#D97706", "order_no": 5},
+                {"code": "NUNG", "name": "Nùng", "badge_color": "#7C3AED", "order_no": 6},
+                {"code": "KHMER", "name": "Khmer", "badge_color": "#DB2777", "order_no": 7},
+                {"code": "OTHER", "name": "Khác", "badge_color": "#64748B", "order_no": 8},
+            ],
+            "RELIGION": [
+                {"code": "NONE", "name": "Không", "badge_color": "#64748B", "order_no": 1},
+                {"code": "BUDDHISM", "name": "Phật giáo", "badge_color": "#D97706", "order_no": 2},
+                {
+                    "code": "CATHOLICISM",
+                    "name": "Công giáo",
+                    "badge_color": "#2563EB",
+                    "order_no": 3,
+                },
+                {
+                    "code": "PROTESTANTISM",
+                    "name": "Tin lành",
+                    "badge_color": "#0D9488",
+                    "order_no": 4,
+                },
+                {"code": "CAODAI", "name": "Cao Đài", "badge_color": "#7C3AED", "order_no": 5},
+                {"code": "HOAHAO", "name": "Hòa Hảo", "badge_color": "#16A34A", "order_no": 6},
+                {"code": "OTHER", "name": "Khác", "badge_color": "#94A3B8", "order_no": 7},
+            ],
+            "RELATIONSHIP": [
+                {"code": "FATHER", "name": "Bố", "badge_color": "#2563EB", "order_no": 1},
+                {"code": "MOTHER", "name": "Mẹ", "badge_color": "#EC4899", "order_no": 2},
+                {"code": "GRANDFATHER", "name": "Ông", "badge_color": "#475569", "order_no": 3},
+                {"code": "GRANDMOTHER", "name": "Bà", "badge_color": "#64748B", "order_no": 4},
+                {
+                    "code": "GUARDIAN",
+                    "name": "Người giám hộ",
+                    "badge_color": "#7C3AED",
+                    "order_no": 5,
+                },
+            ],
+            "HEALTH_STATUS": [
+                {
+                    "code": "GOOD",
+                    "name": "Bình thường / Tốt",
+                    "badge_color": "#16A34A",
+                    "order_no": 1,
+                },
+                {"code": "MYOPIA", "name": "Cận thị", "badge_color": "#0284C7", "order_no": 2},
+                {"code": "ASTHMA", "name": "Hen suyễn", "badge_color": "#EAB308", "order_no": 3},
+                {
+                    "code": "HEART_CONDITION",
+                    "name": "Bệnh tim",
+                    "badge_color": "#DC2626",
+                    "order_no": 4,
+                },
+                {"code": "OTHER", "name": "Bệnh lý khác", "badge_color": "#64748B", "order_no": 5},
+            ],
         }
 
         with transaction.atomic():

@@ -46,6 +46,26 @@ class Command(BaseCommand):
                 "name": "Ban học / Định hướng",
                 "description": "Phân ban đào tạo THPT",
             },
+            {
+                "code": "ETHNICITY",
+                "name": "Dân tộc",
+                "description": "Danh mục thành phần dân tộc Việt Nam theo chuẩn MOET",
+            },
+            {
+                "code": "RELIGION",
+                "name": "Tôn giáo",
+                "description": "Danh mục tôn giáo công nhận tại Việt Nam",
+            },
+            {
+                "code": "RELATIONSHIP",
+                "name": "Mối quan hệ gia đình",
+                "description": "Mối quan hệ nhân thân giữa người giám hộ và học sinh",
+            },
+            {
+                "code": "HEALTH_STATUS",
+                "name": "Tình trạng sức khỏe",
+                "description": "Tình trạng thể chất y tế học đường",
+            },
         ]
 
         with transaction.atomic():

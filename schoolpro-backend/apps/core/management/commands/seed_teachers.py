@@ -26,10 +26,13 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE("Seeding Teachers (core.teachers)..."))
         school = School.objects.first()
 
-        dept_math = Department.objects.filter(name="Tổ Toán - Tin học").first()
-        dept_lit = Department.objects.filter(name="Tổ Ngữ Văn").first()
-        dept_eng = Department.objects.filter(name="Tổ Ngoại Ngữ").first()
-        dept_social = Department.objects.filter(name="Tổ Khoa học Xã hội (Sử - Địa - GDCD)").first()
+        dept_math = Department.objects.filter(name__iexact="Tổ Toán - Tin học").first()
+        dept_lit = Department.objects.filter(name__iexact="Tổ Ngữ văn").first()
+        dept_eng = Department.objects.filter(name__iexact="Tổ Ngoại ngữ").first()
+        dept_history_geo = Department.objects.filter(name__iexact="Tổ Lịch sử - Địa lý").first()
+        dept_econ_law = Department.objects.filter(
+            name__iexact="Tổ Giáo dục kinh tế và pháp luật"
+        ).first()
 
         teachers_data = [
             {
@@ -94,7 +97,7 @@ class Command(BaseCommand):
             },
             {
                 "username": "bithu_doantruong",
-                "department": dept_social,
+                "department": dept_econ_law,
                 "qualification": "Thạc sĩ Giáo dục Công dân & Kỹ năng sống",
                 "subject_major": "Giáo dục Công dân",
                 "national_id": "001085002005",
@@ -124,7 +127,7 @@ class Command(BaseCommand):
             },
             {
                 "username": "bch_doantruong",
-                "department": dept_social,
+                "department": dept_history_geo,
                 "qualification": "Cử nhân Lịch sử",
                 "subject_major": "Lịch sử",
                 "national_id": "001085002007",

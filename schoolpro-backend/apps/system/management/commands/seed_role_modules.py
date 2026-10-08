@@ -171,7 +171,7 @@ class Command(BaseCommand):
                 card(ROUTE_TIMETABLE, pinned=False, col_span=1, order=3),
                 card(ROUTE_REMINDERS, pinned=False, col_span=1, order=4),
             ],
-            "Trưởng ban Thanh tra trường": [
+            "Trưởng ban Thanh tra nhân dân": [
                 card(ROUTE_ANALYTICS, pinned=True, col_span=2, order=1, badge="Thanh tra"),
                 card(ROUTE_TEACHER_GRADES, pinned=False, col_span=1, order=2),
                 card(ROUTE_DUTY, pinned=False, col_span=1, order=3),
