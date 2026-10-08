@@ -120,6 +120,44 @@
         "kind": "build",
         "isDefault": false
       }
+    },
+    {
+      "label": "quality code",
+      "type": "shell",
+      "command": "bash scripts/quality-code.sh",
+      "detail": "Runs full quality verification: Frontend (Oxlint, TypeScript tsc) & Backend (Ruff check, Ruff format check, Django check)",
+      "icon": {
+        "id": "pass",
+        "color": "terminal.ansiCyan"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "quality code: fix",
+      "type": "shell",
+      "command": "bash scripts/quality-code.sh --fix",
+      "detail": "Auto-fixes formatting and linting issues for both Frontend (oxlint --fix) and Backend (ruff format, ruff check --fix)",
+      "icon": {
+        "id": "wand",
+        "color": "terminal.ansiGreen"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      }
     }
   ]
 }
