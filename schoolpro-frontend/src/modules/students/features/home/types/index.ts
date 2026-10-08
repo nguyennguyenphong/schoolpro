@@ -24,15 +24,11 @@ export interface BackendDashboardCard {
   short_name?: string | null;
   description?: string | null;
   icon: string;
-  icon_name: string;
-  icon_bg_color?: string | null;
-  icon_color?: string | null;
   route: string;
   module_type: string;
   category: string;
-  translation_key?: string | null;
-  badge_count?: number | null;
-  badge_color?: string | null;
+  default_color?: string | null;
+  default_badge?: string | null;
   badge_text?: string | null;
   is_pinned: boolean;
   is_hidden: boolean;
@@ -49,6 +45,7 @@ export interface FeatureItem {
   iconName: FeatureIconName;
   iconBgColor: string;
   iconColor: string;
+  color?: string;
   badgeKey?: string;
   badgeCount?: number;
   badgeColor?: "blue" | "green" | "gold" | "red" | "purple" | "cyan" | string;

@@ -51,14 +51,43 @@ export const FunctionalCardItem: React.FC<FunctionalCardItemProps> = ({
       rel="noopener noreferrer"
       className="block h-full no-underline"
     >
-      <Card className="h-full border border-slate-200 hover:border-blue-500 hover:shadow-md transition-all duration-200 cursor-pointer group bg-white relative overflow-hidden rounded-xl [&>.ant-card-body]:p-5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between">
+      <Card className="border border-[#f0f0f0] shadow-2xs">
         <div>
           <div className="flex items-start justify-between gap-3 mb-3">
             <div
-              className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs ${item.iconBgColor} ${item.iconColor}`}
+              className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs border ${item.iconBgColor} ${item.iconColor}`}
+              style={
+                item.color
+                  ? {
+                      backgroundColor: `${item.color}18`,
+                      borderColor: `${item.color}38`,
+                      color: item.color,
+                    }
+                  : undefined
+              }
             >
               <Icon name={resolvedIconName} size={21} />
             </div>
+            {item.badgeText && (
+              <span
+                className="text-[11px] font-semibold px-2 py-0.5 rounded-full border shrink-0 transition-all select-none"
+                style={
+                  item.color
+                    ? {
+                        backgroundColor: `${item.color}14`,
+                        borderColor: `${item.color}33`,
+                        color: item.color,
+                      }
+                    : {
+                        backgroundColor: "#f8fafc",
+                        borderColor: "#e2e8f0",
+                        color: "#475569",
+                      }
+                }
+              >
+                {item.badgeText}
+              </span>
+            )}
           </div>
 
           <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1.5 flex items-center justify-between gap-1.5 h-6">

@@ -236,26 +236,30 @@ class ModuleService:
         try:
             sql = """
                 SELECT
-                    module_id,
-                    module_code,
-                    module_name,
-                    description,
-                    icon,
-                    route,
-                    module_type,
-                    category,
-                    is_hidden,
-                    is_pinned,
-                    display_order,
-                    badge_text,
-                    ui_config
-                FROM sys.v_user_dashboard_cards
-                WHERE user_id = %s
-                  AND (role_code = %s OR role_code = 'STUDENT' OR role_code = 'R_STU_568294')
+                    v.module_id,
+                    v.module_code,
+                    v.module_name,
+                    m.short_name,
+                    v.description,
+                    v.icon,
+                    v.route,
+                    v.module_type,
+                    v.category,
+                    m.default_color,
+                    m.default_badge,
+                    v.is_hidden,
+                    v.is_pinned,
+                    v.display_order,
+                    v.badge_text,
+                    v.ui_config
+                FROM sys.v_user_dashboard_cards v
+                JOIN sys.modules m ON m.id = v.module_id
+                WHERE v.user_id = %s
+                  AND (v.role_code = %s OR v.role_code = 'STUDENT' OR v.role_code = 'R_STU_568294')
             """
             if not include_hidden:
-                sql += " AND is_hidden = FALSE"
-            sql += " ORDER BY display_order ASC;"
+                sql += " AND v.is_hidden = FALSE"
+            sql += " ORDER BY v.display_order ASC;"
 
             with connection.cursor() as cursor:
                 cursor.execute(sql, [str(user_id), role_code])
@@ -270,11 +274,14 @@ class ModuleService:
                         module_id,
                         module_code,
                         module_name,
+                        short_name,
                         desc,
                         icon,
                         route,
                         m_type,
                         cat,
+                        default_color,
+                        default_badge,
                         hidden,
                         pinned,
                         order_no,
@@ -288,12 +295,14 @@ class ModuleService:
                             module_id=str(module_id),
                             code=module_code,
                             name=module_name,
-                            short_name=None,
+                            short_name=short_name,
                             description=desc,
                             icon=icon,
                             route=route,
                             module_type=m_type,
                             category=cat,
+                            default_color=default_color,
+                            default_badge=default_badge,
                             is_hidden=hidden,
                             is_pinned=pinned,
                             display_order=order_no,
@@ -366,6 +375,8 @@ class ModuleService:
                     route=mod.route,
                     module_type=mod.module_type,
                     category=mod.category,
+                    default_color=mod.default_color,
+                    default_badge=mod.default_badge,
                     is_hidden=is_hidden,
                     is_pinned=is_pinned,
                     display_order=order_no,
@@ -392,19 +403,15 @@ class ModuleService:
         is_pinned: bool,
         display_order: int,
         badge_text: str | None,
-        config: dict[str, Any],
+        default_color: str | None = None,
+        default_badge: str | None = None,
+        config: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """
-        Formats single unified card dictionary with backward and forward frontend compatibility.
+        Formats single unified card dictionary adhering strictly to sys.modules database schema.
         """
-        icon_name = config.get("iconName", icon)
-        icon_bg_color = config.get("iconBgColor", "bg-blue-50 border border-blue-200")
-        icon_color = config.get("iconColor", "text-blue-600")
-        badge_count = config.get("badgeCount")
-        badge_color = config.get("badgeColor", "blue")
-        translation_key = config.get("translationKey", "")
-
-        card_id = config.get("id", code)
+        cfg = config or {}
+        card_id = cfg.get("id", code)
 
         return {
             "id": card_id,
@@ -414,18 +421,14 @@ class ModuleService:
             "short_name": short_name,
             "description": description,
             "icon": icon,
-            "icon_name": icon_name,
-            "icon_bg_color": icon_bg_color,
-            "icon_color": icon_color,
             "route": route,
             "module_type": module_type,
             "category": category,
-            "translation_key": translation_key,
-            "badge_count": badge_count,
-            "badge_color": badge_color,
-            "badge_text": badge_text or (str(badge_count) if badge_count is not None else None),
+            "default_color": default_color or cfg.get("color"),
+            "default_badge": default_badge or badge_text,
+            "badge_text": badge_text or default_badge,
             "is_pinned": is_pinned,
             "is_hidden": is_hidden,
             "display_order": display_order,
-            "ui_config": config,
+            "ui_config": cfg,
         }
