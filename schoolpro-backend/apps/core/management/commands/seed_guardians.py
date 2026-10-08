@@ -30,6 +30,9 @@ class Command(BaseCommand):
                 "username": "phuhuynh_01",
                 "student": student_nam,
                 "relationship": "FATHER",
+                "national_id": "001080003001",
+                "job": "Kỹ sư phần mềm",
+                "workplace": "Tập đoàn FPT",
                 "is_primary": True,
                 "is_committee": False,
                 "committee_role": None,
@@ -38,6 +41,9 @@ class Command(BaseCommand):
                 "username": "truongban_phuhuynh_truong",
                 "student": student_tri,
                 "relationship": "FATHER",
+                "national_id": "001080003002",
+                "job": "Bác sĩ Chuyên khoa II",
+                "workplace": "Bệnh viện Chợ Rẫy",
                 "is_primary": True,
                 "is_committee": True,
                 "committee_role": "Trưởng ban Đại diện Cha mẹ học sinh Trường",
@@ -46,6 +52,9 @@ class Command(BaseCommand):
                 "username": "truongban_phuhuynh_lop",
                 "student": student_anh,
                 "relationship": "MOTHER",
+                "national_id": "001080003003",
+                "job": "Giảng viên Đại học",
+                "workplace": "Đại học Quốc gia TP.HCM",
                 "is_primary": True,
                 "is_committee": True,
                 "committee_role": "Trưởng ban Đại diện Cha mẹ học sinh Lớp 10A1",
@@ -73,8 +82,11 @@ class Command(BaseCommand):
                         user=user,
                         full_name=user.full_name,
                         relationship=g_info["relationship"],
+                        national_id=g_info["national_id"],
                         phone=user.phone,
                         email=user.email,
+                        job=g_info["job"],
+                        workplace=g_info["workplace"],
                         address=user.address,
                         is_primary_contact=g_info["is_primary"],
                         is_emergency_contact=True,
@@ -85,16 +97,22 @@ class Command(BaseCommand):
                 else:
                     guardian_obj.student = g_info["student"]
                     guardian_obj.full_name = user.full_name
+                    guardian_obj.national_id = g_info["national_id"]
                     guardian_obj.phone = user.phone
                     guardian_obj.email = user.email
+                    guardian_obj.job = g_info["job"]
+                    guardian_obj.workplace = g_info["workplace"]
                     guardian_obj.is_parent_committee = g_info["is_committee"]
                     guardian_obj.committee_role = g_info["committee_role"]
                     guardian_obj.save(
                         update_fields=[
                             "student",
                             "full_name",
+                            "national_id",
                             "phone",
                             "email",
+                            "job",
+                            "workplace",
                             "is_parent_committee",
                             "committee_role",
                         ]

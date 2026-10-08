@@ -23,9 +23,7 @@ class Command(BaseCommand):
         school = School.objects.first()
 
         if not school:
-            self.stdout.write(
-                self.style.ERROR("No school found. Please seed School first.")
-            )
+            self.stdout.write(self.style.ERROR("No school found. Please seed School first."))
             return
 
         rooms_data = []
@@ -527,9 +525,7 @@ class Command(BaseCommand):
         rooms_data.extend(specialized_rooms)
 
         if len(rooms_data) != 100:
-            raise ValueError(
-                f"Expected exactly 100 rooms, got {len(rooms_data)}."
-            )
+            raise ValueError(f"Expected exactly 100 rooms, got {len(rooms_data)}.")
 
         with transaction.atomic():
             created_count = 0
@@ -543,11 +539,7 @@ class Command(BaseCommand):
 
                 if room_obj:
                     existing_count += 1
-                    self.stdout.write(
-                        self.style.WARNING(
-                            f"  Already exists: {room_obj.name}"
-                        )
-                    )
+                    self.stdout.write(self.style.WARNING(f"  Already exists: {room_obj.name}"))
                     continue
 
                 room_obj = Room.objects.create(
@@ -575,9 +567,7 @@ class Command(BaseCommand):
                 created_count += 1
 
                 self.stdout.write(
-                    self.style.SUCCESS(
-                        f"  Created Room: {room_obj.code} - {room_obj.name}"
-                    )
+                    self.style.SUCCESS(f"  Created Room: {room_obj.code} - {room_obj.name}")
                 )
 
         total_count = Room.objects.filter(school=school).count()

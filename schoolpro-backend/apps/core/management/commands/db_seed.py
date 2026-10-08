@@ -18,41 +18,37 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE(" 🌱 STARTING COMPREHENSIVE SCHOOLPRO DATABASE SEED"))
         self.stdout.write(self.style.NOTICE("==================================================\n"))
 
-        # Table-level seed commands ordered strictly by Foreign Key DAG
+        # Master Core & Foundation seed pipeline ordered strictly by Foreign Key DAG
         seed_pipeline = [
-            # 1. Identity & Institutional Foundations
-            ("seed_roles", "Core: Roles"),
-            ("seed_permissions", "Core: Granular System Permissions"),
-            ("seed_role_permissions", "Core: Role-Permission RBAC Mappings"),
-            ("seed_schools", "Master: School Profile"),
-            ("seed_academic_years", "Master: Academic Year"),
-            ("seed_semesters", "Master: Semesters"),
-            ("seed_users", "Core: Superadmin User & Role Assignment"),
-            # 2. Master Lookups & Academic Infrastructures
-            ("seed_lookup_types", "Master: Lookup Types"),
-            ("seed_lookup_values", "Master: Lookup Values"),
+            # 1. Identity, Security & RBAC Foundations
+            ("seed_roles", "Core: Roles (37 vai trò hệ thống)"),
+            ("seed_permissions", "Core: Permissions (Danh mục quyền hạn)"),
+            ("seed_role_permissions", "Core: Role-Permission Matrix (Phân quyền RBAC)"),
+            ("seed_modules", "System: Dynamic System Modules (Danh mục chức năng)"),
+            (
+                "seed_role_modules",
+                "System: Role-Module Dashboard Layouts (Bố cục Dashboard 37 Roles)",
+            ),
+            # 2. Master Institutional Data & Lookups
+            ("seed_schools", "Master: School Profile (Hồ sơ pháp nhân trường học)"),
+            ("seed_academic_years", "Master: Academic Year (Năm học)"),
+            ("seed_semesters", "Master: Semesters (Học kỳ)"),
             ("seed_grades", "Master: Grades (Khối 10, 11, 12)"),
-            ("seed_rooms", "Academic: Rooms & Facilities"),
-            ("seed_periods", "Academic: Periods (Tiết học)"),
-            ("seed_departments", "Master: Departments (Tổ bộ môn)"),
-            ("seed_subjects", "Master: Subjects (Môn học)"),
-            ("seed_score_types", "Academic: Score Types (Đầu điểm TT22)"),
-            # 3. Organization, Teaching Assignment & Profiles
-            ("seed_teachers", "Core: Teachers & Accounts"),
-            ("seed_staff", "Core: Staff Profiles & Accounts (Cán bộ nhân viên)"),
-            ("seed_classes", "Core: Classes (Lớp học)"),
-            ("seed_class_subject_teachers", "Core: ClassSubjectTeacher (Phân công giảng dạy)"),
-            ("seed_students", "Core: Students & Accounts"),
-            ("seed_student_enrollments", "Core: StudentClassEnrollments (Phân lớp học sinh)"),
-            ("seed_guardians", "Core: Guardians & Accounts (Phụ huynh)"),
-            # 4. Academic Daily Operations
-            ("seed_timetables", "Academic: Timetables (Thời khóa biểu)"),
-            ("seed_attendances", "Academic: Attendance & Attendance Logs"),
-            ("seed_leave_requests", "Academic: Leave Requests (Đơn xin nghỉ phép)"),
-            ("seed_assignments", "Academic: Assignments & Submissions (Bài tập)"),
-            ("seed_exams", "Academic: Exams, Submissions & Event Logs (Thi cử)"),
-            # 5. System UI & Dashboard Modules
-            ("seed_modules", "System: Dynamic Modules & Dashboard Cards"),
+            ("seed_departments", "Master: Departments (Tổ chuyên môn)"),
+            ("seed_subjects", "Master: Subjects (Môn học GDPT 2018)"),
+            ("seed_lookup_types", "Master: Lookup Types (Danh mục tra cứu)"),
+            ("seed_lookup_values", "Master: Lookup Values (Giá trị tra cứu)"),
+            # 3. Academic Physical & Operational Infrastructure
+            ("seed_rooms", "Academic: Rooms & Facilities (100 phòng học & CSVC)"),
+            ("seed_periods", "Academic: Periods (Tiết học ca sáng/chiều)"),
+            ("seed_score_types", "Academic: Score Types (Đầu điểm TT22/TT-BGDĐT)"),
+            # 4. Identity Accounts, Profiles & Baseline Classes
+            ("seed_users", "Core: 37 Enterprise Users (Tài khoản người dùng)"),
+            ("seed_staff", "Core: Staff Profiles (16 Cán bộ nhân viên văn phòng & BGH)"),
+            ("seed_teachers", "Core: Teacher Profiles (7 Giáo viên & Đoàn trường)"),
+            ("seed_classes", "Core: School Classes (4 Lớp học mẫu ban đầu)"),
+            ("seed_students", "Core: Student Profiles (10 Học sinh lớp 10A1)"),
+            ("seed_guardians", "Core: Guardian Profiles (3 Phụ huynh học sinh)"),
         ]
 
         total_steps = len(seed_pipeline)

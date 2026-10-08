@@ -32,15 +32,19 @@ class Command(BaseCommand):
             {
                 "name": "Học kỳ 1 (2026 - 2027)",
                 "order_no": 1,
+                "weeks_count": 18,
                 "start_date": date(2026, 9, 5),
                 "end_date": date(2027, 1, 15),
+                "gradebook_lock_date": date(2027, 1, 20),
                 "is_current": True,
             },
             {
                 "name": "Học kỳ 2 (2026 - 2027)",
                 "order_no": 2,
+                "weeks_count": 18,
                 "start_date": date(2027, 1, 16),
                 "end_date": date(2027, 5, 31),
+                "gradebook_lock_date": date(2027, 6, 5),
                 "is_current": False,
             },
         ]
@@ -56,8 +60,10 @@ class Command(BaseCommand):
                         academic_year=ay,
                         name=item["name"],
                         order_no=item["order_no"],
+                        weeks_count=item["weeks_count"],
                         start_date=item["start_date"],
                         end_date=item["end_date"],
+                        gradebook_lock_date=item["gradebook_lock_date"],
                         is_current=item["is_current"],
                     )
                     created = True

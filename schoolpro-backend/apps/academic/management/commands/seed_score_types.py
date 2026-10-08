@@ -18,16 +18,12 @@ class Command(BaseCommand):
     help = "Seeds standard Score Types per MOET Circular 22."
 
     def handle(self, *args, **options):
-        self.stdout.write(
-            self.style.NOTICE("Seeding Score Types (academic.score_types)...")
-        )
+        self.stdout.write(self.style.NOTICE("Seeding Score Types (academic.score_types)..."))
 
         school = School.objects.first()
 
         if not school:
-            self.stdout.write(
-                self.style.ERROR("No school found. Please seed a school first.")
-            )
+            self.stdout.write(self.style.ERROR("No school found. Please seed a school first."))
             return
 
         score_types_data = [
@@ -51,9 +47,7 @@ class Command(BaseCommand):
                 "min_evaluations": 1,
                 "max_evaluations": 1,
                 "order_no": 2,
-                "description": (
-                    "Điểm đánh giá định kỳ giữa kỳ của môn học."
-                ),
+                "description": ("Điểm đánh giá định kỳ giữa kỳ của môn học."),
             },
             {
                 "name": "Đánh giá cuối kỳ",
@@ -62,9 +56,7 @@ class Command(BaseCommand):
                 "min_evaluations": 1,
                 "max_evaluations": 1,
                 "order_no": 3,
-                "description": (
-                    "Điểm đánh giá định kỳ cuối kỳ của môn học."
-                ),
+                "description": ("Điểm đánh giá định kỳ cuối kỳ của môn học."),
             },
         ]
 
@@ -75,7 +67,7 @@ class Command(BaseCommand):
             for data in score_types_data:
                 score_type = ScoreType.objects.filter(
                     school=school,
-                    code=generate_unique_code(ScoreType, "code"),
+                    name=data["name"],
                 ).first()
 
                 created = False

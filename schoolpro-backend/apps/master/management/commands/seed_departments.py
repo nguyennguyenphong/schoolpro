@@ -23,10 +23,15 @@ class Command(BaseCommand):
 
         departments_data = [
             {"name": "Tổ Toán - Tin học"},
-            {"name": "Tổ Ngữ Văn"},
-            {"name": "Tổ Ngoại Ngữ"},
-            {"name": "Tổ Khoa học Tự nhiên (Lý - Hóa - Sinh)"},
-            {"name": "Tổ Khoa học Xã hội (Sử - Địa - GDCD)"},
+            {"name": "Tổ Ngữ văn"},
+            {"name": "Tổ Ngoại ngữ"},
+            {"name": "Tổ Vật lý - Công nghệ"},
+            {"name": "Tổ Hóa học - Sinh học"},
+            {"name": "Tổ Lịch sử - Địa lý"},
+            {"name": "Tổ Giáo dục kinh tế và pháp luật"},
+            {"name": "Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh"},
+            {"name": "Tổ Nghệ thuật"},
+            {"name": "Tổ Hoạt động trải nghiệm - Hướng nghiệp"},
         ]
 
         with transaction.atomic():
