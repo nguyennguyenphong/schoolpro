@@ -40,7 +40,7 @@ class Command(BaseCommand):
             ("seed_lookup_types", "Master: Lookup Types (Danh mục tra cứu)"),
             ("seed_lookup_values", "Master: Lookup Values (Giá trị tra cứu)"),
             # 3. Academic Physical & Operational Infrastructure
-            ("seed_rooms", "Academic: Rooms & Facilities (100 phòng học & CSVC)"),
+            ("seed_rooms", "Academic: Rooms & Facilities (115 phòng học & CSVC)"),
             ("seed_periods", "Academic: Periods (Tiết học ca sáng/chiều)"),
             ("seed_score_types", "Academic: Score Types (Đầu điểm TT22/TT-BGDĐT)"),
             # 4. Identity Accounts, Profiles & Baseline Classes

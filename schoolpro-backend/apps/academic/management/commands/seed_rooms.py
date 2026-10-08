@@ -67,7 +67,7 @@ class Command(BaseCommand):
         specialized_rooms = [
             {
                 "name": "Phòng Tin học 1",
-                "room_type": "COMPUTER_LAB",
+                "room_type": "COMPUTER_ROOM",
                 "capacity": 40,
                 "building": "Dãy E",
                 "floor": 1,
@@ -80,7 +80,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Tin học 2",
-                "room_type": "COMPUTER_LAB",
+                "room_type": "COMPUTER_ROOM",
                 "capacity": 40,
                 "building": "Dãy E",
                 "floor": 1,
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Tin học 3",
-                "room_type": "COMPUTER_LAB",
+                "room_type": "COMPUTER_ROOM",
                 "capacity": 40,
                 "building": "Dãy E",
                 "floor": 2,
@@ -106,7 +106,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Tin học 4",
-                "room_type": "COMPUTER_LAB",
+                "room_type": "COMPUTER_ROOM",
                 "capacity": 40,
                 "building": "Dãy E",
                 "floor": 2,
@@ -197,7 +197,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Ngoại ngữ 1",
-                "room_type": "LANGUAGE_LAB",
+                "room_type": "LAB",
                 "capacity": 40,
                 "building": "Dãy F",
                 "floor": 1,
@@ -210,7 +210,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Ngoại ngữ 2",
-                "room_type": "LANGUAGE_LAB",
+                "room_type": "LAB",
                 "capacity": 40,
                 "building": "Dãy F",
                 "floor": 1,
@@ -223,7 +223,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Ngoại ngữ 3",
-                "room_type": "LANGUAGE_LAB",
+                "room_type": "LAB",
                 "capacity": 40,
                 "building": "Dãy F",
                 "floor": 2,
@@ -236,7 +236,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Ngoại ngữ 4",
-                "room_type": "LANGUAGE_LAB",
+                "room_type": "LAB",
                 "capacity": 40,
                 "building": "Dãy F",
                 "floor": 2,
@@ -249,7 +249,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng STEM 1",
-                "room_type": "STEM",
+                "room_type": "LAB",
                 "capacity": 35,
                 "building": "Nhà STEM",
                 "floor": 1,
@@ -262,7 +262,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng STEM 2",
-                "room_type": "STEM",
+                "room_type": "LAB",
                 "capacity": 35,
                 "building": "Nhà STEM",
                 "floor": 1,
@@ -275,7 +275,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Mỹ thuật 1",
-                "room_type": "ART_ROOM",
+                "room_type": "CLASSROOM",
                 "capacity": 35,
                 "building": "Dãy F",
                 "floor": 3,
@@ -288,7 +288,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Mỹ thuật 2",
-                "room_type": "ART_ROOM",
+                "room_type": "CLASSROOM",
                 "capacity": 35,
                 "building": "Dãy F",
                 "floor": 3,
@@ -301,7 +301,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Âm nhạc 1",
-                "room_type": "MUSIC_ROOM",
+                "room_type": "CLASSROOM",
                 "capacity": 35,
                 "building": "Dãy F",
                 "floor": 4,
@@ -314,7 +314,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Âm nhạc 2",
-                "room_type": "MUSIC_ROOM",
+                "room_type": "CLASSROOM",
                 "capacity": 35,
                 "building": "Dãy F",
                 "floor": 4,
@@ -340,7 +340,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng đọc",
-                "room_type": "READING_ROOM",
+                "room_type": "LIBRARY",
                 "capacity": 60,
                 "building": "Thư viện",
                 "floor": 2,
@@ -353,7 +353,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Hội trường lớn",
-                "room_type": "HALL",
+                "room_type": "AUDITORIUM",
                 "capacity": 500,
                 "building": "Nhà Đa năng",
                 "floor": 1,
@@ -366,7 +366,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Hội trường nhỏ",
-                "room_type": "HALL",
+                "room_type": "AUDITORIUM",
                 "capacity": 200,
                 "building": "Nhà Đa năng",
                 "floor": 2,
@@ -379,7 +379,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng họp Ban Giám hiệu",
-                "room_type": "MEETING_ROOM",
+                "room_type": "FACULTY_ROOM",
                 "capacity": 20,
                 "building": "Khu Hiệu bộ",
                 "floor": 1,
@@ -392,7 +392,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng họp Hội đồng",
-                "room_type": "MEETING_ROOM",
+                "room_type": "FACULTY_ROOM",
                 "capacity": 40,
                 "building": "Khu Hiệu bộ",
                 "floor": 1,
@@ -405,7 +405,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Y tế",
-                "room_type": "MEDICAL",
+                "room_type": "HEALTH_ROOM",
                 "capacity": 5,
                 "building": "Khu Hiệu bộ",
                 "floor": 1,
@@ -418,7 +418,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Tư vấn học sinh 1",
-                "room_type": "COUNSELING",
+                "room_type": "HEALTH_ROOM",
                 "capacity": 8,
                 "building": "Khu Hiệu bộ",
                 "floor": 2,
@@ -431,7 +431,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Tư vấn học sinh 2",
-                "room_type": "COUNSELING",
+                "room_type": "HEALTH_ROOM",
                 "capacity": 8,
                 "building": "Khu Hiệu bộ",
                 "floor": 2,
@@ -444,7 +444,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Giáo viên",
-                "room_type": "STAFF_ROOM",
+                "room_type": "FACULTY_ROOM",
                 "capacity": 60,
                 "building": "Khu Hiệu bộ",
                 "floor": 2,
@@ -470,7 +470,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng thể chất",
-                "room_type": "SPORTS_ROOM",
+                "room_type": "GYM",
                 "capacity": 50,
                 "building": "Nhà Đa năng",
                 "floor": 2,
@@ -483,7 +483,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Thiết bị dạy học",
-                "room_type": "EQUIPMENT",
+                "room_type": "FACULTY_ROOM",
                 "capacity": 10,
                 "building": "Khu Hiệu bộ",
                 "floor": 1,
@@ -496,7 +496,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng Đoàn Thanh niên",
-                "room_type": "OFFICE",
+                "room_type": "FACULTY_ROOM",
                 "capacity": 15,
                 "building": "Khu Hiệu bộ",
                 "floor": 2,
@@ -509,7 +509,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Phòng học chuyên đề",
-                "room_type": "SPECIALIZED_CLASSROOM",
+                "room_type": "CLASSROOM",
                 "capacity": 30,
                 "building": "Dãy F",
                 "floor": 3,
@@ -524,8 +524,8 @@ class Command(BaseCommand):
 
         rooms_data.extend(specialized_rooms)
 
-        if len(rooms_data) != 100:
-            raise ValueError(f"Expected exactly 100 rooms, got {len(rooms_data)}.")
+        if len(rooms_data) != 115:
+            raise ValueError(f"Expected exactly 115 rooms, got {len(rooms_data)}.")
 
         with transaction.atomic():
             created_count = 0
@@ -574,7 +574,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Successfully processed 100 room definitions. "
+                f"Successfully processed {len(rooms_data)} room definitions. "
                 f"Created: {created_count}, "
                 f"Already exists: {existing_count}, "
                 f"Total rooms for school: {total_count}"

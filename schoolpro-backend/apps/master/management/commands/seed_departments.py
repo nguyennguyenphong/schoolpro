@@ -32,7 +32,7 @@ class Command(BaseCommand):
             {"name": "Tổ Giáo dục thể chất - Giáo dục quốc phòng và an ninh", "type": "SUBJECT"},
             {"name": "Tổ Nghệ thuật", "type": "SUBJECT"},
             {"name": "Tổ Hoạt động trải nghiệm - Hướng nghiệp", "type": "SUBJECT"},
-            {"name": "Tổ Văn phòng", "type": "ADMINISTRATIVE"},
+            {"name": "Tổ Văn phòng", "type": "ADMINISTRATION"},
         ]
 
         with transaction.atomic():

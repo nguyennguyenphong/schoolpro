@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 if not grade_obj:
                     grade_obj = Grade.objects.create(
                         id=uuid6.uuid7(),
-                        code=generate_unique_code(Grade, "code"),
+                        code=generate_unique_code(Grade, "code", length=8),
                         school=school,
                         name=g["name"],
                         order_no=g["order_no"],
