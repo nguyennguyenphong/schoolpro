@@ -21,11 +21,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.NOTICE("Seeding Leave Requests (academic.leave_requests)..."))
-        student_anh = Student.objects.filter(user__username="hs_anh").first()
+        student_anh = Student.objects.filter(user__username="hocsinh_01").first()
         admin_user = User.objects.first()
 
         if not (student_anh and admin_user):
-            self.stdout.write(self.style.ERROR("Error: Student hs_anh or Admin User not found."))
+            self.stdout.write(self.style.ERROR("Error: Student hocsinh_01 or Admin User not found."))
             return
 
         with transaction.atomic():
