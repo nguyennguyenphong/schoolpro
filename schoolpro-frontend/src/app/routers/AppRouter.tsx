@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { Spin } from "@/components/ui/Spin";
 import { ProtectedRoute } from "@/app/routers/ProtectedRoute";
@@ -37,6 +36,30 @@ const ResetPasswordPage = lazy(() =>
   }))
 );
 
+const ForbiddenPage = lazy(() =>
+  import("@/pages/Errors").then(({ ForbiddenPage }) => ({
+    default: ForbiddenPage,
+  }))
+);
+
+const NotFoundPage = lazy(() =>
+  import("@/pages/Errors").then(({ NotFoundPage }) => ({
+    default: NotFoundPage,
+  }))
+);
+
+const BadRequestPage = lazy(() =>
+  import("@/pages/Errors").then(({ BadRequestPage }) => ({
+    default: BadRequestPage,
+  }))
+);
+
+const ServerErrorPage = lazy(() =>
+  import("@/pages/Errors").then(({ ServerErrorPage }) => ({
+    default: ServerErrorPage,
+  }))
+);
+
 const PageLoader: React.FC = () => {
   const { t } = useTranslation("common");
 
@@ -63,34 +86,6 @@ const RootRedirect: React.FC = () => {
   }
 
   return <Navigate to={getRoleHomeRoute(role)} replace />;
-};
-
-const UnauthorizedPage: React.FC = () => {
-  const { t } = useTranslation("common");
-  const { role, logout } = useAuthStore();
-
-  return (
-    <div className="flex h-screen items-center justify-center bg-slate-50">
-      <Result
-        status="403"
-        title={t("errors.403.title")}
-        subTitle={t("errors.403.subtitle")}
-        extra={[
-          <Button
-            key="home"
-            type="primary"
-            href={getRoleHomeRoute(role)}
-            className="mr-3"
-          >
-            Về trang chủ của bạn
-          </Button>,
-          <Button key="logout" onClick={() => logout()} href="/login">
-            {t("buttons.backToLogin")}
-          </Button>,
-        ]}
-      />
-    </div>
-  );
 };
 
 export const AppRouter: React.FC = () => {
@@ -143,9 +138,15 @@ export const AppRouter: React.FC = () => {
             <Route path="/supervisor" element={<Navigate to="/supervisor/home" replace />} />
           </Route>
 
-          {/* Access Control & Fallback routes */}
-          <Route path="/unauthorized" element={<UnauthorizedPage />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          {/* Access Control & Error Fallback routes */}
+          <Route path="/403" element={<ForbiddenPage />} />
+          <Route path="/unauthorized" element={<Navigate to="/403" replace />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="/400" element={<BadRequestPage />} />
+          <Route path="/500" element={<ServerErrorPage />} />
+
+          {/* Catch-all unmatched paths display 404 Not Found */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

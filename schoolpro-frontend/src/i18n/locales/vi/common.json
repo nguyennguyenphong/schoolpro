@@ -10,11 +10,13 @@
     "search": "Tìm kiếm",
     "reset": "Đặt lại",
     "close": "Đóng",
-    "loading": "Đang xử lý..."
+    "loading": "Đang xử lý...",
+    "reload": "Tải lại trang"
   },
   "buttons": {
     "login": "Đăng nhập",
-    "backToLogin": "Quay lại đăng nhập"
+    "backToLogin": "Quay lại đăng nhập",
+    "goHome": "Về trang chủ của bạn"
   },
   "status": {
     "success": "Thành công",
@@ -33,6 +35,10 @@
     "loadingText": "Đang tải trang..."
   },
   "errors": {
+    "400": {
+      "title": "400 - Yêu cầu không hợp lệ",
+      "subtitle": "Yêu cầu của bạn không hợp lệ hoặc dữ liệu gửi lên không đúng định dạng quy định."
+    },
     "403": {
       "title": "403 - Truy cập bị từ chối",
       "subtitle": "Xin lỗi, bạn không có quyền truy cập vào phân vùng này của hệ thống School Pro."
@@ -40,6 +46,10 @@
     "404": {
       "title": "404 - Không tìm thấy trang",
       "subtitle": "Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển."
+    },
+    "500": {
+      "title": "500 - Lỗi máy chủ nội bộ",
+      "subtitle": "Hệ thống đang gặp sự cố xử lý. Vui lòng thử lại sau ít phút hoặc liên hệ quản trị viên."
     },
     "general": "Đã có lỗi xảy ra, vui lòng thử lại sau."
   },

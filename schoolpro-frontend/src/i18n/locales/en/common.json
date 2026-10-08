@@ -10,11 +10,13 @@
     "search": "Search",
     "reset": "Reset",
     "close": "Close",
-    "loading": "Processing..."
+    "loading": "Processing...",
+    "reload": "Reload page"
   },
   "buttons": {
     "login": "Sign In",
-    "backToLogin": "Back to Sign In"
+    "backToLogin": "Back to Sign In",
+    "goHome": "Go to your home"
   },
   "status": {
     "success": "Success",
@@ -33,6 +35,10 @@
     "loadingText": "Loading page..."
   },
   "errors": {
+    "400": {
+      "title": "400 - Bad Request",
+      "subtitle": "Your request is invalid or the submitted parameters are not correctly formatted."
+    },
     "403": {
       "title": "403 - Access Denied",
       "subtitle": "Sorry, you do not have permission to access this section of School Pro."
@@ -40,6 +46,10 @@
     "404": {
       "title": "404 - Page Not Found",
       "subtitle": "The page you are looking for does not exist or has been moved."
+    },
+    "500": {
+      "title": "500 - Internal Server Error",
+      "subtitle": "Something went wrong on our end. Please try again later or contact your system administrator."
     },
     "general": "An error occurred, please try again later."
   },
