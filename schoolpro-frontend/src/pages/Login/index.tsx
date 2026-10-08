@@ -55,7 +55,7 @@ export const LoginPage: React.FC = () => {
         form={form}
         name="education_login_form"
         layout="vertical"
-        initialValues={{ remember: true, role: "student", code: "hs_pham_minh_khoi", password: "SchoolPro@2026" }}
+        initialValues={{ remember: true, role: "student", code: "hocsinh_01", password: "password123" }}
         onFinish={onFinish}
         autoComplete="off"
       >

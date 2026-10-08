@@ -8,6 +8,7 @@ from datetime import timedelta
 from typing import Any
 
 from django.contrib.auth.hashers import check_password
+from django.http import HttpRequest
 from django.utils import timezone
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -15,6 +16,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from apps.core.models.profile import Staff, Student, Teacher
 from apps.core.models.role import Role, UserRole
 from apps.core.models.user import User
+from apps.system.services.login_history_service import LoginHistoryService
 from common.services.base import BaseService
 
 
@@ -23,12 +25,17 @@ class AuthService(BaseService):
     Enterprise Authentication Service for SchoolPro identity platform.
     """
 
+    def __init__(self) -> None:
+        super().__init__()
+        self.login_history_service = LoginHistoryService()
+
     def authenticate(
         self,
         code: str,
         password: str,
         role_identifier: str | None = None,
         remember: bool = True,
+        request: HttpRequest | None = None,
     ) -> dict[str, Any]:
         """
         Authenticate user credentials and issue JWT tokens with embedded active role context.
@@ -40,26 +47,54 @@ class AuthService(BaseService):
         # 1. Lookup User entity
         user = self._find_user_by_identifier(clean_code)
         if not user:
+            self.login_history_service.record_login(
+                request=request,
+                user=None,
+                username_attempt=clean_code,
+                status="FAILED",
+                failure_reason="Tài khoản hoặc mã định danh không tồn tại trong hệ thống.",
+                auth_method="PASSWORD",
+                metadata={"source": "api_login"},
+            )
+            if request:
+                request._schoolpro_login_recorded = True
             raise AuthenticationFailed("Tài khoản hoặc mã định danh không tồn tại trong hệ thống.")
 
         # 2. Verify account status and lock status
         if user.is_locked:
             if user.locked_until and user.locked_until > timezone.now():
                 time_str = user.locked_until.strftime("%H:%M %d/%m/%Y")
-                raise AuthenticationFailed(
-                    f"Tài khoản của bạn tạm thời bị khóa đến {time_str} do nhập sai mật khẩu quá 5 lần.",
-                    code="user_locked",
-                )
-            raise AuthenticationFailed(
-                "Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị.",
-                code="user_locked",
+                reason = f"Tài khoản của bạn tạm thời bị khóa đến {time_str} do nhập sai mật khẩu quá 5 lần."
+            else:
+                reason = "Tài khoản của bạn đã bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ ban quản trị."
+
+            self.login_history_service.record_login(
+                request=request,
+                user=user,
+                username_attempt=clean_code,
+                status="LOCKED_OUT",
+                failure_reason=reason,
+                auth_method="PASSWORD",
+                metadata={"source": "api_login"},
             )
+            if request:
+                request._schoolpro_login_recorded = True
+            raise AuthenticationFailed(reason, code="user_locked")
 
         if user.status_code and user.status_code.upper() in ["INACTIVE", "SUSPENDED"]:
-            raise AuthenticationFailed(
-                "Tài khoản của bạn đã ngừng hoạt động. Vui lòng liên hệ ban quản trị.",
-                code="user_inactive",
+            reason = "Tài khoản của bạn đã ngừng hoạt động. Vui lòng liên hệ ban quản trị."
+            self.login_history_service.record_login(
+                request=request,
+                user=user,
+                username_attempt=clean_code,
+                status="BLOCKED",
+                failure_reason=reason,
+                auth_method="PASSWORD",
+                metadata={"source": "api_login"},
             )
+            if request:
+                request._schoolpro_login_recorded = True
+            raise AuthenticationFailed(reason, code="user_inactive")
 
         # 3. Verify Password with brute-force protection
         if not self._verify_password(password, user.password_hash):
@@ -79,20 +114,38 @@ class AuthService(BaseService):
                     )
                 except Exception:
                     pass
-                raise AuthenticationFailed(
-                    "Bạn đã nhập sai mật khẩu 5 lần. Tài khoản tạm thời bị khóa trong 15 phút.",
-                    code="user_locked",
+                reason = "Bạn đã nhập sai mật khẩu 5 lần. Tài khoản tạm thời bị khóa trong 15 phút."
+                self.login_history_service.record_login(
+                    request=request,
+                    user=user,
+                    username_attempt=clean_code,
+                    status="LOCKED_OUT",
+                    failure_reason=reason,
+                    auth_method="PASSWORD",
+                    metadata={"source": "api_login"},
                 )
+                if request:
+                    request._schoolpro_login_recorded = True
+                raise AuthenticationFailed(reason, code="user_locked")
             else:
                 remaining = 5 - user.failed_login_attempts
                 try:
                     user.save(update_fields=["failed_login_attempts"])
                 except Exception:
                     pass
-                raise AuthenticationFailed(
-                    f"Mật khẩu không chính xác. Bạn còn {remaining} lần thử trước khi tài khoản bị khóa tạm thời.",
-                    code="invalid_credentials",
+                reason = f"Mật khẩu không chính xác. Bạn còn {remaining} lần thử trước khi tài khoản bị khóa tạm thời."
+                self.login_history_service.record_login(
+                    request=request,
+                    user=user,
+                    username_attempt=clean_code,
+                    status="FAILED",
+                    failure_reason=reason,
+                    auth_method="PASSWORD",
+                    metadata={"source": "api_login"},
                 )
+                if request:
+                    request._schoolpro_login_recorded = True
+                raise AuthenticationFailed(reason, code="invalid_credentials")
 
         # 4. Resolve User Roles
         user_roles_qs = UserRole.objects.filter(user=user).select_related("role")
@@ -136,6 +189,23 @@ class AuthService(BaseService):
         except Exception:
             # Model may be unmanaged or table read-only in some configurations
             pass
+
+        # 6. Record successful login history
+        session_identifier = str(refresh.access_token.get("jti") or refresh.get("jti") or "")
+        self.login_history_service.record_login(
+            request=request,
+            user=user,
+            username_attempt=user.username,
+            status="SUCCESS",
+            auth_method="PASSWORD",
+            session_id=session_identifier,
+            metadata={
+                "source": "api_login",
+                "role": selected_role.code if selected_role else None,
+            },
+        )
+        if request:
+            request._schoolpro_login_recorded = True
 
         self.logger.info(
             "User '%s' authenticated successfully with role '%s'",

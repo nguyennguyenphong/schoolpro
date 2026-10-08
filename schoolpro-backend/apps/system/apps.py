@@ -6,3 +6,6 @@ class SystemConfig(AppConfig):
     name = "apps.system"
     label = "system"
     verbose_name = "System Administration & Audit"
+
+    def ready(self) -> None:
+        import apps.system.signals.handlers  # noqa: F401

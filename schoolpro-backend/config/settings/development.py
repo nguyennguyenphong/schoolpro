@@ -18,6 +18,18 @@ ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF settings for development
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
 # Database: Uses DATABASE_URL if provided, else falls back to SQLite for easy local dev
 if "DATABASE_URL" in os.environ:
     DATABASES = {"default": env.db_url("DATABASE_URL")}

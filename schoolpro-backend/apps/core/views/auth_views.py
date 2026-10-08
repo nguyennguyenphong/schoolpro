@@ -44,6 +44,7 @@ class AuthLoginView(APIView):
             password=data["password"],
             role_identifier=data.get("role"),
             remember=data.get("remember", True),
+            request=request,
         )
 
         response_data = {
@@ -117,12 +118,34 @@ class AuthLogoutView(APIView):
     )
     def post(self, request):
         refresh_token = request.data.get("refresh")
+        token_access_key = None
+        user_to_logout = None
+
         if refresh_token:
             try:
                 token = RefreshToken(refresh_token)
+                token_access_key = str(token.access_token)
+                # If token has user_id claim
+                token_user_id = token.get("user_id")
+                if token_user_id:
+                    from apps.core.models.user import User
+
+                    user_to_logout = User.objects.filter(id=token_user_id).first()
                 token.blacklist()
             except Exception:
                 pass
+
+        if not user_to_logout and getattr(request, "user", None) and request.user.is_authenticated:
+            user_to_logout = request.user
+
+        from apps.system.services.login_history_service import LoginHistoryService
+
+        LoginHistoryService().record_logout(
+            request=request,
+            user=user_to_logout,
+            logout_type="USER_INITIATED",
+            session_id=token_access_key,
+        )
 
         return APIResponse.success(
             message="Đăng xuất thành công",

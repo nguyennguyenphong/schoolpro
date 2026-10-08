@@ -115,6 +115,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# Custom Cookie Names to avoid localhost cross-project collisions
+CSRF_COOKIE_NAME = "schoolpro_csrftoken"
+SESSION_COOKIE_NAME = "schoolpro_sessionid"
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = False
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Django REST Framework

@@ -50,6 +50,7 @@ tzlocal==5.4.4
 
 uritemplate==4.2.0
 urllib3==2.8.0
+user-agents==2.2.0
 
 uvicorn==0.54.0
 
