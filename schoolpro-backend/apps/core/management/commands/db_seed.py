@@ -46,7 +46,7 @@ class Command(BaseCommand):
             # 4. Identity Accounts, Profiles & Baseline Classes
             ("seed_users", "Core: 37 Enterprise Users (Tài khoản người dùng)"),
             ("seed_staff", "Core: Staff Profiles (16 Cán bộ nhân viên văn phòng & BGH)"),
-            ("seed_teachers", "Core: Teacher Profiles (7 Giáo viên & Đoàn trường)"),
+            ("seed_teachers", "Core: Teacher Profiles (50 Giáo viên - 5 GV/Tổ chuyên môn)"),
             ("seed_classes", "Core: School Classes (4 Lớp học mẫu ban đầu)"),
             ("seed_students", "Core: Student Profiles (10 Học sinh lớp 10A1)"),
             ("seed_class_groups", "Core: Class Groups (Tổ học tập & trực nhật lớp 10A1)"),
