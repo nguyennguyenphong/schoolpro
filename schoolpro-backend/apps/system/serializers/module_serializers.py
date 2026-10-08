@@ -160,31 +160,26 @@ class RoleModuleAssignSerializer(serializers.Serializer):
 class UserDashboardCardSerializer(serializers.Serializer):
     """
     Serializer for the resolved user dashboard cards.
-    Contains both the core module details and user/role dynamic overrides
-    (pinned, order, badge, colors, and frontend config).
+    Conforms directly to sys.modules and sys.role_modules schema.
     """
 
     id = serializers.CharField()
     module_id = serializers.UUIDField()
     code = serializers.CharField(source="module_code")
     name = serializers.CharField(source="module_name")
-    short_name = serializers.CharField(allow_null=True)
-    description = serializers.CharField(allow_null=True)
+    short_name = serializers.CharField(allow_null=True, required=False)
+    description = serializers.CharField(allow_null=True, required=False)
     icon = serializers.CharField()
-    icon_name = serializers.CharField()
-    icon_bg_color = serializers.CharField(allow_null=True)
-    icon_color = serializers.CharField(allow_null=True)
     route = serializers.CharField()
     module_type = serializers.CharField()
     category = serializers.CharField()
-    translation_key = serializers.CharField(allow_null=True)
-    badge_count = serializers.IntegerField(allow_null=True)
-    badge_color = serializers.CharField(allow_null=True)
-    badge_text = serializers.CharField(allow_null=True)
+    default_color = serializers.CharField(allow_null=True, required=False)
+    default_badge = serializers.CharField(allow_null=True, required=False)
+    badge_text = serializers.CharField(allow_null=True, required=False)
     is_pinned = serializers.BooleanField()
     is_hidden = serializers.BooleanField()
     order_no = serializers.IntegerField(source="display_order")
-    config = serializers.JSONField(source="ui_config", allow_null=True)
+    config = serializers.JSONField(source="ui_config", allow_null=True, required=False)
 
 
 class UpdateUserModulePreferenceSerializer(serializers.Serializer):

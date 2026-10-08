@@ -31,7 +31,7 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
             <div className="relative inline-block self-start sm:self-auto">
               <Avatar
                 size={96}
-                src={personalInfo.avatarUrl}
+                src={personalInfo.avatarUrl?.trim() ? personalInfo.avatarUrl : undefined}
                 className="ring-4 ring-blue-50 border border-slate-200 shadow-md"
               />
               <button

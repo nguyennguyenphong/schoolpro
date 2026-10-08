@@ -148,7 +148,7 @@ export const StudentLayout: React.FC = () => {
               <div className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-slate-50/80 transition-all cursor-pointer select-none group bg-white">
                 <Avatar
                   size={32}
-                  src={user?.avatar_url}
+                  src={user?.avatar_url?.trim() ? user.avatar_url : undefined}
                   className="border border-slate-200 shadow-2xs bg-blue-50 text-blue-600 font-bold"
                 >
                   {studentName.charAt(0).toUpperCase()}

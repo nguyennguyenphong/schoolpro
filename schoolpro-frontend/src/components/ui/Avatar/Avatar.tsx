@@ -5,10 +5,14 @@ import type { AvatarProps, AvatarGroupProps } from "@/components/ui/Avatar/types
 import { avatarStyles, avatarGroupStyles } from "@/components/ui/Avatar/styles";
 
 const InternalAvatar = forwardRef<HTMLSpanElement, AvatarProps>(
-  ({ style, className = "", shape = "circle", ...props }, ref) => {
+  ({ style, className = "", shape = "circle", src, ...props }, ref) => {
+    // Prevent browser warnings when empty string is passed as src attribute
+    const safeSrc = typeof src === "string" && src.trim() === "" ? undefined : src;
+
     return (
       <AntAvatar
         ref={ref}
+        src={safeSrc}
         shape={shape}
         style={{
           ...avatarStyles,

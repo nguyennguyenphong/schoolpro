@@ -46,6 +46,7 @@ class Command(BaseCommand):
 
         # Route definitions shortcuts
         ROUTE_TIMETABLE = "/student/timetable"
+        ROUTE_LEAVE_REQUEST = "/student/leave-requests"
         ROUTE_MATERIALS = "/student/materials"
         ROUTE_ASSIGNMENTS = "/student/assignments"
         ROUTE_EXAMS = "/student/exams"
@@ -84,20 +85,23 @@ class Command(BaseCommand):
         # Common reusable card packages
         STUDENT_COMMON_CARDS = [
             card(ROUTE_TIMETABLE, pinned=True, col_span=1, order=1, badge="Lịch học"),
-            card(ROUTE_ASSIGNMENTS, pinned=True, col_span=1, order=2, badge="Bài tập"),
-            card(ROUTE_GRADEBOOK, pinned=True, col_span=1, order=3, badge="Điểm số"),
-            card(ROUTE_ATTENDANCE, pinned=False, col_span=1, order=4),
-            card(ROUTE_ONLINE_TEST, pinned=False, col_span=1, order=5),
-            card(ROUTE_EXAMS, pinned=False, col_span=1, order=6),
-            card(ROUTE_MATERIALS, pinned=False, col_span=1, order=7),
-            card(ROUTE_EMULATION, pinned=False, col_span=1, order=8),
-            card(ROUTE_NOTICES, pinned=False, col_span=1, order=9),
-            card(ROUTE_CONTACT_BOOK, pinned=False, col_span=1, order=10),
-            card(ROUTE_CLUBS, pinned=False, col_span=1, order=11),
-            card(ROUTE_REMINDERS, pinned=False, col_span=1, order=12),
-            card(ROUTE_CERTIFICATE, pinned=False, col_span=1, order=13),
-            card(ROUTE_FACILITY_ISSUE, pinned=False, col_span=1, order=14),
-            card(ROUTE_EVALUATIONS, pinned=False, col_span=1, order=15, badge="Khảo sát"),
+            card(ROUTE_LEAVE_REQUEST, pinned=False, col_span=1, order=2, badge="Gửi đơn"),
+            card(ROUTE_ATTENDANCE, pinned=False, col_span=1, order=3, badge="Điểm danh"),
+            card(ROUTE_ASSIGNMENTS, pinned=True, col_span=1, order=4, badge="Bài tập"),
+            card(ROUTE_ONLINE_TEST, pinned=False, col_span=1, order=5, badge="Online"),
+            card(ROUTE_EXAMS, pinned=False, col_span=1, order=6, badge="Sắp tới"),
+            card(ROUTE_GRADEBOOK, pinned=True, col_span=1, order=7, badge="Điểm số"),
+            card(ROUTE_MATERIALS, pinned=False, col_span=1, order=8, badge="18"),
+            card(ROUTE_TRACK, pinned=False, col_span=1, order=9, badge="Tổ hợp"),
+            card(ROUTE_NOTICES, pinned=False, col_span=1, order=10, badge="10"),
+            card(ROUTE_CONTACT_BOOK, pinned=False, col_span=1, order=11, badge="Mới"),
+            card(ROUTE_REMINDERS, pinned=False, col_span=1, order=12, badge="4"),
+            card(ROUTE_EMULATION, pinned=False, col_span=1, order=13, badge="Hạng"),
+            card(ROUTE_CLUBS, pinned=False, col_span=1, order=14, badge="Hoạt động"),
+            card(ROUTE_FEES, pinned=False, col_span=1, order=15, badge="Học phí"),
+            card(ROUTE_CERTIFICATE, pinned=False, col_span=1, order=16, badge="Chứng chỉ"),
+            card(ROUTE_FACILITY_ISSUE, pinned=False, col_span=1, order=17, badge="Sửa chữa"),
+            card(ROUTE_EVALUATIONS, pinned=False, col_span=1, order=18, badge="Khảo sát"),
         ]
 
         TEACHER_COMMON_CARDS = [
