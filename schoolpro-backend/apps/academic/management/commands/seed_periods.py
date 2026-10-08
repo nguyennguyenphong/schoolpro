@@ -84,11 +84,11 @@ class Command(BaseCommand):
         with transaction.atomic():
             for p in periods_data:
                 period_obj, created = Period.objects.get_or_create(
+                    school=school,
                     period_no=p["period_no"],
                     shift=p["shift"],
                     defaults={
                         "id": uuid6.uuid7(),
-                        "school": school,
                         "name": p["name"],
                         "start_time": p["start_time"],
                         "end_time": p["end_time"],

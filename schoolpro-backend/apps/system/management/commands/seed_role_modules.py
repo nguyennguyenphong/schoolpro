@@ -267,7 +267,7 @@ class Command(BaseCommand):
                 card(ROUTE_DUTY, pinned=False, col_span=1, order=3),
                 card(ROUTE_NOTICES, pinned=False, col_span=1, order=4),
             ],
-            "Đội trưởng Đội Cờ đỏ trường": [
+            "Cán bộ Đội Cờ đỏ / Sao đỏ": [
                 card(ROUTE_DUTY, pinned=True, col_span=2, order=1, badge="Đội cờ đỏ"),
                 card(ROUTE_EMULATION, pinned=True, col_span=1, order=2, badge="Nề nếp"),
                 card(ROUTE_DISCIPLINE, pinned=False, col_span=1, order=3),
@@ -281,16 +281,16 @@ class Command(BaseCommand):
                 card(ROUTE_EMULATION, pinned=True, col_span=1, order=0, badge="Lớp trưởng"),
                 card(ROUTE_ATTENDANCE, pinned=True, col_span=1, order=0, badge="Điểm danh lớp"),
             ],
-            "Lớp phó Học tập": STUDENT_COMMON_CARDS
+            "Lớp phó học tập": STUDENT_COMMON_CARDS
             + [
                 card(ROUTE_GRADEBOOK, pinned=True, col_span=1, order=0, badge="Học tập"),
                 card(ROUTE_MATERIALS, pinned=True, col_span=1, order=0, badge="Tài liệu lớp"),
             ],
-            "Lớp phó Lao động & Đời sống": STUDENT_COMMON_CARDS
+            "Lớp phó lao động và Đời sống": STUDENT_COMMON_CARDS
             + [
                 card(ROUTE_FACILITY_ISSUE, pinned=True, col_span=1, order=0, badge="Trực nhật"),
             ],
-            "Lớp phó Văn thể mỹ": STUDENT_COMMON_CARDS
+            "Lớp phó Văn - Thể - Mỹ": STUDENT_COMMON_CARDS
             + [
                 card(ROUTE_CLUBS, pinned=True, col_span=1, order=0, badge="Văn thể mỹ"),
             ],
@@ -313,7 +313,7 @@ class Command(BaseCommand):
             # 7. GENERAL STUDENTS
             "Học sinh": STUDENT_COMMON_CARDS,
             # 8. PARENTS & GUARDIANS
-            "Phụ huynh / Người giám hộ": [
+            "Phụ huynh học sinh": [
                 card(ROUTE_PARENT_PORTAL, pinned=True, col_span=2, order=1, badge="Sổ liên lạc"),
                 card(ROUTE_GRADEBOOK, pinned=True, col_span=1, order=2, badge="Bảng điểm"),
                 card(ROUTE_ATTENDANCE, pinned=True, col_span=1, order=3, badge="Chuyên cần"),
@@ -322,14 +322,14 @@ class Command(BaseCommand):
                 card(ROUTE_NOTICES, pinned=False, col_span=1, order=6),
                 card(ROUTE_EMULATION, pinned=False, col_span=1, order=7),
             ],
-            "Trưởng ban Đại diện Cha mẹ học sinh Trường": [
+            "Trưởng ban đại diện Cha mẹ học sinh trường": [
                 card(ROUTE_PARENT_PORTAL, pinned=True, col_span=2, order=1, badge="Ban ĐD Trường"),
                 card(ROUTE_NOTICES, pinned=True, col_span=1, order=2, badge="Thông báo"),
                 card(ROUTE_GRADEBOOK, pinned=False, col_span=1, order=3),
                 card(ROUTE_FEES, pinned=False, col_span=1, order=4),
                 card(ROUTE_ANALYTICS, pinned=False, col_span=1, order=5),
             ],
-            "Trưởng ban Đại diện Cha mẹ học sinh Lớp": [
+            "Trưởng ban đại diện Cha mẹ học sinh lớp": [
                 card(ROUTE_PARENT_PORTAL, pinned=True, col_span=2, order=1, badge="Ban ĐD Lớp"),
                 card(ROUTE_NOTICES, pinned=True, col_span=1, order=2, badge="Thông báo lớp"),
                 card(ROUTE_GRADEBOOK, pinned=False, col_span=1, order=3),

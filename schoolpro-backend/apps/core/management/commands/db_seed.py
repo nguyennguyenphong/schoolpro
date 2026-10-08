@@ -47,7 +47,7 @@ class Command(BaseCommand):
             ("seed_users", "Core: 37 Enterprise Users (Tài khoản người dùng)"),
             ("seed_staff", "Core: Staff Profiles (16 Cán bộ nhân viên văn phòng & BGH)"),
             ("seed_teachers", "Core: Teacher Profiles (50 Giáo viên - 5 GV/Tổ chuyên môn)"),
-            ("seed_classes", "Core: School Classes (4 Lớp học mẫu ban đầu)"),
+            ("seed_classes", "Core: School Classes (70 Lớp: 10A1-10A24, 11A1-11A23, 12A1-12A23)"),
             ("seed_students", "Core: Student Profiles (10 Học sinh lớp 10A1)"),
             ("seed_class_groups", "Core: Class Groups (Tổ học tập & trực nhật lớp 10A1)"),
             ("seed_guardians", "Core: Guardian Profiles (3 Phụ huynh học sinh)"),

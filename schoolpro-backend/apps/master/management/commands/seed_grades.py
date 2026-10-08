@@ -22,14 +22,14 @@ class Command(BaseCommand):
         school = School.objects.first()
 
         grades_data = [
-            {"name": "Khối 10", "level": 10},
-            {"name": "Khối 11", "level": 11},
-            {"name": "Khối 12", "level": 12},
+            {"name": "Khối 10", "order_no": 10},
+            {"name": "Khối 11", "order_no": 11},
+            {"name": "Khối 12", "order_no": 12},
         ]
 
         with transaction.atomic():
             for g in grades_data:
-                grade_obj = Grade.objects.filter(school=school, level=g["level"]).first()
+                grade_obj = Grade.objects.filter(school=school, name=g["name"]).first()
                 created = False
                 if not grade_obj:
                     grade_obj = Grade.objects.create(
@@ -37,9 +37,14 @@ class Command(BaseCommand):
                         code=generate_unique_code(Grade, "code"),
                         school=school,
                         name=g["name"],
-                        level=g["level"],
+                        order_no=g["order_no"],
+                        description=f"Khối lớp {g['order_no']} bậc Trung học Phổ thông",
                     )
                     created = True
+                else:
+                    grade_obj.order_no = g["order_no"]
+                    grade_obj.description = f"Khối lớp {g['order_no']} bậc Trung học Phổ thông"
+                    grade_obj.save(update_fields=["order_no", "description"])
                 status_msg = "Created" if created else "Already exists"
                 self.stdout.write(
                     self.style.SUCCESS(f"  Processed Grade: {grade_obj.name} ({status_msg})")
