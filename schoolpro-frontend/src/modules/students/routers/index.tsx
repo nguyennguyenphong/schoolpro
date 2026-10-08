@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
-import { StudentLayout } from "@/modules/students/layouts/StudentLayout";
+import { MainLayout } from "@/layouts/MainLayout";
 
 const HomePage = lazy(() =>
   import("@/modules/students/features/home").then(({ HomePage }) => ({
@@ -111,7 +111,7 @@ const ChangePasswordPage = lazy(() =>
 );
 
 export const StudentRoutes = (
-  <Route element={<StudentLayout />}>
+  <Route element={<MainLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />

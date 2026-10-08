@@ -1,1 +1,1 @@
-export { StudentLayout } from "@/modules/students/layouts/StudentLayout";
+export { MainLayout, MainLayout as StudentLayout, type MainLayoutProps } from "@/layouts/MainLayout";
