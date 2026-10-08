@@ -6,6 +6,7 @@ import { ProtectedRoute } from "@/app/routers/ProtectedRoute";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
 import { StudentRoutes } from "@/modules/students/routers";
+import { MainLayout } from "@/layouts/MainLayout";
 import {
   AdminHomePage,
   ParentHomePage,
@@ -138,15 +139,17 @@ export const AppRouter: React.FC = () => {
             <Route path="/supervisor" element={<Navigate to="/supervisor/home" replace />} />
           </Route>
 
-          {/* Access Control & Error Fallback routes */}
-          <Route path="/403" element={<ForbiddenPage />} />
-          <Route path="/unauthorized" element={<Navigate to="/403" replace />} />
-          <Route path="/404" element={<NotFoundPage />} />
-          <Route path="/400" element={<BadRequestPage />} />
-          <Route path="/500" element={<ServerErrorPage />} />
+          {/* Access Control & Error Fallback routes (Inherit MainLayout) */}
+          <Route element={<MainLayout />}>
+            <Route path="/403" element={<ForbiddenPage />} />
+            <Route path="/unauthorized" element={<Navigate to="/403" replace />} />
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="/400" element={<BadRequestPage />} />
+            <Route path="/500" element={<ServerErrorPage />} />
 
-          {/* Catch-all unmatched paths display 404 Not Found */}
-          <Route path="*" element={<NotFoundPage />} />
+            {/* Catch-all unmatched paths display 404 Not Found inside MainLayout */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>

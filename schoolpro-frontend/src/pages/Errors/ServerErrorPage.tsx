@@ -2,6 +2,7 @@ import React from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@/components/ui/Icon";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { getRoleHomeRoute } from "@/shared/utils/roleRoutes";
 
@@ -23,41 +24,37 @@ export const ServerErrorPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-8">
-      <div className="w-full max-w-xl bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-slate-200">
-        <Result
-          status="500"
-          title={
-            <span className="text-2xl font-bold text-slate-800">
-              {t("errors.500.title")}
-            </span>
-          }
-          subTitle={
-            <span className="text-slate-500 text-sm sm:text-base leading-relaxed">
-              {t("errors.500.subtitle")}
-            </span>
-          }
-          extra={[
-            <Button
-              key="home"
-              type="primary"
-              size="large"
-              onClick={handleGoHome}
-              className="min-w-35"
-            >
-              {isAuthenticated ? t("buttons.goHome") : t("buttons.login")}
-            </Button>,
-            <Button
-              key="reload"
-              size="large"
-              onClick={handleReload}
-              className="min-w-30"
-            >
-              {t("actions.reload")}
-            </Button>,
-          ]}
-        />
-      </div>
+    <div className="w-full bg-white rounded-2xl border border-slate-200 shadow-2xs p-8 sm:p-14">
+      <Result
+        status="500"
+        title={
+          <span className="text-xl sm:text-2xl font-bold text-slate-800">
+            {t("errors.500.title")}
+          </span>
+        }
+        subTitle={
+          <span className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl inline-block">
+            {t("errors.500.subtitle")}
+          </span>
+        }
+        extra={[
+          <Button
+            key="home"
+            type="primary"
+            icon={<Icon name={isAuthenticated ? "home" : "user"} size={15} />}
+            onClick={handleGoHome}
+          >
+            {isAuthenticated ? t("buttons.goHome") : t("buttons.login")}
+          </Button>,
+          <Button
+            key="reload"
+            icon={<Icon name="refresh" size={15} />}
+            onClick={handleReload}
+          >
+            {t("actions.reload")}
+          </Button>,
+        ]}
+      />
     </div>
   );
 };
