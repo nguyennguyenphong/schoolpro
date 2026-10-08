@@ -5,7 +5,7 @@ Creates 70 classes in total:
   - Grade 11: 11A1 -> 11A23 (23 classes)
   - Grade 12: 12A1 -> 12A23 (23 classes)
 
-Allocates rooms harmoniously across MORNING, AFTERNOON, and EVENING shifts while
+Allocates rooms harmoniously across MORNING and AFTERNOON shifts while
 strictly maintaining designated reserve/backup contingency classrooms in every wing.
 Table: "core"."classes"
 
@@ -29,7 +29,7 @@ from common.utils.code_generator import generate_unique_code
 class Command(BaseCommand):
     help = (
         "Seeds 70 comprehensive School Classes (10A1-10A24, 11A1-11A23, 12A1-12A23) "
-        "distributed across Morning, Afternoon, and Evening shifts with dedicated contingency rooms."
+        "distributed harmoniously across Morning and Afternoon shifts with dedicated contingency rooms."
     )
 
     def handle(self, *args, **options):
@@ -129,19 +129,14 @@ class Command(BaseCommand):
 
             # Shift & Room allocation:
             # - 10A1 -> 10A12: MORNING shift (Rooms A101-A110, A201-A202)
-            # - 10A13 -> 10A21: AFTERNOON shift (Rooms A101-A109)
-            # - 10A22 -> 10A24: EVENING shift (Rooms A101-A103)
+            # - 10A13 -> 10A24: AFTERNOON shift (Rooms A101-A110, A201-A202)
             if i <= 12:
                 shift = "MORNING"
                 room_num = f"A1{i:02d}" if i <= 10 else f"A20{i - 10}"
-            elif i <= 21:
+            else:
                 shift = "AFTERNOON"
                 idx = i - 12
-                room_num = f"A1{idx:02d}"
-            else:
-                shift = "EVENING"
-                idx = i - 21
-                room_num = f"A1{idx:02d}"
+                room_num = f"A1{idx:02d}" if idx <= 10 else f"A20{idx - 10}"
 
             room_name = f"Phòng học {room_num}"
             room_obj = room_map.get(room_name)
@@ -209,20 +204,15 @@ class Command(BaseCommand):
             stream = get_stream(i)
 
             # Shift & Room allocation:
-            # - 11A1 -> 11A10: MORNING shift (Rooms B101-B110)
-            # - 11A11 -> 11A20: AFTERNOON shift (Rooms B101-B110)
-            # - 11A21 -> 11A23: EVENING shift (Rooms B101-B103)
-            if i <= 10:
+            # - 11A1 -> 11A12: MORNING shift (Rooms B101-B110, B201-B202)
+            # - 11A13 -> 11A23: AFTERNOON shift (Rooms B101-B110, B201)
+            if i <= 12:
                 shift = "MORNING"
-                room_num = f"B1{i:02d}"
-            elif i <= 20:
-                shift = "AFTERNOON"
-                idx = i - 10
-                room_num = f"B1{idx:02d}"
+                room_num = f"B1{i:02d}" if i <= 10 else f"B20{i - 10}"
             else:
-                shift = "EVENING"
-                idx = i - 20
-                room_num = f"B1{idx:02d}"
+                shift = "AFTERNOON"
+                idx = i - 12
+                room_num = f"B1{idx:02d}" if idx <= 10 else f"B20{idx - 10}"
 
             room_name = f"Phòng học {room_num}"
             room_obj = room_map.get(room_name)
@@ -290,20 +280,15 @@ class Command(BaseCommand):
             stream = get_stream(i)
 
             # Shift & Room allocation:
-            # - 12A1 -> 12A14: MORNING shift (Rooms C101-C110, C201-C204)
-            # - 12A15 -> 12A21: AFTERNOON shift (Rooms C101-C107)
-            # - 12A22 -> 12A23: EVENING shift (Rooms C101-C102)
-            if i <= 14:
+            # - 12A1 -> 12A12: MORNING shift (Rooms C101-C110, C201-C202)
+            # - 12A13 -> 12A23: AFTERNOON shift (Rooms C101-C110, C201)
+            if i <= 12:
                 shift = "MORNING"
                 room_num = f"C1{i:02d}" if i <= 10 else f"C20{i - 10}"
-            elif i <= 21:
-                shift = "AFTERNOON"
-                idx = i - 14
-                room_num = f"C1{idx:02d}"
             else:
-                shift = "EVENING"
-                idx = i - 21
-                room_num = f"C1{idx:02d}"
+                shift = "AFTERNOON"
+                idx = i - 12
+                room_num = f"C1{idx:02d}" if idx <= 10 else f"C20{idx - 10}"
 
             room_name = f"Phòng học {room_num}"
             room_obj = room_map.get(room_name)

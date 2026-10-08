@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "🗄️ Database: Start PostgreSQL & pgAdmin",
+      "label": "start db",
       "type": "shell",
       "command": "bash scripts/start-db.sh",
-      "detail": "Starts PostgreSQL 16 on port 5433 and pgAdmin 4 on port 5050 in background Docker containers",
+      "detail": "Starts PostgreSQL 16 (port 5433) & pgAdmin 4 (port 5050) Docker containers",
       "icon": {
         "id": "database",
         "color": "terminal.ansiCyan"
@@ -23,10 +23,27 @@
       }
     },
     {
-      "label": "🚀 Backend: Start Django API Server",
+      "label": "reset db",
+      "type": "shell",
+      "command": "bash scripts/reset-db.sh",
+      "detail": "Wipes database volumes and re-initializes all DDL table schemas from SQL scripts",
+      "icon": {
+        "id": "refresh",
+        "color": "terminal.ansiMagenta"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "start backend",
       "type": "shell",
       "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py runserver 0.0.0.0:8000",
-      "detail": "Activates Python 3.13 venv and boots Django development server on http://localhost:8000",
+      "detail": "Boots Django development server on http://localhost:8000",
       "icon": {
         "id": "server-process",
         "color": "terminal.ansiGreen"
@@ -45,7 +62,7 @@
       }
     },
     {
-      "label": "🎨 Frontend: Start Vite React Dev Server",
+      "label": "start frontend",
       "type": "shell",
       "command": "cd schoolpro-frontend && npm run dev",
       "detail": "Starts Vite React 19 development server on http://localhost:5173",
@@ -67,31 +84,10 @@
       }
     },
     {
-      "label": "🔍 Quality: Run Full System Check",
+      "label": "stop all services",
       "type": "shell",
-      "command": "bash scripts/check-all.sh",
-      "detail": "Runs Oxlint, TypeScript (tsc -b), Django system check, and Ruff linting",
-      "icon": {
-        "id": "check-all",
-        "color": "terminal.ansiBlue"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "focus": true,
-        "clear": true
-      },
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "🛑 Database: Stop Services",
-      "type": "shell",
-      "command": "docker compose -f schoolpro-db/docker-compose.yml down && echo 'Stopped PostgreSQL & pgAdmin containers.'",
-      "detail": "Gracefully stops and removes PostgreSQL & pgAdmin Docker containers",
+      "command": "docker compose -f schoolpro-db/docker-compose.yml down && (kill -9 $(lsof -t -i:8000) 2>/dev/null || true) && (kill -9 $(lsof -t -i:5173) 2>/dev/null || true) && echo 'Stopped all SchoolPro services (Docker DB, Backend :8000, Frontend :5173).'",
+      "detail": "Stops PostgreSQL/pgAdmin containers and kills running Backend and Frontend servers",
       "icon": {
         "id": "debug-stop",
         "color": "terminal.ansiRed"
@@ -99,46 +95,18 @@
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
-        "panel": "shared"
+        "panel": "shared",
+        "focus": true,
+        "clear": true
       }
     },
     {
-      "label": "🔄 Database: Reset & Re-seed Tables",
+      "label": "seed python",
       "type": "shell",
-      "command": "bash scripts/reset-db.sh",
-      "detail": "Clears persistent volumes and re-initializes all 90 tables and initial seed data",
+      "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py migrate && python manage.py db_seed",
+      "detail": "Runs 24-step Django Python management command db_seed to seed master data, roles, users, and infrastructure",
       "icon": {
-        "id": "refresh",
-        "color": "terminal.ansiMagenta"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
-    },
-    {
-      "label": "🧹 Database: Reset Tables (Clean - No Seed)",
-      "type": "shell",
-      "command": "bash scripts/reset-db-no-seed.sh",
-      "detail": "Clears persistent volumes and re-initializes all tables WITHOUT initial seed data",
-      "icon": {
-        "id": "trash",
-        "color": "terminal.ansiYellow"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
-    },
-    {
-      "label": "🌱 Database: Seed All Data (Python db_seed)",
-      "type": "shell",
-      "command": "cd schoolpro-backend && source .venv/bin/activate && python manage.py db_seed",
-      "detail": "Seeds full initial & demo data (Superadmin, Lookups, Infrastructure, Classes, Teachers, Students, Operations)",
-      "icon": {
-        "id": "database",
+        "id": "sparkle",
         "color": "terminal.ansiGreen"
       },
       "problemMatcher": [],

@@ -608,20 +608,26 @@ class Command(BaseCommand):
                 # Bind corresponding security Role via UserRole
                 target_role = Role.objects.filter(name=u_info["role_name"]).first()
                 if target_role:
-                    ur, ur_created = UserRole.objects.get_or_create(
-                        user=user,
-                        role=target_role,
-                        defaults={
-                            "id": uuid6.uuid7(),
-                            "is_primary": True,
-                            "effective_from": date.today(),
-                            "status": "ACTIVE",
-                        },
-                    )
-                    if not ur.is_primary or ur.status != "ACTIVE":
-                        ur.is_primary = True
-                        ur.status = "ACTIVE"
-                        ur.save(update_fields=["is_primary", "status"])
+                    # Demote any conflicting active primary role for this user to satisfy ux_user_roles_primary
+                    UserRole.objects.filter(user=user, is_primary=True, status="ACTIVE").exclude(
+                        role=target_role
+                    ).update(is_primary=False)
+
+                    ur = UserRole.objects.filter(user=user, role=target_role).first()
+                    if not ur:
+                        ur = UserRole.objects.create(
+                            id=uuid6.uuid7(),
+                            user=user,
+                            role=target_role,
+                            is_primary=True,
+                            effective_from=date.today(),
+                            status="ACTIVE",
+                        )
+                    else:
+                        if not ur.is_primary or ur.status != "ACTIVE":
+                            ur.is_primary = True
+                            ur.status = "ACTIVE"
+                            ur.save(update_fields=["is_primary", "status"])
 
                 status_msg = "Created" if created else "Updated"
                 self.stdout.write(

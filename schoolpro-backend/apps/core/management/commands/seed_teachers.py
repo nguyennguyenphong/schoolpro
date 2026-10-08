@@ -1398,11 +1398,9 @@ class Command(BaseCommand):
                 # 1. Retrieve or Create corresponding User
                 user = User.objects.filter(username=t_info["username"]).first()
                 if not user:
-                    user_code = generate_unique_code(User, "user_code")
                     user = User.objects.create(
                         id=uuid6.uuid7(),
                         school=school,
-                        user_code=user_code,
                         username=t_info["username"],
                         email=email,
                         phone=t_info["phone"],
@@ -1456,20 +1454,26 @@ class Command(BaseCommand):
                     role_obj = Role.objects.filter(name="Giáo viên bộ môn").first()
 
                 if role_obj:
-                    ur, _ = UserRole.objects.get_or_create(
-                        user=user,
-                        role=role_obj,
-                        defaults={
-                            "id": uuid6.uuid7(),
-                            "is_primary": True,
-                            "effective_from": date.today(),
-                            "status": "ACTIVE",
-                        },
-                    )
-                    if not ur.is_primary or ur.status != "ACTIVE":
-                        ur.is_primary = True
-                        ur.status = "ACTIVE"
-                        ur.save(update_fields=["is_primary", "status"])
+                    # Demote any conflicting active primary role for this user to satisfy ux_user_roles_primary
+                    UserRole.objects.filter(user=user, is_primary=True, status="ACTIVE").exclude(
+                        role=role_obj
+                    ).update(is_primary=False)
+
+                    ur = UserRole.objects.filter(user=user, role=role_obj).first()
+                    if not ur:
+                        ur = UserRole.objects.create(
+                            id=uuid6.uuid7(),
+                            user=user,
+                            role=role_obj,
+                            is_primary=True,
+                            effective_from=date.today(),
+                            status="ACTIVE",
+                        )
+                    else:
+                        if not ur.is_primary or ur.status != "ACTIVE":
+                            ur.is_primary = True
+                            ur.status = "ACTIVE"
+                            ur.save(update_fields=["is_primary", "status"])
 
                 # 3. Retrieve or Create Teacher Profile
                 dept = t_info["department"]
