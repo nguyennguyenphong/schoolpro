@@ -28,7 +28,7 @@ export const NotFoundPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200 shadow-2xs p-8 sm:p-14">
+    <div className="w-full bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
       <Result
         status="404"
         title={
