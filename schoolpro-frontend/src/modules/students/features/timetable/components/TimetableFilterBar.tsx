@@ -46,9 +46,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   const isPrevDisabled = minDayjs ? currentDayjs.isBefore(minDayjs) || currentDayjs.isSame(minDayjs, "day") : false;
   const isNextDisabled = maxDayjs ? currentDayjs.isAfter(maxDayjs) || currentDayjs.isSame(maxDayjs, "day") : false;
 
-  const onPreviousDay = onPrevWeekClick;
-  const onToday = onTodayClick;
-  const onNextDay = onNextWeekClick;
   const isToday = currentDayjs.isSame(dayjs(), "day");
 
   const handleDatePickerChange = (date: Dayjs | Dayjs[] | null) => {
@@ -65,13 +62,13 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   };
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
       {/* 1. Week Navigation & Selector */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0]">
+        <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0">
           <button
             type="button"
-            onClick={onPreviousDay}
+            onClick={onPrevWeekClick}
             disabled={isPrevDisabled}
             className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
               isPrevDisabled
@@ -85,7 +82,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
 
           <button
             type="button"
-            onClick={onToday}
+            onClick={onTodayClick}
             className={`px-2.5 h-7 rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               isToday
                 ? "bg-blue-600 text-white shadow-2xs"
@@ -98,7 +95,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
 
           <button
             type="button"
-            onClick={onNextDay}
+            onClick={onNextWeekClick}
             disabled={isNextDisabled}
             className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
               isNextDisabled
@@ -113,20 +110,20 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
 
         {/* Semester Badge */}
         {semesterLabel && (
-          <div className="h-8 px-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 flex items-center gap-1.5">
+          <div className="h-8 px-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 flex items-center gap-1.5 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block" />
             <span>{semesterLabel}</span>
           </div>
         )}
 
         {/* Week Range Display Badge */}
-        <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5">
+        <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5 shrink-0">
           <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
           <span>{t("card:timetable.weekPrefix", { label: currentWeekLabel })}</span>
         </div>
 
         {/* Week Picker for jumping directly to any week with boundary checking */}
-        <div className="w-40 sm:w-44">
+        <div className="w-full sm:w-44">
           <DatePicker
             picker="week"
             value={currentDayjs}
@@ -141,7 +138,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
       </div>
 
       {/* 2. Actions & View Mode Controls (Grid & List only) */}
-      <div className="flex items-center gap-2.5 justify-end shrink-0">
+      <div className="flex items-center gap-2 justify-between sm:justify-end shrink-0 pt-2 lg:pt-0 border-t border-slate-100 lg:border-t-0">
         {/* Reset button if not on default week */}
         {hasActiveFilters && (
           <Button
@@ -150,16 +147,16 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             title={t("card:timetable.backToCurrentWeek")}
           >
             <Icon name="refresh" size={13} />
-            {t("card:timetable.backToCurrentWeek")}
+            <span>{t("card:timetable.backToCurrentWeek")}</span>
           </Button>
         )}
 
         {/* View Mode Toggle: Grid and List ONLY */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0">
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0 ml-auto sm:ml-0">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`p-1.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`p-1.5 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"
@@ -172,7 +169,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`p-1.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`p-1.5 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"
