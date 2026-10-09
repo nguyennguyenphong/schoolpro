@@ -2,8 +2,8 @@ import React from "react";
 import { Modal } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { PdfViewer } from "./PdfViewer";
-import type { PdfViewerModalProps } from "./types";
+import { PdfViewer } from "@/components/pdf/PdfViewer/PdfViewer";
+import type { PdfViewerModalProps } from "@/components/pdf/PdfViewer/types";
 
 const FALLBACK_PDF_URL = "/sample-notice.pdf";
 

@@ -4,7 +4,7 @@ import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { Spin } from "@/components/ui/Spin";
-import type { PdfViewerProps } from "./types";
+import type { PdfViewerProps } from "@/components/pdf/PdfViewer/types";
 
 const DEFAULT_WORKER_URL = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
 
@@ -28,7 +28,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           fileUrl={fileUrl}
           plugins={[defaultLayoutPluginInstance]}
           renderLoader={() => (
-            <div className="flex flex-col items-center justify-center h-full min-h-[300px] gap-3 text-slate-500">
+            <div className="flex flex-col items-center justify-center h-full min-h-75 gap-3 text-slate-500">
               <Spin size="large" />
               <span className="text-xs font-medium">Đang tải và xử lý tài liệu PDF...</span>
             </div>
@@ -36,7 +36,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           renderError={(error) => {
             onError?.(error);
             return (
-              <div className="flex flex-col items-center justify-center h-full min-h-[300px] p-6 text-center">
+              <div className="flex flex-col items-center justify-center h-full min-h-75 p-6 text-center">
                 <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mb-3">
                   <span className="text-xl font-bold">!</span>
                 </div>

@@ -1,1 +1,1 @@
-export * from "./PdfViewer";
+export * from "@/components/pdf//PdfViewer";

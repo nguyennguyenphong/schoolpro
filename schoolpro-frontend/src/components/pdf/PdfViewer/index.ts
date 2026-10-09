@@ -1,3 +1,3 @@
-export * from "./types";
-export * from "./PdfViewer";
-export * from "./PdfViewerModal";
+export * from "@/components/pdf/PdfViewer/types";
+export * from "@/components/pdf/PdfViewer";
+export * from "@/components/pdf/PdfViewer/PdfViewerModal";

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { PdfViewerModal } from "./PdfViewerModal";
+import { PdfViewerModal } from "@/components/pdf/PdfViewer/PdfViewerModal";
 
 // Mock @react-pdf-viewer/core and @react-pdf-viewer/default-layout to avoid canvas/worker in jsdom
 vi.mock("@react-pdf-viewer/core", () => ({
