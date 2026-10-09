@@ -44,7 +44,7 @@ export interface MainLayoutProps {
 
 /**
  * Universal Master Layout for all SchoolPro portals & roles.
- * Provides full responsive support, hamburger drawer navigation,
+ * Provides full responsive support, Ant Design drawer navigation,
  * dynamic API-driven module listing, and granular visibility toggles.
  */
 export const MainLayout: React.FC<MainLayoutProps> = ({
@@ -71,7 +71,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Local menu drawer state for immediate, reliable toggling
+  // Local menu drawer state
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const openMenu = () => setIsMenuOpen(true);
   const closeMenu = () => setIsMenuOpen(false);
@@ -270,7 +270,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </header>
       )}
 
-      {/* 2. Navigation Drawer (Slide-out menu with real API-driven modules) */}
+      {/* 2. Navigation Drawer (Ant Design Drawer with API-driven modules) */}
       <Drawer
         title={
           <div className="flex items-center gap-2.5">
@@ -290,9 +290,19 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         placement="left"
         onClose={closeMenu}
         open={isMenuOpen}
-        size={320}
+        width={320}
+        styles={{
+          body: {
+            padding: "16px 20px 24px 20px",
+            display: "flex",
+            flexDirection: "column",
+          },
+          header: {
+            padding: "16px 20px",
+          },
+        }}
       >
-        <div className="space-y-4 flex flex-col h-full justify-between">
+        <div className="flex flex-col h-full justify-between gap-4">
           <div className="space-y-4">
             {/* User Info Box */}
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center gap-3">
@@ -340,21 +350,27 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
+                        {/* Icon with colors from API */}
                         <span
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                             isActive
                               ? "bg-blue-600 text-white shadow-2xs"
-                              : "bg-slate-100 text-slate-600"
+                              : item.iconBgColor || "bg-slate-100 text-slate-600"
                           }`}
                         >
-                          <Icon name={item.icon} size={15} />
+                          <Icon
+                            name={item.icon || "file"}
+                            size={15}
+                            className={!isActive && item.iconColor ? item.iconColor : undefined}
+                          />
                         </span>
                         <span className="text-sm truncate">{item.name}</span>
                       </div>
 
+                      {/* Badge with colors from API */}
                       {item.badgeText && (
                         <Tag
-                          color="blue"
+                          color={item.badgeColor || "blue"}
                           className="m-0 text-[10px] font-semibold px-1.5 py-0 shrink-0"
                         >
                           {item.badgeText}
@@ -367,8 +383,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             </div>
           </div>
 
-          {/* Drawer Bottom Controls */}
-          <div className="pt-4 border-t border-slate-200/80 space-y-3">
+          {/* Drawer Bottom Controls (Spaced with breathing room from bottom edge) */}
+          <div className="pt-4 pb-4 sm:pb-6 border-t border-slate-200/80 space-y-3 mt-auto shrink-0">
             <div className="md:hidden">
               <span className="text-xs text-slate-500 font-medium block mb-1.5">
                 Ngôn ngữ hệ thống
@@ -383,7 +399,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   closeMenu();
                   navigate(resolvedProfileRoute);
                 }}
-                className="p-2 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center gap-1.5 text-slate-700 cursor-pointer justify-center"
+                className="p-2 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center gap-1.5 text-slate-700 cursor-pointer justify-center transition-colors"
               >
                 <Icon name="user" size={13} />
                 <span>Hồ sơ</span>
@@ -395,24 +411,27 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   closeMenu();
                   navigate(resolvedSettingsRoute);
                 }}
-                className="p-2 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center gap-1.5 text-slate-700 cursor-pointer justify-center"
+                className="p-2 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center gap-1.5 text-slate-700 cursor-pointer justify-center transition-colors"
               >
                 <Icon name="settings" size={13} />
                 <span>Cài đặt</span>
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                closeMenu();
-                logout();
-              }}
-              className="w-full p-2.5 rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-50 text-rose-600 text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <Icon name="close" size={14} className="text-rose-600" />
-              <span>{t("navigation:header.logout")}</span>
-            </button>
+            {/* Logout Button with bottom margin to prevent hugging bottom screen edge */}
+            <div className="pt-1 mb-2">
+              <button
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  logout();
+                }}
+                className="w-full p-2.5 rounded-xl border border-rose-200 bg-rose-50/60 hover:bg-rose-100/80 text-rose-600 text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-2xs"
+              >
+                <Icon name="close" size={14} className="text-rose-600" />
+                <span>{t("navigation:header.logout")}</span>
+              </button>
+            </div>
           </div>
         </div>
       </Drawer>
