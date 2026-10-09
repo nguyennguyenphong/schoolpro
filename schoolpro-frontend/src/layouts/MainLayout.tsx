@@ -52,7 +52,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   showHeader = true,
   showMenuButton = true,
   showBrand = true,
-  showAcademicBadge = true,
   showSearch = true,
   showLanguageSwitcher = true,
   showNotifications = true,
@@ -82,7 +81,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     userCode,
     subInfo,
     roleTag,
-    academicBadgeString,
     unreadNotificationsCount,
     logout,
     routes,
@@ -191,25 +189,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   </div>
                 </Link>
               )}
-
-              {/* Academic Badge */}
-              {showAcademicBadge && (
-                <div className="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-lg border border-blue-200 bg-blue-50/60 text-blue-700 text-xs font-semibold ml-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                  <span>{academicBadgeString}</span>
-                </div>
-              )}
             </div>
 
             {/* Center: Search Bar */}
             {showSearch && (
-              <div className="hidden lg:flex items-center flex-1 max-w-sm mx-4">
+              <div className="hidden lg:flex items-center flex-1 mx-4">
                 <Input
                   prefix={<Icon name="search" size={15} className="text-slate-400 mr-1.5" />}
                   placeholder={t("navigation:header.searchPlaceholder")}
                   name="search"
                   allowClear
-                  className="rounded-lg bg-slate-50/80 border-[#f0f0f0] hover:border-blue-400 focus:bg-white w-full text-xs"
                 />
               </div>
             )}
@@ -218,7 +207,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             <div className="flex items-center gap-1.5 sm:gap-3">
               {showLanguageSwitcher && (
                 <div className="hidden md:block">
-                  <LanguageSwitcher width={130} />
+                  <LanguageSwitcher width={140} />
                 </div>
               )}
 
@@ -290,17 +279,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         placement="left"
         onClose={closeMenu}
         open={isMenuOpen}
-        width={320}
-        styles={{
-          body: {
-            padding: "16px 20px 24px 20px",
-            display: "flex",
-            flexDirection: "column",
-          },
-          header: {
-            padding: "16px 20px",
-          },
-        }}
+        size={320}
       >
         <div className="flex flex-col h-full justify-between gap-4">
           <div className="space-y-4">
