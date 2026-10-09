@@ -114,9 +114,9 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
             Danh sách bài kiểm tra & Đánh giá định kỳ
           </h4>
 
-          <div className="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+          <div className="border border-[#f0f0f0] rounded-xl overflow-hidden shadow-2xs">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+              <thead className="bg-slate-50 border-b border-[#f0f0f0] text-slate-500 font-bold uppercase tracking-wider">
                 <tr>
                   <th className="py-2.5 px-3">Tên bài kiểm tra</th>
                   <th className="py-2.5 px-3">Hình thức & Hệ số</th>
@@ -149,7 +149,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
         </div>
 
         {/* Teacher Comment Box */}
-        <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+        <div className="p-3.5 bg-slate-50 rounded-xl border border-[#f0f0f0] space-y-1">
           <div className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
             <Icon name="fileText" size={13} className="text-blue-600" />
             <span>Nhận xét và Đánh giá của Giáo viên bộ môn</span>

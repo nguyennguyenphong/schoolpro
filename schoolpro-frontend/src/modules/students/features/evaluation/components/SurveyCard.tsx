@@ -45,7 +45,7 @@ export const SurveyCard: React.FC<SurveyCardProps> = ({
               {item.categoryName}
             </Tag>
 
-            <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-mono">
+            <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-[#f0f0f0] font-mono">
               {item.code}
             </span>
 

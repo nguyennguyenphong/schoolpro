@@ -79,7 +79,7 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
           <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
             Nội dung yêu cầu đề bài
           </h4>
-          <div className="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed">
+          <div className="bg-slate-50/80 p-3.5 rounded-xl border border-[#f0f0f0]/80 text-xs text-slate-700 leading-relaxed">
             {assignment.description}
           </div>
         </div>

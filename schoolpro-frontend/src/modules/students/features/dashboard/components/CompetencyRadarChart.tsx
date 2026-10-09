@@ -93,7 +93,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({ data
   };
 
   return (
-    <div className="p-4 sm:p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-full flex flex-col justify-between overflow-hidden">
+    <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-full flex flex-col justify-between overflow-hidden">
       <div className="mb-2">
         <div className="flex items-center gap-2 mb-0.5">
           <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />

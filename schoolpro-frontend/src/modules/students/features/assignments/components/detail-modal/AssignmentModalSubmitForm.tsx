@@ -43,12 +43,12 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
           placeholder="Nhập ghi chú, câu trả lời trực tiếp hoặc mô tả tệp bài làm đính kèm..."
           value={submissionContent}
           onChange={(e) => onContentChange(e.target.value)}
-          className="w-full p-2.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+          className="w-full p-2.5 text-xs border border-[#f0f0f0] rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
         />
       </div>
 
       <div className="flex items-center gap-3">
-        <label className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+        <label className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#f0f0f0] px-3 py-1.5 rounded-lg transition-colors">
           <Icon name="upload" size={13} className="text-slate-500" />
           <span>
             {selectedFile ? "Đổi tệp khác" : "Chọn tệp đính kèm (PDF, DOCX, ZIP)"}

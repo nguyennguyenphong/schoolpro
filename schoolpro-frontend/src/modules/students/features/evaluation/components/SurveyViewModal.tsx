@@ -59,7 +59,7 @@ export const SurveyViewModal: React.FC<SurveyViewModalProps> = ({
           {survey.questions.map((q, idx) => (
             <div
               key={q.id}
-              className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-1.5"
+              className="p-3.5 rounded-xl border border-[#f0f0f0] bg-slate-50/60 space-y-1.5"
             >
               <div className="text-xs font-bold text-slate-800">
                 <span className="text-emerald-700 mr-1.5">Câu {idx + 1}.</span>
@@ -77,19 +77,19 @@ export const SurveyViewModal: React.FC<SurveyViewModalProps> = ({
                 )}
 
                 {q.type === "single_choice" && (
-                  <div className="text-slate-700 bg-white p-2 rounded-lg border border-slate-200 inline-block font-medium">
+                  <div className="text-slate-700 bg-white p-2 rounded-lg border border-[#f0f0f0] inline-block font-medium">
                     ✓ {q.options ? q.options[0] : "Đã hoàn thành"}
                   </div>
                 )}
 
                 {q.type === "multiple_choice" && (
-                  <div className="text-slate-700 bg-white p-2 rounded-lg border border-slate-200 inline-block font-medium">
+                  <div className="text-slate-700 bg-white p-2 rounded-lg border border-[#f0f0f0] inline-block font-medium">
                     ✓ {q.options ? q.options[0] : "Đã chọn"}
                   </div>
                 )}
 
                 {q.type === "text" && (
-                  <div className="p-2.5 rounded-lg bg-white border border-slate-200 text-slate-700 italic">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#f0f0f0] text-slate-700 italic">
                     "Tiết học rất bổ ích, giáo viên giảng dạy nhiệt tình, phương pháp trực quan và dễ hiểu."
                   </div>
                 )}

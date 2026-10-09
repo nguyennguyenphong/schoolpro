@@ -68,35 +68,35 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
         </div>
 
         {/* Details list */}
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+        <div className="bg-slate-50 border border-[#f0f0f0] rounded-2xl p-4 space-y-3">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Môn học:</span>
             <strong className="text-slate-900 font-bold text-right truncate max-w-64">
               {record.subjectName}
             </strong>
           </div>
 
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Mã học phần:</span>
             <span className="font-mono font-bold text-slate-800">{record.subjectCode}</span>
           </div>
 
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Giáo viên phụ trách:</span>
             <strong className="text-slate-800">{record.teacherName}</strong>
           </div>
 
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Khung giờ học:</span>
             <span className="font-medium text-slate-800">{record.period} ({record.timeSlot})</span>
           </div>
 
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Phòng học:</span>
             <strong className="text-slate-800">{record.room}</strong>
           </div>
 
-          <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+          <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Thời gian điểm danh:</span>
             <strong className="text-emerald-700 font-mono font-bold">
               {record.checkInTime || "Đúng giờ"} (ngày {record.date})

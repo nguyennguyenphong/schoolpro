@@ -12,7 +12,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* 1. Page Header with Breadcrumb & Back Navigation */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <Breadcrumb
           items={[
             {
@@ -68,7 +68,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
         {/* Left Column (2 spans): Requirements, Attachments & Submission Area */}
         <div className="lg:col-span-2 space-y-4 sm:space-y-5">
           {/* Card 1: Requirements */}
-          <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-3">
+          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
               <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
               <h3 className="text-base font-bold text-slate-900 mb-0">
@@ -81,7 +81,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           {/* Card 2: Teacher Attachments */}
-          <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-3">
+          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -96,7 +96,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               {[1, 2].map((idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/80 rounded-xl text-xs"
+                  className="flex items-center justify-between p-3 bg-slate-50 border border-[#f0f0f0]/80 rounded-xl text-xs"
                 >
                   <div className="flex items-center gap-2.5 flex-1 pr-4">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -113,7 +113,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           {/* Card 3: Submission Form Area */}
-          <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-4">
+          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -123,7 +123,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-6 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border-2 border-dashed border-[#f0f0f0] rounded-xl bg-slate-50/50 flex flex-col items-center justify-center text-center">
               <SkeletonAvatar active shape="circle" size={48} className="mb-2" />
               <Skeleton active paragraph={{ rows: 2, width: ["50%", "30%"] }} title={false} />
             </div>
@@ -141,7 +141,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
         {/* Right Column (1 span): Status, Teacher info & Guidelines */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-5">
           {/* Card 1: Status & Deadline */}
-          <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-4">
+          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <h3 className="text-sm font-bold text-slate-900 mb-0">Trạng thái nộp bài</h3>
               <SkeletonButton active size="small" style={{ width: 70, height: 20 }} />
@@ -150,7 +150,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           {/* Card 2: Teacher Info */}
-          <div className="p-4 sm:p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-3">
+          <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
               Thông tin giáo viên phụ trách
             </span>
@@ -163,7 +163,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           {/* Card 3: Guidelines */}
-          <div className="p-4 sm:p-5 border border-slate-200 bg-slate-50/60 rounded-xl text-xs space-y-2">
+          <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-slate-50/60 rounded-xl text-xs space-y-2">
             <div className="flex items-center gap-1.5 font-bold text-slate-800 mb-1">
               <Icon name="info" size={14} className="text-blue-600 shrink-0" />
               <span>Lưu ý khi nộp bài:</span>

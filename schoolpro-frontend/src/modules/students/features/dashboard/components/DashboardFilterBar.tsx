@@ -33,7 +33,7 @@ export const DashboardFilterBar: React.FC<DashboardFilterBarProps> = ({
   const isFiltered = academicYear !== "2025-2026" || semester !== "hk1";
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-wrap items-center justify-between gap-3">
       {/* Left: Filter dropdowns */}
       <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
         <div className="flex items-center gap-1.5">

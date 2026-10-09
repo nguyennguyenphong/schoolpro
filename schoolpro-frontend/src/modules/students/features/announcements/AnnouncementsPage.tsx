@@ -140,7 +140,7 @@ export const AnnouncementsPage: React.FC = () => {
 
       {/* 5. Results Area */}
       {announcements.length === 0 ? (
-        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
             description={
               <div className="space-y-1.5">

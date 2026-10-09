@@ -74,7 +74,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
   const style = getColorStyles(item.colorScheme);
 
   return (
-    <Card className="rounded-xl border border-slate-200 shadow-2xs">
+    <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs">
       <div>
         {/* Header: Icon + Code + Semester */}
         <div className="flex items-center justify-between gap-3 mb-3">
@@ -94,7 +94,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
             </div>
           </div>
 
-          <Tag color="default" className="text-[11px] font-medium border-slate-200 m-0 shrink-0">
+          <Tag color="default" className="text-[11px] font-medium border-[#f0f0f0] m-0 shrink-0">
             {item.semester}
           </Tag>
         </div>
@@ -118,7 +118,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
             <div className="text-sm font-bold text-slate-800">{item.lecturesCount}</div>
             <div className="text-[10px] text-slate-400 font-medium">Bài giảng</div>
           </div>
-          <div className="border-x border-slate-200/80">
+          <div className="border-x border-[#f0f0f0]/80">
             <div className="text-sm font-bold text-slate-800">{item.outlinesCount}</div>
             <div className="text-[10px] text-slate-400 font-medium">Đề cương</div>
           </div>

@@ -93,7 +93,7 @@ export const SettingsTabs: React.FC<SettingsTabsProps> = ({
                 className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
                   isActive
                     ? "bg-white/20 text-white"
-                    : "bg-slate-100 text-slate-600 border border-slate-200"
+                    : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
                 }`}
               >
                 {tab.badge}

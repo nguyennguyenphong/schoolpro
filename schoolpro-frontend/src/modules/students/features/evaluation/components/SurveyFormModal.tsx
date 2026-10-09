@@ -130,7 +130,7 @@ export const SurveyFormModal: React.FC<SurveyFormModalProps> = ({
           {survey.questions.map((q, idx) => (
             <div
               key={q.id}
-              className="p-4 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-2.5"
+              className="p-4 rounded-xl border border-[#f0f0f0] bg-white shadow-2xs space-y-2.5"
             >
               {/* Question Title */}
               <div className="flex items-start justify-between gap-2">

@@ -82,7 +82,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
   const hasActiveFilters = searchQuery.trim() !== "" || selectedWeek !== "all" || activeTab !== "overview";
 
   return (
-    <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+    <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* 1. Bộ lọc trạng thái ở trên (Tabs theo chuẩn sổ liên lạc) */}
       <div className="flex flex-wrap items-center gap-1.5">
         {tabs.map((tab) => {
@@ -109,7 +109,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
                   className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
                     isActive
                       ? "bg-white/20 text-white"
-                      : "bg-slate-100 text-slate-600 border border-slate-200"
+                      : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
                   }`}
                 >
                   {tab.countText}

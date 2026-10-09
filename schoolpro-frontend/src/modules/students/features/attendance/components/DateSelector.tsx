@@ -61,12 +61,12 @@ export const DateSelector: React.FC<DateSelectorProps> = ({
   ];
 
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+    <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-4">
       {/* Top row: Date navigation & Quick Today button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Date Navigator */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-[#f0f0f0]">
             <button
               type="button"
               onClick={onPreviousDay}
@@ -128,7 +128,7 @@ export const DateSelector: React.FC<DateSelectorProps> = ({
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
                 isActive
                   ? "bg-blue-600 text-white border-blue-600 shadow-2xs"
-                  : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
+                  : "bg-slate-50 text-slate-600 border-[#f0f0f0] hover:bg-slate-100 hover:border-slate-300"
               }`}
             >
               <span>{tab.label}</span>

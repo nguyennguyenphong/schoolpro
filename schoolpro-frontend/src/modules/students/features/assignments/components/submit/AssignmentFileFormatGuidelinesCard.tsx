@@ -3,7 +3,7 @@ import { Icon } from "@/components/ui/Icon";
 
 export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
   return (
-    <div className="p-4 sm:p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-3">
+    <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
       <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
         <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
         <h3 className="text-sm font-bold text-slate-900 mb-0">

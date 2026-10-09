@@ -22,7 +22,7 @@ export const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ sc
       case "strong":
         return { color: "#10b981", badgeClass: "text-emerald-600 bg-emerald-50 border-emerald-200" };
       default:
-        return { color: "#cbd5e1", badgeClass: "text-slate-500 bg-slate-50 border-slate-200" };
+        return { color: "#cbd5e1", badgeClass: "text-slate-500 bg-slate-50 border-[#f0f0f0]" };
     }
   };
 
@@ -46,7 +46,7 @@ export const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ sc
   const { color, badgeClass } = getColorConfig(level);
 
   return (
-    <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200 my-3 space-y-2">
+    <div className="p-3 bg-slate-50/80 rounded-xl border border-[#f0f0f0] my-3 space-y-2">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-semibold text-slate-500">
           {t("card:password.strength.title")}:

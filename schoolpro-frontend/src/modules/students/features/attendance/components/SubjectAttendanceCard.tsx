@@ -34,7 +34,7 @@ export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 transition-all p-5 shadow-2xs flex flex-col justify-between gap-4">
+    <div className="bg-white rounded-2xl border border-[#f0f0f0] transition-all p-5 shadow-2xs flex flex-col justify-between gap-4">
       {/* Top Header: Period, Time Slot & Status Badge */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">

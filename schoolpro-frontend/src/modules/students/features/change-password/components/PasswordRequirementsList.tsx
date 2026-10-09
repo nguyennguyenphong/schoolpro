@@ -13,7 +13,7 @@ export const PasswordRequirementsList: React.FC<PasswordRequirementsListProps> =
   const { t } = useTranslation(["card"]);
 
   return (
-    <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+    <div className="p-4 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-3">
       <div className="flex items-center gap-2">
         <span className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="shield-check" size={13} />

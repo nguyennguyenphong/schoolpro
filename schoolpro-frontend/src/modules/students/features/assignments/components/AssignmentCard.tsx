@@ -20,7 +20,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
     return (
       <Card
         loading={true}
-        className="h-60 w-full rounded-xl border border-slate-200 shadow-2xs [&>.ant-card-body]:p-4"
+        className="h-60 w-full rounded-xl border border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-4"
         skeletonProps={{
           paragraph: { rows: 3 },
         }}
@@ -73,7 +73,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
 
   return (
     <div
-      className="h-60 w-full bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between transition-all"
+      className="h-60 w-full bg-white border border-[#f0f0f0] rounded-xl p-4 flex flex-col justify-between transition-all"
     >
       <div>
         <div className="flex items-center justify-between gap-1 mb-2">

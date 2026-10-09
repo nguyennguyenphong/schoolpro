@@ -181,7 +181,7 @@ export const AssignmentSubmitPage: React.FC = () => {
 
   if (!assignment) {
     return (
-      <div className="p-10 text-center bg-white rounded-2xl border border-slate-200 shadow-2xs my-6">
+      <div className="p-10 text-center bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs my-6">
         <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
           <Icon name="file" size={24} />
         </div>
@@ -257,7 +257,7 @@ export const AssignmentSubmitPage: React.FC = () => {
           <AssignmentGradedFeedbackCard assignment={assignment} />
 
           {/* Submission Container Card */}
-          <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-4">
+          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />

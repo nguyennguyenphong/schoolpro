@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
@@ -8,6 +8,7 @@ import type {
   StudentPersonalInfo,
   UpdateProfilePayload,
 } from "@/modules/students/features/profile/types";
+import { useBasicInfoForm } from "@/modules/students/features/profile/hooks/useBasicInfoForm";
 
 interface ProfileBasicInfoTabProps {
   personalInfo: StudentPersonalInfo;
@@ -22,24 +23,10 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
 }) => {
   const { t } = useTranslation(["card", "input", "button", "validation"]);
   const [form] = Form.useForm();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const handleSubmit = async (values: {
-    phone: string;
-    email: string;
-    address: string;
-  }) => {
-    try {
-      setIsSubmitting(true);
-      await onSave({
-        phone: values.phone,
-        email: values.email,
-        address: values.address,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { isSubmitting, handleSubmit, initialValues } = useBasicInfoForm({
+    personalInfo,
+    onSave,
+  });
 
   return (
     <>
@@ -60,20 +47,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          fullName: personalInfo.fullName,
-          studentCode: personalInfo.studentCode,
-          username: personalInfo.username,
-          dateOfBirth: personalInfo.dateOfBirth,
-          gender: personalInfo.gender === "MALE" ? "Nam" : personalInfo.gender === "FEMALE" ? "Nữ" : "Khác",
-          nationalId: personalInfo.nationalId,
-          ethnicity: personalInfo.ethnicity,
-          religion: personalInfo.religion,
-          birthPlace: personalInfo.birthPlace,
-          phone: personalInfo.phone,
-          email: personalInfo.email,
-          address: personalInfo.address,
-        }}
+        initialValues={initialValues}
         onFinish={handleSubmit}
         className="space-y-4"
       >

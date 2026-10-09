@@ -12,7 +12,7 @@ export const HomeSkeleton: React.FC = () => {
           {Array.from({ length: 12 }).map((_, idx) => (
             <Card
               key={idx}
-              className="p-5 border-slate-200 h-full rounded-xl"
+              className="p-5 border-[#f0f0f0] h-full rounded-xl"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="w-11 h-11 rounded-xl bg-slate-200" />

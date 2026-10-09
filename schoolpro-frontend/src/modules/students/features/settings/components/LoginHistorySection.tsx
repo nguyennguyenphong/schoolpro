@@ -169,7 +169,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
               <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0">
                 {t("card:settings.tabs.loginHistory")}
               </h2>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-[#f0f0f0]">
                 {filteredSessions.length}/{sessions.length}
               </span>
             </div>
@@ -240,7 +240,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
 
       {/* 3. Session List Area */}
       {filteredSessions.length === 0 ? (
-        <div className="p-8 sm:p-12 text-center bg-slate-50/50 rounded-xl border border-slate-200">
+        <div className="p-8 sm:p-12 text-center bg-slate-50/50 rounded-xl border border-[#f0f0f0]">
           <Empty
             description={
               <div className="space-y-2">
@@ -272,7 +272,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
                 className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border transition-all ${
                   session.isCurrent
                     ? "bg-blue-50/20 border-blue-200 ring-1 ring-blue-100"
-                    : "bg-slate-50/60 border-slate-200 hover:border-slate-300"
+                    : "bg-slate-50/60 border-[#f0f0f0] hover:border-slate-300"
                 }`}
               >
                 <div className="flex items-start gap-3.5 min-w-0">
@@ -280,7 +280,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
                     className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
                       session.isCurrent
                         ? "bg-blue-600 text-white border-blue-600 shadow-xs"
-                        : "bg-white text-slate-600 border-slate-200"
+                        : "bg-white text-slate-600 border-[#f0f0f0]"
                     }`}
                   >
                     <Icon name={icon} size={20} />
@@ -296,7 +296,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
                           {t("card:settings.sessions.currentDevice")}
                         </Tag>
                       ) : (
-                        <Tag className="text-xs px-2 py-0.5 m-0 bg-slate-100 text-slate-600 border-slate-200">
+                        <Tag className="text-xs px-2 py-0.5 m-0 bg-slate-100 text-slate-600 border-[#f0f0f0]">
                           {session.os}
                         </Tag>
                       )}
@@ -366,7 +366,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
           {t("modal:revokeSessionConfirmContent")}
         </p>
         {sessionToRevoke && (
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 mt-3 text-xs space-y-1">
+          <div className="p-3 bg-slate-50 rounded-xl border border-[#f0f0f0] mt-3 text-xs space-y-1">
             <span className="font-bold text-slate-800 block">
               {sessionToRevoke.deviceName}
             </span>

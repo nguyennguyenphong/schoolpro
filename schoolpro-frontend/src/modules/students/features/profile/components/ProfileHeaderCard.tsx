@@ -32,7 +32,7 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
               <Avatar
                 size={96}
                 src={personalInfo.avatarUrl?.trim() ? personalInfo.avatarUrl : undefined}
-                className="ring-4 ring-blue-50 border border-slate-200 shadow-md"
+                className="ring-4 ring-blue-50 border border-[#f0f0f0] shadow-md"
               />
               <button
                 type="button"
@@ -77,7 +77,7 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
           </div>
 
           {/* Right: Completion Rate */}
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl max-w-xs w-full space-y-2">
+          <div className="p-4 bg-slate-50 border border-[#f0f0f0] rounded-xl max-w-xs w-full space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-slate-700">
                 {t("card:profile.completionRate")}

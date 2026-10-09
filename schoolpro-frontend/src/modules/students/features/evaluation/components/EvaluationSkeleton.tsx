@@ -5,7 +5,7 @@ export const EvaluationSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 animate-pulse">
       {/* Header skeleton */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] space-y-3">
         <div className="h-4 w-48 bg-slate-200 rounded" />
         <div className="flex items-center gap-2">
           <div className="h-7 w-64 bg-slate-200 rounded" />
@@ -40,7 +40,7 @@ export const EvaluationSkeleton: React.FC = () => {
       {/* Survey Cards Grid Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[1, 2, 3, 4].map((j) => (
-          <div key={j} className="bg-white border border-slate-200 rounded-xl p-5 space-y-3 shadow-2xs">
+          <div key={j} className="bg-white border border-[#f0f0f0] rounded-xl p-5 space-y-3 shadow-2xs">
             <div className="flex justify-between items-start">
               <div className="h-5 w-28 bg-slate-200 rounded-full" />
               <div className="h-5 w-20 bg-slate-100 rounded-full" />

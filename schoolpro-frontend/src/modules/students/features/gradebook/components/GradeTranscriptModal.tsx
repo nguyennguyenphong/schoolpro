@@ -58,7 +58,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
     >
       <div className="space-y-4 pt-1 text-slate-800">
         {/* National Header */}
-        <div className="text-center space-y-1 pb-3 border-b-2 border-slate-200">
+        <div className="text-center space-y-1 pb-3 border-b-2 border-[#f0f0f0]">
           <div className="text-xs font-bold text-slate-600 uppercase tracking-wider">
             SỞ GIÁO DỤC VÀ ĐÀO TẠO • TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN
           </div>
@@ -107,18 +107,18 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
             <tbody className="divide-y divide-slate-200">
               {grades.map((item, idx) => (
                 <tr key={item.id} className="hover:bg-slate-50/50">
-                  <td className="py-2 px-3 text-center text-slate-500 font-semibold border border-slate-200">{idx + 1}</td>
-                  <td className="py-2 px-3 font-bold text-slate-800 border border-slate-200">{item.name}</td>
-                  <td className="py-2 px-3 text-center text-slate-600 border border-slate-200">
+                  <td className="py-2 px-3 text-center text-slate-500 font-semibold border border-[#f0f0f0]">{idx + 1}</td>
+                  <td className="py-2 px-3 font-bold text-slate-800 border border-[#f0f0f0]">{item.name}</td>
+                  <td className="py-2 px-3 text-center text-slate-600 border border-[#f0f0f0]">
                     {item.regularScores.map((s) => s.score.toFixed(1)).join("  ")}
                   </td>
-                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-slate-200">
+                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-[#f0f0f0]">
                     {item.midtermScore ? item.midtermScore.score.toFixed(1) : "--"}
                   </td>
-                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-slate-200">
+                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-[#f0f0f0]">
                     {item.finalScore ? item.finalScore.score.toFixed(1) : "--"}
                   </td>
-                  <td className="py-2 px-3 text-center border border-slate-200">
+                  <td className="py-2 px-3 text-center border border-[#f0f0f0]">
                     {item.evaluationType === "feedback" ? (
                       <span className="font-bold text-emerald-700">ĐẠT</span>
                     ) : (
@@ -127,7 +127,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
                       </strong>
                     )}
                   </td>
-                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-slate-200">
+                  <td className="py-2 px-3 text-center font-semibold text-slate-700 border border-[#f0f0f0]">
                     {item.evaluationType === "feedback"
                       ? "Hoàn thành tốt"
                       : (item.averageScore || 0) >= 8.0
@@ -176,7 +176,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
                   "{summary.homeroomComment}"
                 </p>
               </div>
-              <div className="text-[11px] text-slate-400 text-right pt-2 border-t border-slate-200">
+              <div className="text-[11px] text-slate-400 text-right pt-2 border-t border-[#f0f0f0]">
                 GVCN: <strong>{summary.homeroomTeacher}</strong> (Đã ký số xác thực)
               </div>
             </div>

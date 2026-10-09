@@ -81,13 +81,13 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
       </div>
 
       {/* Homeroom Teacher Details Section */}
-      <div className="rounded-xl border border-slate-200 p-5 bg-slate-50/50 space-y-3">
+      <div className="rounded-xl border border-[#f0f0f0] p-5 bg-slate-50/50 space-y-3">
         <h4 className="text-sm font-bold text-slate-800 mb-0 flex items-center gap-2">
           <Icon name="user" size={16} className="text-blue-600" />
           <span>Giáo viên chủ nhiệm lớp</span>
         </h4>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-slate-200 rounded-xl gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-[#f0f0f0] rounded-xl gap-4 mt-3">
           <div className="space-y-1">
             <span className="text-xs text-blue-600 font-semibold uppercase tracking-wider">
               {homeroomTeacher.subject}

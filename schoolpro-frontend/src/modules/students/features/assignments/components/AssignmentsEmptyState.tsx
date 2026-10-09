@@ -16,7 +16,7 @@ export const AssignmentsEmptyState: React.FC<AssignmentsEmptyStateProps> = ({
   const { t } = useTranslation(["message", "button"]);
 
   return (
-    <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+    <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
       <Empty
         description={
           <div className="space-y-1.5">

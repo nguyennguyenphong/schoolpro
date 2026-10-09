@@ -48,7 +48,7 @@ export const ChangePasswordSuccessModal: React.FC<ChangePasswordSuccessModalProp
           <Button
             variant="outline"
             onClick={onClose}
-            className="rounded-xl px-5 h-10 text-xs sm:text-sm font-semibold border-slate-200 text-slate-700 hover:border-slate-300"
+            className="rounded-xl px-5 h-10 text-xs sm:text-sm font-semibold border-[#f0f0f0] text-slate-700 hover:border-slate-300"
           >
             {t("button:close")}
           </Button>

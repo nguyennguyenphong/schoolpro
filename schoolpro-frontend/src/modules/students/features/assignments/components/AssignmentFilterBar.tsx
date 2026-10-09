@@ -103,7 +103,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
         </div>
 
         {/* View Mode Toggle: Grid vs List */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0 self-end sm:self-auto">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}

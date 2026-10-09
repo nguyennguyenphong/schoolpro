@@ -46,7 +46,7 @@ export const SecuritySettingsSection: React.FC<SecuritySettingsSectionProps> = (
       </div>
 
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/70 border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/70 border border-[#f0f0f0]">
           <div className="flex items-start gap-3.5">
             <span className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
               <Icon name="shield" size={18} />
@@ -80,7 +80,7 @@ export const SecuritySettingsSection: React.FC<SecuritySettingsSectionProps> = (
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/70 border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/70 border border-[#f0f0f0]">
           <div className="flex items-start gap-3.5">
             <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
               <Icon name="clock" size={18} />

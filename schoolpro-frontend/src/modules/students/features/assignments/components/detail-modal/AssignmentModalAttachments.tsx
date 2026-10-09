@@ -38,7 +38,7 @@ export const AssignmentModalAttachments: React.FC<AssignmentModalAttachmentsProp
                   });
                 }
               }}
-              className={`flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg text-xs transition-colors ${
+              className={`flex items-center justify-between p-2.5 bg-white border border-[#f0f0f0] rounded-lg text-xs transition-colors ${
                 isPdf
                   ? "hover:border-rose-400 hover:bg-rose-50/30 cursor-pointer group"
                   : "hover:border-blue-400"

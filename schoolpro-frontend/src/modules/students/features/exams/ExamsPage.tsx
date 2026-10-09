@@ -30,7 +30,7 @@ export const ExamsPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
@@ -62,7 +62,7 @@ export const ExamsPage: React.FC = () => {
             <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
               Lớp 11A1
             </span>
-            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
               Học kỳ 1 • 2025-2026
             </span>
             <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
@@ -93,7 +93,7 @@ export const ExamsPage: React.FC = () => {
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border border-slate-200 p-5 space-y-3 shadow-2xs animate-pulse"
+              className="bg-white rounded-xl border border-[#f0f0f0] p-5 space-y-3 shadow-2xs animate-pulse"
             >
               <div className="h-5 w-1/3 bg-slate-200 rounded" />
               <div className="h-6 w-3/4 bg-slate-200 rounded" />
@@ -108,7 +108,7 @@ export const ExamsPage: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-2xs">
+        <div className="bg-white rounded-xl border border-[#f0f0f0] p-12 text-center shadow-2xs">
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={

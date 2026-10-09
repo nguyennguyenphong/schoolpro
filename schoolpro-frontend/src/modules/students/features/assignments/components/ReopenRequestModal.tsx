@@ -71,7 +71,7 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
     >
       <div className="py-3 space-y-4">
         {/* Recipient Teacher Information Box */}
-        <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-2 text-xs">
           <div className="flex items-center justify-between">
             <span className="text-slate-500">Giáo viên phụ trách:</span>
             <strong className="text-slate-800">{assignment.teacherName}</strong>
@@ -109,7 +109,7 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
                 key={idx}
                 type="button"
                 onClick={() => setReason(preset)}
-                className="w-full text-left p-2 rounded-lg text-[11px] text-slate-600 bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50/30 transition-colors"
+                className="w-full text-left p-2 rounded-lg text-[11px] text-slate-600 bg-white border border-[#f0f0f0] hover:border-blue-400 hover:bg-blue-50/30 transition-colors"
               >
                 • {preset}
               </button>

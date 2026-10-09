@@ -46,7 +46,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
   return (
     <Card
       onClick={handleCardClick}
-      className="rounded-xl border border-slate-200 shadow-2xs hover:border-blue-400 transition-all cursor-pointer group w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5"
+      className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-blue-400 transition-all cursor-pointer group w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5"
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-start gap-3.5 flex-1 min-w-0">

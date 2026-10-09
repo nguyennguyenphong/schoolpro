@@ -9,7 +9,7 @@ export const DashboardSkeleton: React.FC = () => {
         {[1, 2, 3, 4].map((i) => (
           <Card
             key={i}
-            className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-28 flex flex-col justify-between"
+            className="p-4 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-28 flex flex-col justify-between"
           >
             <div className="flex justify-between items-start">
               <div className="space-y-2">
@@ -26,13 +26,13 @@ export const DashboardSkeleton: React.FC = () => {
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="lg:col-span-2">
-          <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-[390px] flex flex-col justify-between">
+          <Card className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-[390px] flex flex-col justify-between">
             <div className="h-5 w-64 bg-slate-200 rounded mb-2" />
             <div className="flex-1 bg-slate-100 rounded-lg my-2" />
           </Card>
         </div>
         <div className="lg:col-span-1">
-          <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-[390px] flex flex-col justify-between">
+          <Card className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-[390px] flex flex-col justify-between">
             <div className="h-5 w-48 bg-slate-200 rounded mb-2" />
             <div className="flex-1 bg-slate-100 rounded-lg my-2" />
           </Card>
@@ -41,18 +41,18 @@ export const DashboardSkeleton: React.FC = () => {
 
       {/* Secondary Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-[380px] flex flex-col justify-between">
+        <Card className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-[380px] flex flex-col justify-between">
           <div className="h-5 w-52 bg-slate-200 rounded mb-2" />
           <div className="flex-1 bg-slate-100 rounded-lg my-2" />
         </Card>
-        <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-[380px] flex flex-col justify-between">
+        <Card className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-[380px] flex flex-col justify-between">
           <div className="h-5 w-52 bg-slate-200 rounded mb-2" />
           <div className="flex-1 bg-slate-100 rounded-lg my-2" />
         </Card>
       </div>
 
       {/* Table Skeleton */}
-      <Card className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-64">
+      <Card className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-64">
         <div className="h-5 w-48 bg-slate-200 rounded mb-4" />
         <div className="space-y-3">
           {[1, 2, 3, 4].map((j) => (

@@ -66,7 +66,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* Top row: Search input & View mode toggle (Identical to AssignmentFilterBar) */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">
@@ -83,7 +83,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
         </div>
 
         {/* View Mode Toggle: Bảng điểm vs Lưới thẻ */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 shrink-0 self-end sm:self-auto">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
           <button
             type="button"
             onClick={() => onViewModeChange("table")}

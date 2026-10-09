@@ -58,7 +58,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
           {scores.map((s, idx) => (
             <span
               key={idx}
-              className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-800"
+              className="px-2 py-0.5 rounded bg-slate-100 border border-[#f0f0f0] text-xs font-mono font-bold text-slate-800"
             >
               {s}
             </span>
@@ -105,7 +105,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
 
   if (feedbacks.length === 0) {
     return (
-      <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+      <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
         <Empty
           description={
             <div className="space-y-1.5">
@@ -129,7 +129,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
   return (
     <div className="space-y-3.5">
       {/* View switch mode bar */}
-      <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+      <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#f0f0f0] shadow-2xs">
         <div className="text-xs text-slate-500">
           Hiển thị <strong>{feedbacks.length}</strong> bộ môn được giáo viên gửi nhận xét
         </div>
@@ -163,7 +163,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
       </div>
 
       {viewMode === "table" ? (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#f0f0f0]/90 shadow-xs overflow-hidden">
           <Table
             columns={columns}
             dataSource={feedbacks}
@@ -177,7 +177,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
           {feedbacks.map((item) => (
             <Card
               key={item.id}
-              className="rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between hover:border-blue-300 [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
+              className="rounded-2xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between hover:border-blue-300 [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
             >
               <div>
                 {/* Header */}
@@ -210,7 +210,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
                       {item.regularScores.map((score, sIdx) => (
                         <span
                           key={sIdx}
-                          className="px-2 py-0.5 rounded bg-white border border-slate-200 text-xs font-mono font-bold text-slate-800"
+                          className="px-2 py-0.5 rounded bg-white border border-[#f0f0f0] text-xs font-mono font-bold text-slate-800"
                         >
                           {score}
                         </span>

@@ -149,14 +149,14 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
                   <div
                     key={att.id}
                     onClick={() => handleAttachmentClick(att)}
-                    className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 rounded-lg cursor-pointer transition-all group"
+                    className="flex items-center justify-between p-2.5 bg-slate-50 hover:bg-blue-50/60 border border-[#f0f0f0] hover:border-blue-300 rounded-lg cursor-pointer transition-all group"
                   >
                     <div className="flex items-center gap-2 min-w-0 pr-2">
                       <div
                         className={`w-8 h-8 rounded-lg bg-white border flex items-center justify-center shrink-0 ${
                           isPdf
                             ? "border-rose-200 text-rose-600 group-hover:border-rose-400"
-                            : "border-slate-200 text-blue-600 group-hover:border-blue-400"
+                            : "border-[#f0f0f0] text-blue-600 group-hover:border-blue-400"
                         }`}
                       >
                         <Icon name="file" size={16} />

@@ -33,7 +33,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Top Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 px-6 py-3.5 flex items-center justify-between shadow-xs">
+      <header className="bg-white border-b border-[#f0f0f0] sticky top-0 z-30 px-6 py-3.5 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
             SP
@@ -52,7 +52,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
           <Tag color={roleBadgeColor} className="px-3 py-1 font-semibold rounded-full border-none">
             {roleName}
           </Tag>
-          <div className="flex items-center gap-3 pl-2 border-l border-slate-200">
+          <div className="flex items-center gap-3 pl-2 border-l border-[#f0f0f0]">
             <Avatar size={36} className="bg-blue-600 font-semibold text-white">
               {displayName.charAt(0).toUpperCase()}
             </Avatar>
@@ -107,7 +107,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
 
         {/* Feature Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card hoverable className="rounded-xl border-slate-200 shadow-xs">
+          <Card hoverable className="rounded-xl border-[#f0f0f0] shadow-xs">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-blue-50 text-blue-600">
                 <Icon name="calendar" size={24} />
@@ -126,7 +126,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
             </div>
           </Card>
 
-          <Card hoverable className="rounded-xl border-slate-200 shadow-xs">
+          <Card hoverable className="rounded-xl border-[#f0f0f0] shadow-xs">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-emerald-50 text-emerald-600">
                 <Icon name="mail" size={24} />
@@ -145,7 +145,7 @@ export const RoleHomePage: React.FC<RoleHomeProps> = ({
             </div>
           </Card>
 
-          <Card hoverable className="rounded-xl border-slate-200 shadow-xs">
+          <Card hoverable className="rounded-xl border-[#f0f0f0] shadow-xs">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-purple-50 text-purple-600">
                 <Icon name="file" size={24} />

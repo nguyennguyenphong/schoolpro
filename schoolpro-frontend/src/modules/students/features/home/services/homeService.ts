@@ -102,7 +102,7 @@ class HomeService {
           "#0D9488": { bg: "bg-teal-50 border border-teal-200", text: "text-teal-700" },
           "#059669": { bg: "bg-emerald-50 border border-emerald-200", text: "text-emerald-700" },
           "#0F172A": { bg: "bg-slate-100 border border-slate-300", text: "text-slate-800" },
-          "#64748B": { bg: "bg-slate-50 border border-slate-200", text: "text-slate-600" },
+          "#64748B": { bg: "bg-slate-50 border border-[#f0f0f0]", text: "text-slate-600" },
           "#EA580C": { bg: "bg-orange-50 border border-orange-200", text: "text-orange-600" },
           "#EAB308": { bg: "bg-amber-50 border border-amber-200", text: "text-amber-500" },
         };
@@ -125,7 +125,7 @@ class HomeService {
         case "MANAGEMENT":
           return { bg: "bg-emerald-50 border border-emerald-200", text: "text-emerald-600" };
         default:
-          return { bg: "bg-slate-50 border border-slate-200", text: "text-slate-600" };
+          return { bg: "bg-slate-50 border border-[#f0f0f0]", text: "text-slate-600" };
       }
     };
 

@@ -16,7 +16,7 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
   if (!attachments || attachments.length === 0) return null;
 
   return (
-    <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-3">
+    <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -47,7 +47,7 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
                   });
                 }
               }}
-              className={`flex items-center justify-between p-3 bg-slate-50 border border-slate-200/80 rounded-xl text-xs transition-all ${
+              className={`flex items-center justify-between p-3 bg-slate-50 border border-[#f0f0f0]/80 rounded-xl text-xs transition-all ${
                 isPdf
                   ? "hover:border-rose-400 hover:bg-rose-50/30 cursor-pointer group"
                   : "hover:border-blue-400 hover:bg-white"

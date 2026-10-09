@@ -114,14 +114,14 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assi
       tagText: "Tạm khóa",
       tagColor: "error",
       iconName: "lock",
-      iconBgClass: "bg-slate-100 text-slate-600 border border-slate-200",
+      iconBgClass: "bg-slate-100 text-slate-600 border border-[#f0f0f0]",
       iconTextClass: "text-slate-600",
       isLast: true,
     });
   }
 
   return (
-    <div className="p-5 border border-slate-200 bg-white rounded-xl shadow-2xs space-y-4">
+    <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -156,7 +156,7 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assi
 
               {/* Event Content Card */}
               <div className="flex-1 pb-5 min-w-0">
-                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-3 sm:p-3.5 space-y-1.5 transition-colors hover:bg-slate-50 hover:border-slate-300">
+                <div className="bg-slate-50/70 border border-[#f0f0f0]/80 rounded-xl p-3 sm:p-3.5 space-y-1.5 transition-colors hover:bg-slate-50 hover:border-slate-300">
                   <div className="flex flex-wrap items-center justify-between gap-1.5">
                     <span className="text-xs font-bold text-slate-800">{event.title}</span>
                     <div className="flex items-center gap-2">

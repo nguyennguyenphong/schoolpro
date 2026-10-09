@@ -46,7 +46,7 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
           {file.type === "image" && file.previewUrl ? (
             <div
               onClick={() => onPreview?.(file)}
-              className="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 shrink-0 cursor-pointer hover:opacity-90 transition-opacity bg-white flex items-center justify-center shadow-2xs"
+              className="w-10 h-10 rounded-lg overflow-hidden border border-[#f0f0f0] shrink-0 cursor-pointer hover:opacity-90 transition-opacity bg-white flex items-center justify-center shadow-2xs"
             >
               <img
                 src={file.previewUrl}

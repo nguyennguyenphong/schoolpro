@@ -63,7 +63,7 @@ export const ContactBookPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-5 sm:gap-6 pb-12 w-full">
       {/* 1. Page Header with integrated Breadcrumb & Key Metrics */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3.5">
         <Breadcrumb
           items={[
             {
@@ -96,7 +96,7 @@ export const ContactBookPage: React.FC = () => {
               <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
                 Lớp {summary?.className || "11A1"}
               </span>
-              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
                 {summary?.academicYear || "2025 - 2026"}
               </span>
               <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200 font-mono">
@@ -111,7 +111,7 @@ export const ContactBookPage: React.FC = () => {
           {/* Quick status badges & Action buttons */}
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             {summary && (
-              <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
+              <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
                 <span className="text-slate-500">GPA: <strong className="text-blue-600">{summary.currentGpa.toFixed(1)}</strong></span>
                 <span className="text-slate-300">•</span>
                 <span className="text-slate-500">Hạnh kiểm: <strong className="text-emerald-600">{summary.conduct}</strong></span>

@@ -35,7 +35,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
             <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
               {t("card:profile.sections.guardians")}
             </h2>
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-[#f0f0f0]">
               {guardians.length} người
             </span>
           </div>
@@ -49,7 +49,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
         {guardians.map((g) => (
           <div
             key={g.id}
-            className="rounded-xl border border-slate-200 shadow-2xs p-5 bg-white space-y-3.5 relative overflow-hidden"
+            className="rounded-xl border border-[#f0f0f0] shadow-2xs p-5 bg-white space-y-3.5 relative overflow-hidden"
           >
             <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
               <div className="space-y-1">

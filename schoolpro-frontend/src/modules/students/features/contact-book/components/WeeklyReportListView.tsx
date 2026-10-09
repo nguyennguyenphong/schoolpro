@@ -21,7 +21,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
 }) => {
   if (reports.length === 0) {
     return (
-      <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-slate-200 shadow-2xs">
+      <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs">
         <Empty
           description={
             <div className="flex flex-col gap-1.5">
@@ -54,7 +54,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
         return (
           <div key={report.id} className="w-full">
             <Card
-              className="w-full rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-all duration-200 bg-white overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
+              className="w-full rounded-2xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 bg-white overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
             >
               {/* Header: Week number, dates & tags */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
@@ -109,7 +109,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
               {/* Body: Teacher's evaluation (Học tập & Kỷ luật) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 my-5">
                 {/* Study evaluation */}
-                <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-2">
+                <div className="p-4 rounded-xl bg-slate-50/80 border border-[#f0f0f0]/90 flex flex-col gap-2">
                   <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wide">
                     <Icon name="book" size={14} className="text-blue-600" />
                     Đánh giá học tập trong tuần của GVCN
@@ -120,7 +120,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
                 </div>
 
                 {/* Discipline evaluation */}
-                <div className="p-4 rounded-xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-2">
+                <div className="p-4 rounded-xl bg-slate-50/80 border border-[#f0f0f0]/90 flex flex-col gap-2">
                   <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wide">
                     <Icon name="userCheck" size={14} className="text-emerald-600" />
                     Kỷ luật & Tinh thần nề nếp trong tuần
@@ -132,7 +132,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
               </div>
 
               {/* Teacher signature info bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 py-2.5 px-3.5 bg-slate-50/70 rounded-xl border border-slate-200/70">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 py-2.5 px-3.5 bg-slate-50/70 rounded-xl border border-[#f0f0f0]/70">
                 <span className="flex items-center gap-1.5">
                   <Icon name="check" size={13} className="text-emerald-600" />
                   Giáo viên chủ nhiệm ký duyệt: <strong className="text-slate-800">{report.teacherSignature}</strong>
@@ -141,7 +141,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
               </div>
 
               {/* Parent Feedback Block - Mục dành cho Cha Mẹ học sinh */}
-              <div className="mt-5 pt-5 border-t border-slate-200">
+              <div className="mt-5 pt-5 border-t border-[#f0f0f0]">
                 {report.parentFeedback ? (
                   <div className="p-4 sm:p-5 rounded-xl bg-blue-50/50 border border-blue-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
                     <div className="flex flex-col gap-1.5">

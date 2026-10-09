@@ -63,7 +63,7 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
             <span className="text-slate-500 block mb-1 font-medium">
               Lời nhắn / Ghi chú gửi giáo viên:
             </span>
-            <p className="text-slate-800 italic bg-white p-3 rounded-lg border border-slate-200 mb-0 leading-relaxed">
+            <p className="text-slate-800 italic bg-white p-3 rounded-lg border border-[#f0f0f0] mb-0 leading-relaxed">
               "{assignment.submission.content}"
             </p>
           </div>
@@ -72,8 +72,8 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
 
       {/* Sub-case 1A: Submission is EXPIRED -> Port CLOSED + Reopen Request Button */}
       {isSubmittedAndExpired && (
-        <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200/80">
+        <div className="p-4 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#f0f0f0]/80">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
                 <Icon name="lock" size={16} />

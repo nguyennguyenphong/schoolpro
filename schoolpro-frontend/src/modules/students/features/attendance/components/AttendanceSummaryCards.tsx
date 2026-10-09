@@ -12,7 +12,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({ 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tỷ lệ chuyên cần chung */}
-      <Card className="rounded-xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Tỷ lệ chuyên cần
@@ -38,7 +38,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({ 
       </Card>
 
       {/* 2. Môn học hôm nay */}
-      <Card className="rounded-xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Lịch học hôm nay
@@ -65,7 +65,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({ 
       </Card>
 
       {/* 3. Đã điểm danh */}
-      <Card className="rounded-xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Đã điểm danh
@@ -97,7 +97,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({ 
       </Card>
 
       {/* 4. Cần điểm danh ngay / Chờ điểm danh */}
-      <Card className="rounded-xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
+      <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-slate-300 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             Cần điểm danh

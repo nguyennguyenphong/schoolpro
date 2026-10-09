@@ -56,7 +56,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
       <div className="py-3 space-y-4">
         {/* IMAGE PREVIEW */}
         {file.type === "image" && (
-          <div className="flex flex-col items-center justify-center bg-slate-900/5 rounded-xl p-2 border border-slate-200 overflow-hidden">
+          <div className="flex flex-col items-center justify-center bg-slate-900/5 rounded-xl p-2 border border-[#f0f0f0] overflow-hidden">
             {file.previewUrl ? (
               <img
                 src={file.previewUrl}
@@ -164,7 +164,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
         {/* PDF PREVIEW */}
         {file.type === "pdf" && (
-          <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-inner">
+          <div className="rounded-xl overflow-hidden border border-[#f0f0f0] bg-slate-100 shadow-inner">
             <PdfViewer
               fileUrl={file.previewUrl || file.url || "/sample-notice.pdf"}
               className="h-[68vh] w-full"
@@ -174,7 +174,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
         {/* ARCHIVE / OTHER */}
         {(file.type === "archive" || file.type === "other") && (
-          <div className="p-6 bg-slate-50 border border-slate-200 rounded-xl space-y-3 text-center">
+          <div className="p-6 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-3 text-center">
             <div className="w-16 h-16 rounded-2xl bg-slate-700 text-white flex items-center justify-center mx-auto shadow-md">
               <Icon name="file-archive" size={28} />
             </div>
@@ -191,7 +191,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             <a
               href={file.previewUrl}
               download={file.name}
-              className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+              className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-[#f0f0f0] rounded-lg hover:bg-slate-50 transition-colors"
             >
               <Icon name="download" size={13} className="mr-1.5" />
               Tải xuống tệp

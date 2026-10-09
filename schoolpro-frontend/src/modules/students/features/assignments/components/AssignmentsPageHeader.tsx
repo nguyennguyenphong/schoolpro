@@ -53,7 +53,7 @@ export const AssignmentsPageHeader: React.FC<AssignmentsPageHeaderProps> = ({
             <span className="inline-block w-14 h-5 bg-slate-100 rounded-full animate-pulse" />
           ) : null}
           {summary?.semesterName ? (
-            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
               {summary.semesterName}
               {summary.academicYear ? ` • ${summary.academicYear}` : ""}
             </span>

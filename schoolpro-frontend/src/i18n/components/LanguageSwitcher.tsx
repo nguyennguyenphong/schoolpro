@@ -61,7 +61,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         type="button"
         aria-label="Language selector"
         style={{ width: showFlagOnly ? 70 : width, ...style }}
-        className="h-8.75 flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-blue-400"
+        className="h-8.75 flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-[#f0f0f0] hover:border-blue-400"
       >
         <div className="flex items-center gap-2 min-w-0">
           {currentMetadata?.flag ? (

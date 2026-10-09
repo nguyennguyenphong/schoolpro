@@ -5,7 +5,7 @@ export const TimetableSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 animate-pulse">
       {/* Filter Bar Skeleton */}
-      <Card className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-28 flex flex-col justify-between">
+      <Card className="p-4 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-28 flex flex-col justify-between">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="h-8 w-20 bg-slate-200 rounded" />
@@ -22,7 +22,7 @@ export const TimetableSkeleton: React.FC = () => {
       </Card>
 
       {/* Main Grid Skeleton */}
-      <Card className="p-4 border border-slate-200 bg-white rounded-xl shadow-2xs h-105 flex flex-col">
+      <Card className="p-4 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-105 flex flex-col">
         <div className="h-10 w-full bg-slate-100 rounded mb-3" />
         <div className="grid grid-cols-8 gap-2 flex-1">
           <div className="bg-slate-50 rounded" />

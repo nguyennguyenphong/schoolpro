@@ -28,7 +28,7 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
   };
 
   return (
-    <div className="p-4 sm:p-5 border border-slate-200 bg-white rounded-xl shadow-2xs">
+    <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs">
       {/* Header of Table Card */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
         <div>
@@ -43,47 +43,47 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-xs text-slate-500 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg">
+          <span className="text-xs text-slate-500 bg-slate-50 border border-[#f0f0f0] px-2.5 py-1 rounded-lg">
             Tổng số: <strong className="text-slate-800 font-bold">{grades.length}</strong> môn học
           </span>
         </div>
       </div>
 
       {/* Responsive Horizontal Scroll Wrapper */}
-      <div className="overflow-x-auto rounded-lg border border-slate-200">
+      <div className="overflow-x-auto rounded-lg border border-[#f0f0f0]">
         <table className="w-full min-w-[1180px] text-left border-collapse text-xs">
           {/* Multi-tier Structured Table Header */}
           <thead>
-            <tr className="bg-slate-100/80 border-b border-slate-200 text-slate-700 font-bold uppercase text-[11px] tracking-wider text-center">
-              <th rowSpan={2} className="py-2.5 px-2.5 border-r border-slate-200 w-12 whitespace-nowrap">
+            <tr className="bg-slate-100/80 border-b border-[#f0f0f0] text-slate-700 font-bold uppercase text-[11px] tracking-wider text-center">
+              <th rowSpan={2} className="py-2.5 px-2.5 border-r border-[#f0f0f0] w-12 whitespace-nowrap">
                 STT
               </th>
-              <th rowSpan={2} className="py-2.5 px-3 border-r border-slate-200 text-left min-w-[150px] whitespace-nowrap">
+              <th rowSpan={2} className="py-2.5 px-3 border-r border-[#f0f0f0] text-left min-w-[150px] whitespace-nowrap">
                 Môn học
               </th>
-              <th rowSpan={2} className="py-2.5 px-3 border-r border-slate-200 text-left min-w-[140px] whitespace-nowrap">
+              <th rowSpan={2} className="py-2.5 px-3 border-r border-[#f0f0f0] text-left min-w-[140px] whitespace-nowrap">
                 Giáo viên bộ môn
               </th>
-              <th rowSpan={2} className="py-2.5 px-2 border-r border-slate-200 w-16 whitespace-nowrap">
+              <th rowSpan={2} className="py-2.5 px-2 border-r border-[#f0f0f0] w-16 whitespace-nowrap">
                 Tiết/Tuần
               </th>
 
               {/* Nhóm Đánh giá thường xuyên (colSpan 4) */}
-              <th colSpan={4} className="py-2 px-2 border-r border-slate-200 bg-blue-50/60 text-blue-900 whitespace-nowrap font-bold">
+              <th colSpan={4} className="py-2 px-2 border-r border-[#f0f0f0] bg-blue-50/60 text-blue-900 whitespace-nowrap font-bold">
                 Đánh giá thường xuyên (ĐGTX)
               </th>
 
               {/* Nhóm Đánh giá định kỳ (colSpan 2) */}
-              <th colSpan={2} className="py-2 px-2 border-r border-slate-200 bg-amber-50/60 text-amber-900 whitespace-nowrap font-bold">
+              <th colSpan={2} className="py-2 px-2 border-r border-[#f0f0f0] bg-amber-50/60 text-amber-900 whitespace-nowrap font-bold">
                 Đánh giá định kỳ
               </th>
 
               {/* Nhóm Điểm trung bình môn (colSpan 2) */}
-              <th colSpan={2} className="py-2 px-2 border-r border-slate-200 bg-emerald-50/60 text-emerald-900 whitespace-nowrap font-bold">
+              <th colSpan={2} className="py-2 px-2 border-r border-[#f0f0f0] bg-emerald-50/60 text-emerald-900 whitespace-nowrap font-bold">
                 Điểm TB Môn
               </th>
 
-              <th rowSpan={2} className="py-2.5 px-2.5 border-r border-slate-200 w-24 whitespace-nowrap">
+              <th rowSpan={2} className="py-2.5 px-2.5 border-r border-[#f0f0f0] w-24 whitespace-nowrap">
                 Đánh giá
               </th>
               <th rowSpan={2} className="py-2.5 px-3 text-left min-w-[280px] whitespace-nowrap">
@@ -92,34 +92,34 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
             </tr>
 
             {/* Sub-header Row for Columns */}
-            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[10px] uppercase text-center tracking-wider">
+            <tr className="bg-slate-50 border-b border-[#f0f0f0] text-slate-600 font-semibold text-[10px] uppercase text-center tracking-wider">
               {/* ĐGTX 1..4 */}
-              <th className="py-2 px-2 border-r border-slate-200 w-14 whitespace-nowrap bg-blue-50/30">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-14 whitespace-nowrap bg-blue-50/30">
                 TX 1
               </th>
-              <th className="py-2 px-2 border-r border-slate-200 w-14 whitespace-nowrap bg-blue-50/30">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-14 whitespace-nowrap bg-blue-50/30">
                 TX 2
               </th>
-              <th className="py-2 px-2 border-r border-slate-200 w-14 whitespace-nowrap bg-blue-50/30">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-14 whitespace-nowrap bg-blue-50/30">
                 TX 3
               </th>
-              <th className="py-2 px-2 border-r border-slate-200 w-14 whitespace-nowrap bg-blue-50/30">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-14 whitespace-nowrap bg-blue-50/30">
                 TX 4
               </th>
 
               {/* ĐGĐK Giữa kỳ & Cuối kỳ */}
-              <th className="py-2 px-2 border-r border-slate-200 w-20 whitespace-nowrap bg-amber-50/30 text-amber-800">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-20 whitespace-nowrap bg-amber-50/30 text-amber-800">
                 Giữa kỳ (x2)
               </th>
-              <th className="py-2 px-2 border-r border-slate-200 w-20 whitespace-nowrap bg-amber-50/30 text-amber-800">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-20 whitespace-nowrap bg-amber-50/30 text-amber-800">
                 Cuối kỳ (x3)
               </th>
 
               {/* ĐTB HK1 & Cả năm */}
-              <th className="py-2 px-2 border-r border-slate-200 w-20 whitespace-nowrap bg-emerald-50/30 text-emerald-800">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-20 whitespace-nowrap bg-emerald-50/30 text-emerald-800">
                 ĐTB HK1
               </th>
-              <th className="py-2 px-2 border-r border-slate-200 w-20 whitespace-nowrap bg-emerald-50/30 text-emerald-800">
+              <th className="py-2 px-2 border-r border-[#f0f0f0] w-20 whitespace-nowrap bg-emerald-50/30 text-emerald-800">
                 Cả năm
               </th>
             </tr>

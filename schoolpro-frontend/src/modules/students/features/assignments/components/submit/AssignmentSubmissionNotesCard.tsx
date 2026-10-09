@@ -3,7 +3,7 @@ import { Icon } from "@/components/ui/Icon";
 
 export const AssignmentSubmissionNotesCard: React.FC = () => {
   return (
-    <div className="p-4 sm:p-5 border border-slate-200 bg-slate-50/60 rounded-xl text-xs space-y-2">
+    <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-slate-50/60 rounded-xl text-xs space-y-2">
       <div className="flex items-center gap-1.5 font-bold text-slate-800 mb-1">
         <Icon name="info" size={14} className="text-blue-600 shrink-0" />
         <span>Lưu ý khi nộp bài:</span>

@@ -141,7 +141,7 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
     theme: {
       bg: "bg-slate-50",
       text: "text-slate-600",
-      border: "border-slate-200",
+      border: "border-[#f0f0f0]",
       badgeBg: "bg-slate-100 text-slate-700",
       iconBg: "bg-slate-500 text-white",
     },

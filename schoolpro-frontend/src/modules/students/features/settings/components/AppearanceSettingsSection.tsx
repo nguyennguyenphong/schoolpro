@@ -71,14 +71,14 @@ export const AppearanceSettingsSection: React.FC<AppearanceSettingsSectionProps>
                   className={`flex flex-col items-center justify-center p-4 rounded-xl cursor-pointer transition-all border ${
                     isSelected
                       ? "border-blue-600 bg-blue-50/30 shadow-2xs"
-                      : "border-slate-200 bg-slate-50/50 hover:border-slate-300 hover:bg-slate-50"
+                      : "border-[#f0f0f0] bg-slate-50/50 hover:border-slate-300 hover:bg-slate-50"
                   } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <span
                     className={`w-10 h-10 rounded-xl flex items-center justify-center mb-2.5 transition-colors ${
                       isSelected
                         ? "bg-blue-600 text-white shadow-xs"
-                        : "bg-white text-slate-600 border border-slate-200"
+                        : "bg-white text-slate-600 border border-[#f0f0f0]"
                     }`}
                   >
                     <Icon name={opt.icon} size={20} />

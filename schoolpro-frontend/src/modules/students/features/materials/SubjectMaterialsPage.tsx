@@ -70,7 +70,7 @@ export const SubjectMaterialsPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Header with Breadcrumb and Subject Info */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <Breadcrumb
           items={[
             {
@@ -204,7 +204,7 @@ export const SubjectMaterialsPage: React.FC = () => {
 
       {/* 4. Results Area */}
       {materials.length === 0 ? (
-        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-slate-200 shadow-2xs">
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
             description={
               <div className="space-y-1.5">
@@ -262,7 +262,7 @@ export const SubjectMaterialsPage: React.FC = () => {
 
       {/* 5. Pagination with Border Framing */}
       {total > 0 && (
-        <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-500">
             Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
             <strong className="text-slate-800">{total}</strong> tài liệu môn {subject?.name || subjectCode}

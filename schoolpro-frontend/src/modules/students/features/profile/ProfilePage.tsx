@@ -1,11 +1,10 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
-import type { ProfileTabKey } from "@/modules/students/features/profile/types";
 import { useProfile } from "@/modules/students/features/profile/hooks/useProfile";
+import { useProfileTabs } from "@/modules/students/features/profile/hooks/useProfileTabs";
 import { ProfileHeaderCard } from "@/modules/students/features/profile/components/ProfileHeaderCard";
 import { ProfileTabs } from "@/modules/students/features/profile/components/ProfileTabs";
 import { ProfileBasicInfoTab } from "@/modules/students/features/profile/components/ProfileBasicInfoTab";
@@ -15,7 +14,7 @@ import { ProfileHealthTab } from "@/modules/students/features/profile/components
 
 export const ProfilePage: React.FC = () => {
   const { t } = useTranslation(["navigation", "card", "common", "input"]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { activeTab, setTab } = useProfileTabs();
 
   const {
     profile,
@@ -24,26 +23,6 @@ export const ProfilePage: React.FC = () => {
     updateBasicInfo,
     updateAvatar,
   } = useProfile();
-
-  // Read active tab from URL query params (supports aliases like basic, info, personal)
-  const tabParam = searchParams.get("tab");
-  const activeTab: ProfileTabKey =
-    tabParam === "academic"
-      ? "academic"
-      : tabParam === "guardians" || tabParam === "parents"
-      ? "guardians"
-      : tabParam === "health" || tabParam === "medical"
-      ? "health"
-      : "personal";
-
-  // Push active tab change to URL query params
-  const handleTabChange = (nextTab: ProfileTabKey) => {
-    setSearchParams((prev) => {
-      const updated = new URLSearchParams(prev);
-      updated.set("tab", nextTab);
-      return updated;
-    });
-  };
 
   const guardiansCount = profile?.guardians?.length ?? 0;
 
@@ -102,7 +81,7 @@ export const ProfilePage: React.FC = () => {
           <ProfileTabs
             activeTab={activeTab}
             guardiansCount={guardiansCount}
-            onTabChange={handleTabChange}
+            onTabChange={setTab}
           />
         </Card>
       </div>

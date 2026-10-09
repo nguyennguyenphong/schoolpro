@@ -68,7 +68,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
     <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
       {/* 1. Week Navigation & Selector */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+        <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0]">
           <button
             type="button"
             onClick={onPreviousDay}
@@ -155,7 +155,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
         )}
 
         {/* View Mode Toggle: Grid and List ONLY */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0">
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}

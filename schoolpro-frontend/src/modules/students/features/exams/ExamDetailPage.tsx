@@ -231,7 +231,7 @@ export const ExamDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto space-y-5 animate-pulse pb-16">
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
+        <div className="bg-white p-6 rounded-2xl border border-[#f0f0f0] space-y-4">
           <div className="h-4 w-48 bg-slate-200 rounded" />
           <div className="h-8 w-3/4 bg-slate-200 rounded" />
           <div className="h-4 w-full bg-slate-100 rounded" />
@@ -239,14 +239,14 @@ export const ExamDetailPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div className="lg:col-span-8 space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
+              <div key={i} className="bg-white rounded-2xl border border-[#f0f0f0] p-6 space-y-3">
                 <div className="h-5 w-1/2 bg-slate-200 rounded" />
                 <div className="h-10 w-full bg-slate-100 rounded-xl" />
               </div>
             ))}
           </div>
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 h-64" />
+            <div className="bg-white rounded-2xl border border-[#f0f0f0] p-6 h-64" />
           </div>
         </div>
       </div>
@@ -255,7 +255,7 @@ export const ExamDetailPage: React.FC = () => {
 
   if (!exam) {
     return (
-      <div className="max-w-xl mx-auto bg-white rounded-2xl border border-slate-200 p-10 text-center shadow-2xs space-y-4 my-10">
+      <div className="max-w-xl mx-auto bg-white rounded-2xl border border-[#f0f0f0] p-10 text-center shadow-2xs space-y-4 my-10">
         <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
           <Icon name="info" size={28} />
         </div>
@@ -278,7 +278,7 @@ export const ExamDetailPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-20">
       {/* 1. Page Header with integrated Breadcrumb & Overview */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-2xs space-y-3">
+      <div className="bg-white rounded-2xl border border-[#f0f0f0] p-5 sm:p-6 shadow-2xs space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <Breadcrumb
             items={[
@@ -355,7 +355,7 @@ export const ExamDetailPage: React.FC = () => {
         </div>
 
         {/* Info Banner */}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-[#f0f0f0]">
           <div>
             <span className="text-slate-400">Hình thức: </span>
             <strong className="text-slate-800">Trắc nghiệm trực tuyến</strong>
@@ -417,7 +417,7 @@ export const ExamDetailPage: React.FC = () => {
                 key={q.id}
                 id={`question-${q.id}`}
                 className={`bg-white rounded-2xl border transition-all p-5 sm:p-6 space-y-4 shadow-2xs ${
-                  hasError ? "border-rose-400" : "border-slate-200"
+                  hasError ? "border-rose-400" : "border-[#f0f0f0]"
                 }`}
               >
                 {/* Question Header */}
@@ -502,7 +502,7 @@ export const ExamDetailPage: React.FC = () => {
                                 ? "bg-rose-50 border-rose-400 text-rose-900 shadow-2xs"
                                 : isSelected
                                 ? "bg-blue-50 border-blue-500 text-blue-900 shadow-2xs"
-                                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                                : "bg-white border-[#f0f0f0] text-slate-700 hover:bg-slate-50"
                             }`}
                           >
                             <div className="flex items-center gap-3">
@@ -567,7 +567,7 @@ export const ExamDetailPage: React.FC = () => {
                             } ${
                               isChecked
                                 ? "bg-blue-50 border-blue-500 text-blue-900 shadow-2xs"
-                                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                                : "bg-white border-[#f0f0f0] text-slate-700 hover:bg-slate-50"
                             }`}
                           >
                             <div className="flex items-center gap-3">
@@ -613,7 +613,7 @@ export const ExamDetailPage: React.FC = () => {
                         onChange={(e) => handleInputChange(q.id, e.target.value)}
                         disabled={isReadOnly}
                         placeholder={q.placeholder || "Nhập câu trả lời của em tại đây..."}
-                        className="rounded-xl border-slate-200 text-xs sm:text-sm p-3"
+                        className="rounded-xl border-[#f0f0f0] text-xs sm:text-sm p-3"
                       />
                       {isCompleted && q.correctAnswer && (
                         <div className="text-xs bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-emerald-800">
@@ -625,7 +625,7 @@ export const ExamDetailPage: React.FC = () => {
 
                   {/* 4. RATING */}
                   {isRating && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="bg-slate-50 border border-[#f0f0f0] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <Rate
                           value={typeof currentVal === "number" ? currentVal : 0}
@@ -647,7 +647,7 @@ export const ExamDetailPage: React.FC = () => {
 
                   {/* Explanation for completed exam */}
                   {isCompleted && q.explanation && (
-                    <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 space-y-1">
+                    <div className="mt-3 p-3 bg-slate-50 border border-[#f0f0f0] rounded-xl text-xs text-slate-700 space-y-1">
                       <div className="font-bold text-slate-900 flex items-center gap-1.5">
                         <Icon name="info" size={13} className="text-blue-600" />
                         <span>Giải thích chi tiết:</span>
@@ -663,7 +663,7 @@ export const ExamDetailPage: React.FC = () => {
 
         {/* Right Column: Sticky Progress Sidebar & Question Palette */}
         <div className="lg:col-span-4 flex flex-col gap-4.5 lg:sticky lg:top-20 self-start">
-          <Card className="rounded-2xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
+          <Card className="rounded-2xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
             {/* Header: Progress & Timer */}
             <div className="space-y-3">
               <div className="flex items-center justify-between pb-3">
@@ -721,7 +721,7 @@ export const ExamDetailPage: React.FC = () => {
                         className={`h-9 rounded-xl text-xs font-bold flex items-center justify-center transition-all cursor-pointer border ${
                           done
                             ? "bg-emerald-600 text-white border-emerald-600 shadow-xs hover:bg-emerald-700"
-                            : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
+                            : "bg-slate-100 text-slate-700 border-[#f0f0f0] hover:bg-slate-200"
                         }`}
                         title={`Câu ${i + 1}: ${done ? "Đã làm" : "Chưa làm"}`}
                       >
@@ -762,7 +762,7 @@ export const ExamDetailPage: React.FC = () => {
           </Card>
 
           {/* Exam Summary Details Card */}
-          <Card className="rounded-2xl border-slate-200 shadow-2xs space-y-3">
+          <Card className="rounded-2xl border-[#f0f0f0] shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
               Thông tin đề thi
             </span>
@@ -817,7 +817,7 @@ export const ExamDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-2">
+          <div className="p-3.5 bg-slate-50 rounded-xl border border-[#f0f0f0] text-xs text-slate-600 space-y-2">
             <div className="flex justify-between">
               <span>Số câu đã hoàn thành:</span>
               <strong className="text-emerald-700">
@@ -828,7 +828,7 @@ export const ExamDetailPage: React.FC = () => {
               <span>Thời gian còn lại:</span>
               <strong className="text-slate-800 font-mono">{formattedTime}</strong>
             </div>
-            <p className="text-[11px] text-slate-500 pt-1 border-t border-slate-200 mb-0 leading-relaxed">
+            <p className="text-[11px] text-slate-500 pt-1 border-t border-[#f0f0f0] mb-0 leading-relaxed">
               Sau khi nộp, hệ thống sẽ tính điểm tự động và em không thể thay đổi đáp án đã gửi.
             </p>
           </div>

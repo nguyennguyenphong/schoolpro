@@ -25,7 +25,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
       {/* 1. Student Academic Info & Family Info */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Student & Family Information (Trang Bìa & Lý Lịch Sổ Liên Lạc) */}
-        <Card className="rounded-xl border-slate-200 shadow-2xs lg:col-span-2 [&>.ant-card-body]:p-5">
+        <Card className="rounded-xl border-[#f0f0f0] shadow-2xs lg:col-span-2 [&>.ant-card-body]:p-5">
           <div className="flex items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-4 bg-blue-600 rounded-full inline-block" />
@@ -64,7 +64,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
 
           {/* Thông tin cha mẹ / người giám hộ */}
           {summary.parentInfo && (
-            <div className="mb-4 p-3.5 rounded-xl border border-slate-200/80 bg-white space-y-2.5">
+            <div className="mb-4 p-3.5 rounded-xl border border-[#f0f0f0]/80 bg-white space-y-2.5">
               <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wide">
                 <Icon name="userCheck" size={14} className="text-purple-600" />
                 Thông tin Cha Mẹ / Người giám hộ học sinh
@@ -117,21 +117,21 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
-              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 bg-white">
+              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-[#f0f0f0] bg-white">
                 <Icon name="checkCircle" size={16} className="text-emerald-500 shrink-0" />
                 <div>
                   <span className="text-slate-400 text-[10px] block">Hạnh kiểm</span>
                   <span className="font-bold text-slate-800">{summary.conduct} ({summary.disciplineScore}/100 đ)</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 bg-white">
+              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-[#f0f0f0] bg-white">
                 <Icon name="chart" size={16} className="text-blue-500 shrink-0" />
                 <div>
                   <span className="text-slate-400 text-[10px] block">Học lực</span>
                   <span className="font-bold text-slate-800">Giỏi (GPA {summary.currentGpa.toFixed(1)})</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 bg-white">
+              <div className="flex items-center gap-2 p-2.5 rounded-lg border border-[#f0f0f0] bg-white">
                 <Icon name="clock" size={16} className="text-amber-500 shrink-0" />
                 <div>
                   <span className="text-slate-400 text-[10px] block">Chuyên cần</span>
@@ -143,7 +143,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
         </Card>
 
         {/* Homeroom Teacher Contact Card */}
-        <Card className="rounded-xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 flex flex-col justify-between">
+        <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1.5 h-4 bg-purple-600 rounded-full inline-block" />
@@ -203,7 +203,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             </div>
 
             {/* Quy định sử dụng sổ */}
-            <div className="mt-3.5 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-1">
+            <div className="mt-3.5 p-3 rounded-xl bg-slate-50 border border-[#f0f0f0] text-[11px] text-slate-600 space-y-1">
               <span className="font-bold text-slate-800 block">Quy định Sổ liên lạc:</span>
               <p className="mb-0 leading-relaxed text-slate-500">
                 Sổ liên lạc là phương tiện phối hợp chính thức giữa gia đình và nhà trường. Phụ huynh định kỳ theo dõi nhận xét từng tuần và ký xác nhận vào sổ.
@@ -235,7 +235,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
       {/* 2. Attendance & Signature Status */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Attendance Breakdown */}
-        <Card className="rounded-xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5">
+        <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5">
           <div className="flex items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-4 bg-amber-500 rounded-full inline-block" />
@@ -275,7 +275,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             </div>
           </div>
 
-          <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+          <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-[#f0f0f0] text-xs text-slate-600 flex items-center justify-between">
             <span>Tuân thủ quy định chuyên cần:</span>
             <span className="font-bold text-emerald-600 flex items-center gap-1">
               <Icon name="checkCircle" size={14} />
@@ -285,7 +285,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
         </Card>
 
         {/* Electronic Signature & Confirmation Status */}
-        <Card className="rounded-xl border-slate-200 shadow-2xs [&>.ant-card-body]:p-5 flex flex-col justify-between">
+        <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">

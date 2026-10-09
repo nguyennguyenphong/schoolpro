@@ -28,7 +28,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Intro info box - Đúng tính chất trang sổ liên lạc của Cha Mẹ học sinh */}
-      <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
+      <div className="p-4 sm:p-5 bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div className="flex items-center gap-3.5">
           <span className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0 shadow-2xs">
             <Icon name="fileText" size={20} />
@@ -55,7 +55,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
 
       {/* Danh sách các phiếu ghi ý kiến định kỳ trong sổ */}
       {notesList.length === 0 ? (
-        <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-slate-200 shadow-2xs">
+        <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs">
           <Empty
             description={
               <div className="flex flex-col gap-1.5">
@@ -79,7 +79,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
           {notesList.map((note) => (
             <div key={note.id} className="w-full">
               <Card
-                className="w-full rounded-2xl border border-slate-200/90 shadow-xs"
+                className="w-full rounded-2xl border border-[#f0f0f0]/90 shadow-xs"
               >
                 {/* Header của phiếu ghi ý kiến */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
@@ -113,7 +113,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                 {/* Thân phiếu: Gồm 2 mục chuẩn như sổ giấy */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 my-5">
                   {/* 1. Nhận xét tình hình học ở nhà */}
-                  <div className="p-4 sm:p-5 rounded-xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-2">
+                  <div className="p-4 sm:p-5 rounded-xl bg-slate-50/80 border border-[#f0f0f0]/90 flex flex-col gap-2">
                     <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-wide">
                       <Icon name="home" size={14} className="text-blue-600" />
                       <span>Tình hình tự học & sinh hoạt tại nhà</span>

@@ -140,7 +140,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       {/* 1. Header (Configurable) */}
       {showHeader && (
-        <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-2xs">
+        <header className="sticky top-0 z-40 bg-white border-b border-[#f0f0f0] shadow-2xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             {/* Left: Brand & Academic Badge */}
             <div className="flex items-center gap-4 shrink-0">
@@ -180,7 +180,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   placeholder={t("navigation:header.searchPlaceholder")}
                   name="search"
                   allowClear
-                  className="rounded-lg bg-slate-50/80 border-slate-200 hover:border-blue-400 focus:bg-white w-full text-xs"
+                  className="rounded-lg bg-slate-50/80 border-[#f0f0f0] hover:border-blue-400 focus:bg-white w-full text-xs"
                 />
               </div>
             )}
@@ -197,7 +197,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 <button
                   type="button"
                   onClick={() => navigate(resolvedNoticesRoute)}
-                  className="w-9 h-9 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 flex items-center justify-center transition-all text-slate-600 relative cursor-pointer"
+                  className="w-9 h-9 rounded-lg border border-[#f0f0f0] hover:border-blue-400 hover:bg-slate-50 flex items-center justify-center transition-all text-slate-600 relative cursor-pointer"
                   aria-label={t("navigation:header.notifications")}
                 >
                   <Badge count={unreadNotificationsCount} overflowCount={99} offset={[-2, 2]}>
@@ -212,11 +212,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   trigger={["click"]}
                   placement="bottomRight"
                 >
-                  <div className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-slate-50/80 transition-all cursor-pointer select-none group bg-white">
+                  <div className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl border border-[#f0f0f0] hover:border-blue-400 hover:bg-slate-50/80 transition-all cursor-pointer select-none group bg-white">
                     <Avatar
                       size={32}
                       src={user?.avatar_url?.trim() ? user.avatar_url : undefined}
-                      className="border border-slate-200 shadow-2xs bg-blue-50 text-blue-600 font-bold"
+                      className="border border-[#f0f0f0] shadow-2xs bg-blue-50 text-blue-600 font-bold"
                     >
                       {displayName.charAt(0).toUpperCase()}
                     </Avatar>
@@ -252,7 +252,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
       {/* 3. Footer (Configurable) */}
       {showFooter && (
-        <footer className="bg-white border-t border-slate-200 py-4 mt-auto">
+        <footer className="bg-white border-t border-[#f0f0f0] py-4 mt-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-slate-700">{t("common:brand.title")}</span>

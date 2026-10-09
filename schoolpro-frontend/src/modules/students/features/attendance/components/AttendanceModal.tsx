@@ -186,8 +186,8 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
             </div>
 
             {/* Receipt Box */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2.5 max-w-md mx-auto text-left">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+            <div className="bg-slate-50 border border-[#f0f0f0] rounded-2xl p-4 text-xs space-y-2.5 max-w-md mx-auto text-left">
+              <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
                 <span className="text-slate-500 font-medium">Môn học:</span>
                 <strong className="text-slate-900 font-bold text-right truncate max-w-64">
                   {record.subjectName}
@@ -209,7 +209,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                     : "Mã Code giáo viên"}
                 </span>
               </div>
-              <div className="flex justify-between items-center pt-2 border-t border-slate-200">
+              <div className="flex justify-between items-center pt-2 border-t border-[#f0f0f0]">
                 <span className="text-slate-500 font-medium">Trạng thái:</span>
                 <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
                   <Icon name="checkCircle" size={13} className="text-emerald-600" />
@@ -232,13 +232,13 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
           /* ================= MAIN CHECK-IN INTERACTION ================= */
           <div className="space-y-4">
             {/* Main Tabs: 2 Hình thức (Quét/Upload QR vs Nhập Code) */}
-            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl border border-[#f0f0f0]">
               <button
                 type="button"
                 onClick={() => setMainTab("qr")}
                 className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   mainTab === "qr"
-                    ? "bg-white text-blue-700 shadow-xs border border-slate-200"
+                    ? "bg-white text-blue-700 shadow-xs border border-[#f0f0f0]"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -251,7 +251,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                 onClick={() => setMainTab("code")}
                 className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   mainTab === "code"
-                    ? "bg-white text-blue-700 shadow-xs border border-slate-200"
+                    ? "bg-white text-blue-700 shadow-xs border border-[#f0f0f0]"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -356,7 +356,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
 
                     {selectedImage ? (
                       /* Image Preview Box */
-                      <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50 space-y-3">
+                      <div className="border border-[#f0f0f0] rounded-2xl p-4 bg-slate-50 space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">

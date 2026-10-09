@@ -22,7 +22,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   return (
-    <div className={`border border-slate-200 rounded-lg overflow-hidden bg-slate-100 ${className}`}>
+    <div className={`border border-[#f0f0f0] rounded-lg overflow-hidden bg-slate-100 ${className}`}>
       <Worker workerUrl={workerUrl}>
         <Viewer
           fileUrl={fileUrl}

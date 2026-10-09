@@ -33,7 +33,7 @@ export const FileCategorySelector: React.FC<FileCategorySelectorProps> = ({
           className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
             activeCategoryFilter === "all"
               ? "bg-blue-50 text-blue-700 border-blue-300"
-              : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+              : "bg-white text-slate-600 border-[#f0f0f0] hover:bg-slate-50"
           }`}
         >
           <Icon name="upload" size={12} />

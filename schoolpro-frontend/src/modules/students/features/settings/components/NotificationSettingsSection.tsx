@@ -93,12 +93,12 @@ export const NotificationSettingsSection: React.FC<NotificationSettingsSectionPr
               key={item.key}
               className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border transition-all ${
                 checked
-                  ? "bg-slate-50/70 border-slate-200"
+                  ? "bg-slate-50/70 border-[#f0f0f0]"
                   : "bg-white border-slate-100 opacity-75"
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <span className="w-9 h-9 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center justify-center shrink-0 text-slate-700">
+                <span className="w-9 h-9 rounded-xl bg-white border border-[#f0f0f0] shadow-2xs flex items-center justify-center shrink-0 text-slate-700">
                   <Icon name={item.icon} size={17} />
                 </span>
                 <div className="min-w-0">

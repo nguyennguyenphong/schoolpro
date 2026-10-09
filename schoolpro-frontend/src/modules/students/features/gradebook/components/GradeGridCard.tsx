@@ -61,7 +61,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
         {/* Row 1: Code tag, Periods, Grade level badge */}
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 font-mono">
+            <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-[#f0f0f0] font-mono">
               {item.code}
             </span>
             <span className="text-xs text-slate-400 font-medium">
@@ -127,7 +127,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
             {item.regularScores.map((sc, i) => (
               <span
                 key={sc.id}
-                className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-semibold border border-slate-200"
+                className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-semibold border border-[#f0f0f0]"
                 title={`${sc.name}: ${sc.score}`}
               >
                 TX{i + 1}: <strong>{sc.score}</strong>

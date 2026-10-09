@@ -121,7 +121,7 @@ export const GpaTrendChart: React.FC<GpaTrendChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="p-4 sm:p-5 border border-slate-200 bg-white rounded-xl shadow-2xs h-full flex flex-col justify-between overflow-hidden">
+    <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs h-full flex flex-col justify-between overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
         <div>
           <div className="flex items-center gap-2 mb-0.5">

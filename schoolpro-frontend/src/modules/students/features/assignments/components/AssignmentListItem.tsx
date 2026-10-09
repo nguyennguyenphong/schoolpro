@@ -60,7 +60,7 @@ export const AssignmentListItem: React.FC<AssignmentListItemProps> = ({
   return (
     <div
       onClick={() => onClick(assignment)}
-      className="bg-white rounded-xl border border-slate-200 shadow-2xs p-4 sm:p-5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs p-4 sm:p-5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
     >
       <div className="space-y-2 flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2">

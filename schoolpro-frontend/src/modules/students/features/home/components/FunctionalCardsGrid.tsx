@@ -41,7 +41,7 @@ export const FunctionalCardsGrid: React.FC<FunctionalCardsGridProps> = ({
       </div>
 
       {features.length === 0 ? (
-        <div className="p-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-xl">
+        <div className="p-8 text-center bg-slate-50 border border-dashed border-[#f0f0f0] rounded-xl">
           <p className="text-sm text-slate-500 mb-0">
             {t("message:empty.noFeatures")}
           </p>

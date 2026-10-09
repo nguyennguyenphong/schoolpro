@@ -63,7 +63,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
       case "archive":
       default:
         return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+          <span className="text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-[#f0f0f0]">
             ZIP Archive
           </span>
         );
@@ -132,10 +132,10 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
 
     // Documents (PDF, Word, PPTX, Excel, ZIP)
     return (
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5">
+      <div className="bg-slate-50 border border-[#f0f0f0] rounded-xl p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-white border border-[#f0f0f0] shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
               <Icon name="fileText" size={26} />
             </div>
             <div>
@@ -158,7 +158,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
         </div>
 
         {/* Simulated Document Preview Page */}
-        <div className="mt-4 p-4 bg-white rounded-lg border border-slate-200 shadow-2xs">
+        <div className="mt-4 p-4 bg-white rounded-lg border border-[#f0f0f0] shadow-2xs">
           <div className="flex items-center justify-between text-xs text-slate-400 pb-2 mb-2 border-b border-slate-100">
             <span>Trang 1 / 15</span>
             <span className="text-emerald-600 font-medium flex items-center gap-1">
@@ -166,7 +166,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               Đã kiểm duyệt sư phạm
             </span>
           </div>
-          <div className="text-xs text-slate-700 leading-relaxed font-sans italic bg-slate-50/60 p-3 rounded border border-dashed border-slate-200">
+          <div className="text-xs text-slate-700 leading-relaxed font-sans italic bg-slate-50/60 p-3 rounded border border-dashed border-[#f0f0f0]">
             {item.description}
           </div>
         </div>
@@ -205,7 +205,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             className={`px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${
               item.isBookmarked
                 ? "bg-amber-50 border-amber-300 text-amber-700"
-                : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                : "border-[#f0f0f0] text-slate-600 hover:bg-slate-50"
             }`}
           >
             <Icon name="bookmark" size={14} className={item.isBookmarked ? "text-amber-600" : "text-slate-400"} />
@@ -237,7 +237,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               <Icon name="fileText" size={14} className="text-blue-600" />
               <span>Nội dung chính / Mục lục tài liệu</span>
             </h4>
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div className="bg-slate-50 border border-[#f0f0f0] rounded-lg p-3">
               <ul className="space-y-1.5 text-xs text-slate-700">
                 {item.tableOfContents.map((toc, idx) => (
                   <li key={idx} className="flex items-start gap-2">

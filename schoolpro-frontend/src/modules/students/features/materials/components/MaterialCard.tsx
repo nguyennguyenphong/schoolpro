@@ -82,7 +82,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
       case "archive":
       default:
         return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 shrink-0">
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-[#f0f0f0] flex items-center gap-1 shrink-0">
             <Icon name="archive" size={12} />
             ZIP • {size}
           </span>
@@ -164,7 +164,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
             className={`p-1.5 rounded-lg border transition-colors shrink-0 ${
               item.isBookmarked
                 ? "bg-amber-50 border-amber-300 text-amber-500"
-                : "border-slate-200 text-slate-300 hover:text-amber-500 hover:border-amber-200"
+                : "border-[#f0f0f0] text-slate-300 hover:text-amber-500 hover:border-amber-200"
             }`}
             title={item.isBookmarked ? "Bỏ lưu yêu thích" : "Lưu vào yêu thích"}
           >

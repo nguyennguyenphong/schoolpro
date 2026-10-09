@@ -53,7 +53,7 @@ export const ExamFilterBar: React.FC<ExamFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+    <div className="bg-white p-2 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
       {/* Navigation Tabs - normal compact style like EvaluationPage */}
       <div className="flex flex-wrap items-center gap-1.5">
         {tabs.map((tab) => {
@@ -80,7 +80,7 @@ export const ExamFilterBar: React.FC<ExamFilterBarProps> = ({
                   className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
                     isActive
                       ? "bg-white/20 text-white"
-                      : "bg-slate-100 text-slate-600 border border-slate-200"
+                      : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
                   }`}
                 >
                   {tab.count}

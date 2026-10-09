@@ -38,7 +38,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
   return (
     <div className="space-y-4">
       {/* Date Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 bg-white border border-slate-200 rounded-xl shadow-2xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 bg-white border border-[#f0f0f0] rounded-xl shadow-2xs">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex flex-col items-center justify-center font-bold shadow-xs">
             <span className="text-[11px] uppercase tracking-wider leading-none">
@@ -96,7 +96,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                   {/* Left: Time and Course Info */}
                   <div className="flex items-start gap-4">
                     {/* Time Pillar */}
-                    <div className="w-28 shrink-0 text-center p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div className="w-28 shrink-0 text-center p-2.5 bg-slate-50 border border-[#f0f0f0] rounded-xl">
                       <span className="text-xs font-mono font-bold text-slate-800 block">
                         {slot.startTime} - {slot.endTime}
                       </span>
@@ -115,7 +115,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                     {/* Main Course Details */}
                     <div className="space-y-1.5 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 bg-slate-100 text-slate-700 rounded border border-slate-200">
+                        <span className="font-mono text-xs font-bold px-2 py-0.5 bg-slate-100 text-slate-700 rounded border border-[#f0f0f0]">
                           {slot.courseCode}
                         </span>
                         <Tag color={slot.classType === "practice" ? "green" : "blue"}>
