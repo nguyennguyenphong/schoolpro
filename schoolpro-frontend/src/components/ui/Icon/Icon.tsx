@@ -14,7 +14,11 @@ export const Icon = ({
   ...props
 }: IconProps) => {
   const IconComponent =
-    iconMap[name];
+    iconMap[name] || iconMap["file"];
+
+  if (!IconComponent) {
+    return null;
+  }
 
   return (
     <IconComponent

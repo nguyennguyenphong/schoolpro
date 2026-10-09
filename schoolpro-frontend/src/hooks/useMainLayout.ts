@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { useNotificationStore } from "@/shared/store/useNotificationStore";
 import { useLogout } from "@/hooks/useLogout";
+import { useUserModules } from "@/hooks/useUserModules";
 import { getRoleHomeRoute, normalizeRoleSlug } from "@/shared/utils/roleRoutes";
 
 /**
  * Universal layout state & metadata hook.
  * Dynamically resolves identity, academic context, unread notifications,
- * and navigation targets across all organizational roles.
+ * dynamic modules navigation, and routes across all organizational roles.
  */
 export const useMainLayout = () => {
   const {
@@ -22,6 +23,17 @@ export const useMainLayout = () => {
   const { logout } = useLogout();
   const unreadCount = useNotificationStore((state) => state.unreadCount);
   const fetchUnreadCount = useNotificationStore((state) => state.fetchUnreadCount);
+
+  const {
+    modules,
+    loading: loadingModules,
+    error: modulesError,
+    isMenuOpen,
+    openMenu,
+    closeMenu,
+    toggleMenu,
+    refetch: refetchModules,
+  } = useUserModules();
 
   useEffect(() => {
     if (!academicContext || !profileContext) {
@@ -118,6 +130,15 @@ export const useMainLayout = () => {
     academicBadgeString,
     unreadNotificationsCount: unreadCount,
     logout,
+    // Modules navigation
+    modules,
+    loadingModules,
+    modulesError,
+    isMenuOpen,
+    openMenu,
+    closeMenu,
+    toggleMenu,
+    refetchModules,
     routes: {
       home: defaultHomeRoute,
       notices: defaultNoticesRoute,
