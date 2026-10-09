@@ -100,6 +100,16 @@
       "guardians": "보호자 정보",
       "health": "교내 보건 기록"
     },
+    "sections": {
+      "personal": "기본 인적사항 및 연락처",
+      "personalDesc": "공식 신적 정보는 학교 학적 데이터베이스와 동기화됩니다",
+      "academic": "학적 및 학급 편성",
+      "academicDesc": "소속 학급, 학년도, 배정 교실 및 담임 교사 정보",
+      "guardians": "학부모 및 법정 보호자",
+      "guardiansDesc": "전자 가정통신문 연계 및 긴급 연락을 위한 학부모 연락처 정보",
+      "health": "교내 보건 및 신체 측정",
+      "healthDesc": "신체 발달 수치, 병력 주의사항 및 학생 건강보험 기록"
+    },
     "primaryContact": "주 연락처",
     "parentCommittee": "학부모회 임원"
   },

@@ -1,6 +1,7 @@
 export type GenderType = "MALE" | "FEMALE" | "OTHER";
 export type AcademicStatus = "STUDYING" | "RESERVED" | "GRADUATED" | "SUSPENDED";
 export type GuardianRelationship = "FATHER" | "MOTHER" | "GUARDIAN";
+export type { ProfileTabKey } from "@/modules/students/features/profile/types/tabs";
 
 export interface StudentPersonalInfo {
   id: string;

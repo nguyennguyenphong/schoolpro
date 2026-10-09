@@ -100,6 +100,16 @@
       "guardians": "监护人与家长",
       "health": "校园医疗健康"
     },
+    "sections": {
+      "personal": "个人基本信息与联络方式",
+      "personalDesc": "正式身份信息已同步自学校官方学籍数据库",
+      "academic": "学籍管理与班级建制",
+      "academicDesc": "班级详情、学年学期、教室位置及班主任老师信息",
+      "guardians": "家长与法定监护人",
+      "guardiansDesc": "用于家校电子联络手册及紧急联络的家庭通讯信息",
+      "health": "校园健康管理与体质记录",
+      "healthDesc": "体质体能指标、过敏病史及学生医疗保险档案"
+    },
     "primaryContact": "主要联络人",
     "parentCommittee": "家委会成员"
   },

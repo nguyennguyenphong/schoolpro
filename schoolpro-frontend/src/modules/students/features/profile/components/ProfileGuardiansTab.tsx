@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { StudentGuardian } from "@/modules/students/features/profile/types";
@@ -26,23 +25,31 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-base font-bold text-slate-800 mb-0.5">
-            Thông tin Phụ huynh & Người giám hộ
-          </h3>
-          <p className="text-xs text-slate-400 mb-0">
-            Dữ liệu liên lạc phục vụ kết nối sổ liên lạc điện tử và thông báo khẩn cấp từ nhà trường.
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="users" size={20} />
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
+              {t("card:profile.sections.guardians")}
+            </h2>
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              {guardians.length} người
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            {t("card:profile.sections.guardiansDesc")}
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {guardians.map((g) => (
-          <Card
+          <div
             key={g.id}
-            className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-4 relative overflow-hidden"
+            className="rounded-xl border border-slate-200 shadow-2xs p-5 bg-white space-y-3.5 relative overflow-hidden"
           >
             <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
               <div className="space-y-1">
@@ -94,7 +101,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
                 </div>
               )}
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

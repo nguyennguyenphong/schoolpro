@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { StudentHealthRecord } from "@/modules/students/features/profile/types";
@@ -12,7 +11,7 @@ interface ProfileHealthTabProps {
 export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
   healthRecord,
 }) => {
-  const { t } = useTranslation(["input"]);
+  const { t } = useTranslation(["card", "input"]);
 
   // Calculate BMI: weight / (height / 100)^2
   const heightM = healthRecord.heightCm / 100;
@@ -29,41 +28,57 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Physical stats card */}
-      <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-5">
-        <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="heart" size={20} />
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
+              {t("card:profile.sections.health")}
+            </h2>
+            <Tag color="cyan" className="font-bold text-xs px-2.5 py-0.5 m-0">
+              BHYT: {healthRecord.insuranceCode}
+            </Tag>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            {t("card:profile.sections.healthDesc")}
+          </p>
+        </div>
+      </div>
+
+      {/* Physical stats section */}
+      <div className="rounded-xl border border-slate-200 p-5 bg-slate-50/50 space-y-4">
+        <div className="flex items-center justify-between pb-1 border-b border-slate-200/60">
           <div>
-            <h3 className="text-base font-bold text-slate-800 mb-0.5">
+            <h3 className="text-sm font-bold text-slate-800 mb-0.5">
               Chỉ số thể chất & Sức khỏe định kỳ
             </h3>
-            <p className="text-xs text-slate-400 mb-0">
+            <p className="text-xs text-slate-500 mb-0">
               Lần khám gần nhất: <strong>{healthRecord.lastCheckupAt}</strong> tại Phòng Y tế học đường
             </p>
           </div>
-          <Tag color="cyan" className="font-bold text-xs px-2.5 py-0.5">
-            BHYT: {healthRecord.insuranceCode}
-          </Tag>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 bg-blue-50/60 border border-blue-100 rounded-xl space-y-1">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          <div className="p-3.5 bg-white border border-slate-200 rounded-xl space-y-1 shadow-2xs">
             <span className="text-xs text-slate-500 font-medium">Chiều cao</span>
-            <p className="text-xl font-extrabold text-blue-700 mb-0">
+            <p className="text-lg sm:text-xl font-extrabold text-blue-700 mb-0">
               {healthRecord.heightCm} <span className="text-xs font-semibold text-slate-500">cm</span>
             </p>
           </div>
 
-          <div className="p-4 bg-emerald-50/60 border border-emerald-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-white border border-slate-200 rounded-xl space-y-1 shadow-2xs">
             <span className="text-xs text-slate-500 font-medium">Cân nặng</span>
-            <p className="text-xl font-extrabold text-emerald-700 mb-0">
+            <p className="text-lg sm:text-xl font-extrabold text-emerald-700 mb-0">
               {healthRecord.weightKg} <span className="text-xs font-semibold text-slate-500">kg</span>
             </p>
           </div>
 
-          <div className="p-4 bg-purple-50/60 border border-purple-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-white border border-slate-200 rounded-xl space-y-1 shadow-2xs">
             <span className="text-xs text-slate-500 font-medium">Chỉ số BMI</span>
             <div className="flex items-center gap-2">
-              <p className="text-xl font-extrabold text-purple-700 mb-0">
+              <p className="text-lg sm:text-xl font-extrabold text-purple-700 mb-0">
                 {bmi}
               </p>
               <Tag color={bmiStatus.color} className="text-[10px] m-0 font-bold">
@@ -72,23 +87,23 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
             </div>
           </div>
 
-          <div className="p-4 bg-rose-50/60 border border-rose-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-white border border-slate-200 rounded-xl space-y-1 shadow-2xs">
             <span className="text-xs text-slate-500 font-medium">Nhóm máu</span>
-            <p className="text-xl font-extrabold text-rose-700 mb-0">
+            <p className="text-lg sm:text-xl font-extrabold text-rose-700 mb-0">
               {healthRecord.bloodType}
             </p>
           </div>
         </div>
-      </Card>
+      </div>
 
-      {/* Clinical details card */}
-      <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-4">
+      {/* Clinical details section */}
+      <div className="rounded-xl border border-slate-200 p-5 bg-white space-y-4">
         <h4 className="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
           <Icon name="checkCircle" size={15} className="text-blue-600" />
           <span>Hồ sơ bệnh án & Lưu ý lâm sàng</span>
         </h4>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
           <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.vision")}</span>
             <p className="font-bold text-slate-800 text-sm mb-0">
@@ -124,7 +139,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
             {healthRecord.notes}
           </p>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Card } from "@/components/ui/Card";
 import type {
   StudentPersonalInfo,
   UpdateProfilePayload,
@@ -13,13 +12,15 @@ import type {
 interface ProfileBasicInfoTabProps {
   personalInfo: StudentPersonalInfo;
   onSave: (payload: UpdateProfilePayload) => Promise<boolean>;
+  disabled?: boolean;
 }
 
 export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
   personalInfo,
   onSave,
+  disabled = false,
 }) => {
-  const { t } = useTranslation(["input", "button", "validation"]);
+  const { t } = useTranslation(["card", "input", "button", "validation"]);
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -41,14 +42,19 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
   };
 
   return (
-    <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-6">
-      <div className="border-b border-slate-100 pb-4">
-        <h3 className="text-base font-bold text-slate-800 mb-1">
-          Thông tin cá nhân & Liên lạc
-        </h3>
-        <p className="text-xs text-slate-400 mb-0">
-          Các thông tin định danh chính thức được đồng bộ từ Cơ sở dữ liệu trường học.
-        </p>
+    <>
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="user" size={20} />
+        </span>
+        <div>
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
+            {t("card:profile.sections.personal")}
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            {t("card:profile.sections.personalDesc")}
+          </p>
+        </div>
       </div>
 
       <Form
@@ -164,18 +170,18 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
           <Button
             htmlType="submit"
             variant="primary"
-            disabled={isSubmitting}
+            disabled={isSubmitting || disabled}
             className="px-6"
           >
             <Icon
-              name={isSubmitting ? "loading" : "check"}
+              name={isSubmitting || disabled ? "loading" : "check"}
               size={14}
-              className={isSubmitting ? "animate-spin" : ""}
+              className={isSubmitting || disabled ? "animate-spin" : ""}
             />
             {t("button:saveChanges")}
           </Button>
         </div>
       </Form>
-    </Card>
+    </>
   );
 };

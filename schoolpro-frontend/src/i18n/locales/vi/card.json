@@ -100,6 +100,16 @@
       "guardians": "Người giám hộ",
       "health": "Y tế học đường"
     },
+    "sections": {
+      "personal": "Thông tin cá nhân & Liên lạc",
+      "personalDesc": "Các thông tin định danh chính thức được đồng bộ từ Cơ sở dữ liệu trường học",
+      "academic": "Học vụ & Biên chế Lớp học",
+      "academicDesc": "Chi tiết lớp học, niên khóa, phòng học và giáo viên chủ nhiệm",
+      "guardians": "Phụ huynh & Người giám hộ",
+      "guardiansDesc": "Dữ liệu liên lạc phục vụ kết nối sổ liên lạc điện tử và thông báo khẩn cấp từ nhà trường",
+      "health": "Y tế học đường & Thể chất",
+      "healthDesc": "Chỉ số thể chất, tiền sử bệnh án và hồ sơ bảo hiểm y tế học sinh"
+    },
     "primaryContact": "Liên hệ chính",
     "parentCommittee": "Ban đại diện CMHS"
   },

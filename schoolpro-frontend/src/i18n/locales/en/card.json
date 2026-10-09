@@ -100,6 +100,16 @@
       "guardians": "Guardians & Parents",
       "health": "Campus Healthcare"
     },
+    "sections": {
+      "personal": "Personal Information & Contact",
+      "personalDesc": "Official identity details synchronized from the school database",
+      "academic": "Academic Records & Class Roster",
+      "academicDesc": "Class details, academic year, classroom location, and homeroom teacher",
+      "guardians": "Parents & Guardians",
+      "guardiansDesc": "Contact details for parent-teacher electronic portal and emergency contact",
+      "health": "Campus Healthcare & Physical Profile",
+      "healthDesc": "Physical metrics, medical history, and student health insurance records"
+    },
     "primaryContact": "Primary Contact",
     "parentCommittee": "Parent Committee"
   },

@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { StudentAcademicInfo } from "@/modules/students/features/profile/types";
@@ -12,80 +11,83 @@ interface ProfileAcademicTabProps {
 export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
   academicInfo,
 }) => {
-  const { t } = useTranslation(["input"]);
+  const { t } = useTranslation(["card", "input"]);
   const { homeroomTeacher } = academicInfo;
 
   return (
     <div className="space-y-6">
-      {/* Class & School Details */}
-      <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-5">
-        <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
-          <div>
-            <h3 className="text-base font-bold text-slate-800 mb-0.5">
-              Học vụ & Biên chế Lớp học
-            </h3>
-            <p className="text-xs text-slate-400 mb-0">
-              {academicInfo.schoolName} • Niên khóa 2026 - 2029
-            </p>
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="academic" size={20} />
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
+              {t("card:profile.sections.academic")}
+            </h2>
+            <Tag color="blue" className="font-bold text-xs px-2.5 py-0.5 m-0">
+              {academicInfo.className}
+            </Tag>
           </div>
-          <Tag color="blue" className="font-bold text-xs px-3 py-1">
-            {academicInfo.className}
-          </Tag>
+          <p className="text-xs sm:text-sm text-slate-500 mb-0">
+            {t("card:profile.sections.academicDesc")}
+          </p>
+        </div>
+      </div>
+
+      {/* Class & Academic Information Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.className")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            Lớp {academicInfo.className} ({academicInfo.gradeLevel})
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.className")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              Lớp {academicInfo.className} ({academicInfo.gradeLevel})
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              {academicInfo.classroom}
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.academicYear")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              {academicInfo.academicYear}
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.admissionDate")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              {academicInfo.admissionDate}
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.graduationDate")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              {academicInfo.graduationDate || "Dự kiến 2029"}
-            </p>
-          </div>
-
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-            <span className="text-slate-400 font-medium">{t("input:labels.boarding")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0">
-              {academicInfo.isBoarder ? "Nội trú" : "Ngoại trú / Đi về"}
-            </p>
-          </div>
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.classroom}
+          </p>
         </div>
-      </Card>
 
-      {/* Homeroom Teacher Details Card */}
-      <Card className="rounded-2xl border-slate-200 shadow-xs p-6 bg-white space-y-4">
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.academicYear")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.academicYear}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.admissionDate")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.admissionDate}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.graduationDate")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.graduationDate || "Dự kiến 2029"}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.boarding")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.isBoarder ? "Nội trú" : "Ngoại trú / Đi về"}
+          </p>
+        </div>
+      </div>
+
+      {/* Homeroom Teacher Details Section */}
+      <div className="rounded-xl border border-slate-200 p-5 bg-slate-50/50 space-y-3">
         <h4 className="text-sm font-bold text-slate-800 mb-0 flex items-center gap-2">
           <Icon name="user" size={16} className="text-blue-600" />
           <span>Giáo viên chủ nhiệm lớp</span>
         </h4>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-blue-50/50 border border-blue-100 rounded-xl gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-slate-200 rounded-xl gap-4">
           <div className="space-y-1">
             <span className="text-xs text-blue-600 font-semibold uppercase tracking-wider">
               {homeroomTeacher.subject}
@@ -113,7 +115,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
             </a>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

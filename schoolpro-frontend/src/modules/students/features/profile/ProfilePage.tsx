@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { Tabs } from "@/components/ui/Tabs";
-import { Spin } from "@/components/ui/Spin";
+import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
+import type { ProfileTabKey } from "@/modules/students/features/profile/types";
 import { useProfile } from "@/modules/students/features/profile/hooks/useProfile";
 import { ProfileHeaderCard } from "@/modules/students/features/profile/components/ProfileHeaderCard";
+import { ProfileTabs } from "@/modules/students/features/profile/components/ProfileTabs";
 import { ProfileBasicInfoTab } from "@/modules/students/features/profile/components/ProfileBasicInfoTab";
 import { ProfileAcademicTab } from "@/modules/students/features/profile/components/ProfileAcademicTab";
 import { ProfileGuardiansTab } from "@/modules/students/features/profile/components/ProfileGuardiansTab";
@@ -13,83 +15,42 @@ import { ProfileHealthTab } from "@/modules/students/features/profile/components
 
 export const ProfilePage: React.FC = () => {
   const { t } = useTranslation(["navigation", "card", "common", "input"]);
-  const { profile, loading, updateBasicInfo, updateAvatar } = useProfile();
-  const [activeTab, setActiveTab] = useState<string>("basic");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  if (loading || !profile) {
-    return (
-      <div className="flex items-center justify-center min-h-100">
-        <Spin size="large" />
-      </div>
-    );
-  }
+  const {
+    profile,
+    loading,
+    updating,
+    updateBasicInfo,
+    updateAvatar,
+  } = useProfile();
 
-  const tabItems = [
-    {
-      key: "basic",
-      label: (
-        <span className="inline-flex items-center gap-2 font-medium text-xs sm:text-sm">
-          <Icon name="user" size={15} />
-          <span>{t("card:profile.tabs.personal")}</span>
-        </span>
-      ),
-      children: (
-        <div className="pt-2">
-          <ProfileBasicInfoTab
-            personalInfo={profile.personalInfo}
-            onSave={updateBasicInfo}
-          />
-        </div>
-      ),
-    },
-    {
-      key: "academic",
-      label: (
-        <span className="inline-flex items-center gap-2 font-medium text-xs sm:text-sm">
-          <Icon name="academic" size={15} />
-          <span>{t("card:profile.tabs.academic")}</span>
-        </span>
-      ),
-      children: (
-        <div className="pt-2">
-          <ProfileAcademicTab academicInfo={profile.academicInfo} />
-        </div>
-      ),
-    },
-    {
-      key: "guardians",
-      label: (
-        <span className="inline-flex items-center gap-2 font-medium text-xs sm:text-sm">
-          <Icon name="users" size={15} />
-          <span>{t("card:profile.tabs.guardians")}</span>
-        </span>
-      ),
-      children: (
-        <div className="pt-2">
-          <ProfileGuardiansTab guardians={profile.guardians} />
-        </div>
-      ),
-    },
-    {
-      key: "health",
-      label: (
-        <span className="inline-flex items-center gap-2 font-medium text-xs sm:text-sm">
-          <Icon name="heart" size={15} />
-          <span>{t("card:profile.tabs.health")}</span>
-        </span>
-      ),
-      children: (
-        <div className="pt-2">
-          <ProfileHealthTab healthRecord={profile.healthRecord} />
-        </div>
-      ),
-    },
-  ];
+  // Read active tab from URL query params (supports aliases like basic, info, personal)
+  const tabParam = searchParams.get("tab");
+  const activeTab: ProfileTabKey =
+    tabParam === "academic"
+      ? "academic"
+      : tabParam === "guardians" || tabParam === "parents"
+      ? "guardians"
+      : tabParam === "health" || tabParam === "medical"
+      ? "health"
+      : "personal";
+
+  // Push active tab change to URL query params
+  const handleTabChange = (nextTab: ProfileTabKey) => {
+    setSearchParams((prev) => {
+      const updated = new URLSearchParams(prev);
+      updated.set("tab", nextTab);
+      return updated;
+    });
+  };
+
+  const guardiansCount = profile?.guardians?.length ?? 0;
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2x">
         <Breadcrumb
           items={[
             {
@@ -127,23 +88,50 @@ export const ProfilePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Profile Header Card */}
-      <div>
+      {/* 2. Profile Header Overview Card */}
+      {profile && (
         <ProfileHeaderCard
           profile={profile}
           onUpdateAvatar={updateAvatar}
         />
+      )}
+
+      {/* 3. Separate Tab Navigation Bar inside Card component */}
+      <div className="mb-4 mt-4">
+        <Card className="shadow-2xs">
+          <ProfileTabs
+            activeTab={activeTab}
+            guardiansCount={guardiansCount}
+            onTabChange={handleTabChange}
+          />
+        </Card>
       </div>
 
-      {/* 4. Tab Container */}
-      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs">
-        <Tabs
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          items={tabItems}
-          type="line"
-        />
-      </div>
+      {/* 4. Tab Content Section inside separate Card component */}
+      <Card
+        loading={loading && !profile}
+        className="shadow-2xs"
+      >
+        {profile && activeTab === "personal" && (
+          <ProfileBasicInfoTab
+            personalInfo={profile.personalInfo}
+            onSave={updateBasicInfo}
+            disabled={updating}
+          />
+        )}
+
+        {profile && activeTab === "academic" && (
+          <ProfileAcademicTab academicInfo={profile.academicInfo} />
+        )}
+
+        {profile && activeTab === "guardians" && (
+          <ProfileGuardiansTab guardians={profile.guardians} />
+        )}
+
+        {profile && activeTab === "health" && (
+          <ProfileHealthTab healthRecord={profile.healthRecord} />
+        )}
+      </Card>
     </div>
   );
 };

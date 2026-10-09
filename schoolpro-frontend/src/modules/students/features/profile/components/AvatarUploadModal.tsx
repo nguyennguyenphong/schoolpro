@@ -67,7 +67,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({
       centered
     >
       <div className="space-y-6 pt-2">
-        <p className="text-xs text-slate-500 mb-0">
+        <p className="text-xs text-slate-500 mb-2">
           {t("modal:avatarModalDesc")}
         </p>
 
@@ -78,14 +78,14 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({
             src={selectedUrl}
             className="ring-4 ring-blue-500/20 shadow-md"
           />
-          <span className="text-xs text-slate-400 font-medium">
+          <span className="text-xs text-slate-400 font-medium mt-2">
             Preview
           </span>
         </div>
 
         {/* Preset list */}
         <div className="space-y-2.5">
-          <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-0">
+          <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
             <Icon name="user" size={14} className="text-blue-600" />
             <span>{t("modal:choosePresetAvatar")}</span>
           </h4>

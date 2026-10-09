@@ -100,6 +100,16 @@
       "guardians": "保護者情報",
       "health": "校内健康管理"
     },
+    "sections": {
+      "personal": "個人基本情報と連絡先",
+      "personalDesc": "正式な身元情報は学校の公式学籍データベースから同期されています",
+      "academic": "学籍情報と学級編成",
+      "academicDesc": "クラス詳細、学年、教室配置、担任教員の情報",
+      "guardians": "保護者および法定代理人",
+      "guardiansDesc": "連絡帳連携および緊急連絡用の保護者連絡先データ",
+      "health": "校内健康管理と身体測定",
+      "healthDesc": "身体測定指標、既往歴、健康保険証番号の記録"
+    },
     "primaryContact": "主連絡先",
     "parentCommittee": "PTA役員"
   },
