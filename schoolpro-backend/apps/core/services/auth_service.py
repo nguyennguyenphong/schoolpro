@@ -191,7 +191,7 @@ class AuthService(BaseService):
             pass
 
         # 6. Record successful login history
-        session_identifier = str(refresh.access_token.get("jti") or refresh.get("jti") or "")
+        session_identifier = str(refresh.get("jti") or "")
         self.login_history_service.record_login(
             request=request,
             user=user,

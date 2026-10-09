@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { httpClient } from "@/shared/api/httpClient";
+import { authService } from "@/shared/services/authService";
 import type {
   AcademicContext,
   ApiResponse,
@@ -41,7 +42,7 @@ interface AuthState {
   syncSession: () => Promise<void>;
   // Backward compatibility method
   login: (role: string, token: string) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   initialize: () => void;
 }
 
@@ -223,20 +224,29 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     });
   },
 
-  logout: () => {
-    Object.values(STORAGE_KEYS).forEach((k) => safeRemoveItem(k));
+  logout: async () => {
+    const refresh = get().refreshToken || safeGetItem(STORAGE_KEYS.REFRESH);
+    try {
+      if (refresh) {
+        await authService.logout(refresh);
+      }
+    } catch {
+      // Ignore network errors on logout
+    } finally {
+      Object.values(STORAGE_KEYS).forEach((k) => safeRemoveItem(k));
 
-    set({
-      isAuthenticated: false,
-      accessToken: null,
-      refreshToken: null,
-      role: null,
-      roleDetail: null,
-      user: null,
-      academicContext: null,
-      profileContext: null,
-      isInitialized: true,
-    });
+      set({
+        isAuthenticated: false,
+        accessToken: null,
+        refreshToken: null,
+        role: null,
+        roleDetail: null,
+        user: null,
+        academicContext: null,
+        profileContext: null,
+        isInitialized: true,
+      });
+    }
   },
 
   initialize: () => {

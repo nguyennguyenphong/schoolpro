@@ -143,28 +143,46 @@ class LoginHistoryService(BaseService):
             if not resolved_session and request and hasattr(request, "session"):
                 resolved_session = getattr(request.session, "session_key", None)
 
-            query = LoginHistory.objects.filter(is_active_session=True)
+            target_user = user
+            if (
+                not target_user
+                and request
+                and getattr(request, "user", None)
+                and request.user.is_authenticated
+            ):
+                target_user = request.user
+
+            recent_session = None
+
+            # 1. Match active session by session_id
             if resolved_session:
-                query = query.filter(session_id=resolved_session)
-            elif user:
-                query = query.filter(user=user)
-            else:
+                recent_session = (
+                    LoginHistory.objects.filter(is_active_session=True, session_id=resolved_session)
+                    .order_by("-login_at")
+                    .first()
+                )
+
+            # 2. Fallback to most recent active session for this user
+            if not recent_session and target_user:
+                recent_session = (
+                    LoginHistory.objects.filter(is_active_session=True, user=target_user)
+                    .order_by("-login_at")
+                    .first()
+                )
+
+            if not recent_session:
                 return False
 
-            recent_session = query.order_by("-login_at").first()
-            if recent_session:
-                recent_session.is_active_session = False
-                recent_session.logout_at = timezone.now()
-                recent_session.logout_type = self._normalize_logout_type(logout_type)
-                recent_session.save(update_fields=["is_active_session", "logout_at", "logout_type"])
-                logger.info(
-                    "Session deactivated for user '%s' (session: %s)",
-                    recent_session.username_attempt,
-                    recent_session.session_id,
-                )
-                return True
-
-            return False
+            recent_session.is_active_session = False
+            recent_session.logout_at = timezone.now()
+            recent_session.logout_type = self._normalize_logout_type(logout_type)
+            recent_session.save(update_fields=["is_active_session", "logout_at", "logout_type"])
+            logger.info(
+                "Session deactivated for user '%s' (session: %s)",
+                recent_session.username_attempt,
+                recent_session.session_id,
+            )
+            return True
         except Exception as exc:
             logger.error("Failed to update logout history: %s", exc)
             return False

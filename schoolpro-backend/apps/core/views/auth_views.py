@@ -118,14 +118,13 @@ class AuthLogoutView(APIView):
     )
     def post(self, request):
         refresh_token = request.data.get("refresh")
-        token_access_key = None
+        session_identifier = None
         user_to_logout = None
 
         if refresh_token:
             try:
                 token = RefreshToken(refresh_token)
-                token_access_key = str(token.access_token)
-                # If token has user_id claim
+                session_identifier = str(token.get("jti") or "")
                 token_user_id = token.get("user_id")
                 if token_user_id:
                     from apps.core.models.user import User
@@ -134,6 +133,9 @@ class AuthLogoutView(APIView):
                 token.blacklist()
             except Exception:
                 pass
+
+        if not session_identifier and hasattr(request, "auth") and isinstance(request.auth, dict):
+            session_identifier = str(request.auth.get("jti") or "")
 
         if not user_to_logout and getattr(request, "user", None) and request.user.is_authenticated:
             user_to_logout = request.user
@@ -144,7 +146,7 @@ class AuthLogoutView(APIView):
             request=request,
             user=user_to_logout,
             logout_type="USER_INITIATED",
-            session_id=token_access_key,
+            session_id=session_identifier,
         )
 
         return APIResponse.success(

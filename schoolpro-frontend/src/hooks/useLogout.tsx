@@ -18,8 +18,8 @@ export const useLogout = () => {
         danger: true,
       },
 
-      onOk: () => {
-        logout();
+      onOk: async () => {
+        await logout();
 
         message.success(
           t("message:logoutSuccess"),
