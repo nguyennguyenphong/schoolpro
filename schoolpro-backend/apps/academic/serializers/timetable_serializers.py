@@ -15,6 +15,7 @@ class TimetableSlotResponseSerializer(serializers.Serializer):
     courseCode = serializers.CharField()
     courseName = serializers.CharField()
     classCode = serializers.CharField()
+    className = serializers.CharField(allow_blank=True, required=False)
     credits = serializers.IntegerField(default=2)
     dayOfWeek = serializers.IntegerField()
     date = serializers.CharField()

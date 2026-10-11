@@ -32,12 +32,20 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
         </span>
       )}
 
-      {/* Top Section: Info 1 -> 6 */}
+      {/* Top Section: Môn học, Lớp, Phòng, Thời gian, Giáo viên & Email, Hình thức */}
       <div className="space-y-2.5">
-        {/* 1. Môn học */}
+        {/* 1. Môn học & Lớp (Không hiển thị mã code) */}
         <div className="pb-2 border-b border-slate-100 min-h-14.5">
-          <div className="text-[11px] font-mono font-medium text-slate-500 mb-0.5 truncate">
-            {slot.courseCode} • {t("card:timetable.classLabel", { classCode: slot.classCode })}
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+              <Icon name="academic" size={12} className="text-blue-600 shrink-0" />
+              <span>
+                {t("card:timetable.classLabel", {
+                  classCode: slot.className || slot.classCode,
+                  defaultValue: `Lớp ${slot.className || slot.classCode}`,
+                })}
+              </span>
+            </span>
           </div>
           <h4
             className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 mb-0"
@@ -54,22 +62,22 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
             size={14}
             className="text-slate-400 shrink-0 mt-0.5"
           />
-          <div className="leading-snug">
-            <span className="font-semibold text-slate-800">
-              {slot.room}
-            </span>
-            <span className="text-slate-500">
-              {" "}• {slot.building}
-            </span>
+          <div className="leading-snug space-y-0.5">
+            <div className="font-semibold text-slate-800">
+              <span>{slot.room}</span>
+              {slot.building && (
+                <span className="font-normal text-slate-500"> • {slot.building}</span>
+              )}
+            </div>
             {slot.campus && (
-              <div className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-[11px] text-slate-400">
                 {slot.campus}
               </div>
             )}
           </div>
         </div>
 
-        {/* 3. Giờ học */}
+        {/* 3. Thời gian học & Tiết mấy */}
         <div className="flex items-center gap-2 text-xs text-slate-700">
           <Icon
             name="clock"
@@ -80,22 +88,41 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
             <span>
               {slot.startTime} - {slot.endTime}
             </span>
-            <span className="text-slate-500 text-[11px] ml-1">
+            <span className="text-slate-500 text-[11px] ml-1.5 font-normal">
               ({slot.periods})
             </span>
           </div>
         </div>
 
-        {/* 4. Người dạy */}
-        <div className="flex items-center gap-2 text-xs text-slate-700">
-          <Icon
-            name="user"
-            size={14}
-            className="text-slate-400 shrink-0"
-          />
-          <span className="font-medium text-slate-800 truncate" title={slot.instructorName}>
-            {slot.instructorName}
-          </span>
+        {/* 4. Giáo viên & Email liên hệ giáo viên */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs text-slate-700">
+            <Icon
+              name="user"
+              size={14}
+              className="text-slate-400 shrink-0"
+            />
+            <span className="font-semibold text-slate-800 truncate" title={slot.instructorName}>
+              {slot.instructorName}
+            </span>
+          </div>
+          {slot.instructorEmail ? (
+            <div className="flex items-center gap-2 text-xs text-slate-600">
+              <Icon
+                name="mail"
+                size={13}
+                className="text-slate-400 shrink-0"
+              />
+              <a
+                href={`mailto:${slot.instructorEmail}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-blue-600 hover:text-blue-800 hover:underline truncate text-[11px] font-medium"
+                title={slot.instructorEmail}
+              >
+                {slot.instructorEmail}
+              </a>
+            </div>
+          ) : null}
         </div>
 
         {/* 5. Hình thức học */}
@@ -125,7 +152,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
         </div>
       </div>
 
-      {/* Bottom Section: Info 7 -> 8 */}
+      {/* Bottom Section: Ghi chú & Liên kết khác */}
       <div className="space-y-2 pt-2.5 border-t border-slate-100">
         {/* 7. Ghi chú */}
         <div className="text-xs">

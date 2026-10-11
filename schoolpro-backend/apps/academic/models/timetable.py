@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from common.models.base import UUIDModel
@@ -10,6 +12,27 @@ class Timetable(UUIDModel):
     Database Table: "academic"."timetables"
     Description: Weekly recurring timetable schedule slots by class, day of week, period, and venue
     """
+
+    class DayOfWeek(models.IntegerChoices):
+        MONDAY = 2, "Thứ Hai (2)"
+        TUESDAY = 3, "Thứ Ba (3)"
+        WEDNESDAY = 4, "Thứ Tư (4)"
+        THURSDAY = 5, "Thứ Năm (5)"
+        FRIDAY = 6, "Thứ Sáu (6)"
+        SATURDAY = 7, "Thứ Bảy (7)"
+        SUNDAY = 8, "Chủ Nhật (CN)"
+
+    class ClassType(models.TextChoices):
+        THEORY = "THEORY", "Lý thuyết"
+        PRACTICE = "PRACTICE", "Thực hành"
+        SEMINAR = "SEMINAR", "Chuyên đề / Seminar"
+        EXAM = "EXAM", "Kiểm tra / Thi"
+        EXTRACURRICULAR = "EXTRACURRICULAR", "Ngoại khóa"
+
+    class LearningMode(models.TextChoices):
+        OFFLINE = "OFFLINE", "Trực tiếp (Offline)"
+        ONLINE = "ONLINE", "Trực tuyến (Online)"
+        HYBRID = "HYBRID", "Kết hợp (Hybrid)"
 
     school_class = models.ForeignKey(
         "core.SchoolClass",
@@ -25,7 +48,11 @@ class Timetable(UUIDModel):
         related_name="+",
         db_comment="semester_id foreign key",
     )
-    day_of_week = models.SmallIntegerField()
+    day_of_week = models.SmallIntegerField(
+        choices=DayOfWeek.choices,
+        validators=[MinValueValidator(2), MaxValueValidator(8)],
+        help_text="Thứ trong tuần (2: Thứ Hai, ..., 8: Chủ Nhật)",
+    )
     period = models.ForeignKey(
         "academic.Period",
         on_delete=models.CASCADE,
@@ -51,11 +78,13 @@ class Timetable(UUIDModel):
     )
     class_type = models.CharField(
         max_length=20,
-        default="THEORY",
+        choices=ClassType.choices,
+        default=ClassType.THEORY,
     )
     learning_mode = models.CharField(
         max_length=20,
-        default="OFFLINE",
+        choices=LearningMode.choices,
+        default=LearningMode.OFFLINE,
     )
     is_online = models.BooleanField(
         default=False,
@@ -102,8 +131,33 @@ class Timetable(UUIDModel):
         verbose_name = "Timetable"
         verbose_name_plural = "Timetables"
 
+    def clean(self):
+        super().clean()
+        if self.day_of_week is not None and not (2 <= self.day_of_week <= 8):
+            raise ValidationError(
+                {
+                    "day_of_week": "Thứ trong tuần (day_of_week) phải từ 2 (Thứ Hai) đến 8 (Chủ Nhật)."
+                }
+            )
+        if self.class_type and self.class_type not in self.ClassType.values:
+            raise ValidationError(
+                {
+                    "class_type": f"Loại lớp học không hợp lệ. Chọn một trong: {', '.join(self.ClassType.values)}."
+                }
+            )
+        if self.learning_mode and self.learning_mode not in self.LearningMode.values:
+            raise ValidationError(
+                {
+                    "learning_mode": f"Hình thức học không hợp lệ. Chọn một trong: {', '.join(self.LearningMode.values)}."
+                }
+            )
+        if self.effective_from and self.effective_to and self.effective_from > self.effective_to:
+            raise ValidationError(
+                {"effective_to": "Ngày kết thúc hiệu lực phải sau hoặc bằng ngày bắt đầu hiệu lực."}
+            )
+
     def __str__(self) -> str:
-        return f"Timetable ({self.pk})"
+        return f"{self.school_class} - {self.get_day_of_week_display()} - {self.period}"
 
     def __repr__(self) -> str:
         return f"<Timetable {self.pk}>"
@@ -117,6 +171,19 @@ class TimetableChange(UUIDModel):
     Description: Daily operational substitutions and room change logs
     """
 
+    class ChangeType(models.TextChoices):
+        SUBSTITUTE_TEACHER = "SUBSTITUTE_TEACHER", "Dạy thay (Substitute Teacher)"
+        ROOM_CHANGE = "ROOM_CHANGE", "Đổi phòng học (Room Change)"
+        CANCELLED = "CANCELLED", "Hủy tiết (Cancelled)"
+        MAKE_UP_CLASS = "MAKE_UP_CLASS", "Học bù (Make-up Class)"
+        PERIOD_SWAP = "PERIOD_SWAP", "Đổi tiết (Period Swap)"
+
+    class ChangeStatus(models.TextChoices):
+        PENDING = "PENDING", "Chờ duyệt (Pending)"
+        APPROVED = "APPROVED", "Đã duyệt (Approved)"
+        REJECTED = "REJECTED", "Từ chối (Rejected)"
+        CANCELLED = "CANCELLED", "Đã hủy (Cancelled)"
+
     timetable = models.ForeignKey(
         "academic.Timetable",
         on_delete=models.CASCADE,
@@ -127,6 +194,8 @@ class TimetableChange(UUIDModel):
     change_date = models.DateField()
     change_type = models.CharField(
         max_length=20,
+        choices=ChangeType.choices,
+        default=ChangeType.ROOM_CHANGE,
     )
     substitute_teacher = models.ForeignKey(
         "core.Teacher",
@@ -175,7 +244,8 @@ class TimetableChange(UUIDModel):
     rejection_reason = models.TextField(null=True, blank=True)
     status = models.CharField(
         max_length=20,
-        default="PENDING",
+        choices=ChangeStatus.choices,
+        default=ChangeStatus.APPROVED,
     )
     is_notified_to_class = models.BooleanField(default=False)
     notes = models.TextField(null=True, blank=True)
@@ -190,8 +260,23 @@ class TimetableChange(UUIDModel):
         verbose_name_plural = "Timetable Changes"
         ordering = ["-created_at"]
 
+    def clean(self):
+        super().clean()
+        if self.change_type and self.change_type not in self.ChangeType.values:
+            raise ValidationError(
+                {
+                    "change_type": f"Loại thay đổi không hợp lệ. Chọn một trong: {', '.join(self.ChangeType.values)}."
+                }
+            )
+        if self.status and self.status not in self.ChangeStatus.values:
+            raise ValidationError(
+                {
+                    "status": f"Trạng thái không hợp lệ. Chọn một trong: {', '.join(self.ChangeStatus.values)}."
+                }
+            )
+
     def __str__(self) -> str:
-        return f"TimetableChange ({self.pk})"
+        return f"{self.timetable} - {self.get_change_type_display()} on {self.change_date}"
 
     def __repr__(self) -> str:
         return f"<TimetableChange {self.pk}>"

@@ -150,7 +150,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                           <span>{slot.instructorName}</span>
                         </div>
                         <div>
-                          <span>Lớp: <strong>{slot.classCode}</strong></span>
+                          <span>Lớp: <strong>{slot.className || slot.classCode}</strong></span>
                         </div>
                       </div>
                     </div>

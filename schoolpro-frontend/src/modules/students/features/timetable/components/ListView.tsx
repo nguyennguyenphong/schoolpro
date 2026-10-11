@@ -93,7 +93,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
               {/* Course & Class */}
               <div className="space-y-1">
                 <div className="text-[11px] font-mono text-slate-500">
-                  {slot.courseCode} • {t("card:timetable.classLabel", { classCode: slot.classCode })}
+                  {slot.courseCode} • {t("card:timetable.classLabel", { classCode: slot.className || slot.classCode })}
                 </div>
                 <h4 className="text-sm font-bold text-slate-900 mb-0">
                   {slot.courseName}
@@ -223,7 +223,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
                         {slot.courseName}
                       </span>
                       <span className="text-slate-400 text-[11px] ml-1.5">
-                        ({t("card:timetable.classLabel", { classCode: slot.classCode })} • {t("card:timetable.periodsPerWeek", { count: slot.credits })})
+                        ({t("card:timetable.classLabel", { classCode: slot.className || slot.classCode })} • {t("card:timetable.periodsPerWeek", { count: slot.credits })})
                       </span>
                     </td>
 

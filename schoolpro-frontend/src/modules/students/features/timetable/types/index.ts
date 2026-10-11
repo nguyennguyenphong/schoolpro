@@ -11,6 +11,7 @@ export interface TimetableSlot {
   courseCode: string;
   courseName: string;
   classCode: string;
+  className?: string;
   credits: number;
   dayOfWeek: 2 | 3 | 4 | 5 | 6 | 7 | 8; // 2 = Thứ 2, ..., 8 = Chủ Nhật
   date: string; // "YYYY-MM-DD"

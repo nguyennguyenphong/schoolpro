@@ -98,6 +98,49 @@ class TimetableAdmin(admin.ModelAdmin):
     ]
     list_filter = ["school_class", "semester", "day_of_week", "class_type", "learning_mode"]
     autocomplete_fields = ["school_class", "semester", "period", "class_subject_teacher", "room"]
+    fieldsets = [
+        (
+            "Thông tin lịch học",
+            {
+                "fields": [
+                    ("school_class", "semester"),
+                    ("day_of_week", "period"),
+                    ("class_subject_teacher", "room"),
+                ],
+                "description": "Thứ trong tuần: 2 (Thứ Hai), 3 (Thứ Ba), 4 (Thứ Tư), 5 (Thứ Năm), 6 (Thứ Sáu), 7 (Thứ Bảy), 8 (Chủ Nhật).",
+            },
+        ),
+        (
+            "Hình thức đào tạo & Chi tiết bài giảng",
+            {
+                "fields": [
+                    ("class_type", "learning_mode"),
+                    ("is_online", "online_url"),
+                    "meeting_passcode",
+                    "lesson_topic",
+                    ("color_theme", "notes"),
+                ]
+            },
+        ),
+        (
+            "Thời gian hiệu lực",
+            {
+                "fields": [
+                    ("effective_from", "effective_to"),
+                ]
+            },
+        ),
+        (
+            "Cấu hình nâng cao",
+            {
+                "classes": ["collapse"],
+                "fields": [
+                    "curriculum_material_ids",
+                    "settings",
+                ],
+            },
+        ),
+    ]
 
 
 @admin.register(TimetableChange)

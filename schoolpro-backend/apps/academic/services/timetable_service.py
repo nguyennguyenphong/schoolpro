@@ -40,6 +40,9 @@ class TimetableService:
                 )
                 if enrollment:
                     return str(enrollment.school_class_id)
+                # Fallback to current_class field on Student profile
+                if getattr(student, "current_class_id", None):
+                    return str(student.current_class_id)
         except Exception as e:
             logger.warning(f"Unable to resolve student class for user {user.id}: {e}")
 
@@ -207,7 +210,8 @@ class TimetableService:
                 "id": str(item.id),
                 "courseCode": subject.code if subject else "HP01",
                 "courseName": subject.name if subject else "Học phần",
-                "classCode": school_class.code if school_class else "10A1",
+                "classCode": school_class.name if school_class else "10A1",
+                "className": school_class.name if school_class else "10A1",
                 "credits": getattr(cst, "periods_per_week", 2) or 2,
                 "dayOfWeek": item.day_of_week,
                 "date": slot_date_str,

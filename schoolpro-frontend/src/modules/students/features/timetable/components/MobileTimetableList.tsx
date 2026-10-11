@@ -135,8 +135,16 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                         <div className="space-y-2">
                           <div className="flex items-start justify-between gap-2">
                             <div>
-                              <div className="text-[11px] font-mono text-slate-500 font-medium">
-                                {slot.courseCode} • {t("card:timetable.classLabel", { classCode: slot.classCode })}
+                              <div className="mb-1">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                                  <Icon name="academic" size={12} className="text-blue-600 shrink-0" />
+                                  <span>
+                                    {t("card:timetable.classLabel", {
+                                      classCode: slot.className || slot.classCode,
+                                      defaultValue: `Lớp ${slot.className || slot.classCode}`,
+                                    })}
+                                  </span>
+                                </span>
                               </div>
                               <h4 className="text-sm font-bold text-slate-900 mt-0.5 mb-0">
                                 {slot.courseName}
@@ -170,10 +178,23 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                             </div>
                             <div className="flex items-center gap-1.5">
                               <Icon name="user" size={13} className="text-slate-400 shrink-0" />
-                              <span className="truncate" title={slot.instructorName}>
+                              <span className="truncate font-medium text-slate-800" title={slot.instructorName}>
                                 {slot.instructorName}
                               </span>
                             </div>
+                            {slot.instructorEmail ? (
+                              <div className="flex items-center gap-1.5">
+                                <Icon name="mail" size={13} className="text-slate-400 shrink-0" />
+                                <a
+                                  href={`mailto:${slot.instructorEmail}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-blue-600 hover:text-blue-800 hover:underline truncate text-[11px] font-medium"
+                                  title={slot.instructorEmail}
+                                >
+                                  {slot.instructorEmail}
+                                </a>
+                              </div>
+                            ) : null}
                             <div className="flex items-center justify-between gap-1.5">
                               <Tag
                                 color={isOnline ? "purple" : "cyan"}
