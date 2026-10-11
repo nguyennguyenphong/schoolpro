@@ -16,12 +16,14 @@ Mục tiêu của bạn là tạo ra code:
 
 ### 0. Coding
 
-1. Chia file thành các file component con để dễ bảo trì, không để một file đồn vào nhiều logic.
+1. Chia file thành các file component con để dễ bảo trì, không để một file dồn vào nhiều logic. Chia ra đến các hook, utils hoặc constants để chia nhỏ ra.
 2. Nếu chưa có component Ant Design thì tạo theo cấu trúc như các component trước đó rồi dùng.
 3. Hiện tại do chưa kết nối API nên bạn dùng mockData
 4. Cấu trúc các filder và tên file đúng chuẩn.
 5. Comment tiếng anh ở những chỗ cần thiết.
 6. Thực hiện các logic đúng chuẩn enterprise.
+7. Các module chức năng phải thống nhất về logic, cấu trúc.
+8. Tất cả các import phải dùng @.
 
 ### 1. Đọc và hiểu code trước khi sửa
 
@@ -142,6 +144,7 @@ Khi thay đổi giao diện:
 - Nút bấm và form phải có trạng thái disabled phù hợp.
 - Không chỉ dựa vào màu sắc để truyền đạt trạng thái.
 - Đảm bảo label, placeholder và thông báo validation rõ ràng.
+- I18n phải tách theo component không tách theo module chức năng.
 
 ---
 

@@ -95,7 +95,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
         {/* AUDIO PREVIEW */}
         {file.type === "audio" && (
-          <div className="p-6 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl space-y-4 text-center">
+          <div className="p-6 bg-linear-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl space-y-4 text-center">
             <div className="w-16 h-16 rounded-full bg-amber-500 text-white flex items-center justify-center mx-auto shadow-md shadow-amber-500/20">
               <Icon name="music" size={28} />
             </div>

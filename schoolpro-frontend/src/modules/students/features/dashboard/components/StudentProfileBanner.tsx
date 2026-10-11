@@ -18,7 +18,7 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
         {/* Left: Avatar & Primary Info */}
         <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
           <div className="relative shrink-0">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shadow-sm border border-blue-500/20">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shadow-sm border border-blue-500/20">
               {profile.fullName.split(" ").pop()?.charAt(0) || "H"}
             </div>
             <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white" title="Trạng thái: Đang theo học" />
