@@ -164,7 +164,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
       {/* 2. Desktop & Tablet Large View: Table with Horizontal Scroll */}
       <div className="hidden md:block bg-white border border-[#f0f0f0] rounded-xl shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs whitespace-nowrap min-w-[1400px]">
+          <table className="w-full text-left border-collapse text-xs whitespace-nowrap min-w-350">
             <thead>
               <tr className="bg-slate-50/80 border-b border-[#f0f0f0] text-slate-500 font-semibold uppercase text-[11px] tracking-wider whitespace-nowrap">
                 <th className="py-3 px-4">{t("card:timetable.tableHeaders.date")}</th>
@@ -192,7 +192,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
                   <tr
                     key={slot.id}
                     onClick={() => onSlotClick?.(slot)}
-                    className="hover:bg-slate-50/70 transition-colors whitespace-nowrap cursor-pointer"
+                    className="hover:bg-slate-50/70 transition-colors whitespace-nowrap"
                   >
                     {/* 1. Date Column */}
                     <td className="py-3 px-4">
