@@ -25,6 +25,7 @@ Mục tiêu của bạn là tạo ra code:
 7. Các module chức năng phải thống nhất về logic, cấu trúc.
 8. Tất cả các import phải dùng @.
 9. Các trường hợp cần thiết thì viết thêm file test để kiểm tra.
+10. Không viết tắt các từ, bắt buộc phải ghi rõ ràng. Ví dụ như HS (sai) -> Học sinh (đúng). Tương tự với các từ khác.
 
 ### 1. Đọc và hiểu code trước khi sửa
 
