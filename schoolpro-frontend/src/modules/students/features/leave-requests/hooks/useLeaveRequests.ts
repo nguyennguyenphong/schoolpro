@@ -1,10 +1,12 @@
 import { message } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useLeaveRequestRealtime } from "@/modules/students/features/leave-requests/hooks/useLeaveRequestRealtime";
 import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
 import type {
   LeaveRequestFilter,
   LeaveRequestItem,
+  LeaveRequestRealtimePayload,
   LeaveRequestSummary,
   LeaveRequestViewMode,
 } from "@/modules/students/features/leave-requests/types";
@@ -18,6 +20,8 @@ export interface UseLeaveRequestsResult {
   deletingId: string | null;
   error: Error | null;
   hasActiveFilters: boolean;
+  isRealtimeConnected: boolean;
+  lastSyncedAt: string | null;
   setStatus: (status: string) => void;
   setLeaveType: (leaveType: string) => void;
   setSearchQuery: (query: string) => void;
@@ -27,6 +31,7 @@ export interface UseLeaveRequestsResult {
   resetFilters: () => void;
   deleteLeaveRequest: (item: LeaveRequestItem) => Promise<void>;
   refetch: () => Promise<void>;
+  silentRefetch: () => Promise<void>;
 }
 
 export function useLeaveRequests(): UseLeaveRequestsResult {
@@ -108,6 +113,55 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       setLoading(false);
     }
   }, [filter]);
+
+  /**
+   * Refetches leave requests and summary metrics in the background without toggling loading skeleton.
+   */
+  const silentRefetch = useCallback(async () => {
+    try {
+      const [listRes, sumRes] = await Promise.all([
+        leaveRequestsService.getLeaveRequests(filter),
+        leaveRequestsService.getSummary(),
+      ]);
+      setItems(listRes.items);
+      setTotal(listRes.total);
+      setSummary(sumRes);
+    } catch {
+      // Preserve current items during background revalidation
+    }
+  }, [filter]);
+
+  const handleRealtimeEvent = useCallback(
+    (payload: LeaveRequestRealtimePayload) => {
+      if (payload.eventType === "LEAVE_REQUEST_DELETED") {
+        setItems((prev) => prev.filter((it) => it.id !== payload.leaveRequestId));
+        silentRefetch();
+        return;
+      }
+
+      if (payload.item) {
+        const updatedItem = payload.item;
+        setItems((prev) => {
+          const exists = prev.some((it) => it.id === updatedItem.id);
+          if (!exists) {
+            return prev;
+          }
+          return prev.map((it) => (it.id === updatedItem.id ? { ...it, ...updatedItem } : it));
+        });
+      }
+
+      silentRefetch();
+    },
+    [silentRefetch],
+  );
+
+  const { isConnected: isRealtimeConnected, lastSyncedAt } = useLeaveRequestRealtime({
+    enabled: true,
+    onEvent: handleRealtimeEvent,
+    onSyncChange: () => {
+      silentRefetch();
+    },
+  });
 
   useEffect(() => {
     let ignore = false;
@@ -242,7 +296,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
         setDeletingId(item.id);
         await leaveRequestsService.deleteLeaveRequest(item.id);
         message.success(`Đã xóa đơn xin nghỉ phép ${item.requestCode}.`);
-        await fetchData();
+        await silentRefetch();
       } catch (err) {
         message.error(
           err instanceof Error ? err.message : "Không thể xóa đơn xin nghỉ phép.",
@@ -251,7 +305,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
         setDeletingId(null);
       }
     },
-    [fetchData],
+    [silentRefetch],
   );
 
   return {
@@ -263,6 +317,8 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     deletingId,
     error,
     hasActiveFilters,
+    isRealtimeConnected,
+    lastSyncedAt,
     setStatus,
     setLeaveType,
     setSearchQuery,
@@ -272,5 +328,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     resetFilters,
     deleteLeaveRequest,
     refetch: fetchData,
+    silentRefetch,
   };
 }

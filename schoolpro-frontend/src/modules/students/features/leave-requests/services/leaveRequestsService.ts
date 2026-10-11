@@ -1,4 +1,4 @@
-import { httpClient } from "@/shared/api/httpClient";
+import { API_BASE_URL, httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 import type {
   CreateLeaveRequestPayload,
@@ -6,11 +6,93 @@ import type {
   LeaveRequestFilter,
   LeaveRequestItem,
   LeaveRequestListResult,
+  LeaveRequestRealtimeEventType,
+  LeaveRequestRealtimePayload,
+  LeaveRequestRealtimeSyncSnapshot,
   LeaveRequestSummary,
   LeaveSessionShift,
 } from "@/modules/students/features/leave-requests/types";
 
+export const LEAVE_REQUEST_BROADCAST_CHANNEL = "schoolpro_leave_requests_realtime";
+
 class LeaveRequestsService {
+  /**
+   * Emits a real-time event across browser tabs via BroadcastChannel and window CustomEvent.
+   */
+  emitLocalRealtimeEvent(payload: LeaveRequestRealtimePayload): void {
+    if (typeof window === "undefined") return;
+
+    try {
+      if ("BroadcastChannel" in window) {
+        const channel = new BroadcastChannel(LEAVE_REQUEST_BROADCAST_CHANNEL);
+        channel.postMessage(payload);
+        channel.close();
+      }
+    } catch {
+      // Ignore BroadcastChannel errors in unsupported environments
+    }
+
+    try {
+      window.dispatchEvent(
+        new CustomEvent<LeaveRequestRealtimePayload>(LEAVE_REQUEST_BROADCAST_CHANNEL, {
+          detail: payload,
+        }),
+      );
+    } catch {
+      // Ignore CustomEvent errors
+    }
+  }
+
+  /**
+   * Builds the authenticated WebSocket URL for real-time leave request updates.
+   */
+  buildRealtimeWebSocketUrl(params?: {
+    leaveRequestId?: string;
+    classId?: string;
+  }): string {
+    const httpOrigin = API_BASE_URL.replace(/\/api\/v1\/?$/, "");
+    const wsOrigin = httpOrigin.replace(/^http/i, "ws");
+    const searchParams = new URLSearchParams();
+
+    if (typeof window !== "undefined") {
+      const token =
+        localStorage.getItem("schoolpro_access_token") ||
+        sessionStorage.getItem("schoolpro_access_token");
+      if (token) {
+        searchParams.set("token", token);
+      }
+    }
+
+    if (params?.leaveRequestId) {
+      searchParams.set("leaveRequestId", params.leaveRequestId);
+    }
+    if (params?.classId) {
+      searchParams.set("classId", params.classId);
+    }
+
+    const query = searchParams.toString();
+    return `${wsOrigin}/ws/academic/leave-requests/${query ? `?${query}` : ""}`;
+  }
+
+  /**
+   * Fetches lightweight real-time synchronization snapshot and triggers 3-hour pre-lesson auto-approval check.
+   */
+  async getRealtimeSyncSnapshot(params?: {
+    leaveRequestId?: string;
+    classId?: string;
+    studentId?: string;
+  }): Promise<LeaveRequestRealtimeSyncSnapshot | null> {
+    try {
+      const response = await httpClient.get<ApiResponse<LeaveRequestRealtimeSyncSnapshot>>(
+        "/academic/leave-requests/realtime-sync/",
+        { params },
+      );
+      return response.data?.data || null;
+    } catch {
+      return null;
+    }
+  }
+
   /**
    * Fetch leave requests list with server-side filtering, sorting, and pagination.
    */
@@ -178,7 +260,9 @@ class LeaveRequestsService {
     );
 
     if (response.data?.data) {
-      return response.data.data;
+      const created = response.data.data;
+      this._notifyMutation("LEAVE_REQUEST_CREATED", created.id, created);
+      return created;
     }
 
     throw new Error(response.data?.message || "Không thể gửi đơn xin nghỉ phép");
@@ -197,7 +281,9 @@ class LeaveRequestsService {
     );
 
     if (response.data?.data) {
-      return response.data.data;
+      const updated = response.data.data;
+      this._notifyMutation("LEAVE_REQUEST_UPDATED", updated.id, updated);
+      return updated;
     }
 
     throw new Error(response.data?.message || "Không thể cập nhật đơn xin nghỉ phép");
@@ -216,7 +302,9 @@ class LeaveRequestsService {
     );
 
     if (response.data?.data) {
-      return response.data.data;
+      const cancelled = response.data.data;
+      this._notifyMutation("LEAVE_REQUEST_CANCELLED", cancelled.id, cancelled);
+      return cancelled;
     }
 
     throw new Error(response.data?.message || "Không thể hủy đơn xin nghỉ phép");
@@ -233,6 +321,8 @@ class LeaveRequestsService {
     if (!response.data?.success) {
       throw new Error(response.data?.message || "Không thể xóa đơn xin nghỉ phép");
     }
+
+    this._notifyMutation("LEAVE_REQUEST_DELETED", id, null);
   }
 
   /**
@@ -266,6 +356,22 @@ class LeaveRequestsService {
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(blobUrl);
+  }
+
+  private _notifyMutation(
+    eventType: LeaveRequestRealtimeEventType,
+    leaveRequestId: string,
+    item: LeaveRequestItem | null,
+  ): void {
+    this.emitLocalRealtimeEvent({
+      eventType,
+      leaveRequestId,
+      code: item?.code || item?.requestCode,
+      status: item?.status,
+      isAutoApproved: item?.isAutoApproved,
+      timestamp: new Date().toISOString(),
+      item,
+    });
   }
 }
 

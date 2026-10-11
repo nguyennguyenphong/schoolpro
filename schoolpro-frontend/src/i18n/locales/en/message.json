@@ -36,5 +36,16 @@
   "currentPasswordIncorrect": "Current password is incorrect",
   "passwordMismatch": "Confirm password does not match the new password",
   "settingsSavedSuccess": "Settings configuration saved successfully",
-  "sessionRevokedSuccess": "Device session has been revoked"
+  "sessionRevokedSuccess": "Device session has been revoked",
+  "leaveRequestRealtime": {
+    "liveConnected": "Live updates active",
+    "syncing": "Synchronizing data...",
+    "created": "A new leave request has been submitted and sent to the Homeroom Teacher.",
+    "updated": "Leave request details have been updated in real time.",
+    "cancelled": "The leave request has been cancelled.",
+    "deleted": "The leave request has been removed from the list.",
+    "approved": "The leave request has been approved by the Homeroom Teacher.",
+    "rejected": "The leave request has been rejected by the Homeroom Teacher.",
+    "autoApproved": "The leave request was automatically approved by the system (3 hours before class)."
+  }
 }

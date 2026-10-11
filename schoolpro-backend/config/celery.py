@@ -13,6 +13,13 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 # Auto-discover tasks in all installed apps
 app.autodiscover_tasks()
 
+app.conf.beat_schedule = {
+    "auto-approve-overdue-leave-requests-every-minute": {
+        "task": "apps.academic.tasks.leave_request_tasks.auto_approve_overdue_leave_requests_task",
+        "schedule": 60.0,
+    },
+}
+
 
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):

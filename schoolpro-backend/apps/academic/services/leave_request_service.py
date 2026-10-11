@@ -455,7 +455,7 @@ class LeaveRequestService:
         Persists a chronological LeaveRequestEventLog entry in the database.
         """
         log_time = created_at or timezone.now()
-        return LeaveRequestEventLog.objects.create(
+        log_entry = LeaveRequestEventLog.objects.create(
             leave_request=leave_request,
             event_type=event_type,
             title=title,
@@ -469,6 +469,38 @@ class LeaveRequestService:
             metadata=metadata or {},
             created_at=log_time,
         )
+
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            tz = timezone.get_current_timezone()
+            formatted_log = {
+                "id": str(log_entry.id),
+                "eventType": log_entry.event_type,
+                "title": log_entry.title,
+                "description": log_entry.description or "",
+                "actor": log_entry.actor_name or "Hệ thống",
+                "actorRole": log_entry.actor_role or "SYSTEM",
+                "badgeText": log_entry.badge_text or "Sự kiện",
+                "badgeColor": log_entry.badge_color or "blue",
+                "recipientEmail": log_entry.recipient_email or "",
+                "emailSent": bool(log_entry.email_sent),
+                "createdAt": log_time.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.LOG_CREATED,
+                leave_request=leave_request,
+                log_data=formatted_log,
+                message=title,
+                actor_name=actor_name,
+            )
+        except Exception as exc:
+            logger.debug("Realtime log broadcast skipped: %s", exc)
+
+        return log_entry
 
     @classmethod
     def send_submission_notifications(
@@ -870,6 +902,26 @@ class LeaveRequestService:
 
                     cls.send_approval_notifications(req, is_auto=True)
                     auto_approved_count += 1
+
+                    try:
+                        from apps.academic.services.leave_request_realtime import (
+                            LeaveRequestRealtimeEvent,
+                            LeaveRequestRealtimeService,
+                        )
+
+                        formatted_item = cls.format_leave_request_item(req, include_logs=True)
+                        LeaveRequestRealtimeService.broadcast_event(
+                            event_type=LeaveRequestRealtimeEvent.AUTO_APPROVED,
+                            leave_request=req,
+                            item_data=formatted_item,
+                            message=(
+                                f"Đơn xin nghỉ phép #{req.code} đã được hệ thống tự động phê duyệt "
+                                f"(trước giờ diễn ra môn học 03 giờ)."
+                            ),
+                            actor_name="Hệ thống Tự động Phê duyệt",
+                        )
+                    except Exception as exc:
+                        logger.debug("Auto-approval realtime broadcast skipped: %s", exc)
 
         return auto_approved_count
 
@@ -1661,7 +1713,25 @@ class LeaveRequestService:
             leave_req.code,
             student.id,
         )
-        return cls.get_leave_request_detail(user, str(leave_req.id))
+        detail = cls.get_leave_request_detail(user, str(leave_req.id))
+
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.CREATED,
+                leave_request=leave_req,
+                item_data=detail,
+                message=f"Học sinh {student_name} vừa đăng ký đơn xin nghỉ phép #{leave_req.code}.",
+                actor_name=student_name,
+            )
+        except Exception as exc:
+            logger.debug("Create realtime broadcast skipped: %s", exc)
+
+        return detail
 
     @classmethod
     @transaction.atomic
@@ -1784,7 +1854,25 @@ class LeaveRequestService:
             badge_color="blue",
         )
 
-        return cls.get_leave_request_detail(user, str(leave_req.id))
+        detail = cls.get_leave_request_detail(user, str(leave_req.id))
+
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.UPDATED,
+                leave_request=leave_req,
+                item_data=detail,
+                message=f"Đơn xin nghỉ phép #{leave_req.code} vừa được cập nhật.",
+                actor_name=student_name,
+            )
+        except Exception as exc:
+            logger.debug("Update realtime broadcast skipped: %s", exc)
+
+        return detail
 
     @classmethod
     @transaction.atomic
@@ -1838,7 +1926,25 @@ class LeaveRequestService:
         )
 
         logger.info("Cancelled leave request %s by user %s", leave_req.id, user.id)
-        return cls.get_leave_request_detail(user, str(leave_req.id))
+        detail = cls.get_leave_request_detail(user, str(leave_req.id))
+
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.CANCELLED,
+                leave_request=leave_req,
+                item_data=detail,
+                message=f"Đơn xin nghỉ phép #{leave_req.code} đã được hủy.",
+                actor_name=student_name,
+            )
+        except Exception as exc:
+            logger.debug("Cancel realtime broadcast skipped: %s", exc)
+
+        return detail
 
     @classmethod
     @transaction.atomic
@@ -1851,7 +1957,13 @@ class LeaveRequestService:
         Deletes a leave request if it has not been reviewed yet (PENDING or CANCELLED).
         """
         student = cls.resolve_student(user)
-        qs = LeaveRequest.objects.select_related("student", "school_class")
+        qs = LeaveRequest.objects.select_related(
+            "student",
+            "student__user",
+            "school_class",
+            "school_class__homeroom_teacher",
+            "school_class__homeroom_teacher__user",
+        )
         if student and not (
             getattr(user, "is_staff", False) or getattr(user, "is_superuser", False)
         ):
@@ -1867,9 +1979,32 @@ class LeaveRequestService:
                 "Chỉ có thể xóa đơn xin nghỉ phép khi đơn chưa được giáo viên phê duyệt."
             )
 
-        req_id = leave_req.id
+        req_id = str(leave_req.id)
+        req_code = str(leave_req.code or "")
+        st_id = str(leave_req.student_id)
+        cls_id = str(leave_req.school_class_id)
+        student_user = getattr(leave_req.student, "user", None)
+        student_name = student_user.full_name if student_user else "Học sinh"
+
         leave_req.delete()
         logger.info("Deleted leave request %s by user %s", req_id, user.id)
+
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.DELETED,
+                leave_request_id=req_id,
+                student_id=st_id,
+                class_id=cls_id,
+                message=f"Đơn xin nghỉ phép #{req_code} đã bị xóa.",
+                actor_name=student_name,
+            )
+        except Exception as exc:
+            logger.debug("Delete realtime broadcast skipped: %s", exc)
 
     @classmethod
     def _register_vietnamese_fonts(cls) -> tuple[str, str, str]:

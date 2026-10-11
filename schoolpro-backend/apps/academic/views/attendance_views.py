@@ -420,6 +420,38 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         except ValueError as exc:
             return APIResponse.error(message=str(exc), status_code=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        summary="Get real-time synchronization snapshot for leave requests",
+        description="Returns current syncVersion, latest timestamp, and runs 3-hour pre-lesson auto-approval check.",
+        parameters=[
+            OpenApiParameter("classId", str, description="Optional class UUID"),
+            OpenApiParameter("studentId", str, description="Optional student UUID"),
+            OpenApiParameter(
+                "leaveRequestId", str, description="Optional single leave request UUID"
+            ),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="realtime-sync")
+    def realtime_sync(self, request):
+        from apps.academic.services.leave_request_realtime import LeaveRequestRealtimeService
+
+        class_id = request.query_params.get("classId") or request.query_params.get("class_id")
+        student_id = request.query_params.get("studentId") or request.query_params.get("student_id")
+        leave_request_id = request.query_params.get("leaveRequestId") or request.query_params.get(
+            "leave_request_id"
+        )
+
+        snapshot = LeaveRequestRealtimeService.get_sync_snapshot(
+            user=request.user,
+            class_id=class_id,
+            student_id=student_id,
+            leave_request_id=leave_request_id,
+        )
+        return APIResponse.success(
+            data=snapshot,
+            message="Đồng bộ trạng thái thời gian thực đơn xin nghỉ phép",
+        )
+
 
 @extend_schema_view(
     list=extend_schema(

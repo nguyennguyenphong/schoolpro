@@ -277,6 +277,26 @@ class AttendanceService:
 
         LeaveRequestService.send_approval_notifications(leave_req, is_auto=False)
 
+        try:
+            from apps.academic.services.leave_request_realtime import (
+                LeaveRequestRealtimeEvent,
+                LeaveRequestRealtimeService,
+            )
+
+            formatted_item = LeaveRequestService.format_leave_request_item(
+                leave_req, include_logs=True
+            )
+            status_label_vi = "đã được phê duyệt" if new_status == "APPROVED" else "bị từ chối"
+            LeaveRequestRealtimeService.broadcast_event(
+                event_type=LeaveRequestRealtimeEvent.REVIEWED,
+                leave_request=leave_req,
+                item_data=formatted_item,
+                message=f"Đơn xin nghỉ phép #{leave_req.code} {status_label_vi} bởi {reviewer_name}.",
+                actor_name=reviewer_name,
+            )
+        except Exception as exc:
+            logger.debug("Review realtime broadcast skipped: %s", exc)
+
         logger.info(
             "Leave request %s %s by reviewer %s",
             leave_req.id,

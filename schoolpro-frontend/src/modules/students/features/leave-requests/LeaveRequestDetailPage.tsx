@@ -1,6 +1,6 @@
 import { message } from "antd";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -10,8 +10,12 @@ import {
   LeaveRequestDetailSidebar,
   LeaveRequestStepsLogCard,
 } from "@/modules/students/features/leave-requests/components/detail";
+import { useLeaveRequestRealtime } from "@/modules/students/features/leave-requests/hooks";
 import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
-import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
+import type {
+  LeaveRequestItem,
+  LeaveRequestRealtimePayload,
+} from "@/modules/students/features/leave-requests/types";
 
 const LeaveRequestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +25,59 @@ const LeaveRequestDetailPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [downloading, setDownloading] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
+
+  const silentRefreshDetail = useCallback(async () => {
+    if (!id) return;
+    const latest = await leaveRequestsService.getLeaveRequestById(id);
+    if (latest) {
+      setItem(latest);
+    }
+  }, [id]);
+
+  const handleRealtimeEvent = useCallback(
+    (payload: LeaveRequestRealtimePayload) => {
+      if (payload.eventType === "LEAVE_REQUEST_DELETED" && payload.leaveRequestId === id) {
+        navigate("/student/leave-requests", { replace: true });
+        return;
+      }
+
+      if (payload.item && payload.item.id === id) {
+        setItem(payload.item);
+        return;
+      }
+
+      if (payload.eventType === "LEAVE_REQUEST_LOG_CREATED" && payload.eventLog) {
+        const newLog = payload.eventLog;
+        setItem((prev) => {
+          if (!prev) return prev;
+          const existingLogs = prev.eventLogs || [];
+          if (existingLogs.some((lg) => lg.id === newLog.id)) {
+            return prev;
+          }
+          return {
+            ...prev,
+            eventLogs: [...existingLogs, newLog],
+          };
+        });
+      }
+
+      silentRefreshDetail();
+    },
+    [id, navigate, silentRefreshDetail],
+  );
+
+  useLeaveRequestRealtime({
+    leaveRequestId: id,
+    enabled: Boolean(id),
+    onEvent: handleRealtimeEvent,
+    onSyncChange: (snapshot) => {
+      if (snapshot.detailItem) {
+        setItem(snapshot.detailItem);
+      } else {
+        silentRefreshDetail();
+      }
+    },
+  });
 
   useEffect(() => {
     let ignore = false;

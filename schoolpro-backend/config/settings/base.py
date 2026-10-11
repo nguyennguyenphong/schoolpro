@@ -32,6 +32,7 @@ DJANGO_APPS = [
 SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 
 THIRD_PARTY_APPS = [
+    "channels",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -165,6 +166,24 @@ CELERY_TIMEZONE = "Asia/Ho_Chi_Minh"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_RESULT_EXTENDED = True
+
+# Django Channels Configuration (Redis in production/configured env, InMemory fallback for local/test)
+_channel_redis_url = env("CHANNEL_REDIS_URL", default="")
+if _channel_redis_url:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [_channel_redis_url],
+            },
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        },
+    }
 
 # Email / SMTP Configuration (mapped from MAIL_* in .env)
 EMAIL_BACKEND = env(

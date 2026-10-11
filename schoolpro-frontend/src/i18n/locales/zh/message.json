@@ -36,5 +36,16 @@
   "currentPasswordIncorrect": "当前密码不正确",
   "passwordMismatch": "确认密码与新密码不一致",
   "settingsSavedSuccess": "系统设置保存成功",
-  "sessionRevokedSuccess": "已结束该设备的会话"
+  "sessionRevokedSuccess": "已结束该设备的会话",
+  "leaveRequestRealtime": {
+    "liveConnected": "实时更新已开启",
+    "syncing": "正在同步数据...",
+    "created": "新的请假申请已提交并通知班主任老师。",
+    "updated": "请假申请信息已实时更新。",
+    "cancelled": "请假申请已取消。",
+    "deleted": "请假申请已从列表中删除。",
+    "approved": "请假申请已由班主任老师批准。",
+    "rejected": "请假申请已被班主任老师驳回。",
+    "autoApproved": "请假申请已由系统自动批准（上课前3小时）。"
+  }
 }

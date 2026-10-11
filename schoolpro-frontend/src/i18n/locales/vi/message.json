@@ -36,5 +36,16 @@
   "currentPasswordIncorrect": "Mật khẩu hiện tại không chính xác",
   "passwordMismatch": "Mật khẩu xác nhận không khớp với mật khẩu mới",
   "settingsSavedSuccess": "Đã lưu cấu hình cài đặt thành công",
-  "sessionRevokedSuccess": "Đã đăng xuất phiên làm việc của thiết bị"
+  "sessionRevokedSuccess": "Đã đăng xuất phiên làm việc của thiết bị",
+  "leaveRequestRealtime": {
+    "liveConnected": "Đang cập nhật trực tiếp",
+    "syncing": "Đang đồng bộ dữ liệu...",
+    "created": "Đơn xin nghỉ phép mới đã được tạo và gửi thông báo tới Giáo viên chủ nhiệm.",
+    "updated": "Thông tin đơn xin nghỉ phép đã được cập nhật theo thời gian thực.",
+    "cancelled": "Đơn xin nghỉ phép đã được hủy.",
+    "deleted": "Đơn xin nghỉ phép đã được xóa khỏi danh sách.",
+    "approved": "Đơn xin nghỉ phép đã được Giáo viên chủ nhiệm phê duyệt.",
+    "rejected": "Đơn xin nghỉ phép đã bị Giáo viên chủ nhiệm từ chối.",
+    "autoApproved": "Đơn xin nghỉ phép đã được hệ thống tự động phê duyệt (trước giờ học 03 giờ)."
+  }
 }

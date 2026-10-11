@@ -36,5 +36,16 @@
   "currentPasswordIncorrect": "現在のパスワードが正しくありません",
   "passwordMismatch": "確認用パスワードが新しいパスワードと一致しません",
   "settingsSavedSuccess": "設定を正常に保存しました",
-  "sessionRevokedSuccess": "端末のセッションを終了しました"
+  "sessionRevokedSuccess": "端末のセッションを終了しました",
+  "leaveRequestRealtime": {
+    "liveConnected": "リアルタイム更新中",
+    "syncing": "データを同期中...",
+    "created": "新しい欠席届が作成され、担任教師に通知されました。",
+    "updated": "欠席届の情報がリアルタイムで更新されました。",
+    "cancelled": "欠席届が取り消されました。",
+    "deleted": "欠席届が一覧から削除されました。",
+    "approved": "欠席届が担任教師によって承認されました。",
+    "rejected": "欠席届が担任教師によって却下されました。",
+    "autoApproved": "欠席届がシステムにより自動承認されました（授業開始3時間前）。"
+  }
 }

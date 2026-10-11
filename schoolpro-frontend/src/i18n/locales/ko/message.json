@@ -36,5 +36,16 @@
   "currentPasswordIncorrect": "현재 비밀번호가 올바르지 않습니다",
   "passwordMismatch": "새 비밀번호와 확인 비밀번호가 일치하지 않습니다",
   "settingsSavedSuccess": "설정이 성공적으로 저장되었습니다",
-  "sessionRevokedSuccess": "해당 기기의 세션이 종료되었습니다"
+  "sessionRevokedSuccess": "해당 기기의 세션이 종료되었습니다",
+  "leaveRequestRealtime": {
+    "liveConnected": "실시간 업데이트 중",
+    "syncing": "데이터 동기화 중...",
+    "created": "새로운 결석계가 제출되어 담임 교사에게 알림이 전송되었습니다.",
+    "updated": "결석계 정보가 실시간으로 업데이트되었습니다.",
+    "cancelled": "결석계가 취소되었습니다.",
+    "deleted": "결석계가 목록에서 삭제되었습니다.",
+    "approved": "결석계가 담임 교사에 의해 승인되었습니다.",
+    "rejected": "결석계가 담임 교사에 의해 반려되었습니다.",
+    "autoApproved": "결석계가 시스템에 의해 자동 승인되었습니다(수업 시작 3시간 전)."
+  }
 }

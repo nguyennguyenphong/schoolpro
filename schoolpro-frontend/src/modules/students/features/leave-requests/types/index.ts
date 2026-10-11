@@ -169,3 +169,42 @@ export interface CreateLeaveRequestPayload {
   guardianPhone?: string;
   guardianRelationship?: string;
 }
+
+export type LeaveRequestRealtimeEventType =
+  | "LEAVE_REQUEST_CREATED"
+  | "LEAVE_REQUEST_UPDATED"
+  | "LEAVE_REQUEST_CANCELLED"
+  | "LEAVE_REQUEST_DELETED"
+  | "LEAVE_REQUEST_REVIEWED"
+  | "LEAVE_REQUEST_AUTO_APPROVED"
+  | "LEAVE_REQUEST_LOG_CREATED";
+
+export interface LeaveRequestRealtimePayload {
+  eventType: LeaveRequestRealtimeEventType;
+  leaveRequestId: string;
+  code?: string;
+  status?: LeaveStatus | string;
+  isAutoApproved?: boolean;
+  message?: string;
+  actorName?: string;
+  timestamp: string;
+  item?: LeaveRequestItem | null;
+  eventLog?: LeaveRequestEventLogItem | null;
+}
+
+export interface LeaveRequestRealtimeSyncSnapshot {
+  syncVersion: string;
+  lastUpdatedAt: string;
+  autoApprovedNowCount: number;
+  counts: {
+    total: number;
+    pendingCount: number;
+    approvedCount: number;
+    rejectedCount: number;
+    cancelledCount: number;
+    eventLogsCount: number;
+  };
+  detailItem?: LeaveRequestItem | null;
+  serverTime: string;
+}
+
