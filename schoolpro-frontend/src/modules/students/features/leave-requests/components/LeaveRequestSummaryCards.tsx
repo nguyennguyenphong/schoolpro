@@ -20,7 +20,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
           <Card
             key={i}
             loading={true}
-            className="rounded-xl shadow-2xs border-[#f0f0f0] h-[145px]"
+            className="rounded-xl shadow-2xs border-[#f0f0f0] h-36.25"
             skeletonProps={{
               paragraph: { rows: 2 },
             }}

@@ -1,3 +1,3 @@
-export * from "./LeaveRequestDetailHeader";
-export * from "./LeaveRequestDetailSidebar";
-export * from "./LeaveRequestStepsLogCard";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailHeader";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailSidebar";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestStepsLogCard";

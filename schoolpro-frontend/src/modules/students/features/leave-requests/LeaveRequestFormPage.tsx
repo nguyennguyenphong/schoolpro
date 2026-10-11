@@ -13,7 +13,7 @@ import { Input, TextArea } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Tag } from "@/components/ui/Tag";
 import { Upload } from "@/components/ui/Upload";
-import { leaveRequestsService } from "./services";
+import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
 import type {
   LeaveAffectedLesson,
   LeaveRequestAttachment,
@@ -21,12 +21,12 @@ import type {
   LeaveRequestSummary,
   LeaveSessionShift,
   LeaveType,
-} from "./types";
+} from "@/modules/students/features/leave-requests/types";
 import {
   LEAVE_TYPE_LABELS,
   SESSION_SHIFT_LABELS,
   formatLeaveDateRange,
-} from "./utils/leaveRequestHelpers";
+} from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 const DEFAULT_COMMITMENT =
   "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.";

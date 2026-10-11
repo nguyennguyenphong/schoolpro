@@ -9,9 +9,9 @@ import {
   LeaveRequestDetailHeader,
   LeaveRequestDetailSidebar,
   LeaveRequestStepsLogCard,
-} from "./components/detail";
-import { leaveRequestsService } from "./services";
-import type { LeaveRequestItem } from "./types";
+} from "@/modules/students/features/leave-requests/components/detail";
+import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
+import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 
 const LeaveRequestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

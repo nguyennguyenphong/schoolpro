@@ -342,11 +342,11 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
           <span className="text-xs text-slate-400 font-medium">{logs.length} sự kiện</span>
         </div>
 
-        <div className="relative pl-4 space-y-4 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200">
+        <div className="relative pl-4 space-y-4 before:content-[''] before:absolute before:left-1.75 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
           {logs.map((log) => (
             <div key={log.id} className="relative pl-4">
               <span
-                className={`w-3.5 h-3.5 rounded-full border-2 border-white shadow-xs absolute -left-[15px] top-1 ${log.dotColor}`}
+                className={`w-3.5 h-3.5 rounded-full border-2 border-white shadow-xs absolute -left-3.75 top-1 ${log.dotColor}`}
               />
               <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/70 space-y-1.5">
                 <div className="flex flex-wrap items-center justify-between gap-2">

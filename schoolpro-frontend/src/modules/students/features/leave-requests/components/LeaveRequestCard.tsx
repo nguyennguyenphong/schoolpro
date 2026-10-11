@@ -24,11 +24,10 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
 }) => {
   return (
     <div
-      onClick={() => onViewDetail(item)}
-      className="bg-white rounded-xl border border-[#f0f0f0] hover:border-blue-400 shadow-2xs p-4 flex flex-col justify-between gap-3.5 h-full transition-all cursor-pointer group"
+      className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs p-4 flex flex-col justify-between gap-3.5 h-full transition-all"
     >
       <div className="space-y-3">
-        {/* 1. Loại đơn & Trạng thái */}
+        {/* 1. Type and Status */}
         <div className="flex items-center justify-between gap-2">
           <Tag
             color={LEAVE_TYPE_COLORS[item.leaveType] || "blue"}
@@ -45,7 +44,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
           </Tag>
         </div>
 
-        {/* 2. Thời gian nghỉ & Số ngày */}
+        {/* 2. Time and Number of days */}
         <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2.5 border border-slate-100">
           <div className="flex items-center gap-2 min-w-0">
             <Icon name="calendar" size={15} className="text-blue-600 shrink-0" />
@@ -58,7 +57,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
           </span>
         </div>
 
-        {/* 3. Môn học xin nghỉ (nếu có) */}
+        {/* 3. Subject */}
         {item.affectedSubjects && item.affectedSubjects.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-[11px] font-semibold text-slate-500">Môn nghỉ:</span>
@@ -75,7 +74,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
           </div>
         )}
 
-        {/* 4. Tóm tắt lý do */}
+        {/* 4. Summary */}
         <p
           className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed mb-0"
           title={item.reason}
@@ -84,7 +83,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
         </p>
       </div>
 
-      {/* 4. Footer: Ngày gửi & Button Chi tiết */}
+      {/* 4. Send Date and Detail Button */}
       <div
         className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2"
         onClick={(e) => e.stopPropagation()}
@@ -96,6 +95,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
         <Button
           variant="ghost"
           onClick={() => onViewDetail(item)}
+          href={`/student/leave-requests/${item.id}`}
           className="text-xs text-blue-600 font-semibold px-2.5 py-1 h-7 shrink-0"
         >
           <span>Chi tiết</span>

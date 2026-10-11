@@ -10,9 +10,9 @@ import {
   LeaveRequestsPageHeader,
   LeaveRequestsPagination,
   LeaveRequestSummaryCards,
-} from "./components";
-import { useLeaveRequests } from "./hooks";
-import type { LeaveRequestItem } from "./types";
+} from "@/modules/students/features/leave-requests/components";
+import { useLeaveRequests } from "@/modules/students/features/leave-requests/hooks";
+import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 
 const LeaveRequestsPage: React.FC = () => {
   const navigate = useNavigate();
