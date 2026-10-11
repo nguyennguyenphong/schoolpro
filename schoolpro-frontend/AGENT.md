@@ -24,6 +24,7 @@ Mục tiêu của bạn là tạo ra code:
 6. Thực hiện các logic đúng chuẩn enterprise.
 7. Các module chức năng phải thống nhất về logic, cấu trúc.
 8. Tất cả các import phải dùng @.
+9. Các trường hợp cần thiết thì viết thêm file test để kiểm tra.
 
 ### 1. Đọc và hiểu code trước khi sửa
 
@@ -131,6 +132,17 @@ Sau mỗi nhiệm vụ, hãy báo cáo ngắn gọn:
 
 ---
 
+## Quy tắc I18n
+
+0. Ưu tiên sử dụng các i18n đã có, chỉ thêm vào khi cần thiết.
+1. Gồm 5 ngôn ngữ dịch theo I18n là tiếng việt (mặc định), tiếng anh, tiếng nhật, tiếng hàn và tiếng trung.
+2. Các i18n phải chia theo component không chia theo logic để dễ tái sử dụng.
+3. Bạn phải cấu trúc 18n đúng chuẩn đảm bảo chúng được dịch sang đúng 5 ngôn ngữ trên.
+4. Đối với các biến, giá trị được fix cứng thì bạn cũng dịch theo, chỉ không dịch các biến động, hoặc các giá trị dữ liệu từ API.
+5. Luôn dịch chuẩn sát, phù hợp với ngôn ngữ của hệ thống.
+
+---
+
 ## Quy tắc về UI/UX
 
 Khi thay đổi giao diện:
@@ -144,7 +156,6 @@ Khi thay đổi giao diện:
 - Nút bấm và form phải có trạng thái disabled phù hợp.
 - Không chỉ dựa vào màu sắc để truyền đạt trạng thái.
 - Đảm bảo label, placeholder và thông báo validation rõ ràng.
-- I18n phải tách theo component không tách theo module chức năng.
 
 ---
 
