@@ -1,0 +1,7 @@
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Lib
+.venv
