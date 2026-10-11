@@ -166,6 +166,25 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_RESULT_EXTENDED = True
 
+# Email / SMTP Configuration (mapped from MAIL_* in .env)
+EMAIL_BACKEND = env(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.smtp.EmailBackend",
+)
+EMAIL_HOST = env("MAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env.int("MAIL_PORT", default=587)
+EMAIL_HOST_USER = env("MAIL_USERNAME", default="")
+EMAIL_HOST_PASSWORD = env("MAIL_PASSWORD", default="")
+_mail_encryption = env("MAIL_ENCRYPTION", default="tls").lower()
+EMAIL_USE_TLS = _mail_encryption == "tls"
+EMAIL_USE_SSL = _mail_encryption == "ssl"
+_mail_from_address = env("MAIL_FROM_ADDRESS", default=EMAIL_HOST_USER or "noreply@schoolpro.edu.vn")
+_mail_from_name = env("MAIL_FROM_NAME", default="SchoolPro")
+if "${" in _mail_from_name or not _mail_from_name.strip():
+    _mail_from_name = "Trường THPT SchoolPro"
+DEFAULT_FROM_EMAIL = f"{_mail_from_name} <{_mail_from_address}>"
+EMAIL_TIMEOUT = 10
+
 # Logging Configuration
 LOG_DIR = BASE_DIR / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)

@@ -110,12 +110,34 @@ const ChangePasswordPage = lazy(() =>
   }))
 );
 
+const LeaveRequestsPage = lazy(() =>
+  import("@/modules/students/features/leave-requests").then(({ LeaveRequestsPage }) => ({
+    default: LeaveRequestsPage,
+  }))
+);
+
+const LeaveRequestDetailPage = lazy(() =>
+  import("@/modules/students/features/leave-requests").then(({ LeaveRequestDetailPage }) => ({
+    default: LeaveRequestDetailPage,
+  }))
+);
+
+const LeaveRequestFormPage = lazy(() =>
+  import("@/modules/students/features/leave-requests").then(({ LeaveRequestFormPage }) => ({
+    default: LeaveRequestFormPage,
+  }))
+);
+
 export const StudentRoutes = (
   <Route element={<MainLayout />}>
     <Route path="/student/home" element={<HomePage />} />
     <Route path="/student/dashboard" element={<DashboardPage />} />
     <Route path="/student/timetable" element={<TimetablePage />} />
     <Route path="/student/attendance" element={<AttendancePage />} />
+    <Route path="/student/leave-requests" element={<LeaveRequestsPage />} />
+    <Route path="/student/leave-requests/create" element={<LeaveRequestFormPage />} />
+    <Route path="/student/leave-requests/:id" element={<LeaveRequestDetailPage />} />
+    <Route path="/student/leave-requests/:id/edit" element={<LeaveRequestFormPage />} />
     <Route path="/student/contact-book" element={<ContactBookPage />} />
     <Route path="/student/exams" element={<ExamsPage />} />
     <Route path="/student/exams/:id" element={<ExamDetailPage />} />

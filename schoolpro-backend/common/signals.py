@@ -44,6 +44,7 @@ ENTITY_CODE_FIELDS_BY_MODEL: dict[str, str] = {
     "academic.scoretype": "code",
     "academic.feeitem": "code",
     "academic.studentfeebill": "bill_code",
+    "academic.leaverequest": "code",
     # Emulation Domain
     "emulation.criteria": "code",
     "emulation.classcustomcriteria": "code",

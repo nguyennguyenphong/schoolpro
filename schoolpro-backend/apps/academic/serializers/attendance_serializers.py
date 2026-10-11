@@ -123,6 +123,7 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
         model = LeaveRequest
         fields = [
             "id",
+            "code",
             "student",
             "student_code",
             "student_name",
@@ -145,7 +146,191 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at", "reviewed_at", "reviewed_by"]
+        read_only_fields = ["id", "code", "created_at", "updated_at", "reviewed_at", "reviewed_by"]
+
+
+class LeaveRequestAttachmentSerializer(serializers.Serializer):
+    """
+    Representation of an attachment on a leave request.
+    """
+
+    id = serializers.CharField(required=False, allow_blank=True)
+    name = serializers.CharField()
+    url = serializers.CharField(required=False, allow_blank=True, default="")
+    size = serializers.CharField(required=False, allow_blank=True, default="")
+    type = serializers.CharField(required=False, allow_blank=True, default="pdf")
+
+
+class LeaveAffectedLessonSerializer(serializers.Serializer):
+    """
+    Representation of a timetable lesson slot impacted by the student leave request.
+    """
+
+    lessonKey = serializers.CharField()
+    timetableId = serializers.CharField()
+    date = serializers.CharField()
+    dayOfWeek = serializers.IntegerField()
+    dayOfWeekLabel = serializers.CharField()
+    periodNumber = serializers.IntegerField()
+    periodName = serializers.CharField()
+    shift = serializers.CharField()
+    startTime = serializers.CharField()
+    endTime = serializers.CharField()
+    subjectId = serializers.CharField(allow_blank=True)
+    subjectName = serializers.CharField()
+    teacherId = serializers.CharField(allow_blank=True)
+    teacherName = serializers.CharField()
+    teacherEmail = serializers.CharField(allow_blank=True)
+    roomName = serializers.CharField(allow_blank=True, required=False)
+
+
+class LeaveNotifiedTeacherSerializer(serializers.Serializer):
+    """
+    Representation of a subject teacher notified about the student's absence in their subject periods.
+    """
+
+    teacherId = serializers.CharField(allow_blank=True)
+    teacherName = serializers.CharField()
+    teacherEmail = serializers.CharField(allow_blank=True)
+    subjects = serializers.ListField(child=serializers.CharField())
+    lessonCount = serializers.IntegerField()
+    periodsSummary = serializers.ListField(child=serializers.CharField(), required=False)
+    role = serializers.CharField(default="SUBJECT_TEACHER")
+    canApprove = serializers.BooleanField(default=False)
+    isHomeroomTeacher = serializers.BooleanField(default=False, required=False)
+    notificationStatus = serializers.CharField(default="NOTIFIED")
+
+
+class LeaveRequestEventLogItemSerializer(serializers.Serializer):
+    """
+    Chronological event log entry for a leave request workflow.
+    """
+
+    id = serializers.CharField()
+    eventType = serializers.CharField()
+    title = serializers.CharField()
+    description = serializers.CharField()
+    actor = serializers.CharField()
+    actorRole = serializers.CharField(allow_blank=True, required=False)
+    badgeText = serializers.CharField(allow_blank=True, required=False)
+    badgeColor = serializers.CharField(allow_blank=True, required=False)
+    recipientEmail = serializers.CharField(allow_blank=True, required=False)
+    emailSent = serializers.BooleanField(default=False)
+    createdAt = serializers.CharField()
+
+
+class LeaveRequestItemResponseSerializer(serializers.Serializer):
+    """
+    Formatted response representation of a student leave request item for frontend clients.
+    """
+
+    id = serializers.CharField()
+    code = serializers.CharField()
+    requestCode = serializers.CharField()
+    studentId = serializers.CharField()
+    studentCode = serializers.CharField(allow_blank=True)
+    studentName = serializers.CharField()
+    classId = serializers.CharField()
+    className = serializers.CharField()
+    leaveType = serializers.CharField()
+    leaveTypeCode = serializers.CharField()
+    status = serializers.CharField()
+    statusCode = serializers.CharField()
+    startDate = serializers.CharField()
+    endDate = serializers.CharField()
+    totalDays = serializers.FloatField()
+    sessionShift = serializers.CharField(default="all_day")
+    reason = serializers.CharField()
+    commitment = serializers.CharField(allow_blank=True, required=False)
+    supportingDocumentUrl = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    attachments = LeaveRequestAttachmentSerializer(many=True, required=False)
+    affectedSubjects = serializers.ListField(child=serializers.CharField(), required=False)
+    affectedLessons = LeaveAffectedLessonSerializer(many=True, required=False)
+    notifiedTeachers = LeaveNotifiedTeacherSerializer(many=True, required=False)
+    guardianName = serializers.CharField(allow_blank=True, required=False)
+    guardianPhone = serializers.CharField(allow_blank=True, required=False)
+    guardianRelationship = serializers.CharField(allow_blank=True, required=False)
+    homeroomTeacherName = serializers.CharField(allow_blank=True, required=False)
+    homeroomTeacherEmail = serializers.CharField(allow_blank=True, required=False)
+    homeroomTeacherPhone = serializers.CharField(allow_blank=True, required=False)
+    teacherNote = serializers.CharField(allow_blank=True, required=False)
+    reviewedByName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    reviewedAt = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    firstLessonStartAt = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    approvalDeadline = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    isAutoApproved = serializers.BooleanField(default=False, required=False)
+    eventLogs = LeaveRequestEventLogItemSerializer(many=True, required=False)
+    cancelReason = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    cancelledAt = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    createdAt = serializers.CharField()
+    updatedAt = serializers.CharField()
+
+
+class LeaveRequestSummaryResponseSerializer(serializers.Serializer):
+    """
+    Summary overview metrics and student context for leave requests view.
+    """
+
+    total = serializers.IntegerField()
+    pendingCount = serializers.IntegerField()
+    approvedCount = serializers.IntegerField()
+    rejectedCount = serializers.IntegerField()
+    cancelledCount = serializers.IntegerField()
+    totalDaysOff = serializers.FloatField()
+    maxAllowedDays = serializers.IntegerField()
+    className = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    semesterName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    academicYear = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    homeroomTeacherName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    homeroomTeacherEmail = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    homeroomTeacherPhone = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    guardianName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    guardianPhone = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    guardianRelationship = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+
+
+class CreateUpdateLeaveRequestInputSerializer(serializers.Serializer):
+    """
+    Input schema for creating or updating a student leave request.
+    """
+
+    leaveType = serializers.CharField(required=False, default="sick")
+    leave_type = serializers.CharField(required=False)
+    startDate = serializers.CharField(required=False)
+    start_date = serializers.DateField(required=False)
+    endDate = serializers.CharField(required=False)
+    end_date = serializers.DateField(required=False)
+    sessionShift = serializers.ChoiceField(
+        choices=["all_day", "morning", "afternoon"],
+        required=False,
+        default="all_day",
+    )
+    reason = serializers.CharField(required=True)
+    commitment = serializers.CharField(required=False, allow_blank=True)
+    supportingDocumentUrl = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    supporting_document_url = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
+    attachments = serializers.ListField(
+        child=serializers.DictField(),
+        required=False,
+        default=list,
+    )
+    selectedLessonKeys = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+    )
+    guardianName = serializers.CharField(required=False, allow_blank=True)
+    guardianPhone = serializers.CharField(required=False, allow_blank=True)
+    guardianRelationship = serializers.CharField(required=False, allow_blank=True)
+
+
+class CancelLeaveRequestInputSerializer(serializers.Serializer):
+    """
+    Input schema for cancelling a pending leave request.
+    """
+
+    reason = serializers.CharField(required=False, allow_blank=True, default="")
 
 
 class ReviewLeaveRequestInputSerializer(serializers.Serializer):

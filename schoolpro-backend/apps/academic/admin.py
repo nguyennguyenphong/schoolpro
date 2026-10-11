@@ -18,7 +18,12 @@ from django.contrib import admin
 
 from apps.academic.models.activity import ActivityParticipation, ExtracurricularActivity
 from apps.academic.models.assignment import Assignment, AssignmentEventLog, AssignmentSubmission
-from apps.academic.models.attendance import Attendance, AttendanceLog, LeaveRequest
+from apps.academic.models.attendance import (
+    Attendance,
+    AttendanceLog,
+    LeaveRequest,
+    LeaveRequestEventLog,
+)
 from apps.academic.models.curriculum import (
     CurriculumTrack,
     CurriculumTrackSubject,
@@ -213,28 +218,58 @@ class AttendanceLogAdmin(admin.ModelAdmin):
     readonly_fields = ["created_at"]
 
 
+class LeaveRequestEventLogInline(admin.TabularInline):
+    model = LeaveRequestEventLog
+    extra = 0
+    readonly_fields = ["created_at"]
+    can_delete = False
+
+
 @admin.register(LeaveRequest)
-class LeaveRequestAdmin(admin.ModelAdmin):
+class LeaveRequestAdmin(AutoCodeAdminMixin, admin.ModelAdmin):
+    auto_code_field = "code"
     list_display = [
+        "code",
         "student",
         "school_class",
         "leave_type",
         "start_date",
         "end_date",
         "status",
+        "is_auto_approved",
+        "approval_deadline",
         "requested_by",
         "reviewed_by",
         "created_at",
     ]
     search_fields = [
+        "code",
         "student__student_code",
         "student__user__full_name",
         "school_class__name",
         "reason",
     ]
-    list_filter = ["status", "leave_type", "school_class", "start_date"]
+    list_filter = ["status", "is_auto_approved", "leave_type", "school_class", "start_date"]
     autocomplete_fields = ["student", "school_class", "guardian", "requested_by", "reviewed_by"]
     readonly_fields = ["created_at", "updated_at"]
+    inlines = [LeaveRequestEventLogInline]
+
+
+@admin.register(LeaveRequestEventLog)
+class LeaveRequestEventLogAdmin(admin.ModelAdmin):
+    list_display = [
+        "leave_request",
+        "event_type",
+        "title",
+        "actor_name",
+        "recipient_email",
+        "email_sent",
+        "created_at",
+    ]
+    search_fields = ["title", "description", "actor_name", "recipient_email"]
+    list_filter = ["event_type", "email_sent", "created_at"]
+    autocomplete_fields = ["leave_request"]
+    readonly_fields = ["created_at"]
 
 
 # --- Grading ---

@@ -7,7 +7,8 @@
     "assignments": "Assignments & Tasks",
     "profile": "Student Profile",
     "settings": "System Settings",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "leaveRequests": "Leave Requests"
   },
   "pageTitle": {
     "home": "Home",
@@ -16,7 +17,8 @@
     "assignments": "Assignments & Learning Tasks",
     "profile": "Student Profile",
     "settings": "System Settings",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "leaveRequests": "Leave Requests & Attendance Excuses"
   },
   "pageSubtitle": {
     "home": "School Pro Academic Management System",
@@ -25,7 +27,8 @@
     "assignments": "Track homework assignments, online quizzes, lab reports, and submission deadlines across all subjects",
     "profile": "Student personal records, academic information, guardians, and medical dossier",
     "settings": "Customize interface, language, notification channels, and account security",
-    "changePassword": "Update your password periodically to maintain high account security"
+    "changePassword": "Update your password periodically to maintain high account security",
+    "leaveRequests": "Submit online leave requests, attach supporting documents, and track homeroom teacher approvals"
   },
   "welcome": "Hello, {{name}}! Have a productive study day.",
   "welcomeUser": "Welcome, {{name}}!",

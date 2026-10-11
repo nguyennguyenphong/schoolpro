@@ -73,6 +73,8 @@ const VALID_ICONS: Record<string, IconName> = {
   materials: "download",
   announcement: "info",
   notification: "info",
+  leave: "file-text",
+  send: "send",
 };
 
 const sanitizeIcon = (rawIcon?: string | null): IconName => {

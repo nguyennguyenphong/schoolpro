@@ -2,7 +2,7 @@
 
 from .activity import ActivityParticipation, ExtracurricularActivity
 from .assignment import Assignment, AssignmentEventLog, AssignmentSubmission
-from .attendance import Attendance, AttendanceLog, LeaveRequest
+from .attendance import Attendance, AttendanceLog, LeaveRequest, LeaveRequestEventLog
 from .curriculum import CurriculumTrack, CurriculumTrackSubject, StudentTrackEnrollment
 from .exam import (
     Exam,
@@ -35,6 +35,7 @@ __all__ = [
     "Attendance",
     "AttendanceLog",
     "LeaveRequest",
+    "LeaveRequestEventLog",
     "CurriculumTrack",
     "CurriculumTrackSubject",
     "StudentTrackEnrollment",

@@ -13,3 +13,5 @@ export * from "@/modules/students/features/contact-book";
 export * from "@/modules/students/features/profile";
 export * from "@/modules/students/features/settings";
 export * from "@/modules/students/features/change-password";
+export * from "@/modules/students/features/leave-requests";
+

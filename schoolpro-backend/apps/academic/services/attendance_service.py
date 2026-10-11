@@ -170,18 +170,73 @@ class AttendanceService:
         Approve or reject a student leave request.
         If approved, automatically pre-creates or updates Attendance records as ABSENT_EXCUSED.
         """
-        leave_req = LeaveRequest.objects.select_related("student", "school_class").get(
-            id=leave_request_id
-        )
+        leave_req = LeaveRequest.objects.select_related(
+            "student",
+            "school_class",
+            "school_class__homeroom_teacher",
+            "school_class__homeroom_teacher__user",
+        ).get(id=leave_request_id)
         if leave_req.status != "PENDING":
             raise ValueError(f"Leave request is already {leave_req.status}.")
 
+        homeroom_teacher = (
+            getattr(leave_req.school_class, "homeroom_teacher", None)
+            if leave_req.school_class
+            else None
+        )
+        homeroom_user_id = getattr(homeroom_teacher, "user_id", None) if homeroom_teacher else None
+        is_authorized_reviewer = (
+            getattr(reviewer, "is_superuser", False)
+            or getattr(reviewer, "is_staff", False)
+            or (homeroom_user_id is not None and str(homeroom_user_id) == str(reviewer.id))
+        )
+        if not is_authorized_reviewer:
+            raise ValueError(
+                "Chỉ Giáo viên chủ nhiệm của lớp mới có thẩm quyền phê duyệt đơn xin nghỉ phép. Giáo viên bộ môn chỉ nhận thông báo."
+            )
+
         new_status = "APPROVED" if action.upper() == "APPROVE" else "REJECTED"
+        review_time = timezone.now()
         leave_req.status = new_status
         leave_req.reviewed_by = reviewer
-        leave_req.reviewed_at = timezone.now()
+        leave_req.reviewed_at = review_time
         leave_req.teacher_note = teacher_note
+        leave_req.is_auto_approved = False
         leave_req.save()
+
+        from apps.academic.services.leave_request_service import LeaveRequestService
+
+        reviewer_name = reviewer.full_name or "Giáo viên chủ nhiệm"
+        if new_status == "APPROVED":
+            LeaveRequestService.record_event_log(
+                leave_request=leave_req,
+                event_type="APPROVED",
+                title="Giáo viên chủ nhiệm đã phê duyệt đơn xin nghỉ phép",
+                description=(
+                    teacher_note
+                    or "Giáo viên chủ nhiệm đã đồng ý phê duyệt đơn xin nghỉ phép và cập nhật trạng thái Vắng có phép."
+                ),
+                actor_name=f"GVCN: {reviewer_name}",
+                actor_role="HOMEROOM_TEACHER",
+                badge_text="Đã phê duyệt",
+                badge_color="success",
+                created_at=review_time,
+            )
+        else:
+            LeaveRequestService.record_event_log(
+                leave_request=leave_req,
+                event_type="REJECTED",
+                title="Giáo viên chủ nhiệm từ chối đơn xin nghỉ phép",
+                description=(
+                    teacher_note
+                    or "Đơn xin nghỉ phép không được chấp thuận. Vui lòng xem ghi chú từ Giáo viên chủ nhiệm."
+                ),
+                actor_name=f"GVCN: {reviewer_name}",
+                actor_role="HOMEROOM_TEACHER",
+                badge_text="Từ chối",
+                badge_color="error",
+                created_at=review_time,
+            )
 
         # If approved, update attendance entries for the date range
         if new_status == "APPROVED":
@@ -219,6 +274,8 @@ class AttendanceService:
                     )
                 # Next day
                 current_date = current_date.fromordinal(current_date.toordinal() + 1)
+
+        LeaveRequestService.send_approval_notifications(leave_req, is_auto=False)
 
         logger.info(
             "Leave request %s %s by reviewer %s",
