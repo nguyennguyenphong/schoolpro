@@ -221,7 +221,7 @@ class TimetableService:
                 "shift": item.period.shift.lower(),
                 "room": room.name if room else "Phòng học",
                 "building": room.building if room and room.building else "Dãy nhà B",
-                "campus": "Trường THPT SchoolPro",
+                "campus": "Trường Trung học phổ thông SchoolPro",
                 "instructorName": teacher_user.full_name if teacher_user else "Giáo viên",
                 "instructorEmail": teacher_user.email if teacher_user else "",
                 "instructorPhone": getattr(teacher_user, "phone_number", "") or "",

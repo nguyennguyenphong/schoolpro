@@ -208,7 +208,7 @@ class AnnouncementService {
         academic: "Đào tạo & Học vụ",
         tuition: "Học phí & Khoản thu",
         activity: "Đoàn trường & Ngoại khóa",
-        homeroom: "Lớp & GVCN",
+        homeroom: "Lớp & Giáo viên chủ nhiệm",
         general: "Thông báo chung",
       };
 

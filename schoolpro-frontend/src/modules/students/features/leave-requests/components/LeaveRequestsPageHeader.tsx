@@ -82,7 +82,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
               <Icon name="userCheck" size={14} className="text-blue-600 shrink-0" />
               <span className="text-slate-500">
-                GVCN:{" "}
+                Giáo viên chủ nhiệm:{" "}
                 <strong className="text-slate-800">{summary.homeroomTeacherName}</strong>
               </span>
             </div>

@@ -142,7 +142,7 @@ COMMENT ON TABLE core.lookup_values IS 'Master dynamic values for lookup dropdow
 CREATE TABLE IF NOT EXISTS core.schools (
   id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   code               VARCHAR(30) NOT NULL UNIQUE,       -- E.g. 'THPT_LEQUYDON'
-  name               VARCHAR(255) NOT NULL,             -- E.g. 'Trường THPT Lê Quý Đôn'
+  name               VARCHAR(255) NOT NULL,             -- E.g. 'Trường Trung học phổ thông Lê Quý Đôn'
   educational_stage  VARCHAR(30) NOT NULL DEFAULT 'HIGH_SCHOOL', -- High school (Cấp 3)
   established_year   SMALLINT,
   address            TEXT,
@@ -461,7 +461,7 @@ CREATE TABLE IF NOT EXISTS core.classes (
   class_stream_code   VARCHAR(30) DEFAULT 'KHTN',  -- Natural Sciences vs Social Sciences ('CLASS_STREAM')
   max_students        SMALLINT DEFAULT 45,
   is_active           BOOLEAN NOT NULL DEFAULT TRUE,
-  metadata            JSONB DEFAULT '{}'::jsonb,   -- Subject track configuration per GDPT 2018
+  metadata            JSONB DEFAULT '{}'::jsonb,   -- Subject track configuration per Giáo dục phổ thông 2018
   created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (academic_year_id, code)
 );
@@ -709,7 +709,7 @@ COMMENT ON TABLE core.student_class_enrollments IS 'Annual official class roster
 -- ---------------------------------------------------------------------------
 -- =====================================================================
 -- TABLE: core.subjects (Master Data)
--- Subjects taught according to national curriculum standard (GDPT 2018)
+-- Subjects taught according to national curriculum standard (Giáo dục phổ thông 2018)
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS core.subjects (
@@ -727,7 +727,7 @@ CREATE TABLE IF NOT EXISTS core.subjects (
   UNIQUE (school_id, code)
 );
 
-COMMENT ON TABLE core.subjects IS 'Master subjects directory aligned with Vietnamese high school curriculum (GDPT 2018)';
+COMMENT ON TABLE core.subjects IS 'Master subjects directory aligned with Vietnamese high school curriculum (Giáo dục phổ thông 2018)';
 
 -- ---------------------------------------------------------------------------
 -- File: 02_tables/core/core_class_subject_teachers.sql
@@ -1057,7 +1057,7 @@ COMMENT ON TABLE academic.assignment_submissions IS 'Student homework answers, u
 -- ---------------------------------------------------------------------------
 -- =====================================================================
 -- TABLE: academic.curriculum_tracks
--- High school academic tracks and subject combinations (GDPT 2018)
+-- High school academic tracks and subject combinations (Giáo dục phổ thông 2018)
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS academic.curriculum_tracks (
@@ -1076,7 +1076,7 @@ CREATE TABLE IF NOT EXISTS academic.curriculum_tracks (
 
 CREATE INDEX IF NOT EXISTS ix_tracks_school_grade ON academic.curriculum_tracks(school_id, grade_id);
 
-COMMENT ON TABLE academic.curriculum_tracks IS 'Elective subject tracks and career orientation clusters under GDPT 2018 curriculum';
+COMMENT ON TABLE academic.curriculum_tracks IS 'Elective subject tracks and career orientation clusters under Giáo dục phổ thông 2018 curriculum';
 COMMENT ON COLUMN academic.curriculum_tracks.code IS 'Unique code for academic track within school and grade';
 COMMENT ON COLUMN academic.curriculum_tracks.career_orientation IS 'Target university entrance cluster or professional domain';
 
@@ -1490,7 +1490,7 @@ CREATE TABLE IF NOT EXISTS academic.extracurricular_activities (
 CREATE INDEX IF NOT EXISTS ix_activities_school ON academic.extracurricular_activities(school_id);
 CREATE INDEX IF NOT EXISTS ix_activities_semester ON academic.extracurricular_activities(semester_id);
 
-COMMENT ON TABLE academic.extracurricular_activities IS 'Experiential and vocational orientation activities under GDPT 2018';
+COMMENT ON TABLE academic.extracurricular_activities IS 'Experiential and vocational orientation activities under Giáo dục phổ thông 2018';
 
 -- ---------------------------------------------------------------------------
 -- File: 02_tables/academic/academic_activity_participations.sql
@@ -2730,7 +2730,7 @@ CREATE TRIGGER trg_student_fee_bills_updated_at
 INSERT INTO core.lookup_types (code, name, description, is_system) VALUES
   ('GENDER',              'Giới tính',                   'Nam, Nữ, Khác',                                  TRUE),
   ('ACCOUNT_STATUS',      'Trạng thái tài khoản',        'Hoạt động, Tạm khóa, Chờ duyệt',                 TRUE),
-  ('CLASS_STREAM',        'Ban học tập THPT',            'Khoa học Tự nhiên, Khoa học Xã hội, Chuyên',     TRUE),
+  ('CLASS_STREAM',        'Ban học tập Trung học phổ thông',            'Khoa học Tự nhiên, Khoa học Xã hội, Chuyên',     TRUE),
   ('ROOM_TYPE',           'Phân loại phòng ốc',          'Phòng học lý thuyết, Thí nghiệm, Tin học, Y tế', TRUE),
   ('FACILITY_CATEGORY',   'Danh mục cơ sở vật chất',     'Điện tử, Bàn ghế, Chiếu sáng, Thể thao',         TRUE),
   ('ETHNICITY',           'Dân tộc',                     'Kinh, Tày, Thái, Mường, H''Mông, Khơ-me...',      TRUE),
@@ -2872,14 +2872,14 @@ INSERT INTO core.departments (id, school_id, code, name, department_type, is_act
   ('5401faa0-f169-4225-a637-e2d419b3d18e',  'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_SUP839210', 'Ban Giám thị & Quản lý Nề nếp',           'ADMINISTRATION', TRUE),
   ('f6f9361e-bc85-42eb-8bc5-2b5c8a8faddc',      'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_MED748291', 'Phòng Y tế Học đường',                     'ADMINISTRATION', TRUE),
   ('7d35eb57-e173-4fde-8df3-d72f8488b658',    'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_ACC659182', 'Phòng Kế toán - Tài vụ',                   'ADMINISTRATION', TRUE),
-  ('a5145357-1472-4f7e-85ce-bded2bea1d43','b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_YTH568293', 'Ban Chấp hành Đoàn trường THPT',           'UNION',          TRUE),
-  ('757a8002-d004-4198-9f22-31b06995bc28',       'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_BOD479104', 'Ban Giám hiệu Trường THPT',                'BOARD',          TRUE)
+  ('a5145357-1472-4f7e-85ce-bded2bea1d43','b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_YTH568293', 'Ban Chấp hành Đoàn trường Trung học phổ thông',           'UNION',          TRUE),
+  ('757a8002-d004-4198-9f22-31b06995bc28',       'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'DEP_BOD479104', 'Ban Giám hiệu Trường Trung học phổ thông',                'BOARD',          TRUE)
 ON CONFLICT (school_id, code) DO UPDATE SET
   name = EXCLUDED.name,
   department_type = EXCLUDED.department_type;
 
 -- ---------------------------------------------------------------------
--- 8. MASTER: High School Subjects (core.subjects - GDPT 2018)
+-- 8. MASTER: High School Subjects (core.subjects - Giáo dục phổ thông 2018)
 -- Codes: M839201, L928374, E837465, P298374, C187465...
 -- ---------------------------------------------------------------------
 INSERT INTO core.subjects (school_id, department_id, code, name, evaluation_type, is_compulsory, metadata) VALUES
@@ -2966,9 +2966,9 @@ INSERT INTO core.roles (id, code, name, description, badge_color, icon, is_syste
   ('d96c271e-0b8d-4727-b2e9-a4f164a7c8d5',      'R_ADMIN_839201', 'Quản trị viên hệ thống', 'Toàn quyền cấu hình, vận hành và quản trị kỹ thuật', '#1E293B', 'shield-check', TRUE, TRUE),
   ('a513d262-a312-4a53-b6dd-124e536cd7da',  'R_PRIN_748292',  'Hiệu trưởng / Ban Giám hiệu', 'Ban giám hiệu chỉ đạo toàn diện hoạt động dạy và học', '#4F46E5', 'crown',        TRUE, TRUE),
   ('296ecfb4-1435-41bd-a674-8e068465dc8a',    'R_TCH_659183',   'Giáo viên',              'Giáo viên bộ môn, chủ nhiệm và tổ chuyên môn',         '#2563EB', 'chalkboard',   TRUE, TRUE),
-  ('9e12103a-09f5-4d61-9c8d-88b6309ed3cb',    'R_STU_568294',   'Học sinh',               'Học sinh trường THPT truy cập thời khóa biểu, điểm số', '#059669', 'user-graduate',TRUE, TRUE),
+  ('9e12103a-09f5-4d61-9c8d-88b6309ed3cb',    'R_STU_568294',   'Học sinh',               'Học sinh trường Trung học phổ thông truy cập thời khóa biểu, điểm số', '#059669', 'user-graduate',TRUE, TRUE),
   ('4f6537a5-9455-4cf9-9039-8ab1422ca9e1', 'R_SUP_479105',   'Giám thị học đường',     'Ban giám thị theo dõi nề nếp thi đua và kỷ luật',      '#D97706', 'clipboard-check', TRUE, TRUE),
-  ('dabbd3aa-ae20-4012-b4b9-74dfff207784',      'R_STF_389216',   'Cán bộ nhân viên',       'Y tế, Thư viện, Kế toán - Tài vụ, Thiết bị CSVC',      '#0D9488', 'briefcase',    TRUE, TRUE),
+  ('dabbd3aa-ae20-4012-b4b9-74dfff207784',      'R_STF_389216',   'Cán bộ nhân viên',       'Y tế, Thư viện, Kế toán - Tài vụ, Thiết bị Cơ sở vật chất',      '#0D9488', 'briefcase',    TRUE, TRUE),
   ('946ad4b2-3677-4cab-9e5e-3942bac9265c',     'R_PAR_298307',   'Phụ huynh học sinh',     'Cha mẹ hoặc người giám hộ theo dõi tiến độ học tập',   '#EA580C', 'heart-handshake', FALSE, TRUE)
 ON CONFLICT (code) DO UPDATE SET
   name = EXCLUDED.name,
@@ -2996,13 +2996,13 @@ INSERT INTO core.permissions (code, name, group_code, description) VALUES
   ('EMULATION_RECORD_CREATE',    'Ghi nhận vi phạm & điểm cộng',      'EMULATION',    'Quyền ghi biên bản cờ đỏ và giám thị trực ban'),
   ('EMULATION_RANKING_VIEW',     'Xem xếp hạng thi đua trường/khối',  'EMULATION',    'Thống kê tổng kết cờ thi đua hàng tuần'),
   ('EMULATION_APPEAL_MANAGE',    'Duyệt khiếu nại điểm thi đua',      'EMULATION',    'Quyền phản hồi và xử lý khiếu nại cờ đỏ'),
-  ('EVALUATION_TEACHER_SUBMIT',  'Tham gia khảo sát đánh giá GV',     'EVALUATION',   'Học sinh gửi nhận xét chất lượng giờ dạy (ẩn danh)'),
+  ('EVALUATION_TEACHER_SUBMIT',  'Tham gia khảo sát đánh giá giáo viên',     'EVALUATION',   'Học sinh gửi nhận xét chất lượng giờ dạy (ẩn danh)'),
   ('EVALUATION_FACILITY_REPORT', 'Báo cáo sự cố cơ sở vật chất',      'EVALUATION',   'Gửi phiếu báo hỏng thiết bị phòng học'),
   ('EVALUATION_REPORT_VIEW',     'Xem báo cáo khảo sát chất lượng',   'EVALUATION',   'Ban giám hiệu xem tổng hợp đánh giá giảng viên'),
-  ('NOTIFICATION_VIEW',          'Nhận & xem thông báo học đường',    'NOTIFICATION', 'Xem bản tin từ trường, đoàn thể và GVCN'),
+  ('NOTIFICATION_VIEW',          'Nhận & xem thông báo học đường',    'NOTIFICATION', 'Xem bản tin từ trường, đoàn thể và Giáo viên chủ nhiệm'),
   ('NOTIFICATION_SEND',          'Soạn & phát hành thông báo',        'NOTIFICATION', 'Quyền đăng thông báo diện rộng hoặc gửi SMS/App'),
   ('CONTACT_BOOK_VIEW',          'Xem sổ liên lạc điện tử',           'NOTIFICATION', 'Phụ huynh tra cứu báo cáo học tập định kỳ'),
-  ('CONTACT_BOOK_SIGN',          'Ký duyệt & nhận xét sổ liên lạc',   'NOTIFICATION', 'GVCN gửi phiếu nhận xét và phụ huynh xác nhận'),
+  ('CONTACT_BOOK_SIGN',          'Ký duyệt & nhận xét sổ liên lạc',   'NOTIFICATION', 'Giáo viên chủ nhiệm gửi phiếu nhận xét và phụ huynh xác nhận'),
   ('SYSTEM_SETTINGS_VIEW',       'Xem cấu hình hệ thống',             'SYSTEM',       'Xem các thông số và cờ tính năng toàn trường'),
   ('SYSTEM_SETTINGS_MANAGE',     'Hiệu chỉnh thông số hệ thống',      'SYSTEM',       'Thay đổi cấu hình kỹ thuật, giao diện, bảo mật'),
   ('AUDIT_LOG_VIEW',             'Tra cứu nhật ký an ninh (Audit Log)','SYSTEM',      'Giám sát các thao tác đăng nhập, sửa điểm, xóa dữ liệu')
@@ -3085,7 +3085,7 @@ INSERT INTO core.positions (code, name, scope_type, max_holders, is_leadership, 
   ('POS_VLA_479105', 'Lớp phó lao động',          'CLASS',      1,    TRUE,  'Phụ trách trực nhật, vệ sinh, lao động và cơ sở vật chất'),
   ('POS_VDI_389216', 'Lớp phó trật tự (Nề nếp)',  'CLASS',      1,    TRUE,  'Phụ trách điểm danh, chấm thi đua nội bộ lớp'),
   ('POS_VAC_298307', 'Lớp phó phong trào',        'CLASS',      1,    TRUE,  'Phụ trách văn nghệ, thể dục thể thao, báo tường'),
-  ('POS_TRE_187498', 'Thủ quỹ lớp',               'CLASS',      1,    FALSE, 'Phụ trách thu chi quỹ lớp dưới sự đồng ý của GVCN'),
+  ('POS_TRE_187498', 'Thủ quỹ lớp',               'CLASS',      1,    FALSE, 'Phụ trách thu chi quỹ lớp dưới sự đồng ý của Giáo viên chủ nhiệm'),
   ('POS_SEC_976589', 'Bí thư chi đoàn',           'CLASS',      1,    TRUE,  'Phụ trách công tác Đoàn thanh niên chi đoàn lớp'),
   ('POS_GL_865490',  'Tổ trưởng',                 'GROUP',      1,    TRUE,  'Điều hành và theo dõi thi đua trong tổ học tập'),
   ('POS_GVL_754381', 'Tổ phó',                    'GROUP',      1,    FALSE, 'Hỗ trợ tổ trưởng'),
@@ -3453,7 +3453,7 @@ ON CONFLICT (student_id, class_id) DO UPDATE SET
 -- ---------------------------------------------------------------------
 -- 28. CORE: Position Assignments (core.position_assignments)
 -- ---------------------------------------------------------------------
--- Homeroom Teachers (GVCN)
+-- Homeroom Teachers (Giáo viên chủ nhiệm)
 INSERT INTO core.position_assignments (
   user_id, position_id, academic_year_id, scope_type, class_id, is_current, note
 )
@@ -3555,7 +3555,7 @@ INSERT INTO core.class_subject_teachers (
 ) VALUES
   -- 10A1
   ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'M839201'),  '470885c3-4ba9-4445-9806-117147fb348f',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 4, 'Giảng dạy Toán chuyên đề KHTN'),
-  ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'L928374'),  '6c37a7fc-05c2-4331-9eff-6adc2a62802d',   '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 3, 'Giảng dạy Ngữ văn THPT'),
+  ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'L928374'),  '6c37a7fc-05c2-4331-9eff-6adc2a62802d',   '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 3, 'Giảng dạy Ngữ văn Trung học phổ thông'),
   ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'E837465'),  'b15ec797-4c5c-440b-80ac-c2cd80acde45',   '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 3, 'Giảng dạy Tiếng Anh Global Success'),
   ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'P298374'),  '5b68a943-43b2-4099-b1f1-b758f7309bf2',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 2, 'Giảng dạy Vật lý nâng cao'),
   ('a6a5db50-e0a6-42d3-90ac-8adbd8806fea', (SELECT id FROM core.subjects WHERE code = 'C187465'),  'a694e801-b76a-4e71-9871-96e7b4275db2',  '53a5dc39-38dc-41bb-a7db-04745fa7d73a', 2, 'Giảng dạy Hóa học KHTN'),
@@ -3577,13 +3577,13 @@ ON CONFLICT (class_id, subject_id, semester_id) DO UPDATE SET
 INSERT INTO core.clubs (
   id, school_id, code, name, category, advisor_teacher_id, president_student_id, description, is_active
 ) VALUES
-  ('7fda4936-6d07-4f4f-9d79-862d6f8045fe', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_ROB_839201', 'CLB Sáng tạo Robotics & STEM', 'ACADEMIC',
+  ('7fda4936-6d07-4f4f-9d79-862d6f8045fe', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_ROB_839201', 'Câu lạc bộ Sáng tạo Robotics & STEM', 'ACADEMIC',
    '234cbf0b-be13-4233-a02c-fce474658390', '190adaa6-7ceb-41d8-81b6-86cac98b004f', 'Nghiên cứu lập trình nhúng, thiết kế robot thi đấu VEX và AI học đường', TRUE),
 
-  ('073dc2d5-dc5e-4061-91b5-5c865ca621e7', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_BSK_748292', 'CLB Bóng rổ THPT Lê Quý Đôn', 'SPORTS',
+  ('073dc2d5-dc5e-4061-91b5-5c865ca621e7', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_BSK_748292', 'Câu lạc bộ Bóng rổ Trung học phổ thông Lê Quý Đôn', 'SPORTS',
    'fdd5b49c-dbb1-4fb9-a0da-4a3d813a2a44', '7d38e8bb-2f28-4a22-98bc-1bdc7807ca2b', 'Tập luyện và thi đấu giải bóng rổ học sinh thành phố', TRUE),
 
-  ('b93fc5d3-14cc-4b85-8577-50acbb785a80', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_ENG_659183', 'CLB Tiếng Anh & Hùng biện Quốc tế (LQD Debate)', 'ACADEMIC',
+  ('b93fc5d3-14cc-4b85-8577-50acbb785a80', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_ENG_659183', 'Câu lạc bộ Tiếng Anh & Hùng biện Quốc tế (LQD Debate)', 'ACADEMIC',
    'b15ec797-4c5c-440b-80ac-c2cd80acde45', '5ef27225-43a9-44bb-8391-c7af1ef355fb', 'Rèn luyện kỹ năng thuyết trình, tranh biện tiếng Anh và giao lưu quốc tế', TRUE),
 
   ('0361271b-b0be-4e75-be18-0a997587c80d', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'CLB_VOL_568294', 'Đội Tình nguyện Hoa Phượng Đỏ', 'COMMUNITY',
@@ -3597,12 +3597,12 @@ ON CONFLICT (code) DO UPDATE SET
 -- 32. CORE: Club Memberships (core.club_members)
 -- ---------------------------------------------------------------------
 INSERT INTO core.club_members (club_id, student_id, role_title, status, contribution_notes) VALUES
-  ('7fda4936-6d07-4f4f-9d79-862d6f8045fe',   '190adaa6-7ceb-41d8-81b6-86cac98b004f',    'PRESIDENT',          'ACTIVE', 'Chủ nhiệm CLB, phụ trách trưởng nhóm lập trình'),
+  ('7fda4936-6d07-4f4f-9d79-862d6f8045fe',   '190adaa6-7ceb-41d8-81b6-86cac98b004f',    'PRESIDENT',          'ACTIVE', 'Chủ nhiệm Câu lạc bộ, phụ trách trưởng nhóm lập trình'),
   ('7fda4936-6d07-4f4f-9d79-862d6f8045fe',   '73d4a204-6f20-48e4-95e3-a13da68ca22a',   'MEMBER',             'ACTIVE', 'Thành viên ban thiết kế cơ khí robot'),
   ('073dc2d5-dc5e-4061-91b5-5c865ca621e7', '7d38e8bb-2f28-4a22-98bc-1bdc7807ca2b', 'PRESIDENT',          'ACTIVE', 'Đội trưởng đội bóng rổ nam'),
   ('073dc2d5-dc5e-4061-91b5-5c865ca621e7', '190adaa6-7ceb-41d8-81b6-86cac98b004f',    'MEMBER',             'ACTIVE', 'Hậu vệ ghi điểm'),
   ('073dc2d5-dc5e-4061-91b5-5c865ca621e7', '951f84e1-daff-42c6-9c44-75442273618a',   'MEMBER',             'ACTIVE', 'Tiền đạo cánh'),
-  ('b93fc5d3-14cc-4b85-8577-50acbb785a80',    '5ef27225-43a9-44bb-8391-c7af1ef355fb',  'PRESIDENT',          'ACTIVE', 'Chủ nhiệm CLB Tranh biện tiếng Anh'),
+  ('b93fc5d3-14cc-4b85-8577-50acbb785a80',    '5ef27225-43a9-44bb-8391-c7af1ef355fb',  'PRESIDENT',          'ACTIVE', 'Chủ nhiệm Câu lạc bộ Tranh biện tiếng Anh'),
   ('b93fc5d3-14cc-4b85-8577-50acbb785a80',    '3b88eac1-4928-4a42-9d3c-f84a123179a6',    'HEAD_OF_COMMITTEE', 'ACTIVE', 'Trưởng ban truyền thông sự kiện'),
   ('0361271b-b0be-4e75-be18-0a997587c80d',  '3b88eac1-4928-4a42-9d3c-f84a123179a6',    'PRESIDENT',          'ACTIVE', 'Đội trưởng Đội Tình nguyện Hoa Phượng Đỏ')
 ON CONFLICT (club_id, student_id) DO UPDATE SET
@@ -3656,19 +3656,19 @@ ON CONFLICT (user_id, setting_id) DO UPDATE SET
 INSERT INTO sys.modules (code, name, short_name, description, icon, route, module_type, category, default_color, default_badge) VALUES
   ('MOD_STT_839201', 'Thời khóa biểu',            'TKB',        'Tra cứu lịch học tuần, ca sáng/chiều, phòng học và giảng viên', 'calendar',   '/student/timetable',    'CARD', 'ACADEMIC',      '#10B981', 'Hôm nay'),
   ('MOD_SMA_748292', 'Tài liệu môn học',          'Tài liệu',   'Giáo trình điện tử, slide bài giảng, đề cương ôn tập tải về',   'download',   '/student/materials',    'CARD', 'ACADEMIC',      '#9333EA', '18'),
-  ('MOD_SAS_659183', 'Bài tập & Đồ án',           'Bài tập',    'Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét GV',    'edit',       '/student/assignments',  'CARD', 'ACADEMIC',      '#E11D48', '3'),
+  ('MOD_SAS_659183', 'Bài tập & Đồ án',           'Bài tập',    'Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét giáo viên',    'edit',       '/student/assignments',  'CARD', 'ACADEMIC',      '#E11D48', '3'),
   ('MOD_SEX_568294', 'Bài kiểm tra & Phòng thi',  'Kiểm tra',   'Lịch thi định kỳ, trắc nghiệm trực tuyến, số báo danh',         'file',       '/student/exams',        'CARD', 'ACADEMIC',      '#DB2777', 'Sắp tới'),
   ('MOD_SRC_479105', 'Bảng điểm & Học bạ',        'Bảng điểm',  'Xem điểm thường xuyên, giữa kỳ, cuối kỳ và xếp loại học lực',   'chart',      '/student/gradebook',    'CARD', 'ACADEMIC',      '#7C3AED', 'GPA'),
   ('MOD_SRM_389216', 'Nhắc nhở học tập',          'Nhắc nhở',   'Hạn nộp bài, lịch trực nhật, lịch họp chi đoàn',                'clock',      '/student/reminders',    'CARD', 'COMMUNICATION', '#CA8A04', '4'),
   ('MOD_SAN_298307', 'Thông báo nhà trường',      'Thông báo',  'Tin tức chính thức từ BGH, Đoàn trường và Giáo viên chủ nhiệm', 'info',        '/student/notices',      'CARD', 'COMMUNICATION', '#3B82F6', '10'),
-  ('MOD_TEV_187498', 'Khảo sát & Đánh giá',       'Đánh giá',   'Khảo sát chất lượng giờ dạy cuối kỳ và đánh giá CSVC',          'edit',       '/student/evaluations',  'CARD', 'EVALUATION',    '#EA580C', 'Khảo sát'),
-  ('MOD_FEV_976589', 'Đánh giá & Báo hỏng CSVC',  'Báo hỏng',   'Phản ánh tình trạng máy chiếu, quạt, bàn ghế phòng học',         'tool',       '/student/evaluations/facility','CARD', 'EVALUATION', '#64748B', 'Sửa chữa'),
+  ('MOD_TEV_187498', 'Khảo sát & Đánh giá',       'Đánh giá',   'Khảo sát chất lượng giờ dạy cuối kỳ và đánh giá Cơ sở vật chất',          'edit',       '/student/evaluations',  'CARD', 'EVALUATION',    '#EA580C', 'Khảo sát'),
+  ('MOD_FEV_976589', 'Đánh giá & Báo hỏng Cơ sở vật chất',  'Báo hỏng',   'Phản ánh tình trạng máy chiếu, quạt, bàn ghế phòng học',         'tool',       '/student/evaluations/facility','CARD', 'EVALUATION', '#64748B', 'Sửa chữa'),
   ('MOD_EMU_865490', 'Thi đua cá nhân & Tổ lớp',  'Thi đua',    'Điểm nề nếp, điểm cộng học tập, xếp hạng thi đua trong lớp',    'user',       '/student/emulation',    'CARD', 'EMULATION',     '#D97706', 'Hạng'),
-  ('MOD_SCB_754381', 'Sổ liên lạc điện tử',       'Sổ liên lạc','Xem phiếu nhận xét định kỳ từ GVCN và ký xác nhận',          'book',       '/student/contact-book', 'CARD', 'COMMUNICATION', '#0284C7', 'Mới'),
-  ('MOD_SCL_643272', 'Câu lạc bộ & Ngoại khóa',   'CLB Đoàn',   'Đăng ký tham gia CLB, hoạt động tình nguyện, ngày hội STEM', 'users',      '/student/clubs',        'CARD', 'EMULATION',     '#8B5CF6', 'Hoạt động'),
+  ('MOD_SCB_754381', 'Sổ liên lạc điện tử',       'Sổ liên lạc','Xem phiếu nhận xét định kỳ từ Giáo viên chủ nhiệm và ký xác nhận',          'book',       '/student/contact-book', 'CARD', 'COMMUNICATION', '#0284C7', 'Mới'),
+  ('MOD_SCL_643272', 'Câu lạc bộ & Ngoại khóa',   'Câu lạc bộ Đoàn',   'Đăng ký tham gia Câu lạc bộ, hoạt động tình nguyện, ngày hội STEM', 'users',      '/student/clubs',        'CARD', 'EMULATION',     '#8B5CF6', 'Hoạt động'),
   ('MOD_SFE_532163', 'Học phí & Khoản thu',       'Học phí',    'Tra cứu hóa đơn học phí, bảo hiểm y tế và thanh toán online', 'settings',   '/student/fees',         'CARD', 'MANAGEMENT',    '#0D9488', 'Học phí'),
   ('MOD_SAT_482910', 'Điểm danh chuyên cần',      'Điểm danh',  'Theo dõi tình trạng chuyên cần, vắng có phép, vắng không phép', 'check',      '/student/attendance',   'CARD', 'ACADEMIC',      '#06B6D4', 'Điểm danh'),
-  ('MOD_STR_421054', 'Tổ hợp môn GDPT & THPT',    'Tổ hợp môn', 'Thông tin ban học tập, cụm chuyên đề lựa chọn',               'layers',     '/student/track',        'CARD', 'ACADEMIC',      '#6366F1', 'Tổ hợp'),
+  ('MOD_STR_421054', 'Tổ hợp môn Giáo dục phổ thông & Trung học phổ thông',    'Tổ hợp môn', 'Thông tin ban học tập, cụm chuyên đề lựa chọn',               'layers',     '/student/track',        'CARD', 'ACADEMIC',      '#6366F1', 'Tổ hợp'),
   ('MOD_SOT_310945', 'Khảo thí Trắc nghiệm',      'Thi online', 'Làm bài kiểm tra trực tuyến, trắc nghiệm tính giờ',           'check-circle','/student/online-test', 'CARD', 'ACADEMIC',      '#F43F5E', 'Online'),
   ('MOD_TJR_209836', 'Sổ đầu bài điện tử',        'Sổ đầu bài', 'Ghi nhận bài học, sĩ số, nhận xét và xếp loại tiết học A/B/C/D','book',       '/teacher/journal',      'CARD', 'ACADEMIC',      '#10B981', 'Ký sổ'),
   ('MOD_TGE_198725', 'Sổ điểm điện tử',           'Nhập điểm',  'Nhập điểm thường xuyên, giữa kỳ, cuối kỳ theo chuẩn TT22',      'edit',       '/teacher/grades',       'CARD', 'ACADEMIC',      '#3B82F6', 'Sổ điểm'),
@@ -3919,7 +3919,7 @@ INSERT INTO notification.announcements (
   'b5ebbdb9-a332-4fef-a64a-149c474159e6',
   'Quy định về đồng phục và nền nếp kỷ cương học đường năm học mới',
   'Nhắc nhở học sinh tuân thủ nội quy trang phục, tác phong và việc sử dụng điện thoại thông minh trong giờ học.',
-  '<p>Để xây dựng môi trường sư phạm văn minh, Ban Giám thị trường THPT Lê Quý Đôn lưu ý toàn thể học sinh các quy định sau:</p><ul><li>Đeo phù hiệu trường và thẻ học sinh đầy đủ khi đến trường.</li><li>Nam mặc quần tây xanh đen/đen, nữ mặc váy đồng phục theo quy định.</li><li>Tuyệt đối không sử dụng điện thoại trong giờ học trừ khi có sự cho phép của giáo viên bộ môn nhằm phục vụ học tập.</li></ul>',
+  '<p>Để xây dựng môi trường sư phạm văn minh, Ban Giám thị trường Trung học phổ thông Lê Quý Đôn lưu ý toàn thể học sinh các quy định sau:</p><ul><li>Đeo phù hiệu trường và thẻ học sinh đầy đủ khi đến trường.</li><li>Nam mặc quần tây xanh đen/đen, nữ mặc váy đồng phục theo quy định.</li><li>Tuyệt đối không sử dụng điện thoại trong giờ học trừ khi có sự cho phép của giáo viên bộ môn nhằm phục vụ học tập.</li></ul>',
   'GENERAL',
   'SCHOOL',
   NULL, NULL, NULL, NULL,
@@ -3935,9 +3935,9 @@ INSERT INTO notification.announcements (
 (
   'e1000001-0000-0000-0000-000000000007',
   'b5ebbdb9-a332-4fef-a64a-149c474159e6',
-  'Chuyên đề kỹ năng mềm và phương pháp học tập THPT dành cho Khối 10',
+  'Chuyên đề kỹ năng mềm và phương pháp học tập Trung học phổ thông dành cho Khối 10',
   'Buổi sinh hoạt chuyên đề do chuyên gia tâm lý giáo dục hướng dẫn tại Hội trường A.',
-  '<p>Chào đón các tân học sinh Khối 10, nhà trường tổ chức buổi workshop <strong>Bứt phá thời THPT - Phương pháp tự học và quản lý thời gian hiệu quả</strong> vào tiết sinh hoạt dưới cờ ngày Thứ Hai tới.</p><p>Yêu cầu 100% học sinh Khối 10 tham gia đúng giờ và mang theo sổ tay ghi chép.</p>',
+  '<p>Chào đón các tân học sinh Khối 10, nhà trường tổ chức buổi workshop <strong>Bứt phá thời Trung học phổ thông - Phương pháp tự học và quản lý thời gian hiệu quả</strong> vào tiết sinh hoạt dưới cờ ngày Thứ Hai tới.</p><p>Yêu cầu 100% học sinh Khối 10 tham gia đúng giờ và mang theo sổ tay ghi chép.</p>',
   'EVENTS',
   'GRADE',
   '6294ceb2-291c-4e72-b839-2a72f0950b21', NULL, NULL, NULL,
@@ -3992,7 +3992,7 @@ VALUES
   ('c1000001-0000-0000-0000-000000000005', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'LAB_TIN', 'Phòng Máy tính 1', 'COMPUTER_ROOM', 45, 'Dãy nhà A (Khu Công nghệ)', 1, 'AVAILABLE'),
   ('c1000001-0000-0000-0000-000000000006', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'SAN_TD', 'Sân Thể thao đa năng', 'GYM', 100, 'Nhà thi đấu trường', 1, 'AVAILABLE'),
   ('c1000001-0000-0000-0000-000000000007', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'SAN_QS', 'Sân tập Quân sự', 'CLASSROOM', 100, 'Khuôn viên trường', 1, 'AVAILABLE'),
-  ('c1000001-0000-0000-0000-000000000008', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'ONLINE', 'Lớp học trực tuyến THPT', 'CLASSROOM', 100, 'Hệ thống E-Learning', 1, 'AVAILABLE')
+  ('c1000001-0000-0000-0000-000000000008', 'b5ebbdb9-a332-4fef-a64a-149c474159e6', 'ONLINE', 'Lớp học trực tuyến Trung học phổ thông', 'CLASSROOM', 100, 'Hệ thống E-Learning', 1, 'AVAILABLE')
 ON CONFLICT (school_id, code) DO UPDATE SET
   name = EXCLUDED.name,
   building = EXCLUDED.building;

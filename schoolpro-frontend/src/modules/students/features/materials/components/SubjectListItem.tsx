@@ -67,7 +67,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
                 {item.semester} ({item.academicYear})
               </Tag>
               <span className="text-xs text-slate-500 font-medium">
-                GV: <strong className="text-slate-700">{item.teacher}</strong>
+                Giáo viên: <strong className="text-slate-700">{item.teacher}</strong>
               </span>
             </div>
 

@@ -565,11 +565,11 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
             <Icon name="info" size={14} className="text-blue-600 shrink-0 mt-0.5" />
             <span>
               Khi đăng ký, hệ thống tự động gửi thông báo &amp; Email đến{" "}
-              <strong>Giáo viên chủ nhiệm ({summary?.homeroomTeacherName || "GVCN"})</strong> và các{" "}
-              <strong>Giáo viên bộ môn</strong> dạy các tiết bên dưới (nếu GVCN đồng thời là GV bộ môn thì hệ thống chỉ gửi{" "}
-              <strong>01 lần hợp nhất</strong>). Hạn GVCN phê duyệt là{" "}
+              <strong>Giáo viên chủ nhiệm ({summary?.homeroomTeacherName || "Giáo viên chủ nhiệm"})</strong> và các{" "}
+              <strong>Giáo viên bộ môn</strong> dạy các tiết bên dưới (nếu Giáo viên chủ nhiệm đồng thời là Giáo viên bộ môn thì hệ thống chỉ gửi{" "}
+              <strong>01 lần hợp nhất</strong>). Hạn Giáo viên chủ nhiệm phê duyệt là{" "}
               <strong>trước thời gian diễn ra môn học 03 giờ</strong>; quá hạn hệ thống sẽ{" "}
-              <strong>tự động phê duyệt</strong> và gửi Email kết quả cho học sinh + thông báo GV bộ môn.
+              <strong>tự động phê duyệt</strong> và gửi Email kết quả cho học sinh + thông báo Giáo viên bộ môn.
             </span>
           </div>
 
@@ -615,7 +615,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                         {lesson.startTime} - {lesson.endTime}
                       </div>
                       <div className="text-[11px] text-slate-600 truncate">
-                        GV bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
+                        Giáo viên bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
                       </div>
                     </div>
                   </div>
@@ -800,7 +800,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 
           <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Người phê duyệt (GVCN):</span>
+              <span className="text-slate-500">Người phê duyệt (Giáo viên chủ nhiệm):</span>
               <strong className="text-slate-900">
                 {summary?.homeroomTeacherName || "Giáo viên chủ nhiệm"}
               </strong>
@@ -837,7 +837,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                   <strong className="text-slate-700">{approvalDeadlineInfo.firstLessonLabel}</strong>
                 </div>
                 <div className="text-[11px] text-amber-800 bg-amber-50/90 border border-amber-200 rounded-xl px-2.5 py-1.5">
-                  Hạn GVCN duyệt (trước 03 giờ):{" "}
+                  Hạn Giáo viên chủ nhiệm duyệt (trước 03 giờ):{" "}
                   <strong className="font-mono">{approvalDeadlineInfo.deadlineFormatted}</strong>
                   <span className="block text-[10px] text-amber-700 mt-0.5">
                     Nếu quá hạn trên chưa duyệt, hệ thống sẽ tự động duyệt và gửi Email kết quả.
@@ -848,7 +848,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
         </div>
 
-        {/* Danh sách Giáo viên nhận thông báo & Email (Gộp 1 lần nếu GVCN cũng là GV bộ môn) */}
+        {/* Danh sách Giáo viên nhận thông báo & Email (Gộp 1 lần nếu Giáo viên chủ nhiệm cũng là Giáo viên bộ môn) */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -863,7 +863,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
 
           <div className="space-y-2 text-xs">
-            {/* GVCN - Người duyệt duy nhất (Hợp nhất nếu đồng thời là GV bộ môn) */}
+            {/* Giáo viên chủ nhiệm - Người duyệt duy nhất (Hợp nhất nếu đồng thời là Giáo viên bộ môn) */}
             <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-2">
               <div className="min-w-0 space-y-0.5">
                 <div className="font-bold text-slate-900 truncate">
@@ -872,7 +872,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 <div className="text-[11px] text-slate-600">
                   {notificationRecipients.homeroomAlsoSubjectTeacher ? (
                     <span>
-                      GVCN kiêm GV bộ môn{" "}
+                      Giáo viên chủ nhiệm kiêm Giáo viên bộ môn{" "}
                       <strong>{notificationRecipients.homeroomTeachingSubjects.join(", ")}</strong> (
                       {notificationRecipients.homeroomLessonCount} tiết) •{" "}
                       <span className="text-blue-700 font-semibold">Gửi 01 lần hợp nhất</span>
@@ -886,12 +886,12 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
               </div>
               <Tag color="blue" className="m-0 text-[10px] font-bold shrink-0">
                 {notificationRecipients.homeroomAlsoSubjectTeacher
-                  ? "GVCN & GVBM (1 lần)"
+                  ? "Giáo viên chủ nhiệm & Giáo viên bộ môn (1 lần)"
                   : "Người xét duyệt"}
               </Tag>
             </div>
 
-            {/* Các Giáo viên bộ môn khác (Đã loại trừ nếu trùng với GVCN) */}
+            {/* Các Giáo viên bộ môn khác (Đã loại trừ nếu trùng với Giáo viên chủ nhiệm) */}
             {notificationRecipients.otherSubjectTeachers.map((teacher, idx) => (
               <div
                 key={teacher.teacherId || idx}
@@ -925,13 +925,13 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
               Lịch xin nghỉ bắt buộc phải rơi vào ngày và buổi học có môn học trong Thời khóa biểu.
             </li>
             <li>
-              Khi đăng ký, hệ thống gửi thông báo &amp; Email tới Giáo viên chủ nhiệm và Giáo viên bộ môn (nếu GVCN kiêm GVBM thì chỉ gửi 1 lần).
+              Khi đăng ký, hệ thống gửi thông báo &amp; Email tới Giáo viên chủ nhiệm và Giáo viên bộ môn (nếu Giáo viên chủ nhiệm kiêm Giáo viên bộ môn thì chỉ gửi 1 lần).
             </li>
             <li>
-              Hạn phê duyệt của GVCN là từ lúc đăng ký đến <strong>trước giờ diễn ra môn học 03 giờ</strong>. Nếu quá hạn chưa duyệt, hệ thống sẽ <strong>duyệt tự động</strong>.
+              Hạn phê duyệt của Giáo viên chủ nhiệm là từ lúc đăng ký đến <strong>trước giờ diễn ra môn học 03 giờ</strong>. Nếu quá hạn chưa duyệt, hệ thống sẽ <strong>duyệt tự động</strong>.
             </li>
             <li>
-              Sau khi đơn được duyệt (bởi GVCN hoặc tự động), hệ thống gửi Email kết quả tới Học sinh và thông báo cho Giáo viên bộ môn.
+              Sau khi đơn được duyệt (bởi Giáo viên chủ nhiệm hoặc tự động), hệ thống gửi Email kết quả tới Học sinh và thông báo cho Giáo viên bộ môn.
             </li>
           </ul>
         </div>

@@ -274,7 +274,7 @@ class AnnouncementRepository(BaseRepository[Announcement]):
             "ACTIVITY": "Hoạt động & Ngoại khóa",
             "EMULATION": "Thi đua & Khen thưởng",
             "GENERAL": "Thông báo chung",
-            "HOMEROOM": "Lớp & GVCN",
+            "HOMEROOM": "Lớp & Giáo viên chủ nhiệm",
             "ADMISSION": "Tuyển sinh",
         }
 

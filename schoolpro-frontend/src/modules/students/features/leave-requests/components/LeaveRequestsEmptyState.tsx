@@ -27,7 +27,7 @@ export const LeaveRequestsEmptyState: React.FC<LeaveRequestsEmptyStateProps> = (
             <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
               {hasActiveFilters
                 ? "Không có đơn xin nghỉ nào khớp với bộ lọc hoặc từ khóa tìm kiếm hiện tại."
-                : "Bạn chưa gửi đơn xin nghỉ phép nào trong học kỳ này. Nhấn nút bên dưới để tạo đơn xin nghỉ trực tuyến gửi GVCN."}
+                : "Bạn chưa gửi đơn xin nghỉ phép nào trong học kỳ này. Nhấn nút bên dưới để tạo đơn xin nghỉ trực tuyến gửi Giáo viên chủ nhiệm."}
             </p>
           </div>
         }

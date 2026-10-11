@@ -29,7 +29,7 @@ schoolpro-backend/
 │   ├── master/                      # [Domain 2] Dữ liệu tham chiếu & Danh mục toàn trường (Schema: master_)
 │   ├── academic/                    # [Domain 3] Học vụ, Thời khóa biểu, Điểm, Thi cử, Học phí (Schema: academic_)
 │   ├── emulation/                   # [Domain 4] Thi đua, Nề nếp, Kỷ luật, Trực ban cờ đỏ (Schema: emulation_)
-│   ├── evaluation/                  # [Domain 5] Khảo sát, Đánh giá chất lượng & CSVC (Schema: evaluation_)
+│   ├── evaluation/                  # [Domain 5] Khảo sát, Đánh giá chất lượng & Cơ sở vật chất (Schema: evaluation_)
 │   ├── notification/                # [Domain 6] Thông báo, Sổ liên lạc, Push FCM, Trao đổi (Schema: notification_)
 │   └── system/                      # [Domain 7] Quản trị hệ thống, Audit Logs & Outbox Event (Schema: sys_)
 │
@@ -81,7 +81,7 @@ schoolpro-backend/
 Toàn bộ **67 bảng CSDL** tại `schoolpro-db/sql/02_tables` được phân bổ chính xác vào 7 Domain Apps, giải quyết triệt để vấn đề phụ thuộc vòng (Circular Dependencies) và vi phạm Single Responsibility:
 
 ### 2.1. App `apps/core` (19 Tables - Schema `core_`)
-*Trọng tâm: Định danh người dùng, vai trò phân quyền (RBAC), hồ sơ người dùng, phân lớp, phân công giảng dạy, CLB.*
+*Trọng tâm: Định danh người dùng, vai trò phân quyền (RBAC), hồ sơ người dùng, phân lớp, phân công giảng dạy, Câu lạc bộ.*
 - **Người dùng & Phân quyền:** `core_users`, `core_roles`, `core_permissions`, `core_user_roles`, `core_role_permissions`.
 - **Hồ sơ nhân sự & Học sinh:** `core_students`, `core_teachers`, `core_guardians`, `core_staff`, `core_student_health_records`.
 - **Tổ chức lớp học & Phân công:** `core_classes`, `core_class_groups`, `core_student_class_enrollments`, `core_class_subject_teachers`, `core_position_assignments`.

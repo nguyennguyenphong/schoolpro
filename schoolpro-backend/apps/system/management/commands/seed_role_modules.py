@@ -236,7 +236,9 @@ class Command(BaseCommand):
                 card(ROUTE_NOTICES, pinned=False, col_span=1, order=3),
             ],
             "Nhân viên Hậu cần & Tạp vụ": [
-                card(ROUTE_FACILITY_ISSUE, pinned=True, col_span=2, order=1, badge="CSVC"),
+                card(
+                    ROUTE_FACILITY_ISSUE, pinned=True, col_span=2, order=1, badge="Cơ sở vật chất"
+                ),
                 card(ROUTE_NOTICES, pinned=False, col_span=1, order=2),
                 card(ROUTE_REMINDERS, pinned=False, col_span=1, order=3),
             ],

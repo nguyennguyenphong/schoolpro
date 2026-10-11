@@ -8,7 +8,7 @@ class CurriculumTrack(UUIDModel):
     CurriculumTrack Model.
 
     Database Table: "academic"."curriculum_tracks"
-    Description: Elective subject tracks and career orientation clusters under GDPT 2018 curriculum
+    Description: Elective subject tracks and career orientation clusters under Giáo dục phổ thông 2018 curriculum
     """
 
     school = models.ForeignKey(

@@ -216,7 +216,7 @@ class AttendanceService:
                     teacher_note
                     or "Giáo viên chủ nhiệm đã đồng ý phê duyệt đơn xin nghỉ phép và cập nhật trạng thái Vắng có phép."
                 ),
-                actor_name=f"GVCN: {reviewer_name}",
+                actor_name=f"Giáo viên chủ nhiệm: {reviewer_name}",
                 actor_role="HOMEROOM_TEACHER",
                 badge_text="Đã phê duyệt",
                 badge_color="success",
@@ -231,7 +231,7 @@ class AttendanceService:
                     teacher_note
                     or "Đơn xin nghỉ phép không được chấp thuận. Vui lòng xem ghi chú từ Giáo viên chủ nhiệm."
                 ),
-                actor_name=f"GVCN: {reviewer_name}",
+                actor_name=f"Giáo viên chủ nhiệm: {reviewer_name}",
                 actor_role="HOMEROOM_TEACHER",
                 badge_text="Từ chối",
                 badge_color="error",

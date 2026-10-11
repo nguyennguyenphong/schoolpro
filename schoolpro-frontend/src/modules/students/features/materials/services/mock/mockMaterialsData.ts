@@ -217,7 +217,7 @@ export const mockMaterialsData: MaterialItem[] = [
     fileName: "Bo_de_thi_thu_giua_HK1_Toan_11.pdf",
     fileSize: "3.1 MB",
     fileUrl: "#download-math-exam-prep",
-    author: "Tổ Chuyên môn Toán THPT",
+    author: "Tổ Chuyên môn Toán Trung học phổ thông",
     uploadDate: "2026-09-18",
     downloadsCount: 460,
     viewsCount: 1400,
@@ -305,7 +305,7 @@ export const mockMaterialsData: MaterialItem[] = [
     semester: "HK1",
     academicYear: "2025-2026",
     description:
-      "Clip ghi hình trực tiếp tại phòng thực hành Vật lý trường THPT: Hiện tượng cộng hưởng dao động ở con lắc lò xo và cầu rung.",
+      "Clip ghi hình trực tiếp tại phòng thực hành Vật lý trường Trung học phổ thông: Hiện tượng cộng hưởng dao động ở con lắc lò xo và cầu rung.",
   },
 
   // --- HÓA HỌC (CHEM11) ---

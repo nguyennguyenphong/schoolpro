@@ -86,7 +86,7 @@ export interface ParentNoteItem {
   parentRole: string; // "Bố học sinh" | "Mẹ học sinh" | "Người giám hộ"
   phone: string;
   homeStudyComment: string; // Tình hình học tập & sinh hoạt tại nhà
-  generalOpinion: string; // Ý kiến đóng góp hoặc đề xuất với nhà trường & GVCN
+  generalOpinion: string; // Ý kiến đóng góp hoặc đề xuất với nhà trường & Giáo viên chủ nhiệm
   signedAt: string;
   isConfirmed: boolean;
   teacherResponse?: {

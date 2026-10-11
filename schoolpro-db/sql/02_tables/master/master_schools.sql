@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS core.schools (
   id                     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   code                   VARCHAR(30) NOT NULL UNIQUE,       -- E.g. 'THPT_LEQUYDON'
-  name                   VARCHAR(255) NOT NULL,             -- E.g. 'Trường THPT Lê Quý Đôn'
+  name                   VARCHAR(255) NOT NULL,             -- E.g. 'Trường Trung học phổ thông Lê Quý Đôn'
   moet_code              VARCHAR(50),                       -- Mã trường chuẩn của Bộ GD&ĐT
   educational_stage      VARCHAR(30) NOT NULL DEFAULT 'HIGH_SCHOOL', -- High school (Cấp 3)
   school_type            VARCHAR(30) NOT NULL DEFAULT 'PUBLIC'

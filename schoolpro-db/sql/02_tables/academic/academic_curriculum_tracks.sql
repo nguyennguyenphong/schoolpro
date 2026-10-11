@@ -1,6 +1,6 @@
 -- =====================================================================
 -- TABLE: academic.curriculum_tracks
--- High school academic tracks and subject combinations (GDPT 2018)
+-- High school academic tracks and subject combinations (Giáo dục phổ thông 2018)
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS academic.curriculum_tracks (
@@ -23,6 +23,6 @@ CREATE TABLE IF NOT EXISTS academic.curriculum_tracks (
 
 CREATE INDEX IF NOT EXISTS ix_tracks_school_grade ON academic.curriculum_tracks(school_id, grade_id);
 
-COMMENT ON TABLE academic.curriculum_tracks IS 'Elective subject tracks and career orientation clusters under GDPT 2018 curriculum';
+COMMENT ON TABLE academic.curriculum_tracks IS 'Elective subject tracks and career orientation clusters under Giáo dục phổ thông 2018 curriculum';
 COMMENT ON COLUMN academic.curriculum_tracks.code IS 'Unique code for academic track within school and grade';
 COMMENT ON COLUMN academic.curriculum_tracks.career_orientation IS 'Target university entrance cluster or professional domain';

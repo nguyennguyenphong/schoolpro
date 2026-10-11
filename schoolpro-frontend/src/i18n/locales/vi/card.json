@@ -56,7 +56,7 @@
     },
     "contactBook": {
       "title": "Sổ liên lạc điện tử",
-      "description": "Phiếu nhận xét định kỳ từ GVCN và phản hồi phụ huynh"
+      "description": "Phiếu nhận xét định kỳ từ Giáo viên chủ nhiệm và phản hồi phụ huynh"
     },
     "emulation": {
       "title": "Thi đua & Nề nếp",
@@ -278,7 +278,7 @@
       "all": "Toàn bộ",
       "goodEval": "Đánh giá tốt",
       "checkNow": "Kiểm tra ngay",
-      "contactTeacher": "Cần liên hệ: GV bộ môn"
+      "contactTeacher": "Cần liên hệ: Giáo viên bộ môn"
     },
     "filters": {
       "searchPlaceholder": "Tìm kiếm bài tập theo tên, môn học, giáo viên...",

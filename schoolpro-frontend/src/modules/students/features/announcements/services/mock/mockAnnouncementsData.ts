@@ -110,7 +110,7 @@ Học sinh và Phụ huynh có thể thanh toán trực tiếp qua Cổng thanh 
     id: "ann-04",
     title: "Kế hoạch khảo sát năng lực Ngoại ngữ chuẩn đầu ra cho Học sinh Khối 12",
     summary:
-      "Tổ Ngoại ngữ tổ chức đợt thi thử IELTS/VSTEP định dạng quốc tế nhằm phân loại và hỗ trợ bồi dưỡng học sinh trước kỳ thi TN THPT.",
+      "Tổ Ngoại ngữ tổ chức đợt thi thử IELTS/VSTEP định dạng quốc tế nhằm phân loại và hỗ trợ bồi dưỡng học sinh trước kỳ thi TN Trung học phổ thông.",
     content: `Nhằm đánh giá đúng năng lực và xây dựng lộ trình bồi dưỡng tiếng Anh cho học sinh lớp 12 chuẩn bị xét tuyển đại học:
 
 - Đối tượng: Toàn bộ học sinh khối 12 chưa có chứng chỉ quốc tế IELTS >= 5.5.
@@ -145,11 +145,11 @@ Học sinh và Phụ huynh có thể thanh toán trực tiếp qua Cổng thanh 
 
 Thầy/Cô chủ nhiệm trân trọng thông báo:
 1. Phiếu nhận xét nề nếp, chuyên cần và điểm kiểm tra 15 phút tháng 9 đã được cập nhật trên mục Sổ liên lạc điện tử.
-2. Buổi gặp gỡ định kỳ giữa GVCN và Đại diện Ban phụ huynh lớp sẽ diễn ra vào sáng Thứ Bảy lúc 08h30 ngày 03/10/2026 tại phòng học 12A1.
+2. Buổi gặp gỡ định kỳ giữa Giáo viên chủ nhiệm và Đại diện Ban phụ huynh lớp sẽ diễn ra vào sáng Thứ Bảy lúc 08h30 ngày 03/10/2026 tại phòng học 12A1.
 3. Kính mong phụ huynh xác nhận đã xem thông tin trên hệ thống School Pro.`,
     publishDate: "2026-09-24 09:10",
     author: "Thầy Lê Minh Tuấn",
-    department: "Ban Cố vấn & GVCN Lớp 12A1",
+    department: "Ban Cố vấn & Giáo viên chủ nhiệm Lớp 12A1",
     category: "homeroom",
     priority: "normal",
     isPinned: false,
@@ -161,7 +161,7 @@ Thầy/Cô chủ nhiệm trân trọng thông báo:
     id: "ann-06",
     title: "Đăng ký tham gia Câu lạc bộ Sáng tạo Khoa học Kỹ thuật & Robotics",
     summary:
-      "CLB Robotics trường mở đợt tuyển thành viên mới khóa 2026, chuẩn bị tham gia giải đấu VEX Robotics và Ngày hội STEM cấp Thành phố.",
+      "Câu lạc bộ Robotics trường mở đợt tuyển thành viên mới khóa 2026, chuẩn bị tham gia giải đấu VEX Robotics và Ngày hội STEM cấp Thành phố.",
     content: `Các bạn học sinh đam mê Lập trình, Cơ điện tử và Trí tuệ nhân tạo (AI):
 
 Câu lạc bộ STEM - Robotics chính thức mở đơn chiêu mộ thành viên đợt 1 năm học 2026:
@@ -169,8 +169,8 @@ Câu lạc bộ STEM - Robotics chính thức mở đơn chiêu mộ thành viê
 - Quyền lợi: Được hướng dẫn bởi chuyên gia, sử dụng phòng Lab công nghệ cao, nhận giấy chứng nhận và điểm cộng thi đua khen thưởng.
 - Link đăng ký trực tuyến mở đến 23h59 ngày 05/10/2026.`,
     publishDate: "2026-09-23 15:20",
-    author: "Chủ nhiệm CLB STEM",
-    department: "CLB Sáng tạo Trẻ",
+    author: "Chủ nhiệm Câu lạc bộ STEM",
+    department: "Câu lạc bộ Sáng tạo Trẻ",
     category: "activity",
     priority: "normal",
     isPinned: false,
@@ -312,10 +312,10 @@ Câu lạc bộ STEM - Robotics chính thức mở đơn chiêu mộ thành viê
   },
   {
     id: "ann-12",
-    title: "Lịch Thi Thử Tốt Nghiệp THPT Đợt 1 Chuẩn Cấu Trúc Bộ Giáo Dục",
+    title: "Lịch Thi Thử Tốt Nghiệp Trung học phổ thông Đợt 1 Chuẩn Cấu Trúc Bộ Giáo Dục",
     summary:
-      "Tổ Khảo thí tổ chức đợt thi thử trực tuyến mô phỏng đề thi minh họa tốt nghiệp THPT theo chương trình GDPT 2018.",
-    content: `Chuẩn bị cho kỳ thi tốt nghiệp THPT quốc gia năm 2027:
+      "Tổ Khảo thí tổ chức đợt thi thử trực tuyến mô phỏng đề thi minh họa tốt nghiệp Trung học phổ thông theo chương trình Giáo dục phổ thông 2018.",
+    content: `Chuẩn bị cho kỳ thi tốt nghiệp Trung học phổ thông quốc gia năm 2027:
 
 - Hình thức: Làm bài trực tuyến trên hệ thống thi số School Pro Exam.
 - Thời gian mở cổng thi thử: Từ 08h00 ngày 25/10 đến 22h00 ngày 26/10/2026.
@@ -338,7 +338,7 @@ Câu lạc bộ STEM - Robotics chính thức mở đơn chiêu mộ thành viê
     content: `Phát huy truyền thống tương thân tương ái, Đoàn TNCS Hồ Chí Minh trường phát động chiến dịch thiện nguyện:
 
 1. Thời gian tiếp nhận quyên góp: Từ ngày 01/10 đến 15/10/2026 tại Sảnh Hội trường lớn.
-2. Các hiện vật tiếp nhận: Áo ấm, chăn bông mới, truyện thiếu nhi, sách giáo khoa THCS/THPT còn dùng tốt.
+2. Các hiện vật tiếp nhận: Áo ấm, chăn bông mới, truyện thiếu nhi, sách giáo khoa THCS/Trung học phổ thông còn dùng tốt.
 3. Chi đoàn có đóng góp tích cực sẽ được tuyên dương tại Lễ Chào cờ đầu tuần và cộng điểm phong trào.`,
     publishDate: "2026-09-16 11:00",
     author: "Đoàn Trường",
@@ -362,7 +362,7 @@ Câu lạc bộ STEM - Robotics chính thức mở đơn chiêu mộ thành viê
 - Kết quả bầu cử được lập biên bản và gửi về Phòng Công tác Học sinh trước ngày 05/10/2026.`,
     publishDate: "2026-09-15 09:30",
     author: "Thầy Lê Minh Tuấn",
-    department: "Ban Cố vấn & GVCN Lớp 12A1",
+    department: "Ban Cố vấn & Giáo viên chủ nhiệm Lớp 12A1",
     category: "homeroom",
     priority: "normal",
     isPinned: false,

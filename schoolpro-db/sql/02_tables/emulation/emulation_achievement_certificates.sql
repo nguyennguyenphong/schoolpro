@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS emulation.achievement_certificates (
                             )),
 
   -- Certificate & Honor Details
-  title                   VARCHAR(255) NOT NULL,               -- Tiêu đề thành tích / Tên chứng chỉ (E.g. 'IELTS Academic 8.0', 'Giải Nhất GV Giỏi Tỉnh', 'Bằng khen Thủ tướng')
+  title                   VARCHAR(255) NOT NULL,               -- Tiêu đề thành tích / Tên chứng chỉ (E.g. 'IELTS Academic 8.0', 'Giải Nhất Giáo viên Giỏi Tỉnh', 'Bằng khen Thủ tướng')
   certificate_code        VARCHAR(100),                        -- Số hiệu chứng chỉ / Số văn bằng
   decision_number         VARCHAR(100),                        -- Số quyết định khen thưởng / công nhận
   decision_date           DATE,                                -- Ngày ký quyết định

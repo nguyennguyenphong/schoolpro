@@ -35,5 +35,5 @@ CREATE INDEX IF NOT EXISTS ix_activities_school ON academic.extracurricular_acti
 CREATE INDEX IF NOT EXISTS ix_activities_semester ON academic.extracurricular_activities(semester_id);
 CREATE INDEX IF NOT EXISTS ix_activities_status ON academic.extracurricular_activities(status);
 
-COMMENT ON TABLE academic.extracurricular_activities IS 'Experiential and vocational orientation activities under GDPT 2018';
+COMMENT ON TABLE academic.extracurricular_activities IS 'Experiential and vocational orientation activities under Giáo dục phổ thông 2018';
 COMMENT ON COLUMN academic.extracurricular_activities.target_grades IS 'Array of target grade IDs eligible for registration';

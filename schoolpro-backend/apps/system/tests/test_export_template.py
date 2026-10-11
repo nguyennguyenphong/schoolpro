@@ -33,7 +33,7 @@ class TestExportTemplateModel:
 
         rendered = template.render_html(
             {
-                "school_name": "Trường THPT Chuyên SchoolPro",
+                "school_name": "Trường Trung học phổ thông Chuyên SchoolPro",
                 "recipient": "Phụ huynh học sinh",
                 "notice_body": "Thông báo họp phụ huynh đầu năm học.",
                 "author": "Ban Giám Hiệu",
@@ -41,7 +41,7 @@ class TestExportTemplateModel:
         )
 
         assert "body { font-family: 'Times New Roman'; }" in rendered
-        assert "Trường THPT Chuyên SchoolPro" in rendered
+        assert "Trường Trung học phổ thông Chuyên SchoolPro" in rendered
         assert "Kính gửi: Phụ huynh học sinh" in rendered
         assert "Nội dung: Thông báo họp phụ huynh đầu năm học." in rendered
         assert "Người lập: Ban Giám Hiệu" in rendered

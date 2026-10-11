@@ -3,14 +3,14 @@ import type { StudentAnalyticsData } from "@/modules/students/features/dashboard
 export const mockDashboardData: StudentAnalyticsData = {
   studentProfile: {
     id: "student-1104",
-    studentCode: "HS-2025-1104",
+    studentCode: "Học sinh-2025-1104",
     fullName: "Trần Minh Đức",
     gender: "Nam",
     dob: "15/10/2009",
     className: "11A1",
     gradeLevel: 11,
     stream: "Ban Khoa học Tự nhiên",
-    schoolName: "Trường THPT Chu Văn An",
+    schoolName: "Trường Trung học phổ thông Chu Văn An",
     academicYear: "2025 - 2026",
     homeroomTeacher: "Cô Nguyễn Thị Mai Hoa",
     teacherPhone: "0912.345.678",

@@ -272,7 +272,7 @@ except ValueError as e:
 | **core** | `core_` | Tổ chức, Identity, User, Auth, Roles, Permissions |
 | **master** | `master_` | Dữ liệu tham chiếu: Năm học, Học kì, Môn học, Lớp, Phòng |
 | **academic** | `academic_` | Học vụ: Điểm, Thi cử, Lịch học, Tham dự |
-| **evaluation** | `evaluation_` | Đánh giá: Khảo sát, CSVC, GPA, Bảng điểm |
+| **evaluation** | `evaluation_` | Đánh giá: Khảo sát, Cơ sở vật chất, GPA, Bảng điểm |
 | **emulation** | `emulation_` | Thi đua: Nề nếp, Kỷ luật, Khen thưởng, Xếp hạng |
 | **notification** | `notification_` | Thông báo: Message, Announcement, Push, Reminder |
 | **system** | `system_` | Hệ thống: Audit Log, Config, Backup, Health |

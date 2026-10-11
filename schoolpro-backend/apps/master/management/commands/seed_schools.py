@@ -20,13 +20,13 @@ class Command(BaseCommand):
         self.stdout.write(self.style.NOTICE("Seeding School (core.schools)..."))
 
         with transaction.atomic():
-            school = School.objects.filter(name="Trường THPT SchoolPro").first()
+            school = School.objects.filter(name="Trường Trung học phổ thông SchoolPro").first()
             created = False
             if not school:
                 school = School.objects.create(
                     id=uuid6.uuid7(),
                     code=generate_unique_code(School, "code"),
-                    name="Trường THPT SchoolPro",
+                    name="Trường Trung học phổ thông SchoolPro",
                     moet_code="88012345",
                     educational_stage="HIGH_SCHOOL",
                     school_type="PUBLIC",
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                     tax_id="1234567890",
                     bank_name="Ngân hàng TMCP SchoolPro",
                     bank_account_number="1234567890123456",
-                    bank_account_holder="Trường THPT SchoolPro",
+                    bank_account_holder="Trường Trung học phổ thông SchoolPro",
                     logo_url="https://schoolpro.edu.vn/logo.png",
                     banner_url="https://schoolpro.edu.vn/banner.png",
                     stamp_image_url="https://schoolpro.edu.vn/stamp.png",

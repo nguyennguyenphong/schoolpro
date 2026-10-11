@@ -70,14 +70,14 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
 
         <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-slate-500">Họ và tên GVCN:</span>
+            <span className="text-slate-500">Họ và tên Giáo viên chủ nhiệm:</span>
             <strong className="text-slate-800">{item.homeroomTeacherName}</strong>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-slate-500">Thẩm quyền:</span>
             <span className="font-semibold text-blue-600">
               {homeroomAsSubject
-                ? `GVCN kiêm GVBM (${homeroomAsSubject.subjects.join(", ")}) • Gửi 1 lần`
+                ? `Giáo viên chủ nhiệm kiêm Giáo viên bộ môn (${homeroomAsSubject.subjects.join(", ")}) • Gửi 1 lần`
                 : "Phê duyệt đơn chính thức"}
             </span>
           </div>
@@ -106,7 +106,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
               <strong className={item.isAutoApproved ? "text-cyan-700" : "text-emerald-700"}>
                 {item.isAutoApproved
                   ? "Hệ thống tự động duyệt (quá hạn 3h)"
-                  : "GVCN phê duyệt trực tiếp"}
+                  : "Giáo viên chủ nhiệm phê duyệt trực tiếp"}
               </strong>
             </div>
           )}
@@ -129,7 +129,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
             }`}
           >
             <div className="font-bold mb-1">
-              {item.isAutoApproved ? "Ghi chú hệ thống:" : "Lời phê của GVCN:"}
+              {item.isAutoApproved ? "Ghi chú hệ thống:" : "Lời phê của Giáo viên chủ nhiệm:"}
             </div>
             <p className="mb-0 italic leading-relaxed">{item.teacherNote}</p>
           </div>
@@ -151,12 +151,12 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
             </h3>
           </div>
           <Tag color="purple" className="m-0 text-[11px] font-semibold">
-            {otherSubjectTeachers.length} GVBM
+            {otherSubjectTeachers.length} Giáo viên bộ môn
           </Tag>
         </div>
 
         <p className="text-[11px] text-slate-500 mb-0">
-          Hệ thống thông báo khi học sinh đăng ký và thông báo lại sau khi đơn được duyệt. Trường hợp GVCN cũng là GV bộ môn thì chỉ gửi 01 lần duy nhất.
+          Hệ thống thông báo khi học sinh đăng ký và thông báo lại sau khi đơn được duyệt. Trường hợp Giáo viên chủ nhiệm cũng là Giáo viên bộ môn thì chỉ gửi 01 lần duy nhất.
         </p>
 
         {homeroomAsSubject && (
@@ -164,7 +164,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
             <div className="flex items-center justify-between gap-2">
               <strong className="text-slate-900 truncate">{homeroomAsSubject.teacherName}</strong>
               <Tag color="blue" className="m-0 text-[10px] font-semibold shrink-0">
-                GVCN kiêm GVBM (Gửi 1 lần)
+                Giáo viên chủ nhiệm kiêm Giáo viên bộ môn (Gửi 1 lần)
               </Tag>
             </div>
             <div className="text-[11px] text-slate-600">

@@ -246,7 +246,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
                       TỔNG KẾT HỌC KỲ 1 (2025 - 2026)
                     </span>
                     <div className="text-xs text-slate-500 font-normal mt-0.5 whitespace-nowrap">
-                      GVCN: <strong>{summary.homeroomTeacher}</strong> • Học bạ điện tử xác thực
+                      Giáo viên chủ nhiệm: <strong>{summary.homeroomTeacher}</strong> • Học bạ điện tử xác thực
                     </div>
                   </div>
                 </Table.Summary.Cell>

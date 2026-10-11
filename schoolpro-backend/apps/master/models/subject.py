@@ -8,7 +8,7 @@ class Subject(UUIDModel):
     Subject Model.
 
     Database Table: "core"."subjects"
-    Description: Master subjects directory aligned with Vietnamese high school curriculum (GDPT 2018)
+    Description: Master subjects directory aligned with Vietnamese high school curriculum (Giáo dục phổ thông 2018)
     """
 
     school = models.ForeignKey(

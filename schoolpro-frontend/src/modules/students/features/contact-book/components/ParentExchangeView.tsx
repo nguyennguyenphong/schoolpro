@@ -142,7 +142,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-purple-900 flex items-center gap-1">
                           <Icon name="checkCircle" size={14} className="text-purple-600" />
-                          Ý kiến tiếp thu từ GVCN:
+                          Ý kiến tiếp thu từ Giáo viên chủ nhiệm:
                         </span>
                         <span className="text-[11px] text-purple-700 font-semibold">
                           {note.teacherResponse.teacherName}

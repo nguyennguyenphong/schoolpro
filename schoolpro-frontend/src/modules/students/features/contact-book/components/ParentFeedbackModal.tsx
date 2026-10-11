@@ -192,7 +192,7 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
           name="generalOpinion"
           label={
             <span className="text-xs font-bold text-slate-700">
-              2. Ý kiến, đề xuất của Cha Mẹ học sinh gửi tới Nhà trường & GVCN:
+              2. Ý kiến, đề xuất của Cha Mẹ học sinh gửi tới Nhà trường & Giáo viên chủ nhiệm:
             </span>
           }
           rules={[

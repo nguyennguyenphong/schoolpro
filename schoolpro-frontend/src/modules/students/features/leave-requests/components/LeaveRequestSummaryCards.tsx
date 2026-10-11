@@ -72,7 +72,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
       <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Đang chờ GVCN duyệt
+            Đang chờ Giáo viên chủ nhiệm duyệt
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="clock" size={17} />
@@ -94,7 +94,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span className="truncate max-w-44">
-            GVCN:{" "}
+            Giáo viên chủ nhiệm:{" "}
             <strong className="text-slate-700">
               {summary.homeroomTeacherName || "Giáo viên"}
             </strong>

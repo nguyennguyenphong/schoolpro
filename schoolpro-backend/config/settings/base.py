@@ -181,7 +181,7 @@ EMAIL_USE_SSL = _mail_encryption == "ssl"
 _mail_from_address = env("MAIL_FROM_ADDRESS", default=EMAIL_HOST_USER or "noreply@schoolpro.edu.vn")
 _mail_from_name = env("MAIL_FROM_NAME", default="SchoolPro")
 if "${" in _mail_from_name or not _mail_from_name.strip():
-    _mail_from_name = "Trường THPT SchoolPro"
+    _mail_from_name = "Trường Trung học phổ thông SchoolPro"
 DEFAULT_FROM_EMAIL = f"{_mail_from_name} <{_mail_from_address}>"
 EMAIL_TIMEOUT = 10
 

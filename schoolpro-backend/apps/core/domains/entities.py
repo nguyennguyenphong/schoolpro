@@ -193,7 +193,7 @@ class StudentEntity(BaseDomainEntity):
     def create(
         cls, user_id: uuid.UUID, admission_date: date, code: str | None = None
     ) -> "StudentEntity":
-        student_code = code or generate_entity_code("HS")
+        student_code = code or generate_entity_code("Học sinh")
         return cls(
             id=uuid6.uuid7(),
             user_id=user_id,

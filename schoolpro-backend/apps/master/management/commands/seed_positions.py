@@ -122,7 +122,7 @@ class Command(BaseCommand):
             {
                 "name": "Giáo viên Chủ nhiệm",
                 "scope_type": "CLASS",
-                "role_name": "Giáo viên Chủ nhiệm (GVCN)",
+                "role_name": "Giáo viên Chủ nhiệm (Giáo viên chủ nhiệm)",
                 "allowance": Decimal("0.30"),
                 "max_holders": 1,
                 "order_no": 20,

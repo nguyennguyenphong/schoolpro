@@ -23,7 +23,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
     code: "MATH11",
     name: "Toán học 11",
     teacher: "ThS. Hoàng Văn Nam",
-    teacherTitle: "Tổ trưởng Chuyên môn Toán - GVCN",
+    teacherTitle: "Tổ trưởng Chuyên môn Toán - Giáo viên chủ nhiệm",
     periodsPerWeek: 4,
     evaluationType: "score",
     regularScores: [

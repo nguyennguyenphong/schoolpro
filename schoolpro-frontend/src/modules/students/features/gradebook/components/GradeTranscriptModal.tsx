@@ -177,7 +177,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
                 </p>
               </div>
               <div className="text-[11px] text-slate-400 text-right pt-2 border-t border-[#f0f0f0]">
-                GVCN: <strong>{summary.homeroomTeacher}</strong> (Đã ký số xác thực)
+                Giáo viên chủ nhiệm: <strong>{summary.homeroomTeacher}</strong> (Đã ký số xác thực)
               </div>
             </div>
           </div>

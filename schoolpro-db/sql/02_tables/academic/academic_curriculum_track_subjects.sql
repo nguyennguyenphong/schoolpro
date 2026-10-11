@@ -21,4 +21,4 @@ CREATE TABLE IF NOT EXISTS academic.curriculum_track_subjects (
 CREATE INDEX IF NOT EXISTS ix_track_subjects_track ON academic.curriculum_track_subjects(track_id);
 
 COMMENT ON TABLE academic.curriculum_track_subjects IS 'Subject composition and specialized learning clusters per academic track';
-COMMENT ON COLUMN academic.curriculum_track_subjects.cluster_period_count IS 'Standard 35-period elective study cluster under GDPT 2018';
+COMMENT ON COLUMN academic.curriculum_track_subjects.cluster_period_count IS 'Standard 35-period elective study cluster under Giáo dục phổ thông 2018';

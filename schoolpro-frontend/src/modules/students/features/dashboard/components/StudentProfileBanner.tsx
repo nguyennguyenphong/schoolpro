@@ -80,7 +80,7 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
           <div className="bg-slate-50/80 rounded-xl p-2.5 sm:p-3 border border-[#f0f0f0]/80">
             <div className="text-[11px] text-slate-400 font-medium mb-0.5 flex items-center gap-1">
               <Icon name="user" size={12} className="text-slate-400 shrink-0" />
-              <span>GV Chủ nhiệm</span>
+              <span>Giáo viên Chủ nhiệm</span>
             </div>
             <div className="font-bold text-slate-800 text-sm truncate" title={profile.homeroomTeacher}>
               {profile.homeroomTeacher}

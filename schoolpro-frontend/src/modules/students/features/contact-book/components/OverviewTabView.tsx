@@ -360,7 +360,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               Theo dõi chi tiết nhận xét từng tuần và bảng điểm các môn
             </h4>
             <p className="text-xs text-slate-500 mb-0">
-              Tra cứu đầy đủ phiếu liên lạc từng tuần của GVCN và bảng điểm nhận xét của từng thầy cô bộ môn
+              Tra cứu đầy đủ phiếu liên lạc từng tuần của Giáo viên chủ nhiệm và bảng điểm nhận xét của từng thầy cô bộ môn
             </p>
           </div>
         </div>

@@ -121,7 +121,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span>Toàn khối 11:</span>
           <strong className="text-blue-600 font-bold">
-            #{overview.gradeRank} / {overview.totalStudentsInGrade} HS
+            #{overview.gradeRank} / {overview.totalStudentsInGrade} Học sinh
           </strong>
         </div>
       </Card>

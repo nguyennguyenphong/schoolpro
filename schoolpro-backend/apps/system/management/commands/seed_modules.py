@@ -65,7 +65,7 @@ class Command(BaseCommand):
             {
                 "name": "Bài tập & Đồ án",
                 "short_name": "Bài tập",
-                "description": "Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét GV",
+                "description": "Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét Giáo viên",
                 "icon": "edit",
                 "route": "/student/assignments",
                 "module_type": "CARD",
@@ -123,7 +123,7 @@ class Command(BaseCommand):
                 "order": 8,
             },
             {
-                "name": "Tổ hợp môn GDPT & THPT",
+                "name": "Tổ hợp môn Giáo dục phổ thông & Trung học phổ thông",
                 "short_name": "Tổ hợp môn",
                 "description": "Thông tin ban học tập, cụm chuyên đề lựa chọn theo chương trình mới",
                 "icon": "layers",
@@ -149,7 +149,7 @@ class Command(BaseCommand):
             {
                 "name": "Sổ liên lạc điện tử",
                 "short_name": "Sổ liên lạc",
-                "description": "Xem phiếu nhận xét định kỳ từ GVCN và ký xác nhận",
+                "description": "Xem phiếu nhận xét định kỳ từ Giáo viên chủ nhiệm và ký xác nhận",
                 "icon": "book",
                 "route": "/student/contact-book",
                 "module_type": "CARD",
@@ -184,8 +184,8 @@ class Command(BaseCommand):
             },
             {
                 "name": "Câu lạc bộ & Ngoại khóa",
-                "short_name": "CLB Đoàn",
-                "description": "Đăng ký tham gia CLB, hoạt động tình nguyện, ngày hội STEM",
+                "short_name": "Câu lạc bộ Đoàn",
+                "description": "Đăng ký tham gia Câu lạc bộ, hoạt động tình nguyện, ngày hội STEM",
                 "icon": "users",
                 "route": "/student/clubs",
                 "module_type": "CARD",
@@ -467,7 +467,7 @@ class Command(BaseCommand):
             {
                 "name": "Cổng thông tin Phụ huynh",
                 "short_name": "Cổng PHHS",
-                "description": "Theo dõi kết quả học tập, điểm danh, nộp học phí và trao đổi trực tiếp với GVCN",
+                "description": "Theo dõi kết quả học tập, điểm danh, nộp học phí và trao đổi trực tiếp với Giáo viên chủ nhiệm",
                 "icon": "users",
                 "route": "/parent/portal",
                 "module_type": "CARD",

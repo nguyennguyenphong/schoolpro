@@ -1,6 +1,6 @@
 -- =====================================================================
 -- TABLE: core.subjects (Master Data)
--- Subjects taught according to national curriculum standard (GDPT 2018)
+-- Subjects taught according to national curriculum standard (Giáo dục phổ thông 2018)
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS core.subjects (
@@ -28,5 +28,5 @@ CREATE TABLE IF NOT EXISTS core.subjects (
 CREATE INDEX IF NOT EXISTS ix_subjects_school ON core.subjects(school_id);
 CREATE INDEX IF NOT EXISTS ix_subjects_department ON core.subjects(department_id);
 
-COMMENT ON TABLE core.subjects IS 'Master subjects directory aligned with Vietnamese high school curriculum (GDPT 2018)';
+COMMENT ON TABLE core.subjects IS 'Master subjects directory aligned with Vietnamese high school curriculum (Giáo dục phổ thông 2018)';
 COMMENT ON COLUMN core.subjects.periods_per_year IS 'Total mandatory curriculum periods per school academic year';

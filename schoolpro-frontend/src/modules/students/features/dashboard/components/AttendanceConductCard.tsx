@@ -85,7 +85,7 @@ export const AttendanceConductCard: React.FC<AttendanceConductCardProps> = ({
           </Tag>
         </div>
         <p className="text-xs text-slate-500 mb-2">
-          Biểu đồ tỷ lệ chuyên cần và nhận xét tu dưỡng từ GVCN
+          Biểu đồ tỷ lệ chuyên cần và nhận xét tu dưỡng từ Giáo viên chủ nhiệm
         </p>
 
         {/* ECharts Attendance Donut Chart with explicit height 160 */}

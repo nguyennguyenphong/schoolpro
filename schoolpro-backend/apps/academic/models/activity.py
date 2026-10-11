@@ -8,7 +8,7 @@ class ExtracurricularActivity(UUIDModel):
     ExtracurricularActivity Model.
 
     Database Table: "academic"."extracurricular_activities"
-    Description: Experiential and vocational orientation activities under GDPT 2018
+    Description: Experiential and vocational orientation activities under Giáo dục phổ thông 2018
     """
 
     school = models.ForeignKey(

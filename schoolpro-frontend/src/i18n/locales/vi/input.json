@@ -34,7 +34,7 @@
     "tuition": "Học phí & Khoản thu",
     "activity": "Đoàn trường & Ngoại khóa",
     "emulation": "Thi đua & Khen thưởng",
-    "homeroom": "Lớp & GVCN",
+    "homeroom": "Lớp & Giáo viên chủ nhiệm",
     "general": "Thông báo chung"
   },
   "sortOptions": {
@@ -84,8 +84,8 @@
     "status": "Trạng thái học tập",
     "boarding": "Hình thức",
     "homeroomTeacher": "Giáo viên chủ nhiệm",
-    "teacherPhone": "SĐT GVCN",
-    "teacherEmail": "Email GVCN",
+    "teacherPhone": "SĐT Giáo viên chủ nhiệm",
+    "teacherEmail": "Email Giáo viên chủ nhiệm",
     "classroom": "Phòng học",
     "currentPassword": "Mật khẩu hiện tại",
     "newPassword": "Mật khẩu mới",

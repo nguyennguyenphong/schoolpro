@@ -73,7 +73,7 @@ export const GradebookPage: React.FC = () => {
                 Học kỳ 1 • 2025-2026
               </span>
               <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200 font-mono">
-                Mã HS: SV202688
+                Mã Học sinh: SV202688
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">

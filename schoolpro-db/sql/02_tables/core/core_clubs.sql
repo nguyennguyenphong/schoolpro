@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS core.clubs (
   vice_president_student_id UUID REFERENCES core.students(id) ON DELETE SET NULL,
   meeting_schedule         VARCHAR(255),                      -- E.g. 'Chiều thứ 7 hàng tuần (14:00 - 16:30)'
   meeting_location         VARCHAR(255),                      -- E.g. 'Hội trường B / Sân bóng đá'
-  membership_fee           NUMERIC(10,2) DEFAULT 0.00,        -- Phí tham gia / quỹ CLB
+  membership_fee           NUMERIC(10,2) DEFAULT 0.00,        -- Phí tham gia / quỹ Câu lạc bộ
   max_members              SMALLINT,                          -- Giới hạn số lượng thành viên
   social_media_link        VARCHAR(500),
   cover_image_url          TEXT,

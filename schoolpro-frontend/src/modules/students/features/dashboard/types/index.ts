@@ -1,13 +1,13 @@
 export interface StudentProfileInfo {
   id: string;
-  studentCode: string; // e.g. "HS-2025-1104"
+  studentCode: string; // e.g. "Học sinh-2025-1104"
   fullName: string; // e.g. "Trần Minh Đức"
   gender: "Nam" | "Nữ";
   dob: string; // e.g. "15/10/2009"
   className: string; // e.g. "11A1"
   gradeLevel: number; // 11
   stream: string; // e.g. "Khoa học Tự nhiên"
-  schoolName: string; // e.g. "Trường THPT Chu Văn An"
+  schoolName: string; // e.g. "Trường Trung học phổ thông Chu Văn An"
   academicYear: string; // e.g. "2025 - 2026"
   homeroomTeacher: string; // e.g. "Cô Nguyễn Thị Mai Hoa"
   teacherPhone: string; // e.g. "0912.345.678"

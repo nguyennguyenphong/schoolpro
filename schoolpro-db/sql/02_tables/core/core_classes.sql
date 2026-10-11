@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS core.classes (
   grade_id                     UUID NOT NULL REFERENCES core.grades(id),
   code                         VARCHAR(20) NOT NULL,        -- E.g. '10A1'
   name                         VARCHAR(100) NOT NULL,       -- E.g. 'Lớp 10A1'
-  homeroom_teacher_id          UUID,                        -- GVCN chính (references core.teachers)
-  assistant_homeroom_teacher_id UUID,                        -- GVCN phụ tá (references core.teachers)
+  homeroom_teacher_id          UUID,                        -- Giáo viên chủ nhiệm chính (references core.teachers)
+  assistant_homeroom_teacher_id UUID,                        -- Giáo viên chủ nhiệm phụ tá (references core.teachers)
   monitor_student_id           UUID,                        -- Lớp trưởng (references core.students)
   vice_monitor_student_id      UUID,                        -- Lớp phó học tập (references core.students)
   curriculum_track_id          UUID,                        -- Tổ hợp ban (references academic.curriculum_tracks)
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS core.classes (
   slogan                       VARCHAR(255),
   avatar_url                   TEXT,
   is_active                    BOOLEAN NOT NULL DEFAULT TRUE,
-  metadata                     JSONB DEFAULT '{}'::jsonb,   -- Subject track configuration per GDPT 2018
+  metadata                     JSONB DEFAULT '{}'::jsonb,   -- Subject track configuration per Giáo dục phổ thông 2018
   created_at                   TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at                   TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (academic_year_id, code)
@@ -37,4 +37,4 @@ CREATE INDEX IF NOT EXISTS ix_classes_track ON core.classes(curriculum_track_id)
 
 COMMENT ON TABLE core.classes IS 'Annual high school class rooms grouped by grade level, homeroom teacher, and academic track';
 COMMENT ON COLUMN core.classes.homeroom_teacher_id IS 'Assigned principal homeroom teacher (Giáo viên chủ nhiệm)';
-COMMENT ON COLUMN core.classes.curriculum_track_id IS 'GDPT 2018 subject track combination assigned to the entire classroom';
+COMMENT ON COLUMN core.classes.curriculum_track_id IS 'Giáo dục phổ thông 2018 subject track combination assigned to the entire classroom';

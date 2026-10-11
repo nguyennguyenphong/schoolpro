@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS evaluation.facility_incident_reports (
   status               VARCHAR(20) NOT NULL DEFAULT 'REPORTED'
                          CHECK (status IN ('REPORTED', 'RECEIVED', 'REPAIRING', 'RESOLVED', 'REJECTED')),
   reported_by          UUID NOT NULL REFERENCES core.users(id),
-  handled_by           UUID REFERENCES core.users(id) ON DELETE SET NULL, -- Nhân viên kỹ thuật / quản trị CSVC
+  handled_by           UUID REFERENCES core.users(id) ON DELETE SET NULL, -- Nhân viên kỹ thuật / quản trị Cơ sở vật chất
   contractor_name      VARCHAR(150),                                      -- Thợ / đơn vị bảo hành ngoài
   estimated_cost       NUMERIC(12,2) DEFAULT 0.00,
   actual_cost          NUMERIC(12,2) DEFAULT 0.00,

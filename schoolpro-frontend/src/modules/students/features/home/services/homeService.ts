@@ -58,7 +58,7 @@ class HomeService {
       fullName: user?.full_name || user?.name || "Học sinh SchoolPro",
       email: user?.email || "student@schoolpro.edu.vn",
       major: className,
-      faculty: "Trường THPT SchoolPro",
+      faculty: "Trường Trung học phổ thông SchoolPro",
       cohort: "Niên khóa 2026 - 2027",
       academicYear: academic?.academic_year || "Năm học 2026 - 2027",
       currentSemester: academic?.semester || "Học kỳ 1",

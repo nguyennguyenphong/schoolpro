@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS core.club_members (
   status             VARCHAR(20) NOT NULL DEFAULT 'ACTIVE'
                        CHECK (status IN ('ACTIVE', 'INACTIVE', 'ALUMNI', 'EXPELLED')),
   leave_reason       TEXT,
-  attendance_rate    NUMERIC(5,2) DEFAULT 100.00,       -- Chuyên cần sinh hoạt CLB (%)
-  merit_points       SMALLINT NOT NULL DEFAULT 0,       -- Điểm thưởng đóng góp CLB
+  attendance_rate    NUMERIC(5,2) DEFAULT 100.00,       -- Chuyên cần sinh hoạt Câu lạc bộ (%)
+  merit_points       SMALLINT NOT NULL DEFAULT 0,       -- Điểm thưởng đóng góp Câu lạc bộ
   certificate_issued BOOLEAN NOT NULL DEFAULT FALSE,    -- Đã cấp chứng nhận thành viên
   contribution_notes TEXT,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT now(),

@@ -61,13 +61,13 @@ export const useMainLayout = () => {
     "";
 
   // Sub-information description (Class for student, Department for staff, etc.)
-  let subInfo = "Trường THPT SchoolPro";
+  let subInfo = "Trường Trung học phổ thông SchoolPro";
   if (roleSlug === "student") {
     subInfo = profileContext?.class_name
       ? `Lớp ${profileContext.class_name}`
       : profileContext?.class_code
         ? `Lớp ${profileContext.class_code}`
-        : "Trường THPT SchoolPro";
+        : "Trường Trung học phổ thông SchoolPro";
   } else if (profileContext?.department_name) {
     subInfo = String(profileContext.department_name);
   } else if (roleDetail?.name) {
@@ -78,9 +78,9 @@ export const useMainLayout = () => {
   const roleTag =
     roleDetail?.name ||
     (roleSlug === "student"
-      ? "HS"
+      ? "Học sinh"
       : roleSlug === "teacher"
-        ? "GV"
+        ? "Giáo viên"
         : roleSlug === "staff"
           ? "CB"
           : roleSlug === "admin"

@@ -98,7 +98,7 @@ export const CompetencyRadarChart: React.FC<CompetencyRadarChartProps> = ({ data
         <div className="flex items-center gap-2 mb-0.5">
           <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
           <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
-            Đánh giá Phẩm chất & Năng lực (GDPT 2018)
+            Đánh giá Phẩm chất & Năng lực (Giáo dục phổ thông 2018)
           </h3>
         </div>
         <p className="text-xs text-slate-500 mb-0">

@@ -106,7 +106,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
           <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">
             Hạng {summary.classPosition}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">/ {summary.totalClassStudents} HS</span>
+          <span className="text-xs text-slate-400 font-semibold">/ {summary.totalClassStudents} Học sinh</span>
           <Tag color="warning" className="ml-auto m-0 font-semibold">
             Top 7%
           </Tag>

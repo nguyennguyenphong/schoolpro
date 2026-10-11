@@ -1040,7 +1040,7 @@ class Command(BaseCommand):
                 "name": "approve:leave_requests",
                 "group_code": "LEAVE_MGMT",
                 "module": "ACADEMIC",
-                "description": "Phê duyệt đơn xin nghỉ phép học sinh (GVCN hoặc Y tế)",
+                "description": "Phê duyệt đơn xin nghỉ phép học sinh (Giáo viên chủ nhiệm hoặc Y tế)",
                 "is_dangerous": False,
             },
             {

@@ -389,7 +389,7 @@ class Command(BaseCommand):
                         f"| {cls_obj.shift:<10} "
                         f"| {cls_obj.room_name or 'N/A':<15} "
                         f"| {cls_obj.class_stream_code:<16} "
-                        f"| GVCN: {teacher_name:<26} ({status_msg})"
+                        f"| Giáo viên chủ nhiệm: {teacher_name:<26} ({status_msg})"
                     )
                 )
 

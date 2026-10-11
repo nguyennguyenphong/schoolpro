@@ -528,18 +528,18 @@ class LeaveRequestService:
             lesson_cnt = homeroom_as_subject_entry.get("lessonCount", 1)
             hr_title = "Gửi thông báo & Email tới Giáo viên chủ nhiệm (kiêm Giáo viên bộ môn)"
             hr_desc = (
-                f"Đã gửi 01 thông báo hợp nhất và email tới GVCN {homeroom_name} "
+                f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
                 f"(đồng thời dạy môn {subj_list} - {lesson_cnt} tiết). "
                 f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
             )
         else:
             hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
             hr_desc = (
-                f"Đã gửi thông báo và email tới GVCN {homeroom_name} ({homeroom_email or 'N/A'}). "
+                f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
                 f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
             )
 
-        email_subject_hr = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} - HS {student_name} (Lớp {class_name})"
+        email_subject_hr = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} - Học sinh {student_name} (Lớp {class_name})"
         email_body_hr = (
             f"Kính gửi Thầy/Cô {homeroom_name},\n\n"
             f"Học sinh {student_name} ({student_code}) - Lớp {class_name} vừa đăng ký đơn xin nghỉ phép.\n"
@@ -564,7 +564,7 @@ class LeaveRequestService:
             description=hr_desc,
             actor_name=f"Hệ thống SchoolPro → {homeroom_name}",
             actor_role="HOMEROOM_TEACHER",
-            badge_text="Đã gửi Email GVCN",
+            badge_text="Đã gửi Email Giáo viên chủ nhiệm",
             badge_color="purple",
             recipient_email=homeroom_email,
             email_sent=sent_hr,
@@ -607,7 +607,7 @@ class LeaveRequestService:
                 ),
                 actor_name="Hệ thống Quản lý Học vụ",
                 actor_role="SYSTEM",
-                badge_text=f"Đã báo {len(other_subject_teachers)} GVBM",
+                badge_text=f"Đã báo {len(other_subject_teachers)} Giáo viên bộ môn",
                 badge_color="cyan",
                 recipient_email=", ".join(st_emails[:3]),
                 email_sent=bool(st_emails),
@@ -660,7 +660,7 @@ class LeaveRequestService:
         approver_label = (
             "Hệ thống tự động phê duyệt (quá hạn 3 giờ trước giờ học)"
             if is_auto
-            else f"GVCN {leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name}"
+            else f"Giáo viên chủ nhiệm {leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name}"
         )
 
         # 1. Email to Student
@@ -691,7 +691,7 @@ class LeaveRequestService:
             ),
             actor_name="Hệ thống Quản lý Học vụ",
             actor_role="SYSTEM",
-            badge_text="Đã gửi Email HS",
+            badge_text="Đã gửi Email Học sinh",
             badge_color="blue",
             recipient_email=student_email,
             email_sent=sent_student,
@@ -722,7 +722,7 @@ class LeaveRequestService:
                 if t_email:
                     subj_str = ", ".join(t.get("subjects") or [])
                     cls._send_email_safe(
-                        subject=f"[SchoolPro] Đã duyệt nghỉ phép - HS {student_name} (Lớp {class_name}) môn {subj_str}",
+                        subject=f"[SchoolPro] Đã duyệt nghỉ phép - Học sinh {student_name} (Lớp {class_name}) môn {subj_str}",
                         plain_body=(
                             f"Kính gửi Thầy/Cô {t['teacherName']},\n\n"
                             f"Đơn xin nghỉ phép #{leave_req.code} của học sinh {student_name} (Lớp {class_name}) "
@@ -744,7 +744,7 @@ class LeaveRequestService:
                 ),
                 actor_name="Hệ thống Quản lý Học vụ",
                 actor_role="SYSTEM",
-                badge_text="Đã báo GVBM sau duyệt",
+                badge_text="Đã báo Giáo viên bộ môn sau duyệt",
                 badge_color="success",
                 created_at=review_time + timedelta(seconds=2),
             )
@@ -954,14 +954,14 @@ class LeaveRequestService:
                 subj_list = ", ".join(homeroom_as_subject.get("subjects") or [])
                 hr_title = "Gửi thông báo & Email tới Giáo viên chủ nhiệm (kiêm Giáo viên bộ môn)"
                 hr_desc = (
-                    f"Đã gửi 01 thông báo hợp nhất và email tới GVCN {homeroom_name} "
+                    f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
                     f"(đồng thời dạy môn {subj_list}). Hạn phê duyệt trước {deadline_fmt} "
                     f"(trước giờ diễn ra môn học 3 giờ)."
                 )
             else:
                 hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
                 hr_desc = (
-                    f"Đã gửi thông báo và email tới GVCN {homeroom_name} ({homeroom_email or 'N/A'}). "
+                    f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
                     f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
                 )
 
@@ -972,7 +972,7 @@ class LeaveRequestService:
                 description=hr_desc,
                 actor_name=f"Hệ thống SchoolPro → {homeroom_name}",
                 actor_role="HOMEROOM_TEACHER",
-                badge_text="Đã gửi Email GVCN",
+                badge_text="Đã gửi Email Giáo viên chủ nhiệm",
                 badge_color="purple",
                 recipient_email=homeroom_email,
                 email_sent=True,
@@ -991,7 +991,7 @@ class LeaveRequestService:
                     description=f"Đã thông báo lịch nghỉ học tới Giáo viên bộ môn: {'; '.join(t_Notif)}.",
                     actor_name="Hệ thống Quản lý Học vụ",
                     actor_role="SYSTEM",
-                    badge_text=f"Đã báo {len(other_teachers)} GVBM",
+                    badge_text=f"Đã báo {len(other_teachers)} Giáo viên bộ môn",
                     badge_color="cyan",
                     email_sent=True,
                     created_at=base_time + timedelta(seconds=30),
@@ -1043,7 +1043,7 @@ class LeaveRequestService:
                     ),
                     actor_name="Hệ thống Quản lý Học vụ",
                     actor_role="SYSTEM",
-                    badge_text="Đã gửi Email & Báo GVBM",
+                    badge_text="Đã gửi Email & Báo Giáo viên bộ môn",
                     badge_color="blue",
                     recipient_email=student_user.email if student_user else "",
                     email_sent=True,
@@ -1071,7 +1071,7 @@ class LeaveRequestService:
                     description=f"Đã gửi email thông báo từ chối đơn tới học sinh {student_name}.",
                     actor_name="Hệ thống Quản lý Học vụ",
                     actor_role="SYSTEM",
-                    badge_text="Đã gửi Email HS",
+                    badge_text="Đã gửi Email Học sinh",
                     badge_color="blue",
                     recipient_email=student_user.email if student_user else "",
                     email_sent=True,
@@ -2051,7 +2051,7 @@ class LeaveRequestService:
         # 1. Header Table (School Name & National Motto)
         header_data = [
             [
-                Paragraph("TRƯỜNG THPT SCHOOLPRO", style_center_bold),
+                Paragraph("TRƯỜNG Trung học phổ thông SCHOOLPRO", style_center_bold),
                 Paragraph("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", style_center_bold),
             ],
             [
@@ -2100,7 +2100,7 @@ class LeaveRequestService:
         class_name = escape(str(item.get("className") or "10A1"))
         story.append(
             Paragraph(
-                "<b>Kính gửi:</b> - Ban Giám hiệu Trường THPT SchoolPro",
+                "<b>Kính gửi:</b> - Ban Giám hiệu Trường Trung học phổ thông SchoolPro",
                 style_body,
             )
         )

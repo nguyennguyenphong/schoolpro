@@ -263,7 +263,7 @@ export const mockParentNotes: ParentNoteItem[] = [
     signedAt: "28/09/2026 19:30",
     isConfirmed: true,
     teacherResponse: {
-      teacherName: "Cô Nguyễn Thị Mai (GVCN)",
+      teacherName: "Cô Nguyễn Thị Mai (Giáo viên chủ nhiệm)",
       content:
         "Cảm ơn gia đình đã luôn đồng hành cùng nhà trường. Em An đã được chọn vào đội dự tuyển học sinh giỏi Tin học của trường, cô sẽ theo sát hỗ trợ em.",
       respondedAt: "29/09/2026 08:15",
@@ -282,7 +282,7 @@ export const mockParentNotes: ParentNoteItem[] = [
     signedAt: "21/09/2026 20:15",
     isConfirmed: true,
     teacherResponse: {
-      teacherName: "Cô Nguyễn Thị Mai (GVCN)",
+      teacherName: "Cô Nguyễn Thị Mai (Giáo viên chủ nhiệm)",
       content: "Em An đã hoàn thành bài bù rất tốt, sức khỏe trên lớp ổn định.",
       respondedAt: "22/09/2026 09:00",
     },

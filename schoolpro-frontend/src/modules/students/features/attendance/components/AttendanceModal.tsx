@@ -162,7 +162,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
               <span>•</span>
               <span>{record.room}</span>
               <span>•</span>
-              <span>GV: {record.teacherName}</span>
+              <span>Giáo viên: {record.teacherName}</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 # 🎓 SchoolPro - Enterprise High School Database Architecture
 
-Hệ thống cơ sở dữ liệu **PostgreSQL Enterprise** toàn diện cho Trường Trung học Phổ thông (Cấp 3), được thiết kế theo chuẩn **Kiến trúc chống phá vỡ cấu trúc (Future-Proof Architecture)**, tích hợp sẵn **Master Data theo Chương trình GDPT 2018 & Thông tư 22/2021/TT-BGDĐT**, hỗ trợ đa vai trò linh hoạt và vận hành tức thì qua Docker & pgAdmin 4.
+Hệ thống cơ sở dữ liệu **PostgreSQL Enterprise** toàn diện cho Trường Trung học Phổ thông (Cấp 3), được thiết kế theo chuẩn **Kiến trúc chống phá vỡ cấu trúc (Future-Proof Architecture)**, tích hợp sẵn **Master Data theo Chương trình Giáo dục phổ thông 2018 & Thông tư 22/2021/TT-BGDĐT**, hỗ trợ đa vai trò linh hoạt và vận hành tức thì qua Docker & pgAdmin 4.
 
 ---
 
@@ -33,10 +33,10 @@ Hệ thống giáo dục thường xuyên thay đổi quy chế (thông tư đi�
    - Bảng `core.custom_field_definitions` và `core.custom_field_values` cho phép trường tự định nghĩa thêm trường thông tin mới cho Học sinh, Giáo viên, Lớp học, Bài thi (VD: *Mã định danh VNeID mức 2*, *Số hiệu máy tính xách tay*,...) mà không cần thêm cột vào DDL.
 3. **Phân quyền chức vụ theo Không gian & Thời gian (Polymorphic Temporal Positions):**
    - Bảng `core.positions` và `core.position_assignments` theo dõi ai đã từng hoặc đang giữ chức vụ gì ở đâu (`SCHOOL`, `GRADE`, `CLASS`, `GROUP`, `DEPARTMENT`, `INDIVIDUAL`) kèm `start_date`, `end_date`, `is_current`.
-   - Đáp ứng trọn vẹn: *Thầy A là GVCN lớp 10A1 năm 2024, năm 2025 là Tổ trưởng tổ Toán; Em B là Lớp trưởng lớp 10A1, em C là Lớp phó lao động, em D là Tổ trưởng Tổ 1.*
+   - Đáp ứng trọn vẹn: *Thầy A là Giáo viên chủ nhiệm lớp 10A1 năm 2024, năm 2025 là Tổ trưởng tổ Toán; Em B là Lớp trưởng lớp 10A1, em C là Lớp phó lao động, em D là Tổ trưởng Tổ 1.*
 4. **Hệ thống Thi đua đa cấp động (Multi-Level Emulation):**
    - Tiêu chí toàn trường lưu ở `master.emulation_criteria`.
-   - Đồng thời, mỗi lớp học có bảng `emulation.class_custom_criteria` để GVCN và ban cán sự lớp tự tạo tiêu chí chấm điểm thi đua nội bộ trong lớp.
+   - Đồng thời, mỗi lớp học có bảng `emulation.class_custom_criteria` để Giáo viên chủ nhiệm và ban cán sự lớp tự tạo tiêu chí chấm điểm thi đua nội bộ trong lớp.
 5. **Card giao diện & Cài đặt 4 tầng cá nhân hóa (`sys` schema):**
    - Danh mục Card chức năng được phân quyền theo Role (`sys.modules`, `sys.role_modules`), người dùng được tự ghim, ẩn, đổi thứ tự kéo thả (`sys.user_module_preferences`).
    - Cài đặt hệ thống giải quyết theo 4 tầng ưu tiên: **Cá nhân (User) $\rightarrow$ Vai trò (Role) $\rightarrow$ Trường học (School) $\rightarrow$ Mặc định (Default)**.
@@ -62,11 +62,11 @@ schoolpro-db/
     │   └── functions.sql           # fn_set_updated_at() tự động cập nhật timestamp
     ├── 02_tables/                  # Định nghĩa bảng (Mỗi table 1 file riêng biệt)
     │   ├── master/                 # 15 bảng danh mục và master data dùng chung
-    │   ├── core/                   # 19 bảng người dùng, vai trò, chức vụ, hồ sơ, lớp, CLB
+    │   ├── core/                   # 19 bảng người dùng, vai trò, chức vụ, hồ sơ, lớp, Câu lạc bộ
     │   ├── academic/               # 25 bảng học vụ: TKB, ngân hàng câu hỏi, bài thi, TT22, học phí
     │   ├── emulation/              # 7 bảng thi đua nề nếp, cờ đỏ, xếp hạng, khen thưởng & kỷ luật
     │   ├── evaluation/             # 6 bảng đánh giá giáo viên ẩn danh & sự cố cơ sở vật chất
-    │   ├── notification/           # 6 bảng thông báo, sổ liên lạc điện tử, tin nhắn PH-GV, tokens
+    │   ├── notification/           # 6 bảng thông báo, sổ liên lạc điện tử, tin nhắn PH-Giáo viên, tokens
     │   └── sys/                    # 7 bảng cấu hình card động theo role, user settings, audit logs
     ├── 03_views/                   # Các View tổng hợp dữ liệu thời gian thực
     │   └── views.sql               # v_current_class_leadership, v_student_360_profile,...
@@ -83,7 +83,7 @@ schoolpro-db/
 | Schema | Vai trò nghiệp vụ |
 | :--- | :--- |
 | **`core`** | Quản lý người dùng, phân quyền RBAC, hồ sơ học sinh/giáo viên/phụ huynh, cơ cấu khối - lớp - tổ, phân công chức vụ theo niên khóa, Câu lạc bộ Đoàn - Hội, Lookup Engine & Custom Fields. |
-| **`academic`** | Nghiệp vụ học đường THPT: TKB ca - tiết, sổ đầu bài, tài liệu, bài tập, tổ hợp môn GDPT 2018, ngân hàng câu hỏi & thi trắc nghiệm online, điểm số & đánh giá rèn luyện/học bạ TT22, miễn giảm môn học, hoạt động ngoại khóa trải nghiệm, quản lý học phí & khoản thu. |
+| **`academic`** | Nghiệp vụ học đường Trung học phổ thông: TKB ca - tiết, sổ đầu bài, tài liệu, bài tập, tổ hợp môn Giáo dục phổ thông 2018, ngân hàng câu hỏi & thi trắc nghiệm online, điểm số & đánh giá rèn luyện/học bạ TT22, miễn giảm môn học, hoạt động ngoại khóa trải nghiệm, quản lý học phí & khoản thu. |
 | **`emulation`** | Thi đua & Nề nếp: Tiêu chí chung toàn trường & nội bộ riêng của lớp, sổ trực ban giám thị, nề nếp cờ đỏ, bảng tổng sắp xếp hạng tuần/tháng, sổ vàng khen thưởng & kỷ luật. |
 | **`evaluation`** | Đánh giá khảo sát: Học sinh đánh giá giáo viên cuối kỳ (hoàn toàn ẩn danh); Báo cáo hỏng hóc và theo dõi sửa chữa cơ sở vật chất (máy chiếu, đèn, bàn ghế,...). |
 | **`notification`** | Kênh thông tin liên lạc: Thông báo đa kênh; Sổ liên lạc điện tử định kỳ; Nhắn tin trực tiếp 1-1 Phụ huynh - Giáo viên; Nhắc nhở học vụ; Token thông báo đẩy FCM/APNs. |
@@ -106,13 +106,13 @@ Phân hệ này quản lý các thông tin dùng chung toàn trường, các dan
 | **`core.schools`** | Quản lý thông tin pháp nhân trường học, địa chỉ, số điện thoại, website, tên hiệu trưởng. | Là bảng gốc của hệ thống (Root Tenant). Hầu hết các bảng `core`, `academic` đều liên kết về đây. | `id` (UUID PK), `code` (VARCHAR UNIQUE), `name` (VARCHAR), `educational_stage` (VARCHAR), `address` (TEXT), `phone` (VARCHAR). |
 | **`core.academic_years`** | Quản lý niên khóa/năm học (VD: 2024-2025, 2025-2026, 2026-2027), xác định năm học hiện hành. | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi `semesters`, `classes`, `position_assignments`, `awards`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `start_date` (DATE), `end_date` (DATE), `is_current` (BOOL). |
 | **`core.semesters`** | Quản lý học kỳ trong năm học (Học kỳ 1, Học kỳ 2, Học kỳ Hè). | `academic_year_id` $\rightarrow$ `core.academic_years(id)`. Được tham chiếu bởi TKB, điểm số, sổ liên lạc, học phí. | `id` (UUID PK), `academic_year_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `start_date` (DATE), `end_date` (DATE), `is_current` (BOOL). |
-| **`core.grades`** | Quản lý khối lớp THPT (Khối 10, Khối 11, Khối 12). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi `classes`, `curriculum_tracks`, `question_bank`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `order_no` (INT). |
+| **`core.grades`** | Quản lý khối lớp Trung học phổ thông (Khối 10, Khối 11, Khối 12). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi `classes`, `curriculum_tracks`, `question_bank`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `order_no` (INT). |
 | **`core.departments`** | Quản lý tổ chuyên môn và phòng ban (Tổ Toán - Tin, Tổ Ngữ văn, Ban Giám thị, Y tế, Tài vụ). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi `teachers`, `subjects`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `department_type` (VARCHAR). |
-| **`core.subjects`** | Danh mục môn học GDPT 2018 (Toán, Văn, Anh, Lý, Hóa, Sinh, Sử, Địa, GDKT&PL, HĐTN&HN...). | `school_id` $\rightarrow$ `core.schools(id)`, `department_id` $\rightarrow$ `core.departments(id)`. Được tham chiếu bởi TKB, giáo viên bộ môn, điểm số. | `id` (UUID PK), `code` (VARCHAR), `name` (VARCHAR), `evaluation_type` (SCORE/COMMENT), `is_compulsory` (BOOL), `metadata` (JSONB). |
+| **`core.subjects`** | Danh mục môn học Giáo dục phổ thông 2018 (Toán, Văn, Anh, Lý, Hóa, Sinh, Sử, Địa, GDKT&PL, HĐTN&HN...). | `school_id` $\rightarrow$ `core.schools(id)`, `department_id` $\rightarrow$ `core.departments(id)`. Được tham chiếu bởi TKB, giáo viên bộ môn, điểm số. | `id` (UUID PK), `code` (VARCHAR), `name` (VARCHAR), `evaluation_type` (SCORE/COMMENT), `is_compulsory` (BOOL), `metadata` (JSONB). |
 | **`core.rooms`** | Danh mục phòng học, phòng thí nghiệm, phòng chức năng, nhà thi đấu thể thao. | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi thời khóa biểu `timetables` và báo hỏng `evaluation_facilities`. | `id` (UUID PK), `school_id` (UUID FK), `room_code` (VARCHAR), `name` (VARCHAR), `room_type_code` (VARCHAR), `capacity` (INT). |
-| **`core.periods`** | Khung giờ chuẩn cho 10 tiết học THPT (Tiết 1 đến 5 ca sáng, tiết 6 đến 10 ca chiều). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu trực tiếp bởi `timetables`. | `id` (UUID PK), `school_id` (UUID FK), `period_number` (INT), `shift` (MORNING/AFTERNOON), `start_time` (TIME), `end_time` (TIME). |
+| **`core.periods`** | Khung giờ chuẩn cho 10 tiết học Trung học phổ thông (Tiết 1 đến 5 ca sáng, tiết 6 đến 10 ca chiều). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu trực tiếp bởi `timetables`. | `id` (UUID PK), `school_id` (UUID FK), `period_number` (INT), `shift` (MORNING/AFTERNOON), `start_time` (TIME), `end_time` (TIME). |
 | **`core.score_types`** | Định nghĩa các đầu điểm theo Thông tư 22 (Miệng, 15 phút, Giữa kỳ, Cuối kỳ) cùng hệ số điểm. | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi bảng điểm học sinh `student_scores`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `coefficient` (NUMERIC), `min_required` (INT). |
-| **`core.positions`** | Danh mục chức vụ học đường: GVCN, Lớp trưởng, Lớp phó, Bí thư, Tổ trưởng, Giám thị, Cờ đỏ. | Không có FK phụ thuộc. Được tham chiếu bởi bảng phân công chức vụ `position_assignments`. | `id` (UUID PK), `code` (VARCHAR UNIQUE), `name` (VARCHAR), `applicable_scope` (CLASS/SCHOOL/GRADE), `rank_weight` (INT). |
+| **`core.positions`** | Danh mục chức vụ học đường: Giáo viên chủ nhiệm, Lớp trưởng, Lớp phó, Bí thư, Tổ trưởng, Giám thị, Cờ đỏ. | Không có FK phụ thuộc. Được tham chiếu bởi bảng phân công chức vụ `position_assignments`. | `id` (UUID PK), `code` (VARCHAR UNIQUE), `name` (VARCHAR), `applicable_scope` (CLASS/SCHOOL/GRADE), `rank_weight` (INT). |
 | **`master.emulation_criteria`** | Bảng tiêu chí thi đua toàn trường (Đi học muộn, Không mặc đồng phục, Giờ học tốt, Vệ sinh). | `school_id` $\rightarrow$ `core.schools(id)`. Được tham chiếu bởi các bản ghi nề nếp `emulation.records`. | `id` (UUID PK), `school_id` (UUID FK), `code` (VARCHAR), `title` (VARCHAR), `category` (VARCHAR), `default_points` (NUMERIC). |
 | **`sys.settings_definitions`** | Định nghĩa các khóa cài đặt hệ thống (Giao diện, thông báo, thời hạn khóa sổ điểm, bảo mật). | Được tham chiếu bởi các bảng cấu hình 4 tầng (`sys_role_settings_defaults`, `sys_system_settings`, `sys_user_settings`). | `id` (UUID PK), `code` (VARCHAR UNIQUE), `name` (VARCHAR), `category` (VARCHAR), `data_type` (VARCHAR), `default_value` (JSONB). |
 | **`sys.modules`** | Danh mục các thẻ/module chức năng trên giao diện (Thời khóa biểu, Học bạ, Điểm số, Đề thi, Sổ liên lạc). | Được tham chiếu bởi bảng phân quyền thẻ `sys.role_modules` và tùy biến cá nhân `sys.user_module_preferences`. | `id` (UUID PK), `code` (VARCHAR UNIQUE), `name` (VARCHAR), `route` (VARCHAR), `icon` (VARCHAR), `category` (VARCHAR). |
@@ -134,7 +134,7 @@ Phân hệ quản lý tài khoản người dùng, phân quyền vai trò (Role-
 | **`core.user_roles`** | Gán vai trò cho người dùng (Một người có thể có nhiều vai trò, ví dụ: vừa là Giáo viên, vừa là Phụ huynh). | `user_id` $\rightarrow$ `core.users(id)`, `role_id` $\rightarrow$ `core.roles(id)`. | `id` (UUID PK), `user_id` (UUID FK), `role_id` (UUID FK), `is_primary` (BOOL), `status` (ACTIVE/INACTIVE). |
 | **`core.classes`** | Quản lý thông tin lớp học (10A1, 11D1, 12A2), sỉ số mục tiêu, phòng học cố định. | `school_id` $\rightarrow$ `core.schools(id)`, `grade_id` $\rightarrow$ `core.grades(id)`, `academic_year_id` $\rightarrow$ `core.academic_years(id)`. | `id` (UUID PK), `code` (VARCHAR), `name` (VARCHAR), `grade_id` (UUID FK), `academic_year_id` (UUID FK), `room_id` (UUID FK). |
 | **`core.class_groups`** | Chia nhỏ lớp thành các tổ/nhóm học tập (Tổ 1, Tổ 2, Tổ 3, Tổ 4) để chấm điểm thi đua hoặc phân nhóm. | `class_id` $\rightarrow$ `core.classes(id)`. Được tham chiếu bởi `position_assignments`. | `id` (UUID PK), `class_id` (UUID FK), `name` (VARCHAR), `order_no` (INT). |
-| **`core.position_assignments`** | Phân công chức vụ theo không gian và thời gian: GVCN, Lớp trưởng, Tổ trưởng theo năm học và lớp học. | `user_id` $\rightarrow$ `core.users(id)`, `position_id` $\rightarrow$ `core.positions(id)`, `class_id` $\rightarrow$ `core.classes(id)`. | `id` (UUID PK), `user_id` (UUID FK), `position_id` (UUID FK), `class_id` (UUID FK), `start_date` (DATE), `is_current` (BOOL). |
+| **`core.position_assignments`** | Phân công chức vụ theo không gian và thời gian: Giáo viên chủ nhiệm, Lớp trưởng, Tổ trưởng theo năm học và lớp học. | `user_id` $\rightarrow$ `core.users(id)`, `position_id` $\rightarrow$ `core.positions(id)`, `class_id` $\rightarrow$ `core.classes(id)`. | `id` (UUID PK), `user_id` (UUID FK), `position_id` (UUID FK), `class_id` (UUID FK), `start_date` (DATE), `is_current` (BOOL). |
 | **`core.students`** | Hồ sơ nghiệp vụ học sinh: Mã học sinh (HS2026...), ngày nhập học, ngày tốt nghiệp, dân tộc, diện chính sách. | `user_id` $\rightarrow$ `core.users(id)`. Là trung tâm liên kết của điểm số, học phí, chuyên cần, khen thưởng. | `id` (UUID PK), `user_id` (UUID FK UNIQUE), `student_code` (VARCHAR UNIQUE), `admission_date` (DATE), `status` (STUDYING/...). |
 | **`core.student_health_records`** | Sổ theo dõi sức khỏe học sinh: Chiều cao, cân nặng, thị lực, tiền sử bệnh án, dị ứng, BHYT. | `student_id` $\rightarrow$ `core.students(id)`. | `id` (UUID PK), `student_id` (UUID FK), `academic_year_id` (UUID FK), `height` (NUMERIC), `weight` (NUMERIC), `allergies` (TEXT). |
 | **`core.guardians`** | Hồ sơ phụ huynh/người giám hộ, quan hệ với học sinh (Bố, Mẹ, Người bảo hộ), quyền liên lạc chính. | `user_id` $\rightarrow$ `core.users(id)`, `student_id` $\rightarrow$ `core.students(id)`. | `id` (UUID PK), `user_id` (UUID FK), `student_id` (UUID FK), `relationship_type` (FATHER/MOTHER/...), `is_emergency_contact` (BOOL). |
@@ -160,11 +160,11 @@ Phân hệ quản lý toàn bộ vòng đời học tập: Thời khóa biểu, 
 | **`academic.material_attachments`** | Tệp tin đính kèm cho bài giảng/tài liệu (PDF, PPTX, MP4, DOCX) cùng đường dẫn lưu trữ. | `material_id` $\rightarrow$ `academic.curriculum_materials(id)`. | `id` (UUID PK), `material_id` (UUID FK), `file_name` (VARCHAR), `file_url` (TEXT), `file_size_bytes` (BIGINT), `mime_type` (VARCHAR). |
 | **`academic.assignments`** | Quản lý bài tập về nhà, tiểu luận hoặc dự án học tập do giáo viên giao cho lớp. | `class_id` $\rightarrow$ `core.classes(id)`, `subject_id` $\rightarrow$ `core.subjects(id)`, `teacher_id` $\rightarrow$ `core.teachers(id)`. | `id` (UUID PK), `title` (VARCHAR), `instructions` (TEXT), `due_date` (TIMESTAMPTZ), `max_score` (NUMERIC), `attachment_url` (TEXT). |
 | **`academic.assignment_submissions`** | Bài làm nộp của học sinh, thời điểm nộp bài, điểm số chấm và lời phê của giáo viên. | `assignment_id` $\rightarrow$ `academic.assignments(id)`, `student_id` $\rightarrow$ `core.students(id)`. | `id` (UUID PK), `assignment_id` (UUID FK), `student_id` (UUID FK), `submission_content` (TEXT), `score` (NUMERIC), `feedback` (TEXT). |
-| **`academic.curriculum_tracks`** | Định nghĩa tổ hợp ban học tập theo Chương trình GDPT 2018 (Ban KHTN A00, Ban KHXH D01, Ban Nghệ thuật). | `school_id` $\rightarrow$ `core.schools(id)`, `grade_id` $\rightarrow$ `core.grades(id)`. | `id` (UUID PK), `school_id` (UUID FK), `grade_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `career_orientation` (TEXT). |
+| **`academic.curriculum_tracks`** | Định nghĩa tổ hợp ban học tập theo Chương trình Giáo dục phổ thông 2018 (Ban KHTN A00, Ban KHXH D01, Ban Nghệ thuật). | `school_id` $\rightarrow$ `core.schools(id)`, `grade_id` $\rightarrow$ `core.grades(id)`. | `id` (UUID PK), `school_id` (UUID FK), `grade_id` (UUID FK), `code` (VARCHAR), `name` (VARCHAR), `career_orientation` (TEXT). |
 | **`academic.curriculum_track_subjects`** | Danh sách các môn học lựa chọn cấu thành nên tổ hợp ban môn học đó. | `track_id` $\rightarrow$ `academic.curriculum_tracks(id)`, `subject_id` $\rightarrow$ `core.subjects(id)`. | `track_id` (UUID), `subject_id` (UUID), `is_specialized` (BOOL), `weekly_periods` (INT). PK `(track_id, subject_id)`. |
 | **`academic.student_track_enrollments`** | Ghi nhận học sinh đăng ký và học theo tổ hợp môn/ban học tập nào trong từng niên khóa. | `student_id` $\rightarrow$ `core.students(id)`, `track_id` $\rightarrow$ `academic.curriculum_tracks(id)`. | `id` (UUID PK), `student_id` (UUID FK), `track_id` (UUID FK), `academic_year_id` (UUID FK), `status` (ACTIVE/CHANGED). |
 | **`academic.question_bank`** | Ngân hàng câu hỏi trắc nghiệm & tự luận theo ma trận đề: Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao. | `subject_id` $\rightarrow$ `core.subjects(id)`, `grade_id` $\rightarrow$ `core.grades(id)`. | `id` (UUID PK), `content` (TEXT), `question_type` (SINGLE/MULTI/ESSAY), `options` (JSONB), `correct_answers` (JSONB), `solution` (TEXT). |
-| **`academic.exams`** | Quản lý kỳ kiểm tra/kỳ thi (Giữa kỳ, Cuối kỳ, Khảo sát chất lượng, Thi thử THPT Quốc gia). | `school_id` $\rightarrow$ `core.schools(id)`, `subject_id` $\rightarrow$ `core.subjects(id)`, `semester_id` $\rightarrow$ `core.semesters(id)`. | `id` (UUID PK), `title` (VARCHAR), `duration_minutes` (INT), `total_score` (NUMERIC), `start_time` (TIMESTAMPTZ), `end_time` (TIMESTAMPTZ). |
+| **`academic.exams`** | Quản lý kỳ kiểm tra/kỳ thi (Giữa kỳ, Cuối kỳ, Khảo sát chất lượng, Thi thử Trung học phổ thông Quốc gia). | `school_id` $\rightarrow$ `core.schools(id)`, `subject_id` $\rightarrow$ `core.subjects(id)`, `semester_id` $\rightarrow$ `core.semesters(id)`. | `id` (UUID PK), `title` (VARCHAR), `duration_minutes` (INT), `total_score` (NUMERIC), `start_time` (TIMESTAMPTZ), `end_time` (TIMESTAMPTZ). |
 | **`academic.exam_questions`** | Đề thi chi tiết: Gán các câu hỏi từ ngân hàng câu hỏi vào bài thi theo thứ tự và điểm số. | `exam_id` $\rightarrow$ `academic.exams(id)`, `question_id` $\rightarrow$ `academic.question_bank(id)`. | `id` (UUID PK), `exam_id` (UUID FK), `question_id` (UUID FK), `question_order` (INT), `points` (NUMERIC). |
 | **`academic.exam_submissions`** | Phiếu làm bài thi trực tuyến của học sinh: Thời gian bắt đầu, nộp bài, số câu đúng và tổng điểm tự động. | `exam_id` $\rightarrow$ `academic.exams(id)`, `student_id` $\rightarrow$ `core.students(id)`. | `id` (UUID PK), `exam_id` (UUID FK), `student_id` (UUID FK), `score` (NUMERIC), `started_at` (TIMESTAMPTZ), `submitted_at` (TIMESTAMPTZ). |
 | **`academic.exam_submission_answers`** | Câu trả lời chi tiết của từng câu trong bài thi, đáp án học sinh chọn và điểm câu đó đạt được. | `submission_id` $\rightarrow$ `academic.exam_submissions(id)`, `exam_question_id` $\rightarrow$ `academic.exam_questions(id)`. | `id` (UUID PK), `submission_id` (UUID FK), `selected_answers` (JSONB), `is_correct` (BOOL), `score_awarded` (NUMERIC). |
@@ -222,7 +222,7 @@ Phân hệ kết nối Nhà trường - Giáo viên - Học sinh - Phụ huynh: 
 | **`notification.announcement_reads`** | Theo dõi học sinh hoặc phụ huynh nào đã xem/đọc thông báo để nắm tỷ lệ tiếp cận thông tin. | `announcement_id` $\rightarrow$ `notification.announcements(id)`, `user_id` $\rightarrow$ `core.users(id)`. | `announcement_id` (UUID), `user_id` (UUID), `read_at` (TIMESTAMPTZ). Khóa chính kết hợp `(announcement_id, user_id)`. |
 | **`notification.reminders`** | Nhắc nhở công việc cá nhân tự động (Nhắc nộp bài tập về nhà, nhắc đóng học phí, lịch họp phụ huynh). | `user_id` $\rightarrow$ `core.users(id)`. | `id` (UUID PK), `user_id` (UUID FK), `title` (VARCHAR), `remind_at` (TIMESTAMPTZ), `is_completed` (BOOL). |
 | **`notification.push_tokens`** | Quản lý Device Push Tokens (FCM cho Android, APNs cho iOS, Web Push) để gửi thông báo tức thời ra màn hình khóa điện thoại. | `user_id` $\rightarrow$ `core.users(id)`. | `id` (UUID PK), `user_id` (UUID FK), `token` (TEXT UNIQUE), `platform` (ANDROID/IOS/WEB), `last_used_at` (TIMESTAMPTZ). |
-| **`notification.contact_book_notes`** | Phiếu Sổ liên lạc điện tử định kỳ (Tuần, Tháng, Kỳ): Tổng hợp điểm số, ngày công chuyên cần, nề nếp và nhận xét của GVCN gửi phụ huynh ký nhận. | `student_id` $\rightarrow$ `core.students(id)`, `class_id` $\rightarrow$ `core.classes(id)`, `semester_id` $\rightarrow$ `core.semesters(id)`. | `id` (UUID PK), `student_id` (UUID FK), `period_label` (VARCHAR), `academic_digest` (JSONB), `attendance_digest` (JSONB), `parent_acknowledged` (BOOL). |
+| **`notification.contact_book_notes`** | Phiếu Sổ liên lạc điện tử định kỳ (Tuần, Tháng, Kỳ): Tổng hợp điểm số, ngày công chuyên cần, nề nếp và nhận xét của Giáo viên chủ nhiệm gửi phụ huynh ký nhận. | `student_id` $\rightarrow$ `core.students(id)`, `class_id` $\rightarrow$ `core.classes(id)`, `semester_id` $\rightarrow$ `core.semesters(id)`. | `id` (UUID PK), `student_id` (UUID FK), `period_label` (VARCHAR), `academic_digest` (JSONB), `attendance_digest` (JSONB), `parent_acknowledged` (BOOL). |
 | **`notification.parent_teacher_messages`** | Hộp thư tin nhắn riêng tư 1-1 giữa Phụ huynh học sinh và Giáo viên chủ nhiệm/Giáo viên bộ môn. | `sender_id` $\rightarrow$ `core.users(id)`, `receiver_id` $\rightarrow$ `core.users(id)`, `student_id` $\rightarrow$ `core.students(id)`. | `id` (UUID PK), `sender_id` (UUID FK), `receiver_id` (UUID FK), `student_id` (UUID FK), `message_text` (TEXT), `is_read` (BOOL). |
 
 ---
@@ -247,17 +247,17 @@ Phân hệ đảm bảo vận hành thông minh: Thẻ chức năng Dashboard c�
 
 Khi chạy `init.sql`, hệ thống tự động nạp toàn bộ danh mục sản xuất:
 
-1. **Trường học mẫu:** THPT Lê Quý Đôn (`THPT_LEQUYDON`).
+1. **Trường học mẫu:** Trung học phổ thông Lê Quý Đôn (`THPT_LEQUYDON`).
 2. **Niên khóa & Học kỳ:** 2024-2025, 2025-2026, 2026-2027 (hiện hành) cùng HK1, HK2, Khóa Hè.
 3. **Khối lớp:** Khối 10, Khối 11, Khối 12.
 4. **11 Tổ chuyên môn:** Toán - Tin học, Ngữ văn, Ngoại ngữ, Vật lý, Hóa học - Sinh học, Lịch sử - Địa lý - GDKT&PL, Thể dục - GDQP&AN, Ban Giám thị, Phòng Y tế, Tài vụ, Đoàn trường.
-5. **15 Môn học chuẩn GDPT 2018:** Toán, Ngữ văn, Tiếng Anh, Lịch sử, GDTC, GDQP&AN, HĐTN&HN, GD địa phương, Vật lý, Hóa học, Sinh học, Địa lý, GDKT&PL, Tin học, Công nghệ.
+5. **15 Môn học chuẩn Giáo dục phổ thông 2018:** Toán, Ngữ văn, Tiếng Anh, Lịch sử, GDTC, GDQP&AN, HĐTN&HN, GD địa phương, Vật lý, Hóa học, Sinh học, Địa lý, GDKT&PL, Tin học, Công nghệ.
 6. **Lớp học & Tổ học tập:** Các lớp 10A1, 10A2, 10D1, 10D2, 11A1, 11D1, 12A1, 12D1 (Ban Tự nhiên & Xã hội), Tổ 1, 2, 3, 4 trong từng lớp.
-7. **Ca học & 10 Tiết chuẩn THPT:** Ca Sáng (Tiết 1 đến 5 từ 07:00), Ca Chiều (Tiết 6 đến 10 từ 12:45).
+7. **Ca học & 10 Tiết chuẩn Trung học phổ thông:** Ca Sáng (Tiết 1 đến 5 từ 07:00), Ca Chiều (Tiết 6 đến 10 từ 12:45).
 8. **Phòng học & Cơ sở vật chất:** Phòng học A101, A102, B101; Phòng thí nghiệm Lý - Hóa - Sinh; Phòng máy tính Tin học; Thư viện; Hội trường 500 chỗ; Nhà đa năng.
 9. **Cột điểm Thông tư 22:** Kiểm tra miệng, 15 phút (ĐĐGtx - hệ số 1), Giữa kỳ (ĐĐGgk - hệ số 2), Cuối kỳ (ĐĐGck - hệ số 3).
-10. **Chức vụ đối tượng:** Giáo viên chủ nhiệm, GV bộ môn, Lớp trưởng, Lớp phó học tập, Lớp phó lao động, Lớp phó nề nếp, Bí thư chi đoàn, Tổ trưởng, Đội viên cờ đỏ, Giám thị khối,...
-11. **17 Modules Card giao diện:** Thời khóa biểu, Bảng điểm học bạ, Bài tập, Đề thi, Sổ đầu bài, Đánh giá GV ẩn danh, Báo hỏng thiết bị, Xếp hạng thi đua,...
+10. **Chức vụ đối tượng:** Giáo viên chủ nhiệm, Giáo viên bộ môn, Lớp trưởng, Lớp phó học tập, Lớp phó lao động, Lớp phó nề nếp, Bí thư chi đoàn, Tổ trưởng, Đội viên cờ đỏ, Giám thị khối,...
+11. **17 Modules Card giao diện:** Thời khóa biểu, Bảng điểm học bạ, Bài tập, Đề thi, Sổ đầu bài, Đánh giá Giáo viên ẩn danh, Báo hỏng thiết bị, Xếp hạng thi đua,...
 12. **10 Tiêu chí thi đua:** Nề nếp đi học đúng giờ, đồng phục phù hiệu, vệ sinh lớp học, giờ học tốt điểm A, hoa điểm 10,...
 
 ---
@@ -295,7 +295,7 @@ Mở trình duyệt truy cập: **`http://localhost:5050`**
 
 ## 🔍 Các câu lệnh truy vấn mẫu hữu ích
 
-### 1. Truy vấn Danh sách Ban cán sự & GVCN hiện tại của từng lớp
+### 1. Truy vấn Danh sách Ban cán sự & Giáo viên chủ nhiệm hiện tại của từng lớp
 ```sql
 SELECT 
   class_code, 

@@ -148,7 +148,7 @@ export const mockSurveys: SurveyItem[] = [
   },
   {
     id: "survey-03",
-    code: "KS-CSVC-11",
+    code: "KS-Cơ sở vật chất-11",
     title: "Khảo sát ý kiến về Cơ sở vật chất, Phòng máy tính & Thư viện số",
     category: "facilities",
     categoryName: "Cơ sở vật chất",

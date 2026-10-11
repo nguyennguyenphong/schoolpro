@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS core.student_health_records (
   examined_by_nurse_id        UUID REFERENCES core.users(id) ON DELETE SET NULL, -- Nhân viên y tế học đường
   last_checkup_at             DATE,
   vaccination_records         JSONB DEFAULT '[]'::jsonb,            -- Danh mục lịch sử tiêm chủng
-  special_care_instructions   TEXT,                                 -- Lưu ý chăm sóc cho GVCN & GV Thể dục
+  special_care_instructions   TEXT,                                 -- Lưu ý chăm sóc cho Giáo viên chủ nhiệm & Giáo viên Thể dục
   notes                       TEXT,
   created_at                  TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at                  TIMESTAMPTZ NOT NULL DEFAULT now()

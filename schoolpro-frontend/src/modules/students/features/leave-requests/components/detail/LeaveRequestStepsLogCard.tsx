@@ -84,7 +84,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             time: `Hạn duyệt: ${formatDateTimeDisplay(item.approvalDeadline || item.createdAt)}`,
             title: "Đang chờ Giáo viên chủ nhiệm phê duyệt (Hạn trước giờ học 03 giờ)",
             actor: `${item.homeroomTeacherName || "Giáo viên chủ nhiệm"} • Hệ thống Tự động Duyệt`,
-            badgeText: "Chờ GVCN duyệt",
+            badgeText: "Chờ Giáo viên chủ nhiệm duyệt",
             badgeColor: "warning" as const,
             dotColor: "bg-amber-500 animate-pulse",
             emailSent: false,
@@ -140,7 +140,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             <div className="flex items-center gap-2">
               <Icon name="clock" size={14} className="text-blue-600 shrink-0" />
               <span>
-                Hạn GVCN phê duyệt (trước giờ học 03 giờ):{" "}
+                Hạn Giáo viên chủ nhiệm phê duyệt (trước giờ học 03 giờ):{" "}
                 <strong className="font-mono">
                   {formatDateTimeDisplay(item.approvalDeadline)}
                 </strong>
@@ -148,7 +148,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             </div>
             <span className="text-[11px] font-medium">
               {item.isAutoApproved
-                ? "Đã tự động phê duyệt khi đến hạn & gửi Email tới Học sinh + GVBM"
+                ? "Đã tự động phê duyệt khi đến hạn & gửi Email tới Học sinh + Giáo viên bộ môn"
                 : item.status === "pending"
                   ? "Quá hạn chưa duyệt → Hệ thống tự động phê duyệt & gửi Email"
                   : `Đã xử lý lúc ${formatDateTimeDisplay(item.reviewedAt || item.updatedAt)}`}
@@ -173,14 +173,14 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
               {
                 title: (
                   <span className="font-semibold text-xs sm:text-sm">
-                    Báo GVCN &amp; GVBM
+                    Báo Giáo viên chủ nhiệm &amp; Giáo viên bộ môn
                   </span>
                 ),
                 description: (
                   <span className="text-[11px] text-slate-500 block">
                     {homeroomAlsoSubject
-                      ? "GVCN kiêm GVBM (gửi 1 lần)"
-                      : `Email GVCN & ${notifiedTeachers.length} GVBM`}
+                      ? "Giáo viên chủ nhiệm kiêm Giáo viên bộ môn (gửi 1 lần)"
+                      : `Email Giáo viên chủ nhiệm & ${notifiedTeachers.length} Giáo viên bộ môn`}
                   </span>
                 ),
               },
@@ -193,9 +193,9 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
                       : item.isAutoApproved
                         ? `Tự động duyệt (${formatDateTimeDisplay(item.reviewedAt)})`
                         : item.status === "approved"
-                          ? `GVCN duyệt (${formatDateTimeDisplay(item.reviewedAt)})`
+                          ? `Giáo viên chủ nhiệm duyệt (${formatDateTimeDisplay(item.reviewedAt)})`
                           : item.status === "rejected"
-                            ? `GVCN từ chối (${formatDateTimeDisplay(item.reviewedAt)})`
+                            ? `Giáo viên chủ nhiệm từ chối (${formatDateTimeDisplay(item.reviewedAt)})`
                             : "Đã hủy"}
                   </span>
                 ),
@@ -203,15 +203,15 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
               {
                 title: (
                   <span className="font-semibold text-xs sm:text-sm">
-                    Email HS &amp; Báo GVBM
+                    Email Học sinh &amp; Báo Giáo viên bộ môn
                   </span>
                 ),
                 description: (
                   <span className="text-[11px] text-slate-500 block">
                     {item.status === "approved"
-                      ? "Đã gửi Email HS & báo GVBM"
+                      ? "Đã gửi Email Học sinh & báo Giáo viên bộ môn"
                       : item.status === "rejected"
-                        ? "Đã gửi Email kết quả HS"
+                        ? "Đã gửi Email kết quả Học sinh"
                         : "Sau khi đơn được duyệt"}
                   </span>
                 ),
@@ -293,11 +293,11 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
                       {lesson.startTime} - {lesson.endTime}
                     </div>
                     <div className="text-[11px] text-slate-600 truncate">
-                      GV bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
+                      Giáo viên bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
                     </div>
                   </div>
                   <Tag color="cyan" className="m-0 text-[10px] font-semibold shrink-0">
-                    Đã báo GVBM
+                    Đã báo Giáo viên bộ môn
                   </Tag>
                 </div>
               ))}

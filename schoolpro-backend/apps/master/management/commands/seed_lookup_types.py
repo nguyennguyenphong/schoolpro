@@ -44,7 +44,7 @@ class Command(BaseCommand):
             {
                 "code": "CLASS_STREAM",
                 "name": "Ban học / Định hướng",
-                "description": "Phân ban đào tạo THPT",
+                "description": "Phân ban đào tạo Trung học phổ thông",
             },
             {
                 "code": "ETHNICITY",

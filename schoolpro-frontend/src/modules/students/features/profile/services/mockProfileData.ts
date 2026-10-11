@@ -35,7 +35,7 @@ export const MOCK_STUDENT_PROFILE: StudentProfileData = {
   academicInfo: {
     className: "10A1",
     gradeLevel: "Khối 10",
-    schoolName: "Trường THPT Chuyên SchoolPro",
+    schoolName: "Trường Trung học phổ thông Chuyên SchoolPro",
     academicYear: "2026 - 2027",
     admissionDate: "2026-08-15",
     graduationDate: "2029-06-30",

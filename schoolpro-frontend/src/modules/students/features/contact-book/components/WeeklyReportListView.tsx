@@ -112,7 +112,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
                 <div className="p-4 rounded-xl bg-slate-50/80 border border-[#f0f0f0]/90 flex flex-col gap-2">
                   <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wide">
                     <Icon name="book" size={14} className="text-blue-600" />
-                    Đánh giá học tập trong tuần của GVCN
+                    Đánh giá học tập trong tuần của Giáo viên chủ nhiệm
                   </span>
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mb-0">
                     {report.studyComment}
