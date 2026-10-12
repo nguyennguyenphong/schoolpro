@@ -42,7 +42,6 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
               <span>
                 {t("card:timetable.classLabel", {
                   classCode: slot.className || slot.classCode,
-                  defaultValue: `Lớp ${slot.className || slot.classCode}`,
                 })}
               </span>
             </span>

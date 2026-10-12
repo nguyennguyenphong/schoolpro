@@ -101,10 +101,7 @@ export function useLeaveRequestRealtime(
           useNotificationStore.getState().incrementUnreadCount(1);
           message.success(
             payload.message ||
-              translate("message:leaveRequestRealtime.autoApproved", {
-                defaultValue:
-                  "Đơn xin nghỉ phép đã được hệ thống tự động phê duyệt (trước giờ học 03 giờ).",
-              }),
+              translate("message:leaveRequestRealtime.autoApproved"),
           );
         } else if (payload.eventType === "LEAVE_REQUEST_REVIEWED") {
           useNotificationStore.getState().incrementUnreadCount(1);
@@ -113,18 +110,12 @@ export function useLeaveRequestRealtime(
           if (isApproved) {
             message.success(
               payload.message ||
-                translate("message:leaveRequestRealtime.approved", {
-                  defaultValue:
-                    "Đơn xin nghỉ phép đã được Giáo viên chủ nhiệm phê duyệt.",
-                }),
+                translate("message:leaveRequestRealtime.approved"),
             );
           } else {
             message.warning(
               payload.message ||
-                translate("message:leaveRequestRealtime.rejected", {
-                  defaultValue:
-                    "Đơn xin nghỉ phép đã bị Giáo viên chủ nhiệm từ chối.",
-                }),
+                translate("message:leaveRequestRealtime.rejected"),
             );
           }
         }
@@ -155,10 +146,7 @@ export function useLeaveRequestRealtime(
         .getState()
         .incrementUnreadCount(snapshot.autoApprovedNowCount);
       message.success(
-        tRef.current("message:leaveRequestRealtime.autoApproved", {
-          defaultValue:
-            "Đơn xin nghỉ phép đã được hệ thống tự động phê duyệt (trước giờ học 03 giờ).",
-        }),
+        tRef.current("message:leaveRequestRealtime.autoApproved"),
       );
     }
 

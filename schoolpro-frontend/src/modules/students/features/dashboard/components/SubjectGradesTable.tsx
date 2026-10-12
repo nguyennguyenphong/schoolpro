@@ -142,7 +142,7 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
                   <div className="font-bold text-slate-900 text-xs">
                     {item.subjectName}
                   </div>
-                  <span className="font-mono text-[10px] text-slate-400">
+                  <span className="text-[10px] text-slate-400">
                     {item.subjectCode}
                   </span>
                 </td>

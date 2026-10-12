@@ -13,6 +13,7 @@ import type {
   AttendanceSummary,
   CheckInPayload,
   CheckInResult,
+  DailyAttendanceQueryParams,
   OpenAttendanceSessionPayload,
 } from "@/modules/students/features/attendance/types";
 import {
@@ -24,7 +25,7 @@ import { API_BASE_URL, httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 
 export const ATTENDANCE_BROADCAST_CHANNEL = "schoolpro_attendance_realtime";
-const LOCAL_STORAGE_RECORDS_KEY = "schoolpro_attendance_records_v2";
+const LOCAL_STORAGE_RECORDS_KEY = "schoolpro_attendance_records_v3";
 
 interface DailyAttendanceApiData {
   date: string;
@@ -114,7 +115,6 @@ class AttendanceService {
             remainingSeconds: 0,
             note: i18n.t("message:attendance.sessionExpiredNote", {
               time: deadlineStr,
-              defaultValue: `Mã điểm danh đã hết hạn lúc ${deadlineStr}. Cổng điểm danh đã đóng.`,
             }),
           };
         }
@@ -228,26 +228,36 @@ class AttendanceService {
   }
 
   /**
-   * Fetches daily subject attendance records and summary for the selected date (YYYY-MM-DD).
+   * Fetches daily subject attendance records and summary using query params (date, shift, status, search).
    */
   async getDailyAttendance(
-    date: string,
+    paramsOrDate: DailyAttendanceQueryParams | string,
     statusFilter?: string,
     searchQuery?: string,
   ): Promise<{ records: AttendanceRecord[]; summary: AttendanceSummary }> {
+    const query: DailyAttendanceQueryParams =
+      typeof paramsOrDate === "string"
+        ? {
+            date: paramsOrDate,
+            status: (statusFilter as DailyAttendanceQueryParams["status"]) || "all",
+            search: searchQuery,
+          }
+        : paramsOrDate;
+
     try {
       const response = await httpClient.get<
         ApiResponse<DailyAttendanceApiData>
       >("/academic/attendance/daily/", {
         params: {
-          date,
+          date: query.date,
+          shift: query.shift && query.shift !== "all" ? query.shift : undefined,
           status:
-            statusFilter && statusFilter !== "all" ? statusFilter : undefined,
-          search: searchQuery?.trim() || undefined,
+            query.status && query.status !== "all" ? query.status : undefined,
+          search: query.search?.trim() || undefined,
         },
       });
       const apiData = response.data?.data;
-      if (apiData && Array.isArray(apiData.records) && apiData.records.length > 0) {
+      if (apiData && Array.isArray(apiData.records) && apiData.summary) {
         return {
           records: apiData.records,
           summary: apiData.summary,
@@ -260,10 +270,35 @@ class AttendanceService {
     return new Promise((resolve) => {
       setTimeout(() => {
         const { updatedRecords } = this.syncLocalExpirations();
-        const dayRecords = updatedRecords.filter((r) => r.date === date);
+        let dayRecords = updatedRecords.filter((r) => r.date === query.date);
+
+        if (query.shift && query.shift !== "all") {
+          dayRecords = dayRecords.filter((r) => r.shift === query.shift);
+        }
+
         const summary = this.computeLocalSummary(dayRecords);
+
+        let filteredRecords = [...dayRecords];
+        if (query.status && query.status !== "all") {
+          filteredRecords = filteredRecords.filter(
+            (r) => r.status === query.status,
+          );
+        }
+        if (query.search && query.search.trim()) {
+          const q = query.search.trim().toLowerCase();
+          filteredRecords = filteredRecords.filter((r) => {
+            const hay =
+              `${r.subjectName} ${r.subjectCode} ${r.teacherName} ${r.room} ${r.building || ""} ${r.period} ${r.lessonTopic || ""}`.toLowerCase();
+            return hay.includes(q);
+          });
+        }
+
+        filteredRecords.sort(
+          (a, b) => (a.periodNumber ?? 0) - (b.periodNumber ?? 0),
+        );
+
         resolve({
-          records: dayRecords,
+          records: filteredRecords,
           summary,
         });
       }, this.latency);
@@ -353,25 +388,13 @@ class AttendanceService {
             (payload.timetableId && r.timetableId === payload.timetableId),
         );
         if (idx === -1) {
-          reject(
-            new Error(
-              i18n.t("message:attendance.sessionNotFound", {
-                defaultValue: "Không tìm thấy phiên điểm danh môn học này.",
-              }),
-            ),
-          );
+          reject(new Error(i18n.t("message:attendance.sessionNotFound")));
           return;
         }
 
         const customPin = (payload.pinCode || "").trim();
         if (customPin && !/^\d{6}$/.test(customPin)) {
-          reject(
-            new Error(
-              i18n.t("message:attendance.invalidSixDigitPin", {
-                defaultValue: "Mã điểm danh bắt buộc phải gồm đúng 6 chữ số (0-9).",
-              }),
-            ),
-          );
+          reject(new Error(i18n.t("message:attendance.invalidSixDigitPin")));
           return;
         }
 
@@ -422,7 +445,6 @@ class AttendanceService {
             i18n.t("message:attendance.openSessionNote", {
               pinCode,
               radius,
-              defaultValue: `Cổng điểm danh đang mở! Nhập mã 6 chữ số (${pinCode}) hoặc quét/tải ảnh mã QR trong bán kính ${radius}m.`,
             }),
         };
 
@@ -444,7 +466,6 @@ class AttendanceService {
           message: i18n.t("message:attendance.teacherOpenedSessionToast", {
             subject: updated.subjectName,
             radius: updated.allowedRadiusMeters,
-            defaultValue: `Giáo viên đã mở mã điểm danh mới môn ${updated.subjectName} (Bán kính quét: ${updated.allowedRadiusMeters}m).`,
           }),
           timestamp: new Date().toISOString(),
         });
@@ -484,7 +505,6 @@ class AttendanceService {
       remainingSeconds: 0,
       note: i18n.t("message:attendance.sessionExpiredNote", {
         time: deadlineStr,
-        defaultValue: `Mã điểm danh đã hết hạn lúc ${deadlineStr}. Cổng điểm danh đã đóng.`,
       }),
     };
 
@@ -500,7 +520,6 @@ class AttendanceService {
       record: updated,
       message: i18n.t("message:attendance.sessionExpiredToast", {
         subject: updated.subjectName,
-        defaultValue: `Mã điểm danh môn ${updated.subjectName} đã hết thời gian hiệu lực.`,
       }),
       timestamp: now.toISOString(),
     });
@@ -557,9 +576,7 @@ class AttendanceService {
         if (recordIndex === -1) {
           resolve({
             success: false,
-            message: i18n.t("message:attendance.sessionNotFound", {
-              defaultValue: "Không tìm thấy phiên điểm danh môn học này.",
-            }),
+            message: i18n.t("message:attendance.sessionNotFound"),
           });
           return;
         }
@@ -569,9 +586,7 @@ class AttendanceService {
         if (target.status === "present") {
           resolve({
             success: true,
-            message: i18n.t("message:attendance.alreadyCheckedIn", {
-              defaultValue: "Bạn đã hoàn thành điểm danh môn học này trước đó rồi.",
-            }),
+            message: i18n.t("message:attendance.alreadyCheckedIn"),
             record: target,
           });
           return;
@@ -584,10 +599,7 @@ class AttendanceService {
         if (target.status !== "open" || isExpiredByTime) {
           resolve({
             success: false,
-            message: i18n.t("message:attendance.expiredCannotUse", {
-              defaultValue:
-                "Mã điểm danh đã hết thời gian hiệu lực và không còn giá trị sử dụng. Vui lòng liên hệ Giáo viên bộ môn.",
-            }),
+            message: i18n.t("message:attendance.expiredCannotUse"),
           });
           return;
         }
@@ -599,10 +611,7 @@ class AttendanceService {
         ) {
           resolve({
             success: false,
-            message: i18n.t("message:attendance.gpsRequired", {
-              defaultValue:
-                "Hệ thống yêu cầu tọa độ Kinh độ & Vĩ độ GPS để xác thực vị trí trong lớp học và chống gian lận 100%.",
-            }),
+            message: i18n.t("message:attendance.gpsRequired"),
           });
           return;
         }
@@ -613,9 +622,7 @@ class AttendanceService {
           if (!/^\d{6}$/.test(entered)) {
             resolve({
               success: false,
-              message: i18n.t("message:attendance.enterSixDigits", {
-                defaultValue: "Vui lòng nhập mã điểm danh hợp lệ gồm đúng 6 chữ số.",
-              }),
+              message: i18n.t("message:attendance.enterSixDigits"),
             });
             return;
           }
@@ -625,7 +632,6 @@ class AttendanceService {
               success: false,
               message: i18n.t("message:attendance.wrongPinCode", {
                 code: target.attendanceCode,
-                defaultValue: `Mã điểm danh 6 chữ số không chính xác! Vui lòng kiểm tra lại mã do Giáo viên cung cấp. (Mã phiên hiện tại: ${target.attendanceCode})`,
               }),
             });
             return;
@@ -638,9 +644,7 @@ class AttendanceService {
           if (!qrRaw) {
             resolve({
               success: false,
-              message: i18n.t("message:attendance.qrEmpty", {
-                defaultValue: "Không nhận diện được dữ liệu mã QR hợp lệ. Vui lòng thử lại.",
-              }),
+              message: i18n.t("message:attendance.qrEmpty"),
             });
             return;
           }
@@ -649,10 +653,7 @@ class AttendanceService {
           if (!matchesToken && !matchesPin) {
             resolve({
               success: false,
-              message: i18n.t("message:attendance.wrongQrToken", {
-                defaultValue:
-                  "Mã QR không khớp với phiên điểm danh hiện tại hoặc thuộc về tiết học khác.",
-              }),
+              message: i18n.t("message:attendance.wrongQrToken"),
             });
             return;
           }
@@ -676,7 +677,6 @@ class AttendanceService {
             message: i18n.t("message:attendance.outOfRadiusError", {
               distance: distanceMeters.toFixed(1),
               allowedRadius,
-              defaultValue: `Từ chối điểm danh do ngoài phạm vi cho phép! Vị trí hiện tại của bạn cách thiết bị Giáo viên ${distanceMeters.toFixed(1)}m, vượt quá bán kính quét tối đa (${allowedRadius}m).`,
             }),
           });
           return;
@@ -687,16 +687,10 @@ class AttendanceService {
         const checkInTime = now.toTimeString().slice(0, 8);
         const methodText =
           payload.method === "qr_scan"
-            ? i18n.t("card:attendance.method.qrScan", {
-                defaultValue: "Quét Camera QR",
-              })
+            ? i18n.t("card:attendance.method.qrScan")
             : payload.method === "qr_upload"
-              ? i18n.t("card:attendance.method.qrUpload", {
-                  defaultValue: "Tải ảnh mã QR",
-                })
-              : i18n.t("card:attendance.method.pinCode", {
-                  defaultValue: "Mã 6 chữ số",
-                });
+              ? i18n.t("card:attendance.method.qrUpload")
+              : i18n.t("card:attendance.method.pinCode");
 
         const updatedRecord: AttendanceRecord = {
           ...target,
@@ -714,7 +708,6 @@ class AttendanceService {
             method: methodText,
             distance: distanceMeters.toFixed(1),
             allowedRadius,
-            defaultValue: `Đã điểm danh hợp lệ lúc ${checkInTime} qua ${methodText} (Khoảng cách GPS: ${distanceMeters.toFixed(1)}m / cho phép ${allowedRadius}m).`,
           }),
         };
 
@@ -738,7 +731,6 @@ class AttendanceService {
           message: i18n.t("message:attendance.checkInSuccessToast", {
             subject: target.subjectName,
             distance: distanceMeters.toFixed(1),
-            defaultValue: `Điểm danh thành công môn ${target.subjectName}! Khoảng cách xác thực GPS: ${distanceMeters.toFixed(1)}m.`,
           }),
           record: updatedRecord,
         });

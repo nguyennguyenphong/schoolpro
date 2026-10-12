@@ -49,7 +49,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
             <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">
               Chi tiết Bảng điểm Môn {item.name}
             </h2>
-            <Tag color="blue" className="font-mono font-bold m-0">
+            <Tag color="blue" className="font-bold m-0">
               {item.code}
             </Tag>
           </div>

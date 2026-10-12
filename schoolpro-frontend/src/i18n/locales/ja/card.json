@@ -215,6 +215,7 @@
     "noLink": "なし",
     "joinOnlineClass": "オンライン授業に参加",
     "periodsPerWeek": "{{count}} コマ/週",
+    "slotsCountSuffix": "コマ",
     "classLabel": "{{classCode}} 組",
     "shifts": {
       "morning": "午前の部",
@@ -536,7 +537,9 @@
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "許可半径:",
       "countdownRowLabel": "有効期限:",
-      "verifiedRowLabel": "GPS認証:"
+      "verifiedRowLabel": "GPS認証:",
+      "expiredShort": "受付終了",
+      "openAtTime": "{{time}} 開始"
     },
     "empty": {
       "noOpenTitle": "No subjects currently have an open attendance session",

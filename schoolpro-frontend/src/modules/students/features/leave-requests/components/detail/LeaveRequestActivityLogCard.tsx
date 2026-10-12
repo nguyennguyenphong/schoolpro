@@ -77,7 +77,7 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
                   <Tag color={log.badgeColor} className="m-0 text-[10px] font-semibold">
                     {log.badgeText}
                   </Tag>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-600 font-mono">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-600">
                     <Icon name="clock" size={11} className="text-blue-600 shrink-0" />
                     <span>{log.time}</span>
                   </span>

@@ -166,6 +166,7 @@
     "allShifts": "全部时段",
     "shiftMorning": "上午",
     "shiftAfternoon": "下午",
+    "shiftEvening": "晚上",
     "classTypeLabel": "授课形式:",
     "allClassTypes": "全部形式",
     "sortPeriodAsc": "最早节次优先",

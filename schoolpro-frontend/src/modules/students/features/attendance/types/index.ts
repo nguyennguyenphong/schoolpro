@@ -10,16 +10,14 @@ export type AttendanceStatusFilter =
   | "open"
   | "present"
   | "upcoming"
+  | "excused"
   | "absent";
 
-export type AttendanceShiftFilter = "all" | "morning" | "afternoon";
-
-export type AttendanceClassTypeFilter = "all" | "theory" | "practice";
-
-export type AttendanceSortOption =
-  | "period_asc"
-  | "period_desc"
-  | "status_priority";
+export type AttendanceShiftFilter =
+  | "all"
+  | "morning"
+  | "afternoon"
+  | "evening";
 
 export type AttendanceMethod = "qr_scan" | "qr_upload" | "code";
 
@@ -27,12 +25,17 @@ export type AttendanceViewMode = "grid" | "list";
 
 export interface AttendanceFilter {
   selectedDate: string;
-  searchQuery: string;
-  status: AttendanceStatusFilter;
   shift: AttendanceShiftFilter;
-  classType: AttendanceClassTypeFilter;
-  sortBy: AttendanceSortOption;
+  status: AttendanceStatusFilter;
+  searchQuery: string;
   viewMode: AttendanceViewMode;
+}
+
+export interface DailyAttendanceQueryParams {
+  date: string;
+  shift?: AttendanceShiftFilter;
+  status?: AttendanceStatusFilter;
+  search?: string;
 }
 
 export interface AttendanceRecord {
@@ -58,7 +61,7 @@ export interface AttendanceRecord {
   endTime?: string;
   period: string; // e.g. "Tiết 1 - 2"
   periodNumber?: number;
-  shift?: "morning" | "afternoon";
+  shift?: "morning" | "afternoon" | "evening";
   classType?: "theory" | "practice";
   lessonTopic?: string;
   status: SubjectAttendanceStatus;
@@ -96,6 +99,10 @@ export interface AttendanceRecord {
   isWithinRadius?: boolean;
   /** Browser/Device GPS accuracy in meters */
   gpsAccuracyMeters?: number | null;
+  /** Linked Leave Request ID when student has an approved/pending leave request */
+  leaveRequestId?: string | null;
+  /** Linked Leave Request Code (e.g. "LR-20260929-001") */
+  leaveRequestCode?: string | null;
   /** Note from teacher or system */
   note?: string;
 }

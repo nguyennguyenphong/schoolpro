@@ -98,7 +98,7 @@ export const SurveyFormModal: React.FC<SurveyFormModalProps> = ({
             <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">
               {survey.title}
             </h2>
-            <Tag color="blue" className="font-mono font-bold m-0 text-xs">
+            <Tag color="blue" className="font-bold m-0 text-xs">
               {survey.code}
             </Tag>
           </div>

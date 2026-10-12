@@ -26,7 +26,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
       );
     }
 
-    if (score === undefined) return <span className="text-slate-300 font-mono">--</span>;
+    if (score === undefined) return <span className="text-slate-300">--</span>;
 
     let badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
     if (score >= 9.0) {
@@ -108,7 +108,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
             <span className="font-bold text-slate-900 text-sm">
               {record.name}
             </span>
-            <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-mono font-bold">
+            <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-bold">
               {record.code}
             </span>
           </div>
@@ -158,7 +158,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
             {midterm.score.toFixed(1)}
           </span>
         ) : (
-          <span className="text-slate-300 font-mono">--</span>
+          <span className="text-slate-300">--</span>
         ),
     },
     {
@@ -177,7 +177,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
             {final.score.toFixed(1)}
           </span>
         ) : (
-          <span className="text-slate-300 font-mono">--</span>
+          <span className="text-slate-300">--</span>
         ),
     },
     {

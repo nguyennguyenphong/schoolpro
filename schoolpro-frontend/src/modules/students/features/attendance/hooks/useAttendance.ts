@@ -6,11 +6,9 @@ import { useSearchParams } from "react-router-dom";
 import { useAttendanceRealtime } from "@/modules/students/features/attendance/hooks/useAttendanceRealtime";
 import { attendanceService } from "@/modules/students/features/attendance/services";
 import type {
-  AttendanceClassTypeFilter,
   AttendanceFilter,
   AttendanceRecord,
   AttendanceShiftFilter,
-  AttendanceSortOption,
   AttendanceStatusFilter,
   AttendanceSummary,
   AttendanceViewMode,
@@ -21,23 +19,9 @@ import { computeRemainingSeconds } from "@/modules/students/features/attendance/
 
 export const DEFAULT_DEMO_TODAY = "2026-09-29";
 
-const STATUS_PRIORITY_ORDER: Record<string, number> = {
-  open: 0,
-  upcoming: 1,
-  present: 2,
-  excused: 3,
-  absent: 4,
-};
-
 export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
   const { t } = useTranslation(["message"]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [shift, setShift] = useState<AttendanceShiftFilter>("all");
-  const [classType, setClassType] = useState<AttendanceClassTypeFilter>("all");
-  const [sortBy, setSortBy] = useState<AttendanceSortOption>("period_asc");
-  const [viewMode, setViewMode] = useState<AttendanceViewMode>("grid");
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [summary, setSummary] = useState<AttendanceSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,12 +29,27 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
   const [activeRecordForModal, setActiveRecordForModal] =
     useState<AttendanceRecord | null>(null);
 
-  const selectedDateRef = useRef(selectedDate);
-  useEffect(() => {
-    selectedDateRef.current = selectedDate;
-  }, [selectedDate]);
+  // 1. Read filter state from URL query params (?date=...&shift=...&status=...&q=...&view=...)
+  const selectedDate = useMemo<string>(() => {
+    const rawDate = searchParams.get("date")?.trim();
+    if (rawDate && /^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+      return rawDate;
+    }
+    return initialDate;
+  }, [searchParams, initialDate]);
 
-  // Read status filter from URL query param (?status=all | open | present | upcoming | absent)
+  const shift = useMemo<AttendanceShiftFilter>(() => {
+    const rawShift = searchParams.get("shift")?.toLowerCase();
+    if (
+      rawShift === "morning" ||
+      rawShift === "afternoon" ||
+      rawShift === "evening"
+    ) {
+      return rawShift;
+    }
+    return "all";
+  }, [searchParams]);
+
   const filterStatus = useMemo<AttendanceStatusFilter>(() => {
     const rawStatus = searchParams.get("status")?.toLowerCase();
     if (
@@ -58,6 +57,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
       rawStatus === "open" ||
       rawStatus === "present" ||
       rawStatus === "upcoming" ||
+      rawStatus === "excused" ||
       rawStatus === "absent"
     ) {
       return rawStatus;
@@ -65,26 +65,119 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     return "all";
   }, [searchParams]);
 
-  const setFilterStatus = useCallback(
-    (newStatus: AttendanceStatusFilter) => {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        if (newStatus && newStatus !== "all") {
-          next.set("status", newStatus);
-        } else {
-          next.delete("status");
-        }
-        return next;
-      });
+  const searchQuery = useMemo<string>(() => {
+    return searchParams.get("q") || searchParams.get("search") || "";
+  }, [searchParams]);
+
+  const viewMode = useMemo<AttendanceViewMode>(() => {
+    return searchParams.get("view") === "list" ? "list" : "grid";
+  }, [searchParams]);
+
+  // 2. Sync URL query parameters when any filter changes
+  const updateUrlParams = useCallback(
+    (patch: Partial<AttendanceFilter>) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+
+          const nextDate = patch.selectedDate ?? selectedDate;
+          if (nextDate) {
+            next.set("date", nextDate);
+          }
+
+          const nextShift = patch.shift ?? shift;
+          if (nextShift && nextShift !== "all") {
+            next.set("shift", nextShift);
+          } else {
+            next.delete("shift");
+          }
+
+          const nextStatus = patch.status ?? filterStatus;
+          if (nextStatus && nextStatus !== "all") {
+            next.set("status", nextStatus);
+          } else {
+            next.delete("status");
+          }
+
+          const nextSearch =
+            patch.searchQuery !== undefined ? patch.searchQuery : searchQuery;
+          next.delete("search");
+          if (nextSearch.trim()) {
+            next.set("q", nextSearch.trim());
+          } else {
+            next.delete("q");
+          }
+
+          const nextView = patch.viewMode ?? viewMode;
+          if (nextView === "list") {
+            next.set("view", "list");
+          } else {
+            next.delete("view");
+          }
+
+          return next;
+        },
+        { replace: true },
+      );
     },
-    [setSearchParams],
+    [selectedDate, shift, filterStatus, searchQuery, viewMode, setSearchParams],
   );
 
-  const refreshSilently = useCallback(async (targetDate?: string) => {
-    const dateToFetch = targetDate || selectedDateRef.current;
+  const setSelectedDate = useCallback(
+    (dateStr: string) => {
+      updateUrlParams({ selectedDate: dateStr });
+    },
+    [updateUrlParams],
+  );
+
+  const setShift = useCallback(
+    (newShift: AttendanceShiftFilter) => {
+      updateUrlParams({ shift: newShift });
+    },
+    [updateUrlParams],
+  );
+
+  const setFilterStatus = useCallback(
+    (newStatus: AttendanceStatusFilter) => {
+      updateUrlParams({ status: newStatus });
+    },
+    [updateUrlParams],
+  );
+
+  const setSearchQuery = useCallback(
+    (newQuery: string) => {
+      updateUrlParams({ searchQuery: newQuery });
+    },
+    [updateUrlParams],
+  );
+
+  const setViewMode = useCallback(
+    (newMode: AttendanceViewMode) => {
+      updateUrlParams({ viewMode: newMode });
+    },
+    [updateUrlParams],
+  );
+
+  const queryRef = useRef({
+    date: selectedDate,
+    shift,
+    status: filterStatus,
+    search: searchQuery,
+  });
+  useEffect(() => {
+    queryRef.current = {
+      date: selectedDate,
+      shift,
+      status: filterStatus,
+      search: searchQuery,
+    };
+  }, [selectedDate, shift, filterStatus, searchQuery]);
+
+  // 3. Pass URL parameters directly to the API to fetch data
+  const refreshSilently = useCallback(async () => {
     try {
       const { records: dayRecords, summary: daySummary } =
-        await attendanceService.getDailyAttendance(dateToFetch);
+        await attendanceService.getDailyAttendance(queryRef.current);
       setRecords(dayRecords);
       setSummary(daySummary);
       setActiveRecordForModal((prev) => {
@@ -106,19 +199,20 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     try {
       setLoading(true);
       const { records: dayRecords, summary: daySummary } =
-        await attendanceService.getDailyAttendance(selectedDate);
+        await attendanceService.getDailyAttendance({
+          date: selectedDate,
+          shift,
+          status: filterStatus,
+          search: searchQuery,
+        });
       setRecords(dayRecords);
       setSummary(daySummary);
     } catch {
-      message.error(
-        t("message:attendance.loadFailed", {
-          defaultValue: "Không thể tải danh sách điểm danh.",
-        }),
-      );
+      message.error(t("message:attendance.loadFailed"));
     } finally {
       setLoading(false);
     }
-  }, [selectedDate, t]);
+  }, [selectedDate, shift, filterStatus, searchQuery, t]);
 
   useEffect(() => {
     let ignore = false;
@@ -126,18 +220,19 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
       try {
         setLoading(true);
         const { records: dayRecords, summary: daySummary } =
-          await attendanceService.getDailyAttendance(selectedDate);
+          await attendanceService.getDailyAttendance({
+            date: selectedDate,
+            shift,
+            status: filterStatus,
+            search: searchQuery,
+          });
         if (!ignore) {
           setRecords(dayRecords);
           setSummary(daySummary);
         }
       } catch {
         if (!ignore) {
-          message.error(
-            t("message:attendance.loadFailed", {
-              defaultValue: "Không thể tải danh sách điểm danh.",
-            }),
-          );
+          message.error(t("message:attendance.loadFailed"));
         }
       } finally {
         if (!ignore) {
@@ -150,10 +245,9 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     return () => {
       ignore = true;
     };
-  }, [selectedDate, t]);
+  }, [selectedDate, shift, filterStatus, searchQuery, t]);
 
-  // 1-second live countdown ticker for any OPEN session so UI counts down smoothly
-  // and immediately expires in real time when remainingSeconds reaches 0
+  // 1-second live countdown ticker for any OPEN session
   useEffect(() => {
     const hasOpenWithExpiry = records.some(
       (r) => r.status === "open" && Boolean(r.expiresAt),
@@ -178,7 +272,6 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
               remainingSeconds: 0,
               note: t("message:attendance.sessionExpiredNote", {
                 time: deadlineStr,
-                defaultValue: `Mã điểm danh đã hết hạn lúc ${deadlineStr}. Cổng điểm danh đã đóng.`,
               }),
             };
           }
@@ -198,7 +291,6 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     return () => clearInterval(timer);
   }, [records, refreshSilently, t]);
 
-  // Keep activeRecordForModal synchronized with live `records`
   const resolvedActiveRecordForModal = useMemo(() => {
     if (!activeRecordForModal) return null;
     return (
@@ -224,20 +316,22 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
       },
     });
 
-  // Navigate dates
+  // Navigate dates via URL params
   const goToToday = useCallback(() => {
-    setSelectedDate(DEFAULT_DEMO_TODAY);
-  }, []);
+    updateUrlParams({ selectedDate: DEFAULT_DEMO_TODAY });
+  }, [updateUrlParams]);
 
   const goToPreviousDay = useCallback(() => {
-    setSelectedDate((prev) =>
-      dayjs(prev).subtract(1, "day").format("YYYY-MM-DD"),
-    );
-  }, []);
+    const prevDate = dayjs(selectedDate)
+      .subtract(1, "day")
+      .format("YYYY-MM-DD");
+    updateUrlParams({ selectedDate: prevDate });
+  }, [selectedDate, updateUrlParams]);
 
   const goToNextDay = useCallback(() => {
-    setSelectedDate((prev) => dayjs(prev).add(1, "day").format("YYYY-MM-DD"));
-  }, []);
+    const nextDate = dayjs(selectedDate).add(1, "day").format("YYYY-MM-DD");
+    updateUrlParams({ selectedDate: nextDate });
+  }, [selectedDate, updateUrlParams]);
 
   // Perform student check-in
   const performCheckIn = useCallback(
@@ -258,9 +352,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
       } catch {
         const errRes: CheckInResult = {
           success: false,
-          message: t("message:attendance.systemCheckInError", {
-            defaultValue: "Lỗi hệ thống khi gửi dữ liệu điểm danh.",
-          }),
+          message: t("message:attendance.systemCheckInError"),
         };
         message.error(errRes.message);
         return errRes;
@@ -271,88 +363,36 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     [refreshSilently, t],
   );
 
-  // Filter and sort records
-  const filteredRecords = useMemo(() => {
-    const filtered = records.filter((r) => {
-      if (filterStatus === "open" && r.status !== "open") return false;
-      if (filterStatus === "present" && r.status !== "present") return false;
-      if (filterStatus === "upcoming" && r.status !== "upcoming") return false;
-      if (
-        filterStatus === "absent" &&
-        r.status !== "absent" &&
-        r.status !== "excused"
-      ) {
-        return false;
-      }
-
-      if (shift !== "all" && r.shift && r.shift !== shift) {
-        return false;
-      }
-
-      if (classType !== "all" && r.classType && r.classType !== classType) {
-        return false;
-      }
-
-      if (searchQuery.trim()) {
-        const q = searchQuery.trim().toLowerCase();
-        const hay =
-          `${r.subjectName} ${r.subjectCode} ${r.teacherName} ${r.room} ${r.building || ""} ${r.period} ${r.lessonTopic || ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-
-    return [...filtered].sort((a, b) => {
-      if (sortBy === "period_desc") {
-        return (b.periodNumber ?? 0) - (a.periodNumber ?? 0);
-      }
-      if (sortBy === "status_priority") {
-        const prioA = STATUS_PRIORITY_ORDER[a.status] ?? 99;
-        const prioB = STATUS_PRIORITY_ORDER[b.status] ?? 99;
-        if (prioA !== prioB) return prioA - prioB;
-      }
-      return (a.periodNumber ?? 0) - (b.periodNumber ?? 0);
-    });
-  }, [records, filterStatus, shift, classType, searchQuery, sortBy]);
-
   const filter: AttendanceFilter = useMemo(
     () => ({
       selectedDate,
-      searchQuery,
-      status: filterStatus,
       shift,
-      classType,
-      sortBy,
+      status: filterStatus,
+      searchQuery,
       viewMode,
     }),
-    [
-      selectedDate,
-      searchQuery,
-      filterStatus,
-      shift,
-      classType,
-      sortBy,
-      viewMode,
-    ],
+    [selectedDate, shift, filterStatus, searchQuery, viewMode],
   );
 
   const hasActiveFilters = Boolean(
     filterStatus !== "all" ||
-      searchQuery.trim() ||
       shift !== "all" ||
-      classType !== "all" ||
-      sortBy !== "period_asc" ||
+      searchQuery.trim() ||
       selectedDate !== DEFAULT_DEMO_TODAY,
   );
 
   const resetFilters = useCallback(() => {
-    setFilterStatus("all");
-    setSearchQuery("");
-    setShift("all");
-    setClassType("all");
-    setSortBy("period_asc");
-    setSelectedDate(DEFAULT_DEMO_TODAY);
-  }, [setFilterStatus]);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams();
+        if (prev.get("view") === "list") {
+          next.set("view", "list");
+        }
+        return next;
+      },
+      { replace: true },
+    );
+  }, [setSearchParams]);
 
   return {
     filter,
@@ -362,14 +402,9 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     setSearchQuery,
     shift,
     setShift,
-    classType,
-    setClassType,
-    sortBy,
-    setSortBy,
     viewMode,
     setViewMode,
     records,
-    filteredRecords,
     summary,
     loading,
     submitting,

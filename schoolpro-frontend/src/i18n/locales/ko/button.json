@@ -72,5 +72,8 @@
   "generateRandomPin": "Generate Random 6-Digit PIN",
   "expireSessionNow": "Expire Code Immediately",
   "publishTeacherSession": "Publish 6-Digit PIN & QR (Realtime)",
-  "viewAllSubjects": "View All Subjects"
+  "viewAllSubjects": "View All Subjects",
+  "leaveRequests": "결석계 목록",
+  "viewLeaveRequest": "결석계 보기",
+  "requestLeave": "결석계 신청"
 }

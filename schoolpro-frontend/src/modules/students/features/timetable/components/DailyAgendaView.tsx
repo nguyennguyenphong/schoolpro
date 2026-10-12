@@ -97,7 +97,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                   <div className="flex items-start gap-4">
                     {/* Time Pillar */}
                     <div className="w-28 shrink-0 text-center p-2.5 bg-slate-50 border border-[#f0f0f0] rounded-xl">
-                      <span className="text-xs font-mono font-bold text-slate-800 block">
+                      <span className="text-xs font-bold text-slate-800 block">
                         {slot.startTime} - {slot.endTime}
                       </span>
                       <span className="text-[11px] text-blue-600 font-semibold block mt-0.5">
@@ -115,7 +115,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                     {/* Main Course Details */}
                     <div className="space-y-1.5 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 bg-slate-100 text-slate-700 rounded border border-[#f0f0f0]">
+                        <span className="text-xs font-bold px-2 py-0.5 bg-slate-100 text-slate-700 rounded border border-[#f0f0f0]">
                           {slot.courseCode}
                         </span>
                         <Tag color={slot.classType === "practice" ? "green" : "blue"}>

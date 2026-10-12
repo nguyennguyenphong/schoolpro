@@ -304,7 +304,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
                       <span>{session.browser}</span>
                       <span>•</span>
-                      <span className="font-mono text-slate-600">{session.ipAddress}</span>
+                      <span className="text-slate-600">{session.ipAddress}</span>
                       <span>•</span>
                       <span>{session.location}</span>
                     </div>

@@ -48,7 +48,7 @@ export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> =
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-600">
               <Icon name="clock" size={13} className="text-blue-600 shrink-0" />
               <span>{t("leaveRequests.detail.approvalDeadlineShortLabel")}</span>
-              <strong className="font-mono text-slate-800">
+              <strong className="text-slate-800">
                 {formatDateTimeDisplay(item.approvalDeadline)}
               </strong>
             </span>
@@ -80,7 +80,7 @@ export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> =
                 </span>
               ),
               content: (
-                <span className="text-[11px] text-slate-500 block font-mono mt-0.5">
+                <span className="text-[11px] text-slate-500 block mt-0.5">
                   {formatDateTimeDisplay(item.createdAt)}
                 </span>
               ),
@@ -166,7 +166,7 @@ export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> =
             <span className="italic">{item.teacherNote}</span>
           </div>
           {item.reviewedAt && (
-            <span className="text-[11px] font-mono opacity-80 shrink-0">
+            <span className="text-[11px] opacity-80 shrink-0">
               {formatDateTimeDisplay(item.reviewedAt)}
             </span>
           )}

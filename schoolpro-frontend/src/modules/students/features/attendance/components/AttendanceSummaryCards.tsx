@@ -9,7 +9,7 @@ interface AttendanceSummaryCardsProps {
 }
 
 /**
- * Student Attendance Summary Cards matching AnnouncementSummaryCards style.
+ * Student Attendance Summary Cards with non-wrapping responsive labels.
  */
 export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
   summary,
@@ -21,10 +21,8 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
       {/* 1. Tổng số môn học trong ngày */}
       <Card className="rounded-xl shadow-2xs transition-all">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {t("card:attendance.summary.todayScheduleTitle", {
-              defaultValue: "Tổng số tiết học",
-            })}
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap">
+            {t("card:attendance.summary.todayScheduleTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
             <Icon name="calendar" size={17} />
@@ -32,7 +30,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight whitespace-nowrap">
             {summary.totalToday}
           </span>
         </div>
@@ -41,10 +39,8 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
       {/* 2. Đang mở điểm danh */}
       <Card className="rounded-xl shadow-2xs transition-all">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {t("card:attendance.filter.open", {
-              defaultValue: "Đang mở điểm danh",
-            })}
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap">
+            {t("card:attendance.filter.open")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="clock" size={17} />
@@ -52,7 +48,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight whitespace-nowrap">
             {summary.openToday ?? summary.pendingToday}
           </span>
         </div>
@@ -61,10 +57,8 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
       {/* 3. Đã điểm danh hợp lệ */}
       <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {t("card:attendance.summary.attendedTitle", {
-              defaultValue: "Đã điểm danh",
-            })}
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap">
+            {t("card:attendance.summary.attendedTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
             <Icon name="checkCircle" size={17} />
@@ -72,7 +66,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight whitespace-nowrap">
             {summary.attendedToday}
           </span>
         </div>
@@ -81,10 +75,8 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
       {/* 4. Vắng mặt / Quá hạn */}
       <Card className="rounded-xl shadow-2xs hover:border-rose-400 transition-all">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {t("card:attendance.filter.absent", {
-              defaultValue: "Vắng / Quá hạn",
-            })}
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap">
+            {t("card:attendance.filter.absent")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center shrink-0">
             <Icon name="warning" size={17} />
@@ -92,7 +84,7 @@ export const AttendanceSummaryCards: React.FC<AttendanceSummaryCardsProps> = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-rose-600 tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold text-rose-600 tracking-tight whitespace-nowrap">
             {summary.absentToday}
           </span>
         </div>

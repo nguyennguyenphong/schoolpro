@@ -10,13 +10,14 @@ export interface AttendanceStatusTabsProps {
     open: number;
     present: number;
     upcoming: number;
+    excused: number;
     absent: number;
   };
   onStatusChange: (status: AttendanceStatusFilter) => void;
 }
 
 /**
- * Status filter tabs for student attendance (All, Open, Present, Upcoming, Absent)
+ * Status filter tabs for student attendance (All, Open, Present, Upcoming, Excused, Absent)
  * following the exact design pattern of AnnouncementStatusTabs.
  */
 export const AttendanceStatusTabs: React.FC<AttendanceStatusTabsProps> = ({
@@ -29,46 +30,42 @@ export const AttendanceStatusTabs: React.FC<AttendanceStatusTabsProps> = ({
   const tabs: Array<{
     key: AttendanceStatusFilter;
     label: string;
-    icon: "file" | "clock" | "checkCircle" | "calendar" | "warning";
+    icon: "file" | "clock" | "checkCircle" | "calendar" | "file-text" | "warning";
     count: number;
   }> = [
     {
       key: "all",
-      label: t("card:attendance.filter.all", {
-        defaultValue: "Tất cả môn học",
-      }),
+      label: t("card:attendance.filter.all"),
       icon: "file",
       count: counts.all,
     },
     {
       key: "open",
-      label: t("card:attendance.filter.open", {
-        defaultValue: "Đang mở điểm danh",
-      }),
+      label: t("card:attendance.filter.open"),
       icon: "clock",
       count: counts.open,
     },
     {
       key: "present",
-      label: t("card:attendance.filter.present", {
-        defaultValue: "Đã điểm danh",
-      }),
+      label: t("card:attendance.filter.present"),
       icon: "checkCircle",
       count: counts.present,
     },
     {
       key: "upcoming",
-      label: t("card:attendance.filter.upcoming", {
-        defaultValue: "Chưa đến giờ",
-      }),
+      label: t("card:attendance.filter.upcoming"),
       icon: "calendar",
       count: counts.upcoming,
     },
     {
+      key: "excused",
+      label: t("card:attendance.status.excused"),
+      icon: "file-text",
+      count: counts.excused,
+    },
+    {
       key: "absent",
-      label: t("card:attendance.filter.absent", {
-        defaultValue: "Vắng / Quá hạn",
-      }),
+      label: t("card:attendance.filter.absent"),
       icon: "warning",
       count: counts.absent,
     },

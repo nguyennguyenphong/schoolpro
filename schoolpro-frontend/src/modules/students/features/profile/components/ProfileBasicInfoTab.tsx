@@ -58,11 +58,11 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
           </Form.Item>
 
           <Form.Item label={t("input:labels.studentCode")} name="studentCode">
-            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+            <Input disabled className="bg-slate-50! text-slate-700!" />
           </Form.Item>
 
           <Form.Item label={t("input:labels.username")} name="username">
-            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+            <Input disabled className="bg-slate-50! text-slate-700!" />
           </Form.Item>
 
           <Form.Item label={t("input:labels.dateOfBirth")} name="dateOfBirth">
@@ -74,7 +74,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
           </Form.Item>
 
           <Form.Item label={t("input:labels.nationalId")} name="nationalId">
-            <Input disabled className="bg-slate-50! text-slate-700 font-mono!" />
+            <Input disabled className="bg-slate-50! text-slate-700!" />
           </Form.Item>
 
           <Form.Item label={t("input:labels.ethnicity")} name="ethnicity">

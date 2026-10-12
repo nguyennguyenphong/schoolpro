@@ -446,6 +446,7 @@ class AttendanceSessionService:
         cls,
         user: Any,
         date_str: str | None = None,
+        shift_filter: str | None = None,
         status_filter: str | None = None,
         search_query: str | None = None,
     ) -> dict[str, Any]:
@@ -546,6 +547,7 @@ class AttendanceSessionService:
 
         # Also check approved LeaveRequest covering target_date
         has_approved_leave = False
+        approved_leave_id: str | None = None
         approved_leave_code = ""
         if student:
             approved_leave = LeaveRequest.objects.filter(
@@ -556,6 +558,7 @@ class AttendanceSessionService:
             ).first()
             if approved_leave:
                 has_approved_leave = True
+                approved_leave_id = str(approved_leave.id)
                 approved_leave_code = approved_leave.code
 
         formatted_records: list[dict[str, Any]] = []
@@ -738,30 +741,49 @@ class AttendanceSessionService:
                 "studentLongitude": student_lng,
                 "distanceMeters": distance_m,
                 "isWithinRadius": is_within_radius,
+                "leaveRequestId": (
+                    str(att.metadata.get("leave_request_id"))
+                    if att and isinstance(att.metadata, dict) and att.metadata.get("leave_request_id")
+                    else approved_leave_id
+                ),
+                "leaveRequestCode": (
+                    str(att.metadata.get("leave_request_code"))
+                    if att and isinstance(att.metadata, dict) and att.metadata.get("leave_request_code")
+                    else (approved_leave_code or None)
+                ),
                 "note": note_text,
             }
 
-            if status_filter and status_filter != "all":
-                if status_filter == "absent" and ui_status not in ("absent", "excused"):
-                    continue
-                elif status_filter != "absent" and ui_status != status_filter:
-                    continue
-
-            if search_query and search_query.strip():
-                q = search_query.strip().lower()
-                searchable = (
-                    f"{record_item['subjectName']} {record_item['subjectCode']} "
-                    f"{record_item['teacherName']} {record_item['room']} {record_item['period']}"
-                ).lower()
-                if q not in searchable:
+            if shift_filter and shift_filter.strip().lower() not in ("", "all"):
+                if shift_code != shift_filter.strip().lower():
                     continue
 
             formatted_records.append(record_item)
 
         summary = cls._compute_summary(formatted_records, student, class_id)
+
+        filtered_records: list[dict[str, Any]] = []
+        norm_status = status_filter.strip().lower() if status_filter else "all"
+        norm_search = search_query.strip().lower() if search_query else ""
+
+        for rec in formatted_records:
+            if norm_status and norm_status != "all":
+                if rec["status"] != norm_status:
+                    continue
+
+            if norm_search:
+                searchable = (
+                    f"{rec['subjectName']} {rec['subjectCode']} "
+                    f"{rec['teacherName']} {rec['room']} {rec['period']}"
+                ).lower()
+                if norm_search not in searchable:
+                    continue
+
+            filtered_records.append(rec)
+
         return {
             "date": target_date.isoformat(),
-            "records": formatted_records,
+            "records": filtered_records,
             "summary": summary,
         }
 

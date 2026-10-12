@@ -72,5 +72,8 @@
   "generateRandomPin": "Generate Random 6-Digit PIN",
   "expireSessionNow": "Expire Code Immediately",
   "publishTeacherSession": "Publish 6-Digit PIN & QR (Realtime)",
-  "viewAllSubjects": "View All Subjects"
+  "viewAllSubjects": "View All Subjects",
+  "leaveRequests": "欠席届一覧",
+  "viewLeaveRequest": "欠席届を見る",
+  "requestLeave": "欠席届を作成"
 }

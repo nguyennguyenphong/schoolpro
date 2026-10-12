@@ -215,6 +215,7 @@
     "noLink": "없음",
     "joinOnlineClass": "온라인 강의실 입장",
     "periodsPerWeek": "주당 {{count}}교시",
+    "slotsCountSuffix": "교시",
     "classLabel": "{{classCode}} 반",
     "shifts": {
       "morning": "오전반",
@@ -536,7 +537,9 @@
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "허용 반경:",
       "countdownRowLabel": "유효 시간:",
-      "verifiedRowLabel": "GPS 인증:"
+      "verifiedRowLabel": "GPS 인증:",
+      "expiredShort": "마감됨",
+      "openAtTime": "{{time}} 오픈"
     },
     "empty": {
       "noOpenTitle": "No subjects currently have an open attendance session",

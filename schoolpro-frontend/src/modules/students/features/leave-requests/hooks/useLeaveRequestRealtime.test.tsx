@@ -6,8 +6,7 @@ import type { LeaveRequestRealtimePayload } from "@/modules/students/features/le
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
-    t: (key: string, options?: { defaultValue?: string }) =>
-      options?.defaultValue || key,
+    t: (key: string) => key,
   }),
 }));
 

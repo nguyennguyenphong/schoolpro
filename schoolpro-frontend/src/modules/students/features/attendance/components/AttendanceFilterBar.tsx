@@ -5,10 +5,8 @@ import {
   AttendanceStatusTabs,
 } from "@/modules/students/features/attendance/components/filter";
 import type {
-  AttendanceClassTypeFilter,
   AttendanceFilter,
   AttendanceShiftFilter,
-  AttendanceSortOption,
   AttendanceStatusFilter,
   AttendanceViewMode,
 } from "@/modules/students/features/attendance/types";
@@ -20,6 +18,7 @@ export interface AttendanceFilterBarProps {
     open: number;
     present: number;
     upcoming: number;
+    excused: number;
     absent: number;
   };
   hasActiveFilters?: boolean;
@@ -31,17 +30,9 @@ export interface AttendanceFilterBarProps {
   onPrevDayClick: () => void;
   onNextDayClick: () => void;
   onShiftChange: (shift: AttendanceShiftFilter) => void;
-  onClassTypeChange: (classType: AttendanceClassTypeFilter) => void;
-  onSortByChange: (sortBy: AttendanceSortOption) => void;
   onResetFilters: () => void;
 }
 
-/**
- * AttendanceFilterBar orchestrates:
- * 1. Status Filter Tabs (All / Open / Present / Upcoming / Absent)
- * 2. Search Input & View Mode Toggle (Grid / List)
- * 3. Date Navigation (< | Hôm nay | > + DatePicker) & Dropdown Filters (Shift, ClassType, Sort, Reset)
- */
 export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
   filter,
   counts,
@@ -54,8 +45,6 @@ export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
   onPrevDayClick,
   onNextDayClick,
   onShiftChange,
-  onClassTypeChange,
-  onSortByChange,
   onResetFilters,
 }) => {
   return (
@@ -75,7 +64,7 @@ export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
         onViewModeChange={onViewModeChange}
       />
 
-      {/* 3. Date Navigation & Dropdown Filters */}
+      {/* 3. Date Navigation (Hôm nay / Ngày học) & Buổi học Filter */}
       <AttendanceDropdownFilters
         filter={filter}
         hasActiveFilters={hasActiveFilters}
@@ -84,8 +73,6 @@ export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
         onPrevDayClick={onPrevDayClick}
         onNextDayClick={onNextDayClick}
         onShiftChange={onShiftChange}
-        onClassTypeChange={onClassTypeChange}
-        onSortByChange={onSortByChange}
         onResetFilters={onResetFilters}
       />
     </div>

@@ -166,6 +166,7 @@
     "allShifts": "すべての時間帯",
     "shiftMorning": "午前の部",
     "shiftAfternoon": "午後の部",
+    "shiftEvening": "夜間の部",
     "classTypeLabel": "授業形式:",
     "allClassTypes": "すべての形式",
     "sortPeriodAsc": "早い時限順",

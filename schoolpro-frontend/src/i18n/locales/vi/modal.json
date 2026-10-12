@@ -56,7 +56,8 @@
       "presetCustom": "Tọa độ tùy chỉnh",
       "validTag": "Hợp lệ",
       "blockedTag": "Chặn gian lận",
-      "outOfRangeWarning": "Khoảng cách hiện tại ({{distance}}m) vượt quá bán kính thiết bị quét của Giáo viên ({{radius}}m). Bạn không thể điểm danh từ xa!"
+      "outOfRangeWarning": "Khoảng cách hiện tại ({{distance}}m) vượt quá bán kính thiết bị quét của Giáo viên ({{radius}}m). Bạn không thể điểm danh từ xa!",
+      "compactValidText": "Vị trí hợp lệ: cách lớp học {{distance}}m (bán kính cho phép ≤ {{radius}}m)"
     },
     "success": {
       "title": "Điểm danh hợp lệ thành công!",
@@ -65,6 +66,7 @@
     "receipt": {
       "subject": "Môn học:",
       "checkInTime": "Thời gian ghi nhận:",
+      "justNow": "Vừa xong",
       "method": "Hình thức xác thực:",
       "studentCoords": "Tọa độ GPS Học sinh:",
       "distance": "Khoảng cách tới thiết bị Giáo viên:",
@@ -83,12 +85,14 @@
       "gpsSectionTitle": "Tọa độ Kinh độ & Vĩ độ thiết bị quét của Giáo viên"
     },
     "detail": {
-      "title": "Minh chứng điểm danh & Xác thực tọa độ GPS",
+      "title": "Chi tiết điểm danh môn học",
       "verifiedBannerTitle": "Đã xác thực có mặt đúng giờ & trong bán kính lớp học 100%",
       "verifiedBannerDesc": "Dữ liệu chuyên cần cùng tọa độ Kinh độ & Vĩ độ GPS đã được lưu trữ chống gian lận.",
       "timeSlotLabel": "Khung giờ học:",
       "gpsProofTitle": "Dữ liệu đối chiếu tọa độ GPS (Chống gian lận)",
-      "withinRadiusTag": "Đúng bán kính"
+      "withinRadiusTag": "Đúng bán kính",
+      "validDistanceBadge": "Hợp lệ ({{distance}}m / {{radius}}m)",
+      "onTime": "Đúng giờ"
     }
   }
 }

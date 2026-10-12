@@ -31,27 +31,18 @@ export const AttendanceSearchAndView: React.FC<
 
   return (
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-      {/* Search Input */}
-      <div className="flex-1 w-full sm:w-auto">
-        <label htmlFor="attendance-search-input" className="sr-only">
-          {t("input:attendance.searchPlaceholder", {
-            defaultValue:
-              "Tìm kiếm theo tên môn học, mã môn, giáo viên hoặc phòng học...",
-          })}
-        </label>
+      <div className="relative flex-1">
         <Input
-          id="attendance-search-input"
-          name="attendanceSearch"
-          autoFocus
+          id="leave-request-search-input"
+          name="searchQuery"
+          aria-label={t("input:leaveRequests.searchPlaceholder")}
+          placeholder={t("input:leaveRequests.searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder={t("input:attendance.searchPlaceholder", {
-            defaultValue:
-              "Tìm kiếm theo tên môn học, mã môn, giáo viên hoặc phòng học...",
-          })}
-          prefix={<Icon name="search" size={14} className="text-slate-400" />}
+          prefix={<Icon name="search" size={15} className="text-slate-400" />}
           allowClear
-          className="rounded-lg text-xs w-full"
+          className="w-full"
+          autoFocus
         />
       </div>
 
@@ -60,30 +51,26 @@ export const AttendanceSearchAndView: React.FC<
         <button
           type="button"
           onClick={() => onViewModeChange("grid")}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
             viewMode === "grid"
               ? "bg-white text-blue-600 shadow-xs"
               : "text-slate-600 hover:text-slate-900"
           }`}
-          title={t("card:timetable.viewGrid", { defaultValue: "Dạng lưới" })}
         >
           <Icon name="chart" size={13} />
-          <span>{t("input:viewMode.grid", { defaultValue: "Thẻ" })}</span>
+          <span>{t("input:leaveRequests.viewCard")}</span>
         </button>
         <button
           type="button"
           onClick={() => onViewModeChange("list")}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
             viewMode === "list"
               ? "bg-white text-blue-600 shadow-xs"
               : "text-slate-600 hover:text-slate-900"
           }`}
-          title={t("card:timetable.viewList", {
-            defaultValue: "Dạng danh sách",
-          })}
         >
           <Icon name="menu" size={13} />
-          <span>{t("input:viewMode.list", { defaultValue: "Danh sách" })}</span>
+          <span>{t("input:leaveRequests.viewList")}</span>
         </button>
       </div>
     </div>

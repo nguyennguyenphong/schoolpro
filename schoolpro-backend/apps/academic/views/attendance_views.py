@@ -110,7 +110,14 @@ class AttendanceViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter("date", str, description="Target date (YYYY-MM-DD)"),
             OpenApiParameter(
-                "status", str, description="Filter by status (all, open, present, absent)"
+                "shift",
+                str,
+                description="Filter by shift (all, morning, afternoon, evening)",
+            ),
+            OpenApiParameter(
+                "status",
+                str,
+                description="Filter by status (all, open, present, upcoming, excused, absent)",
             ),
             OpenApiParameter("q", str, description="Search keyword"),
         ],
@@ -118,12 +125,14 @@ class AttendanceViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"], url_path="daily")
     def daily(self, request):
         date_str = request.query_params.get("date")
+        shift_filter = request.query_params.get("shift")
         status_filter = request.query_params.get("status")
         search_query = request.query_params.get("q") or request.query_params.get("search")
 
         result = AttendanceSessionService.list_student_attendance_by_date(
             user=request.user,
             date_str=date_str,
+            shift_filter=shift_filter,
             status_filter=status_filter,
             search_query=search_query,
         )

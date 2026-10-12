@@ -229,8 +229,8 @@ export function generateSessionQrSvgDataUrl(
     <rect width="100%" height="100%" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
     ${rects.join("")}
     <rect x="${margin + 75}" y="${margin + 75}" width="60" height="60" rx="10" fill="#2563eb" stroke="#ffffff" stroke-width="4"/>
-    <text x="${totalSize / 2}" y="${margin + 110}" text-anchor="middle" fill="#ffffff" font-family="monospace, sans-serif" font-size="13" font-weight="800">${subjectCode.slice(0, 6)}</text>
-    <text x="${totalSize / 2}" y="${totalSize + 18}" text-anchor="middle" fill="#334155" font-family="monospace, sans-serif" font-size="12" font-weight="700">PIN: ${pinCode} • ${qrToken.slice(0, 18)}</text>
+    <text x="${totalSize / 2}" y="${margin + 110}" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="800">${subjectCode.slice(0, 6)}</text>
+    <text x="${totalSize / 2}" y="${totalSize + 18}" text-anchor="middle" fill="#334155" font-family="sans-serif" font-size="12" font-weight="700">PIN: ${pinCode} • ${qrToken.slice(0, 18)}</text>
   </svg>`;
 
   return `data:image/svg+xml;utf8,${encodeURIComponent(svgContent)}`;

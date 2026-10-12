@@ -300,7 +300,7 @@ export const SurveyDetailPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {survey.title}
             </h1>
-            <Tag color="blue" className="font-mono font-bold m-0 text-xs">
+            <Tag color="blue" className="font-bold m-0 text-xs">
               {survey.code}
             </Tag>
             {survey.isAnonymous ? (

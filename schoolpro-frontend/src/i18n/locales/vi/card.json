@@ -215,6 +215,7 @@
     "noLink": "Không có",
     "joinOnlineClass": "Vào lớp học trực tuyến",
     "periodsPerWeek": "{{count}} tiết/tuần",
+    "slotsCountSuffix": "tiết",
     "classLabel": "Lớp {{classCode}}",
     "shifts": {
       "morning": "Ca Sáng",
@@ -536,7 +537,9 @@
       "excusedHint": "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ",
       "allowedRadiusLabel": "Bán kính cho phép:",
       "countdownRowLabel": "Thời hạn mã:",
-      "verifiedRowLabel": "Xác thực GPS:"
+      "verifiedRowLabel": "Xác thực GPS:",
+      "expiredShort": "Đã đóng cổng",
+      "openAtTime": "Mở lúc {{time}}"
     },
     "empty": {
       "noOpenTitle": "Hiện không có môn học nào đang mở cổng điểm danh",

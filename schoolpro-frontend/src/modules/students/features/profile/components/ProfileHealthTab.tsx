@@ -113,7 +113,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
 
           <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.insuranceCode")}</span>
-            <p className="font-bold text-slate-800 text-sm mb-0 font-mono">
+            <p className="font-bold text-slate-800 text-sm mb-0">
               {healthRecord.insuranceCode}
             </p>
           </div>

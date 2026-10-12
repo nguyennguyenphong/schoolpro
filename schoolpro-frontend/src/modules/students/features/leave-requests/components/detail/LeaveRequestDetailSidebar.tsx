@@ -80,7 +80,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                 <span className="text-slate-500">
                   {t("card:leaveRequests.detail.reviewedAtLabel")}
                 </span>
-                <strong className="text-slate-700 font-mono">
+                <strong className="text-slate-700">
                   {formatDateTimeDisplay(item.reviewedAt)}
                 </strong>
               </div>
@@ -154,7 +154,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
               <span className="text-slate-500">
                 {t("card:leaveRequests.detail.studentCodeLabel")}
               </span>
-              <strong className="text-slate-700 font-mono">{item.studentCode}</strong>
+              <strong className="text-slate-700">{item.studentCode}</strong>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-500">{t("card:leaveRequests.summary.classLabel")}</span>
@@ -192,7 +192,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
             {item.guardianPhone && (
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">{t("card:leaveRequests.detail.phoneLabel")}</span>
-                <strong className="text-blue-600 font-mono">{item.guardianPhone}</strong>
+                <strong className="text-blue-600">{item.guardianPhone}</strong>
               </div>
             )}
           </div>

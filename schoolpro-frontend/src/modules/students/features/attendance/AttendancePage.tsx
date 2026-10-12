@@ -24,11 +24,8 @@ export const AttendancePage: React.FC = () => {
     setSelectedDate,
     setSearchQuery,
     setShift,
-    setClassType,
-    setSortBy,
     setViewMode,
     records,
-    filteredRecords,
     summary,
     loading,
     submitting,
@@ -69,29 +66,28 @@ export const AttendancePage: React.FC = () => {
     setSelectedRecordForDetail(null);
   };
 
-  // Counts for status filter tabs (matching AnnouncementFilterBar pattern)
+  // Counts for status filter tabs come from API summary so they stay accurate when status filter is active
   const counts = {
-    all: records.length,
-    open: records.filter((r) => r.status === "open").length,
-    present: records.filter((r) => r.status === "present").length,
-    upcoming: records.filter((r) => r.status === "upcoming").length,
-    absent: records.filter(
-      (r) => r.status === "absent" || r.status === "excused",
-    ).length,
+    all: summary?.totalToday ?? records.length,
+    open: summary?.openToday ?? 0,
+    present: summary?.attendedToday ?? 0,
+    upcoming: summary?.upcomingToday ?? 0,
+    excused: summary?.excusedToday ?? 0,
+    absent: summary?.absentToday ?? 0,
   };
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
-      {/* 1. Page Header with integrated Breadcrumb & Realtime Badge */}
+      {/* 1. Page Header with integrated Breadcrumb & Leave Requests Link */}
       <AttendancePageHeader
         summary={summary}
         isRealtimeConnected={isRealtimeConnected}
       />
 
-      {/* 2. Summary Metric Cards (matching AnnouncementSummaryCards) */}
+      {/* 2. Summary Metric Cards */}
       {summary && <AttendanceSummaryCards summary={summary} />}
 
-      {/* 3. Filter Bar (Status Tabs + Search & View Toggle + Date Navigation & Dropdowns) */}
+      {/* 3. Filter Bar (Status Tabs + Search & View Toggle + Today/Date/Shift URL Filters) */}
       <AttendanceFilterBar
         filter={filter}
         counts={counts}
@@ -104,40 +100,26 @@ export const AttendancePage: React.FC = () => {
         onPrevDayClick={goToPreviousDay}
         onNextDayClick={goToNextDay}
         onShiftChange={setShift}
-        onClassTypeChange={setClassType}
-        onSortByChange={setSortBy}
         onResetFilters={resetFilters}
       />
 
-      {/* 4. Schedule & Attendance Results Area (Grid Cards or Table List like Timetable) */}
+      {/* 4. Schedule & Attendance Results Area (Grid Cards or Table List) */}
       {loading && records.length === 0 ? (
-        <AttendanceSkeleton count={4} viewMode={filter.viewMode} />
-      ) : filteredRecords.length === 0 ? (
+        <AttendanceSkeleton count={6} viewMode={filter.viewMode} />
+      ) : records.length === 0 ? (
         <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
                   {hasActiveFilters
-                    ? t("message:empty.noFilteredResults", {
-                        defaultValue:
-                          "Không tìm thấy môn học phù hợp với bộ lọc",
-                      })
-                    : t("card:attendance.empty.noScheduleTitle", {
-                        defaultValue:
-                          "Không có lịch học cần điểm danh trong ngày này",
-                      })}
+                    ? t("message:empty.noFilteredResults")
+                    : t("card:attendance.empty.noScheduleTitle")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
-                    ? t("message:empty.noFilteredDescription", {
-                        defaultValue:
-                          "Hãy thử thay đổi điều kiện lọc hoặc đặt lại bộ lọc để xem toàn bộ danh sách.",
-                      })
-                    : t("card:attendance.empty.dateHint", {
-                        defaultValue:
-                          "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác để xem lịch điểm danh.",
-                      })}
+                    ? t("message:empty.noFilteredDescription")
+                    : t("card:attendance.empty.dateHint")}
                 </p>
               </div>
             }
@@ -149,14 +131,14 @@ export const AttendancePage: React.FC = () => {
                 className="mt-3"
               >
                 <Icon name="refresh" size={13} />
-                <span>{t("button:reset", { defaultValue: "Đặt lại" })}</span>
+                <span>{t("button:reset")}</span>
               </Button>
             )}
           </Empty>
         </div>
       ) : filter.viewMode === "grid" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredRecords.map((record) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {records.map((record) => (
             <SubjectAttendanceCard
               key={record.id}
               record={record}
@@ -167,7 +149,7 @@ export const AttendancePage: React.FC = () => {
         </div>
       ) : (
         <AttendanceListView
-          records={filteredRecords}
+          records={records}
           onOpenCheckIn={handleOpenCheckIn}
           onViewDetail={handleOpenDetail}
         />
@@ -182,7 +164,7 @@ export const AttendancePage: React.FC = () => {
         submitting={submitting}
       />
 
-      {/* 6. Attendance Proof & GPS Coordinates Detail Modal */}
+      {/* 6. Attendance Detail Modal */}
       <AttendanceDetailModal
         open={detailModalOpen}
         record={selectedRecordForDetail}

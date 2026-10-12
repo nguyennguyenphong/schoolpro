@@ -166,6 +166,7 @@
     "allShifts": "전체 시간대",
     "shiftMorning": "오전 수업",
     "shiftAfternoon": "오후 수업",
+    "shiftEvening": "야간 수업",
     "classTypeLabel": "수업 유형:",
     "allClassTypes": "전체 유형",
     "sortPeriodAsc": "이른 교시순",

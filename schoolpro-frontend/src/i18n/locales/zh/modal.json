@@ -56,7 +56,8 @@
       "presetCustom": "Custom Coordinates",
       "validTag": "Valid",
       "blockedTag": "Anti-Cheat Blocked",
-      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!"
+      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!",
+      "compactValidText": "位置有效：距教室 {{distance}}m（允许半径 ≤ {{radius}}m）"
     },
     "success": {
       "title": "Attendance Verified Successfully!",
@@ -65,6 +66,7 @@
     "receipt": {
       "subject": "Subject:",
       "checkInTime": "Recorded Time:",
+      "justNow": "刚刚",
       "method": "Verification Method:",
       "studentCoords": "Student GPS Coordinates:",
       "distance": "Distance to Teacher Device:",
@@ -83,12 +85,14 @@
       "gpsSectionTitle": "Teacher Scanning Device Latitude & Longitude"
     },
     "detail": {
-      "title": "Attendance Proof & GPS Coordinate Verification",
+      "title": "签到详情",
       "verifiedBannerTitle": "Verified On-Time & 100% Within Classroom Radius",
       "verifiedBannerDesc": "Attendance record and GPS Latitude & Longitude are stored against fraud.",
       "timeSlotLabel": "Class Time:",
       "gpsProofTitle": "GPS Coordinate Verification Data (Anti-Fraud)",
-      "withinRadiusTag": "Within Radius"
+      "withinRadiusTag": "Within Radius",
+      "validDistanceBadge": "有效 ({{distance}}m / {{radius}}m)",
+      "onTime": "准时"
     }
   }
 }

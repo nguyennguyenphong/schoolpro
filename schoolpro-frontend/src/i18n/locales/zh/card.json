@@ -215,6 +215,7 @@
     "noLink": "暂无",
     "joinOnlineClass": "进入在线课堂",
     "periodsPerWeek": "每周 {{count}} 节",
+    "slotsCountSuffix": "节",
     "classLabel": "{{classCode}} 班",
     "shifts": {
       "morning": "上午时段",
@@ -536,7 +537,9 @@
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "允许半径:",
       "countdownRowLabel": "代码有效期:",
-      "verifiedRowLabel": "GPS验证:"
+      "verifiedRowLabel": "GPS验证:",
+      "expiredShort": "已关闭",
+      "openAtTime": "{{time}} 开启"
     },
     "empty": {
       "noOpenTitle": "No subjects currently have an open attendance session",

@@ -166,6 +166,7 @@
     "allShifts": "All sessions",
     "shiftMorning": "Morning",
     "shiftAfternoon": "Afternoon",
+    "shiftEvening": "Evening",
     "classTypeLabel": "Format:",
     "allClassTypes": "All formats",
     "sortPeriodAsc": "Earliest period",

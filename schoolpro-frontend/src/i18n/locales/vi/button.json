@@ -72,5 +72,8 @@
   "generateRandomPin": "Tạo mã 6 số ngẫu nhiên",
   "expireSessionNow": "Cho hết hạn mã ngay",
   "publishTeacherSession": "Phát mã 6 số & QR (Thời gian thực)",
-  "viewAllSubjects": "Xem tất cả môn học"
+  "viewAllSubjects": "Xem tất cả môn học",
+  "leaveRequests": "Đơn xin nghỉ phép",
+  "viewLeaveRequest": "Xem đơn nghỉ phép",
+  "requestLeave": "Xin nghỉ phép"
 }

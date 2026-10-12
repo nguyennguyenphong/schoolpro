@@ -74,7 +74,7 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
               {t("navigation:pageTitle.leaveRequestDetail")}
             </h1>
             {item.code && (
-              <span className="text-xs font-mono font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
+              <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
                 {t("card:leaveRequests.detail.requestCodeBadge", { code: item.code })}
               </span>
             )}
@@ -89,7 +89,7 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
             <span>
               {t("card:leaveRequests.detail.submittedAtPrefix")}{" "}
-              <strong className="text-slate-700 font-mono">
+              <strong className="text-slate-700">
                 {formatDateTimeDisplay(item.createdAt)}
               </strong>
             </span>

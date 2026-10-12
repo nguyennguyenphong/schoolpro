@@ -29,7 +29,7 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">
                 {profile.fullName}
               </h2>
-              <Tag color="blue" className="m-0 font-mono text-xs font-semibold px-2 py-0.5 rounded-xl">
+              <Tag color="blue" className="m-0 text-xs font-semibold px-2 py-0.5 rounded-xl">
                 {profile.studentCode}
               </Tag>
               <Tag color="success" className="m-0 text-xs font-semibold px-2 py-0.5 rounded-xl">

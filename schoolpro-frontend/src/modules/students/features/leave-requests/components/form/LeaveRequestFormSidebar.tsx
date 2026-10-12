@@ -97,7 +97,7 @@ export const LeaveRequestFormSidebar: React.FC<LeaveRequestFormSidebarProps> = (
               </div>
               <div className="text-[11px] text-amber-800 bg-amber-50/90 border border-amber-200 rounded-xl px-2.5 py-1.5">
                 {t("card:leaveRequests.form.deadlineLabel")}{" "}
-                <strong className="font-mono">{approvalDeadlineInfo.deadlineFormatted}</strong>
+                <strong>{approvalDeadlineInfo.deadlineFormatted}</strong>
                 <span className="block text-[10px] text-amber-700 mt-0.5">
                   {t("card:leaveRequests.form.deadlineAutoApproveHint")}
                 </span>

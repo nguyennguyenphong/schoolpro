@@ -101,8 +101,6 @@ export function useAttendanceRealtime(
               translate("message:attendance.teacherOpenedSessionToast", {
                 subject: payload.record?.subjectName || "",
                 radius: payload.allowedRadiusMeters || 50,
-                defaultValue:
-                  "Giáo viên vừa mở mã điểm danh 6 chữ số & mã QR mới cho tiết học!",
               }),
           );
         } else if (payload.eventType === "ATTENDANCE_SESSION_EXPIRED") {
@@ -110,7 +108,6 @@ export function useAttendanceRealtime(
             payload.message ||
               translate("message:attendance.sessionExpiredToast", {
                 subject: payload.record?.subjectName || "",
-                defaultValue: "Mã điểm danh đã hết thời gian hiệu lực.",
               }),
           );
         }

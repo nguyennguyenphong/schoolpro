@@ -82,7 +82,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
           </div>
           <div>
             <span className="text-slate-500 block">Mã học sinh:</span>
-            <strong className="text-sm text-slate-900 font-mono">SV202688</strong>
+            <strong className="text-sm text-slate-900">SV202688</strong>
           </div>
           <div>
             <span className="text-slate-500 block">Năm học / Học kỳ:</span>

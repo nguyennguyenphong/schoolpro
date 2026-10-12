@@ -124,7 +124,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               <Icon name="music" size={15} className="mr-1.5" />
               Nghe audio
             </Button>
-            <span className="text-xs text-slate-400 font-mono">00:00 / 18:45</span>
+            <span className="text-xs text-slate-400">00:00 / 18:45</span>
           </div>
         </div>
       );

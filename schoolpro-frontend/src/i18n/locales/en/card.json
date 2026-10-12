@@ -215,6 +215,7 @@
     "noLink": "None",
     "joinOnlineClass": "Join online classroom",
     "periodsPerWeek": "{{count}} periods/week",
+    "slotsCountSuffix": "periods",
     "classLabel": "Class {{classCode}}",
     "shifts": {
       "morning": "Morning",
@@ -536,7 +537,9 @@
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "Allowed radius:",
       "countdownRowLabel": "Code expires in:",
-      "verifiedRowLabel": "GPS verified:"
+      "verifiedRowLabel": "GPS verified:",
+      "expiredShort": "Closed",
+      "openAtTime": "Opens at {{time}}"
     },
     "empty": {
       "noOpenTitle": "No subjects currently have an open attendance session",

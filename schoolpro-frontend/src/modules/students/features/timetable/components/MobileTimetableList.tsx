@@ -97,7 +97,7 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                   </Tag>
                 )}
                 <span className="text-xs text-slate-500 font-medium bg-white px-2 py-0.5 rounded-full border border-slate-200">
-                  {day.slots.length} {t("card:timetable.slotsCountSuffix", { defaultValue: "tiết" })}
+                  {day.slots.length} {t("card:timetable.slotsCountSuffix")}
                 </span>
               </div>
             </div>
@@ -141,7 +141,6 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                                   <span>
                                     {t("card:timetable.classLabel", {
                                       classCode: slot.className || slot.classCode,
-                                      defaultValue: `Lớp ${slot.className || slot.classCode}`,
                                     })}
                                   </span>
                                 </span>
