@@ -1,21 +1,28 @@
-import React, { useState } from "react";
-import { Empty, Skeleton } from "antd";
-import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import type React from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
-import { useAttendance } from "@/modules/students/features/attendance/hooks";
+import { Empty } from "@/components/ui/Empty";
 import {
+  AttendanceDetailModal,
+  AttendanceModal,
+  AttendancePageHeader,
+  AttendanceSkeleton,
   AttendanceSummaryCards,
   DateSelector,
   SubjectAttendanceCard,
-  AttendanceModal,
-  AttendanceDetailModal,
+  TeacherSessionConfigModal,
 } from "@/modules/students/features/attendance/components";
+import { useAttendance } from "@/modules/students/features/attendance/hooks";
 import type { AttendanceRecord } from "@/modules/students/features/attendance/types";
 
 export const AttendancePage: React.FC = () => {
+  const { t } = useTranslation(["card", "button"]);
   const {
     selectedDate,
+    setSelectedDate,
+    searchQuery,
+    setSearchQuery,
     records,
     filteredRecords,
     summary,
@@ -23,17 +30,26 @@ export const AttendancePage: React.FC = () => {
     submitting,
     filterStatus,
     setFilterStatus,
+    hasActiveFilters,
+    resetFilters,
     activeRecordForModal,
     setActiveRecordForModal,
+    isRealtimeConnected,
     goToToday,
     goToPreviousDay,
     goToNextDay,
     performCheckIn,
+    openOrUpdateTeacherSession,
+    expireSessionNow,
+    reload,
   } = useAttendance();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [detailModalOpen, setDetailModalOpen] = useState<boolean>(false);
+  const [teacherConfigOpen, setTeacherConfigOpen] = useState<boolean>(false);
   const [selectedRecordForDetail, setSelectedRecordForDetail] =
+    useState<AttendanceRecord | null>(null);
+  const [selectedRecordForTeacher, setSelectedRecordForTeacher] =
     useState<AttendanceRecord | null>(null);
 
   const handleOpenCheckIn = (record: AttendanceRecord) => {
@@ -56,79 +72,64 @@ export const AttendancePage: React.FC = () => {
     setSelectedRecordForDetail(null);
   };
 
+  const handleOpenTeacherConfig = (record?: AttendanceRecord) => {
+    setSelectedRecordForTeacher(
+      record ||
+        records.find((r) => r.status === "open") ||
+        records[0] ||
+        null,
+    );
+    setTeacherConfigOpen(true);
+  };
+
+  const handleCloseTeacherConfig = () => {
+    setTeacherConfigOpen(false);
+    setSelectedRecordForTeacher(null);
+  };
+
   // Counts for filter tabs
   const counts = {
     all: records.length,
     open: records.filter((r) => r.status === "open").length,
     present: records.filter((r) => r.status === "present").length,
-    absent: records.filter((r) => r.status === "absent").length,
+    absent: records.filter(
+      (r) => r.status === "absent" || r.status === "excused",
+    ).length,
   };
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-12">
-      {/* 1. Header with Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
-        <Breadcrumb
-          items={[
-            {
-              href: "/student/home",
-              title: (
-                <span className="flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
-                  <Icon name="home" size={14} />
-                  <span>Trang chủ</span>
-                </span>
-              ),
-            },
-            {
-              title: (
-                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
-                  <Icon name="userCheck" size={13} className="text-blue-600 shrink-0" />
-                  <span>Điểm danh môn học</span>
-                </span>
-              ),
-            },
-          ]}
-        />
-
-        <div className="pt-1">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-              Điểm danh môn học theo ngày
-            </h1>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            Điểm danh nhanh bằng <strong>Quét mã QR</strong>, <strong>Tải ảnh QR</strong> hoặc <strong>Nhập mã code</strong> do thầy cô cung cấp.
-          </p>
-        </div>
-      </div>
+    <div className="flex flex-col gap-4 sm:gap-5 pb-10">
+      {/* 1. Header with Breadcrumb, Realtime Status & Teacher Session Generator Button */}
+      <AttendancePageHeader
+        summary={summary}
+        loading={loading}
+        isRealtimeConnected={isRealtimeConnected}
+        onOpenTeacherConfig={() => handleOpenTeacherConfig()}
+        onRefresh={() => void reload()}
+      />
 
       {/* 2. Overview Summary Cards */}
-      {summary && <AttendanceSummaryCards summary={summary} />}
+      <AttendanceSummaryCards summary={summary} loading={loading} />
 
-      {/* 3. Date Navigation & Filter Tabs */}
+      {/* 3. Date Navigation, Search & Filter Tabs */}
       <DateSelector
         selectedDate={selectedDate}
+        onDateSelect={setSelectedDate}
         onPreviousDay={goToPreviousDay}
         onNextDay={goToNextDay}
         onToday={goToToday}
         activeFilter={filterStatus}
         onFilterChange={setFilterStatus}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        hasActiveFilters={hasActiveFilters}
+        onResetFilters={resetFilters}
         counts={counts}
       />
 
       {/* 4. Subject Attendance List */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2, 3, 4].map((n) => (
-            <div
-              key={n}
-              className="bg-white rounded-xl border border-[#f0f0f0] p-5 space-y-3 shadow-2xs"
-            >
-              <Skeleton active paragraph={{ rows: 3 }} />
-            </div>
-          ))}
-        </div>
+        <AttendanceSkeleton count={4} />
       ) : filteredRecords.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredRecords.map((record) => (
@@ -137,55 +138,87 @@ export const AttendancePage: React.FC = () => {
               record={record}
               onOpenCheckIn={handleOpenCheckIn}
               onViewDetail={handleOpenDetail}
+              onConfigureSession={handleOpenTeacherConfig}
             />
           ))}
         </div>
       ) : (
-        /* Empty State */
-        <div className="bg-white rounded-xl border border-[#f0f0f0] p-12 text-center shadow-2xs space-y-3">
+        <div className="bg-white rounded-xl border border-[#f0f0f0] p-12 text-center shadow-2xs flex flex-col items-center gap-3">
           <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
               <div className="space-y-1">
-                <p className="text-slate-800 font-bold text-sm">
+                <p className="text-slate-800 font-bold text-sm mb-0">
                   {filterStatus === "open"
-                    ? "Hiện không có môn học nào đang mở cổng điểm danh"
+                    ? t("card:attendance.empty.noOpenTitle", {
+                        defaultValue:
+                          "Hiện không có môn học nào đang mở cổng điểm danh",
+                      })
                     : filterStatus === "present"
-                    ? "Chưa có môn học nào được điểm danh trong ngày này"
-                    : filterStatus === "absent"
-                    ? "Không có môn học nào bị đánh dấu vắng mặt"
-                    : "Không có lịch học nào trong ngày được chọn"}
+                      ? t("card:attendance.empty.noPresentTitle", {
+                          defaultValue:
+                            "Chưa có môn học nào được điểm danh trong ngày này",
+                        })
+                      : filterStatus === "absent"
+                        ? t("card:attendance.empty.noAbsentTitle", {
+                            defaultValue:
+                              "Không có môn học nào bị đánh dấu vắng mặt hoặc quá hạn",
+                          })
+                        : t("card:attendance.empty.noScheduleTitle", {
+                            defaultValue:
+                              "Không tìm thấy lịch điểm danh phù hợp trong ngày được chọn",
+                          })}
                 </p>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                  {filterStatus === "all"
-                    ? "Em có thể bấm 'Hôm nay' hoặc chọn các ngày khác trong tuần để xem lịch điểm danh."
-                    : "Hãy thử đổi bộ lọc hoặc kiểm tra lại lịch học của ngày hôm nay."}
+                <p className="text-xs text-slate-400 max-w-sm mx-auto mb-0">
+                  {hasActiveFilters
+                    ? t("card:attendance.empty.filterHint", {
+                        defaultValue:
+                          "Hãy thử đặt lại bộ lọc hoặc kiểm tra từ khóa tìm kiếm.",
+                      })
+                    : t("card:attendance.empty.dateHint", {
+                        defaultValue:
+                          "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác trong tuần để xem lịch điểm danh.",
+                      })}
                 </p>
               </div>
             }
           />
-          {filterStatus !== "all" && (
+          {hasActiveFilters && (
             <Button
               variant="outline"
-              onClick={() => setFilterStatus("all")}
+              onClick={resetFilters}
               className="text-xs font-semibold"
             >
-              Xem tất cả môn học
+              {t("button:viewAllSubjects", {
+                defaultValue: "Xem tất cả môn học",
+              })}
             </Button>
           )}
         </div>
       )}
 
-      {/* 5. Attendance Check-in Modal (QR Camera + QR Upload + Code Entry) */}
+      {/* 5. Student Check-in Modal (6-Digit PIN + QR Camera/Image Upload + GPS Anti-Cheat) */}
       <AttendanceModal
         open={modalOpen}
         record={activeRecordForModal}
         onClose={handleCloseCheckIn}
         onSubmitCheckIn={performCheckIn}
+        onOpenTeacherConfig={handleOpenTeacherConfig}
         submitting={submitting}
       />
 
-      {/* 6. Attendance Detail View Modal */}
+      {/* 6. Teacher Session Configurator Modal (Generate 6-Digit PIN + QR + Scan Radius + Expiration) */}
+      <TeacherSessionConfigModal
+        key={`${selectedRecordForTeacher?.id || "default"}-${teacherConfigOpen ? "open" : "closed"}`}
+        open={teacherConfigOpen}
+        records={records}
+        initialRecord={selectedRecordForTeacher}
+        submitting={submitting}
+        onClose={handleCloseTeacherConfig}
+        onOpenOrUpdateSession={openOrUpdateTeacherSession}
+        onExpireSessionNow={expireSessionNow}
+      />
+
+      {/* 7. Attendance Proof & GPS Coordinates Detail Modal */}
       <AttendanceDetailModal
         open={detailModalOpen}
         record={selectedRecordForDetail}

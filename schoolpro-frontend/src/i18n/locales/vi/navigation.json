@@ -11,7 +11,8 @@
     "leaveRequests": "Xin nghỉ phép",
     "leaveRequestCreate": "Tạo đơn xin nghỉ phép",
     "leaveRequestEdit": "Chỉnh sửa đơn xin nghỉ phép",
-    "leaveRequestDetail": "Chi tiết & Tiến trình xử lý"
+    "leaveRequestDetail": "Chi tiết & Tiến trình xử lý",
+    "attendance": "Điểm danh môn học"
   },
   "pageTitle": {
     "home": "Trang chủ",
@@ -24,7 +25,8 @@
     "leaveRequests": "Xin nghỉ phép trực tuyến",
     "leaveRequestCreate": "Tạo đơn xin nghỉ phép trực tuyến",
     "leaveRequestEdit": "Chỉnh sửa đơn xin nghỉ phép",
-    "leaveRequestDetail": "Chi tiết đơn xin nghỉ phép"
+    "leaveRequestDetail": "Chi tiết đơn xin nghỉ phép",
+    "attendance": "Điểm danh môn học theo ngày"
   },
   "pageSubtitle": {
     "home": "Hệ thống quản lý thông tin học tập và đào tạo School Pro",
@@ -35,7 +37,8 @@
     "settings": "Tùy chỉnh giao diện, ngôn ngữ, kênh nhận thông báo và bảo mật tài khoản",
     "changePassword": "Cập nhật mật khẩu định kỳ để nâng cao an toàn và bảo mật cho tài khoản",
     "leaveRequests": "Tạo đơn xin nghỉ phép trực tuyến, đính kèm giấy tờ minh chứng và theo dõi phản hồi phê duyệt từ Giáo viên chủ nhiệm",
-    "leaveRequestForm": "Điền đầy đủ thông tin thời gian, môn học xin nghỉ và xác nhận của phụ huynh để gửi Giáo viên chủ nhiệm phê duyệt"
+    "leaveRequestForm": "Điền đầy đủ thông tin thời gian, môn học xin nghỉ và xác nhận của phụ huynh để gửi Giáo viên chủ nhiệm phê duyệt",
+    "attendance": "Điểm danh chống gian lận 100% qua Mã 6 chữ số hoặc Quét/Tải ảnh mã QR kết hợp xác thực tọa độ Kinh độ & Vĩ độ GPS theo bán kính thiết bị Giáo viên."
   },
   "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
   "welcomeUser": "Xin chào, {{name}}!",

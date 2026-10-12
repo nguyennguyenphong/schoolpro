@@ -46,7 +46,6 @@ class AttendanceService:
             student_id = item["student_id"]
             new_status = item["status"]
             check_in_time = item.get("check_in_time")
-            check_out_time = item.get("check_out_time")
             method = item.get("method", "MANUAL")
             device_id = item.get("device_id")
             excuse_reason = item.get("excuse_reason")
@@ -61,7 +60,6 @@ class AttendanceService:
                     "school_class_id": class_id,
                     "status": new_status,
                     "check_in_time": check_in_time,
-                    "check_out_time": check_out_time,
                     "method": method,
                     "device_id": device_id,
                     "excuse_reason": excuse_reason,
@@ -77,8 +75,6 @@ class AttendanceService:
                 att_record.status = new_status
                 if check_in_time is not None:
                     att_record.check_in_time = check_in_time
-                if check_out_time is not None:
-                    att_record.check_out_time = check_out_time
                 att_record.method = method
                 if device_id:
                     att_record.device_id = device_id
@@ -98,6 +94,7 @@ class AttendanceService:
                 previous_status=previous_status,
                 new_status=new_status,
                 action=action,
+                method=method,
                 reason=excuse_reason
                 or note
                 or ("Initial roll-call" if created else "Teacher update"),

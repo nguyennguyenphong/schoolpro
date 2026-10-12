@@ -19,9 +19,13 @@ from apps.academic.serializers.attendance_serializers import (
     LeaveRequestItemResponseSerializer,
     LeaveRequestSerializer,
     LeaveRequestSummaryResponseSerializer,
+    OpenAttendanceSessionInputSerializer,
     ReviewLeaveRequestInputSerializer,
+    StudentCheckInInputSerializer,
 )
+from apps.academic.services.attendance_realtime import AttendanceRealtimeService
 from apps.academic.services.attendance_service import AttendanceService
+from apps.academic.services.attendance_session_service import AttendanceSessionService
 from apps.academic.services.leave_request_service import LeaveRequestService
 from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
@@ -60,7 +64,7 @@ class LeaveRequestPagination(PageNumberPagination):
 )
 class AttendanceViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for attendance roll-call records and audit trails.
+    ViewSet for attendance roll-call records, teacher sessions, GPS check-ins, and audit trails.
     """
 
     authentication_classes = [SchoolProJWTAuthentication]
@@ -68,7 +72,13 @@ class AttendanceViewSet(viewsets.ModelViewSet):
     serializer_class = AttendanceSerializer
     queryset = (
         Attendance.objects.select_related(
-            "student", "student__user", "school_class", "period", "recorded_by"
+            "student",
+            "student__user",
+            "school_class",
+            "subject",
+            "period",
+            "session",
+            "recorded_by",
         )
         .prefetch_related("logs", "logs__performed_by")
         .all()
@@ -90,6 +100,168 @@ class AttendanceViewSet(viewsets.ModelViewSet):
         if att_status:
             qs = qs.filter(status=att_status)
         return qs
+
+    @extend_schema(
+        summary="Get student daily subject attendance schedule and sessions",
+        description=(
+            "Returns subject attendance cards for the selected date with 6-digit PIN, "
+            "QR token, teacher GPS coordinates, allowed radius, countdown timer, and check-in status."
+        ),
+        parameters=[
+            OpenApiParameter("date", str, description="Target date (YYYY-MM-DD)"),
+            OpenApiParameter(
+                "status", str, description="Filter by status (all, open, present, absent)"
+            ),
+            OpenApiParameter("q", str, description="Search keyword"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="daily")
+    def daily(self, request):
+        date_str = request.query_params.get("date")
+        status_filter = request.query_params.get("status")
+        search_query = request.query_params.get("q") or request.query_params.get("search")
+
+        result = AttendanceSessionService.list_student_attendance_by_date(
+            user=request.user,
+            date_str=date_str,
+            status_filter=status_filter,
+            search_query=search_query,
+        )
+        return APIResponse.success(
+            data=result,
+            message="Danh sách điểm danh môn học theo ngày",
+        )
+
+    @extend_schema(
+        summary="Get student attendance summary",
+        description="Returns daily and overall semester attendance metrics.",
+        parameters=[
+            OpenApiParameter("date", str, description="Target date (YYYY-MM-DD)"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="summary")
+    def summary(self, request):
+        date_str = request.query_params.get("date")
+        result = AttendanceSessionService.list_student_attendance_by_date(
+            user=request.user,
+            date_str=date_str,
+        )
+        return APIResponse.success(
+            data=result["summary"],
+            message="Thống kê chuyên cần của học sinh",
+        )
+
+    @extend_schema(
+        summary="Student check-in via 6-digit PIN or QR code with GPS geofencing",
+        description=(
+            "Validates 6-digit PIN code or QR token, checks strict expiration time, "
+            "and verifies student GPS coordinates are within the teacher's allowed scan radius."
+        ),
+        request=StudentCheckInInputSerializer,
+    )
+    @action(detail=False, methods=["post"], url_path="check-in")
+    def check_in(self, request):
+        serializer = StudentCheckInInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            result = AttendanceSessionService.student_check_in(
+                user=request.user,
+                data=serializer.validated_data,
+            )
+            return APIResponse.success(
+                data=result,
+                message=result["message"],
+            )
+        except ValueError as exc:
+            return APIResponse.error(
+                message=str(exc),
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @extend_schema(
+        summary="Teacher opens or regenerates an attendance session (6-digit PIN + QR + GPS radius)",
+        description=(
+            "Creates or updates a real-time attendance session with a 6-digit PIN code, "
+            "QR token, teacher GPS coordinates, allowed scan radius in meters, and expiration timer."
+        ),
+        request=OpenAttendanceSessionInputSerializer,
+    )
+    @action(detail=False, methods=["post"], url_path="open-session")
+    def open_session(self, request):
+        serializer = OpenAttendanceSessionInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            session_data = AttendanceSessionService.open_or_update_session(
+                user=request.user,
+                data=serializer.validated_data,
+            )
+            return APIResponse.success(
+                data=session_data,
+                message="Mở phiên điểm danh và phát mã 6 chữ số / QR thành công.",
+            )
+        except ValueError as exc:
+            return APIResponse.error(
+                message=str(exc),
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @extend_schema(
+        summary="Expire or close an attendance session immediately",
+        description="Marks an active attendance session as EXPIRED and broadcasts in real time.",
+    )
+    @action(detail=False, methods=["post"], url_path="expire-session")
+    def expire_session(self, request):
+        target_id = (
+            request.data.get("sessionId")
+            or request.data.get("recordId")
+            or request.data.get("timetableId")
+            or ""
+        )
+        try:
+            session_data = AttendanceSessionService.expire_session_now(
+                user=request.user,
+                session_id_or_record_id=str(target_id),
+            )
+            return APIResponse.success(
+                data=session_data,
+                message="Phiên điểm danh đã hết hạn sử dụng.",
+            )
+        except ValueError as exc:
+            return APIResponse.error(
+                message=str(exc),
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @extend_schema(
+        summary="Get real-time synchronization snapshot for attendance",
+        description="Returns current syncVersion, auto-expires overdue sessions, and provides counts.",
+        parameters=[
+            OpenApiParameter("date", str, description="Target date (YYYY-MM-DD)"),
+            OpenApiParameter("classId", str, description="Optional class UUID"),
+            OpenApiParameter("studentId", str, description="Optional student UUID"),
+            OpenApiParameter("sessionId", str, description="Optional attendance session UUID"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="realtime-sync")
+    def realtime_sync(self, request):
+        date_str = request.query_params.get("date")
+        class_id = request.query_params.get("classId") or request.query_params.get("class_id")
+        student_id = request.query_params.get("studentId") or request.query_params.get("student_id")
+        session_id = request.query_params.get("sessionId") or request.query_params.get("session_id")
+
+        snapshot = AttendanceRealtimeService.get_sync_snapshot(
+            user=request.user,
+            date_str=date_str,
+            class_id=class_id,
+            student_id=student_id,
+            session_id=session_id,
+        )
+        return APIResponse.success(
+            data=snapshot,
+            message="Đồng bộ trạng thái thời gian thực điểm danh môn học",
+        )
 
     @extend_schema(
         summary="Bulk mark class attendance",

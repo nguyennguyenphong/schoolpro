@@ -148,5 +148,18 @@
     "commitmentLabel": "학생 학습 서약",
     "commitmentPlaceholder": "수업 필기 보충, 과제 완수 및 자율 복습을 서약합니다...",
     "defaultCommitment": "결석 기간 동안 수업 필기를 보충하고 과제를 빠짐없이 수행하며 스스로 학습 내용을 복습할 것을 약속합니다."
+  },
+  "attendance": {
+    "selectDateLabel": "Select attendance date",
+    "searchPlaceholder": "Search subject, teacher, classroom...",
+    "studentLatitudeLabel": "Student Latitude",
+    "studentLongitudeLabel": "Student Longitude",
+    "uploadQrImageLabel": "Upload attendance QR image file",
+    "selectSubjectSlotLabel": "Select subject lesson to open attendance",
+    "teacherPinCodeLabel": "6-Digit Attendance PIN Code (Teacher)",
+    "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
+    "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
+    "teacherLatitudeLabel": "Teacher Device Latitude",
+    "teacherLongitudeLabel": "Teacher Device Longitude"
   }
 }

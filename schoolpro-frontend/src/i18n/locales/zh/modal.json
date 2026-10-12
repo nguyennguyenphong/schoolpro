@@ -17,5 +17,78 @@
   "revokeSessionConfirmTitle": "确认结束会话",
   "revokeSessionConfirmContent": "您确定要退出该设备的登录状态吗？",
   "deleteLeaveRequestConfirmTitle": "确认删除请假申请？",
-  "deleteLeaveRequestConfirmDesc": "此待审批的请假申请将被永久删除。"
+  "deleteLeaveRequestConfirmDesc": "此待审批的请假申请将被永久删除。",
+  "attendance": {
+    "bannerTag": "Live Attendance Portal • 100% GPS Anti-Fraud",
+    "expiredBadgeTitle": "Code Status",
+    "countdownTitle": "Time Remaining",
+    "expiredShort": "EXPIRED",
+    "tabs": {
+      "pinCode": "1. 6-Digit PIN Code",
+      "qrCode": "2. Scan QR / Upload QR"
+    },
+    "pin": {
+      "title": "Enter the 6-digit attendance PIN code provided by your Teacher",
+      "subtitle": "Code is only valid while the countdown is active and you are within the allowed scan radius.",
+      "activeTeacherCodeLabel": "Active Teacher 6-Digit PIN:"
+    },
+    "qr": {
+      "cameraTab": "Live Camera Scan",
+      "uploadTab": "Upload QR Image",
+      "cameraReadyHint": "Camera detected Teacher QR Code • Ready for GPS verification",
+      "qrDecodedReady": "✓ Decoded valid QR token from uploaded image",
+      "dropzoneTitle": "Select a QR code image from your device",
+      "dropzoneHint": "Supports PNG, JPG, JPEG, WebP, SVG captured from the classroom projector"
+    },
+    "gps": {
+      "title": "100% Anti-Fraud GPS Verification (Latitude & Longitude)",
+      "subtitle": "Teacher device allowed scan radius: max {{radius}}m",
+      "withinRange": "In Range",
+      "outOfRange": "Too Far - Blocked",
+      "teacherDeviceLabel": "Teacher Device Coordinates (Center)",
+      "studentDeviceLabel": "Student Device Coordinates",
+      "latShort": "Lat:",
+      "lngShort": "Lng:",
+      "testPositionLabel": "Select Student Device Position (Test Radius Geofencing):",
+      "presetInClassroom": "In Classroom (~8.5m)",
+      "presetNearCorridor": "Classroom Door / Corridor",
+      "presetOutsideSchool": "Far Outside Radius (~245m)",
+      "presetCustom": "Custom Coordinates",
+      "validTag": "Valid",
+      "blockedTag": "Anti-Cheat Blocked",
+      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!"
+    },
+    "success": {
+      "title": "Attendance Verified Successfully!",
+      "subtitle": "Your attendance receipt and GPS Latitude & Longitude coordinates have been recorded."
+    },
+    "receipt": {
+      "subject": "Subject:",
+      "checkInTime": "Recorded Time:",
+      "method": "Verification Method:",
+      "studentCoords": "Student GPS Coordinates:",
+      "distance": "Distance to Teacher Device:",
+      "status": "Verification Status:",
+      "verifiedText": "100% Valid • Inside Classroom Radius"
+    },
+    "expired": {
+      "title": "Attendance code has expired and is no longer valid!",
+      "description": "The time limit for the 6-digit PIN and QR code has ended. Please ask your subject teacher to issue a new code."
+    },
+    "teacherConfig": {
+      "title": "Configure Attendance Session & GPS Scan Radius (Teacher)",
+      "subtitle": "Generate 6-digit PIN, QR code, set allowed scan radius and expiration time in real time",
+      "qrPreviewTitle": "Session QR Code",
+      "qrPreviewHint": "Synced in real time to Student screens",
+      "gpsSectionTitle": "Teacher Scanning Device Latitude & Longitude"
+    },
+    "detail": {
+      "title": "Attendance Proof & GPS Coordinate Verification",
+      "verifiedBannerTitle": "Verified On-Time & 100% Within Classroom Radius",
+      "verifiedBannerDesc": "Attendance record and GPS Latitude & Longitude are stored against fraud.",
+      "timeSlotLabel": "Class Time:",
+      "gpsProofTitle": "GPS Coordinate Verification Data (Anti-Fraud)",
+      "withinRadiusTag": "Within Radius"
+    }
+  }
 }

@@ -473,5 +473,74 @@
       "relationshipLabel": "Mối quan hệ:",
       "phoneLabel": "Số điện thoại:"
     }
+  },
+  "attendance": {
+    "header": {
+      "classBadge": "Lớp {{className}}",
+      "realtimeConnected": "Trực tuyến thời gian thực",
+      "realtimeSyncing": "Đồng bộ tự động"
+    },
+    "summary": {
+      "overallRateTitle": "Tỷ lệ chuyên cần",
+      "excellentBadge": "Xuất sắc",
+      "disciplineScoreLabel": "Điểm chuyên cần:",
+      "gpsVerifiedLabel": "Xác thực GPS",
+      "todayScheduleTitle": "Lịch học trong ngày",
+      "subjectUnit": "môn học",
+      "timeWindowLabel": "Khung giờ:",
+      "sessionsCount": "{{count}} ca học",
+      "attendedTitle": "Đã điểm danh",
+      "onTimeLabel": "Đúng giờ & Đúng vị trí:",
+      "validStatus": "Hợp lệ 100%",
+      "pendingTitle": "Cần điểm danh",
+      "pendingUnit": "môn chờ xử lý",
+      "completedTag": "Hoàn tất",
+      "absentOrExpiredLabel": "Vắng / Quá hạn:",
+      "openCountLabel": "{{count}} môn đang mở",
+      "waitingForTeacher": "Theo lịch học"
+    },
+    "filter": {
+      "all": "Tất cả môn học",
+      "open": "Đang mở điểm danh",
+      "present": "Đã điểm danh",
+      "absent": "Vắng / Quá hạn",
+      "dateSubtitle": "Danh sách các môn học có lịch điểm danh trong ngày"
+    },
+    "status": {
+      "open": "Đang mở điểm danh",
+      "present": "Đã điểm danh",
+      "excused": "Nghỉ có phép",
+      "upcoming": "Chưa mở cổng",
+      "absent": "Vắng / Hết hạn mã"
+    },
+    "method": {
+      "qrScan": "Quét Camera QR",
+      "qrUpload": "Tải ảnh mã QR",
+      "pinCode": "Mã 6 chữ số",
+      "electronic": "Điểm danh trực tuyến"
+    },
+    "card": {
+      "subjectCodeLabel": "Mã môn học:",
+      "teacherLabel": "Giáo viên:",
+      "roomLabel": "Phòng học:",
+      "pinCodeBadge": "Mã 6 số: {{code}}",
+      "radiusBadge": "Bán kính quét: ≤ {{radius}}m",
+      "expiresInLabel": "Hết hạn sau: {{time}}",
+      "checkedInAt": "Điểm danh lúc: {{time}}",
+      "teacherGpsCoord": "Tọa độ thiết bị Giáo viên: {{lat}}, {{lng}}",
+      "deadlineLabel": "Hạn đóng mã:",
+      "upcomingHint": "Giáo viên sẽ phát mã 6 số & QR khi vào tiết",
+      "expiredHint": "Mã điểm danh đã hết thời gian sử dụng",
+      "verifiedGpsHint": "Đã xác thực tọa độ GPS & chuyên cần hợp lệ",
+      "excusedHint": "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ"
+    },
+    "empty": {
+      "noOpenTitle": "Hiện không có môn học nào đang mở cổng điểm danh",
+      "noPresentTitle": "Chưa có môn học nào được điểm danh trong ngày này",
+      "noAbsentTitle": "Không có môn học nào bị đánh dấu vắng mặt hoặc quá hạn",
+      "noScheduleTitle": "Không tìm thấy lịch điểm danh phù hợp trong ngày được chọn",
+      "filterHint": "Hãy thử đặt lại bộ lọc hoặc kiểm tra từ khóa tìm kiếm.",
+      "dateHint": "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác trong tuần để xem lịch điểm danh."
+    }
   }
 }

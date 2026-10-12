@@ -1589,30 +1589,142 @@ CREATE INDEX IF NOT EXISTS ix_student_bills_status ON academic.student_fee_bills
 COMMENT ON TABLE academic.student_fee_bills IS 'Student fee accounts, payment reconciliation records, and social welfare subsidies';
 
 -- ---------------------------------------------------------------------------
+-- File: 02_tables/academic/academic_attendance_sessions.sql
+-- ---------------------------------------------------------------------------
+-- =====================================================================
+-- TABLE: academic.attendance_sessions
+-- Teacher-initiated real-time attendance sessions with 6-digit PIN code,
+-- dynamic QR token, strict expiration time, and GPS geofencing radius
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS academic.attendance_sessions (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  timetable_id          UUID REFERENCES academic.timetables(id) ON DELETE SET NULL,
+  class_id              UUID NOT NULL REFERENCES core.classes(id) ON DELETE CASCADE,
+  subject_id            UUID NOT NULL REFERENCES core.subjects(id) ON DELETE CASCADE,
+  period_id             UUID REFERENCES academic.periods(id) ON DELETE SET NULL,
+  teacher_id            UUID REFERENCES core.teachers(id) ON DELETE SET NULL,
+  room_id               UUID REFERENCES academic.rooms(id) ON DELETE SET NULL,
+  session_date          DATE NOT NULL DEFAULT CURRENT_DATE,
+  pin_code              VARCHAR(6) NOT NULL
+                          CHECK (pin_code ~ '^[0-9]{6}$'),
+  qr_token              VARCHAR(128) NOT NULL UNIQUE,
+  teacher_latitude      NUMERIC(10, 7) NOT NULL
+                          CHECK (teacher_latitude BETWEEN -90 AND 90),
+  teacher_longitude     NUMERIC(10, 7) NOT NULL
+                          CHECK (teacher_longitude BETWEEN -180 AND 180),
+  allowed_radius_meters INTEGER NOT NULL DEFAULT 50
+                          CHECK (allowed_radius_meters BETWEEN 5 AND 5000),
+  duration_seconds      INTEGER NOT NULL DEFAULT 300
+                          CHECK (duration_seconds BETWEEN 30 AND 7200),
+  opened_at             TIMESTAMPTZ NOT NULL DEFAULT now(),
+  expires_at            TIMESTAMPTZ NOT NULL,
+  closed_at             TIMESTAMPTZ,
+  status                VARCHAR(20) NOT NULL DEFAULT 'OPEN'
+                          CHECK (status IN ('OPEN', 'EXPIRED', 'CLOSED')),
+  note                  TEXT,
+  metadata              JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_by            UUID NOT NULL REFERENCES core.users(id) ON DELETE CASCADE,
+  created_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CHECK (expires_at > opened_at)
+);
+
+CREATE INDEX IF NOT EXISTS ix_att_sessions_class_date
+  ON academic.attendance_sessions(class_id, session_date);
+CREATE INDEX IF NOT EXISTS ix_att_sessions_timetable_date
+  ON academic.attendance_sessions(timetable_id, session_date);
+CREATE INDEX IF NOT EXISTS ix_att_sessions_status_expires
+  ON academic.attendance_sessions(status, expires_at);
+CREATE INDEX IF NOT EXISTS ix_att_sessions_pin_code
+  ON academic.attendance_sessions(pin_code, status);
+
+COMMENT ON TABLE academic.attendance_sessions IS 'Real-time attendance sessions created by teachers with 6-digit PIN, QR code, expiration timer, and GPS geofencing';
+
+-- ---------------------------------------------------------------------------
 -- File: 02_tables/academic/academic_attendance.sql
 -- ---------------------------------------------------------------------------
 -- =====================================================================
 -- TABLE: academic.attendance
--- Daily and period-based student attendance records
+-- Daily and period-based student attendance records with GPS verification
 -- =====================================================================
 
 CREATE TABLE IF NOT EXISTS academic.attendance (
-  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  student_id      UUID NOT NULL REFERENCES core.students(id) ON DELETE CASCADE,
-  class_id        UUID NOT NULL REFERENCES core.classes(id) ON DELETE CASCADE,
-  attendance_date DATE NOT NULL,
-  period_id       UUID REFERENCES academic.periods(id) ON DELETE SET NULL,
-  status          VARCHAR(20) NOT NULL
-                    CHECK (status IN ('PRESENT', 'ABSENT_EXCUSED', 'ABSENT_UNEXCUSED', 'LATE')),
-  note            TEXT,
-  recorded_by     UUID NOT NULL REFERENCES core.users(id),
-  recorded_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id           UUID REFERENCES academic.attendance_sessions(id) ON DELETE SET NULL,
+  timetable_id         UUID REFERENCES academic.timetables(id) ON DELETE SET NULL,
+  student_id           UUID NOT NULL REFERENCES core.students(id) ON DELETE CASCADE,
+  class_id             UUID NOT NULL REFERENCES core.classes(id) ON DELETE CASCADE,
+  subject_id           UUID REFERENCES core.subjects(id) ON DELETE SET NULL,
+  attendance_date      DATE NOT NULL,
+  period_id            UUID REFERENCES academic.periods(id) ON DELETE SET NULL,
+  status               VARCHAR(20) NOT NULL
+                         CHECK (status IN ('PRESENT', 'ABSENT_EXCUSED', 'ABSENT_UNEXCUSED', 'LATE', 'LEFT_EARLY')),
+  check_in_time        TIMESTAMPTZ,
+  method               VARCHAR(30) NOT NULL DEFAULT 'MANUAL'
+                         CHECK (method IN ('PIN_CODE', 'QR_SCAN', 'QR_UPLOAD', 'QR_CODE', 'MANUAL', 'TEACHER_APP', 'EXCUSED_LEAVE', 'ONLINE')),
+  check_in_code        VARCHAR(64),
+  check_in_latitude    NUMERIC(10, 7)
+                         CHECK (check_in_latitude IS NULL OR (check_in_latitude BETWEEN -90 AND 90)),
+  check_in_longitude   NUMERIC(10, 7)
+                         CHECK (check_in_longitude IS NULL OR (check_in_longitude BETWEEN -180 AND 180)),
+  distance_meters      NUMERIC(8, 2)
+                         CHECK (distance_meters IS NULL OR distance_meters >= 0),
+  is_within_radius     BOOLEAN NOT NULL DEFAULT TRUE,
+  gps_accuracy_meters  NUMERIC(8, 2),
+  device_id            VARCHAR(100),
+  excuse_reason        TEXT,
+  excuse_document_url  TEXT,
+  is_parent_notified   BOOLEAN NOT NULL DEFAULT FALSE,
+  notification_sent_at TIMESTAMPTZ,
+  note                 TEXT,
+  metadata             JSONB DEFAULT '{}'::jsonb,
+  recorded_by          UUID NOT NULL REFERENCES core.users(id),
+  recorded_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (student_id, attendance_date, period_id)
 );
 
 CREATE INDEX IF NOT EXISTS ix_attendance_class_date ON academic.attendance(class_id, attendance_date);
+CREATE INDEX IF NOT EXISTS ix_attendance_student_date ON academic.attendance(student_id, attendance_date);
+CREATE INDEX IF NOT EXISTS ix_attendance_session ON academic.attendance(session_id);
+CREATE INDEX IF NOT EXISTS ix_attendance_status ON academic.attendance(status);
 
-COMMENT ON TABLE academic.attendance IS 'Daily student attendance roll-call tracking excuses and tardiness';
+COMMENT ON TABLE academic.attendance IS 'Daily and period-level student attendance roll-call tracking 6-digit PIN, QR scan/upload, GPS anti-cheat coordinates, and excuses';
+
+-- ---------------------------------------------------------------------------
+-- File: 02_tables/academic/academic_attendance_logs.sql
+-- ---------------------------------------------------------------------------
+-- =====================================================================
+-- TABLE: academic.attendance_logs
+-- Audit trail and change history for student attendance roll-calls
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS academic.attendance_logs (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  attendance_id      UUID NOT NULL REFERENCES academic.attendance(id) ON DELETE CASCADE,
+  session_id         UUID REFERENCES academic.attendance_sessions(id) ON DELETE SET NULL,
+  student_id         UUID NOT NULL REFERENCES core.students(id) ON DELETE CASCADE,
+  previous_status    VARCHAR(20),
+  new_status         VARCHAR(20) NOT NULL
+                       CHECK (new_status IN ('PRESENT', 'ABSENT_EXCUSED', 'ABSENT_UNEXCUSED', 'LATE', 'LEFT_EARLY')),
+  action             VARCHAR(50) NOT NULL DEFAULT 'STATUS_UPDATED',
+  method             VARCHAR(30),
+  check_in_latitude  NUMERIC(10, 7),
+  check_in_longitude NUMERIC(10, 7),
+  distance_meters    NUMERIC(8, 2),
+  is_within_radius   BOOLEAN,
+  reason             TEXT,
+  performed_by       UUID REFERENCES core.users(id) ON DELETE SET NULL,
+  metadata           JSONB DEFAULT '{}'::jsonb,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS ix_att_log_attendance ON academic.attendance_logs(attendance_id);
+CREATE INDEX IF NOT EXISTS ix_att_log_session ON academic.attendance_logs(session_id);
+CREATE INDEX IF NOT EXISTS ix_att_log_student ON academic.attendance_logs(student_id);
+CREATE INDEX IF NOT EXISTS ix_att_log_created_at ON academic.attendance_logs(created_at);
+
+COMMENT ON TABLE academic.attendance_logs IS 'Audit and change history log tracking student check-ins, GPS verification metrics, and teacher modifications';
 
 
 -- ===========================================================================

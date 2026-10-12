@@ -11,7 +11,8 @@
     "leaveRequests": "请假申请",
     "leaveRequestCreate": "创建请假申请",
     "leaveRequestEdit": "编辑请假申请",
-    "leaveRequestDetail": "详情与处理进度"
+    "leaveRequestDetail": "详情与处理进度",
+    "attendance": "课程考勤签到"
   },
   "pageTitle": {
     "home": "首页",
@@ -24,7 +25,8 @@
     "leaveRequests": "在线请假申请",
     "leaveRequestCreate": "在线创建请假申请",
     "leaveRequestEdit": "编辑请假申请",
-    "leaveRequestDetail": "请假申请详情"
+    "leaveRequestDetail": "请假申请详情",
+    "attendance": "每日课程考勤签到"
   },
   "pageSubtitle": {
     "home": "School Pro 教学管理与学生服务系统",
@@ -35,7 +37,8 @@
     "settings": "个性化界面外观、使用语言、通知接收渠道与账户安全",
     "changePassword": "定期更新密码以维护您的账户安全",
     "leaveRequests": "在线提交请假申请、上传证明材料并跟踪班主任审批反馈",
-    "leaveRequestForm": "完整填写请假时间、涉及课程与家长确认信息，提交班主任审批"
+    "leaveRequestForm": "完整填写请假时间、涉及课程与家长确认信息，提交班主任审批",
+    "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius."
   },
   "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
   "welcomeUser": "你好，{{name}}！",

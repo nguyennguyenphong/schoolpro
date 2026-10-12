@@ -94,6 +94,7 @@ execute_sql "$SQL_DIR/02_tables/academic/academic_extracurricular_activities.sql
 execute_sql "$SQL_DIR/02_tables/academic/academic_activity_participations.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_fee_items.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_student_fee_bills.sql"
+execute_sql "$SQL_DIR/02_tables/academic/academic_attendance_sessions.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_attendance.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_attendance_logs.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_leave_requests.sql"

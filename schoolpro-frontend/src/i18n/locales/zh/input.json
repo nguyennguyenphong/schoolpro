@@ -148,5 +148,18 @@
     "commitmentLabel": "学生学习承诺",
     "commitmentPlaceholder": "承诺补齐课堂笔记、按时完成作业并自主复习课程内容...",
     "defaultCommitment": "我承诺在请假期间主动补齐课堂笔记、认真完成全部作业并自行复习巩固所学知识。"
+  },
+  "attendance": {
+    "selectDateLabel": "Select attendance date",
+    "searchPlaceholder": "Search subject, teacher, classroom...",
+    "studentLatitudeLabel": "Student Latitude",
+    "studentLongitudeLabel": "Student Longitude",
+    "uploadQrImageLabel": "Upload attendance QR image file",
+    "selectSubjectSlotLabel": "Select subject lesson to open attendance",
+    "teacherPinCodeLabel": "6-Digit Attendance PIN Code (Teacher)",
+    "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
+    "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
+    "teacherLatitudeLabel": "Teacher Device Latitude",
+    "teacherLongitudeLabel": "Teacher Device Longitude"
   }
 }

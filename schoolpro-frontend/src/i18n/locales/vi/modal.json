@@ -17,5 +17,78 @@
   "revokeSessionConfirmTitle": "Xác nhận kết thúc phiên làm việc",
   "revokeSessionConfirmContent": "Bạn có chắc chắn muốn đăng xuất phiên làm việc trên thiết bị này không?",
   "deleteLeaveRequestConfirmTitle": "Xác nhận xóa đơn xin nghỉ phép?",
-  "deleteLeaveRequestConfirmDesc": "Đơn xin nghỉ phép chưa duyệt này sẽ bị xóa vĩnh viễn."
+  "deleteLeaveRequestConfirmDesc": "Đơn xin nghỉ phép chưa duyệt này sẽ bị xóa vĩnh viễn.",
+  "attendance": {
+    "bannerTag": "Cổng điểm danh trực tuyến • Chống gian lận GPS 100%",
+    "expiredBadgeTitle": "Trạng thái mã",
+    "countdownTitle": "Thời gian còn lại",
+    "expiredShort": "ĐÃ HẾT HẠN",
+    "tabs": {
+      "pinCode": "1. Mã gồm 6 chữ số",
+      "qrCode": "2. Quét QR / Tải ảnh QR"
+    },
+    "pin": {
+      "title": "Nhập mã điểm danh gồm 6 chữ số do Giáo viên cung cấp",
+      "subtitle": "Mã chỉ có hiệu lực trong thời gian đếm ngược và khi bạn ở trong bán kính cho phép.",
+      "activeTeacherCodeLabel": "Mã 6 chữ số Giáo viên đang mở:"
+    },
+    "qr": {
+      "cameraTab": "Quét trực tiếp qua Camera",
+      "uploadTab": "Tải ảnh mã QR lên",
+      "cameraReadyHint": "Camera đã nhận diện mã QR của Giáo viên • Sẵn sàng xác thực GPS",
+      "qrDecodedReady": "✓ Đã giải mã dữ liệu QR hợp lệ từ ảnh",
+      "dropzoneTitle": "Chọn ảnh mã QR từ thiết bị để điểm danh",
+      "dropzoneHint": "Hỗ trợ ảnh PNG, JPG, JPEG, WebP, SVG chụp từ màn hình chiếu của Giáo viên"
+    },
+    "gps": {
+      "title": "Xác thực vị trí GPS chống gian lận 100% (Kinh độ & Vĩ độ)",
+      "subtitle": "Bán kính thiết bị quét của Giáo viên cho phép: tối đa {{radius}}m",
+      "withinRange": "Đạt yêu cầu",
+      "outOfRange": "Quá xa - Bị chặn",
+      "teacherDeviceLabel": "Tọa độ thiết bị Giáo viên (Tâm quét)",
+      "studentDeviceLabel": "Tọa độ thiết bị Học sinh",
+      "latShort": "Vĩ độ:",
+      "lngShort": "Kinh độ:",
+      "testPositionLabel": "Chọn vị trí thiết bị Học sinh (Kiểm thử khoảng cách bán kính):",
+      "presetInClassroom": "Trong lớp học (~8.5m)",
+      "presetNearCorridor": "Cửa lớp / Hành lang",
+      "presetOutsideSchool": "Ở xa ngoài bán kính (~245m)",
+      "presetCustom": "Tọa độ tùy chỉnh",
+      "validTag": "Hợp lệ",
+      "blockedTag": "Chặn gian lận",
+      "outOfRangeWarning": "Khoảng cách hiện tại ({{distance}}m) vượt quá bán kính thiết bị quét của Giáo viên ({{radius}}m). Bạn không thể điểm danh từ xa!"
+    },
+    "success": {
+      "title": "Điểm danh hợp lệ thành công!",
+      "subtitle": "Hệ thống đã lưu biên lai điểm danh kèm tọa độ Kinh độ & Vĩ độ GPS của bạn."
+    },
+    "receipt": {
+      "subject": "Môn học:",
+      "checkInTime": "Thời gian ghi nhận:",
+      "method": "Hình thức xác thực:",
+      "studentCoords": "Tọa độ GPS Học sinh:",
+      "distance": "Khoảng cách tới thiết bị Giáo viên:",
+      "status": "Trạng thái xác thực:",
+      "verifiedText": "Hợp lệ 100% • Trong bán kính lớp học"
+    },
+    "expired": {
+      "title": "Mã điểm danh đã hết hạn và không còn giá trị sử dụng!",
+      "description": "Thời gian giới hạn của mã 6 chữ số và mã QR cho tiết học này đã kết thúc. Vui lòng liên hệ Giáo viên bộ môn để mở lại mã mới."
+    },
+    "teacherConfig": {
+      "title": "Thiết lập phiên điểm danh & Bán kính quét GPS (Giáo viên)",
+      "subtitle": "Tạo mã 6 chữ số, mã QR, cài đặt bán kính thiết bị quét và thời gian hiệu lực theo thời gian thực",
+      "qrPreviewTitle": "Mã QR phiên điểm danh",
+      "qrPreviewHint": "Tự động đồng bộ tới màn hình Học sinh",
+      "gpsSectionTitle": "Tọa độ Kinh độ & Vĩ độ thiết bị quét của Giáo viên"
+    },
+    "detail": {
+      "title": "Minh chứng điểm danh & Xác thực tọa độ GPS",
+      "verifiedBannerTitle": "Đã xác thực có mặt đúng giờ & trong bán kính lớp học 100%",
+      "verifiedBannerDesc": "Dữ liệu chuyên cần cùng tọa độ Kinh độ & Vĩ độ GPS đã được lưu trữ chống gian lận.",
+      "timeSlotLabel": "Khung giờ học:",
+      "gpsProofTitle": "Dữ liệu đối chiếu tọa độ GPS (Chống gian lận)",
+      "withinRadiusTag": "Đúng bán kính"
+    }
+  }
 }

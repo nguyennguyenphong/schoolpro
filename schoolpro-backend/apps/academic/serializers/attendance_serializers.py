@@ -4,7 +4,12 @@ Serializers for Academic Attendance, Leave Requests, and Attendance Logs domain.
 
 from rest_framework import serializers
 
-from apps.academic.models.attendance import Attendance, AttendanceLog, LeaveRequest
+from apps.academic.models.attendance import (
+    Attendance,
+    AttendanceLog,
+    AttendanceSession,
+    LeaveRequest,
+)
 
 
 class AttendanceLogSerializer(serializers.ModelSerializer):
@@ -21,10 +26,16 @@ class AttendanceLogSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "attendance",
+            "session",
             "student",
             "previous_status",
             "new_status",
             "action",
+            "method",
+            "check_in_latitude",
+            "check_in_longitude",
+            "distance_meters",
+            "is_within_radius",
             "reason",
             "performed_by",
             "performed_by_name",
@@ -42,6 +53,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source="student.user.full_name", read_only=True)
     student_code = serializers.CharField(source="student.student_code", read_only=True)
     class_name = serializers.CharField(source="school_class.name", read_only=True)
+    subject_name = serializers.CharField(source="subject.name", read_only=True, default=None)
     period_name = serializers.CharField(source="period.name", read_only=True, default=None)
     recorded_by_name = serializers.CharField(source="recorded_by.full_name", read_only=True)
     logs = AttendanceLogSerializer(many=True, read_only=True)
@@ -50,18 +62,27 @@ class AttendanceSerializer(serializers.ModelSerializer):
         model = Attendance
         fields = [
             "id",
+            "session",
+            "timetable",
             "student",
             "student_code",
             "student_name",
             "school_class",
             "class_name",
+            "subject",
+            "subject_name",
             "attendance_date",
             "period",
             "period_name",
             "status",
             "check_in_time",
-            "check_out_time",
             "method",
+            "check_in_code",
+            "check_in_latitude",
+            "check_in_longitude",
+            "distance_meters",
+            "is_within_radius",
+            "gps_accuracy_meters",
             "device_id",
             "excuse_reason",
             "excuse_document_url",
@@ -77,6 +98,96 @@ class AttendanceSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "recorded_at"]
 
 
+class AttendanceSessionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for teacher-created attendance session.
+    """
+
+    class_name = serializers.CharField(source="school_class.name", read_only=True)
+    subject_code = serializers.CharField(source="subject.code", read_only=True)
+    subject_name = serializers.CharField(source="subject.name", read_only=True)
+    room_name = serializers.CharField(source="room.name", read_only=True, default=None)
+
+    class Meta:
+        model = AttendanceSession
+        fields = [
+            "id",
+            "timetable",
+            "school_class",
+            "class_name",
+            "subject",
+            "subject_code",
+            "subject_name",
+            "period",
+            "teacher",
+            "room",
+            "room_name",
+            "session_date",
+            "pin_code",
+            "qr_token",
+            "teacher_latitude",
+            "teacher_longitude",
+            "allowed_radius_meters",
+            "duration_seconds",
+            "opened_at",
+            "expires_at",
+            "closed_at",
+            "status",
+            "note",
+            "metadata",
+            "created_by",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at"]
+
+
+class OpenAttendanceSessionInputSerializer(serializers.Serializer):
+    """
+    Input schema for opening or regenerating an attendance session by teacher.
+    """
+
+    recordId = serializers.CharField(required=False, allow_blank=True)
+    sessionId = serializers.CharField(required=False, allow_blank=True)
+    timetableId = serializers.CharField(required=False, allow_blank=True)
+    date = serializers.CharField(required=False, allow_blank=True)
+    pinCode = serializers.RegexField(
+        regex=r"^\d{6}$",
+        required=False,
+        allow_blank=True,
+        error_messages={"invalid": "Mã điểm danh phải gồm đúng 6 chữ số."},
+    )
+    teacherLatitude = serializers.FloatField(required=False)
+    teacherLongitude = serializers.FloatField(required=False)
+    allowedRadiusMeters = serializers.IntegerField(
+        required=False, min_value=5, max_value=5000, default=50
+    )
+    durationSeconds = serializers.IntegerField(
+        required=False, min_value=30, max_value=7200, default=600
+    )
+    note = serializers.CharField(required=False, allow_blank=True)
+
+
+class StudentCheckInInputSerializer(serializers.Serializer):
+    """
+    Input schema for student attendance check-in (6-digit PIN or QR scan/upload + GPS).
+    """
+
+    recordId = serializers.CharField(required=False, allow_blank=True)
+    sessionId = serializers.CharField(required=False, allow_blank=True)
+    timetableId = serializers.CharField(required=False, allow_blank=True)
+    method = serializers.ChoiceField(
+        choices=["code", "pin_code", "qr_scan", "qr_upload", "qr_code"],
+        default="code",
+    )
+    code = serializers.CharField(required=False, allow_blank=True)
+    qrData = serializers.CharField(required=False, allow_blank=True)
+    imageName = serializers.CharField(required=False, allow_blank=True)
+    latitude = serializers.FloatField(required=True)
+    longitude = serializers.FloatField(required=True)
+    accuracy = serializers.FloatField(required=False, allow_null=True)
+
+
 class MarkAttendanceItemSerializer(serializers.Serializer):
     """
     Input schema for an individual student attendance mark.
@@ -87,7 +198,6 @@ class MarkAttendanceItemSerializer(serializers.Serializer):
         choices=["PRESENT", "ABSENT_EXCUSED", "ABSENT_UNEXCUSED", "LATE", "LEFT_EARLY"]
     )
     check_in_time = serializers.DateTimeField(required=False, allow_null=True)
-    check_out_time = serializers.DateTimeField(required=False, allow_null=True)
     method = serializers.CharField(default="MANUAL")
     device_id = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     excuse_reason = serializers.CharField(required=False, allow_blank=True, allow_null=True)

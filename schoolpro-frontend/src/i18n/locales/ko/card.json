@@ -473,5 +473,74 @@
       "relationshipLabel": "관계:",
       "phoneLabel": "전화번호:"
     }
+  },
+  "attendance": {
+    "header": {
+      "classBadge": "Class {{className}}",
+      "realtimeConnected": "Live Realtime",
+      "realtimeSyncing": "Auto Syncing"
+    },
+    "summary": {
+      "overallRateTitle": "Attendance Rate",
+      "excellentBadge": "Excellent",
+      "disciplineScoreLabel": "Attendance Score:",
+      "gpsVerifiedLabel": "GPS Verified",
+      "todayScheduleTitle": "Daily Schedule",
+      "subjectUnit": "subjects",
+      "timeWindowLabel": "Hours:",
+      "sessionsCount": "{{count}} sessions",
+      "attendedTitle": "Checked In",
+      "onTimeLabel": "On Time & In Range:",
+      "validStatus": "100% Valid",
+      "pendingTitle": "Pending Check-In",
+      "pendingUnit": "pending",
+      "completedTag": "Completed",
+      "absentOrExpiredLabel": "Absent / Expired:",
+      "openCountLabel": "{{count}} open now",
+      "waitingForTeacher": "Scheduled"
+    },
+    "filter": {
+      "all": "All Subjects",
+      "open": "Open for Check-In",
+      "present": "Checked In",
+      "absent": "Absent / Expired",
+      "dateSubtitle": "Subject attendance sessions scheduled for the selected date"
+    },
+    "status": {
+      "open": "Open for Check-In",
+      "present": "Checked In",
+      "excused": "Excused Leave",
+      "upcoming": "Not Open Yet",
+      "absent": "Absent / Expired"
+    },
+    "method": {
+      "qrScan": "QR Camera Scan",
+      "qrUpload": "QR Image Upload",
+      "pinCode": "6-Digit PIN",
+      "electronic": "Online Check-In"
+    },
+    "card": {
+      "subjectCodeLabel": "Subject Code:",
+      "teacherLabel": "Teacher:",
+      "roomLabel": "Classroom:",
+      "pinCodeBadge": "6-Digit PIN: {{code}}",
+      "radiusBadge": "Scan Radius: ≤ {{radius}}m",
+      "expiresInLabel": "Expires in: {{time}}",
+      "checkedInAt": "Checked in at: {{time}}",
+      "teacherGpsCoord": "Teacher Device GPS: {{lat}}, {{lng}}",
+      "deadlineLabel": "Expires at:",
+      "upcomingHint": "Teacher will issue 6-digit PIN & QR when class starts",
+      "expiredHint": "Attendance code has expired",
+      "verifiedGpsHint": "GPS coordinates & attendance verified",
+      "excusedHint": "Synchronized from approved leave request"
+    },
+    "empty": {
+      "noOpenTitle": "No subjects currently have an open attendance session",
+      "noPresentTitle": "No subjects have been checked in on this date yet",
+      "noAbsentTitle": "No subjects marked absent or expired",
+      "noScheduleTitle": "No matching attendance schedule found for the selected date",
+      "filterHint": "Try resetting filters or checking your search keyword.",
+      "dateHint": "Click 'Today' or select another weekday to view attendance schedules."
+    }
   }
 }

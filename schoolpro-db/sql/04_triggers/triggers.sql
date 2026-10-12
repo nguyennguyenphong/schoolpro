@@ -121,3 +121,10 @@ CREATE TRIGGER trg_student_fee_bills_updated_at
   BEFORE UPDATE ON academic.student_fee_bills
   FOR EACH ROW
   EXECUTE FUNCTION core.fn_set_updated_at();
+
+-- Auto-update updated_at for academic.attendance_sessions
+DROP TRIGGER IF EXISTS trg_attendance_sessions_updated_at ON academic.attendance_sessions;
+CREATE TRIGGER trg_attendance_sessions_updated_at
+  BEFORE UPDATE ON academic.attendance_sessions
+  FOR EACH ROW
+  EXECUTE FUNCTION core.fn_set_updated_at();
