@@ -9,6 +9,7 @@ import type {
   AssignmentSummary,
   AssignmentViewMode,
 } from "@/modules/students/features/assignments/types";
+import { SelectSubject } from "@/components/subjects/SelectSubject";
 
 interface SubjectOption {
   label: string;
@@ -42,7 +43,6 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   searchQuery,
   viewMode,
   summary,
-  subjects,
   hasActiveFilters = false,
   onSubjectChange,
   onStatusChange,
@@ -61,11 +61,6 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
     }, 50);
     return () => clearTimeout(timer);
   }, []);
-
-  const subjectOptions: SubjectOption[] =
-    subjects && subjects.length > 0
-      ? [{ label: t("card:assignments.filters.allSubjects"), value: "all" }, ...subjects]
-      : [{ label: t("card:assignments.filters.allSubjects"), value: "all" }];
 
   const statusOptions = [
     { label: t("card:assignments.filters.allStatuses"), value: "all" },
@@ -221,12 +216,11 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             >
               {t("card:assignments.filters.subject")}
             </label>
-            <Select
+            <SelectSubject
+              className="w-50 sm:w-50" 
               id="assignment-filter-subject"
               value={subject}
               onChange={onSubjectChange}
-              options={subjectOptions}
-              className="w-36 sm:w-44"
             />
           </div>
 

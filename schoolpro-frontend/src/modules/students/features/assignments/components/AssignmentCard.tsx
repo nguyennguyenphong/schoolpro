@@ -74,8 +74,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
 
   return (
     <div
-      onClick={() => onClick?.(assignment)}
-      className="bg-white border border-[#f0f0f0] hover:border-blue-300 rounded-xl p-4 flex flex-col justify-between gap-3.5 transition-all cursor-pointer shadow-2xs h-full"
+      className="bg-white border border-[#f0f0f0] rounded-xl p-4 flex flex-col justify-between gap-3.5 transition-all shadow-2xs h-full"
     >
       <div className="flex flex-col gap-2.5">
         {/* Row 1: Subject Badge & Status Badge */}
@@ -166,6 +165,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
             onClick?.(assignment);
           }}
           className="whitespace-nowrap shrink-0"
+          href={`/student/assignments/${assignment.id}`}
         >
           {assignment.status === "pending"
             ? t("button:submitAssignmentShort")
