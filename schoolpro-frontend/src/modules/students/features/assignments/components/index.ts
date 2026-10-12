@@ -9,6 +9,7 @@ export { FilePreviewModal } from "@/modules/students/features/assignments/compon
 export { FileItemCard } from "@/modules/students/features/assignments/components/FileItemCard";
 export { FileUploaderArea } from "@/modules/students/features/assignments/components/FileUploaderArea";
 export { ReopenRequestModal } from "@/modules/students/features/assignments/components/ReopenRequestModal";
+export { ScoreAppealModal } from "@/modules/students/features/assignments/components/ScoreAppealModal";
 export { AssignmentsPageHeader } from "@/modules/students/features/assignments/components/AssignmentsPageHeader";
 export { AssignmentsEmptyState } from "@/modules/students/features/assignments/components/AssignmentsEmptyState";
 export { AssignmentsPagination } from "@/modules/students/features/assignments/components/AssignmentsPagination";

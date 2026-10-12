@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
@@ -27,23 +28,46 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
   onRequestReopen,
   onStartResubmit,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
+  const attemptNumber = assignment.submission?.attemptNumber ?? 1;
+  const maxAttempts = (assignment.maxResubmissionCount ?? 3) + 1;
+  const canResubmit =
+    assignment.allowResubmission !== false && attemptNumber < maxAttempts;
+
   return (
     <div className="space-y-3.5">
       <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl space-y-3 text-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-blue-900 font-bold border-b border-blue-200/70 pb-2">
-          <span className="flex items-center gap-1.5">
-            <Icon name="check" size={14} className="text-emerald-600 shrink-0" />
-            <span>Bài tập đã được gửi lên hệ thống thành công</span>
-          </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-blue-900 font-bold border-b border-blue-200/70 pb-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="flex items-center gap-1.5">
+              <Icon name="check" size={14} className="text-emerald-600 shrink-0" />
+              <span>{t("card:assignments.detail.submissionSuccessBanner")}</span>
+            </span>
+            <Tag color="processing" className="m-0 text-[10px]">
+              {t("card:assignments.card.attemptBadge", {
+                attempt: attemptNumber,
+              })}
+            </Tag>
+            {assignment.submission?.isLate && (
+              <Tag color="warning" className="m-0 text-[10px]">
+                {t("card:assignments.card.lateBadge")}
+              </Tag>
+            )}
+          </div>
           <span className="text-slate-500 font-normal text-[11px]">
-            Thời gian nộp: {assignment.submission?.submittedAt}
+            {t("card:assignments.detail.submittedAtLabel", {
+              time: assignment.submission?.submittedAt ?? "",
+            })}
           </span>
         </div>
 
         {/* List of submitted files */}
         <div>
           <span className="text-xs font-bold text-slate-700 block mb-2">
-            Tệp bài làm đã nộp ({files.length} tệp):
+            {t("card:assignments.detail.submittedFilesLabel", {
+              count: files.length,
+            })}
           </span>
           <div className="space-y-2">
             {files.map((file) => (
@@ -61,7 +85,7 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
         {assignment.submission?.content && (
           <div className="pt-1">
             <span className="text-slate-500 block mb-1 font-medium">
-              Lời nhắn / Ghi chú gửi giáo viên:
+              {t("card:assignments.detail.studentNoteLabel")}
             </span>
             <p className="text-slate-800 italic bg-white p-3 rounded-lg border border-[#f0f0f0] mb-0 leading-relaxed">
               "{assignment.submission.content}"
@@ -80,16 +104,21 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-sm">Cổng nộp bài đã đóng</span>
-                  <Tag color="default">Hết hạn nộp</Tag>
+                  <span className="font-bold text-slate-900 text-sm">
+                    {t("card:assignments.detail.portClosedTitle")}
+                  </span>
+                  <Tag color="default">
+                    {t("card:assignments.detail.expiredTag")}
+                  </Tag>
                 </div>
                 <span className="text-xs text-slate-500">
-                  Hạn chót ({assignment.dueDate}) đã kết thúc. Học sinh không thể tự nộp lại bài làm.
+                  {t("card:assignments.detail.portClosedDesc", {
+                    dueDate: assignment.dueDate,
+                  })}
                 </span>
               </div>
             </div>
 
-            {/* Reopen Request Button */}
             <Button
               variant="outline"
               onClick={onRequestReopen}
@@ -98,31 +127,28 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
               <Icon name="mail" size={13} className="mr-1.5 text-blue-600" />
               <span>
                 {assignment.reopenRequest
-                  ? "Gửi lại yêu cầu mở cổng"
-                  : "Yêu cầu mở lại nộp bài"}
+                  ? t("button:resendReopenRequest")
+                  : t("button:requestReopenPort")}
               </span>
             </Button>
           </div>
 
-          {/* Display existing reopen request details if already requested */}
           {assignment.reopenRequest && (
             <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs space-y-1.5">
               <div className="flex items-center justify-between font-bold text-amber-900">
                 <span className="flex items-center gap-1.5">
                   <Icon name="clock" size={13} className="text-amber-600" />
-                  <span>Đã gửi yêu cầu mở lại cổng nộp bài</span>
+                  <span>{t("card:assignments.detail.reopenSentTitle")}</span>
                 </span>
-                <Tag color="warning">Đang chờ giáo viên phản hồi</Tag>
+                <Tag color="warning">
+                  {t("card:assignments.detail.reopenWaitingTag")}
+                </Tag>
               </div>
               <p className="text-slate-600 mb-0">
-                Gửi đến email giáo viên:{" "}
-                <strong className="text-blue-700">
-                  {assignment.reopenRequest.teacherEmail}
-                </strong>{" "}
-                • Thời gian gửi:{" "}
-                <span className="text-slate-700 font-medium">
-                  {assignment.reopenRequest.requestedAt}
-                </span>
+                {t("card:assignments.detail.reopenSentMeta", {
+                  email: assignment.reopenRequest.teacherEmail,
+                  time: assignment.reopenRequest.requestedAt,
+                })}
               </p>
               <div className="p-2.5 bg-white rounded border border-amber-200 text-slate-700 italic">
                 "{assignment.reopenRequest.reason}"
@@ -133,10 +159,14 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
       )}
 
       {/* Sub-case 1B: Still within deadline & not graded -> Allows Re-submitting */}
-      {!isSubmittedAndExpired && !isGraded && (
+      {!isSubmittedAndExpired && !isGraded && canResubmit && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
           <span className="text-[11px] text-slate-500 italic">
-            * Thời hạn nộp bài vẫn còn hiệu lực đến {assignment.dueDate}. Bạn có thể nộp lại bản sửa đổi nếu cần.
+            {t("card:assignments.detail.resubmitAllowedHint", {
+              dueDate: assignment.dueDate,
+              attempt: attemptNumber,
+              maxAttempts,
+            })}
           </span>
           <Button
             variant="outline"
@@ -144,7 +174,7 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
             className="self-end sm:self-auto"
           >
             <Icon name="refresh" size={12} />
-            Nộp lại bài làm
+            {t("button:resubmitAssignment")}
           </Button>
         </div>
       )}

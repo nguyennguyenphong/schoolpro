@@ -172,5 +172,10 @@
     "sortPeriodAsc": "最早节次优先",
     "sortPeriodDesc": "最晚节次优先",
     "sortStatusPriority": "正在开启优先"
+  },
+  "assignments": {
+    "submissionNoteLabel": "给教师的备注 / 直接作答:",
+    "submissionNotePlaceholder": "输入作业摘要说明、数据解释、小组分工或直接输入论述题回答...",
+    "uploadFilesLabel": "上传作业附件"
   }
 }

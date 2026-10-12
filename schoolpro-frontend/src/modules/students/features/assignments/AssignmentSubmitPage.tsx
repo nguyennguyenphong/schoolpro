@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -14,12 +15,14 @@ import { assignmentsService } from "@/modules/students/features/assignments/serv
 import {
   FilePreviewModal,
   ReopenRequestModal,
+  ScoreAppealModal,
   AssignmentDetailSkeleton,
 } from "@/modules/students/features/assignments/components";
 import {
   AssignmentSubmitHeader,
   AssignmentRequirementsCard,
   AssignmentTeacherAttachments,
+  AssignmentRubricCard,
   AssignmentGradedFeedbackCard,
   AssignmentSubmissionView,
   AssignmentOverdueCard,
@@ -36,6 +39,7 @@ import {
 export const AssignmentSubmitPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation(["card", "button", "message"]);
 
   const [assignment, setAssignment] = useState<AssignmentItem | null>(null);
   const [summary, setSummary] = useState<AssignmentSummary | null>(null);
@@ -59,6 +63,10 @@ export const AssignmentSubmitPage: React.FC = () => {
   // Reopen Request Modal state
   const [reopenModalOpen, setReopenModalOpen] = useState(false);
   const [requestingReopen, setRequestingReopen] = useState(false);
+
+  // Score Appeal Modal state
+  const [appealModalOpen, setAppealModalOpen] = useState(false);
+  const [submittingAppeal, setSubmittingAppeal] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -133,7 +141,7 @@ export const AssignmentSubmitPage: React.FC = () => {
   const handleSubmit = async () => {
     if (!assignment) return;
     if (!submissionContent.trim() && files.length === 0) {
-      message.warning("Vui lòng đính kèm ít nhất 1 tệp bài làm hoặc nhập nội dung trả lời!");
+      message.warning(t("message:assignments.emptySubmissionWarning"));
       return;
     }
 
@@ -147,12 +155,15 @@ export const AssignmentSubmitPage: React.FC = () => {
         files: files,
       };
 
-      const updated = await assignmentsService.submitAssignment(assignment.id, submission);
+      const updated = await assignmentsService.submitAssignment(
+        assignment.id,
+        submission,
+      );
       setAssignment(updated);
       setIsResubmitting(false);
-      message.success("Nộp bài tập trực tuyến thành công!");
+      message.success(t("message:assignments.submitSuccess"));
     } catch {
-      message.error("Đã xảy ra lỗi khi nộp bài. Vui lòng thử lại!");
+      message.error(t("message:assignments.submitError"));
     } finally {
       setSubmitting(false);
     }
@@ -162,16 +173,43 @@ export const AssignmentSubmitPage: React.FC = () => {
     if (!assignment) return;
     try {
       setRequestingReopen(true);
-      const updated = await assignmentsService.requestReopenAssignment(assignment.id, reason);
+      const updated = await assignmentsService.requestReopenAssignment(
+        assignment.id,
+        reason,
+      );
       setAssignment(updated);
       setReopenModalOpen(false);
       message.success(
-        `Đã gửi email yêu cầu mở lại cổng nộp bài đến giáo viên ${assignment.teacherName} (${updated.reopenRequest?.teacherEmail || assignment.teacherEmail}) thành công!`,
+        t("message:assignments.reopenSuccess", {
+          teacher: assignment.teacherName,
+          email:
+            updated.reopenRequest?.teacherEmail ||
+            assignment.teacherEmail ||
+            "",
+        }),
       );
     } catch {
-      message.error("Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại sau!");
+      message.error(t("message:assignments.reopenError"));
     } finally {
       setRequestingReopen(false);
+    }
+  };
+
+  const handleAppealScore = async (reason: string) => {
+    if (!assignment) return;
+    try {
+      setSubmittingAppeal(true);
+      const updated = await assignmentsService.appealAssignment(
+        assignment.id,
+        reason,
+      );
+      setAssignment(updated);
+      setAppealModalOpen(false);
+      message.success(t("message:assignments.appealSuccess"));
+    } catch {
+      message.error(t("message:assignments.appealError"));
+    } finally {
+      setSubmittingAppeal(false);
     }
   };
 
@@ -186,30 +224,35 @@ export const AssignmentSubmitPage: React.FC = () => {
           <Icon name="file" size={24} />
         </div>
         <h3 className="text-base font-bold text-slate-800 mb-1">
-          Không tìm thấy bài tập
+          {t("card:assignments.detail.notFoundTitle")}
         </h3>
         <p className="text-xs text-slate-500 mb-4">
-          Bài tập này không tồn tại hoặc đã được chuyển khỏi hệ thống.
+          {t("card:assignments.detail.notFoundDesc")}
         </p>
         <Button variant="primary" onClick={() => navigate("/student/assignments")}>
-          Quay lại danh sách bài tập
+          {t("button:backToAssignments")}
         </Button>
       </div>
     );
   }
 
   const isPastDue = isDueDatePassed(assignment.dueDate);
-  const isPending = assignment.status === "pending" && !isPastDue;
+  const canLateSubmit = isPastDue && Boolean(assignment.allowLateSubmission);
+  const isPending =
+    (assignment.status === "pending" && !isPastDue) ||
+    (!assignment.submission && canLateSubmit);
   const hasSubmission = Boolean(assignment.submission);
-  const isOverdue = assignment.status === "overdue" || (isPastDue && !hasSubmission);
+  const isOverdue =
+    (assignment.status === "overdue" || (isPastDue && !hasSubmission)) &&
+    !canLateSubmit;
   const isSubmitted = assignment.status === "submitted";
   const isGraded = assignment.status === "graded";
 
-  // Môn đã nộp bài rồi và hết hạn nộp thì đóng:
-  const isSubmittedAndExpired = (hasSubmission || isGraded) && isPastDue;
+  const isSubmittedAndExpired =
+    (hasSubmission || isGraded) && isPastDue && !canLateSubmit;
 
-  // Show upload form only when pending within deadline OR user clicked resubmit within deadline
-  const showForm = (isPending && !hasSubmission) || (isResubmitting && !isSubmittedAndExpired);
+  const showForm =
+    (isPending && !hasSubmission) || (isResubmitting && !isSubmittedAndExpired);
 
   const teacherEmail =
     assignment.teacherEmail ||
@@ -219,23 +262,23 @@ export const AssignmentSubmitPage: React.FC = () => {
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z]/g, "")}@schoolpro.edu.vn`;
 
-  const getTypeLabel = () => {
+  const getTypeLabel = (): string => {
     switch (assignment.type) {
       case "quiz":
-        return "Trắc nghiệm trực tuyến";
+        return t("card:assignments.typeLabels.quiz");
       case "project":
-        return "Báo cáo / Dự án";
+        return t("card:assignments.typeLabels.project");
       case "essay":
-        return "Bài viết / Tự luận";
+        return t("card:assignments.typeLabels.essay");
       case "homework":
       default:
-        return "Bài tập về nhà";
+        return t("card:assignments.typeLabels.homework");
     }
   };
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
-      {/* 1. Page Header with Breadcrumb & Details */}
+      {/* 1. Page Header with Breadcrumb & Workflow Steps */}
       <AssignmentSubmitHeader
         assignment={assignment}
         isPastDue={isPastDue}
@@ -245,16 +288,30 @@ export const AssignmentSubmitPage: React.FC = () => {
 
       {/* 2. Main 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-        {/* Left Column (2 spans): Requirements, Attachments, Feedback & Submission Area */}
+        {/* Left Column (2 spans): Requirements, Attachments, Rubric, Feedback & Submission Area */}
         <div className="lg:col-span-2 space-y-4 sm:space-y-5">
-          <AssignmentRequirementsCard description={assignment.description} />
+          <AssignmentRequirementsCard
+            description={assignment.description}
+            originalDueDate={assignment.originalDueDate}
+            extensions={assignment.extensions}
+          />
 
           <AssignmentTeacherAttachments
             attachments={assignment.attachments}
             onPreviewPdf={setPreviewPdf}
           />
 
-          <AssignmentGradedFeedbackCard assignment={assignment} />
+          <AssignmentRubricCard
+            rubric={assignment.rubric}
+            solutionAttachments={assignment.solutionAttachments}
+            isGraded={isGraded}
+            onPreviewPdf={setPreviewPdf}
+          />
+
+          <AssignmentGradedFeedbackCard
+            assignment={assignment}
+            onRequestAppeal={() => setAppealModalOpen(true)}
+          />
 
           {/* Submission Container Card */}
           <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
@@ -262,20 +319,30 @@ export const AssignmentSubmitPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
                 <h3 className="text-base font-bold text-slate-900 mb-0">
-                  Khu vực Nộp bài trực tuyến
+                  {t("card:assignments.detail.submissionAreaTitle")}
                 </h3>
               </div>
               <div>
                 {isSubmittedAndExpired ? (
-                  <Tag color="default">Đã nộp (Đã đóng)</Tag>
+                  <Tag color="default">
+                    {t("card:assignments.statusLabels.submittedClosed")}
+                  </Tag>
                 ) : isGraded ? (
-                  <Tag color="success">Đã chấm điểm</Tag>
+                  <Tag color="success">
+                    {t("card:assignments.statusLabels.graded")}
+                  </Tag>
                 ) : isSubmitted ? (
-                  <Tag color="processing">Đã nộp bài</Tag>
+                  <Tag color="processing">
+                    {t("card:assignments.statusLabels.submitted")}
+                  </Tag>
                 ) : isOverdue ? (
-                  <Tag color="error">Quá hạn nộp</Tag>
+                  <Tag color="error">
+                    {t("card:assignments.statusLabels.overdue")}
+                  </Tag>
                 ) : (
-                  <Tag color="warning">Chưa nộp bài</Tag>
+                  <Tag color="warning">
+                    {t("card:assignments.statusLabels.notSubmitted")}
+                  </Tag>
                 )}
               </div>
             </div>
@@ -310,14 +377,14 @@ export const AssignmentSubmitPage: React.FC = () => {
                 onCancelResubmit={() => setIsResubmitting(false)}
                 submitting={submitting}
                 onSubmit={handleSubmit}
+                maxFilesCount={assignment.maxFilesCount}
+                maxFileSizeMb={assignment.maxFileSizeMb}
               />
             )}
           </div>
 
-          {/* Standalone Event Timeline Log Card below "Khu vực Nộp bài trực tuyến" */}
-          {(isOverdue || Boolean(assignment.reopenRequest)) && (
-            <AssignmentOverdueLog assignment={assignment} />
-          )}
+          {/* Standalone Event Timeline Log Card */}
+          <AssignmentOverdueLog assignment={assignment} />
         </div>
 
         {/* Right Column: Deadlines, Guidelines & Academic Info */}
@@ -346,6 +413,14 @@ export const AssignmentSubmitPage: React.FC = () => {
         assignment={assignment}
         onSubmit={handleRequestReopen}
         loading={requestingReopen}
+      />
+
+      <ScoreAppealModal
+        open={appealModalOpen}
+        onClose={() => setAppealModalOpen(false)}
+        assignment={assignment}
+        onSubmit={handleAppealScore}
+        loading={submittingAppeal}
       />
 
       {previewPdf && (

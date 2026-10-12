@@ -1,19 +1,52 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
+import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
-export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
+interface AssignmentFileFormatGuidelinesCardProps {
+  assignment?: AssignmentItem;
+}
+
+export const AssignmentFileFormatGuidelinesCard: React.FC<
+  AssignmentFileFormatGuidelinesCardProps
+> = ({ assignment }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
       <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
         <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
         <h3 className="text-sm font-bold text-slate-900 mb-0">
-          Quy chuẩn định dạng tệp nộp bài
+          {t("card:assignments.detail.fileGuidelinesTitle")}
         </h3>
       </div>
 
       <p className="text-[11px] text-slate-500 mb-2">
-        Hệ thống chấp nhận đầy đủ 6 định dạng tiêu chuẩn cho học sinh:
+        {t("card:assignments.detail.fileGuidelinesSubtitle")}
       </p>
+
+      {assignment?.allowedFileTypes && assignment.allowedFileTypes.length > 0 && (
+        <div className="p-2.5 bg-slate-50 border border-[#f0f0f0] rounded-lg text-xs space-y-1.5">
+          <div className="flex items-center justify-between">
+            <strong className="text-blue-700">
+              {t("card:assignments.detail.maxFilesAndSizeBadge", {
+                maxFiles: assignment.maxFilesCount ?? 5,
+                maxSize: assignment.maxFileSizeMb ?? 25,
+              })}
+            </strong>
+          </div>
+          <div className="flex flex-wrap gap-1 pt-0.5">
+            {assignment.allowedFileTypes.map((ext) => (
+              <span
+                key={ext}
+                className="text-[10px] font-semibold text-slate-700 bg-white border border-slate-200 px-1.5 py-0.5 rounded uppercase"
+              >
+                .{ext}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="space-y-2 text-xs">
         <div className="flex items-center gap-2 p-2 rounded-lg bg-blue-50/70 border border-blue-200">
@@ -21,8 +54,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="file-text" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-blue-900 block truncate">Word (.docx, .doc)</span>
-            <span className="text-[11px] text-blue-700">Bài viết luận, báo cáo thu hoạch</span>
+            <span className="font-semibold text-blue-900 block truncate">
+              {t("card:assignments.detail.formatWordTitle")}
+            </span>
+            <span className="text-[11px] text-blue-700">
+              {t("card:assignments.detail.formatWordDesc")}
+            </span>
           </div>
         </div>
 
@@ -31,8 +68,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="file-spreadsheet" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-emerald-900 block truncate">Excel (.xlsx, .csv)</span>
-            <span className="text-[11px] text-emerald-700">Bảng số liệu thí nghiệm, biểu đồ</span>
+            <span className="font-semibold text-emerald-900 block truncate">
+              {t("card:assignments.detail.formatExcelTitle")}
+            </span>
+            <span className="text-[11px] text-emerald-700">
+              {t("card:assignments.detail.formatExcelDesc")}
+            </span>
           </div>
         </div>
 
@@ -41,8 +82,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="file" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-rose-900 block truncate">PDF (.pdf)</span>
-            <span className="text-[11px] text-rose-700">Bản scan bài giải viết tay, tài liệu</span>
+            <span className="font-semibold text-rose-900 block truncate">
+              {t("card:assignments.detail.formatPdfTitle")}
+            </span>
+            <span className="text-[11px] text-rose-700">
+              {t("card:assignments.detail.formatPdfDesc")}
+            </span>
           </div>
         </div>
 
@@ -51,8 +96,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="image" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-indigo-900 block truncate">Hình ảnh (.jpg, .png)</span>
-            <span className="text-[11px] text-indigo-700">Ảnh chụp vở bài tập, sơ đồ tư duy</span>
+            <span className="font-semibold text-indigo-900 block truncate">
+              {t("card:assignments.detail.formatImageTitle")}
+            </span>
+            <span className="text-[11px] text-indigo-700">
+              {t("card:assignments.detail.formatImageDesc")}
+            </span>
           </div>
         </div>
 
@@ -61,8 +110,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="video" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-purple-900 block truncate">Video (.mp4, .mov)</span>
-            <span className="text-[11px] text-purple-700">Clip thuyết trình, bài tập thực hành</span>
+            <span className="font-semibold text-purple-900 block truncate">
+              {t("card:assignments.detail.formatVideoTitle")}
+            </span>
+            <span className="text-[11px] text-purple-700">
+              {t("card:assignments.detail.formatVideoDesc")}
+            </span>
           </div>
         </div>
 
@@ -71,8 +124,12 @@ export const AssignmentFileFormatGuidelinesCard: React.FC = () => {
             <Icon name="music" size={13} />
           </div>
           <div className="min-w-0">
-            <span className="font-semibold text-amber-900 block truncate">Audio (.mp3, .wav)</span>
-            <span className="text-[11px] text-amber-700">Ghi âm phát âm tiếng Anh, thuyết minh</span>
+            <span className="font-semibold text-amber-900 block truncate">
+              {t("card:assignments.detail.formatAudioTitle")}
+            </span>
+            <span className="text-[11px] text-amber-700">
+              {t("card:assignments.detail.formatAudioDesc")}
+            </span>
           </div>
         </div>
       </div>

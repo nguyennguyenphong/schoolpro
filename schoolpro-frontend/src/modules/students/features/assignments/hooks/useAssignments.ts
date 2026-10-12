@@ -157,6 +157,7 @@ export function useAssignments(): UseAssignmentsResult {
       filter.subject !== "all" ||
       filter.status !== "all" ||
       filter.type !== "all" ||
+      Boolean(filter.sortBy && filter.sortBy !== "newest") ||
       filter.searchQuery.trim().length > 0
     );
   }, [filter]);

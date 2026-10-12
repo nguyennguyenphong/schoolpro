@@ -13,6 +13,7 @@ from apps.academic.serializers.assignment_serializers import (
     AssignmentItemResponseSerializer,
     AssignmentSummaryResponseSerializer,
     ReopenRequestInputSerializer,
+    ScoreAppealInputSerializer,
     SubmitAssignmentRequestSerializer,
 )
 from apps.academic.services.assignment_service import AssignmentService
@@ -68,13 +69,13 @@ class AssignmentPagination(PageNumberPagination):
     ),
     retrieve=extend_schema(
         summary="Get assignment detail",
-        description="Retrieve full assignment requirement, teacher attachments, and student submission.",
+        description="Retrieve full assignment requirement, teacher attachments, rubric, event logs, and student submission.",
         responses={200: AssignmentItemResponseSerializer},
     ),
 )
 class StudentAssignmentViewSet(viewsets.ViewSet):
     """
-    ViewSet providing student homework feed, detail view, submission, and reopen requests.
+    ViewSet providing student homework feed, detail view, submission, reopen requests, and score appeals.
     """
 
     authentication_classes = [SchoolProJWTAuthentication]
@@ -156,7 +157,7 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
 
     @extend_schema(
         summary="Get assignment summary and metrics",
-        description="Aggregated count of total, pending, submitted, graded, overdue, and average score.",
+        description="Aggregated count of total, pending, submitted, graded, overdue, average score, and class subjects.",
         responses={200: AssignmentSummaryResponseSerializer},
     )
     @action(detail=False, methods=["get"], url_path="summary")
@@ -232,6 +233,40 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
             return APIResponse.success(
                 data=response_serializer.data,
                 message="Đã gửi yêu cầu mở lại nộp bài đến giáo viên",
+            )
+        except Exception as e:
+            return APIResponse.error(
+                message=str(e),
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+    @extend_schema(
+        summary="Submit score appeal for graded assignment",
+        description="Send a score appeal (phúc khảo điểm) to the subject teacher for a graded assignment.",
+        request=ScoreAppealInputSerializer,
+        responses={200: AssignmentItemResponseSerializer},
+    )
+    @action(detail=True, methods=["post"], url_path="appeal")
+    def appeal(self, request, pk=None):
+        """
+        Submit score appeal request for a graded assignment.
+        """
+        serializer = ScoreAppealInputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        reason = serializer.validated_data["reason"]
+        attachments = serializer.validated_data.get("attachments", [])
+        try:
+            updated_item = self.service.submit_appeal(
+                user=request.user,
+                assignment_id=pk,
+                reason=reason,
+                attachments=attachments,
+            )
+            response_serializer = AssignmentItemResponseSerializer(updated_item)
+            return APIResponse.success(
+                data=response_serializer.data,
+                message="Đã gửi yêu cầu phúc khảo điểm đến giáo viên bộ môn",
             )
         except Exception as e:
             return APIResponse.error(

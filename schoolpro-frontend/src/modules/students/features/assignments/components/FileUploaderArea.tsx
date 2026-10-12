@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { message } from "antd";
 import type { SubmittedFile, FileCategory } from "@/modules/students/features/assignments/types";
 import {
@@ -18,38 +19,52 @@ interface FileUploaderAreaProps {
   onChange: (files: SubmittedFile[]) => void;
   onPreview: (file: SubmittedFile) => void;
   maxFiles?: number;
+  maxFileSizeMb?: number;
 }
 
 export const FileUploaderArea: React.FC<FileUploaderAreaProps> = ({
   files,
   onChange,
   onPreview,
-  maxFiles = 10,
+  maxFiles = 5,
+  maxFileSizeMb = 25,
 }) => {
+  const { t } = useTranslation(["card", "message"]);
   const [isDragging, setIsDragging] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<FileCategory | "all">("all");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleProcessFiles = (newFileList: FileList | File[]) => {
     const validFiles: SubmittedFile[] = [];
-    const maxSizeBytes = 100 * 1024 * 1024; // 100MB
+    const maxSizeBytes = maxFileSizeMb * 1024 * 1024;
 
     Array.from(newFileList).forEach((file) => {
       if (files.length + validFiles.length >= maxFiles) {
-        message.warning(`Bạn chỉ được đính kèm tối đa ${maxFiles} tệp cho một lần nộp.`);
+        message.warning(
+          t("message:assignments.maxFilesWarning", { max: maxFiles }),
+        );
         return;
       }
 
       if (file.size > maxSizeBytes) {
-        message.error(`Tệp "${file.name}" vượt quá giới hạn 100MB.`);
+        message.error(
+          t("message:assignments.maxFileSizeError", {
+            name: file.name,
+            max: maxFileSizeMb,
+          }),
+        );
         return;
       }
 
       const category = detectFileType(file.name);
       let previewUrl: string | undefined = undefined;
 
-      // Create preview object URL for multimedia & PDF documents
-      if (category === "image" || category === "video" || category === "audio" || category === "pdf") {
+      if (
+        category === "image" ||
+        category === "video" ||
+        category === "audio" ||
+        category === "pdf"
+      ) {
         try {
           previewUrl = URL.createObjectURL(file);
         } catch {
@@ -63,14 +78,16 @@ export const FileUploaderArea: React.FC<FileUploaderAreaProps> = ({
         size: formatFileSize(file.size),
         sizeBytes: file.size,
         type: category,
-        uploadedAt: "Vừa tải lên",
+        uploadedAt: t("card:assignments.uploader.justUploaded"),
         previewUrl,
       });
     });
 
     if (validFiles.length > 0) {
       onChange([...files, ...validFiles]);
-      message.success(`Đã thêm ${validFiles.length} tệp bài làm.`);
+      message.success(
+        t("message:assignments.filesAddedSuccess", { count: validFiles.length }),
+      );
     }
   };
 

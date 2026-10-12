@@ -282,4 +282,4 @@ class AssignmentEventLog(UUIDModel):
         ordering = ["created_at"]
 
     def __str__(self) -> str:
-        return f"{self.event_title} ({self.created_at})"
+        return f"{self.title} ({self.created_at})"

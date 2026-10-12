@@ -1,8 +1,12 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon/types";
-import type { AssignmentItem } from "@/modules/students/features/assignments/types";
+import type {
+  AssignmentEventLogItem,
+  AssignmentItem,
+} from "@/modules/students/features/assignments/types";
 
 interface AssignmentOverdueLogProps {
   assignment: AssignmentItem;
@@ -18,106 +22,125 @@ interface LogEventItem {
   iconName: IconName;
   iconBgClass: string;
   iconTextClass: string;
-  isLast?: boolean;
 }
 
-export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assignment }) => {
-  const events: LogEventItem[] = [
-    {
-      id: "event-assigned",
-      time: assignment.assignedDate,
-      title: "Giao bài tập & Mở cổng nộp bài",
-      description: (
-        <span>
-          Giáo viên phụ trách <strong className="text-slate-800">{assignment.teacherName}</strong> đã
-          phát hành đề bài và kích hoạt cổng nộp bài trực tuyến cho học sinh.
-        </span>
-      ),
-      tagText: "Đã giao bài",
-      tagColor: "processing",
-      iconName: "file-text",
-      iconBgClass: "bg-blue-100 text-blue-700 border border-blue-200",
-      iconTextClass: "text-blue-700",
-    },
-    {
-      id: "event-due",
-      time: assignment.dueDate,
-      title: "Hết hạn nộp & Tự động khóa cổng",
-      description: (
-        <span>
-          Hết thời hạn nộp bài theo lịch biểu học vụ. Hệ thống SchoolPro đã tự động khóa cổng nộp
-          trực tuyến. Bài tập được chuyển sang trạng thái <strong>Quá hạn</strong>.
-        </span>
-      ),
-      tagText: "Đã khóa cổng",
-      tagColor: "error",
-      iconName: "lock",
-      iconBgClass: "bg-rose-100 text-rose-700 border border-rose-200",
-      iconTextClass: "text-rose-700",
-    },
-  ];
+export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({
+  assignment,
+}) => {
+  const { t } = useTranslation(["card"]);
 
-  if (assignment.reopenRequest) {
-    events.push({
-      id: "event-reopen-request",
-      time: assignment.reopenRequest.requestedAt,
-      title: "Học sinh gửi yêu cầu mở lại cổng",
-      description: (
-        <div className="space-y-1.5 pt-0.5">
-          <p className="text-xs text-slate-600 mb-0">
-            Đã gửi thông điệp yêu cầu đến giáo viên{" "}
-            <strong className="text-slate-800">{assignment.teacherName}</strong> qua hòm thư{" "}
-            <span className="font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-              {assignment.reopenRequest.teacherEmail}
-            </span>
-          </p>
-          <div className="p-2.5 bg-amber-50/70 border border-amber-200/80 rounded-lg text-slate-700 italic text-xs mt-3">
-            "{assignment.reopenRequest.reason}"
-          </div>
-        </div>
-      ),
-      tagText: "Chờ phê duyệt",
-      tagColor: "warning",
-      iconName: "mail",
-      iconBgClass: "bg-amber-100 text-amber-700 border border-amber-200",
-      iconTextClass: "text-amber-700",
-    });
+  const mapBackendEvent = (item: AssignmentEventLogItem): LogEventItem => {
+    switch (item.eventType) {
+      case "ASSIGNED":
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title || t("card:assignments.detail.stepAssigned"),
+          description: item.description,
+          tagText: t("card:assignments.detail.stepAssigned"),
+          tagColor: "processing",
+          iconName: "file-text",
+          iconBgClass: "bg-blue-100 text-blue-700 border border-blue-200",
+          iconTextClass: "text-blue-700",
+        };
+      case "DEADLINE_EXTENDED":
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title,
+          description: item.description,
+          tagText: t("card:assignments.card.extendedBadge", { level: 1 }),
+          tagColor: "warning",
+          iconName: "clock",
+          iconBgClass: "bg-amber-100 text-amber-700 border border-amber-200",
+          iconTextClass: "text-amber-700",
+        };
+      case "SUBMITTED":
+      case "RESUBMITTED":
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title,
+          description: item.description,
+          tagText: t("card:assignments.statusLabels.submitted"),
+          tagColor: "processing",
+          iconName: "upload",
+          iconBgClass: "bg-indigo-100 text-indigo-700 border border-indigo-200",
+          iconTextClass: "text-indigo-700",
+        };
+      case "GRADED":
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title,
+          description: item.description,
+          tagText: t("card:assignments.statusLabels.graded"),
+          tagColor: "success",
+          iconName: "check",
+          iconBgClass: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+          iconTextClass: "text-emerald-700",
+        };
+      case "REOPEN_REQUESTED":
+      case "APPEAL_SUBMITTED":
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title,
+          description: item.description,
+          tagText: t("card:assignments.detail.reopenWaitingTag"),
+          tagColor: "warning",
+          iconName: "mail",
+          iconBgClass: "bg-amber-100 text-amber-700 border border-amber-200",
+          iconTextClass: "text-amber-700",
+        };
+      case "DUE_EXPIRED":
+      default:
+        return {
+          id: item.id,
+          time: item.createdAt,
+          title: item.title || t("card:assignments.detail.overdueLockedTitle"),
+          description: item.description,
+          tagText: t("card:assignments.detail.expiredTag"),
+          tagColor: "error",
+          iconName: "lock",
+          iconBgClass: "bg-rose-100 text-rose-700 border border-rose-200",
+          iconTextClass: "text-rose-700",
+        };
+    }
+  };
 
-    events.push({
-      id: "event-current-status",
-      time: "Hiện tại",
-      title: "Đang chờ giáo viên xử lý yêu cầu",
-      description: (
-        <span>
-          Yêu cầu đề xuất mở lại đang trong danh sách chờ duyệt của giáo viên bộ môn. Học sinh sẽ
-          nhận được thông báo ngay khi giáo viên phản hồi hoặc gia hạn cổng nộp bài.
-        </span>
-      ),
-      tagText: "Đang xử lý",
-      tagColor: "warning",
-      iconName: "clock",
-      iconBgClass: "bg-amber-50 text-amber-600 border border-amber-200",
-      iconTextClass: "text-amber-600",
-      isLast: true,
-    });
+  let events: LogEventItem[] = [];
+
+  if (assignment.eventLogs && assignment.eventLogs.length > 0) {
+    events = assignment.eventLogs.map(mapBackendEvent);
   } else {
-    events.push({
-      id: "event-current-closed",
-      time: "Hiện tại",
-      title: "Cổng nộp bài đang đóng",
-      description: (
-        <span>
-          Học sinh chưa thể tải bài làm lên hệ thống. Nếu có lý do chính đáng cần nộp bài bổ sung,
-          vui lòng sử dụng tính năng gửi yêu cầu mở cổng nộp bài bên trên.
-        </span>
-      ),
-      tagText: "Tạm khóa",
-      tagColor: "error",
-      iconName: "lock",
-      iconBgClass: "bg-slate-100 text-slate-600 border border-[#f0f0f0]",
-      iconTextClass: "text-slate-600",
-      isLast: true,
-    });
+    events = [
+      {
+        id: "event-assigned",
+        time: assignment.assignedDate,
+        title: t("card:assignments.detail.stepAssigned"),
+        description: `${t("card:assignments.detail.eventActorPrefix")} ${assignment.teacherName}`,
+        tagText: t("card:assignments.detail.stepAssigned"),
+        tagColor: "processing",
+        iconName: "file-text",
+        iconBgClass: "bg-blue-100 text-blue-700 border border-blue-200",
+        iconTextClass: "text-blue-700",
+      },
+    ];
+
+    if (assignment.status === "overdue") {
+      events.push({
+        id: "event-due",
+        time: assignment.dueDate,
+        title: t("card:assignments.detail.overdueLockedTitle"),
+        description: t("card:assignments.detail.overdueLockedDesc"),
+        tagText: t("card:assignments.detail.expiredTag"),
+        tagColor: "error",
+        iconName: "lock",
+        iconBgClass: "bg-rose-100 text-rose-700 border border-rose-200",
+        iconTextClass: "text-rose-700",
+      });
+    }
   }
 
   return (
@@ -126,20 +149,20 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assi
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h3 className="text-base font-bold text-slate-900 mb-0">
-            Nhật ký tiến trình sự kiện (Log)
+            {t("card:assignments.detail.eventLogTitle")}
           </h3>
         </div>
-        <span className="text-[11px] text-slate-400 font-medium">Theo dòng thời gian từ trên xuống</span>
+        <span className="text-[11px] text-slate-400 font-medium">
+          {t("card:assignments.detail.eventLogSubtitle")}
+        </span>
       </div>
 
-      {/* Top-to-Bottom Vertical Timeline Log */}
       <div className="relative pl-1 pr-1 pt-1">
         {events.map((event, index) => {
           const isFinal = index === events.length - 1;
 
           return (
             <div key={event.id} className="relative flex items-start gap-3 sm:gap-4 group">
-              {/* Vertical connecting line */}
               {!isFinal && (
                 <div
                   className="absolute left-4 top-8 -bottom-3 w-0.5 bg-slate-200 group-hover:bg-blue-300 transition-colors"
@@ -147,14 +170,12 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assi
                 />
               )}
 
-              {/* Node Icon */}
               <div
                 className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-xs transition-transform ${event.iconBgClass}`}
               >
                 <Icon name={event.iconName} size={14} className={event.iconTextClass} />
               </div>
 
-              {/* Event Content Card */}
               <div className="flex-1 pb-5 min-w-0">
                 <div className="bg-slate-50/70 border border-[#f0f0f0]/80 rounded-xl p-3 sm:p-3.5 space-y-1.5 transition-colors hover:bg-slate-50 hover:border-slate-300">
                   <div className="flex flex-wrap items-center justify-between gap-1.5">
@@ -170,7 +191,9 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({ assi
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-600 leading-relaxed">{event.description}</div>
+                  <div className="text-xs text-slate-600 leading-relaxed">
+                    {event.description}
+                  </div>
                 </div>
               </div>
             </div>

@@ -46,9 +46,9 @@ export const AssignmentSubmitSidebar: React.FC<AssignmentSubmitSidebarProps> = (
         teacherEmail={teacherEmail}
       />
 
-      <AssignmentFileFormatGuidelinesCard />
+      <AssignmentFileFormatGuidelinesCard assignment={assignment} />
 
-      <AssignmentSubmissionNotesCard />
+      <AssignmentSubmissionNotesCard assignment={assignment} />
     </div>
   );
 };

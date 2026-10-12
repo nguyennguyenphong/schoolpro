@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { TextArea } from "@/components/ui/Input";
 import { Icon } from "@/components/ui/Icon";
@@ -15,6 +16,8 @@ interface AssignmentSubmitFormProps {
   onCancelResubmit: () => void;
   submitting: boolean;
   onSubmit: () => void;
+  maxFilesCount?: number;
+  maxFileSizeMb?: number;
 }
 
 export const AssignmentSubmitForm: React.FC<AssignmentSubmitFormProps> = ({
@@ -27,37 +30,48 @@ export const AssignmentSubmitForm: React.FC<AssignmentSubmitFormProps> = ({
   onCancelResubmit,
   submitting,
   onSubmit,
+  maxFilesCount = 10,
+  maxFileSizeMb = 100,
 }) => {
+  const { t } = useTranslation(["card", "button", "input"]);
+
   return (
     <div className="space-y-4">
-      {/* File Uploader supporting Word, Excel, Video, Audio, PDF, Image */}
       <FileUploaderArea
         files={files}
         onChange={onFilesChange}
         onPreview={onPreview}
+        maxFiles={maxFilesCount}
+        maxFileSizeMb={maxFileSizeMb}
       />
 
-      {/* Accompanying Teacher Note / Text Answer */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="text-xs font-semibold text-slate-700 block mb-0">
-            Ghi chú / Trả lời trực tiếp cho giáo viên:
+          <label
+            htmlFor="assignment-submission-content"
+            className="text-xs font-semibold text-slate-700 block mb-0"
+          >
+            {t("input:assignments.submissionNoteLabel")}
           </label>
           <span className="text-[11px] text-slate-400">
-            {submissionContent.length}/1000 ký tự
+            {t("card:assignments.modals.charCount", {
+              count: submissionContent.length,
+              max: 1000,
+            })}
           </span>
         </div>
         <TextArea
+          id="assignment-submission-content"
+          name="submissionContent"
           rows={4}
           maxLength={1000}
-          placeholder="Nhập ghi chú tóm tắt bài làm, giải trình số liệu, phân công nhóm hoặc câu trả lời tự luận trực tiếp..."
+          placeholder={t("input:assignments.submissionNotePlaceholder")}
           value={submissionContent}
           onChange={(e) => onContentChange(e.target.value)}
           style={{ resize: "none" }}
         />
       </div>
 
-      {/* Submit Confirmation Buttons */}
       <div className="flex items-center justify-between pt-3 border-t border-slate-100">
         <div>
           {isResubmitting && (
@@ -66,7 +80,7 @@ export const AssignmentSubmitForm: React.FC<AssignmentSubmitFormProps> = ({
               onClick={onCancelResubmit}
               disabled={submitting}
             >
-              Hủy nộp lại
+              {t("button:cancelResubmit")}
             </Button>
           )}
         </div>
@@ -79,7 +93,9 @@ export const AssignmentSubmitForm: React.FC<AssignmentSubmitFormProps> = ({
             className="px-5 font-semibold"
           >
             <Icon name="check" size={13} />
-            {submitting ? "Đang gửi bài..." : "Xác nhận nộp bài"}
+            {submitting
+              ? t("button:submittingAssignment")
+              : t("button:confirmSubmitAssignment")}
           </Button>
         </div>
       </div>

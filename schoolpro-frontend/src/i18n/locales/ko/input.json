@@ -172,5 +172,10 @@
     "sortPeriodAsc": "이른 교시순",
     "sortPeriodDesc": "늦은 교시순",
     "sortStatusPriority": "진행 중 우선"
+  },
+  "assignments": {
+    "submissionNoteLabel": "교사에게 남길 메모 / 직접 답변:",
+    "submissionNotePlaceholder": "과제 요약, 데이터 설명, 조원 역할 분담 또는 서술형 답변을 입력하세요...",
+    "uploadFilesLabel": "과제 첨부파일 업로드"
   }
 }

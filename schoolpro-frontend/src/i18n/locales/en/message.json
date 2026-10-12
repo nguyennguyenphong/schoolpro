@@ -94,5 +94,19 @@
     "teacherGpsUpdated": "Updated Teacher device GPS coordinates!",
     "invalidImageFormat": "Please upload a valid image file (PNG, JPG, JPEG, WebP, SVG).",
     "selectQrImageFirst": "Please select or upload a QR code image first."
+  },
+  "assignments": {
+    "emptySubmissionWarning": "Please attach at least 1 solution file or enter a text answer!",
+    "submitSuccess": "Online assignment submitted successfully!",
+    "submitError": "An error occurred while submitting your work. Please try again!",
+    "reopenEmptyReasonWarning": "Please enter a reason and message for your teacher!",
+    "reopenSuccess": "Reopen request sent to teacher {{teacher}} ({{email}}) successfully!",
+    "reopenError": "Failed to send reopen request. Please try again later!",
+    "appealEmptyReasonWarning": "Please enter your score appeal explanation!",
+    "appealSuccess": "Score appeal request sent to the subject teacher successfully!",
+    "appealError": "Could not submit score appeal request. Please try again!",
+    "maxFilesWarning": "You may attach at most {{max}} files per submission.",
+    "maxFileSizeError": "File \"{{name}}\" exceeds the {{max}}MB size limit.",
+    "filesAddedSuccess": "Added {{count}} assignment file(s)."
   }
 }

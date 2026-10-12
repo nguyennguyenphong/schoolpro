@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
@@ -17,6 +18,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
   open,
   onClose,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
   if (!file) return null;
 
   const meta = FILE_CATEGORIES_META[file.type] || FILE_CATEGORIES_META.other;
@@ -26,7 +29,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
       open={open}
       onCancel={onClose}
       footer={null}
-      destroyOnHidden      
+      destroyOnHidden
       width={
         file.type === "pdf"
           ? 960
@@ -47,7 +50,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               {file.name}
             </h4>
             <span className="text-[11px] text-slate-500 font-normal">
-              {meta.title} • {file.size}
+              {meta.badge} • {file.size}
             </span>
           </div>
         </div>
@@ -66,7 +69,11 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             ) : (
               <div className="py-16 text-center text-slate-400">
                 <Icon name="image" size={48} className="mx-auto mb-2 opacity-50" />
-                <p className="text-xs">Xem trước hình ảnh: {file.name}</p>
+                <p className="text-xs">
+                  {t("card:assignments.uploader.previewImageAlt", {
+                    name: file.name,
+                  })}
+                </p>
               </div>
             )}
           </div>
@@ -81,13 +88,19 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                 controls
                 autoPlay
                 className="w-full max-h-[60vh] object-contain"
-              >
-                Trình duyệt của bạn không hỗ trợ phát video này.
-              </video>
+              />
             ) : (
               <div className="py-20 text-center text-slate-300">
-                <Icon name="video" size={48} className="mx-auto mb-2 opacity-60 text-purple-400" />
-                <p className="text-xs">Trình phát video xem trước: {file.name}</p>
+                <Icon
+                  name="video"
+                  size={48}
+                  className="mx-auto mb-2 opacity-60 text-purple-400"
+                />
+                <p className="text-xs">
+                  {t("card:assignments.uploader.previewVideoFallback", {
+                    name: file.name,
+                  })}
+                </p>
               </div>
             )}
           </div>
@@ -100,18 +113,22 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               <Icon name="music" size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0.5">{file.name}</h4>
-              <p className="text-xs text-amber-700">Tệp ghi âm / âm thanh phát âm ({file.size})</p>
+              <h4 className="text-sm font-bold text-slate-800 mb-0.5">
+                {file.name}
+              </h4>
+              <p className="text-xs text-amber-700">
+                {t("card:assignments.uploader.previewAudioDesc", {
+                  size: file.size,
+                })}
+              </p>
             </div>
             {file.previewUrl ? (
               <div className="pt-2">
-                <audio src={file.previewUrl} controls className="w-full">
-                  Trình duyệt không hỗ trợ phát âm thanh này.
-                </audio>
+                <audio src={file.previewUrl} controls className="w-full" />
               </div>
             ) : (
               <div className="text-xs text-slate-500 italic">
-                (Tệp ghi âm sẵn sàng nộp cho giáo viên kiểm tra)
+                {t("card:assignments.uploader.previewAudioReady")}
               </div>
             )}
           </div>
@@ -124,17 +141,22 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               W
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0.5">{file.name}</h4>
-              <p className="text-xs text-blue-700">Tài liệu soạn thảo Microsoft Word ({file.size})</p>
+              <h4 className="text-sm font-bold text-slate-800 mb-0.5">
+                {file.name}
+              </h4>
+              <p className="text-xs text-blue-700">
+                {t("card:assignments.uploader.previewWordDesc", {
+                  size: file.size,
+                })}
+              </p>
             </div>
             <div className="p-3 bg-white rounded-lg border border-blue-100 text-xs text-slate-600 text-left space-y-1">
               <div className="flex items-center gap-1.5 font-semibold text-slate-700">
                 <Icon name="info" size={13} className="text-blue-600" />
-                <span>Thông tin tệp Word:</span>
+                <span>{t("card:assignments.uploader.previewWordInfoTitle")}</span>
               </div>
               <p className="text-[11px] text-slate-500 mb-0">
-                Hệ thống hỗ trợ lưu trữ và chuyển giao tài liệu nguyên bản đến giáo viên bộ môn.
-                Thầy cô sẽ đọc và nhận xét chi tiết trên tệp Word khi chấm bài.
+                {t("card:assignments.uploader.previewWordInfoDesc")}
               </p>
             </div>
           </div>
@@ -147,16 +169,22 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               X
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0.5">{file.name}</h4>
-              <p className="text-xs text-emerald-700">Bảng tính Microsoft Excel / CSV ({file.size})</p>
+              <h4 className="text-sm font-bold text-slate-800 mb-0.5">
+                {file.name}
+              </h4>
+              <p className="text-xs text-emerald-700">
+                {t("card:assignments.uploader.previewExcelDesc", {
+                  size: file.size,
+                })}
+              </p>
             </div>
             <div className="p-3 bg-white rounded-lg border border-emerald-100 text-xs text-slate-600 text-left space-y-1">
               <div className="flex items-center gap-1.5 font-semibold text-slate-700">
                 <Icon name="info" size={13} className="text-emerald-600" />
-                <span>Thông tin bảng tính:</span>
+                <span>{t("card:assignments.uploader.previewExcelInfoTitle")}</span>
               </div>
               <p className="text-[11px] text-slate-500 mb-0">
-                Tệp bảng số liệu thống kê, công thức tính toán và biểu đồ đã được đính kèm chuẩn xác.
+                {t("card:assignments.uploader.previewExcelInfoDesc")}
               </p>
             </div>
           </div>
@@ -179,8 +207,14 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               <Icon name="file-archive" size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0.5">{file.name}</h4>
-              <p className="text-xs text-slate-500">Tệp nén dữ liệu học tập ({file.size})</p>
+              <h4 className="text-sm font-bold text-slate-800 mb-0.5">
+                {file.name}
+              </h4>
+              <p className="text-xs text-slate-500">
+                {t("card:assignments.uploader.previewArchiveDesc", {
+                  size: file.size,
+                })}
+              </p>
             </div>
           </div>
         )}
@@ -191,14 +225,14 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             <a
               href={file.previewUrl}
               download={file.name}
-              className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-[#f0f0f0] rounded-lg hover:bg-slate-50 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-[#f0f0f0] rounded-lg hover:bg-slate-50 transition-colors"
             >
               <Icon name="download" size={13} />
-              Tải xuống tệp
+              <span>{t("button:downloadFile")}</span>
             </a>
           )}
           <Button variant="primary" onClick={onClose}>
-            Đóng xem trước
+            {t("button:closePreview")}
           </Button>
         </div>
       </div>

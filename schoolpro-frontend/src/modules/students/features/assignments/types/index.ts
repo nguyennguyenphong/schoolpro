@@ -8,6 +8,21 @@ export interface AssignmentAttachment {
   url: string;
 }
 
+export interface AssignmentExtension {
+  level: number;
+  dueDate: string;
+  reason?: string;
+}
+
+export interface AssignmentRubricCriterion {
+  id: string;
+  criterion: string;
+  maxPoints: number;
+  description?: string;
+  earnedPoints?: number | null;
+  comment?: string | null;
+}
+
 export type FileCategory =
   | "word"
   | "excel"
@@ -30,7 +45,13 @@ export interface SubmittedFile {
 }
 
 export interface AssignmentSubmission {
+  id?: string;
+  attemptNumber?: number;
+  submissionStatus?: string;
   submittedAt: string;
+  isLate?: boolean;
+  lateMinutes?: number;
+  penaltyDeduction?: number;
   content?: string;
   fileUrl?: string;
   fileName?: string;
@@ -42,38 +63,90 @@ export interface ReopenRequest {
   reason: string;
   teacherEmail: string;
   status: "pending" | "approved" | "rejected";
+  approvedAt?: string | null;
+}
+
+export interface ScoreAppeal {
+  status: "pending" | "approved" | "rejected";
+  reason: string;
+  attachments?: AssignmentAttachment[];
+  appealedAt: string;
+  response?: string | null;
+  resolvedAt?: string | null;
+  resolvedByName?: string | null;
+}
+
+export interface AssignmentEventLogItem {
+  id: string;
+  eventType: string;
+  title: string;
+  description?: string;
+  actorName?: string;
+  createdAt: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface AssignmentSubjectOption {
+  code: string;
+  name: string;
+  count: number;
 }
 
 export interface AssignmentItem {
   id: string;
+  code?: string;
   title: string;
   subjectCode: string;
   subjectName: string;
+  className?: string;
   teacherName: string;
   teacherEmail?: string;
   type: AssignmentType;
+  format?: string;
   status: AssignmentStatus;
-  dueDate: string; // YYYY-MM-DD HH:mm
+  dueDate: string; // YYYY-MM-DD HH:mm (Effective due date)
+  originalDueDate?: string; // YYYY-MM-DD HH:mm
+  isExtended?: boolean;
+  extensions?: AssignmentExtension[];
   assignedDate: string; // YYYY-MM-DD
   description: string;
-  pointsPossible: number; // Thang điểm (thường là 10)
-  score?: number | null; // Điểm số đạt được (nếu đã chấm)
-  teacherFeedback?: string | null; // Nhận xét của giáo viên
+  pointsPossible: number;
+  passScore?: number;
+  weightPercent?: number;
+  score?: number | null;
+  rawScore?: number | null;
+  penaltyDeduction?: number;
+  teacherFeedback?: string | null;
+  gradedAt?: string | null;
+  gradedByName?: string | null;
+  allowedFileTypes?: string[];
+  maxFileSizeMb?: number;
+  maxFilesCount?: number;
+  fileNamingRule?: string | null;
+  allowLateSubmission?: boolean;
+  latePenaltyPercent?: number;
+  allowResubmission?: boolean;
+  maxResubmissionCount?: number;
   attachments?: AssignmentAttachment[];
+  rubric?: AssignmentRubricCriterion[];
+  solutionAttachments?: AssignmentAttachment[];
   submission?: AssignmentSubmission | null;
   reopenRequest?: ReopenRequest | null;
+  appeal?: ScoreAppeal | null;
+  eventLogs?: AssignmentEventLogItem[];
 }
 
 export interface AssignmentSummary {
   total: number;
-  pendingCount: number; // Chưa nộp
-  submittedCount: number; // Đã nộp, chờ chấm
-  gradedCount: number; // Đã chấm điểm
-  overdueCount: number; // Quá hạn
-  averageScore: number; // Điểm trung bình bài tập
+  pendingCount: number;
+  submittedCount: number;
+  gradedCount: number;
+  overdueCount: number;
+  averageScore: number;
   className?: string | null;
   semesterName?: string | null;
   academicYear?: string | null;
+  subjects?: AssignmentSubjectOption[];
 }
 
 export interface AssignmentFilter {

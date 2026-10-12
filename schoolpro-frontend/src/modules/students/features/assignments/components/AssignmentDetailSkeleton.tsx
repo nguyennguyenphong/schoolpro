@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -9,6 +10,8 @@ import { Skeleton, SkeletonButton, SkeletonAvatar } from "@/components/ui/Skelet
  * Mirrors exact container classes, paddings, borders, flex layouts, and headers.
  */
 export const AssignmentDetailSkeleton: React.FC = () => {
+  const { t } = useTranslation(["card", "button", "navigation"]);
+
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* 1. Page Header with Breadcrumb & Back Navigation */}
@@ -20,7 +23,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("navigation:breadcrumb.home")}</span>
                 </span>
               ),
             },
@@ -29,14 +32,14 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500">
                   <Icon name="edit" size={13} className="text-slate-400 shrink-0" />
-                  <span>Bài tập & Nhiệm vụ</span>
+                  <span>{t("navigation:breadcrumb.assignments")}</span>
                 </span>
               ),
             },
             {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
-                  <span>Chi tiết & Nộp bài</span>
+                  <span>{t("card:assignments.detail.breadcrumbDetail")}</span>
                 </span>
               ),
             },
@@ -58,7 +61,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
 
           <Button variant="outline" disabled className="self-start sm:self-auto shrink-0">
             <Icon name="arrow-left" size={13} />
-            <span>Quay lại</span>
+            <span>{t("button:backToAssignments")}</span>
           </Button>
         </div>
       </div>
@@ -72,7 +75,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
             <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
               <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
               <h3 className="text-base font-bold text-slate-900 mb-0">
-                Nội dung yêu cầu đề bài
+                {t("card:assignments.detail.requirementsTitle")}
               </h3>
             </div>
             <div className="py-1">
@@ -86,7 +89,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
                 <h3 className="text-base font-bold text-slate-900 mb-0">
-                  Tài liệu & Đề bài đính kèm của giáo viên
+                  {t("card:assignments.detail.teacherAttachmentsTitle")}
                 </h3>
               </div>
               <SkeletonButton active size="small" style={{ width: 45, height: 18 }} />
@@ -118,7 +121,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
                 <h3 className="text-base font-bold text-slate-900 mb-0">
-                  Nộp bài tập trực tuyến
+                  {t("card:assignments.detail.submissionAreaTitle")}
                 </h3>
               </div>
             </div>
@@ -143,7 +146,9 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           {/* Card 1: Status & Deadline */}
           <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900 mb-0">Trạng thái nộp bài</h3>
+              <h3 className="text-sm font-bold text-slate-900 mb-0">
+                {t("card:assignments.detail.deadlineCardTitle")}
+              </h3>
               <SkeletonButton active size="small" style={{ width: 70, height: 20 }} />
             </div>
             <Skeleton active paragraph={{ rows: 3 }} title={false} />
@@ -152,7 +157,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           {/* Card 2: Teacher Info */}
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
-              Thông tin giáo viên phụ trách
+              {t("card:assignments.detail.academicInfoTitle")}
             </span>
             <div className="flex items-center gap-3">
               <SkeletonAvatar active shape="circle" size={42} />
@@ -166,7 +171,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-slate-50/60 rounded-xl text-xs space-y-2">
             <div className="flex items-center gap-1.5 font-bold text-slate-800 mb-1">
               <Icon name="info" size={14} className="text-blue-600 shrink-0" />
-              <span>Lưu ý khi nộp bài:</span>
+              <span>{t("card:assignments.detail.notesCardTitle")}</span>
             </div>
             <Skeleton active paragraph={{ rows: 3 }} title={false} />
           </div>

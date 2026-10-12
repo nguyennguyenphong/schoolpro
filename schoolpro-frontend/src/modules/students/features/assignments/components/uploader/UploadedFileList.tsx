@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import type { SubmittedFile } from "@/modules/students/features/assignments/types";
 import { FileItemCard } from "@/modules/students/features/assignments/components/FileItemCard";
 
@@ -15,20 +16,24 @@ export const UploadedFileList: React.FC<UploadedFileListProps> = ({
   onClearAll,
   onPreview,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   if (files.length === 0) return null;
 
   return (
     <div className="space-y-2 pt-1">
       <div className="flex items-center justify-between text-xs">
         <span className="font-bold text-slate-800">
-          Danh sách tệp chuẩn bị nộp ({files.length}):
+          {t("card:assignments.uploader.preparedFilesLabel", {
+            count: files.length,
+          })}
         </span>
         <button
           type="button"
           onClick={onClearAll}
-          className="text-slate-400 hover:text-rose-600 transition-colors text-[11px]"
+          className="text-slate-400 hover:text-rose-600 transition-colors text-[11px] cursor-pointer"
         >
-          Xóa tất cả tệp
+          {t("card:assignments.uploader.clearAllFiles")}
         </button>
       </div>
 

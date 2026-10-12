@@ -31,6 +31,7 @@ export const AssignmentsPage: React.FC = () => {
     setSubject,
     setStatus,
     setType,
+    setSortBy,
     setSearchQuery,
     setViewMode,
     setPage,
@@ -42,8 +43,14 @@ export const AssignmentsPage: React.FC = () => {
     navigate(`/student/assignments/${item.id}`);
   };
 
-  // Derive unique subject options dynamically from currently loaded assignments
+  // Resolve available class subjects from summary.subjects first (so filtering by 1 subject keeps all subjects in dropdown)
   const dynamicSubjects = useMemo(() => {
+    if (summary?.subjects && summary.subjects.length > 0) {
+      return summary.subjects.map((s) => ({
+        value: s.code,
+        label: s.name,
+      }));
+    }
     const map = new Map<string, string>();
     assignments.forEach((a) => {
       if (a.subjectCode && a.subjectName) {
@@ -54,7 +61,7 @@ export const AssignmentsPage: React.FC = () => {
       value,
       label,
     }));
-  }, [assignments]);
+  }, [summary, assignments]);
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
@@ -64,18 +71,21 @@ export const AssignmentsPage: React.FC = () => {
       {/* 2. Overview Summary Cards (always rendered at position 2 to prevent CLS) */}
       <AssignmentSummaryCards summary={summary} loading={loading && !summary} />
 
-      {/* 3. Filter Bar (Search, Subject, Status, Type, and View Mode) */}
+      {/* 3. Filter Bar (Status Tabs, Search, Subject, Status, Type, Sort, and View Mode) */}
       <AssignmentFilterBar
         subject={filter.subject}
         status={filter.status}
         type={filter.type}
+        sortBy={filter.sortBy || "newest"}
         searchQuery={filter.searchQuery}
         viewMode={filter.viewMode}
+        summary={summary}
         subjects={dynamicSubjects.length > 0 ? dynamicSubjects : undefined}
         hasActiveFilters={hasActiveFilters}
         onSubjectChange={setSubject}
         onStatusChange={setStatus}
         onTypeChange={setType}
+        onSortByChange={setSortBy}
         onSearchChange={setSearchQuery}
         onViewModeChange={setViewMode}
         onResetFilters={resetFilters}
@@ -83,7 +93,7 @@ export const AssignmentsPage: React.FC = () => {
 
       {/* 4. Assignment Results: Loading skeleton, Error, Empty, or Grid/List */}
       {loading ? (
-        <AssignmentSkeleton />
+        <AssignmentSkeleton viewMode={filter.viewMode} />
       ) : error ? (
         <div className="p-8 text-center bg-white rounded-xl border border-rose-200 shadow-2xs">
           <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-3">

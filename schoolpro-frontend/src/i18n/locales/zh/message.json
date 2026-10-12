@@ -94,5 +94,19 @@
     "teacherGpsUpdated": "Updated Teacher device GPS coordinates!",
     "invalidImageFormat": "Please upload a valid image file (PNG, JPG, JPEG, WebP, SVG).",
     "selectQrImageFirst": "Please select or upload a QR code image first."
+  },
+  "assignments": {
+    "emptySubmissionWarning": "请至少上传 1 个作业文件或输入文字作答内容！",
+    "submitSuccess": "在线提交作业成功！",
+    "submitError": "提交作业时发生错误，请重试！",
+    "reopenEmptyReasonWarning": "请输入申请理由及给老师的留言！",
+    "reopenSuccess": "已成功向 {{teacher}} 老师 ({{email}}) 发送重新开放通道申请！",
+    "reopenError": "发送申请时发生错误，请稍后重试！",
+    "appealEmptyReasonWarning": "请输入成绩复核申诉说明！",
+    "appealSuccess": "已成功向任课教师发送成绩复核申请！",
+    "appealError": "无法发送成绩复核申请，请重试！",
+    "maxFilesWarning": "单次提交最多只能附带 {{max}} 个文件。",
+    "maxFileSizeError": "文件 \"{{name}}\" 超过大小限制 ({{max}}MB)。",
+    "filesAddedSuccess": "已添加 {{count}} 个作业文件。"
   }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { message } from "antd";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import type { AssignmentAttachment } from "@/modules/students/features/assignments/types";
@@ -13,6 +14,8 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
   attachments,
   onPreviewPdf,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
   if (!attachments || attachments.length === 0) return null;
 
   return (
@@ -21,11 +24,11 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h3 className="text-base font-bold text-slate-900 mb-0">
-            Tài liệu & Đề bài đính kèm của giáo viên
+            {t("card:assignments.detail.teacherAttachmentsTitle")}
           </h3>
         </div>
         <span className="text-xs text-slate-500">
-          {attachments.length} tệp
+          {t("card:assignments.detail.filesUnit", { count: attachments.length })}
         </span>
       </div>
 
@@ -75,7 +78,7 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
                     <span>{file.size}</span>
                     {isPdf && (
                       <span className="text-rose-600 font-semibold bg-rose-50 px-1 rounded text-[10px]">
-                        PDF
+                        {t("card:assignments.uploader.pdfFormat")}
                       </span>
                     )}
                   </div>
@@ -97,7 +100,7 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
                     }}
                   >
                     <Icon name="eye" size={12} className="mr-1" />
-                    Xem trước
+                    {t("button:preview")}
                   </Button>
                 )}
                 <Button
@@ -105,11 +108,11 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
                   className="shrink-0 text-xs h-7 px-2.5"
                   onClick={(e) => {
                     e.stopPropagation();
-                    message.info(`Đang tải tệp: ${file.name}`);
+                    message.info(`${t("button:download")}: ${file.name}`);
                   }}
                 >
                   <Icon name="download" size={12} className="mr-1" />
-                  Tải về
+                  {t("button:download")}
                 </Button>
               </div>
             </div>

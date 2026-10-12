@@ -172,5 +172,10 @@
     "sortPeriodAsc": "早い時限順",
     "sortPeriodDesc": "遅い時限順",
     "sortStatusPriority": "受付中を優先"
+  },
+  "assignments": {
+    "submissionNoteLabel": "教員へのメモ・直接回答:",
+    "submissionNotePlaceholder": "解答の要約、データの補足、グループ役割分担、または記述回答を入力してください...",
+    "uploadFilesLabel": "課題ファイルのアップロード"
   }
 }

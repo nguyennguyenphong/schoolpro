@@ -172,5 +172,10 @@
     "sortPeriodAsc": "Tiết học sớm nhất",
     "sortPeriodDesc": "Tiết học muộn nhất",
     "sortStatusPriority": "Ưu tiên đang mở cổng"
+  },
+  "assignments": {
+    "submissionNoteLabel": "Ghi chú / Trả lời trực tiếp cho giáo viên:",
+    "submissionNotePlaceholder": "Nhập ghi chú tóm tắt bài làm, giải trình số liệu, phân công nhóm hoặc câu trả lời tự luận trực tiếp...",
+    "uploadFilesLabel": "Tải tệp bài làm đính kèm"
   }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
@@ -20,61 +21,131 @@ export const AssignmentDeadlineStatusCard: React.FC<AssignmentDeadlineStatusCard
   isSubmitted,
   isOverdue,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
       <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
         <span className="w-1.5 h-4 rounded-full bg-amber-500 inline-block" />
         <h3 className="text-sm font-bold text-slate-900 mb-0">
-          Thời hạn & Trạng thái
+          {t("card:assignments.detail.deadlineCardTitle")}
         </h3>
       </div>
 
       <div className="space-y-2.5 text-xs">
         <div className="flex items-center justify-between">
-          <span className="text-slate-500">Trạng thái:</span>
+          <span className="text-slate-500">
+            {t("card:assignments.detail.statusField")}
+          </span>
           {isSubmittedAndExpired ? (
-            <Tag color="default">Đã nộp (Đã đóng)</Tag>
+            <Tag color="default">
+              {t("card:assignments.statusLabels.submittedClosed")}
+            </Tag>
           ) : isGraded ? (
-            <Tag color="success">Đã chấm điểm</Tag>
+            <Tag color="success">{t("card:assignments.statusLabels.graded")}</Tag>
           ) : isSubmitted ? (
-            <Tag color="processing">Đã nộp bài</Tag>
+            <Tag color="processing">{t("card:assignments.statusLabels.submitted")}</Tag>
           ) : isOverdue ? (
-            <Tag color="error">Quá hạn nộp</Tag>
+            <Tag color="error">{t("card:assignments.statusLabels.overdue")}</Tag>
           ) : (
-            <Tag color="warning">Chưa nộp</Tag>
+            <Tag color="warning">{t("card:assignments.statusLabels.notSubmitted")}</Tag>
           )}
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-slate-500">Hạn chót:</span>
+          <span className="text-slate-500">
+            {t("card:assignments.detail.dueDateField")}
+          </span>
           <strong className={isPastDue ? "text-rose-600 font-bold" : "text-slate-800"}>
             {assignment.dueDate}
           </strong>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-slate-500">Tình trạng cổng:</span>
+          <span className="text-slate-500">
+            {t("card:assignments.detail.portStatusField")}
+          </span>
           {isPastDue ? (
             <span className="text-rose-600 font-semibold flex items-center gap-1">
               <Icon name="lock" size={12} />
-              <span>Đã đóng cổng</span>
+              <span>{t("card:assignments.detail.portClosedStatus")}</span>
             </span>
           ) : (
             <span className="text-emerald-600 font-semibold flex items-center gap-1">
               <Icon name="check" size={12} />
-              <span>Đang mở nộp bài</span>
+              <span>{t("card:assignments.detail.portOpenStatus")}</span>
             </span>
           )}
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-slate-500">Thang điểm tối đa:</span>
-          <strong className="text-slate-800">{assignment.pointsPossible} điểm</strong>
+          <span className="text-slate-500">
+            {t("card:assignments.detail.maxPointsField")}
+          </span>
+          <strong className="text-slate-800">
+            {t("card:assignments.detail.pointsUnit", {
+              points: assignment.pointsPossible,
+            })}
+          </strong>
+        </div>
+
+        {assignment.passScore !== undefined && (
+          <div className="flex items-center justify-between">
+            <span className="text-slate-500">
+              {t("card:assignments.detail.passScoreLabel")}
+            </span>
+            <strong className="text-slate-800">{assignment.passScore}</strong>
+          </div>
+        )}
+
+        {assignment.weightPercent !== undefined && (
+          <div className="flex items-center justify-between">
+            <span className="text-slate-500">
+              {t("card:assignments.detail.weightField")}
+            </span>
+            <strong className="text-slate-800">{assignment.weightPercent}%</strong>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between">
+          <span className="text-slate-500">
+            {t("card:assignments.detail.lateSubmissionField")}
+          </span>
+          <strong
+            className={
+              assignment.allowLateSubmission ? "text-amber-700" : "text-slate-700"
+            }
+          >
+            {assignment.allowLateSubmission
+              ? (assignment.latePenaltyPercent ?? 0) > 0
+                ? t("card:assignments.detail.lateAllowedWithPenalty", {
+                    penalty: assignment.latePenaltyPercent ?? 0,
+                  })
+                : t("card:assignments.detail.lateAllowedNoPenalty")
+              : t("card:assignments.detail.lateDisallowedValue")}
+          </strong>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-slate-500">Hình thức nộp:</span>
-          <strong className="text-blue-600">Trực tuyến (SchoolPro)</strong>
+          <span className="text-slate-500">
+            {t("card:assignments.detail.resubmissionField")}
+          </span>
+          <strong className="text-slate-700">
+            {assignment.allowResubmission !== false
+              ? t("card:assignments.detail.resubmissionAllowedValue", {
+                  count: assignment.maxResubmissionCount ?? 3,
+                })
+              : t("card:assignments.detail.resubmissionDisallowedValue")}
+          </strong>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="text-slate-500">
+            {t("card:assignments.detail.submissionModeField")}
+          </span>
+          <strong className="text-blue-600">
+            {t("card:assignments.detail.submissionModeOnline")}
+          </strong>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import type { SubmittedFile } from "@/modules/students/features/assignments/types";
@@ -17,6 +18,7 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
   onRemove,
   readOnly = false,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
   const meta = FILE_CATEGORIES_META[file.type] || FILE_CATEGORIES_META.other;
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -28,11 +30,14 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
       audioRef.current.pause();
       setIsPlayingAudio(false);
     } else {
-      audioRef.current.play().then(() => {
-        setIsPlayingAudio(true);
-      }).catch(() => {
-        setIsPlayingAudio(false);
-      });
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlayingAudio(true);
+        })
+        .catch(() => {
+          setIsPlayingAudio(false);
+        });
     }
   };
 
@@ -65,7 +70,7 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <span
-                className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${meta.theme.badgeBg}`}
+                className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${meta.theme.badgeBg}`}
               >
                 {meta.badge}
               </span>
@@ -87,7 +92,6 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
 
         {/* Right: Actions */}
         <div className="flex items-center gap-1.5 shrink-0">
-          {/* Quick Audio Play Button */}
           {file.type === "audio" && file.previewUrl && (
             <>
               <audio
@@ -99,36 +103,40 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
               <button
                 type="button"
                 onClick={toggleAudio}
-                className="p-1.5 text-xs text-amber-700 hover:text-amber-800 bg-amber-100 hover:bg-amber-200/80 rounded-lg transition-colors flex items-center gap-1"
-                title={isPlayingAudio ? "Tạm dừng" : "Phát thử âm thanh"}
+                className="p-1.5 text-xs text-amber-700 hover:text-amber-800 bg-amber-100 hover:bg-amber-200/80 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                title={
+                  isPlayingAudio
+                    ? t("card:assignments.uploader.pauseAudio")
+                    : t("card:assignments.uploader.listenAudio")
+                }
               >
                 <Icon name={isPlayingAudio ? "pause" : "play"} size={13} />
                 <span className="text-[11px] font-medium hidden sm:inline">
-                  {isPlayingAudio ? "Đang phát" : "Nghe thử"}
+                  {isPlayingAudio
+                    ? t("card:assignments.uploader.playingAudio")
+                    : t("card:assignments.uploader.listenAudio")}
                 </span>
               </button>
             </>
           )}
 
-          {/* Preview Button */}
           {onPreview && (
             <Button
               variant="outline"
-              className="bg-white text-slate-700"
+              className="bg-white text-slate-700 whitespace-nowrap"
               onClick={() => onPreview(file)}
             >
               <Icon name="eye" size={12} />
-              <span>Xem trước</span>
+              <span>{t("button:preview")}</span>
             </Button>
           )}
 
-          {/* Remove Button */}
           {!readOnly && onRemove && (
             <button
               type="button"
               onClick={() => onRemove(file.id)}
-              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-              title="Xóa tệp này"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+              title={t("card:assignments.uploader.removeFileTitle")}
             >
               <Icon name="close" size={14} />
             </button>

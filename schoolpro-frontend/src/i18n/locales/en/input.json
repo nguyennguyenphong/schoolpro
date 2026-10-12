@@ -172,5 +172,10 @@
     "sortPeriodAsc": "Earliest period",
     "sortPeriodDesc": "Latest period",
     "sortStatusPriority": "Open sessions first"
+  },
+  "assignments": {
+    "submissionNoteLabel": "Note / Direct Answer for Teacher:",
+    "submissionNotePlaceholder": "Enter a summary note, data explanation, group member roles, or direct written response...",
+    "uploadFilesLabel": "Upload assignment files"
   }
 }

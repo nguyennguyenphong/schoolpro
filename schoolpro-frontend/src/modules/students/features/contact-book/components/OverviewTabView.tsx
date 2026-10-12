@@ -350,7 +350,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
       </div>
 
       {/* 3. Quick Links Section */}
-      <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50/60 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="p-4 bg-linear-to-r from-blue-50 to-indigo-50/60 rounded-xl border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
             <Icon name="fileText" size={20} />

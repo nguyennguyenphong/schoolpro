@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,8 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
   assignment,
   onRequestReopen,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
   return (
     <div className="p-4 sm:p-5 border border-rose-200 bg-rose-50/30 rounded-xl space-y-3.5">
       {/* 1. Header Alert Banner */}
@@ -22,21 +25,23 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
             <Icon name="lock" size={17} />
           </div>
           <div>
-            <span className="font-bold text-rose-950 text-sm block">Cổng nộp bài đã khóa</span>
+            <span className="font-bold text-rose-950 text-sm block">
+              {t("card:assignments.detail.overdueLockedTitle")}
+            </span>
             <span className="text-xs text-rose-700">
-              Thời hạn nộp bài tập đã kết thúc vào lúc <strong>{assignment.dueDate}</strong>.
+              {t("card:assignments.detail.overdueEndedAt", {
+                dueDate: assignment.dueDate,
+              })}
             </span>
           </div>
         </div>
         <Tag color="error" className="m-0 font-semibold self-start sm:self-auto">
-          Quá hạn nộp bài
+          {t("card:assignments.statusLabels.overdue")}
         </Tag>
       </div>
 
       <p className="text-xs text-slate-600 mb-0 leading-relaxed">
-        Cổng nộp bài trực tuyến đã tự động khóa theo lịch biểu học vụ. Nếu bạn gặp sự cố kỹ thuật hoặc
-        có lý do bất khả kháng cần nộp bù, vui lòng sử dụng biểu mẫu yêu cầu mở lại cổng nộp bài để gửi
-        thông điệp trực tiếp đến giáo viên phụ trách.
+        {t("card:assignments.detail.overdueLockedDesc")}
       </p>
 
       {/* 2. Reopen Request Status Preview if already sent */}
@@ -45,15 +50,17 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
           <div className="flex items-center justify-between font-bold text-amber-900">
             <span className="flex items-center gap-1.5">
               <Icon name="clock" size={13} className="text-amber-600" />
-              <span>Đã gửi yêu cầu mở lại cổng nộp bài</span>
+              <span>{t("card:assignments.detail.reopenSentTitle")}</span>
             </span>
             <Tag color="warning" className="m-0 text-[10px]">
-              Đang chờ giáo viên duyệt
+              {t("card:assignments.detail.reopenWaitingTag")}
             </Tag>
           </div>
           <p className="text-slate-600 mb-0">
-            Gửi đến: <strong className="text-blue-700">{assignment.reopenRequest.teacherEmail}</strong>{" "}
-            lúc {assignment.reopenRequest.requestedAt}
+            {t("card:assignments.detail.reopenSentMeta", {
+              email: assignment.reopenRequest.teacherEmail,
+              time: assignment.reopenRequest.requestedAt,
+            })}
           </p>
           <div className="p-2.5 bg-white rounded border border-amber-200 text-slate-700 italic mt-2">
             "{assignment.reopenRequest.reason}"
@@ -64,11 +71,13 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
       {/* 3. Action Footer */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-rose-200/60">
         <span className="text-[11px] text-slate-500 italic">
-          * Đề xuất sẽ được gửi trực tiếp tới email giáo viên bộ môn
+          {t("card:assignments.detail.overdueEmailHint")}
         </span>
         <Button variant="primary" onClick={onRequestReopen}>
           <Icon name="mail" size={13} className="mr-1.5" />
-          {assignment.reopenRequest ? "Gửi lại yêu cầu mở cổng" : "Yêu cầu mở lại nộp bài"}
+          {assignment.reopenRequest
+            ? t("button:resendReopenRequest")
+            : t("button:requestReopenPort")}
         </Button>
       </div>
     </div>

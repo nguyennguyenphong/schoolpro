@@ -1,17 +1,17 @@
 import { httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 import type {
-  AssignmentItem,
-  AssignmentSummary,
+  AssignmentAttachment,
   AssignmentFilter,
-  AssignmentSubmission,
+  AssignmentItem,
   AssignmentListResult,
+  AssignmentSubmission,
+  AssignmentSummary,
 } from "@/modules/students/features/assignments/types";
 
 class AssignmentsService {
   /**
    * Fetch assignments list with server-side filtering and pagination.
-   * If there is no data, returns an empty list without assigning fake mock items.
    */
   async getAssignments(filter?: Partial<AssignmentFilter>): Promise<AssignmentListResult> {
     try {
@@ -58,7 +58,6 @@ class AssignmentsService {
         totalPages: 0,
       };
     } catch {
-      // Return clean empty result without mock fallback
       return {
         items: [],
         total: 0,
@@ -92,6 +91,7 @@ class AssignmentsService {
         className: null,
         semesterName: null,
         academicYear: null,
+        subjects: [],
       };
     } catch {
       return {
@@ -104,6 +104,7 @@ class AssignmentsService {
         className: null,
         semesterName: null,
         academicYear: null,
+        subjects: [],
       };
     }
   }
@@ -170,6 +171,26 @@ class AssignmentsService {
     }
 
     throw new Error(response.data?.message || "Không thể gửi yêu cầu mở lại nộp bài");
+  }
+
+  /**
+   * Submit a score appeal request for a graded assignment.
+   */
+  async appealAssignment(
+    assignmentId: string,
+    reason: string,
+    attachments: AssignmentAttachment[] = [],
+  ): Promise<AssignmentItem> {
+    const response = await httpClient.post<ApiResponse<AssignmentItem>>(
+      `/academic/assignments/${assignmentId}/appeal/`,
+      { reason, attachments },
+    );
+
+    if (response.data?.data) {
+      return response.data.data;
+    }
+
+    throw new Error(response.data?.message || "Không thể gửi yêu cầu phúc khảo điểm");
   }
 }
 

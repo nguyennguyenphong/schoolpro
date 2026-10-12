@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
@@ -24,6 +25,8 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
   onSubmit,
   onCancel,
 }) => {
+  const { t } = useTranslation(["card", "button", "input"]);
+
   if (assignment.status !== "pending" && assignment.status !== "overdue") {
     return null;
   }
@@ -31,16 +34,21 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
   return (
     <div className="border-t border-slate-100 pt-3 space-y-3">
       <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-        Nộp bài tập trực tuyến
+        {t("card:assignments.detail.submissionAreaTitle")}
       </h4>
 
       <div>
-        <label className="text-xs text-slate-600 font-medium block mb-1">
-          Ghi chú / Lời nhắn cho giáo viên:
+        <label
+          htmlFor="modal-submission-content"
+          className="text-xs text-slate-600 font-medium block mb-1"
+        >
+          {t("input:assignments.submissionNoteLabel")}
         </label>
         <textarea
+          id="modal-submission-content"
+          name="modalSubmissionContent"
           rows={3}
-          placeholder="Nhập ghi chú, câu trả lời trực tiếp hoặc mô tả tệp bài làm đính kèm..."
+          placeholder={t("input:assignments.submissionNotePlaceholder")}
           value={submissionContent}
           onChange={(e) => onContentChange(e.target.value)}
           className="w-full p-2.5 text-xs border border-[#f0f0f0] rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
@@ -48,12 +56,15 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
       </div>
 
       <div className="flex items-center gap-3">
-        <label className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#f0f0f0] px-3 py-1.5 rounded-lg transition-colors">
+        <label
+          htmlFor="modal-submission-file"
+          className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#f0f0f0] px-3 py-1.5 rounded-lg transition-colors"
+        >
           <Icon name="upload" size={13} className="text-slate-500" />
-          <span>
-            {selectedFile ? "Đổi tệp khác" : "Chọn tệp đính kèm (PDF, DOCX, ZIP)"}
-          </span>
+          <span>{t("input:assignments.uploadFilesLabel")}</span>
           <input
+            id="modal-submission-file"
+            name="modalSubmissionFile"
             type="file"
             className="hidden"
             onChange={(e) => {
@@ -75,10 +86,12 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
 
       <div className="flex items-center justify-end gap-2 pt-2">
         <Button variant="outline" onClick={onCancel}>
-          Hủy bỏ
+          {t("button:cancel")}
         </Button>
         <Button variant="primary" onClick={onSubmit} disabled={submitting}>
-          {submitting ? "Đang gửi..." : "Xác nhận nộp bài"}
+          {submitting
+            ? t("button:submittingAssignment")
+            : t("button:confirmSubmitAssignment")}
         </Button>
       </div>
     </div>

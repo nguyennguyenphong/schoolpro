@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, message } from "antd";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { TextArea } from "@/components/ui/Input";
 import { Icon } from "@/components/ui/Icon";
@@ -13,12 +14,6 @@ interface ReopenRequestModalProps {
   loading?: boolean;
 }
 
-const QUICK_REASONS = [
-  "Em nộp nhầm phiên bản file nháp, xin phép thầy/cô cho em nộp lại bản chính thức hoàn thiện.",
-  "Em gặp sự cố mất kết nối mạng và thiết bị sát giờ nộp, kính mong thầy/cô xem xét mở lại cổng.",
-  "Nhóm em đã bổ sung thêm video thuyết trình và bảng số liệu thực hành còn thiếu, xin phép nộp bổ sung.",
-];
-
 export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
   open,
   onClose,
@@ -26,7 +21,14 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
   onSubmit,
   loading = false,
 }) => {
+  const { t } = useTranslation(["card", "button", "message"]);
   const [reason, setReason] = useState("");
+
+  const quickReasons: string[] = [
+    t("card:assignments.modals.quickReason1"),
+    t("card:assignments.modals.quickReason2"),
+    t("card:assignments.modals.quickReason3"),
+  ];
 
   const teacherEmail =
     assignment.teacherEmail ||
@@ -38,7 +40,7 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
 
   const handleSend = async () => {
     if (!reason.trim()) {
-      message.warning("Vui lòng nhập lý do và lời nhắn gửi giáo viên!");
+      message.warning(t("message:assignments.reopenEmptyReasonWarning"));
       return;
     }
     await onSubmit(reason.trim());
@@ -60,25 +62,28 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-900 mb-0">
-              Yêu cầu mở lại cổng nộp bài
+              {t("card:assignments.modals.reopenTitle")}
             </h3>
             <span className="text-xs text-slate-500 font-normal">
-              Gửi thông điệp đề xuất trực tiếp đến email giáo viên phụ trách
+              {t("card:assignments.modals.reopenSubtitle")}
             </span>
           </div>
         </div>
       }
     >
       <div className="py-3 space-y-4">
-        {/* Recipient Teacher Information Box */}
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="text-slate-500">Giáo viên phụ trách:</span>
+            <span className="text-slate-500">
+              {t("card:assignments.modals.recipientTeacher")}
+            </span>
             <strong className="text-slate-800">{assignment.teacherName}</strong>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-500">Email nhận yêu cầu:</span>
+            <span className="text-slate-500">
+              {t("card:assignments.modals.recipientEmail")}
+            </span>
             <span className="font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded flex items-center gap-1">
               <Icon name="mail" size={12} className="text-blue-600" />
               <span>{teacherEmail}</span>
@@ -86,25 +91,28 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-500">Môn học & Bài tập:</span>
+            <span className="text-slate-500">
+              {t("card:assignments.modals.subjectAndAssignment")}
+            </span>
             <span className="text-slate-800 font-medium truncate max-w-[260px]">
               {assignment.subjectName} • {assignment.title}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-500">Hạn chót đã kết thúc:</span>
+            <span className="text-slate-500">
+              {t("card:assignments.modals.expiredDeadline")}
+            </span>
             <span className="text-rose-600 font-bold">{assignment.dueDate}</span>
           </div>
         </div>
 
-        {/* Quick Reason Suggestions */}
         <div>
-          <label className="text-xs font-semibold text-slate-700 block mb-1.5">
-            Gợi ý lý do nhanh:
-          </label>
+          <span className="text-xs font-semibold text-slate-700 block mb-1.5">
+            {t("card:assignments.modals.quickReasonsLabel")}
+          </span>
           <div className="space-y-1.5">
-            {QUICK_REASONS.map((preset, idx) => (
+            {quickReasons.map((preset, idx) => (
               <button
                 key={idx}
                 type="button"
@@ -117,35 +125,38 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
           </div>
         </div>
 
-        {/* Reason Message Input */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-semibold text-slate-700 block mb-0">
-              Nội dung lời nhắn gửi thầy/cô: <span className="text-rose-500">*</span>
+            <label
+              htmlFor="assignment-reopen-reason"
+              className="text-xs font-semibold text-slate-700 block mb-0"
+            >
+              {t("card:assignments.modals.messageToTeacherLabel")}{" "}
+              <span className="text-rose-500">*</span>
             </label>
             <span className="text-[11px] text-slate-400">
-              {reason.length}/500 ký tự
+              {t("card:assignments.modals.charCount", {
+                count: reason.length,
+                max: 500,
+              })}
             </span>
           </div>
 
           <TextArea
+            id="assignment-reopen-reason"
+            name="reopenReason"
             rows={4}
             maxLength={500}
-            placeholder="Kính gửi thầy/cô, em xin phép gửi lý do xin mở lại cổng nộp bài tập..."
+            placeholder={t("card:assignments.modals.reopenPlaceholder")}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             style={{ resize: "none" }}
           />
         </div>
 
-        {/* Action Buttons */}
         <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={loading}
-          >
-            Hủy bỏ
+          <Button variant="outline" onClick={onClose} disabled={loading}>
+            {t("button:cancel")}
           </Button>
 
           <Button
@@ -154,7 +165,9 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
             disabled={loading || !reason.trim()}
           >
             <Icon name="send" size={13} className="mr-1.5" />
-            {loading ? "Đang gửi email..." : "Gửi yêu cầu đến giáo viên"}
+            {loading
+              ? t("button:sendingEmail")
+              : t("button:sendRequestToTeacher")}
           </Button>
         </div>
       </div>
