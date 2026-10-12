@@ -365,15 +365,11 @@ const LeaveRequestFormPage: React.FC = () => {
     navigate(isEditMode && id ? `/student/leave-requests/${id}` : "/student/leave-requests");
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-8">
+    <div className="flex flex-col gap-4 sm:gap-5 pb-8">
       <LeaveRequestFormHeader isEditMode={isEditMode} onBack={handleBack} />
 
       {loading ? (
-        <Card
-          loading={true}
-          className="rounded-xl shadow-2xs border-[#f0f0f0] h-96"
-          skeletonProps={{ paragraph: { rows: 8 } }}
-        />
+        <LeaveRequestFormSkeleton />
       ) : (
         <LeaveRequestFormBody
           key={`${editingItem?.id ?? "new"}-${summary?.guardianName ?? ""}`}
