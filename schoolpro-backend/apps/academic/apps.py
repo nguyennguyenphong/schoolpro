@@ -6,3 +6,8 @@ class AcademicConfig(AppConfig):
     name = "apps.academic"
     label = "academic"
     verbose_name = "Academic Affairs"
+
+    def ready(self) -> None:
+        from common.asgi_ws_bridge import install_wsgi_websocket_bridge
+
+        install_wsgi_websocket_bridge()

@@ -10,15 +10,9 @@ Handles:
 """
 
 import logging
-import os
-import threading
-from datetime import date, datetime, time, timedelta
-from html import escape
-from io import BytesIO
+from datetime import date, datetime, timedelta
 from typing import Any
 
-from django.conf import settings
-from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
@@ -29,7 +23,13 @@ from apps.academic.models.attendance import (
     LeaveRequest,
     LeaveRequestEventLog,
 )
-from apps.academic.models.timetable import Timetable
+from apps.academic.services.leave_request_notification_service import (
+    LeaveRequestNotificationService,
+)
+from apps.academic.services.leave_request_pdf_service import LeaveRequestPdfService
+from apps.academic.services.leave_request_timetable_service import (
+    LeaveRequestTimetableService,
+)
 from apps.core.models.organization import SchoolClass, StudentClassEnrollment
 from apps.core.models.profile import Guardian, Student
 from apps.master.models.semester import Semester
@@ -81,15 +81,7 @@ class LeaveRequestService:
         "cancelled": "CANCELLED",
     }
 
-    DAY_OF_WEEK_LABELS = {
-        2: "Thứ Hai",
-        3: "Thứ Ba",
-        4: "Thứ Tư",
-        5: "Thứ Năm",
-        6: "Thứ Sáu",
-        7: "Thứ Bảy",
-        8: "Chủ Nhật",
-    }
+    DAY_OF_WEEK_LABELS = LeaveRequestTimetableService.DAY_OF_WEEK_LABELS
 
     MAX_ALLOWED_DAYS_PER_YEAR = 45
     AUTO_APPROVAL_HOURS_BEFORE_LESSON = 3
@@ -174,16 +166,9 @@ class LeaveRequestService:
     def calculate_leave_days(
         start_date: date, end_date: date, session_shift: str = "all_day"
     ) -> float:
-        """
-        Calculates number of leave days.
-        If single day and morning/afternoon shift is selected, counts as 0.5 day, otherwise integer days.
-        """
-        if end_date < start_date:
-            return 0.0
-        total_days = (end_date - start_date).days + 1
-        if total_days == 1 and session_shift in ("morning", "afternoon"):
-            return 0.5
-        return float(total_days)
+        return LeaveRequestTimetableService.calculate_leave_days(
+            start_date=start_date, end_date=end_date, session_shift=session_shift
+        )
 
     @classmethod
     def get_active_weekdays_for_class(
@@ -191,27 +176,9 @@ class LeaveRequestService:
         school_class: SchoolClass | None,
         session_shift: str = "all_day",
     ) -> list[int]:
-        """
-        Returns sorted list of active timetable day_of_week integers (2=Mon ... 8=Sun)
-        for the given class and session_shift.
-        """
-        if not school_class:
-            return []
-
-        qs = Timetable.objects.filter(school_class=school_class).select_related("period")
-        active_dows: set[int] = set()
-        for slot in qs:
-            period = slot.period
-            if not period or getattr(period, "is_break", False):
-                continue
-            p_shift = (getattr(period, "shift", "MORNING") or "MORNING").upper()
-            if session_shift == "morning" and p_shift == "AFTERNOON":
-                continue
-            if session_shift == "afternoon" and p_shift == "MORNING":
-                continue
-            active_dows.add(slot.day_of_week)
-
-        return sorted(active_dows)
+        return LeaveRequestTimetableService.get_active_weekdays_for_class(
+            school_class=school_class, session_shift=session_shift
+        )
 
     @classmethod
     def compute_affected_lessons_for_class(
@@ -222,147 +189,13 @@ class LeaveRequestService:
         session_shift: str = "all_day",
         selected_lesson_keys: list[str] | None = None,
     ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-        """
-        Queries the class timetable across [start_date, end_date] and returns:
-        1. affected_lessons: list of lesson slots impacted by the leave request
-        2. notified_teachers: deduplicated list of teachers (if Homeroom Teacher is also a
-           Subject Teacher, they are merged into a single recipient entry so they only receive one notification).
-        """
-        if not school_class or end_date < start_date:
-            return [], []
-
-        homeroom_teacher = getattr(school_class, "homeroom_teacher", None)
-        homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
-        homeroom_teacher_id = str(homeroom_teacher.id) if homeroom_teacher else ""
-        homeroom_email = (homeroom_user.email or "").strip().lower() if homeroom_user else ""
-
-        slots = list(
-            Timetable.objects.filter(school_class=school_class)
-            .select_related(
-                "period",
-                "room",
-                "class_subject_teacher",
-                "class_subject_teacher__subject",
-                "class_subject_teacher__teacher",
-                "class_subject_teacher__teacher__user",
-            )
-            .order_by("day_of_week", "period__period_no")
+        return LeaveRequestTimetableService.compute_affected_lessons_for_class(
+            school_class=school_class,
+            start_date=start_date,
+            end_date=end_date,
+            session_shift=session_shift,
+            selected_lesson_keys=selected_lesson_keys,
         )
-
-        slots_by_dow: dict[int, list[Timetable]] = {}
-        for slot in slots:
-            slots_by_dow.setdefault(slot.day_of_week, []).append(slot)
-
-        selected_set = set(selected_lesson_keys) if selected_lesson_keys else None
-        affected_lessons: list[dict[str, Any]] = []
-        max_span_days = min((end_date - start_date).days + 1, 14)
-
-        for offset in range(max_span_days):
-            curr_date = start_date + timedelta(days=offset)
-            dow = curr_date.weekday() + 2  # Monday=0 -> 2, Sunday=6 -> 8
-            day_slots = slots_by_dow.get(dow, [])
-
-            for slot in day_slots:
-                period = slot.period
-                if not period or getattr(period, "is_break", False):
-                    continue
-
-                period_shift = (getattr(period, "shift", "MORNING") or "MORNING").upper()
-                period_no = getattr(period, "period_no", 1) or 1
-
-                if session_shift == "morning" and period_shift == "AFTERNOON":
-                    continue
-                if session_shift == "afternoon" and period_shift == "MORNING":
-                    continue
-
-                lesson_key = f"{curr_date.strftime('%Y-%m-%d')}_{slot.id}"
-                if selected_set is not None and (
-                    lesson_key not in selected_set and str(slot.id) not in selected_set
-                ):
-                    continue
-
-                cst = slot.class_subject_teacher
-                subject = getattr(cst, "subject", None) if cst else None
-                teacher = getattr(cst, "teacher", None) if cst else None
-                teacher_user = getattr(teacher, "user", None) if teacher else None
-                room = slot.room
-
-                start_str = (
-                    period.start_time.strftime("%H:%M")
-                    if getattr(period, "start_time", None)
-                    else "07:15"
-                )
-                end_str = (
-                    period.end_time.strftime("%H:%M")
-                    if getattr(period, "end_time", None)
-                    else "08:00"
-                )
-
-                affected_lessons.append(
-                    {
-                        "lessonKey": lesson_key,
-                        "timetableId": str(slot.id),
-                        "date": curr_date.strftime("%Y-%m-%d"),
-                        "dayOfWeek": dow,
-                        "dayOfWeekLabel": cls.DAY_OF_WEEK_LABELS.get(dow, f"Thứ {dow}"),
-                        "periodNumber": period_no,
-                        "periodName": period.name or f"Tiết {period_no}",
-                        "shift": "morning" if period_shift == "MORNING" else "afternoon",
-                        "startTime": start_str,
-                        "endTime": end_str,
-                        "subjectId": str(subject.id) if subject else "",
-                        "subjectName": subject.name if subject else "Môn học",
-                        "teacherId": str(teacher.id) if teacher else "",
-                        "teacherName": teacher_user.full_name
-                        if teacher_user
-                        else "Giáo viên bộ môn",
-                        "teacherEmail": teacher_user.email if teacher_user else "",
-                        "roomName": room.name if room else "",
-                    }
-                )
-
-        # Deduplicate teachers: If Homeroom Teacher is also a Subject Teacher, merge into a single recipient
-        teachers_map: dict[str, dict[str, Any]] = {}
-        for lesson in affected_lessons:
-            t_id = lesson["teacherId"]
-            t_email = (lesson["teacherEmail"] or "").strip().lower()
-            t_key = t_email or t_id or lesson["teacherName"]
-            if not t_key:
-                continue
-
-            is_also_homeroom = bool(
-                (homeroom_teacher_id and t_id == homeroom_teacher_id)
-                or (homeroom_email and t_email == homeroom_email)
-            )
-
-            if t_key not in teachers_map:
-                teachers_map[t_key] = {
-                    "teacherId": t_id,
-                    "teacherName": lesson["teacherName"],
-                    "teacherEmail": lesson["teacherEmail"],
-                    "subjects": [],
-                    "lessonCount": 0,
-                    "periodsSummary": [],
-                    "role": "HOMEROOM_AND_SUBJECT_TEACHER"
-                    if is_also_homeroom
-                    else "SUBJECT_TEACHER",
-                    "isHomeroomTeacher": is_also_homeroom,
-                    "canApprove": is_also_homeroom,
-                    "notificationStatus": "NOTIFIED",
-                }
-            entry = teachers_map[t_key]
-            if lesson["subjectName"] not in entry["subjects"]:
-                entry["subjects"].append(lesson["subjectName"])
-            entry["lessonCount"] += 1
-            period_label = (
-                f"{lesson['dayOfWeekLabel']} ({datetime.strptime(lesson['date'], '%Y-%m-%d').strftime('%d/%m')}) "
-                f"- Tiết {lesson['periodNumber']} ({lesson['subjectName']})"
-            )
-            if period_label not in entry["periodsSummary"]:
-                entry["periodsSummary"].append(period_label)
-
-        notified_teachers = list(teachers_map.values())
-        return affected_lessons, notified_teachers
 
     @classmethod
     def calculate_first_lesson_and_deadline(
@@ -370,31 +203,9 @@ class LeaveRequestService:
         affected_lessons: list[dict[str, Any]],
         fallback_start_date: date,
     ) -> tuple[datetime, datetime]:
-        """
-        Determines the exact start datetime of the earliest affected lesson and
-        calculates the approval deadline = (first_lesson_start - 3 hours).
-        """
-        tz = timezone.get_current_timezone()
-        earliest_dt: datetime | None = None
-
-        for lesson in affected_lessons:
-            try:
-                lesson_date = datetime.strptime(lesson["date"], "%Y-%m-%d").date()
-                start_parts = str(lesson.get("startTime") or "07:15").split(":")
-                lesson_time = time(int(start_parts[0]), int(start_parts[1]))
-                candidate = timezone.make_aware(datetime.combine(lesson_date, lesson_time), tz)
-                if earliest_dt is None or candidate < earliest_dt:
-                    earliest_dt = candidate
-            except Exception:
-                continue
-
-        if earliest_dt is None:
-            earliest_dt = timezone.make_aware(
-                datetime.combine(fallback_start_date, time(7, 15)), tz
-            )
-
-        deadline_dt = earliest_dt - timedelta(hours=cls.AUTO_APPROVAL_HOURS_BEFORE_LESSON)
-        return earliest_dt, deadline_dt
+        return LeaveRequestTimetableService.calculate_first_lesson_and_deadline(
+            affected_lessons=affected_lessons, fallback_start_date=fallback_start_date
+        )
 
     @classmethod
     def _send_email_safe(
@@ -404,36 +215,12 @@ class LeaveRequestService:
         recipient_list: list[str],
         html_body: str | None = None,
     ) -> bool:
-        """
-        Dispatches an SMTP email safely in a background daemon thread so API latency stays low,
-        while logging delivery status.
-        """
-        valid_recipients = [
-            r.strip() for r in recipient_list if r and "@" in r and not r.endswith(".local")
-        ]
-        if not valid_recipients:
-            return False
-
-        from_email = getattr(settings, "DEFAULT_FROM_EMAIL", None) or getattr(
-            settings, "EMAIL_HOST_USER", "noreply@schoolpro.edu.vn"
+        return LeaveRequestNotificationService.send_email_safe(
+            subject=subject,
+            plain_body=plain_body,
+            recipient_list=recipient_list,
+            html_body=html_body,
         )
-
-        def _worker():
-            try:
-                send_mail(
-                    subject=subject,
-                    message=plain_body,
-                    from_email=from_email,
-                    recipient_list=valid_recipients,
-                    html_message=html_body,
-                    fail_silently=False,
-                )
-                logger.info("Sent leave request email '%s' to %s", subject, valid_recipients)
-            except Exception as exc:
-                logger.warning("SMTP email delivery warning for %s: %s", valid_recipients, exc)
-
-        threading.Thread(target=_worker, daemon=True).start()
-        return True
 
     @classmethod
     def record_event_log(
@@ -451,11 +238,7 @@ class LeaveRequestService:
         created_at: datetime | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> LeaveRequestEventLog:
-        """
-        Persists a chronological LeaveRequestEventLog entry in the database.
-        """
-        log_time = created_at or timezone.now()
-        log_entry = LeaveRequestEventLog.objects.create(
+        return LeaveRequestNotificationService.record_event_log(
             leave_request=leave_request,
             event_type=event_type,
             title=title,
@@ -464,43 +247,11 @@ class LeaveRequestService:
             actor_role=actor_role,
             badge_text=badge_text,
             badge_color=badge_color,
-            recipient_email=recipient_email or None,
+            recipient_email=recipient_email,
             email_sent=email_sent,
-            metadata=metadata or {},
-            created_at=log_time,
+            created_at=created_at,
+            metadata=metadata,
         )
-
-        try:
-            from apps.academic.services.leave_request_realtime import (
-                LeaveRequestRealtimeEvent,
-                LeaveRequestRealtimeService,
-            )
-
-            tz = timezone.get_current_timezone()
-            formatted_log = {
-                "id": str(log_entry.id),
-                "eventType": log_entry.event_type,
-                "title": log_entry.title,
-                "description": log_entry.description or "",
-                "actor": log_entry.actor_name or "Hệ thống",
-                "actorRole": log_entry.actor_role or "SYSTEM",
-                "badgeText": log_entry.badge_text or "Sự kiện",
-                "badgeColor": log_entry.badge_color or "blue",
-                "recipientEmail": log_entry.recipient_email or "",
-                "emailSent": bool(log_entry.email_sent),
-                "createdAt": log_time.astimezone(tz).strftime("%Y-%m-%d %H:%M:%S"),
-            }
-            LeaveRequestRealtimeService.broadcast_event(
-                event_type=LeaveRequestRealtimeEvent.LOG_CREATED,
-                leave_request=leave_request,
-                log_data=formatted_log,
-                message=title,
-                actor_name=actor_name,
-            )
-        except Exception as exc:
-            logger.debug("Realtime log broadcast skipped: %s", exc)
-
-        return log_entry
 
     @classmethod
     def send_submission_notifications(
@@ -510,141 +261,12 @@ class LeaveRequestService:
         notified_teachers: list[dict[str, Any]],
         deadline_dt: datetime,
     ) -> None:
-        """
-        Logs and dispatches initial submission notifications & emails:
-        1. Deduplicated recipients: If Homeroom Teacher is also a Subject Teacher of an affected lesson,
-           send ONE combined notification & email to them.
-        2. Other Subject Teachers receive a notification & email about the student's registration for leave.
-        """
-        student = leave_req.student
-        student_user = getattr(student, "user", None) if student else None
-        student_name = student_user.full_name if student_user else "Học sinh"
-        student_code = student.student_code if student else ""
-        school_class = leave_req.school_class
-        class_name = school_class.name if school_class else "10A1"
-
-        homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
-        homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
-        homeroom_name = homeroom_user.full_name if homeroom_user else "Giáo viên chủ nhiệm"
-        homeroom_email = (homeroom_user.email or "").strip() if homeroom_user else ""
-        homeroom_id = str(homeroom_teacher.id) if homeroom_teacher else ""
-
-        tz = timezone.get_current_timezone()
-        now_dt = timezone.now()
-        deadline_fmt = deadline_dt.astimezone(tz).strftime("%H:%M ngày %d/%m/%Y")
-        date_range_fmt = (
-            leave_req.start_date.strftime("%d/%m/%Y")
-            if leave_req.start_date == leave_req.end_date
-            else f"{leave_req.start_date.strftime('%d/%m/%Y')} - {leave_req.end_date.strftime('%d/%m/%Y')}"
+        LeaveRequestNotificationService.send_submission_notifications(
+            leave_req=leave_req,
+            affected_lessons=affected_lessons,
+            notified_teachers=notified_teachers,
+            deadline_dt=deadline_dt,
         )
-
-        # Check if homeroom teacher is also in notified_teachers
-        homeroom_as_subject_entry = None
-        other_subject_teachers: list[dict[str, Any]] = []
-        for t in notified_teachers:
-            if (
-                t.get("isHomeroomTeacher")
-                or (homeroom_id and t.get("teacherId") == homeroom_id)
-                or (
-                    homeroom_email
-                    and (t.get("teacherEmail") or "").strip().lower() == homeroom_email.lower()
-                )
-            ):
-                homeroom_as_subject_entry = t
-            else:
-                other_subject_teachers.append(t)
-
-        # 1. Notify Homeroom Teacher (combined if also teaching affected subject)
-        if homeroom_as_subject_entry:
-            subj_list = ", ".join(homeroom_as_subject_entry.get("subjects") or [])
-            lesson_cnt = homeroom_as_subject_entry.get("lessonCount", 1)
-            hr_title = "Gửi thông báo & Email tới Giáo viên chủ nhiệm (kiêm Giáo viên bộ môn)"
-            hr_desc = (
-                f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
-                f"(đồng thời dạy môn {subj_list} - {lesson_cnt} tiết). "
-                f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
-            )
-        else:
-            hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
-            hr_desc = (
-                f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
-                f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
-            )
-
-        email_subject_hr = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} - Học sinh {student_name} (Lớp {class_name})"
-        email_body_hr = (
-            f"Kính gửi Thầy/Cô {homeroom_name},\n\n"
-            f"Học sinh {student_name} ({student_code}) - Lớp {class_name} vừa đăng ký đơn xin nghỉ phép.\n"
-            f"- Mã đơn: {leave_req.code}\n"
-            f"- Thời gian nghỉ: {date_range_fmt}\n"
-            f"- Số tiết học xin nghỉ: {len(affected_lessons)} tiết\n"
-            f"- Lý do: {leave_req.reason}\n"
-            f"- Hạn phê duyệt: Trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ).\n"
-            f"Lưu ý: Nếu quá thời hạn trên mà đơn chưa được duyệt, hệ thống sẽ tự động phê duyệt đơn.\n\n"
-            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
-        )
-        sent_hr = cls._send_email_safe(
-            subject=email_subject_hr,
-            plain_body=email_body_hr,
-            recipient_list=[homeroom_email] if homeroom_email else [],
-        )
-
-        cls.record_event_log(
-            leave_request=leave_req,
-            event_type="HOMEROOM_NOTIFIED",
-            title=hr_title,
-            description=hr_desc,
-            actor_name=f"Hệ thống SchoolPro → {homeroom_name}",
-            actor_role="HOMEROOM_TEACHER",
-            badge_text="Đã gửi Email Giáo viên chủ nhiệm",
-            badge_color="purple",
-            recipient_email=homeroom_email,
-            email_sent=sent_hr,
-            created_at=now_dt + timedelta(seconds=1),
-        )
-
-        # 2. Notify remaining Subject Teachers (excluding homeroom teacher to avoid duplicate)
-        if other_subject_teachers:
-            teacher_summaries = [
-                f"{t['teacherName']} (Môn {', '.join(t['subjects'])} - {t['lessonCount']} tiết)"
-                for t in other_subject_teachers
-            ]
-            st_emails = [t["teacherEmail"] for t in other_subject_teachers if t.get("teacherEmail")]
-
-            for t in other_subject_teachers:
-                t_email = (t.get("teacherEmail") or "").strip()
-                if t_email:
-                    subj_str = ", ".join(t.get("subjects") or [])
-                    cls._send_email_safe(
-                        subject=f"[SchoolPro] Thông báo học sinh đăng ký nghỉ môn {subj_str} - Lớp {class_name}",
-                        plain_body=(
-                            f"Kính gửi Thầy/Cô {t['teacherName']},\n\n"
-                            f"Học sinh {student_name} ({student_code}) - Lớp {class_name} đã đăng ký xin nghỉ phép "
-                            f"vào thời gian {date_range_fmt} có tiết môn {subj_str} ({t['lessonCount']} tiết).\n"
-                            f"- Mã đơn: {leave_req.code}\n"
-                            f"- Lý do: {leave_req.reason}\n"
-                            f"- Đơn đang chờ Giáo viên chủ nhiệm ({homeroom_name}) phê duyệt (hạn trước {deadline_fmt}).\n\n"
-                            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
-                        ),
-                        recipient_list=[t_email],
-                    )
-
-            cls.record_event_log(
-                leave_request=leave_req,
-                event_type="SUBJECT_TEACHERS_NOTIFIED",
-                title=f"Thông báo tới {len(other_subject_teachers)} Giáo viên bộ môn giảng dạy",
-                description=(
-                    f"Đã gửi thông báo đăng ký nghỉ học tới giáo viên bộ môn: "
-                    f"{'; '.join(teacher_summaries)}."
-                ),
-                actor_name="Hệ thống Quản lý Học vụ",
-                actor_role="SYSTEM",
-                badge_text=f"Đã báo {len(other_subject_teachers)} Giáo viên bộ môn",
-                badge_color="cyan",
-                recipient_email=", ".join(st_emails[:3]),
-                email_sent=bool(st_emails),
-                created_at=now_dt + timedelta(seconds=2),
-            )
 
     @classmethod
     def send_approval_notifications(
@@ -652,134 +274,10 @@ class LeaveRequestService:
         leave_req: LeaveRequest,
         is_auto: bool = False,
     ) -> None:
-        """
-        Triggered when a leave request is approved (either by Homeroom Teacher or Auto-Approval Engine)
-        or rejected by Homeroom Teacher:
-        1. Sends email to Student (and Guardian) about approval/rejection.
-        2. Sends notification & email to Subject Teachers confirming the approved absence.
-        """
-        meta = leave_req.metadata if isinstance(leave_req.metadata, dict) else {}
-        affected_lessons = meta.get("affectedLessons") or []
-        notified_teachers = meta.get("notifiedTeachers") or []
-        if not notified_teachers:
-            affected_lessons, notified_teachers = cls.compute_affected_lessons_for_class(
-                school_class=leave_req.school_class,
-                start_date=leave_req.start_date,
-                end_date=leave_req.end_date,
-                session_shift=meta.get("sessionShift", "all_day"),
-            )
-
-        student = leave_req.student
-        student_user = getattr(student, "user", None) if student else None
-        student_name = student_user.full_name if student_user else "Học sinh"
-        student_email = (student_user.email or "").strip() if student_user else ""
-        school_class = leave_req.school_class
-        class_name = school_class.name if school_class else "10A1"
-        homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
-        homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
-        homeroom_name = homeroom_user.full_name if homeroom_user else "Giáo viên chủ nhiệm"
-        homeroom_id = str(homeroom_teacher.id) if homeroom_teacher else ""
-        homeroom_email = (homeroom_user.email or "").strip().lower() if homeroom_user else ""
-
-        date_range_fmt = (
-            leave_req.start_date.strftime("%d/%m/%Y")
-            if leave_req.start_date == leave_req.end_date
-            else f"{leave_req.start_date.strftime('%d/%m/%Y')} - {leave_req.end_date.strftime('%d/%m/%Y')}"
+        LeaveRequestNotificationService.send_approval_notifications(
+            leave_req=leave_req,
+            is_auto=is_auto,
         )
-
-        review_time = leave_req.reviewed_at or timezone.now()
-        status_vi = "ĐÃ PHÊ DUYỆT" if leave_req.status == "APPROVED" else "TỪ CHỐI"
-        approver_label = (
-            "Hệ thống tự động phê duyệt (quá hạn 3 giờ trước giờ học)"
-            if is_auto
-            else f"Giáo viên chủ nhiệm {leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name}"
-        )
-
-        # 1. Email to Student
-        student_subject = (
-            f"[SchoolPro] Thông báo kết quả đơn xin nghỉ phép #{leave_req.code}: {status_vi}"
-        )
-        student_body = (
-            f"Chào em {student_name} (Lớp {class_name}),\n\n"
-            f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) đã được xử lý:\n"
-            f"- Trạng thái: {status_vi}\n"
-            f"- Người xử lý: {approver_label}\n"
-            f"- Ghi chú: {leave_req.teacher_note or 'Đồng ý cho học sinh nghỉ học có phép.'}\n\n"
-            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
-        )
-        sent_student = cls._send_email_safe(
-            subject=student_subject,
-            plain_body=student_body,
-            recipient_list=[student_email] if student_email else [],
-        )
-
-        cls.record_event_log(
-            leave_request=leave_req,
-            event_type="STUDENT_EMAIL_SENT",
-            title="Gửi Email thông báo kết quả duyệt đơn tới Học sinh",
-            description=(
-                f"Đã gửi email xác nhận trạng thái '{status_vi}' tới học sinh {student_name} "
-                f"({student_email or 'Tài khoản học sinh'})."
-            ),
-            actor_name="Hệ thống Quản lý Học vụ",
-            actor_role="SYSTEM",
-            badge_text="Đã gửi Email Học sinh",
-            badge_color="blue",
-            recipient_email=student_email,
-            email_sent=sent_student,
-            created_at=review_time + timedelta(seconds=1),
-        )
-
-        # 2. If Approved, notify Subject Teachers about the finalized approval
-        if leave_req.status == "APPROVED" and notified_teachers:
-            other_teachers = [
-                t
-                for t in notified_teachers
-                if not (
-                    t.get("isHomeroomTeacher")
-                    or (homeroom_id and t.get("teacherId") == homeroom_id)
-                    or (
-                        homeroom_email
-                        and (t.get("teacherEmail") or "").strip().lower() == homeroom_email
-                    )
-                )
-            ]
-            target_teachers = other_teachers if other_teachers else notified_teachers
-            teacher_names = [
-                f"{t['teacherName']} ({', '.join(t['subjects'])})" for t in target_teachers
-            ]
-
-            for t in other_teachers:
-                t_email = (t.get("teacherEmail") or "").strip()
-                if t_email:
-                    subj_str = ", ".join(t.get("subjects") or [])
-                    cls._send_email_safe(
-                        subject=f"[SchoolPro] Đã duyệt nghỉ phép - Học sinh {student_name} (Lớp {class_name}) môn {subj_str}",
-                        plain_body=(
-                            f"Kính gửi Thầy/Cô {t['teacherName']},\n\n"
-                            f"Đơn xin nghỉ phép #{leave_req.code} của học sinh {student_name} (Lớp {class_name}) "
-                            f"trong thời gian {date_range_fmt} (môn {subj_str} - {t['lessonCount']} tiết) "
-                            f"đã được {approver_label} phê duyệt.\n"
-                            f"Hệ thống đã cập nhật trạng thái Vắng có phép vào sổ điểm danh.\n\n"
-                            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
-                        ),
-                        recipient_list=[t_email],
-                    )
-
-            cls.record_event_log(
-                leave_request=leave_req,
-                event_type="SUBJECT_TEACHERS_APPROVAL_NOTIFIED",
-                title="Thông báo kết quả phê duyệt tới Giáo viên bộ môn",
-                description=(
-                    f"Đã gửi thông báo xác nhận học sinh nghỉ có phép ({len(affected_lessons)} tiết) "
-                    f"tới Giáo viên bộ môn: {', '.join(teacher_names)} và cập nhật sổ điểm danh."
-                ),
-                actor_name="Hệ thống Quản lý Học vụ",
-                actor_role="SYSTEM",
-                badge_text="Đã báo Giáo viên bộ môn sau duyệt",
-                badge_color="success",
-                created_at=review_time + timedelta(seconds=2),
-            )
 
     @classmethod
     def check_and_auto_approve_overdue_requests(cls, qs: Any = None) -> int:
@@ -2008,402 +1506,9 @@ class LeaveRequestService:
 
     @classmethod
     def _register_vietnamese_fonts(cls) -> tuple[str, str, str]:
-        """
-        Registers Unicode TTF fonts (Times New Roman / DejaVu / Arial) with ReportLab
-        so Vietnamese diacritics render accurately in generated PDF files.
-        """
-        from reportlab.pdfbase import pdfmetrics
-        from reportlab.pdfbase.ttfonts import TTFont
-
-        registered = pdfmetrics.getRegisteredFontNames()
-        if "VN-Serif" in registered and "VN-Serif-Bold" in registered:
-            return "VN-Serif", "VN-Serif-Bold", "VN-Serif-Italic"
-
-        candidates = [
-            (
-                "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
-                "/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf",
-                "/System/Library/Fonts/Supplemental/Times New Roman Italic.ttf",
-            ),
-            (
-                "/System/Library/Fonts/Supplemental/Arial.ttf",
-                "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
-                "/System/Library/Fonts/Supplemental/Arial Italic.ttf",
-            ),
-            (
-                "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf",
-                "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
-                "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf",
-            ),
-            (
-                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-                "/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf",
-            ),
-        ]
-
-        for reg_path, bold_path, italic_path in candidates:
-            if os.path.exists(reg_path):
-                pdfmetrics.registerFont(TTFont("VN-Serif", reg_path))
-                pdfmetrics.registerFont(
-                    TTFont("VN-Serif-Bold", bold_path if os.path.exists(bold_path) else reg_path)
-                )
-                pdfmetrics.registerFont(
-                    TTFont(
-                        "VN-Serif-Italic",
-                        italic_path if os.path.exists(italic_path) else reg_path,
-                    )
-                )
-                return "VN-Serif", "VN-Serif-Bold", "VN-Serif-Italic"
-
-        return "Helvetica", "Helvetica-Bold", "Helvetica-Oblique"
+        return LeaveRequestPdfService.register_vietnamese_fonts()
 
     @classmethod
     def generate_leave_request_pdf(cls, user: Any, leave_request_id: str) -> tuple[bytes, str]:
-        """
-        Fetches the latest leave request data from the database and generates
-        an official A4 Vietnamese administrative PDF document.
-        Returns (pdf_bytes, filename).
-        """
-        from reportlab.lib import colors
-        from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT
-        from reportlab.lib.pagesizes import A4
-        from reportlab.lib.styles import ParagraphStyle
-        from reportlab.lib.units import mm
-        from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
-
         item = cls.get_leave_request_detail(user=user, leave_request_id=leave_request_id)
-        font_reg, font_bold, font_italic = cls._register_vietnamese_fonts()
-
-        leave_type_labels = {
-            "sick": "Nghỉ ốm / Khám chữa bệnh",
-            "family_affair": "Việc gia đình",
-            "bereavement": "Việc hiếu / Tang chế",
-            "official_competition": "Thi đấu / Công tác trường",
-            "other": "Lý do khác",
-        }
-        status_labels = {
-            "pending": "Chờ phê duyệt",
-            "approved": "Đã phê duyệt (Tự động)" if item.get("isAutoApproved") else "Đã phê duyệt",
-            "rejected": "Từ chối phê duyệt",
-            "cancelled": "Đã hủy đơn",
-        }
-        shift_labels = {
-            "all_day": "Nghỉ cả ngày",
-            "morning": "Nghỉ buổi sáng",
-            "afternoon": "Nghỉ buổi chiều",
-        }
-
-        leave_type_text = leave_type_labels.get(item["leaveType"], "Xin nghỉ phép")
-        status_text = status_labels.get(item["status"], item["status"])
-        shift_text = shift_labels.get(item["sessionShift"], "Nghỉ cả ngày")
-
-        def fmt_date(d_str: str) -> str:
-            try:
-                return datetime.strptime(d_str, "%Y-%m-%d").strftime("%d/%m/%Y")
-            except ValueError:
-                return d_str
-
-        start_fmt = fmt_date(item["startDate"])
-        end_fmt = fmt_date(item["endDate"])
-        date_range_text = (
-            f"Ngày {start_fmt}"
-            if item["startDate"] == item["endDate"]
-            else f"Từ ngày {start_fmt} đến hết ngày {end_fmt}"
-        )
-
-        now_local = timezone.now().astimezone(timezone.get_current_timezone())
-        created_dt = now_local
-        if item.get("createdAt"):
-            try:
-                created_dt = datetime.strptime(item["createdAt"][:16], "%Y-%m-%d %H:%M")
-            except ValueError:
-                created_dt = now_local
-
-        buffer = BytesIO()
-        doc = SimpleDocTemplate(
-            buffer,
-            pagesize=A4,
-            leftMargin=22 * mm,
-            rightMargin=18 * mm,
-            topMargin=18 * mm,
-            bottomMargin=18 * mm,
-            title=f"Đơn xin phép nghỉ học - {item['code']}",
-        )
-
-        style_center = ParagraphStyle(
-            "VNCenter",
-            fontName=font_reg,
-            fontSize=11.5,
-            leading=16,
-            alignment=TA_CENTER,
-        )
-        style_center_bold = ParagraphStyle(
-            "VNCenterBold",
-            fontName=font_bold,
-            fontSize=11.5,
-            leading=16,
-            alignment=TA_CENTER,
-        )
-        style_right_italic = ParagraphStyle(
-            "VNRightItalic",
-            fontName=font_italic,
-            fontSize=11.5,
-            leading=16,
-            alignment=TA_RIGHT,
-        )
-        style_title = ParagraphStyle(
-            "VNTitle",
-            fontName=font_bold,
-            fontSize=16,
-            leading=22,
-            alignment=TA_CENTER,
-        )
-        style_subtitle = ParagraphStyle(
-            "VNSubtitle",
-            fontName=font_italic,
-            fontSize=11,
-            leading=15,
-            alignment=TA_CENTER,
-            textColor=colors.HexColor("#374151"),
-        )
-        style_body = ParagraphStyle(
-            "VNBody",
-            fontName=font_reg,
-            fontSize=11.5,
-            leading=17,
-            alignment=TA_JUSTIFY,
-        )
-        style_body_bold = ParagraphStyle(
-            "VNBodyBold",
-            fontName=font_bold,
-            fontSize=11.5,
-            leading=17,
-        )
-
-        story: list[Any] = []
-
-        # 1. Header Table (School Name & National Motto)
-        header_data = [
-            [
-                Paragraph("TRƯỜNG Trung học phổ thông SCHOOLPRO", style_center_bold),
-                Paragraph("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", style_center_bold),
-            ],
-            [
-                Paragraph(
-                    f"LỚP: <b>{escape(str(item.get('className') or '10A1'))}</b><br/>"
-                    f"<font size='10'>Mã đơn: {escape(str(item.get('code') or ''))}</font>",
-                    style_center,
-                ),
-                Paragraph("<u>Độc lập - Tự do - Hạnh phúc</u>", style_center_bold),
-            ],
-        ]
-        header_table = Table(header_data, colWidths=[72 * mm, 98 * mm])
-        header_table.setStyle(
-            TableStyle(
-                [
-                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-                ]
-            )
-        )
-        story.append(header_table)
-        story.append(Spacer(1, 3 * mm))
-
-        # 2. Date Line
-        story.append(
-            Paragraph(
-                f"Ngày {created_dt.strftime('%d')} tháng {created_dt.strftime('%m')} năm {created_dt.strftime('%Y')}",
-                style_right_italic,
-            )
-        )
-        story.append(Spacer(1, 3 * mm))
-
-        # 3. Title
-        story.append(Paragraph("ĐƠN XIN PHÉP NGHỈ HỌC", style_title))
-        story.append(
-            Paragraph(
-                f"(Phân loại: {escape(leave_type_text)} • Trạng thái: {escape(status_text)})",
-                style_subtitle,
-            )
-        )
-        story.append(Spacer(1, 4 * mm))
-
-        # 4. Salutation
-        homeroom_name = escape(str(item.get("homeroomTeacherName") or "Giáo viên chủ nhiệm"))
-        class_name = escape(str(item.get("className") or "10A1"))
-        story.append(
-            Paragraph(
-                "<b>Kính gửi:</b> - Ban Giám hiệu Trường Trung học phổ thông SchoolPro",
-                style_body,
-            )
-        )
-        story.append(
-            Paragraph(
-                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                f"- Thầy/Cô Giáo viên chủ nhiệm lớp {class_name}: <b>{homeroom_name}</b> (Người xét duyệt)",
-                style_body,
-            )
-        )
-        story.append(
-            Paragraph(
-                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                f"- Quý Thầy/Cô giáo bộ môn giảng dạy lớp {class_name}",
-                style_body,
-            )
-        )
-        story.append(Spacer(1, 3 * mm))
-
-        # 5. Student & Guardian Info
-        student_name = escape(str(item.get("studentName") or ""))
-        student_code = escape(str(item.get("studentCode") or ""))
-        guardian_name = escape(str(item.get("guardianName") or "Phụ huynh học sinh"))
-        guardian_rel = escape(str(item.get("guardianRelationship") or "Phụ huynh"))
-        guardian_phone = escape(str(item.get("guardianPhone") or ""))
-
-        story.append(
-            Paragraph(
-                f"Em tên là: <b>{student_name}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                f"Mã số học sinh: <b>{student_code}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                f"Lớp: <b>{class_name}</b>",
-                style_body,
-            )
-        )
-        guardian_line = f"Họ và tên Phụ huynh xác nhận: <b>{guardian_name}</b> ({guardian_rel})"
-        if guardian_phone:
-            guardian_line += f" — SĐT: <b>{guardian_phone}</b>"
-        story.append(Paragraph(guardian_line, style_body))
-        story.append(Spacer(1, 3 * mm))
-
-        # 6. Leave Request Details Box
-        story.append(
-            Paragraph(
-                "Nay em làm đơn này kính xin Thầy/Cô cho phép em được nghỉ học với thông tin cụ thể như sau:",
-                style_body,
-            )
-        )
-        story.append(Spacer(1, 2 * mm))
-
-        affected_subjects_str = (
-            ", ".join(item.get("affectedSubjects") or []) or "Theo thời khóa biểu"
-        )
-        info_rows = [
-            [
-                Paragraph("<b>Thời gian xin nghỉ:</b>", style_body),
-                Paragraph(escape(date_range_text), style_body),
-            ],
-            [
-                Paragraph("<b>Số ngày &amp; Ca nghỉ:</b>", style_body),
-                Paragraph(
-                    f"<b>{item.get('totalDays', 1)} ngày</b> ({escape(shift_text)})",
-                    style_body,
-                ),
-            ],
-            [
-                Paragraph("<b>Các môn học xin nghỉ:</b>", style_body),
-                Paragraph(escape(affected_subjects_str), style_body),
-            ],
-        ]
-        info_table = Table(info_rows, colWidths=[48 * mm, 122 * mm])
-        info_table.setStyle(
-            TableStyle(
-                [
-                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F8FAFC")),
-                    ("BOX", (0, 0), (-1, -1), 0.75, colors.HexColor("#CBD5E1")),
-                    ("INNERGRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#E2E8F0")),
-                    ("TOPPADDING", (0, 0), (-1, -1), 5),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 10),
-                    ("RIGHTPADDING", (0, 0), (-1, -1), 10),
-                    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ]
-            )
-        )
-        story.append(info_table)
-        story.append(Spacer(1, 3 * mm))
-
-        # 7. Reason & Commitment
-        reason_html = escape(str(item.get("reason") or "")).replace("\n", "<br/>")
-        story.append(Paragraph("<b>Lý do xin nghỉ học chi tiết:</b>", style_body_bold))
-        story.append(Paragraph(reason_html, style_body))
-        story.append(Spacer(1, 2.5 * mm))
-
-        commitment_html = escape(
-            str(
-                item.get("commitment")
-                or "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học."
-            )
-        )
-        story.append(Paragraph("<b>Lời hứa và cam kết của học sinh:</b>", style_body_bold))
-        story.append(Paragraph(commitment_html, style_body))
-        story.append(Spacer(1, 3 * mm))
-
-        if item.get("teacherNote"):
-            reviewer = escape(str(item.get("reviewedByName") or homeroom_name))
-            note_html = escape(str(item.get("teacherNote"))).replace("\n", "<br/>")
-            story.append(
-                Paragraph(
-                    f"<b>Ý kiến phê duyệt ({reviewer}):</b>",
-                    style_body_bold,
-                )
-            )
-            story.append(Paragraph(f'<i>"{note_html}"</i>', style_body))
-            story.append(Spacer(1, 3 * mm))
-
-        story.append(Spacer(1, 4 * mm))
-
-        # 8. Signature Block
-        reviewer_display = escape(
-            str(item.get("reviewedByName") or item.get("homeroomTeacherName") or "")
-        )
-        sig_data = [
-            [
-                Paragraph("<b>XÁC NHẬN CỦA PHỤ HUYNH</b>", style_center_bold),
-                Paragraph("<b>GIÁO VIÊN CHỦ NHIỆM</b>", style_center_bold),
-                Paragraph("<b>HỌC SINH LÀM ĐƠN</b>", style_center_bold),
-            ],
-            [
-                Paragraph("<i>(Ký và ghi rõ họ tên)</i>", style_subtitle),
-                Paragraph(f"<i>({escape(status_text)})</i>", style_subtitle),
-                Paragraph("<i>(Ký và ghi rõ họ tên)</i>", style_subtitle),
-            ],
-            [
-                Spacer(1, 16 * mm),
-                Spacer(1, 16 * mm),
-                Spacer(1, 16 * mm),
-            ],
-            [
-                Paragraph(f"<b>{guardian_name}</b>", style_center_bold),
-                Paragraph(f"<b>{reviewer_display}</b>", style_center_bold),
-                Paragraph(f"<b>{student_name}</b>", style_center_bold),
-            ],
-        ]
-        sig_table = Table(sig_data, colWidths=[56 * mm, 58 * mm, 56 * mm])
-        sig_table.setStyle(
-            TableStyle(
-                [
-                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ]
-            )
-        )
-        story.append(sig_table)
-        story.append(Spacer(1, 6 * mm))
-
-        story.append(
-            Paragraph(
-                f"<font size='9' color='#64748B'>Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • "
-                f"Mã đơn: {escape(str(item.get('code') or ''))} • "
-                f"Thời gian xuất: {now_local.strftime('%H:%M %d/%m/%Y')}</font>",
-                style_center,
-            )
-        )
-
-        doc.build(story)
-        pdf_bytes = buffer.getvalue()
-        buffer.close()
-
-        safe_code = str(item.get("code") or "DON").replace("#", "").replace("/", "-")
-        filename = f"Don_Xin_Nghi_Phep_{safe_code}.pdf"
-        return pdf_bytes, filename
+        return LeaveRequestPdfService.render_pdf_from_item(item)

@@ -175,11 +175,16 @@ export function useLeaveRequestRealtime(
 
     let isUnmounted = false;
     let ws: WebSocket | null = null;
+    let initialConnectTimer: ReturnType<typeof setTimeout> | null = null;
     let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
     let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
     let retryCount = 0;
 
     const clearTimers = () => {
+      if (initialConnectTimer) {
+        clearTimeout(initialConnectTimer);
+        initialConnectTimer = null;
+      }
       if (reconnectTimer) {
         clearTimeout(reconnectTimer);
         reconnectTimer = null;
@@ -187,6 +192,34 @@ export function useLeaveRequestRealtime(
       if (heartbeatTimer) {
         clearInterval(heartbeatTimer);
         heartbeatTimer = null;
+      }
+    };
+
+    const closeSocketSafely = (socket: WebSocket | null) => {
+      if (!socket) return;
+      socket.onmessage = null;
+      socket.onerror = null;
+      socket.onclose = null;
+
+      if (socket.readyState === WebSocket.CONNECTING) {
+        // Avoid "WebSocket is closed before the connection is established" console error
+        socket.onopen = () => {
+          try {
+            socket.close(1000);
+          } catch {
+            // Ignore close error
+          }
+        };
+        return;
+      }
+
+      socket.onopen = null;
+      if (socket.readyState === WebSocket.OPEN) {
+        try {
+          socket.close(1000);
+        } catch {
+          // Ignore close error on teardown
+        }
       }
     };
 
@@ -198,15 +231,23 @@ export function useLeaveRequestRealtime(
           leaveRequestId,
           classId,
         });
-        ws = new WebSocket(wsUrl);
+        const socket = new WebSocket(wsUrl);
+        ws = socket;
 
-        ws.onopen = () => {
-          if (isUnmounted) return;
+        socket.onopen = () => {
+          if (isUnmounted) {
+            try {
+              socket.close(1000);
+            } catch {
+              // Ignore
+            }
+            return;
+          }
           retryCount = 0;
           setIsConnected(true);
 
-          if (leaveRequestId && ws?.readyState === WebSocket.OPEN) {
-            ws.send(
+          if (leaveRequestId && socket.readyState === WebSocket.OPEN) {
+            socket.send(
               JSON.stringify({
                 action: "subscribe_detail",
                 leaveRequestId,
@@ -215,13 +256,13 @@ export function useLeaveRequestRealtime(
           }
 
           heartbeatTimer = setInterval(() => {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-              ws.send(JSON.stringify({ action: "ping" }));
+            if (socket.readyState === WebSocket.OPEN) {
+              socket.send(JSON.stringify({ action: "ping" }));
             }
           }, 25000);
         };
 
-        ws.onmessage = (event: MessageEvent) => {
+        socket.onmessage = (event: MessageEvent) => {
           if (isUnmounted) return;
           try {
             const parsed = JSON.parse(String(event.data)) as {
@@ -236,11 +277,11 @@ export function useLeaveRequestRealtime(
           }
         };
 
-        ws.onerror = () => {
+        socket.onerror = () => {
           // Handled in onclose with backoff retry
         };
 
-        ws.onclose = () => {
+        socket.onclose = () => {
           if (isUnmounted) return;
           setIsConnected(false);
           clearTimers();
@@ -256,18 +297,14 @@ export function useLeaveRequestRealtime(
       }
     };
 
-    connectWebSocket();
+    // Short delay avoids StrictMode mount->unmount->remount opening a throwaway socket
+    initialConnectTimer = setTimeout(connectWebSocket, 50);
 
     return () => {
       isUnmounted = true;
       clearTimers();
-      if (ws) {
-        try {
-          ws.close();
-        } catch {
-          // Ignore close error on teardown
-        }
-      }
+      closeSocketSafely(ws);
+      ws = null;
     };
   }, [classId, enabled, handleIncomingEvent, leaveRequestId]);
 

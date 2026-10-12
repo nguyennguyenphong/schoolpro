@@ -1,19 +1,15 @@
-import { Popconfirm } from "antd";
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { Popconfirm } from "@/components/ui/Popconfirm";
 import { Tag } from "@/components/ui/Tag";
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 import {
   LEAVE_STATUS_COLORS,
-  LEAVE_TYPE_COLORS,
   formatDateTimeDisplay,
-  formatLeaveDateRange,
   getLeaveStatusLabel,
-  getLeaveTypeLabel,
-  getSessionShiftLabel,
 } from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 interface LeaveRequestDetailHeaderProps {
@@ -72,7 +68,7 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1">
         <div>
-          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {t("navigation:pageTitle.leaveRequestDetail")}
@@ -83,12 +79,6 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
               </span>
             )}
             <Tag
-              color={LEAVE_TYPE_COLORS[item.leaveType] || "blue"}
-              className="m-0 text-xs font-semibold px-2.5 py-0.5"
-            >
-              {getLeaveTypeLabel(item.leaveType)}
-            </Tag>
-            <Tag
               color={LEAVE_STATUS_COLORS[item.status] || "default"}
               className="m-0 text-xs font-bold px-2.5 py-0.5"
             >
@@ -96,26 +86,17 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
             </Tag>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
             <span>
-              {t("card:leaveRequests.detail.leaveTimePrefix")}{" "}
-              <strong className="text-slate-800">
-                {formatLeaveDateRange(item.startDate, item.endDate)}
-              </strong>{" "}
-              {t("card:leaveRequests.item.daysAndShiftParen", {
-                days: item.totalDays,
-                shift: getSessionShiftLabel(item.sessionShift),
-              })}
+              {t("card:leaveRequests.detail.submittedAtPrefix")}{" "}
+              <strong className="text-slate-700 font-mono">
+                {formatDateTimeDisplay(item.createdAt)}
+              </strong>
             </span>
             <span>•</span>
             <span>
               {t("card:leaveRequests.detail.classPrefix")}{" "}
               <strong className="text-slate-700">{item.className}</strong>
-            </span>
-            <span>•</span>
-            <span>
-              {t("card:leaveRequests.detail.submittedAtPrefix")}{" "}
-              <strong className="text-slate-700">{formatDateTimeDisplay(item.createdAt)}</strong>
             </span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 export * from "@/modules/students/features/leave-requests/components/detail";
+export * from "@/modules/students/features/leave-requests/components/form";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestCard";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestFilterBar";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestListItem";

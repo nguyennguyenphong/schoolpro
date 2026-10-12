@@ -5,4 +5,4 @@ export { default as LeaveRequestFormPage } from "@/modules/students/features/lea
 export { default as LeaveRequestsPage } from "@/modules/students/features/leave-requests/LeaveRequestsPage";
 export * from "@/modules/students/features/leave-requests/services";
 export * from "@/modules/students/features/leave-requests/types";
-export * from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
+export * from "@/modules/students/features/leave-requests/utils";

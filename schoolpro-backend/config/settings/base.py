@@ -181,7 +181,7 @@ if _channel_redis_url:
 else:
     CHANNEL_LAYERS = {
         "default": {
-            "BACKEND": "channels.layers.InMemoryChannelLayer",
+            "BACKEND": "common.asgi_ws_bridge.ThreadSafeInMemoryChannelLayer",
         },
     }
 
