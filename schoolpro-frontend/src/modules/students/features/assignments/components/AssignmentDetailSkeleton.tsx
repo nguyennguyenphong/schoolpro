@@ -57,7 +57,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           <Button variant="outline" disabled className="self-start sm:self-auto shrink-0">
-            <Icon name="arrow-left" size={13} className="mr-1.5" />
+            <Icon name="arrow-left" size={13} />
             <span>Quay lại</span>
           </Button>
         </div>

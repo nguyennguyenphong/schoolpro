@@ -99,10 +99,14 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         {/* 1. Loại đơn & Ca nghỉ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label
+              htmlFor="leave-request-type"
+              className="text-xs font-bold text-slate-700 block mb-1.5"
+            >
               {t("input:leaveRequests.leaveTypeLabel")} <span className="text-rose-500">*</span>
             </label>
             <Select
+              id="leave-request-type"
               value={leaveType}
               onChange={(val: LeaveType) => setLeaveType(val)}
               className="w-full"
@@ -123,10 +127,14 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label
+              htmlFor="leave-request-session-shift"
+              className="text-xs font-bold text-slate-700 block mb-1.5"
+            >
               {t("input:leaveRequests.sessionShiftLabel")} <span className="text-rose-500">*</span>
             </label>
             <Select
+              id="leave-request-session-shift"
               value={sessionShift}
               onChange={(val: LeaveSessionShift) => handleSessionShiftChange(val)}
               className="w-full"
@@ -165,10 +173,15 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         {/* 2. Từ ngày - Đến ngày */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label
+              htmlFor="leave-request-start-date"
+              className="text-xs font-bold text-slate-700 block mb-1.5"
+            >
               {t("input:leaveRequests.startDateLabel")} <span className="text-rose-500">*</span>
             </label>
             <DatePicker
+              id="leave-request-start-date"
+              name="startDate"
               format="DD/MM/YYYY"
               allowClear={false}
               value={startDate ? dayjs(startDate) : null}
@@ -183,10 +196,15 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label
+              htmlFor="leave-request-end-date"
+              className="text-xs font-bold text-slate-700 block mb-1.5"
+            >
               {t("input:leaveRequests.endDateLabel")} <span className="text-rose-500">*</span>
             </label>
             <DatePicker
+              id="leave-request-end-date"
+              name="endDate"
               format="DD/MM/YYYY"
               allowClear={false}
               value={endDate ? dayjs(endDate) : null}
@@ -241,10 +259,15 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 
         {/* 4. Lý do xin nghỉ chi tiết */}
         <div>
-          <label className="text-xs font-bold text-slate-700 block mb-1.5">
+          <label
+            htmlFor="leave-request-reason"
+            className="text-xs font-bold text-slate-700 block mb-1.5"
+          >
             {t("input:leaveRequests.reasonLabel")} <span className="text-rose-500">*</span>
           </label>
           <TextArea
+            id="leave-request-reason"
+            name="reason"
             rows={4}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
@@ -267,10 +290,15 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 
         {/* 7. Cam kết học tập của học sinh */}
         <div>
-          <label className="text-xs font-bold text-slate-700 block mb-1.5">
+          <label
+            htmlFor="leave-request-commitment"
+            className="text-xs font-bold text-slate-700 block mb-1.5"
+          >
             {t("input:leaveRequests.commitmentLabel")}
           </label>
           <TextArea
+            id="leave-request-commitment"
+            name="commitment"
             rows={3}
             value={commitment}
             onChange={(e) => setCommitment(e.target.value)}

@@ -193,7 +193,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               download={file.name}
               className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-[#f0f0f0] rounded-lg hover:bg-slate-50 transition-colors"
             >
-              <Icon name="download" size={13} className="mr-1.5" />
+              <Icon name="download" size={13} />
               Tải xuống tệp
             </a>
           )}

@@ -63,6 +63,8 @@ export const LeaveRequestLessonsSelector: React.FC<LeaveRequestLessonsSelectorPr
 
           {availableLessons.length > 0 && (
             <Checkbox
+              id="leave-request-select-all-lessons"
+              name="selectAllLessons"
               checked={
                 availableLessons.length > 0 &&
                 selectedLessonKeys.length === availableLessons.length
@@ -119,6 +121,7 @@ export const LeaveRequestLessonsSelector: React.FC<LeaveRequestLessonsSelectorPr
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-64 overflow-y-auto pr-1">
             {availableLessons.map((lesson) => {
               const isChecked = selectedLessonKeys.includes(lesson.lessonKey);
+              const checkboxId = `leave-request-lesson-${lesson.lessonKey}`;
               return (
                 <div
                   key={lesson.lessonKey}
@@ -131,6 +134,11 @@ export const LeaveRequestLessonsSelector: React.FC<LeaveRequestLessonsSelectorPr
                 >
                   <div onClick={(e) => e.stopPropagation()} className="pt-0.5">
                     <Checkbox
+                      id={checkboxId}
+                      name={`lesson_${lesson.lessonKey}`}
+                      aria-label={`${lesson.subjectName} - ${t("card:leaveRequests.form.periodBadge", {
+                        period: lesson.periodNumber,
+                      })}`}
                       checked={isChecked}
                       onChange={(e) => onToggleLesson(lesson.lessonKey, e.target.checked)}
                     />

@@ -38,7 +38,7 @@ export const LeaveRequestsEmptyState: React.FC<LeaveRequestsEmptyStateProps> = (
         <div className="flex items-center justify-center gap-2 mt-3">
           {hasActiveFilters ? (
             <Button variant="outline" onClick={onResetFilters}>
-              <Icon name="refresh" size={13} className="mr-1" />
+              <Icon name="refresh" size={13} />
               <span>{t("button:resetFilters")}</span>
             </Button>
           ) : (

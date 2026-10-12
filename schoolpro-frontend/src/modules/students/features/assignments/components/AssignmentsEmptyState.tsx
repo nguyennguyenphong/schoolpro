@@ -35,7 +35,7 @@ export const AssignmentsEmptyState: React.FC<AssignmentsEmptyStateProps> = ({
       >
         {hasActiveFilters && (
           <Button variant="outline" onClick={onResetFilters} className="mt-3">
-            <Icon name="refresh" size={13} className="mr-1" />
+            <Icon name="refresh" size={13} />
             {t("button:resetFilters")}
           </Button>
         )}

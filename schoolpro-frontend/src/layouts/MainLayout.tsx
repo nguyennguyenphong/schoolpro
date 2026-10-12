@@ -195,7 +195,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             {showSearch && (
               <div className="hidden lg:flex items-center flex-1 mx-4">
                 <Input
-                  prefix={<Icon name="search" size={15} className="text-slate-400 mr-1.5" />}
+                  prefix={<Icon name="search" size={15} className="text-slate-400" />}
                   placeholder={t("navigation:header.searchPlaceholder")}
                   name="search"
                   allowClear

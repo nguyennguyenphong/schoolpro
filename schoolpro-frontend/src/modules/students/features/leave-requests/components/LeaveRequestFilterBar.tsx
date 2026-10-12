@@ -71,6 +71,8 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
         <div className="relative flex-1">
           <Input
             id="leave-request-search-input"
+            name="searchQuery"
+            aria-label={t("input:leaveRequests.searchPlaceholder")}
             placeholder={t("input:leaveRequests.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -115,10 +117,14 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
         <div className="flex flex-wrap items-center gap-2.5">
           {/* 1. Loại nghỉ phép */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            <label
+              htmlFor="leave-request-filter-type"
+              className="text-xs font-semibold text-slate-500 whitespace-nowrap"
+            >
               {t("input:leaveRequests.filterLeaveType")}
-            </span>
+            </label>
             <Select
+              id="leave-request-filter-type"
               value={leaveType}
               onChange={onLeaveTypeChange}
               options={leaveTypeOptions}
@@ -128,10 +134,14 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
 
           {/* 2. Trạng thái */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            <label
+              htmlFor="leave-request-filter-status"
+              className="text-xs font-semibold text-slate-500 whitespace-nowrap"
+            >
               {t("input:leaveRequests.filterStatus")}
-            </span>
+            </label>
             <Select
+              id="leave-request-filter-status"
               value={status}
               onChange={onStatusChange}
               options={statusOptions}
@@ -141,10 +151,14 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
 
           {/* 3. Sắp xếp */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            <label
+              htmlFor="leave-request-filter-sort"
+              className="text-xs font-semibold text-slate-500 whitespace-nowrap"
+            >
               {t("input:leaveRequests.filterSort")}
-            </span>
+            </label>
             <SelectSort
+              id="leave-request-filter-sort"
               value={sortBy}
               onChange={onSortByChange}
               options={sortOptions}
@@ -154,11 +168,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
         </div>
 
         {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            onClick={onResetFilters}
-            className="text-xs text-rose-600 hover:text-rose-700 font-semibold"
-          >
+          <Button variant="outline" onClick={onResetFilters}>
             <Icon name="refresh" size={13} />
             <span>{t("button:resetFilters")}</span>
           </Button>

@@ -181,7 +181,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             onClick={onResetFilters}
             className="text-slate-600 hover:text-blue-600"
           >
-            <Icon name="refresh" size={12} className="mr-1" />
+            <Icon name="refresh" size={12} />
             {t("button:resetFilters")}
           </Button>
         )}

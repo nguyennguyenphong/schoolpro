@@ -44,30 +44,46 @@ export const LeaveRequestGuardianAttachmentsSection: React.FC<
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label
+              htmlFor="leave-request-guardian-name"
+              className="text-[11px] font-semibold text-slate-500 block mb-1"
+            >
               {t("input:leaveRequests.guardianNameLabel")}
             </label>
             <Input
+              id="leave-request-guardian-name"
+              name="guardianName"
+              autoComplete="name"
               value={guardianName}
               onChange={(e) => onGuardianNameChange(e.target.value)}
               placeholder={t("input:leaveRequests.guardianNamePlaceholder")}
             />
           </div>
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label
+              htmlFor="leave-request-guardian-phone"
+              className="text-[11px] font-semibold text-slate-500 block mb-1"
+            >
               {t("input:leaveRequests.guardianPhoneLabel")}
             </label>
             <Input
+              id="leave-request-guardian-phone"
+              name="guardianPhone"
+              autoComplete="tel"
               value={guardianPhone}
               onChange={(e) => onGuardianPhoneChange(e.target.value)}
               placeholder={t("input:leaveRequests.guardianPhonePlaceholder")}
             />
           </div>
           <div>
-            <label className="text-[11px] font-semibold text-slate-500 block mb-1">
+            <label
+              htmlFor="leave-request-guardian-relationship"
+              className="text-[11px] font-semibold text-slate-500 block mb-1"
+            >
               {t("input:leaveRequests.guardianRelationshipLabel")}
             </label>
             <Select
+              id="leave-request-guardian-relationship"
               value={guardianRelationship}
               onChange={(val: string) => onGuardianRelationshipChange(val)}
               className="w-full"
@@ -95,11 +111,16 @@ export const LeaveRequestGuardianAttachmentsSection: React.FC<
       </div>
 
       <div className="space-y-2.5">
-        <label className="text-xs font-bold text-slate-700 block">
+        <label
+          htmlFor="leave-request-attachments"
+          className="text-xs font-bold text-slate-700 block"
+        >
           {t("input:leaveRequests.attachmentLabel")}
         </label>
 
         <Upload.Dragger
+          id="leave-request-attachments"
+          name="attachments"
           multiple
           accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
           showUploadList={false}
