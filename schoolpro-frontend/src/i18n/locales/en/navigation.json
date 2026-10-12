@@ -8,7 +8,10 @@
     "profile": "Student Profile",
     "settings": "System Settings",
     "changePassword": "Change Password",
-    "leaveRequests": "Leave Requests"
+    "leaveRequests": "Leave Requests",
+    "leaveRequestCreate": "Create Leave Request",
+    "leaveRequestEdit": "Edit Leave Request",
+    "leaveRequestDetail": "Details & Processing Progress"
   },
   "pageTitle": {
     "home": "Home",
@@ -18,7 +21,10 @@
     "profile": "Student Profile",
     "settings": "System Settings",
     "changePassword": "Change Password",
-    "leaveRequests": "Leave Requests & Attendance Excuses"
+    "leaveRequests": "Online Leave Requests",
+    "leaveRequestCreate": "Create Online Leave Request",
+    "leaveRequestEdit": "Edit Leave Request",
+    "leaveRequestDetail": "Leave Request Details"
   },
   "pageSubtitle": {
     "home": "School Pro Academic Management System",
@@ -28,7 +34,8 @@
     "profile": "Student personal records, academic information, guardians, and medical dossier",
     "settings": "Customize interface, language, notification channels, and account security",
     "changePassword": "Update your password periodically to maintain high account security",
-    "leaveRequests": "Submit online leave requests, attach supporting documents, and track homeroom teacher approvals"
+    "leaveRequests": "Submit online leave requests, attach supporting documents, and track Homeroom Teacher approvals",
+    "leaveRequestForm": "Complete leave dates, affected lessons, and guardian confirmation to submit for Homeroom Teacher approval"
   },
   "welcome": "Hello, {{name}}! Have a productive study day.",
   "welcomeUser": "Welcome, {{name}}!",

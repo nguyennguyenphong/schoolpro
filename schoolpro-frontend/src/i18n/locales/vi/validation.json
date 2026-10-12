@@ -11,5 +11,12 @@
   "otpRequired": "Vui lòng nhập đầy đủ mã OTP!",
   "otpLength": "Mã OTP phải có đúng 6 chữ số!",
   "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu mới!",
-  "passwordMismatch": "Mật khẩu xác nhận không khớp với mật khẩu mới!"
+  "passwordMismatch": "Mật khẩu xác nhận không khớp với mật khẩu mới!",
+  "leaveRequests": {
+    "dateRangeRequired": "Vui lòng chọn đầy đủ ngày bắt đầu và ngày kết thúc nghỉ.",
+    "endDateBeforeStart": "Ngày kết thúc không được nhỏ hơn ngày bắt đầu nghỉ.",
+    "noLessonsInTimetable": "Ngày hoặc buổi học đã chọn không có môn học nào trong Thời khóa biểu. Vui lòng chọn ngày/buổi học có tiết trong Thời khóa biểu.",
+    "atLeastOneLessonRequired": "Vui lòng chọn ít nhất 01 tiết học trong Thời khóa biểu để đăng ký nghỉ phép.",
+    "reasonMinLength": "Vui lòng nhập lý do xin nghỉ phép chi tiết (tối thiểu 10 ký tự)."
+  }
 }

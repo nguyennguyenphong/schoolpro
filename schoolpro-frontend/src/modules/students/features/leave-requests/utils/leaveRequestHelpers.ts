@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import i18n from "@/i18n/i18n";
 import type {
   LeaveStatus,
   LeaveType,
@@ -40,6 +41,50 @@ export const SESSION_SHIFT_LABELS: Record<LeaveSessionShift, string> = {
   morning: "Buổi sáng",
   afternoon: "Buổi chiều",
 };
+
+export function getLeaveTypeLabel(leaveType?: LeaveType | string | null): string {
+  switch (leaveType) {
+    case "sick":
+      return i18n.t("card:leaveRequests.leaveTypes.sick");
+    case "family_affair":
+      return i18n.t("card:leaveRequests.leaveTypes.family_affair");
+    case "bereavement":
+      return i18n.t("card:leaveRequests.leaveTypes.bereavement");
+    case "official_competition":
+      return i18n.t("card:leaveRequests.leaveTypes.official_competition");
+    case "other":
+      return i18n.t("card:leaveRequests.leaveTypes.other");
+    default:
+      return i18n.t("card:leaveRequests.leaveTypes.default");
+  }
+}
+
+export function getLeaveStatusLabel(status?: LeaveStatus | string | null): string {
+  switch (status) {
+    case "pending":
+      return i18n.t("card:leaveRequests.statuses.pending");
+    case "approved":
+      return i18n.t("card:leaveRequests.statuses.approved");
+    case "rejected":
+      return i18n.t("card:leaveRequests.statuses.rejected");
+    case "cancelled":
+      return i18n.t("card:leaveRequests.statuses.cancelled");
+    default:
+      return status || "";
+  }
+}
+
+export function getSessionShiftLabel(shift?: LeaveSessionShift | string | null): string {
+  switch (shift) {
+    case "morning":
+      return i18n.t("card:leaveRequests.shifts.morning");
+    case "afternoon":
+      return i18n.t("card:leaveRequests.shifts.afternoon");
+    case "all_day":
+    default:
+      return i18n.t("card:leaveRequests.shifts.all_day");
+  }
+}
 
 export function formatLeaveDateRange(startDate: string, endDate: string): string {
   if (!startDate) return "";

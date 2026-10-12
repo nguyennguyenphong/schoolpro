@@ -11,5 +11,12 @@
   "otpRequired": "OTPコードをすべて入力してください！",
   "otpLength": "OTPコードは6桁である必要があります！",
   "confirmPasswordRequired": "新しいパスワードを確認してください！",
-  "passwordMismatch": "確認用パスワードが一致しません！"
+  "passwordMismatch": "確認用パスワードが一致しません！",
+  "leaveRequests": {
+    "dateRangeRequired": "開始日と終了日の両方を選択してください。",
+    "endDateBeforeStart": "終了日は開始日より前の日付にはできません。",
+    "noLessonsInTimetable": "選択した日付または時間帯には時間割上の授業がありません。授業がある日付または時間帯を選択してください。",
+    "atLeastOneLessonRequired": "欠席届を提出するには、時間割から少なくとも1時限を選択してください。",
+    "reasonMinLength": "欠席理由を詳しく入力してください（10文字以上）。"
+  }
 }

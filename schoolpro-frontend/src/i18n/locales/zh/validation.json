@@ -11,5 +11,12 @@
   "otpRequired": "请输入完整的 OTP 验证码！",
   "otpLength": "OTP 验证码必须为 6 位数字！",
   "confirmPasswordRequired": "请再次确认您的新密码！",
-  "passwordMismatch": "两次输入的新密码不一致！"
+  "passwordMismatch": "两次输入的新密码不一致！",
+  "leaveRequests": {
+    "dateRangeRequired": "请完整选择请假开始日期和结束日期。",
+    "endDateBeforeStart": "结束日期不能早于开始日期。",
+    "noLessonsInTimetable": "所选日期或时段在课程表中没有任何课程，请选择有课的日期或时段。",
+    "atLeastOneLessonRequired": "请在课程表中至少选择 1 节课以提交请假申请。",
+    "reasonMinLength": "请输入详细的请假事由（至少 10 个字符）。"
+  }
 }

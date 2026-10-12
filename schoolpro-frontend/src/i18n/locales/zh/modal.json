@@ -15,5 +15,7 @@
   "passwordSuccessTitle": "密码修改成功！",
   "passwordSuccessContent": "您的账户密码已安全更新，下次登录时请使用新密码。",
   "revokeSessionConfirmTitle": "确认结束会话",
-  "revokeSessionConfirmContent": "您确定要退出该设备的登录状态吗？"
+  "revokeSessionConfirmContent": "您确定要退出该设备的登录状态吗？",
+  "deleteLeaveRequestConfirmTitle": "确认删除请假申请？",
+  "deleteLeaveRequestConfirmDesc": "此待审批的请假申请将被永久删除。"
 }

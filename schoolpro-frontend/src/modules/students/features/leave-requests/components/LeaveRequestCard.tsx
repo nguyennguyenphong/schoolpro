@@ -1,16 +1,17 @@
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 import {
   LEAVE_STATUS_COLORS,
-  LEAVE_STATUS_LABELS,
   LEAVE_TYPE_COLORS,
-  LEAVE_TYPE_LABELS,
-  SESSION_SHIFT_LABELS,
   formatDateTimeDisplay,
   formatLeaveDateRange,
+  getLeaveStatusLabel,
+  getLeaveTypeLabel,
+  getSessionShiftLabel,
 } from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 interface LeaveRequestCardProps {
@@ -22,6 +23,8 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
   item,
   onViewDetail,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
   return (
     <div
       className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs p-4 flex flex-col justify-between gap-3.5 h-full transition-all"
@@ -33,14 +36,14 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
             color={LEAVE_TYPE_COLORS[item.leaveType] || "blue"}
             className="m-0 text-[11px] font-semibold px-2.5 py-0.5 truncate"
           >
-            {LEAVE_TYPE_LABELS[item.leaveType] || "Xin nghỉ phép"}
+            {getLeaveTypeLabel(item.leaveType)}
           </Tag>
 
           <Tag
             color={LEAVE_STATUS_COLORS[item.status] || "default"}
             className="m-0 text-[11px] font-bold px-2.5 py-0.5 shrink-0"
           >
-            {LEAVE_STATUS_LABELS[item.status] || item.status}
+            {getLeaveStatusLabel(item.status)}
           </Tag>
         </div>
 
@@ -53,14 +56,19 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
             </span>
           </div>
           <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 shrink-0">
-            {item.totalDays} ngày • {SESSION_SHIFT_LABELS[item.sessionShift] || "Cả ngày"}
+            {t("card:leaveRequests.item.daysAndShift", {
+              days: item.totalDays,
+              shift: getSessionShiftLabel(item.sessionShift),
+            })}
           </span>
         </div>
 
         {/* 3. Subject */}
         {item.affectedSubjects && item.affectedSubjects.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-slate-500">Môn nghỉ:</span>
+            <span className="text-[11px] font-semibold text-slate-500">
+              {t("card:leaveRequests.item.affectedSubjectsLabel")}
+            </span>
             {item.affectedSubjects.slice(0, 3).map((subj) => (
               <Tag key={subj} color="cyan" className="m-0 text-[10px] font-semibold px-2 py-0">
                 {subj}
@@ -68,7 +76,9 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
             ))}
             {item.affectedSubjects.length > 3 && (
               <span className="text-[11px] font-semibold text-slate-500">
-                +{item.affectedSubjects.length - 3} môn
+                {t("card:leaveRequests.item.moreSubjects", {
+                  count: item.affectedSubjects.length - 3,
+                })}
               </span>
             )}
           </div>
@@ -98,7 +108,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
           href={`/student/leave-requests/${item.id}`}
           className="text-xs text-blue-600 font-semibold px-2.5 py-1 h-7 shrink-0"
         >
-          <span>Chi tiết</span>
+          <span>{t("button:viewDetail")}</span>
           <Icon name="chevron-right" size={13} />
         </Button>
       </div>

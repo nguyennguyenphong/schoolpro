@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -13,6 +14,8 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
   summary,
   loading = false,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   if (loading || !summary) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -40,7 +43,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
       <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Tổng số đơn đã gửi
+            {t("card:leaveRequests.summary.totalTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
             <Icon name="file-text" size={17} />
@@ -51,7 +54,9 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
           <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {summary.total}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">đơn</span>
+          <span className="text-xs text-slate-400 font-semibold">
+            {t("card:leaveRequests.summary.requestUnit")}
+          </span>
           {summary.semesterName && (
             <Tag color="processing" className="ml-auto m-0 font-semibold">
               {summary.semesterName}
@@ -61,10 +66,12 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span>
-            Lớp học:{" "}
+            {t("card:leaveRequests.summary.classLabel")}{" "}
             <strong className="text-slate-700">{summary.className || "10A1"}</strong>
           </span>
-          <span className="text-blue-600 font-medium">Toàn học kỳ</span>
+          <span className="text-blue-600 font-medium">
+            {t("card:leaveRequests.summary.allSemester")}
+          </span>
         </div>
       </Card>
 
@@ -72,7 +79,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
       <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Đang chờ Giáo viên chủ nhiệm duyệt
+            {t("card:leaveRequests.summary.pendingTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="clock" size={17} />
@@ -83,23 +90,29 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
           <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">
             {summary.pendingCount}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">đơn chờ</span>
+          <span className="text-xs text-slate-400 font-semibold">
+            {t("card:leaveRequests.summary.pendingUnit")}
+          </span>
           <Tag
             color={summary.pendingCount > 0 ? "warning" : "success"}
             className="ml-auto m-0 font-semibold"
           >
-            {summary.pendingCount > 0 ? "Đang xử lý" : "Đã duyệt hết"}
+            {summary.pendingCount > 0
+              ? t("card:leaveRequests.summary.processingTag")
+              : t("card:leaveRequests.summary.allApprovedTag")}
           </Tag>
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span className="truncate max-w-44">
-            Giáo viên chủ nhiệm:{" "}
+            {t("card:leaveRequests.header.homeroomTeacherPrefix")}{" "}
             <strong className="text-slate-700">
-              {summary.homeroomTeacherName || "Giáo viên"}
+              {summary.homeroomTeacherName || t("card:leaveRequests.header.teacherFallback")}
             </strong>
           </span>
-          <span className="text-amber-600 font-medium">Có thể sửa/hủy</span>
+          <span className="text-amber-600 font-medium">
+            {t("card:leaveRequests.summary.editableHint")}
+          </span>
         </div>
       </Card>
 
@@ -107,7 +120,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
       <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Đơn đã phê duyệt
+            {t("card:leaveRequests.summary.approvedTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
             <Icon name="checkCircle" size={17} />
@@ -118,7 +131,9 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
           <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">
             {summary.approvedCount}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">đơn hợp lệ</span>
+          <span className="text-xs text-slate-400 font-semibold">
+            {t("card:leaveRequests.summary.validUnit")}
+          </span>
           <Tag color="success" className="ml-auto m-0 font-semibold">
             {approvalRate}%
           </Tag>
@@ -126,12 +141,14 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
           <span>
-            Từ chối / Đã hủy:{" "}
+            {t("card:leaveRequests.summary.rejectedOrCancelled")}{" "}
             <strong className="text-rose-600">
               {summary.rejectedCount + summary.cancelledCount}
             </strong>
           </span>
-          <span className="text-emerald-600 font-medium">Vắng có phép</span>
+          <span className="text-emerald-600 font-medium">
+            {t("card:leaveRequests.summary.excusedAbsence")}
+          </span>
         </div>
       </Card>
 
@@ -139,7 +156,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
       <Card className="rounded-xl shadow-2xs hover:border-cyan-400 transition-all">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Tổng ngày nghỉ có phép
+            {t("card:leaveRequests.summary.daysOffTitle")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-200 flex items-center justify-center shrink-0">
             <Icon name="calendar" size={17} />
@@ -151,16 +168,18 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
             {summary.totalDaysOff}
           </span>
           <span className="text-xs text-slate-400 font-semibold">
-            / {summary.maxAllowedDays} ngày
+            {t("card:leaveRequests.summary.maxAllowedDays", { max: summary.maxAllowedDays })}
           </span>
           <Tag color="cyan" className="ml-auto m-0 font-semibold">
-            Còn {remainingDays} ngày
+            {t("card:leaveRequests.summary.remainingDays", { count: remainingDays })}
           </Tag>
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
-          <span>Quy định Bộ GD&ĐT</span>
-          <span className="text-cyan-700 font-semibold">Tối đa 45 buổi/năm</span>
+          <span>{t("card:leaveRequests.summary.ministryRegulation")}</span>
+          <span className="text-cyan-700 font-semibold">
+            {t("card:leaveRequests.summary.maxSessionsPerYear")}
+          </span>
         </div>
       </Card>
     </div>

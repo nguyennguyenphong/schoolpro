@@ -1,3 +1,4 @@
+import i18n from "@/i18n/i18n";
 import { API_BASE_URL, httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 import type {
@@ -211,7 +212,7 @@ class LeaveRequestsService {
 
       return {
         className: "10A1",
-        homeroomTeacherName: "Giáo viên chủ nhiệm",
+        homeroomTeacherName: i18n.t("card:leaveRequests.header.homeroomTeacherFallback"),
         homeroomTeacherEmail: "",
         approvalAuthority: "HOMEROOM_TEACHER_ONLY",
         affectedLessons: [],
@@ -220,7 +221,7 @@ class LeaveRequestsService {
     } catch {
       return {
         className: "10A1",
-        homeroomTeacherName: "Giáo viên chủ nhiệm",
+        homeroomTeacherName: i18n.t("card:leaveRequests.header.homeroomTeacherFallback"),
         homeroomTeacherEmail: "",
         approvalAuthority: "HOMEROOM_TEACHER_ONLY",
         affectedLessons: [],
@@ -265,7 +266,7 @@ class LeaveRequestsService {
       return created;
     }
 
-    throw new Error(response.data?.message || "Không thể gửi đơn xin nghỉ phép");
+    throw new Error(response.data?.message || i18n.t("message:leaveRequestCreateError"));
   }
 
   /**
@@ -286,7 +287,7 @@ class LeaveRequestsService {
       return updated;
     }
 
-    throw new Error(response.data?.message || "Không thể cập nhật đơn xin nghỉ phép");
+    throw new Error(response.data?.message || i18n.t("message:leaveRequestUpdateError"));
   }
 
   /**
@@ -307,7 +308,7 @@ class LeaveRequestsService {
       return cancelled;
     }
 
-    throw new Error(response.data?.message || "Không thể hủy đơn xin nghỉ phép");
+    throw new Error(response.data?.message || i18n.t("message:leaveRequestCancelError"));
   }
 
   /**
@@ -319,7 +320,7 @@ class LeaveRequestsService {
     );
 
     if (!response.data?.success) {
-      throw new Error(response.data?.message || "Không thể xóa đơn xin nghỉ phép");
+      throw new Error(response.data?.message || i18n.t("message:leaveRequestDeleteError"));
     }
 
     this._notifyMutation("LEAVE_REQUEST_DELETED", id, null);

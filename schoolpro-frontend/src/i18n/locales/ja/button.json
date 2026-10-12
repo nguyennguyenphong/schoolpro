@@ -40,5 +40,13 @@
   "revokeSession": "このセッションを終了",
   "logoutAllDevices": "すべてのデバイスからログアウト",
   "resetFilters": "フィルターをリセット",
-  "reloadData": "データを再読み込み"
+  "reloadData": "データを再読み込み",
+  "createLeaveRequest": "欠席届を作成",
+  "submitLeaveRequest": "欠席届を送信",
+  "updateLeaveRequest": "変更を保存",
+  "lockedNoLessons": "ロック中（授業なし）",
+  "downloadLeaveRequestPdf": "申請書ダウンロード (PDF)",
+  "deleteLeaveRequest": "欠席届を削除",
+  "backToLeaveRequests": "欠席届一覧に戻る",
+  "openAttachment": "開く"
 }

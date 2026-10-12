@@ -15,5 +15,7 @@
   "passwordSuccessTitle": "Đổi mật khẩu thành công!",
   "passwordSuccessContent": "Mật khẩu của bạn đã được cập nhật thành công. Vui lòng ghi nhớ và sử dụng mật khẩu mới cho các lần đăng nhập tiếp theo.",
   "revokeSessionConfirmTitle": "Xác nhận kết thúc phiên làm việc",
-  "revokeSessionConfirmContent": "Bạn có chắc chắn muốn đăng xuất phiên làm việc trên thiết bị này không?"
+  "revokeSessionConfirmContent": "Bạn có chắc chắn muốn đăng xuất phiên làm việc trên thiết bị này không?",
+  "deleteLeaveRequestConfirmTitle": "Xác nhận xóa đơn xin nghỉ phép?",
+  "deleteLeaveRequestConfirmDesc": "Đơn xin nghỉ phép chưa duyệt này sẽ bị xóa vĩnh viễn."
 }

@@ -7,7 +7,11 @@
     "assignments": "作业与学习任务",
     "profile": "学生档案",
     "settings": "系统设置",
-    "changePassword": "修改密码"
+    "changePassword": "修改密码",
+    "leaveRequests": "请假申请",
+    "leaveRequestCreate": "创建请假申请",
+    "leaveRequestEdit": "编辑请假申请",
+    "leaveRequestDetail": "详情与处理进度"
   },
   "pageTitle": {
     "home": "首页",
@@ -16,7 +20,11 @@
     "assignments": "作业与学习任务",
     "profile": "学生档案",
     "settings": "系统设置",
-    "changePassword": "修改账户密码"
+    "changePassword": "修改账户密码",
+    "leaveRequests": "在线请假申请",
+    "leaveRequestCreate": "在线创建请假申请",
+    "leaveRequestEdit": "编辑请假申请",
+    "leaveRequestDetail": "请假申请详情"
   },
   "pageSubtitle": {
     "home": "School Pro 教学管理与学生服务系统",
@@ -25,7 +33,9 @@
     "assignments": "查看课后作业、在线测验、实验报告及各学科提交进度",
     "profile": "学生个人基本资料、学籍、监护人联络与校园医疗记录",
     "settings": "个性化界面外观、使用语言、通知接收渠道与账户安全",
-    "changePassword": "定期更新密码以维护您的账户安全"
+    "changePassword": "定期更新密码以维护您的账户安全",
+    "leaveRequests": "在线提交请假申请、上传证明材料并跟踪班主任审批反馈",
+    "leaveRequestForm": "完整填写请假时间、涉及课程与家长确认信息，提交班主任审批"
   },
   "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
   "welcomeUser": "你好，{{name}}！",

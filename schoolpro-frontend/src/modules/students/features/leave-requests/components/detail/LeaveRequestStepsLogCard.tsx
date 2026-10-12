@@ -1,17 +1,18 @@
 import { Steps } from "antd";
 import dayjs from "dayjs";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 import {
   LEAVE_STATUS_COLORS,
-  LEAVE_STATUS_LABELS,
   LEAVE_TYPE_COLORS,
-  LEAVE_TYPE_LABELS,
-  SESSION_SHIFT_LABELS,
   formatDateTimeDisplay,
   formatLeaveDateRange,
+  getLeaveStatusLabel,
+  getLeaveTypeLabel,
+  getSessionShiftLabel,
 } from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 interface LeaveRequestStepsLogCardProps {
@@ -19,6 +20,7 @@ interface LeaveRequestStepsLogCardProps {
 }
 
 export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> = ({ item }) => {
+  const { t } = useTranslation("card");
   const affectedLessons = item.affectedLessons || [];
   const notifiedTeachers = item.notifiedTeachers || [];
 
@@ -59,7 +61,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
     time: formatDateTimeDisplay(ev.createdAt),
     title: ev.title,
     actor: ev.actor,
-    badgeText: ev.badgeText || "Hệ thống",
+    badgeText: ev.badgeText || t("leaveRequests.detail.systemBadge"),
     badgeColor: (ev.badgeColor || "blue") as
       | "blue"
       | "cyan"
@@ -81,24 +83,28 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
           ...dbLogs,
           {
             id: "log-pending-deadline",
-            time: `Hạn duyệt: ${formatDateTimeDisplay(item.approvalDeadline || item.createdAt)}`,
-            title: "Đang chờ Giáo viên chủ nhiệm phê duyệt (Hạn trước giờ học 03 giờ)",
-            actor: `${item.homeroomTeacherName || "Giáo viên chủ nhiệm"} • Hệ thống Tự động Duyệt`,
-            badgeText: "Chờ Giáo viên chủ nhiệm duyệt",
+            time: t("leaveRequests.detail.pendingDeadlineTime", {
+              time: formatDateTimeDisplay(item.approvalDeadline || item.createdAt),
+            }),
+            title: t("leaveRequests.detail.pendingDeadlineLogTitle"),
+            actor: t("leaveRequests.detail.pendingDeadlineLogActor", {
+              teacherName:
+                item.homeroomTeacherName || t("leaveRequests.header.homeroomTeacherFallback"),
+            }),
+            badgeText: t("leaveRequests.detail.pendingDeadlineLogBadge"),
             badgeColor: "warning" as const,
             dotColor: "bg-amber-500 animate-pulse",
             emailSent: false,
             recipientEmail: item.homeroomTeacherEmail || "",
-            description: `Hạn phê duyệt từ lúc đăng ký (${formatDateTimeDisplay(
-              item.createdAt,
-            )}) đến trước thời gian diễn ra môn học 03 giờ (${formatDateTimeDisplay(
-              item.approvalDeadline,
-            )}). Nếu quá thời hạn trên mà Giáo viên chủ nhiệm chưa duyệt, hệ thống sẽ tự động phê duyệt đơn, gửi Email cho học sinh và thông báo tới Giáo viên bộ môn.`,
+            description: t("leaveRequests.detail.pendingDeadlineLogDesc", {
+              createdAt: formatDateTimeDisplay(item.createdAt),
+              deadline: formatDateTimeDisplay(item.approvalDeadline),
+            }),
           },
         ]
       : dbLogs;
 
-  const homeroomAlsoSubject = notifiedTeachers.some((t) => t.isHomeroomTeacher);
+  const homeroomAlsoSubject = notifiedTeachers.some((teacher) => teacher.isHomeroomTeacher);
 
   return (
     <div className="space-y-4 sm:space-y-5">
@@ -108,20 +114,20 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
             <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
-              Quy trình xét duyệt &amp; Thông báo tự động
+              {t("leaveRequests.detail.workflowCardTitle")}
             </h3>
           </div>
           <div className="flex items-center gap-2">
             {item.isAutoApproved && (
               <Tag color="cyan" className="m-0 font-bold text-xs">
-                Hệ thống duyệt tự động (Trước 3h)
+                {t("leaveRequests.detail.autoApprovedBadge")}
               </Tag>
             )}
             <Tag
               color={LEAVE_STATUS_COLORS[item.status] || "default"}
               className="m-0 font-bold text-xs"
             >
-              {LEAVE_STATUS_LABELS[item.status] || item.status}
+              {getLeaveStatusLabel(item.status)}
             </Tag>
           </div>
         </div>
@@ -140,7 +146,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             <div className="flex items-center gap-2">
               <Icon name="clock" size={14} className="text-blue-600 shrink-0" />
               <span>
-                Hạn Giáo viên chủ nhiệm phê duyệt (trước giờ học 03 giờ):{" "}
+                {t("leaveRequests.detail.deadlineLabel")}{" "}
                 <strong className="font-mono">
                   {formatDateTimeDisplay(item.approvalDeadline)}
                 </strong>
@@ -148,10 +154,12 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             </div>
             <span className="text-[11px] font-medium">
               {item.isAutoApproved
-                ? "Đã tự động phê duyệt khi đến hạn & gửi Email tới Học sinh + Giáo viên bộ môn"
+                ? t("leaveRequests.detail.deadlineAutoApprovedStatus")
                 : item.status === "pending"
-                  ? "Quá hạn chưa duyệt → Hệ thống tự động phê duyệt & gửi Email"
-                  : `Đã xử lý lúc ${formatDateTimeDisplay(item.reviewedAt || item.updatedAt)}`}
+                  ? t("leaveRequests.detail.deadlinePendingStatus")
+                  : t("leaveRequests.detail.deadlineProcessedStatus", {
+                      time: formatDateTimeDisplay(item.reviewedAt || item.updatedAt),
+                    })}
             </span>
           </div>
         )}
@@ -163,7 +171,11 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
             status={stepStatus}
             items={[
               {
-                title: <span className="font-semibold text-xs sm:text-sm">Đăng ký nghỉ học</span>,
+                title: (
+                  <span className="font-semibold text-xs sm:text-sm">
+                    {t("leaveRequests.detail.step1Title")}
+                  </span>
+                ),
                 description: (
                   <span className="text-[11px] text-slate-500 block font-mono">
                     {formatDateTimeDisplay(item.createdAt)}
@@ -173,46 +185,60 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
               {
                 title: (
                   <span className="font-semibold text-xs sm:text-sm">
-                    Báo Giáo viên chủ nhiệm &amp; Giáo viên bộ môn
+                    {t("leaveRequests.detail.step2Title")}
                   </span>
                 ),
                 description: (
                   <span className="text-[11px] text-slate-500 block">
                     {homeroomAlsoSubject
-                      ? "Giáo viên chủ nhiệm kiêm Giáo viên bộ môn (gửi 1 lần)"
-                      : `Email Giáo viên chủ nhiệm & ${notifiedTeachers.length} Giáo viên bộ môn`}
-                  </span>
-                ),
-              },
-              {
-                title: <span className="font-semibold text-xs sm:text-sm">Phê duyệt đơn</span>,
-                description: (
-                  <span className="text-[11px] text-slate-500 block">
-                    {item.status === "pending"
-                      ? `Hạn: ${formatDateTimeDisplay(item.approvalDeadline)}`
-                      : item.isAutoApproved
-                        ? `Tự động duyệt (${formatDateTimeDisplay(item.reviewedAt)})`
-                        : item.status === "approved"
-                          ? `Giáo viên chủ nhiệm duyệt (${formatDateTimeDisplay(item.reviewedAt)})`
-                          : item.status === "rejected"
-                            ? `Giáo viên chủ nhiệm từ chối (${formatDateTimeDisplay(item.reviewedAt)})`
-                            : "Đã hủy"}
+                      ? t("leaveRequests.detail.step2DescCombined")
+                      : t("leaveRequests.detail.step2DescSeparate", {
+                          count: notifiedTeachers.length,
+                        })}
                   </span>
                 ),
               },
               {
                 title: (
                   <span className="font-semibold text-xs sm:text-sm">
-                    Email Học sinh &amp; Báo Giáo viên bộ môn
+                    {t("leaveRequests.detail.step3Title")}
+                  </span>
+                ),
+                description: (
+                  <span className="text-[11px] text-slate-500 block">
+                    {item.status === "pending"
+                      ? t("leaveRequests.detail.step3DescPending", {
+                          time: formatDateTimeDisplay(item.approvalDeadline),
+                        })
+                      : item.isAutoApproved
+                        ? t("leaveRequests.detail.step3DescAutoApproved", {
+                            time: formatDateTimeDisplay(item.reviewedAt),
+                          })
+                        : item.status === "approved"
+                          ? t("leaveRequests.detail.step3DescApproved", {
+                              time: formatDateTimeDisplay(item.reviewedAt),
+                            })
+                          : item.status === "rejected"
+                            ? t("leaveRequests.detail.step3DescRejected", {
+                                time: formatDateTimeDisplay(item.reviewedAt),
+                              })
+                            : t("leaveRequests.statuses.cancelled")}
+                  </span>
+                ),
+              },
+              {
+                title: (
+                  <span className="font-semibold text-xs sm:text-sm">
+                    {t("leaveRequests.detail.step4Title")}
                   </span>
                 ),
                 description: (
                   <span className="text-[11px] text-slate-500 block">
                     {item.status === "approved"
-                      ? "Đã gửi Email Học sinh & báo Giáo viên bộ môn"
+                      ? t("leaveRequests.detail.step4DescApproved")
                       : item.status === "rejected"
-                        ? "Đã gửi Email kết quả Học sinh"
-                        : "Sau khi đơn được duyệt"}
+                        ? t("leaveRequests.detail.step4DescRejected")
+                        : t("leaveRequests.detail.step4DescPending")}
                   </span>
                 ),
               },
@@ -226,13 +252,15 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
         <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
           <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
           <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
-            Nội dung đăng ký & Môn học xin nghỉ
+            {t("leaveRequests.detail.contentCardTitle")}
           </h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-500 block mb-1">Khoảng thời gian nghỉ</span>
+            <span className="text-[11px] text-slate-500 block mb-1">
+              {t("leaveRequests.detail.dateRangeBoxLabel")}
+            </span>
             <div className="flex items-center gap-1.5 font-bold text-slate-900 text-xs sm:text-sm">
               <Icon name="calendar" size={14} className="text-blue-600 shrink-0" />
               <span>{formatLeaveDateRange(item.startDate, item.endDate)}</span>
@@ -240,22 +268,29 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-500 block mb-1">Số ngày & Ca nghỉ</span>
+            <span className="text-[11px] text-slate-500 block mb-1">
+              {t("leaveRequests.detail.daysAndShiftBoxLabel")}
+            </span>
             <div className="flex items-center gap-1.5 font-bold text-blue-700 text-xs sm:text-sm">
               <Icon name="clock" size={14} className="text-blue-600 shrink-0" />
               <span>
-                {item.totalDays} ngày ({SESSION_SHIFT_LABELS[item.sessionShift] || "Cả ngày"})
+                {t("leaveRequests.item.daysAndShift", {
+                  days: item.totalDays,
+                  shift: getSessionShiftLabel(item.sessionShift),
+                })}
               </span>
             </div>
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-500 block mb-1">Phân loại lý do</span>
+            <span className="text-[11px] text-slate-500 block mb-1">
+              {t("leaveRequests.detail.reasonCategoryBoxLabel")}
+            </span>
             <Tag
               color={LEAVE_TYPE_COLORS[item.leaveType] || "blue"}
               className="m-0 font-semibold text-xs"
             >
-              {LEAVE_TYPE_LABELS[item.leaveType] || "Xin nghỉ phép"}
+              {getLeaveTypeLabel(item.leaveType)}
             </Tag>
           </div>
         </div>
@@ -264,7 +299,9 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-700">
-              Danh sách các tiết học / môn học xin nghỉ ({affectedLessons.length} tiết):
+              {t("leaveRequests.detail.affectedLessonsListTitle", {
+                count: affectedLessons.length,
+              })}
             </span>
             {item.affectedSubjects && item.affectedSubjects.length > 0 && (
               <div className="flex flex-wrap gap-1">
@@ -286,32 +323,36 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
                 >
                   <div className="min-w-0 space-y-0.5">
                     <div className="font-bold text-slate-900 truncate">
-                      Môn {lesson.subjectName} • Tiết {lesson.periodNumber}
+                      {t("leaveRequests.detail.subjectAndPeriodItem", {
+                        subject: lesson.subjectName,
+                        period: lesson.periodNumber,
+                      })}
                     </div>
                     <div className="text-[11px] text-slate-500">
                       {lesson.dayOfWeekLabel} ({dayjs(lesson.date).format("DD/MM/YYYY")}) •{" "}
                       {lesson.startTime} - {lesson.endTime}
                     </div>
                     <div className="text-[11px] text-slate-600 truncate">
-                      Giáo viên bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
+                      {t("leaveRequests.form.subjectTeacherPrefix")}{" "}
+                      <strong className="text-slate-800">{lesson.teacherName}</strong>
                     </div>
                   </div>
                   <Tag color="cyan" className="m-0 text-[10px] font-semibold shrink-0">
-                    Đã báo Giáo viên bộ môn
+                    {t("leaveRequests.detail.notifiedSubjectTeacherBadge")}
                   </Tag>
                 </div>
               ))}
             </div>
           ) : (
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500">
-              Không có tiết học trùng trong Thời khóa biểu vào ngày nghỉ này.
+              {t("leaveRequests.detail.noMatchingLessons")}
             </div>
           )}
         </div>
 
         <div className="space-y-1.5">
           <span className="text-xs font-bold text-slate-700 block">
-            Lý do xin nghỉ học chi tiết:
+            {t("leaveRequests.detail.detailedReasonLabel")}
           </span>
           <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/80 text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line">
             {item.reason}
@@ -321,7 +362,7 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
         {item.commitment && (
           <div className="space-y-1.5">
             <span className="text-xs font-bold text-slate-700 block">
-              Cam kết học tập của học sinh:
+              {t("leaveRequests.detail.studentCommitmentLabel")}
             </span>
             <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100 text-xs text-slate-700 italic">
               {item.commitment}
@@ -336,10 +377,12 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-emerald-600 inline-block" />
             <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
-              Nhật ký xử lý đơn (Activity Log)
+              {t("leaveRequests.detail.activityLogCardTitle")}
             </h3>
           </div>
-          <span className="text-xs text-slate-400 font-medium">{logs.length} sự kiện</span>
+          <span className="text-xs text-slate-400 font-medium">
+            {t("leaveRequests.detail.eventsCount", { count: logs.length })}
+          </span>
         </div>
 
         <div className="relative pl-4 space-y-4 before:content-[''] before:absolute before:left-1.75 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
@@ -364,11 +407,12 @@ export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> =
 
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                   <span>
-                    Thực hiện bởi: <strong className="text-slate-700">{log.actor}</strong>
+                    {t("leaveRequests.detail.performedBy")}{" "}
+                    <strong className="text-slate-700">{log.actor}</strong>
                   </span>
                   {log.recipientEmail && (
                     <span className="text-[11px] text-blue-600 font-medium">
-                      Email: {log.recipientEmail}
+                      {t("leaveRequests.detail.emailPrefix")} {log.recipientEmail}
                     </span>
                   )}
                 </div>

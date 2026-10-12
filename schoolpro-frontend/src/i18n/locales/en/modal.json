@@ -15,5 +15,7 @@
   "passwordSuccessTitle": "Password Changed Successfully!",
   "passwordSuccessContent": "Your account password has been updated securely. Please use your new password for your next login.",
   "revokeSessionConfirmTitle": "Confirm Terminating Session",
-  "revokeSessionConfirmContent": "Are you sure you want to log out of this device session?"
+  "revokeSessionConfirmContent": "Are you sure you want to log out of this device session?",
+  "deleteLeaveRequestConfirmTitle": "Confirm deleting leave request?",
+  "deleteLeaveRequestConfirmDesc": "This pending leave request will be permanently deleted."
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -35,27 +36,32 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
   onViewModeChange,
   onResetFilters,
 }) => {
+  const { t } = useTranslation(["input", "card", "button"]);
+
   const statusOptions = [
-    { label: "Tất cả trạng thái", value: "all" },
-    { label: "Chờ duyệt", value: "pending" },
-    { label: "Đã duyệt", value: "approved" },
-    { label: "Từ chối", value: "rejected" },
-    { label: "Đã hủy", value: "cancelled" },
+    { label: t("input:leaveRequests.allStatuses"), value: "all" },
+    { label: t("card:leaveRequests.statuses.pending"), value: "pending" },
+    { label: t("card:leaveRequests.statuses.approved"), value: "approved" },
+    { label: t("card:leaveRequests.statuses.rejected"), value: "rejected" },
+    { label: t("card:leaveRequests.statuses.cancelled"), value: "cancelled" },
   ];
 
   const leaveTypeOptions = [
-    { label: "Tất cả loại nghỉ phép", value: "all" },
-    { label: "Nghỉ ốm / Khám bệnh", value: "sick" },
-    { label: "Việc gia đình", value: "family_affair" },
-    { label: "Việc hiếu / Tang chế", value: "bereavement" },
-    { label: "Thi đấu / Công tác trường", value: "official_competition" },
-    { label: "Lý do khác", value: "other" },
+    { label: t("input:leaveRequests.allLeaveTypes"), value: "all" },
+    { label: t("card:leaveRequests.leaveTypes.sick"), value: "sick" },
+    { label: t("card:leaveRequests.leaveTypes.family_affair"), value: "family_affair" },
+    { label: t("card:leaveRequests.leaveTypes.bereavement"), value: "bereavement" },
+    {
+      label: t("card:leaveRequests.leaveTypes.official_competition"),
+      value: "official_competition",
+    },
+    { label: t("card:leaveRequests.leaveTypes.other"), value: "other" },
   ];
 
   const sortOptions = [
-    { label: "Mới tạo gần nhất", value: "newest" },
-    { label: "Cũ nhất trước", value: "oldest" },
-    { label: "Theo ngày bắt đầu nghỉ", value: "start_date" },
+    { label: t("input:leaveRequests.sortNewest"), value: "newest" },
+    { label: t("input:leaveRequests.sortOldest"), value: "oldest" },
+    { label: t("input:leaveRequests.sortStartDate"), value: "start_date" },
   ];
 
   return (
@@ -65,7 +71,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
         <div className="relative flex-1">
           <Input
             id="leave-request-search-input"
-            placeholder="Tìm kiếm theo lý do xin nghỉ, lời phê giáo viên..."
+            placeholder={t("input:leaveRequests.searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             prefix={<Icon name="search" size={15} className="text-slate-400" />}
@@ -87,7 +93,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             }`}
           >
             <Icon name="chart" size={13} />
-            <span>Dạng thẻ</span>
+            <span>{t("input:leaveRequests.viewCard")}</span>
           </button>
           <button
             type="button"
@@ -99,7 +105,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             }`}
           >
             <Icon name="menu" size={13} />
-            <span>Danh sách</span>
+            <span>{t("input:leaveRequests.viewList")}</span>
           </button>
         </div>
       </div>
@@ -110,7 +116,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
           {/* 1. Loại nghỉ phép */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              Loại đơn:
+              {t("input:leaveRequests.filterLeaveType")}
             </span>
             <Select
               value={leaveType}
@@ -123,7 +129,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
           {/* 2. Trạng thái */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              Trạng thái:
+              {t("input:leaveRequests.filterStatus")}
             </span>
             <Select
               value={status}
@@ -136,7 +142,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
           {/* 3. Sắp xếp */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              Sắp xếp:
+              {t("input:leaveRequests.filterSort")}
             </span>
             <SelectSort
               value={sortBy}
@@ -154,7 +160,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             className="text-xs text-rose-600 hover:text-rose-700 font-semibold"
           >
             <Icon name="refresh" size={13} />
-            <span>Đặt lại bộ lọc</span>
+            <span>{t("button:resetFilters")}</span>
           </Button>
         )}
       </div>

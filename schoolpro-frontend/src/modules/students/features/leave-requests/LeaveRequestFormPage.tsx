@@ -2,6 +2,7 @@ import { message } from "antd";
 import dayjs from "dayjs";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
@@ -23,13 +24,10 @@ import type {
   LeaveType,
 } from "@/modules/students/features/leave-requests/types";
 import {
-  LEAVE_TYPE_LABELS,
-  SESSION_SHIFT_LABELS,
   formatLeaveDateRange,
+  getLeaveTypeLabel,
+  getSessionShiftLabel,
 } from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
-
-const DEFAULT_COMMITMENT =
-  "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.";
 
 /**
  * Converts a Dayjs weekday (0 = Sunday, 1 = Monday ... 6 = Saturday)
@@ -69,6 +67,8 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
   onCancel,
   onSuccess,
 }) => {
+  const { t } = useTranslation(["input", "card", "button", "validation", "message"]);
+
   const initialDefaultDate = useMemo(
     () => getNearestValidStudyDate(dayjs(), [2, 3, 4, 5, 6, 7]),
     [],
@@ -82,7 +82,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
   );
   const [reason, setReason] = useState<string>(editingItem?.reason ?? "");
   const [commitment, setCommitment] = useState<string>(
-    editingItem?.commitment || DEFAULT_COMMITMENT,
+    editingItem?.commitment || t("input:leaveRequests.defaultCommitment"),
   );
   const [guardianName, setGuardianName] = useState<string>(
     editingItem?.guardianName || summary?.guardianName || "",
@@ -91,7 +91,9 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     editingItem?.guardianPhone || summary?.guardianPhone || "",
   );
   const [guardianRelationship, setGuardianRelationship] = useState<string>(
-    editingItem?.guardianRelationship || summary?.guardianRelationship || "Phụ huynh",
+    editingItem?.guardianRelationship ||
+      summary?.guardianRelationship ||
+      t("input:leaveRequests.relationshipGuardian"),
   );
   const [attachments, setAttachments] = useState<LeaveRequestAttachment[]>(
     editingItem?.attachments ?? [],
@@ -102,9 +104,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     editingItem?.affectedLessons ?? [],
   );
   const [activeDaysOfWeek, setActiveDaysOfWeek] = useState<number[]>([2, 3, 4, 5, 6, 7]);
-  const [selectedLessonKeys, setSelectedLessonKeys] = useState<string[]>(
-    editingItem?.affectedLessons?.map((l) => l.lessonKey) ?? [],
-  );
+  const [customSelectedKeys, setCustomSelectedKeys] = useState<string[] | null>(null);
   const [loadingLessons, setLoadingLessons] = useState<boolean>(false);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -116,7 +116,6 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     async function fetchTimetableForDateRange() {
       if (!startDate || !endDate || dayjs(endDate).isBefore(dayjs(startDate), "day")) {
         setAllDayLessonsForRange([]);
-        setSelectedLessonKeys([]);
         return;
       }
 
@@ -166,10 +165,10 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     return allDayLessonsForRange.filter((l) => l.shift === sessionShift);
   }, [allDayLessonsForRange, sessionShift]);
 
-  // Synchronize selectedLessonKeys whenever availableLessons changes
-  useEffect(() => {
-    setSelectedLessonKeys(availableLessons.map((l) => l.lessonKey));
-  }, [availableLessons]);
+  const selectedLessonKeys = useMemo(
+    () => customSelectedKeys ?? availableLessons.map((l) => l.lessonKey),
+    [customSelectedKeys, availableLessons],
+  );
 
   const morningLessonsCount = useMemo(
     () => allDayLessonsForRange.filter((l) => l.shift === "morning").length,
@@ -201,10 +200,15 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     if (!earliest || !firstLesson) return null;
     const deadline = earliest.subtract(3, "hour");
     return {
-      firstLessonLabel: `Tiết ${firstLesson.periodNumber} (${firstLesson.subjectName}) lúc ${firstLesson.startTime} ngày ${dayjs(firstLesson.date).format("DD/MM/YYYY")}`,
-      deadlineFormatted: deadline.format("HH:mm [ngày] DD/MM/YYYY"),
+      firstLessonLabel: t("card:leaveRequests.form.firstLessonSummary", {
+        period: firstLesson.periodNumber,
+        subject: firstLesson.subjectName,
+        time: firstLesson.startTime,
+        date: dayjs(firstLesson.date).format("DD/MM/YYYY"),
+      }),
+      deadlineFormatted: deadline.format("HH:mm - DD/MM/YYYY"),
     };
-  }, [selectedLessons]);
+  }, [selectedLessons, t]);
 
   // Group notified teachers and detect if Homeroom Teacher is also teaching one of the affected subjects
   const notificationRecipients = useMemo(() => {
@@ -298,16 +302,17 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
   };
 
   const handleToggleLesson = (lessonKey: string, checked: boolean) => {
-    setSelectedLessonKeys((prev) =>
-      checked ? [...prev, lessonKey] : prev.filter((k) => k !== lessonKey),
-    );
+    setCustomSelectedKeys((prev) => {
+      const base = prev ?? availableLessons.map((l) => l.lessonKey);
+      return checked ? [...base, lessonKey] : base.filter((k) => k !== lessonKey);
+    });
   };
 
   const handleToggleAllLessons = (checked: boolean) => {
     if (checked) {
-      setSelectedLessonKeys(availableLessons.map((l) => l.lessonKey));
+      setCustomSelectedKeys(availableLessons.map((l) => l.lessonKey));
     } else {
-      setSelectedLessonKeys([]);
+      setCustomSelectedKeys([]);
     }
   };
 
@@ -319,29 +324,27 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
     setFormError(null);
 
     if (!startDate || !endDate) {
-      setFormError("Vui lòng chọn đầy đủ ngày bắt đầu và ngày kết thúc nghỉ.");
+      setFormError(t("validation:leaveRequests.dateRangeRequired"));
       return;
     }
 
     if (dayjs(endDate).isBefore(dayjs(startDate), "day")) {
-      setFormError("Ngày kết thúc không được nhỏ hơn ngày bắt đầu nghỉ.");
+      setFormError(t("validation:leaveRequests.endDateBeforeStart"));
       return;
     }
 
     if (availableLessons.length === 0) {
-      setFormError(
-        "Ngày hoặc buổi học đã chọn không có môn học nào trong Thời khóa biểu. Vui lòng chọn ngày/buổi học có tiết trong Thời khóa biểu.",
-      );
+      setFormError(t("validation:leaveRequests.noLessonsInTimetable"));
       return;
     }
 
     if (selectedLessonKeys.length === 0) {
-      setFormError("Vui lòng chọn ít nhất 01 tiết học trong Thời khóa biểu để đăng ký nghỉ phép.");
+      setFormError(t("validation:leaveRequests.atLeastOneLessonRequired"));
       return;
     }
 
     if (!reason.trim() || reason.trim().length < 10) {
-      setFormError("Vui lòng nhập lý do xin nghỉ phép chi tiết (tối thiểu 10 ký tự).");
+      setFormError(t("validation:leaveRequests.reasonMinLength"));
       return;
     }
 
@@ -367,19 +370,23 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 
       message.success(
         editingItem
-          ? "Cập nhật đơn xin nghỉ phép thành công!"
-          : "Đã gửi đơn xin nghỉ phép và gửi Email/Thông báo tới Giáo viên chủ nhiệm & Giáo viên bộ môn!",
+          ? t("message:leaveRequestUpdatedSuccess")
+          : t("message:leaveRequestCreatedSuccess"),
       );
       onSuccess(saved);
     } catch (err) {
       const errMsg =
-        err instanceof Error ? err.message : "Đã có lỗi xảy ra khi lưu đơn xin nghỉ phép.";
+        err instanceof Error ? err.message : t("message:leaveRequestSaveError");
       setFormError(errMsg);
       message.error(errMsg);
     } finally {
       setSubmitting(false);
     }
   };
+
+  const homeroomDisplayName =
+    summary?.homeroomTeacherName || t("card:leaveRequests.header.homeroomTeacherFallback");
+  const classDisplayName = summary?.className || "10A1";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -396,48 +403,60 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="text-xs font-bold text-slate-700 block mb-1.5">
-              Loại đơn xin nghỉ <span className="text-rose-500">*</span>
+              {t("input:leaveRequests.leaveTypeLabel")} <span className="text-rose-500">*</span>
             </label>
             <Select
               value={leaveType}
               onChange={(val: LeaveType) => setLeaveType(val)}
               className="w-full"
               options={[
-                { label: "Nghỉ ốm / Khám chữa bệnh", value: "sick" },
-                { label: "Việc gia đình", value: "family_affair" },
-                { label: "Việc hiếu / Tang chế", value: "bereavement" },
-                { label: "Thi đấu / Công tác đoàn trường", value: "official_competition" },
-                { label: "Lý do khác", value: "other" },
+                { label: t("card:leaveRequests.leaveTypes.sick"), value: "sick" },
+                { label: t("card:leaveRequests.leaveTypes.family_affair"), value: "family_affair" },
+                { label: t("card:leaveRequests.leaveTypes.bereavement"), value: "bereavement" },
+                {
+                  label: t("card:leaveRequests.leaveTypes.official_competition"),
+                  value: "official_competition",
+                },
+                { label: t("card:leaveRequests.leaveTypes.other"), value: "other" },
               ]}
             />
           </div>
 
           <div>
             <label className="text-xs font-bold text-slate-700 block mb-1.5">
-              Buổi / Ca xin nghỉ (Theo Thời khóa biểu) <span className="text-rose-500">*</span>
+              {t("input:leaveRequests.sessionShiftLabel")} <span className="text-rose-500">*</span>
             </label>
             <Select
               value={sessionShift}
-              onChange={(val: LeaveSessionShift) => setSessionShift(val)}
+              onChange={(val: LeaveSessionShift) => {
+                setSessionShift(val);
+                setCustomSelectedKeys(null);
+              }}
               className="w-full"
               options={[
                 {
-                  label: `Nghỉ cả ngày (${allDayLessonsForRange.length} tiết)`,
+                  label: t("input:leaveRequests.shiftAllDayOption", {
+                    count: allDayLessonsForRange.length,
+                  }),
                   value: "all_day",
                 },
                 {
                   label:
                     !loadingLessons && morningLessonsCount === 0
-                      ? "Chỉ nghỉ buổi sáng (Không có môn học - Đã khóa)"
-                      : `Chỉ nghỉ buổi sáng (${morningLessonsCount} tiết)`,
+                      ? t("input:leaveRequests.shiftMorningLockedOption")
+                      : t("input:leaveRequests.shiftMorningOption", {
+                          count: morningLessonsCount,
+                        }),
                   value: "morning",
                   disabled: !loadingLessons && morningLessonsCount === 0,
                 },
                 {
                   label:
                     !loadingLessons && afternoonLessonsCount === 0
-                      ? "Chỉ nghỉ buổi chiều (Không có môn học - Đã khóa)"
-                      : `Chỉ nghỉ buổi chiều (${afternoonLessonsCount} tiết)`,
+                      ? t("input:leaveRequests.shiftAfternoonLockedOption")
+                      : t("input:leaveRequests.shiftAfternoonOption", {
+                          count: afternoonLessonsCount,
+                        }),
                   value: "afternoon",
                   disabled: !loadingLessons && afternoonLessonsCount === 0,
                 },
@@ -450,7 +469,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <div>
             <label className="text-xs font-bold text-slate-700 block mb-1.5">
-              Từ ngày (Chỉ mở ngày có lịch học) <span className="text-rose-500">*</span>
+              {t("input:leaveRequests.startDateLabel")} <span className="text-rose-500">*</span>
             </label>
             <DatePicker
               format="DD/MM/YYYY"
@@ -462,6 +481,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 if (!singleDate) return;
                 const nextStart = singleDate.format("YYYY-MM-DD");
                 setStartDate(nextStart);
+                setCustomSelectedKeys(null);
                 if (endDate && nextStart > endDate) {
                   setEndDate(nextStart);
                 }
@@ -472,7 +492,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 
           <div>
             <label className="text-xs font-bold text-slate-700 block mb-1.5">
-              Đến hết ngày <span className="text-rose-500">*</span>
+              {t("input:leaveRequests.endDateLabel")} <span className="text-rose-500">*</span>
             </label>
             <DatePicker
               format="DD/MM/YYYY"
@@ -488,6 +508,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 const singleDate = Array.isArray(dateVal) ? dateVal[0] : dateVal;
                 if (!singleDate) return;
                 setEndDate(singleDate.format("YYYY-MM-DD"));
+                setCustomSelectedKeys(null);
               }}
               className="w-full"
             />
@@ -500,13 +521,17 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 : "bg-amber-50/80 border-amber-200"
             }`}
           >
-            <span className="text-[11px] text-slate-500 block">Tổng thời gian nghỉ</span>
+            <span className="text-[11px] text-slate-500 block">
+              {t("input:leaveRequests.totalDurationLabel")}
+            </span>
             <strong
               className={`text-sm font-extrabold ${
                 calculatedDays > 0 ? "text-blue-700" : "text-amber-700"
               }`}
             >
-              {calculatedDays > 0 ? `${calculatedDays} ngày học` : "Không có môn học"}
+              {calculatedDays > 0
+                ? t("input:leaveRequests.studyDaysCount", { count: calculatedDays })
+                : t("input:leaveRequests.noStudyLessons")}
             </strong>
           </div>
         </div>
@@ -516,13 +541,11 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 flex items-start gap-2.5">
             <Icon name="warning" size={16} className="text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <div className="font-bold">
-                Đã khóa đăng ký: Không có môn học nào trong Thời khóa biểu vào buổi/ngày đã chọn!
-              </div>
+              <div className="font-bold">{t("card:leaveRequests.form.lockedWarningTitle")}</div>
               <p className="mb-0 text-amber-800 leading-relaxed">
-                Lịch xin nghỉ bắt buộc phải rơi vào ngày và buổi học có môn học trong Thời khóa biểu của lớp{" "}
-                <strong>{summary?.className || "10A1"}</strong>. Vui lòng đổi sang{" "}
-                <strong>Nghỉ cả ngày / Buổi học có tiết</strong> hoặc chọn ngày học khác.
+                {t("card:leaveRequests.form.lockedWarningDesc", {
+                  className: classDisplayName,
+                })}
               </p>
             </div>
           </div>
@@ -539,7 +562,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
               <Icon name="book" size={14} className="text-blue-600" />
-              <span>Các môn học xin nghỉ theo Thời khóa biểu</span>
+              <span>{t("card:leaveRequests.form.lessonsSectionTitle")}</span>
             </div>
 
             {availableLessons.length > 0 && (
@@ -555,7 +578,10 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 onChange={(e) => handleToggleAllLessons(e.target.checked)}
               >
                 <span className="text-xs font-semibold text-slate-600">
-                  Chọn tất cả ({selectedLessons.length}/{availableLessons.length} tiết)
+                  {t("input:leaveRequests.selectAllLessons", {
+                    selected: selectedLessons.length,
+                    total: availableLessons.length,
+                  })}
                 </span>
               </Checkbox>
             )}
@@ -564,22 +590,19 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           <div className="p-2.5 rounded-xl bg-blue-50/80 border border-blue-200 text-[11px] text-blue-800 flex items-start gap-2">
             <Icon name="info" size={14} className="text-blue-600 shrink-0 mt-0.5" />
             <span>
-              Khi đăng ký, hệ thống tự động gửi thông báo &amp; Email đến{" "}
-              <strong>Giáo viên chủ nhiệm ({summary?.homeroomTeacherName || "Giáo viên chủ nhiệm"})</strong> và các{" "}
-              <strong>Giáo viên bộ môn</strong> dạy các tiết bên dưới (nếu Giáo viên chủ nhiệm đồng thời là Giáo viên bộ môn thì hệ thống chỉ gửi{" "}
-              <strong>01 lần hợp nhất</strong>). Hạn Giáo viên chủ nhiệm phê duyệt là{" "}
-              <strong>trước thời gian diễn ra môn học 03 giờ</strong>; quá hạn hệ thống sẽ{" "}
-              <strong>tự động phê duyệt</strong> và gửi Email kết quả cho học sinh + thông báo Giáo viên bộ môn.
+              {t("card:leaveRequests.form.autoNotificationNotice", {
+                teacherName: homeroomDisplayName,
+              })}
             </span>
           </div>
 
           {loadingLessons ? (
             <div className="py-6 text-center text-xs text-slate-500">
-              Đang đối chiếu Thời khóa biểu của lớp...
+              {t("card:leaveRequests.form.checkingTimetable")}
             </div>
           ) : availableLessons.length === 0 ? (
             <div className="p-4 rounded-xl bg-white border border-amber-200 text-xs text-amber-800 text-center font-medium">
-              Buổi học hoặc ngày học này không có tiết học nào trong Thời khóa biểu (Đã khóa chọn tiết).
+              {t("card:leaveRequests.form.noLessonsInSlot")}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-64 overflow-y-auto pr-1">
@@ -607,7 +630,9 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                           {lesson.subjectName}
                         </span>
                         <Tag color="blue" className="m-0 text-[10px] font-semibold px-1.5 py-0">
-                          Tiết {lesson.periodNumber}
+                          {t("card:leaveRequests.form.periodBadge", {
+                            period: lesson.periodNumber,
+                          })}
                         </Tag>
                       </div>
                       <div className="text-[11px] text-slate-500">
@@ -615,7 +640,8 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                         {lesson.startTime} - {lesson.endTime}
                       </div>
                       <div className="text-[11px] text-slate-600 truncate">
-                        Giáo viên bộ môn: <strong className="text-slate-800">{lesson.teacherName}</strong>
+                        {t("card:leaveRequests.form.subjectTeacherPrefix")}{" "}
+                        <strong className="text-slate-800">{lesson.teacherName}</strong>
                       </div>
                     </div>
                   </div>
@@ -625,16 +651,16 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           )}
         </div>
 
-        {/* 4. Lý do xin nghỉ chi tiết (Đã bỏ các nút chọn mẫu lý do theo yêu cầu) */}
+        {/* 4. Lý do xin nghỉ chi tiết */}
         <div>
           <label className="text-xs font-bold text-slate-700 block mb-1.5">
-            Lý do xin nghỉ chi tiết <span className="text-rose-500">*</span>
+            {t("input:leaveRequests.reasonLabel")} <span className="text-rose-500">*</span>
           </label>
           <TextArea
             rows={4}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            placeholder="Trình bày rõ lý do xin nghỉ học để Giáo viên chủ nhiệm xem xét phê duyệt..."
+            placeholder={t("input:leaveRequests.reasonPlaceholder")}
           />
         </div>
 
@@ -642,53 +668,65 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
             <Icon name="users" size={14} className="text-blue-600" />
-            <span>Thông tin Phụ huynh xác nhận đơn</span>
+            <span>{t("input:leaveRequests.guardianSectionTitle")}</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="text-[11px] font-semibold text-slate-500 block mb-1">
-                Họ và tên phụ huynh
+                {t("input:leaveRequests.guardianNameLabel")}
               </label>
               <Input
                 value={guardianName}
                 onChange={(e) => setGuardianName(e.target.value)}
-                placeholder="Nguyễn Văn A"
+                placeholder={t("input:leaveRequests.guardianNamePlaceholder")}
               />
             </div>
             <div>
               <label className="text-[11px] font-semibold text-slate-500 block mb-1">
-                Số điện thoại liên hệ
+                {t("input:leaveRequests.guardianPhoneLabel")}
               </label>
               <Input
                 value={guardianPhone}
                 onChange={(e) => setGuardianPhone(e.target.value)}
-                placeholder="0912345678"
+                placeholder={t("input:leaveRequests.guardianPhonePlaceholder")}
               />
             </div>
             <div>
               <label className="text-[11px] font-semibold text-slate-500 block mb-1">
-                Mối quan hệ
+                {t("input:leaveRequests.guardianRelationshipLabel")}
               </label>
               <Select
                 value={guardianRelationship}
                 onChange={(val: string) => setGuardianRelationship(val)}
                 className="w-full"
                 options={[
-                  { label: "Bố", value: "Bố" },
-                  { label: "Mẹ", value: "Mẹ" },
-                  { label: "Ông / Bà", value: "Ông / Bà" },
-                  { label: "Người giám hộ", value: "Phụ huynh" },
+                  {
+                    label: t("input:leaveRequests.relationshipFather"),
+                    value: t("input:leaveRequests.relationshipFather"),
+                  },
+                  {
+                    label: t("input:leaveRequests.relationshipMother"),
+                    value: t("input:leaveRequests.relationshipMother"),
+                  },
+                  {
+                    label: t("input:leaveRequests.relationshipGrandparent"),
+                    value: t("input:leaveRequests.relationshipGrandparent"),
+                  },
+                  {
+                    label: t("input:leaveRequests.relationshipGuardian"),
+                    value: t("input:leaveRequests.relationshipGuardian"),
+                  },
                 ]}
               />
             </div>
           </div>
         </div>
 
-        {/* 6. Đính kèm minh chứng (Chỉ dùng Upload component, không hiển thị link URL) */}
+        {/* 6. Đính kèm minh chứng */}
         <div className="space-y-2.5">
           <label className="text-xs font-bold text-slate-700 block">
-            Đính kèm minh chứng (Giấy khám bệnh, giấy hẹn, quyết định triệu tập...)
+            {t("input:leaveRequests.attachmentLabel")}
           </label>
 
           <Upload.Dragger
@@ -713,10 +751,10 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                 <Icon name="upload" size={18} />
               </span>
               <p className="text-xs font-semibold text-slate-700 mb-0">
-                Nhấn hoặc kéo thả tệp minh chứng vào đây để đính kèm
+                {t("input:leaveRequests.attachmentDropzoneTitle")}
               </p>
               <p className="text-[11px] text-slate-400 mb-0">
-                Hỗ trợ định dạng PDF, JPG, PNG, DOC, DOCX (Tối đa 10MB/tệp)
+                {t("input:leaveRequests.attachmentDropzoneHint")}
               </p>
             </div>
           </Upload.Dragger>
@@ -739,7 +777,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                     onClick={() => handleRemoveAttachment(idx)}
                   >
                     <Icon name="delete" size={12} />
-                    <span>Xóa</span>
+                    <span>{t("button:delete")}</span>
                   </Button>
                 </div>
               ))}
@@ -747,23 +785,23 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           )}
         </div>
 
-        {/* 7. Cam kết học tập của học sinh (Dùng TextArea) */}
+        {/* 7. Cam kết học tập của học sinh */}
         <div>
           <label className="text-xs font-bold text-slate-700 block mb-1.5">
-            Cam kết học tập của học sinh
+            {t("input:leaveRequests.commitmentLabel")}
           </label>
           <TextArea
             rows={3}
             value={commitment}
             onChange={(e) => setCommitment(e.target.value)}
-            placeholder="Cam kết chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức..."
+            placeholder={t("input:leaveRequests.commitmentPlaceholder")}
           />
         </div>
 
-        {/* Submit Actions (Khóa nút gửi nếu ngày/buổi không có tiết học hoặc chưa chọn tiết nào) */}
+        {/* Submit Actions */}
         <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
           <Button variant="outline" onClick={onCancel} disabled={submitting}>
-            Hủy bỏ
+            {t("button:cancel")}
           </Button>
           <Button
             variant="primary"
@@ -779,10 +817,10 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
             <Icon name="send" size={14} />
             <span>
               {hasNoLessonsInSelection
-                ? "Đã khóa (Không có môn học)"
+                ? t("button:lockedNoLessons")
                 : editingItem
-                  ? "Lưu cập nhật đơn"
-                  : "Gửi đơn xin nghỉ phép"}
+                  ? t("button:updateLeaveRequest")
+                  : t("button:submitLeaveRequest")}
             </span>
           </Button>
         </div>
@@ -794,53 +832,62 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
             <h3 className="text-sm font-bold text-slate-900 mb-0">
-              Tóm tắt đơn &amp; Hạn phê duyệt
+              {t("card:leaveRequests.form.summaryCardTitle")}
             </h3>
           </div>
 
           <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Người phê duyệt (Giáo viên chủ nhiệm):</span>
-              <strong className="text-slate-900">
-                {summary?.homeroomTeacherName || "Giáo viên chủ nhiệm"}
+              <span className="text-slate-500">
+                {t("card:leaveRequests.form.approverLabel")}
+              </span>
+              <strong className="text-slate-900">{homeroomDisplayName}</strong>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-500">{t("card:leaveRequests.summary.classLabel")}</span>
+              <strong className="text-blue-600">
+                {t("card:leaveRequests.header.classBadge", { className: classDisplayName })}
               </strong>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Lớp học:</span>
-              <strong className="text-blue-600">Lớp {summary?.className || "10A1"}</strong>
+              <span className="text-slate-500">{t("card:leaveRequests.form.categoryLabel")}</span>
+              <strong className="text-slate-800">{getLeaveTypeLabel(leaveType)}</strong>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Phân loại:</span>
-              <strong className="text-slate-800">{LEAVE_TYPE_LABELS[leaveType]}</strong>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">Thời gian nghỉ:</span>
+              <span className="text-slate-500">{t("card:leaveRequests.form.leaveTimeLabel")}</span>
               <strong className="text-slate-800">
                 {formatLeaveDateRange(startDate, endDate)}
               </strong>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Tổng số ngày:</span>
+              <span className="text-slate-500">{t("card:leaveRequests.form.totalDaysLabel")}</span>
               <strong className="text-blue-700">
-                {calculatedDays} ngày ({SESSION_SHIFT_LABELS[sessionShift]})
+                {t("card:leaveRequests.item.daysAndShift", {
+                  days: calculatedDays,
+                  shift: getSessionShiftLabel(sessionShift),
+                })}
               </strong>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">Số tiết học xin nghỉ:</span>
-              <strong className="text-indigo-600">{selectedLessons.length} tiết</strong>
+              <span className="text-slate-500">
+                {t("card:leaveRequests.form.selectedLessonsCountLabel")}
+              </span>
+              <strong className="text-indigo-600">
+                {t("card:leaveRequests.form.periodsCount", { count: selectedLessons.length })}
+              </strong>
             </div>
 
             {approvalDeadlineInfo && (
               <div className="pt-2 border-t border-slate-200/80 space-y-1">
                 <div className="text-[11px] text-slate-500">
-                  Tiết học đầu tiên:{" "}
+                  {t("card:leaveRequests.form.firstLessonLabel")}{" "}
                   <strong className="text-slate-700">{approvalDeadlineInfo.firstLessonLabel}</strong>
                 </div>
                 <div className="text-[11px] text-amber-800 bg-amber-50/90 border border-amber-200 rounded-xl px-2.5 py-1.5">
-                  Hạn Giáo viên chủ nhiệm duyệt (trước 03 giờ):{" "}
+                  {t("card:leaveRequests.form.deadlineLabel")}{" "}
                   <strong className="font-mono">{approvalDeadlineInfo.deadlineFormatted}</strong>
                   <span className="block text-[10px] text-amber-700 mt-0.5">
-                    Nếu quá hạn trên chưa duyệt, hệ thống sẽ tự động duyệt và gửi Email kết quả.
+                    {t("card:leaveRequests.form.deadlineAutoApproveHint")}
                   </span>
                 </div>
               </div>
@@ -848,50 +895,52 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
         </div>
 
-        {/* Danh sách Giáo viên nhận thông báo & Email (Gộp 1 lần nếu Giáo viên chủ nhiệm cũng là Giáo viên bộ môn) */}
+        {/* Danh sách Giáo viên nhận thông báo & Email */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
               <h3 className="text-sm font-bold text-slate-900 mb-0">
-                Giáo viên nhận thông báo &amp; Email
+                {t("card:leaveRequests.form.recipientsCardTitle")}
               </h3>
             </div>
             <Tag color="purple" className="m-0 text-[11px] font-semibold">
-              {notificationRecipients.otherSubjectTeachers.length + 1} người nhận
+              {t("card:leaveRequests.form.recipientsCount", {
+                count: notificationRecipients.otherSubjectTeachers.length + 1,
+              })}
             </Tag>
           </div>
 
           <div className="space-y-2 text-xs">
-            {/* Giáo viên chủ nhiệm - Người duyệt duy nhất (Hợp nhất nếu đồng thời là Giáo viên bộ môn) */}
+            {/* Giáo viên chủ nhiệm */}
             <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-2">
               <div className="min-w-0 space-y-0.5">
-                <div className="font-bold text-slate-900 truncate">
-                  {summary?.homeroomTeacherName || "Giáo viên chủ nhiệm"}
-                </div>
+                <div className="font-bold text-slate-900 truncate">{homeroomDisplayName}</div>
                 <div className="text-[11px] text-slate-600">
                   {notificationRecipients.homeroomAlsoSubjectTeacher ? (
                     <span>
-                      Giáo viên chủ nhiệm kiêm Giáo viên bộ môn{" "}
-                      <strong>{notificationRecipients.homeroomTeachingSubjects.join(", ")}</strong> (
-                      {notificationRecipients.homeroomLessonCount} tiết) •{" "}
-                      <span className="text-blue-700 font-semibold">Gửi 01 lần hợp nhất</span>
+                      {t("card:leaveRequests.form.homeroomCombinedDesc", {
+                        subjects: notificationRecipients.homeroomTeachingSubjects.join(", "),
+                        count: notificationRecipients.homeroomLessonCount,
+                      })}
                     </span>
                   ) : (
                     <span>
-                      Giáo viên chủ nhiệm • Lớp {summary?.className || "10A1"} (Nhận Email duyệt đơn)
+                      {t("card:leaveRequests.form.homeroomOnlyDesc", {
+                        className: classDisplayName,
+                      })}
                     </span>
                   )}
                 </div>
               </div>
               <Tag color="blue" className="m-0 text-[10px] font-bold shrink-0">
                 {notificationRecipients.homeroomAlsoSubjectTeacher
-                  ? "Giáo viên chủ nhiệm & Giáo viên bộ môn (1 lần)"
-                  : "Người xét duyệt"}
+                  ? t("card:leaveRequests.form.homeroomCombinedBadge")
+                  : t("card:leaveRequests.form.approverBadge")}
               </Tag>
             </div>
 
-            {/* Các Giáo viên bộ môn khác (Đã loại trừ nếu trùng với Giáo viên chủ nhiệm) */}
+            {/* Các Giáo viên bộ môn khác */}
             {notificationRecipients.otherSubjectTeachers.map((teacher, idx) => (
               <div
                 key={teacher.teacherId || idx}
@@ -902,11 +951,14 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
                     {teacher.teacherName}
                   </div>
                   <div className="text-[11px] text-slate-500 truncate">
-                    Môn: <strong>{teacher.subjects.join(", ")}</strong> ({teacher.lessonCount} tiết)
+                    {t("card:leaveRequests.form.subjectLessonsSummary", {
+                      subjects: teacher.subjects.join(", "),
+                      count: teacher.lessonCount,
+                    })}
                   </div>
                 </div>
                 <Tag color="cyan" className="m-0 text-[10px] font-semibold shrink-0">
-                  Nhận thông báo
+                  {t("card:leaveRequests.form.notifiedBadge")}
                 </Tag>
               </div>
             ))}
@@ -917,22 +969,14 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-amber-500 inline-block" />
             <h3 className="text-sm font-bold text-slate-900 mb-0">
-              Quy định phê duyệt &amp; Gửi Email
+              {t("card:leaveRequests.form.policyCardTitle")}
             </h3>
           </div>
           <ul className="list-disc pl-4 space-y-1.5 text-slate-600 mb-0">
-            <li>
-              Lịch xin nghỉ bắt buộc phải rơi vào ngày và buổi học có môn học trong Thời khóa biểu.
-            </li>
-            <li>
-              Khi đăng ký, hệ thống gửi thông báo &amp; Email tới Giáo viên chủ nhiệm và Giáo viên bộ môn (nếu Giáo viên chủ nhiệm kiêm Giáo viên bộ môn thì chỉ gửi 1 lần).
-            </li>
-            <li>
-              Hạn phê duyệt của Giáo viên chủ nhiệm là từ lúc đăng ký đến <strong>trước giờ diễn ra môn học 03 giờ</strong>. Nếu quá hạn chưa duyệt, hệ thống sẽ <strong>duyệt tự động</strong>.
-            </li>
-            <li>
-              Sau khi đơn được duyệt (bởi Giáo viên chủ nhiệm hoặc tự động), hệ thống gửi Email kết quả tới Học sinh và thông báo cho Giáo viên bộ môn.
-            </li>
+            <li>{t("card:leaveRequests.form.policyRule1")}</li>
+            <li>{t("card:leaveRequests.form.policyRule2")}</li>
+            <li>{t("card:leaveRequests.form.policyRule3")}</li>
+            <li>{t("card:leaveRequests.form.policyRule4")}</li>
           </ul>
         </div>
       </div>
@@ -941,6 +985,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
 };
 
 const LeaveRequestFormPage: React.FC = () => {
+  const { t } = useTranslation(["navigation", "button"]);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
@@ -989,7 +1034,7 @@ const LeaveRequestFormPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("navigation:breadcrumb.home")}</span>
                 </span>
               ),
             },
@@ -998,7 +1043,7 @@ const LeaveRequestFormPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="file-text" size={13} className="text-slate-400 shrink-0" />
-                  <span>Xin nghỉ phép</span>
+                  <span>{t("navigation:breadcrumb.leaveRequests")}</span>
                 </span>
               ),
             },
@@ -1006,7 +1051,9 @@ const LeaveRequestFormPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                   <span>
-                    {isEditMode ? "Chỉnh sửa đơn xin nghỉ phép" : "Tạo đơn xin nghỉ phép"}
+                    {isEditMode
+                      ? t("navigation:breadcrumb.leaveRequestEdit")
+                      : t("navigation:breadcrumb.leaveRequestCreate")}
                   </span>
                 </span>
               ),
@@ -1019,11 +1066,13 @@ const LeaveRequestFormPage: React.FC = () => {
             <div className="flex items-center gap-2 mb-1">
               <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-                {isEditMode ? "Chỉnh sửa đơn xin nghỉ phép" : "Tạo đơn xin nghỉ phép trực tuyến"}
+                {isEditMode
+                  ? t("navigation:pageTitle.leaveRequestEdit")
+                  : t("navigation:pageTitle.leaveRequestCreate")}
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              Điền đầy đủ thông tin thời gian, môn học xin nghỉ và xác nhận của phụ huynh để gửi Giáo viên chủ nhiệm phê duyệt
+              {t("navigation:pageSubtitle.leaveRequestForm")}
             </p>
           </div>
 
@@ -1034,7 +1083,7 @@ const LeaveRequestFormPage: React.FC = () => {
             }
           >
             <Icon name="arrow-left" size={14} />
-            <span>Quay lại</span>
+            <span>{t("button:back")}</span>
           </Button>
         </div>
       </div>

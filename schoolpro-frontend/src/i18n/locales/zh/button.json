@@ -40,5 +40,13 @@
   "revokeSession": "退出此设备",
   "logoutAllDevices": "退出所有设备",
   "resetFilters": "重置筛选",
-  "reloadData": "重新加载数据"
+  "reloadData": "重新加载数据",
+  "createLeaveRequest": "创建请假申请",
+  "submitLeaveRequest": "提交请假申请",
+  "updateLeaveRequest": "保存更新",
+  "lockedNoLessons": "已锁定（无课程）",
+  "downloadLeaveRequestPdf": "下载申请单 (PDF)",
+  "deleteLeaveRequest": "删除请假单",
+  "backToLeaveRequests": "返回请假申请列表",
+  "openAttachment": "打开"
 }

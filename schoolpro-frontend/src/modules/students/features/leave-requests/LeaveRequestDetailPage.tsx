@@ -1,6 +1,7 @@
 import { message } from "antd";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -18,6 +19,7 @@ import type {
 } from "@/modules/students/features/leave-requests/types";
 
 const LeaveRequestDetailPage: React.FC = () => {
+  const { t } = useTranslation(["message", "button"]);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -114,10 +116,10 @@ const LeaveRequestDetailPage: React.FC = () => {
       if (latestItem) {
         setItem(latestItem);
       }
-      message.success("Đã tải xuống đơn xin nghỉ phép (PDF) với dữ liệu mới nhất.");
+      message.success(t("message:leaveRequestPdfDownloadSuccess"));
     } catch (err) {
       message.error(
-        err instanceof Error ? err.message : "Không thể tải file PDF đơn xin nghỉ phép.",
+        err instanceof Error ? err.message : t("message:leaveRequestPdfDownloadError"),
       );
     } finally {
       setDownloading(false);
@@ -129,11 +131,11 @@ const LeaveRequestDetailPage: React.FC = () => {
     try {
       setDeleting(true);
       await leaveRequestsService.deleteLeaveRequest(item.id);
-      message.success("Đã xóa đơn xin nghỉ phép thành công.");
+      message.success(t("message:leaveRequestDeleteSuccess"));
       navigate("/student/leave-requests", { replace: true });
     } catch (err) {
       message.error(
-        err instanceof Error ? err.message : "Không thể xóa đơn xin nghỉ phép.",
+        err instanceof Error ? err.message : t("message:leaveRequestDeleteError"),
       );
     } finally {
       setDeleting(false);
@@ -175,13 +177,13 @@ const LeaveRequestDetailPage: React.FC = () => {
           <Icon name="file-text" size={24} />
         </div>
         <h3 className="text-base font-bold text-slate-800 mb-1">
-          Không tìm thấy đơn xin nghỉ phép
+          {t("message:empty.leaveRequestNotFoundTitle")}
         </h3>
         <p className="text-xs text-slate-500 mb-4">
-          Đơn xin nghỉ phép này không tồn tại hoặc đã bị xóa khỏi hệ thống.
+          {t("message:empty.leaveRequestNotFoundDesc")}
         </p>
         <Button variant="primary" onClick={() => navigate("/student/leave-requests")}>
-          Quay lại danh sách đơn xin nghỉ phép
+          {t("button:backToLeaveRequests")}
         </Button>
       </div>
     );

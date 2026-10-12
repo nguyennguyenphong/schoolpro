@@ -146,6 +146,30 @@ describe("i18next Translation Execution", () => {
     await i18n.changeLanguage("en");
     expect(dayjs.locale()).toBe("en");
   });
+
+  it("should translate leaveRequests keys across all 5 languages (vi, en, ja, ko, zh)", async () => {
+    await i18n.changeLanguage("vi");
+    expect(i18n.t("navigation:breadcrumb.leaveRequests")).toBe("Xin nghỉ phép");
+    expect(i18n.t("button:createLeaveRequest")).toBe("Tạo đơn xin nghỉ phép");
+    expect(i18n.t("card:leaveRequests.statuses.pending")).toBe("Chờ duyệt");
+
+    await i18n.changeLanguage("en");
+    expect(i18n.t("navigation:breadcrumb.leaveRequests")).toBe("Leave Requests");
+    expect(i18n.t("button:createLeaveRequest")).toBe("Create Leave Request");
+    expect(i18n.t("card:leaveRequests.statuses.pending")).toBe("Pending Approval");
+
+    await i18n.changeLanguage("ja");
+    expect(i18n.t("navigation:breadcrumb.leaveRequests")).toBe("欠席届・休暇申請");
+    expect(i18n.t("button:createLeaveRequest")).toBe("欠席届を作成");
+
+    await i18n.changeLanguage("ko");
+    expect(i18n.t("navigation:breadcrumb.leaveRequests")).toBe("결석계 신청");
+    expect(i18n.t("button:createLeaveRequest")).toBe("결석계 작성");
+
+    await i18n.changeLanguage("zh");
+    expect(i18n.t("navigation:breadcrumb.leaveRequests")).toBe("请假申请");
+    expect(i18n.t("button:createLeaveRequest")).toBe("创建请假申请");
+  });
 });
 
 describe("Intl Formatters", () => {

@@ -1,5 +1,6 @@
 import { Alert, Col, Row } from "antd";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
   LeaveRequestCard,
@@ -15,6 +16,7 @@ import { useLeaveRequests } from "@/modules/students/features/leave-requests/hoo
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 
 const LeaveRequestsPage: React.FC = () => {
+  const { t } = useTranslation(["message"]);
   const navigate = useNavigate();
 
   const {
@@ -54,7 +56,7 @@ const LeaveRequestsPage: React.FC = () => {
         <Alert
           type="error"
           showIcon
-          title="Không thể tải danh sách đơn xin nghỉ phép"
+          title={t("message:failedToLoadLeaveRequests")}
           description={error.message}
           className="rounded-xl"
         />

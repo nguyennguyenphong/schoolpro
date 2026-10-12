@@ -40,5 +40,13 @@
   "revokeSession": "Đăng xuất thiết bị này",
   "logoutAllDevices": "Đăng xuất tất cả thiết bị",
   "resetFilters": "Đặt lại bộ lọc",
-  "reloadData": "Tải lại dữ liệu"
+  "reloadData": "Tải lại dữ liệu",
+  "createLeaveRequest": "Tạo đơn xin nghỉ phép",
+  "submitLeaveRequest": "Gửi đơn xin nghỉ phép",
+  "updateLeaveRequest": "Lưu cập nhật đơn",
+  "lockedNoLessons": "Đã khóa (Không có môn học)",
+  "downloadLeaveRequestPdf": "Tải đơn (PDF)",
+  "deleteLeaveRequest": "Xóa đơn",
+  "backToLeaveRequests": "Quay lại danh sách đơn xin nghỉ phép",
+  "openAttachment": "Mở"
 }

@@ -40,5 +40,13 @@
   "revokeSession": "Revoke Session",
   "logoutAllDevices": "Logout all devices",
   "resetFilters": "Reset Filters",
-  "reloadData": "Reload Data"
+  "reloadData": "Reload Data",
+  "createLeaveRequest": "Create Leave Request",
+  "submitLeaveRequest": "Submit Leave Request",
+  "updateLeaveRequest": "Save Request Updates",
+  "lockedNoLessons": "Locked (No Scheduled Lessons)",
+  "downloadLeaveRequestPdf": "Download (PDF)",
+  "deleteLeaveRequest": "Delete Request",
+  "backToLeaveRequests": "Back to Leave Requests",
+  "openAttachment": "Open"
 }

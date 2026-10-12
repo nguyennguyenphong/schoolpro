@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pagination } from "@/components/ui/Pagination";
 
 interface LeaveRequestsPaginationProps {
@@ -16,13 +17,18 @@ export const LeaveRequestsPagination: React.FC<LeaveRequestsPaginationProps> = (
   itemsCount,
   onChange,
 }) => {
+  const { t } = useTranslation("card");
+
   if (total <= 0) return null;
 
   return (
     <div className="p-4 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
       <div className="text-xs text-slate-500">
-        Hiển thị <strong className="text-slate-800">{itemsCount}</strong> trên tổng số{" "}
-        <strong className="text-slate-800">{total}</strong> đơn xin nghỉ phép
+        {t("leaveRequests.item.paginationShowingPrefix")}{" "}
+        <strong className="text-slate-800">{itemsCount}</strong>{" "}
+        {t("leaveRequests.item.paginationShowingMiddle")}{" "}
+        <strong className="text-slate-800">{total}</strong>{" "}
+        {t("leaveRequests.item.paginationShowingSuffix")}
       </div>
 
       <Pagination

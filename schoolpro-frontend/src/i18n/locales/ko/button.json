@@ -40,5 +40,13 @@
   "revokeSession": "이 기기에서 로그아웃",
   "logoutAllDevices": "모든 기기에서 로그아웃",
   "resetFilters": "필터 재설정",
-  "reloadData": "데이터 다시 불러오기"
+  "reloadData": "데이터 다시 불러오기",
+  "createLeaveRequest": "결석계 작성",
+  "submitLeaveRequest": "결석계 제출",
+  "updateLeaveRequest": "수정 내용 저장",
+  "lockedNoLessons": "잠금됨 (수업 없음)",
+  "downloadLeaveRequestPdf": "결석계 다운로드 (PDF)",
+  "deleteLeaveRequest": "결석계 삭제",
+  "backToLeaveRequests": "결석계 목록으로 돌아가기",
+  "openAttachment": "열기"
 }

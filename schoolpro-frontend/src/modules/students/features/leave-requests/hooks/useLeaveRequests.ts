@@ -1,6 +1,7 @@
 import { message } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import i18n from "@/i18n/i18n";
 import { useLeaveRequestRealtime } from "@/modules/students/features/leave-requests/hooks/useLeaveRequestRealtime";
 import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
 import type {
@@ -108,7 +109,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       setTotal(listRes.total);
       setSummary(sumRes);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Không thể tải danh sách đơn xin nghỉ phép"));
+      setError(err instanceof Error ? err : new Error(i18n.t("message:failedToLoadLeaveRequests")));
     } finally {
       setLoading(false);
     }
@@ -182,7 +183,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       } catch (err) {
         if (!ignore) {
           setError(
-            err instanceof Error ? err : new Error("Không thể tải danh sách đơn xin nghỉ phép"),
+            err instanceof Error ? err : new Error(i18n.t("message:failedToLoadLeaveRequests")),
           );
           setLoading(false);
         }
@@ -295,11 +296,11 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       try {
         setDeletingId(item.id);
         await leaveRequestsService.deleteLeaveRequest(item.id);
-        message.success(`Đã xóa đơn xin nghỉ phép ${item.requestCode}.`);
+        message.success(i18n.t("message:leaveRequestDeleteWithCodeSuccess", { code: item.requestCode }));
         await silentRefetch();
       } catch (err) {
         message.error(
-          err instanceof Error ? err.message : "Không thể xóa đơn xin nghỉ phép.",
+          err instanceof Error ? err.message : i18n.t("message:leaveRequestDeleteError"),
         );
       } finally {
         setDeletingId(null);

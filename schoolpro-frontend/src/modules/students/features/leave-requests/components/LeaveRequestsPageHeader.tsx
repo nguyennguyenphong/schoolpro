@@ -16,7 +16,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
   loading,
   onCreateClick,
 }) => {
-  const { t } = useTranslation(["navigation"]);
+  const { t } = useTranslation(["navigation", "card", "button"]);
 
   return (
     <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2.5">
@@ -27,7 +27,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             title: (
               <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                 <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                <span>{t("navigation:breadcrumb.home", { defaultValue: "Trang chủ" })}</span>
+                <span>{t("navigation:breadcrumb.home")}</span>
               </span>
             ),
           },
@@ -35,9 +35,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             title: (
               <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                 <Icon name="file-text" size={13} className="text-blue-600 shrink-0" />
-                <span>
-                  {t("navigation:breadcrumb.leaveRequests", { defaultValue: "Xin nghỉ phép" })}
-                </span>
+                <span>{t("navigation:breadcrumb.leaveRequests")}</span>
               </span>
             ),
           },
@@ -49,13 +47,11 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-              {t("navigation:pageTitle.leaveRequests", {
-                defaultValue: "Xin nghỉ phép trực tuyến",
-              })}
+              {t("navigation:pageTitle.leaveRequests")}
             </h1>
             {summary?.className ? (
               <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-                Lớp {summary.className}
+                {t("card:leaveRequests.header.classBadge", { className: summary.className })}
               </span>
             ) : loading ? (
               <span className="inline-block w-16 h-5 bg-slate-100 rounded-full animate-pulse" />
@@ -70,10 +66,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             ) : null}
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
-            {t("navigation:pageSubtitle.leaveRequests", {
-              defaultValue:
-                "Tạo đơn xin nghỉ phép trực tuyến, đính kèm giấy tờ minh chứng và theo dõi phản hồi phê duyệt từ Giáo viên chủ nhiệm",
-            })}
+            {t("navigation:pageSubtitle.leaveRequests")}
           </p>
         </div>
 
@@ -82,7 +75,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
               <Icon name="userCheck" size={14} className="text-blue-600 shrink-0" />
               <span className="text-slate-500">
-                Giáo viên chủ nhiệm:{" "}
+                {t("card:leaveRequests.header.homeroomTeacherPrefix")}{" "}
                 <strong className="text-slate-800">{summary.homeroomTeacherName}</strong>
               </span>
             </div>
@@ -94,7 +87,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             className="font-semibold text-xs sm:text-sm"
           >
             <Icon name="plus" size={15} />
-            <span>Tạo đơn xin nghỉ phép</span>
+            <span>{t("button:createLeaveRequest")}</span>
           </Button>
         </div>
       </div>

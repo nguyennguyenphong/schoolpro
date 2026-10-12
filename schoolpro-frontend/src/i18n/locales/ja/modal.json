@@ -15,5 +15,7 @@
   "passwordSuccessTitle": "パスワードが正常に変更されました！",
   "passwordSuccessContent": "アカウントのパスワードが安全に更新されました。次回ログイン時は新しいパスワードをご利用ください。",
   "revokeSessionConfirmTitle": "セッション終了の確認",
-  "revokeSessionConfirmContent": "この端末のログインセッションを終了してもよろしいですか？"
+  "revokeSessionConfirmContent": "この端末のログインセッションを終了してもよろしいですか？",
+  "deleteLeaveRequestConfirmTitle": "欠席届の削除を確認しますか？",
+  "deleteLeaveRequestConfirmDesc": "未承認の欠席届は完全に削除されます。"
 }

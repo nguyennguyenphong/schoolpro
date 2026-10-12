@@ -7,7 +7,11 @@
     "assignments": "課題・学習タスク",
     "profile": "学生プロフィール",
     "settings": "システム設定",
-    "changePassword": "パスワード変更"
+    "changePassword": "パスワード変更",
+    "leaveRequests": "欠席届・休暇申請",
+    "leaveRequestCreate": "欠席届の作成",
+    "leaveRequestEdit": "欠席届の編集",
+    "leaveRequestDetail": "詳細・処理状況"
   },
   "pageTitle": {
     "home": "ホーム",
@@ -16,7 +20,11 @@
     "assignments": "課題・学習タスク",
     "profile": "学生プロフィール",
     "settings": "システム設定",
-    "changePassword": "アカウントのパスワード変更"
+    "changePassword": "アカウントのパスワード変更",
+    "leaveRequests": "オンライン欠席届・休暇申請",
+    "leaveRequestCreate": "オンライン欠席届の作成",
+    "leaveRequestEdit": "欠席届の編集",
+    "leaveRequestDetail": "欠席届の詳細"
   },
   "pageSubtitle": {
     "home": "School Pro 学習・教務管理システム",
@@ -25,7 +33,9 @@
     "assignments": "宿題、オンライン小テスト、実験レポート、各科目の提出進捗状況を確認します",
     "profile": "基本情報、学籍情報、保護者連絡先、校内健康記録の確認・管理",
     "settings": "外観、言語、通知チャンネル、アカウントセキュリティのカスタマイズ",
-    "changePassword": "定期的なパスワード変更によりアカウントのセキュリティを高めましょう"
+    "changePassword": "定期的なパスワード変更によりアカウントのセキュリティを高めましょう",
+    "leaveRequests": "オンラインで欠席届を作成し、証明書類を添付して担任教員の承認状況を確認できます",
+    "leaveRequestForm": "欠席期間、対象授業、保護者確認情報を入力して担任教員に承認を申請します"
   },
   "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
   "welcomeUser": "こんにちは、{{name}}さん！",

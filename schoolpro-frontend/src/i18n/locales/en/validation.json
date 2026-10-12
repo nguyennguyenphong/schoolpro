@@ -11,5 +11,12 @@
   "otpRequired": "Please enter the complete OTP code!",
   "otpLength": "OTP code must be 6 digits!",
   "confirmPasswordRequired": "Please confirm your new password!",
-  "passwordMismatch": "Confirm password does not match new password!"
+  "passwordMismatch": "Confirm password does not match new password!",
+  "leaveRequests": {
+    "dateRangeRequired": "Please select both start date and end date.",
+    "endDateBeforeStart": "End date cannot be earlier than start date.",
+    "noLessonsInTimetable": "The selected date or session has no scheduled lessons in the timetable. Please select a date or session with scheduled lessons.",
+    "atLeastOneLessonRequired": "Please select at least 1 scheduled lesson from the timetable to submit a leave request.",
+    "reasonMinLength": "Please enter a detailed reason for your leave request (minimum 10 characters)."
+  }
 }
