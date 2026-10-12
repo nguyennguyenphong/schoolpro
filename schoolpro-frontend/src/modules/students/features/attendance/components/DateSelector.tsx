@@ -61,7 +61,7 @@ export const DateSelector: React.FC<DateSelectorProps> = ({
   ];
 
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-4">
+    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
       {/* Top row: Date navigation & Quick Today button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Date Navigator */}

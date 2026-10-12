@@ -51,7 +51,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                   download
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors"
                 >
                   Tải tệp về máy để xem
                 </a>

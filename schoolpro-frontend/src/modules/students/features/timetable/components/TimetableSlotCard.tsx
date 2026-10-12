@@ -37,7 +37,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
         {/* 1. Môn học & Lớp (Không hiển thị mã code) */}
         <div className="pb-2 border-b border-slate-100 min-h-14.5">
           <div className="flex items-center justify-between gap-1 mb-1">
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-xl border border-blue-100">
               <Icon name="academic" size={12} className="text-blue-600 shrink-0" />
               <span>
                 {t("card:timetable.classLabel", {
@@ -180,7 +180,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-semibold hover:underline text-xs bg-blue-50/60 hover:bg-blue-50 px-2 py-1 rounded-md border border-blue-100 transition-colors w-fit"
+              className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-semibold hover:underline text-xs bg-blue-50/60 hover:bg-blue-50 px-2 py-1 rounded-xl border border-blue-100 transition-colors w-fit"
             >
               <Icon
                 name="external-link"

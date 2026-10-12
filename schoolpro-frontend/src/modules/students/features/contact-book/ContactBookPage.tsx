@@ -63,7 +63,7 @@ export const ContactBookPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-5 sm:gap-6 pb-12 w-full">
       {/* 1. Page Header with integrated Breadcrumb & Key Metrics */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3.5">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3.5">
         <Breadcrumb
           items={[
             {

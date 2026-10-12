@@ -36,7 +36,7 @@ export const GradebookPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <Breadcrumb
           items={[
             {

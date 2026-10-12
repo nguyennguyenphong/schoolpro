@@ -46,7 +46,7 @@ export const AssignmentModalAttachments: React.FC<AssignmentModalAttachmentsProp
             >
               <div className="flex items-center gap-2 truncate">
                 <div
-                  className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${
+                  className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 ${
                     isPdf
                       ? "bg-rose-50 text-rose-600 border border-rose-200/60"
                       : "bg-blue-50 text-blue-600"

@@ -136,7 +136,7 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <div className="mb-1">
-                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-xl border border-blue-100">
                                   <Icon name="academic" size={12} className="text-blue-600 shrink-0" />
                                   <span>
                                     {t("card:timetable.classLabel", {

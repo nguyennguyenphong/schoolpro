@@ -21,7 +21,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
 }) => {
   if (reports.length === 0) {
     return (
-      <div className="p-10 sm:p-14 text-center bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs">
+      <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
         <Empty
           description={
             <div className="flex flex-col gap-1.5">
@@ -54,7 +54,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
         return (
           <div key={report.id} className="w-full">
             <Card
-              className="w-full rounded-2xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 bg-white overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
+              className="w-full rounded-xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 bg-white overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
             >
               {/* Header: Week number, dates & tags */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">

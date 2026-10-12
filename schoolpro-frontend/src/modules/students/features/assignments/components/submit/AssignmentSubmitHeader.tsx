@@ -19,7 +19,7 @@ export const AssignmentSubmitHeader: React.FC<AssignmentSubmitHeaderProps> = ({
   onBack,
 }) => {
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
+    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       <Breadcrumb
         items={[
           {
@@ -57,10 +57,10 @@ export const AssignmentSubmitHeader: React.FC<AssignmentSubmitHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {assignment.title}
             </h1>
-            <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-md">
+            <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl">
               {assignment.subjectName}
             </span>
-            <span className="text-xs text-slate-600 bg-slate-100 border border-[#f0f0f0] px-2 py-0.5 rounded-md">
+            <span className="text-xs text-slate-600 bg-slate-100 border border-[#f0f0f0] px-2 py-0.5 rounded-xl">
               {typeLabel}
             </span>
             <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">

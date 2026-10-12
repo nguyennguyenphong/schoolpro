@@ -186,7 +186,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
             </div>
 
             {/* Receipt Box */}
-            <div className="bg-slate-50 border border-[#f0f0f0] rounded-2xl p-4 text-xs space-y-2.5 max-w-md mx-auto text-left">
+            <div className="bg-slate-50 border border-[#f0f0f0] rounded-xl p-4 text-xs space-y-2.5 max-w-md mx-auto text-left">
               <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
                 <span className="text-slate-500 font-medium">Môn học:</span>
                 <strong className="text-slate-900 font-bold text-right truncate max-w-64">
@@ -232,7 +232,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
           /* ================= MAIN CHECK-IN INTERACTION ================= */
           <div className="space-y-4">
             {/* Main Tabs: 2 Hình thức (Quét/Upload QR vs Nhập Code) */}
-            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl border border-[#f0f0f0]">
+            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-xl border border-[#f0f0f0]">
               <button
                 type="button"
                 onClick={() => setMainTab("qr")}
@@ -297,9 +297,9 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                 {/* Sub-mode 1.1: Live Camera Scanner */}
                 {qrSubMode === "camera" && (
                   <div className="space-y-3">
-                    <div className="relative w-full h-64 sm:h-72 rounded-2xl bg-slate-900 overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
+                    <div className="relative w-full h-64 sm:h-72 rounded-xl bg-slate-900 overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
                       {/* Viewfinder Overlay */}
-                      <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl border-2 border-white/40 flex items-center justify-center">
+                      <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-xl border-2 border-white/40 flex items-center justify-center">
                         {/* 4 Corner Markers */}
                         <span className="absolute -top-1 -left-1 w-5 h-5 border-t-4 border-l-4 border-blue-500 rounded-tl-md" />
                         <span className="absolute -top-1 -right-1 w-5 h-5 border-t-4 border-r-4 border-blue-500 rounded-tr-md" />
@@ -356,7 +356,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
 
                     {selectedImage ? (
                       /* Image Preview Box */
-                      <div className="border border-[#f0f0f0] rounded-2xl p-4 bg-slate-50 space-y-3">
+                      <div className="border border-[#f0f0f0] rounded-xl p-4 bg-slate-50 space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
@@ -405,9 +405,9 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                       /* Drag & Drop Upload Zone */
                       <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-slate-300 hover:border-blue-400 bg-slate-50 hover:bg-blue-50/40 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-3"
+                        className="border-2 border-dashed border-slate-300 hover:border-blue-400 bg-slate-50 hover:bg-blue-50/40 rounded-xl p-8 text-center cursor-pointer transition-all space-y-3"
                       >
-                        <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto shadow-2xs">
+                        <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto shadow-2xs">
                           <Icon name="upload" size={24} />
                         </div>
 

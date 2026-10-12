@@ -5,12 +5,12 @@ export const MaterialsSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 animate-pulse">
       {/* 1. Integrated Header skeleton */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <div className="h-4 w-36 bg-slate-200 rounded" />
         <div className="flex items-center justify-between">
           <div className="space-y-1.5">
-            <div className="h-6 w-56 bg-slate-200 rounded-md" />
-            <div className="h-3.5 w-80 bg-slate-100 rounded-md" />
+            <div className="h-6 w-56 bg-slate-200 rounded-xl" />
+            <div className="h-3.5 w-80 bg-slate-100 rounded-xl" />
           </div>
           <div className="h-8 w-24 bg-slate-200 rounded-lg" />
         </div>
@@ -49,16 +49,16 @@ export const MaterialsSkeleton: React.FC = () => {
           <Card key={idx} className="p-4.5 border-[#f0f0f0] rounded-xl h-64 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
-                <div className="h-5 w-24 bg-slate-200 rounded-md" />
+                <div className="h-5 w-24 bg-slate-200 rounded-xl" />
                 <div className="h-5 w-16 bg-slate-200 rounded-full" />
               </div>
-              <div className="h-5 w-5/6 bg-slate-200 rounded-md mb-2" />
-              <div className="h-4 w-full bg-slate-100 rounded-md mb-1" />
-              <div className="h-4 w-2/3 bg-slate-100 rounded-md" />
+              <div className="h-5 w-5/6 bg-slate-200 rounded-xl mb-2" />
+              <div className="h-4 w-full bg-slate-100 rounded-xl mb-1" />
+              <div className="h-4 w-2/3 bg-slate-100 rounded-xl" />
             </div>
             <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
               <div className="h-3.5 w-32 bg-slate-200 rounded" />
-              <div className="h-8 w-24 bg-slate-200 rounded-md" />
+              <div className="h-8 w-24 bg-slate-200 rounded-xl" />
             </div>
           </Card>
         ))}

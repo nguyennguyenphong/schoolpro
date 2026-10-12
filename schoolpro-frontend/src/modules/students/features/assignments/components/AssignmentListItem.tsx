@@ -64,7 +64,7 @@ export const AssignmentListItem: React.FC<AssignmentListItemProps> = ({
     >
       <div className="space-y-2 flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-md">
+          <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl">
             {assignment.subjectName}
           </span>
           <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">

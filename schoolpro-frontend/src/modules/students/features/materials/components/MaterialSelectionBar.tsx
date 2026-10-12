@@ -38,7 +38,7 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
 
         <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
 
-        <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-md border border-blue-200">
+        <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-xl border border-blue-200">
           Đã chọn: {selectedCount} tài liệu
         </div>
       </div>

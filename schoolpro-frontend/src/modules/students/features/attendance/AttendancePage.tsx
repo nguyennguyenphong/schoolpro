@@ -67,7 +67,7 @@ export const AttendancePage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-12">
       {/* 1. Header with Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {
@@ -123,7 +123,7 @@ export const AttendancePage: React.FC = () => {
           {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="bg-white rounded-2xl border border-[#f0f0f0] p-5 space-y-3 shadow-2xs"
+              className="bg-white rounded-xl border border-[#f0f0f0] p-5 space-y-3 shadow-2xs"
             >
               <Skeleton active paragraph={{ rows: 3 }} />
             </div>
@@ -142,7 +142,7 @@ export const AttendancePage: React.FC = () => {
         </div>
       ) : (
         /* Empty State */
-        <div className="bg-white rounded-2xl border border-[#f0f0f0] p-12 text-center shadow-2xs space-y-3">
+        <div className="bg-white rounded-xl border border-[#f0f0f0] p-12 text-center shadow-2xs space-y-3">
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={

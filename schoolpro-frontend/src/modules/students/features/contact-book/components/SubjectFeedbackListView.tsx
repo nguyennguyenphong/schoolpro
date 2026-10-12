@@ -163,7 +163,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
       </div>
 
       {viewMode === "table" ? (
-        <div className="bg-white rounded-2xl border border-[#f0f0f0]/90 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#f0f0f0]/90 shadow-xs overflow-hidden">
           <Table
             columns={columns}
             dataSource={feedbacks}
@@ -177,7 +177,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
           {feedbacks.map((item) => (
             <Card
               key={item.id}
-              className="rounded-2xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between hover:border-blue-300 [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
+              className="rounded-xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between hover:border-blue-300 [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
             >
               <div>
                 {/* Header */}

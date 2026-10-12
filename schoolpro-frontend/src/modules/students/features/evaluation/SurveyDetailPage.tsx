@@ -205,7 +205,7 @@ export const SurveyDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto space-y-5 animate-pulse pb-16">
-        <div className="bg-white p-6 rounded-2xl border border-[#f0f0f0] space-y-4">
+        <div className="bg-white p-6 rounded-xl border border-[#f0f0f0] space-y-4">
           <div className="h-4 w-48 bg-slate-200 rounded" />
           <div className="h-8 w-3/4 bg-slate-200 rounded" />
           <div className="h-4 w-full bg-slate-100 rounded" />
@@ -213,14 +213,14 @@ export const SurveyDetailPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div className="lg:col-span-8 space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#f0f0f0] p-6 space-y-3">
+              <div key={i} className="bg-white rounded-xl border border-[#f0f0f0] p-6 space-y-3">
                 <div className="h-5 w-1/2 bg-slate-200 rounded" />
                 <div className="h-10 w-full bg-slate-100 rounded-xl" />
               </div>
             ))}
           </div>
           <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white rounded-2xl border border-[#f0f0f0] p-6 h-64" />
+            <div className="bg-white rounded-xl border border-[#f0f0f0] p-6 h-64" />
           </div>
         </div>
       </div>
@@ -229,8 +229,8 @@ export const SurveyDetailPage: React.FC = () => {
 
   if (!survey) {
     return (
-      <div className="max-w-xl mx-auto bg-white rounded-2xl border border-[#f0f0f0] p-10 text-center shadow-2xs space-y-4 my-10">
-        <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+      <div className="max-w-xl mx-auto bg-white rounded-xl border border-[#f0f0f0] p-10 text-center shadow-2xs space-y-4 my-10">
+        <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
           <Icon name="info" size={28} />
         </div>
         <h2 className="text-lg font-bold text-slate-900 mb-1">Không tìm thấy phiếu khảo sát</h2>
@@ -252,7 +252,7 @@ export const SurveyDetailPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-20">
       {/* 1. Page Header with integrated Breadcrumb & Overview */}
-      <div className="bg-white rounded-2xl border border-[#f0f0f0] p-5 sm:p-6 shadow-2xs space-y-3">
+      <div className="bg-white rounded-xl border border-[#f0f0f0] p-5 sm:p-6 shadow-2xs space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <Breadcrumb
             items={[
@@ -395,7 +395,7 @@ export const SurveyDetailPage: React.FC = () => {
               <div
                 key={q.id}
                 id={`question-${q.id}`}
-                className={`bg-white rounded-2xl border transition-all p-5 sm:p-6 space-y-4 shadow-2xs ${
+                className={`bg-white rounded-xl border transition-all p-5 sm:p-6 space-y-4 shadow-2xs ${
                   hasError
                     ? "border-rose-400"
                     : "border-[#f0f0f0]"
@@ -608,7 +608,7 @@ export const SurveyDetailPage: React.FC = () => {
                             </div>
 
                             <div
-                              className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${
+                              className={`w-5 h-5 rounded-xl border flex items-center justify-center shrink-0 ${
                                 isSelected
                                   ? "border-blue-600 bg-blue-600 text-white"
                                   : "border-slate-300 bg-white"
@@ -662,7 +662,7 @@ export const SurveyDetailPage: React.FC = () => {
           })}
 
           {/* Bottom Left Form Actions */}
-          <div className="bg-white rounded-2xl border border-[#f0f0f0] p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-white rounded-xl border border-[#f0f0f0] p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <Button
               variant="outline"
               onClick={() => navigate("/student/evaluations")}
@@ -690,7 +690,7 @@ export const SurveyDetailPage: React.FC = () => {
         {/* Right Column: Progress Panel & Question Markers Grid (Sticky on scroll) */}
         <div className="lg:col-span-4 flex flex-col gap-4.5 lg:sticky lg:top-20 self-start">
           {/* Progress & Questions Grid Card */}
-          <Card className="rounded-2xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
+          <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 space-y-4">
             <div className="pb-3">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
                 Tiến độ thực hiện
@@ -771,7 +771,7 @@ export const SurveyDetailPage: React.FC = () => {
           </Card>
 
           {/* Survey Summary Details Card */}
-          <Card className="rounded-2xl border-[#f0f0f0] shadow-2xs space-y-3">
+          <Card className="rounded-xl border-[#f0f0f0] shadow-2xs space-y-3">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
               Thông tin đợt khảo sát
             </span>
@@ -815,7 +815,7 @@ export const SurveyDetailPage: React.FC = () => {
       >
         <div className="p-2 space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
               <Icon name="checkCircle" size={22} />
             </div>
             <div>

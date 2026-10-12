@@ -5,12 +5,12 @@ export const ContactBookSkeleton: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 animate-pulse">
       {/* 1. Header skeleton */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-3">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <div className="h-4 w-40 bg-slate-200 rounded" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-2">
-            <div className="h-7 w-64 bg-slate-200 rounded-md" />
-            <div className="h-3.5 w-80 bg-slate-100 rounded-md" />
+            <div className="h-7 w-64 bg-slate-200 rounded-xl" />
+            <div className="h-3.5 w-80 bg-slate-100 rounded-xl" />
           </div>
           <div className="flex gap-2">
             <div className="h-9 w-32 bg-slate-200 rounded-lg" />

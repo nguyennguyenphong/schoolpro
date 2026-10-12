@@ -225,7 +225,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs overflow-hidden">
+    <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs overflow-hidden">
       <Table<SubjectGradeItem>
         rowKey="id"
         columns={columns}

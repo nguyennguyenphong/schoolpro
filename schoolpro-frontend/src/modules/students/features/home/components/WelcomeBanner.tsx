@@ -35,7 +35,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-blue-700 via-blue-600 to-indigo-700 text-white p-6 sm:p-8 shadow-md shadow-blue-500/15 border border-blue-500/40">
+    <div className="relative overflow-hidden rounded-xl bg-linear-to-r from-blue-700 via-blue-600 to-indigo-700 text-white p-6 sm:p-8 shadow-md shadow-blue-500/15 border border-blue-500/40">
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">

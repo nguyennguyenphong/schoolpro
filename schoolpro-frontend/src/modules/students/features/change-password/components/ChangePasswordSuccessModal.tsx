@@ -29,10 +29,10 @@ export const ChangePasswordSuccessModal: React.FC<ChangePasswordSuccessModalProp
       footer={null}
       centered
       width={460}
-      className="rounded-2xl overflow-hidden"
+      className="rounded-xl overflow-hidden"
     >
       <div className="text-center py-5 px-3 sm:px-6">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-4 text-emerald-600 shadow-xs">
+        <div className="w-16 h-16 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-4 text-emerald-600 shadow-xs">
           <Icon name="check" size={32} />
         </div>
 

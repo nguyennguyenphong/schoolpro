@@ -13,12 +13,12 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
   overview,
 }) => {
   return (
-    <div className="bg-white rounded-2xl border border-[#f0f0f0] p-4 sm:p-5 shadow-2xs">
+    <div className="bg-white rounded-xl border border-[#f0f0f0] p-4 sm:p-5 shadow-2xs">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Left: Avatar & Primary Info */}
         <div className="flex items-start sm:items-center gap-3.5 sm:gap-4">
           <div className="relative shrink-0">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shadow-sm border border-blue-500/20">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shadow-sm border border-blue-500/20">
               {profile.fullName.split(" ").pop()?.charAt(0) || "H"}
             </div>
             <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white" title="Trạng thái: Đang theo học" />
@@ -29,10 +29,10 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">
                 {profile.fullName}
               </h2>
-              <Tag color="blue" className="m-0 font-mono text-xs font-semibold px-2 py-0.5 rounded-md">
+              <Tag color="blue" className="m-0 font-mono text-xs font-semibold px-2 py-0.5 rounded-xl">
                 {profile.studentCode}
               </Tag>
-              <Tag color="success" className="m-0 text-xs font-semibold px-2 py-0.5 rounded-md">
+              <Tag color="success" className="m-0 text-xs font-semibold px-2 py-0.5 rounded-xl">
                 {profile.status}
               </Tag>
             </div>
@@ -51,7 +51,7 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
                 {overview.awards.map((award, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md"
+                    className="inline-flex items-center gap-1 text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-xl"
                   >
                     <Icon name="check" size={12} className="text-amber-600 shrink-0" />
                     <span>{award}</span>

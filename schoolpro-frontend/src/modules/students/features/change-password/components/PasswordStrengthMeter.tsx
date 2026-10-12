@@ -51,7 +51,7 @@ export const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ sc
         <span className="text-xs font-semibold text-slate-500">
           {t("card:password.strength.title")}:
         </span>
-        <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md border ${badgeClass}`}>
+        <span className={`text-[11px] font-bold px-2 py-0.5 rounded-xl border ${badgeClass}`}>
           {t(getLabelKey(level) as any)}
         </span>
       </div>

@@ -181,7 +181,7 @@ export const AssignmentSubmitPage: React.FC = () => {
 
   if (!assignment) {
     return (
-      <div className="p-10 text-center bg-white rounded-2xl border border-[#f0f0f0] shadow-2xs my-6">
+      <div className="p-10 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs my-6">
         <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
           <Icon name="file" size={24} />
         </div>

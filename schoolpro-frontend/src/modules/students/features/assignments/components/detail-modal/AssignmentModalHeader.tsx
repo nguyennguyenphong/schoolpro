@@ -12,7 +12,7 @@ export const AssignmentModalHeader: React.FC<AssignmentModalHeaderProps> = ({
   return (
     <div className="border-b border-slate-100 pb-3">
       <div className="flex flex-wrap items-center gap-2 mb-2">
-        <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-md">
+        <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl">
           {assignment.subjectName}
         </span>
         <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">

@@ -86,7 +86,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -98,7 +98,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"

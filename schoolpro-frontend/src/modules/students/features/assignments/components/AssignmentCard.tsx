@@ -77,7 +77,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
     >
       <div>
         <div className="flex items-center justify-between gap-1 mb-2">
-          <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md truncate">
+          <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-xl truncate">
             {assignment.subjectName}
           </span>
           {getStatusBadge()}

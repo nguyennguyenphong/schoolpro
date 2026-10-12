@@ -190,7 +190,7 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
                 {/* 11. Average Score (ĐTB HK1) */}
                 <td className="py-2.5 px-2 text-center border-r border-slate-100 whitespace-nowrap bg-emerald-50/20">
                   <span
-                    className={`inline-block px-2 py-0.5 rounded-md font-extrabold text-xs ${
+                    className={`inline-block px-2 py-0.5 rounded-xl font-extrabold text-xs ${
                       item.averageScore >= 8.0
                         ? "bg-emerald-100/70 text-emerald-800 border border-emerald-300"
                         : item.averageScore >= 6.5

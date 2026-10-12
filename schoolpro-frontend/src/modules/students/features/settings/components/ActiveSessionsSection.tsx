@@ -58,7 +58,7 @@ export const ActiveSessionsSection: React.FC<ActiveSessionsSectionProps> = ({
   const otherSessionsCount = sessions.filter((s) => !s.isCurrent).length;
 
   return (
-    <Card className="rounded-2xl border border-[#f0f0f0] shadow-2xs bg-white p-5 sm:p-6 space-y-6">
+    <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs bg-white p-5 sm:p-6 space-y-6">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div className="flex items-center gap-3">

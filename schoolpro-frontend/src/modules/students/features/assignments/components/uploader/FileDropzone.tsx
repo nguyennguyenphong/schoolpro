@@ -26,7 +26,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       onClick={() => fileInputRef.current?.click()}
-      className={`border-2 border-dashed rounded-2xl p-6 sm:p-7 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
+      className={`border-2 border-dashed rounded-xl p-6 sm:p-7 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
         isDragging
           ? "border-blue-500 bg-blue-50/70 scale-[0.99]"
           : "border-slate-300 hover:border-blue-400 bg-slate-50/60 hover:bg-blue-50/20"
@@ -46,7 +46,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
         }}
       />
 
-      <div className="w-13 h-13 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center mb-3 shadow-inner">
+      <div className="w-13 h-13 rounded-xl bg-blue-600/10 text-blue-600 flex items-center justify-center mb-3 shadow-inner">
         <Icon name="upload" size={24} />
       </div>
 
@@ -60,22 +60,22 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 
       {/* Format Badges in dropzone */}
       <div className="flex flex-wrap items-center justify-center gap-1.5">
-        <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-xl">
           Word (.doc, .docx)
         </span>
-        <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-xl">
           Excel (.xlsx, .csv)
         </span>
-        <span className="text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-xl">
           PDF (.pdf)
         </span>
-        <span className="text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-xl">
           Ảnh (.jpg, .png)
         </span>
-        <span className="text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-xl">
           Video (.mp4, .mov)
         </span>
-        <span className="text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-md">
+        <span className="text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-xl">
           Audio (.mp3, .wav)
         </span>
       </div>

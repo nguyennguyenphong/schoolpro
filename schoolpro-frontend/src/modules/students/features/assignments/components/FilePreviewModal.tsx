@@ -120,7 +120,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         {/* WORD DOCUMENT PREVIEW */}
         {file.type === "word" && (
           <div className="p-6 bg-blue-50/50 border border-blue-200 rounded-xl space-y-3 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto shadow-md shadow-blue-500/20 font-bold text-xl">
+            <div className="w-16 h-16 rounded-xl bg-blue-600 text-white flex items-center justify-center mx-auto shadow-md shadow-blue-500/20 font-bold text-xl">
               W
             </div>
             <div>
@@ -143,7 +143,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         {/* EXCEL PREVIEW */}
         {file.type === "excel" && (
           <div className="p-6 bg-emerald-50/50 border border-emerald-200 rounded-xl space-y-3 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-500/20 font-bold text-xl">
+            <div className="w-16 h-16 rounded-xl bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md shadow-emerald-500/20 font-bold text-xl">
               X
             </div>
             <div>
@@ -175,7 +175,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         {/* ARCHIVE / OTHER */}
         {(file.type === "archive" || file.type === "other") && (
           <div className="p-6 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-3 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-slate-700 text-white flex items-center justify-center mx-auto shadow-md">
+            <div className="w-16 h-16 rounded-xl bg-slate-700 text-white flex items-center justify-center mx-auto shadow-md">
               <Icon name="file-archive" size={28} />
             </div>
             <div>

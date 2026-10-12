@@ -70,7 +70,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             type="button"
             onClick={onPrevWeekClick}
             disabled={isPrevDisabled}
-            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
+            className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
               isPrevDisabled
                 ? "text-slate-300 cursor-not-allowed"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
@@ -83,7 +83,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={onTodayClick}
-            className={`px-2.5 h-7 rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-2.5 h-7 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               isToday
                 ? "bg-blue-600 text-white shadow-2xs"
                 : "text-slate-700 hover:bg-white"
@@ -97,7 +97,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             type="button"
             onClick={onNextWeekClick}
             disabled={isNextDisabled}
-            className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
+            className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
               isNextDisabled
                 ? "text-slate-300 cursor-not-allowed"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white cursor-pointer"
@@ -156,7 +156,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`p-1.5 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`p-1.5 px-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"
@@ -169,7 +169,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`p-1.5 px-2.5 rounded-md text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`p-1.5 px-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-2xs font-semibold"
                 : "text-slate-500 hover:text-slate-800"

@@ -33,7 +33,7 @@ export const DashboardPage: React.FC = () => {
   if (loading && !data) {
     return (
       <div className="space-y-4 sm:space-y-5 pb-8">
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-2">
+        <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
           <div className="h-4 w-48 bg-slate-200 rounded animate-pulse" />
           <div className="h-7 w-72 bg-slate-200 rounded animate-pulse" />
         </div>
@@ -77,7 +77,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-2">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-2">
         <Breadcrumb
           items={[
             {

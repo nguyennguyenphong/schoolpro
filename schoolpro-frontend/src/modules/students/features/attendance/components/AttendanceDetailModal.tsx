@@ -53,7 +53,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
     >
       <div className="space-y-4 pt-3 text-xs">
         {/* Banner */}
-        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-3">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-3">
           <span className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
             <Icon name="check" size={20} strokeWidth={3} />
           </span>
@@ -68,7 +68,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
         </div>
 
         {/* Details list */}
-        <div className="bg-slate-50 border border-[#f0f0f0] rounded-2xl p-4 space-y-3">
+        <div className="bg-slate-50 border border-[#f0f0f0] rounded-xl p-4 space-y-3">
           <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
             <span className="text-slate-500 font-medium">Môn học:</span>
             <strong className="text-slate-900 font-bold text-right truncate max-w-64">
