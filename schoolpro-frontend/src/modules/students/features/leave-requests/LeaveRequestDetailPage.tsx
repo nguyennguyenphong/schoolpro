@@ -2,11 +2,11 @@ import type React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
 import {
   LeaveRequestDetailHeader,
   LeaveRequestDetailSidebar,
+  LeaveRequestDetailSkeleton,
   LeaveRequestStepsLogCard,
   LeaveRequestWorkflowCard,
 } from "@/modules/students/features/leave-requests/components/detail";
@@ -21,36 +21,7 @@ const LeaveRequestDetailPage: React.FC = () => {
     useLeaveRequestDetail(id);
 
   if (loading) {
-    return (
-      <div className="space-y-4 pb-8">
-        <Card
-          loading={true}
-          className="rounded-xl shadow-2xs border-[#f0f0f0] h-28"
-          skeletonProps={{ paragraph: { rows: 2 } }}
-        />
-        <Card
-          loading={true}
-          className="rounded-xl shadow-2xs border-[#f0f0f0] h-36"
-          skeletonProps={{ paragraph: { rows: 2 } }}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2">
-            <Card
-              loading={true}
-              className="rounded-xl shadow-2xs border-[#f0f0f0] h-96"
-              skeletonProps={{ paragraph: { rows: 8 } }}
-            />
-          </div>
-          <div>
-            <Card
-              loading={true}
-              className="rounded-xl shadow-2xs border-[#f0f0f0] h-80"
-              skeletonProps={{ paragraph: { rows: 6 } }}
-            />
-          </div>
-        </div>
-      </div>
-    );
+    return <LeaveRequestDetailSkeleton />;
   }
 
   if (!item) {
@@ -73,7 +44,7 @@ const LeaveRequestDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-8">
+    <div className="flex flex-col gap-4 sm:gap-5 pb-8">
       <LeaveRequestDetailHeader
         item={item}
         downloading={downloading}

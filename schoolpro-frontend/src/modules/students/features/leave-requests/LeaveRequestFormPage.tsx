@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Icon } from "@/components/ui/Icon";
 import { TextArea } from "@/components/ui/Input";
@@ -12,6 +11,7 @@ import { Select } from "@/components/ui/Select";
 import {
   LeaveRequestFormHeader,
   LeaveRequestFormSidebar,
+  LeaveRequestFormSkeleton,
   LeaveRequestGuardianAttachmentsSection,
   LeaveRequestLessonsSelector,
 } from "@/modules/students/features/leave-requests/components/form";

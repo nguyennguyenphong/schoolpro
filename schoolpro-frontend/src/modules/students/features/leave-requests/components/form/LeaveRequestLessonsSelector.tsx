@@ -93,8 +93,23 @@ export const LeaveRequestLessonsSelector: React.FC<LeaveRequestLessonsSelectorPr
         </div>
 
         {loadingLessons ? (
-          <div className="py-6 text-center text-xs text-slate-500">
-            {t("card:leaveRequests.form.checkingTimetable")}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 animate-pulse">
+            {[1, 2, 3, 4].map((skeletonIdx) => (
+              <div
+                key={skeletonIdx}
+                className="p-3 rounded-xl bg-white border border-slate-200 flex items-start gap-2.5"
+              >
+                <div className="w-4 h-4 rounded bg-slate-200 shrink-0 mt-0.5" />
+                <div className="min-w-0 flex-1 flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <div className="h-4 w-28 bg-slate-200 rounded" />
+                    <div className="h-4 w-14 bg-slate-100 rounded" />
+                  </div>
+                  <div className="h-3 w-40 bg-slate-100 rounded" />
+                  <div className="h-3 w-32 bg-slate-100 rounded" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : availableLessons.length === 0 ? (
           <div className="p-4 rounded-xl bg-white border border-amber-200 text-xs text-amber-800 text-center font-medium">

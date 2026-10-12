@@ -20,14 +20,28 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <Card
-            key={i}
-            loading={true}
-            className="rounded-xl shadow-2xs border-[#f0f0f0] h-36.25"
-            skeletonProps={{
-              paragraph: { rows: 2 },
-            }}
-          />
+          <Card key={i} className="rounded-xl shadow-2xs border-[#f0f0f0]">
+            <div className="animate-pulse">
+              {/* Row 1: Title & Icon box */}
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="h-4 w-28 bg-slate-200 rounded" />
+                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200/70 shrink-0" />
+              </div>
+
+              {/* Row 2: Big metric number, unit & right Tag */}
+              <div className="flex items-baseline gap-2 mb-2">
+                <div className="h-8 sm:h-9 w-12 bg-slate-200 rounded-lg" />
+                <div className="h-4 w-16 bg-slate-100 rounded" />
+                <div className="ml-auto h-5.5 w-20 bg-slate-100 rounded-md" />
+              </div>
+
+              {/* Row 3: Bottom border info strip */}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                <div className="h-4 w-28 bg-slate-100 rounded" />
+                <div className="h-4 w-20 bg-slate-100 rounded" />
+              </div>
+            </div>
+          </Card>
         ))}
       </div>
     );

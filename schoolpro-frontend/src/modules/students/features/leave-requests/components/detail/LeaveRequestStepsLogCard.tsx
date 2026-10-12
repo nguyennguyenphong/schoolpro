@@ -9,7 +9,7 @@ interface LeaveRequestStepsLogCardProps {
 
 export const LeaveRequestStepsLogCard: React.FC<LeaveRequestStepsLogCardProps> = ({ item }) => {
   return (
-    <div className="space-y-4 sm:space-y-5">
+    <div className="flex flex-col gap-4 sm:gap-5">
       <LeaveRequestContentCard item={item} />
       <LeaveRequestActivityLogCard item={item} />
     </div>

@@ -45,7 +45,7 @@ const LeaveRequestsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4 pb-6">
+    <div className="flex flex-col gap-4 pb-6">
       <LeaveRequestsPageHeader
         summary={summary}
         loading={loading}
@@ -80,7 +80,7 @@ const LeaveRequestsPage: React.FC = () => {
       />
 
       {loading ? (
-        <LeaveRequestSkeleton />
+        <LeaveRequestSkeleton viewMode={filter.viewMode} />
       ) : items.length === 0 ? (
         <LeaveRequestsEmptyState
           hasActiveFilters={hasActiveFilters}

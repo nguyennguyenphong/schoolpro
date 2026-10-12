@@ -71,7 +71,7 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {summary?.homeroomTeacherName && (
+          {summary?.homeroomTeacherName ? (
             <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
               <Icon name="userCheck" size={14} className="text-blue-600 shrink-0" />
               <span className="text-slate-500">
@@ -79,7 +79,12 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
                 <strong className="text-slate-800">{summary.homeroomTeacherName}</strong>
               </span>
             </div>
-          )}
+          ) : loading ? (
+            <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] h-8 animate-pulse">
+              <span className="w-3.5 h-3.5 rounded-full bg-slate-200 shrink-0" />
+              <span className="w-36 h-3.5 rounded bg-slate-200" />
+            </div>
+          ) : null}
 
           <Button
             variant="primary"
