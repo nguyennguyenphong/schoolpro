@@ -46,7 +46,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             </div>
             <div>
               <span className="text-[11px] font-medium text-slate-400 block">Mã số học sinh</span>
-              <span className="text-xs sm:text-sm font-mono font-bold text-blue-600">{summary.studentCode}</span>
+              <span className="text-xs sm:text-sm font-bold text-blue-600">{summary.studentCode}</span>
             </div>
             <div>
               <span className="text-[11px] font-medium text-slate-400 block">Ngày sinh / Giới tính</span>

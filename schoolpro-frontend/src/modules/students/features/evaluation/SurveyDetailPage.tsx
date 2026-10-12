@@ -699,7 +699,7 @@ export const SurveyDetailPage: React.FC = () => {
                 <span className="text-2xl font-extrabold text-slate-900">
                   {answeredCount} <span className="text-sm font-semibold text-slate-400">/ {totalQuestions} câu</span>
                 </span>
-                <span className="text-sm font-bold text-blue-600 font-mono">
+                <span className="text-sm font-bold text-blue-600">
                   {progressPercent}%
                 </span>
               </div>

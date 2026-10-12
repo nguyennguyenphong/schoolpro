@@ -99,7 +99,7 @@ export const ContactBookPage: React.FC = () => {
               <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
                 {summary?.academicYear || "2025 - 2026"}
               </span>
-              <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200 font-mono">
+              <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
                 {summary?.studentCode || "HS202688"}
               </span>
             </div>

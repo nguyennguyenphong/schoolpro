@@ -58,7 +58,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
           {scores.map((s, idx) => (
             <span
               key={idx}
-              className="px-2 py-0.5 rounded bg-slate-100 border border-[#f0f0f0] text-xs font-mono font-bold text-slate-800"
+              className="px-2 py-0.5 rounded bg-slate-100 border border-[#f0f0f0] text-xs font-bold text-slate-800"
             >
               {s}
             </span>
@@ -73,7 +73,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
       width: 120,
       align: "center",
       render: (score: number | null) => (
-        <span className="font-bold font-mono text-xs sm:text-sm text-blue-600">
+        <span className="font-bold text-xs sm:text-sm text-blue-600">
           {score !== null ? score.toFixed(1) : "—"}
         </span>
       ),
@@ -85,7 +85,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
       width: 110,
       align: "center",
       render: (score: number | null) => (
-        <span className="font-extrabold font-mono text-xs sm:text-sm text-emerald-600">
+        <span className="font-extrabold text-xs sm:text-sm text-emerald-600">
           {score !== null ? score.toFixed(1) : "—"}
         </span>
       ),
@@ -196,7 +196,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
 
                   <div className="text-right shrink-0">
                     <span className="text-[10px] uppercase font-bold text-slate-400 block">ĐTB Môn</span>
-                    <span className="text-xl font-extrabold text-blue-600 font-mono">
+                    <span className="text-xl font-extrabold text-blue-600">
                       {item.averageScore !== null ? item.averageScore.toFixed(1) : "—"}
                     </span>
                   </div>
@@ -210,7 +210,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
                       {item.regularScores.map((score, sIdx) => (
                         <span
                           key={sIdx}
-                          className="px-2 py-0.5 rounded bg-white border border-[#f0f0f0] text-xs font-mono font-bold text-slate-800"
+                          className="px-2 py-0.5 rounded bg-white border border-[#f0f0f0] text-xs font-bold text-slate-800"
                         >
                           {score}
                         </span>
@@ -220,7 +220,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
 
                   <div className="text-right">
                     <span className="text-[11px] text-slate-400 block mb-1">Giữa kỳ:</span>
-                    <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-xs font-mono font-bold text-blue-700">
+                    <span className="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700">
                       {item.midtermScore !== null ? item.midtermScore.toFixed(1) : "—"}
                     </span>
                   </div>

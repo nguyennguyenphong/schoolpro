@@ -327,7 +327,7 @@ export const ExamDetailPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {exam.title}
             </h1>
-            <Tag color="blue" className="font-mono font-bold m-0 text-xs">
+            <Tag color="blue" className="font-bold m-0 text-xs">
               {exam.code}
             </Tag>
 
@@ -673,7 +673,7 @@ export const ExamDetailPage: React.FC = () => {
 
                 {!isReadOnly ? (
                   <div
-                    className={`flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono font-bold text-xs border ${
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-xl font-bold text-xs border ${
                       timeLeft < 300
                         ? "bg-rose-50 border-rose-200 text-rose-700 animate-pulse"
                         : "bg-amber-50 border-amber-200 text-amber-800"
@@ -770,7 +770,7 @@ export const ExamDetailPage: React.FC = () => {
             <div className="space-y-2 text-xs mt-3">
               <div className="flex justify-between py-1">
                 <span className="text-slate-400">Mã đề thi:</span>
-                <span className="font-mono font-bold text-slate-800">{exam.code}</span>
+                <span className="font-bold text-slate-800">{exam.code}</span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-slate-400">Thời gian làm bài:</span>
@@ -826,7 +826,7 @@ export const ExamDetailPage: React.FC = () => {
             </div>
             <div className="flex justify-between">
               <span>Thời gian còn lại:</span>
-              <strong className="text-slate-800 font-mono">{formattedTime}</strong>
+              <strong className="text-slate-800">{formattedTime}</strong>
             </div>
             <p className="text-[11px] text-slate-500 pt-1 border-t border-[#f0f0f0] mb-0 leading-relaxed">
               Sau khi nộp, hệ thống sẽ tính điểm tự động và em không thể thay đổi đáp án đã gửi.
