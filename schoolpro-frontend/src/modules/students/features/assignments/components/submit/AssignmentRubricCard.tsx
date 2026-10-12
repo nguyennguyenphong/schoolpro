@@ -1,5 +1,5 @@
 import React from "react";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";

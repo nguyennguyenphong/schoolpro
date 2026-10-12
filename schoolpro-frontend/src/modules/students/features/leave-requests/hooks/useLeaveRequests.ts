@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import i18n from "@/i18n/i18n";

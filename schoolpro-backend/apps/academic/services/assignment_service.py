@@ -648,6 +648,7 @@ class AssignmentService:
             "id": str(assignment.id),
             "code": assignment_code,
             "title": assignment.title,
+            "subjectId": str(subject.id) if subject else None,
             "subjectCode": subject_code,
             "subjectName": subject.name if subject else "Môn học",
             "className": school_class.name if school_class else "",
@@ -1155,7 +1156,14 @@ class AssignmentService:
         result = formatted_items
 
         if subject and subject != "all":
-            result = [i for i in result if i["subjectCode"] == subject]
+            subj_norm = subject.strip().lower()
+            result = [
+                i
+                for i in result
+                if str(i.get("subjectId") or "").lower() == subj_norm
+                or str(i.get("subjectCode") or "").lower() == subj_norm
+                or str(i.get("subjectName") or "").lower() == subj_norm
+            ]
 
         if status_filter and status_filter != "all":
             result = [i for i in result if i["status"] == status_filter]

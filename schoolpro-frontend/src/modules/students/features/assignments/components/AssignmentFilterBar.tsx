@@ -217,10 +217,12 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
               {t("card:assignments.filters.subject")}
             </label>
             <SelectSubject
-              className="w-50 sm:w-50" 
+              className="w-44 sm:w-52"
               id="assignment-filter-subject"
-              value={subject}
-              onChange={onSubjectChange}
+              includeAllOption
+              allOptionLabel={t("card:assignments.filters.allSubjects")}
+              value={subject || "all"}
+              onChange={(val) => onSubjectChange(String(val || "all"))}
             />
           </div>
 

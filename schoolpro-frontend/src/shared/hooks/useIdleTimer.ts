@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { useAuthStore } from "@/shared/store/useAuthStore";
 import { clearAuthSessionAndRedirect } from "@/shared/api/httpClient";
 

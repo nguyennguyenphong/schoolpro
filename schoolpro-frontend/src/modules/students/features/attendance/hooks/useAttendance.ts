@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import dayjs from "dayjs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import type { AssignmentAttachment } from "@/modules/students/features/assignments/types";
 
 interface AssignmentModalAttachmentsProps {

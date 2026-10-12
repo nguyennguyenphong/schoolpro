@@ -49,7 +49,7 @@ export const SelectSemester = ({
   excludeLocked = false,
   customSemesters,
   showCodePrefix = false,
-  includeAllOption = false,
+  includeAllOption = true,
   allOptionLabel = "Tất cả học kỳ",
   allOptionValue = "all",
   placeholder = "Chọn học kỳ",
@@ -70,9 +70,12 @@ export const SelectSemester = ({
     enabled: !customSemesters || customSemesters.length === 0,
   });
 
-  // Resolve incoming value: if value is semester code or name, resolve to semester.id
+  // Resolve incoming value: if value is "all", semester code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
-    if (includeAllOption && value === allOptionValue) {
+    if (
+      value === allOptionValue ||
+      (typeof value === "string" && value.toLowerCase().trim() === "all")
+    ) {
       return allOptionValue;
     }
     if (value !== undefined && value !== null && value !== "") {
@@ -83,7 +86,10 @@ export const SelectSemester = ({
       return value;
     }
     return value;
-  }, [value, semesters, includeAllOption, allOptionValue]);
+  }, [value, semesters, allOptionValue]);
+
+  const shouldIncludeAllOption =
+    includeAllOption || resolvedValue === allOptionValue;
 
   // Map semesters to standard Ant Design select options
   const options = useMemo(() => {
@@ -101,7 +107,7 @@ export const SelectSemester = ({
       };
     });
 
-    if (includeAllOption) {
+    if (shouldIncludeAllOption) {
       return [
         {
           label: allOptionLabel,
@@ -117,10 +123,22 @@ export const SelectSemester = ({
   }, [
     semesters,
     showCodePrefix,
-    includeAllOption,
+    shouldIncludeAllOption,
     allOptionLabel,
     allOptionValue,
   ]);
+
+  const handleChange: SelectSemesterProps["onChange"] = (val, option) => {
+    if (!onChange) return;
+    if (val === undefined && shouldIncludeAllOption && value !== undefined) {
+      onChange(allOptionValue, {
+        label: allOptionLabel,
+        value: allOptionValue,
+      });
+      return;
+    }
+    onChange(val, option);
+  };
 
   return (
     <Select
@@ -141,7 +159,7 @@ export const SelectSemester = ({
       loading={isLoading}
       options={options}
       value={resolvedValue}
-      onChange={onChange}
+      onChange={handleChange}
       {...props}
     />
   );

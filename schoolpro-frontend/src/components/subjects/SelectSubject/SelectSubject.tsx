@@ -53,7 +53,7 @@ export const SelectSubject = ({
   schoolId,
   customSubjects,
   showCodePrefix = false,
-  includeAllOption = false,
+  includeAllOption = true,
   allOptionLabel = "Tất cả môn học",
   allOptionValue = "all",
   placeholder = "Chọn môn học",
@@ -76,9 +76,12 @@ export const SelectSubject = ({
     enabled: !customSubjects || customSubjects.length === 0,
   });
 
-  // Resolve incoming value: if value is subject code or name, resolve to subject.id
+  // Resolve incoming value: if value is "all", subject code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
-    if (includeAllOption && value === allOptionValue) {
+    if (
+      value === allOptionValue ||
+      (typeof value === "string" && value.toLowerCase().trim() === "all")
+    ) {
       return allOptionValue;
     }
     if (value !== undefined && value !== null && value !== "") {
@@ -89,7 +92,10 @@ export const SelectSubject = ({
       return value;
     }
     return value;
-  }, [value, subjects, includeAllOption, allOptionValue]);
+  }, [value, subjects, allOptionValue]);
+
+  const shouldIncludeAllOption =
+    includeAllOption || resolvedValue === allOptionValue;
 
   // Map subjects to standard Ant Design select options
   const options = useMemo(() => {
@@ -107,7 +113,7 @@ export const SelectSubject = ({
       };
     });
 
-    if (includeAllOption) {
+    if (shouldIncludeAllOption) {
       return [
         {
           label: allOptionLabel,
@@ -123,10 +129,22 @@ export const SelectSubject = ({
   }, [
     subjects,
     showCodePrefix,
-    includeAllOption,
+    shouldIncludeAllOption,
     allOptionLabel,
     allOptionValue,
   ]);
+
+  const handleChange: SelectSubjectProps["onChange"] = (val, option) => {
+    if (!onChange) return;
+    if (val === undefined && shouldIncludeAllOption && value !== undefined) {
+      onChange(allOptionValue, {
+        label: allOptionLabel,
+        value: allOptionValue,
+      });
+      return;
+    }
+    onChange(val, option);
+  };
 
   return (
     <Select
@@ -147,7 +165,7 @@ export const SelectSubject = ({
       loading={isLoading}
       options={options}
       value={resolvedValue}
-      onChange={onChange}
+      onChange={handleChange}
       {...props}
     />
   );

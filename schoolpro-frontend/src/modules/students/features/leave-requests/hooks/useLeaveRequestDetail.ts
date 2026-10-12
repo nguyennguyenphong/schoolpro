@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

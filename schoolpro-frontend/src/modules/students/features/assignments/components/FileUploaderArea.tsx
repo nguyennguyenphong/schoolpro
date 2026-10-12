@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import type { SubmittedFile, FileCategory } from "@/modules/students/features/assignments/types";
 import {
   detectFileType,

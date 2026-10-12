@@ -1,5 +1,5 @@
 import React from "react";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { useTranslation } from "react-i18next";
 import { FunctionalCardItem } from "@/modules/students/features/home/components/FunctionalCardItem";
 import type { FeatureItem } from "@/modules/students/features/home/types";

@@ -48,7 +48,7 @@ export const SelectAcademicYear = ({
   schoolId,
   customAcademicYears,
   showCodePrefix = false,
-  includeAllOption = false,
+  includeAllOption = true,
   allOptionLabel = "Tất cả năm học",
   allOptionValue = "all",
   placeholder = "Chọn năm học",
@@ -68,9 +68,12 @@ export const SelectAcademicYear = ({
     enabled: !customAcademicYears || customAcademicYears.length === 0,
   });
 
-  // Resolve incoming value: if value is academic year code or name, resolve to academicYear.id
+  // Resolve incoming value: if value is "all", academic year code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
-    if (includeAllOption && value === allOptionValue) {
+    if (
+      value === allOptionValue ||
+      (typeof value === "string" && value.toLowerCase().trim() === "all")
+    ) {
       return allOptionValue;
     }
     if (value !== undefined && value !== null && value !== "") {
@@ -81,7 +84,10 @@ export const SelectAcademicYear = ({
       return value;
     }
     return value;
-  }, [value, academicYears, includeAllOption, allOptionValue]);
+  }, [value, academicYears, allOptionValue]);
+
+  const shouldIncludeAllOption =
+    includeAllOption || resolvedValue === allOptionValue;
 
   // Map academic years to standard Ant Design select options
   const options = useMemo(() => {
@@ -97,7 +103,7 @@ export const SelectAcademicYear = ({
       };
     });
 
-    if (includeAllOption) {
+    if (shouldIncludeAllOption) {
       return [
         {
           label: allOptionLabel,
@@ -113,10 +119,22 @@ export const SelectAcademicYear = ({
   }, [
     academicYears,
     showCodePrefix,
-    includeAllOption,
+    shouldIncludeAllOption,
     allOptionLabel,
     allOptionValue,
   ]);
+
+  const handleChange: SelectAcademicYearProps["onChange"] = (val, option) => {
+    if (!onChange) return;
+    if (val === undefined && shouldIncludeAllOption && value !== undefined) {
+      onChange(allOptionValue, {
+        label: allOptionLabel,
+        value: allOptionValue,
+      });
+      return;
+    }
+    onChange(val, option);
+  };
 
   return (
     <Select
@@ -137,7 +155,7 @@ export const SelectAcademicYear = ({
       loading={isLoading}
       options={options}
       value={resolvedValue}
-      onChange={onChange}
+      onChange={handleChange}
       {...props}
     />
   );

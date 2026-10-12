@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import type { SurveyItem, EvaluationSummary } from "@/modules/students/features/evaluation/types";
 import { evaluationService } from "@/modules/students/features/evaluation/services";
 
