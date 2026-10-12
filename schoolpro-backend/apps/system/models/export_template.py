@@ -18,6 +18,7 @@ class TemplateType(models.TextChoices):
     """Business domain category for the export template."""
 
     ANNOUNCEMENT = "ANNOUNCEMENT", "Thông báo & Công văn"
+    LEAVE_REQUEST = "LEAVE_REQUEST", "Đơn xin nghỉ phép"
     ACADEMIC = "ACADEMIC", "Học vụ & Bảng điểm"
     STUDENT_PROFILE = "STUDENT_PROFILE", "Hồ sơ học sinh"
     ATTENDANCE = "ATTENDANCE", "Điểm danh & Chuyên cần"
@@ -86,7 +87,7 @@ class ExportTemplate(BaseModel):
         max_length=100,
         blank=True,
         db_index=True,
-        help_text="Mã định danh duy nhất (VD: ANNOUNCEMENT_OFFICIAL_A4, TRANSCRIPT_SEMESTER_A4)",
+        help_text="Mã định danh duy nhất (VD: ANNOUNCEMENT_OFFICIAL_A4, LEAVE_REQUEST_OFFICIAL_A4)",
     )
     name = models.CharField(
         max_length=255,
@@ -208,18 +209,18 @@ class ExportTemplate(BaseModel):
     def __repr__(self) -> str:
         return f"<ExportTemplate {self.pk}: {self.code}>"
 
-    def render_html(self, context: dict[str, Any] | None = None) -> str:
+    def interpolate_text(self, raw_text: str, context: dict[str, Any] | None = None) -> str:
         """
-        Renders the full HTML document by merging styles, header, content, and footer,
-        and replacing placeholder tags {{variable_name}} with context values.
+        Replaces {{ placeholder }} variables in raw_text using sample_data + context.
         """
+        if not raw_text:
+            return ""
         ctx = context or {}
-        # Merge sample_data defaults with incoming context
-        merged_context: dict[str, Any] = {**self.sample_data, **ctx}
+        sample = self.sample_data if isinstance(self.sample_data, dict) else {}
+        merged_context: dict[str, Any] = {**sample, **ctx}
 
         def replace_placeholder(match: re.Match) -> str:
             raw_key = match.group(1).strip()
-            # Handle nested keys like "school.name"
             val: Any = merged_context
             for part in raw_key.split("."):
                 if isinstance(val, dict):
@@ -228,6 +229,64 @@ class ExportTemplate(BaseModel):
                     val = getattr(val, part, "")
             return str(val) if val is not None else ""
 
+        pattern = re.compile(r"\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}")
+        return pattern.sub(replace_placeholder, raw_text)
+
+    def resolve_filename(
+        self,
+        context: dict[str, Any] | None = None,
+        extension_override: str | None = None,
+        default_prefix: str = "Tai_Lieu",
+    ) -> str:
+        """
+        Resolves output filename dynamically based on template configuration:
+        - Checks sample_data.get('filename_pattern') or context.get('filename_pattern')
+        - Interpolates {{code}}, {{student_code}}, etc.
+        - Appends appropriate extension based on extension_override or self.file_format.
+        """
+        ctx = context or {}
+        sample = self.sample_data if isinstance(self.sample_data, dict) else {}
+        merged = {**sample, **ctx}
+
+        ext_map = {
+            FileFormat.PDF: "pdf",
+            FileFormat.HTML_PRINT: "html",
+            FileFormat.WORD: "doc",
+            FileFormat.EXCEL: "xlsx",
+        }
+        ext = (extension_override or ext_map.get(self.file_format, "pdf")).lstrip(".").lower()
+
+        raw_pattern = (
+            merged.get("filename_pattern")
+            or sample.get("filename_pattern")
+            or f"{default_prefix}_{{{{code}}}}"
+        )
+        interpolated = self.interpolate_text(str(raw_pattern), merged).strip()
+        safe_base = re.sub(r'[\\/*?:"<>|#\s]+', "_", interpolated).strip("_") or default_prefix
+        if safe_base.lower().endswith(f".{ext}"):
+            return safe_base
+        return f"{safe_base}.{ext}"
+
+    def render_html(self, context: dict[str, Any] | None = None) -> str:
+        """
+        Renders the full HTML document by merging styles, header, content, and footer,
+        and replacing placeholder tags {{variable_name}} with context values.
+        """
+        ctx = context or {}
+        sample = self.sample_data if isinstance(self.sample_data, dict) else {}
+        merged_context: dict[str, Any] = {**sample, **ctx}
+        margins = self.margins if isinstance(self.margins, dict) else {}
+
+        watermark_html = ""
+        if self.watermark_text:
+            wm_text = self.interpolate_text(self.watermark_text, merged_context)
+            watermark_html = (
+                f'<div class="export-watermark" style="position: fixed; top: 45%; left: 50%; '
+                f"transform: translate(-50%, -50%) rotate(-35deg); font-size: 44pt; "
+                f"color: rgba(100, 116, 139, 0.09); font-weight: bold; white-space: nowrap; "
+                f'pointer-events: none; z-index: 0;">{wm_text}</div>'
+            )
+
         full_template = f"""<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -235,8 +294,8 @@ class ExportTemplate(BaseModel):
   <title>{merged_context.get("title", self.name)}</title>
   <style>
     @page {{
-      size: {self.page_size} {self.page_orientation.lower()};
-      margin: {self.margins.get("top", "20mm")} {self.margins.get("right", "15mm")} {self.margins.get("bottom", "20mm")} {self.margins.get("left", "20mm")};
+      size: {self.page_size or "A4"} {(self.page_orientation or "PORTRAIT").lower()};
+      margin: {margins.get("top", "20mm")} {margins.get("right", "15mm")} {margins.get("bottom", "20mm")} {margins.get("left", "20mm")};
     }}
     body {{
       font-family: "Times New Roman", Times, serif;
@@ -251,7 +310,8 @@ class ExportTemplate(BaseModel):
   </style>
 </head>
 <body>
-  <div class="print-container">
+  {watermark_html}
+  <div class="print-container" style="position: relative; z-index: 1;">
     {self.header_content or ""}
     {self.content or ""}
     {self.footer_content or ""}
@@ -259,6 +319,4 @@ class ExportTemplate(BaseModel):
 </body>
 </html>"""
 
-        # Replace {{ key }} and {{key}}
-        pattern = re.compile(r"\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}")
-        return pattern.sub(replace_placeholder, full_template)
+        return self.interpolate_text(full_template, merged_context)

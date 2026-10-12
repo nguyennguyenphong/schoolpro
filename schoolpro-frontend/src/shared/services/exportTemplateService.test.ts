@@ -137,4 +137,91 @@ describe("exportTemplateService", () => {
       expect(result).toContain("Thông báo tuyển sinh năm học 2026 - 2027");
     });
   });
+
+  describe("renderLeaveRequest & resolveExportFilename", () => {
+    const sampleLeaveRequest = {
+      id: "lr-01",
+      code: "261012000189",
+      requestCode: "261012000189",
+      studentId: "st-01",
+      studentName: "Đỗ Minh Quân",
+      studentCode: "HS20260001",
+      classId: "cls-01",
+      className: "10A1",
+      leaveType: "sick" as const,
+      leaveTypeCode: "SICK",
+      sessionShift: "all_day" as const,
+      startDate: "2026-10-15",
+      endDate: "2026-10-15",
+      totalDays: 1,
+      reason: "Em bị sốt virus cần nghỉ ngơi theo chỉ định bác sĩ.",
+      status: "approved" as const,
+      statusCode: "APPROVED",
+      createdAt: "2026-10-12 08:30",
+      updatedAt: "2026-10-12 09:00",
+      homeroomTeacherName: "Nguyễn Thị Mai",
+      guardianName: "Đỗ Văn Hùng",
+      guardianRelationship: "Bố",
+      guardianPhone: "0912345678",
+    };
+
+    it("resolves dynamic filename from template sample_data.filename_pattern and file_format", () => {
+      const customTemplate = {
+        id: "tpl-lr-1",
+        code: "LEAVE_REQUEST_OFFICIAL_A4",
+        name: "Đơn xin nghỉ phép tùy chỉnh",
+        template_type: "LEAVE_REQUEST" as const,
+        file_format: "WORD" as const,
+        content: "<div>{{student_name}}</div>",
+        sample_data: {
+          filename_pattern: "DonXinNghi_{{student_code}}_{{code}}",
+        },
+        is_default: true,
+        is_active: true,
+      };
+
+      const ctx = exportTemplateService.buildLeaveRequestContext(sampleLeaveRequest);
+      const filename = exportTemplateService.resolveExportFilename(
+        customTemplate,
+        ctx,
+        "Don_Xin_Nghi_Phep",
+      );
+      expect(filename).toBe("DonXinNghi_HS20260001_261012000189.doc");
+    });
+
+    it("renders custom CSS, watermark, margins, and placeholders via client-side ExportTemplate", async () => {
+      vi.spyOn(httpClient, "get").mockResolvedValueOnce({
+        data: {
+          success: true,
+          data: {
+            id: "",
+            code: "LEAVE_REQUEST_CUSTOM",
+            name: "Mẫu Đơn Tùy Biến",
+            template_type: "LEAVE_REQUEST",
+            file_format: "HTML_PRINT",
+            header_content: "<header>{{school_name}} - {{code}}</header>",
+            content: "<main>Học sinh: {{student_name}} - Lớp: {{class_name}}</main>",
+            footer_content: "<footer>GVCN: {{homeroom_teacher_name}}</footer>",
+            style_content: ".custom-leave { color: #0f172a; }",
+            watermark_text: "SCHOOLPRO {{code}}",
+            page_size: "A4",
+            page_orientation: "LANDSCAPE",
+            margins: { top: "12mm", right: "14mm", bottom: "12mm", left: "18mm" },
+            is_default: true,
+            is_active: true,
+          },
+        },
+      } as any);
+
+      const html = await exportTemplateService.renderLeaveRequest(sampleLeaveRequest, {
+        templateCode: "LEAVE_REQUEST_CUSTOM",
+      });
+
+      expect(html).toContain("size: A4 landscape;");
+      expect(html).toContain("margin: 12mm 14mm 12mm 18mm;");
+      expect(html).toContain(".custom-leave { color: #0f172a; }");
+      expect(html).toContain("SCHOOLPRO 261012000189");
+      expect(html).toContain("Học sinh: Đỗ Minh Quân - Lớp: 10A1");
+    });
+  });
 });

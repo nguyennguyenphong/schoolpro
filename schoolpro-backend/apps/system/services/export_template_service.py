@@ -205,11 +205,19 @@ class ExportTemplateService:
         """
         template = self.get_template(template_id)
         rendered_html = template.render_html(context_data)
+        filename = template.resolve_filename(
+            context=context_data,
+            default_prefix="Don_Xin_Nghi_Phep"
+            if template.template_type in (TemplateType.LEAVE_REQUEST, TemplateType.ATTENDANCE)
+            else "Thong_Bao",
+        )
         return {
             "html": rendered_html,
             "template_id": template.id,
             "template_code": template.code,
             "template_name": template.name,
+            "file_format": template.file_format,
+            "filename": filename,
         }
 
     def get_or_create_default_announcement_template(self, school_id: Any = None) -> ExportTemplate:
@@ -310,3 +318,393 @@ class ExportTemplateService:
         )
         logger.info(f"Seeded official default announcement template: {template.id}")
         return template
+
+    def get_or_create_default_leave_request_template(self, school_id: Any = None) -> ExportTemplate:
+        """
+        Ensures a customizable Vietnamese administrative A4 leave request template exists
+        in sys.export_templates.
+        Prioritizes:
+        1. Active template with code LEAVE_REQUEST_OFFICIAL_A4 (school-specific or global)
+        2. Default template for TemplateType.LEAVE_REQUEST or TemplateType.ATTENDANCE
+        3. Auto-seeds LEAVE_REQUEST_OFFICIAL_A4 if missing.
+        """
+        existing = (
+            self.repository.get_active_by_code(DEFAULT_LEAVE_REQUEST_CODE, school_id=school_id)
+            or self.repository.get_default_by_type(TemplateType.LEAVE_REQUEST, school_id=school_id)
+            or self.repository.get_default_by_type(TemplateType.ATTENDANCE, school_id=school_id)
+        )
+        if existing:
+            return existing
+
+        template = ExportTemplate.objects.create(
+            code=DEFAULT_LEAVE_REQUEST_CODE,
+            name="Mẫu Đơn Xin Phép Nghỉ Học A4 Chuẩn",
+            description=(
+                "Biểu mẫu đơn xin phép nghỉ học hành chính khổ A4 hỗ trợ tùy biến tên file, "
+                "định dạng (PDF/HTML/Word), CSS, Header/Content/Footer và các biến động."
+            ),
+            template_type=TemplateType.LEAVE_REQUEST,
+            file_format=FileFormat.PDF,
+            header_content=DEFAULT_LEAVE_REQUEST_HEADER,
+            content=DEFAULT_LEAVE_REQUEST_CONTENT,
+            footer_content=DEFAULT_LEAVE_REQUEST_FOOTER,
+            style_content=DEFAULT_LEAVE_REQUEST_STYLES,
+            page_size="A4",
+            page_orientation="PORTRAIT",
+            margins={"top": "18mm", "right": "18mm", "bottom": "18mm", "left": "22mm"},
+            placeholders_schema=DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
+            sample_data=DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
+            is_default=True,
+            is_active=True,
+        )
+        logger.info("Seeded official default leave request template: %s", template.id)
+        return template
+
+
+DEFAULT_LEAVE_REQUEST_CODE = "LEAVE_REQUEST_OFFICIAL_A4"
+
+DEFAULT_LEAVE_REQUEST_HEADER = """
+<table class="lr-header-table">
+  <tr>
+    <td class="lr-header-left">
+      <div class="lr-school-name">{{school_name}}</div>
+      <div class="lr-class-meta">LỚP: <strong>{{class_name}}</strong></div>
+      <div class="lr-code-meta">Mã đơn: {{code}}</div>
+    </td>
+    <td class="lr-header-right">
+      <div class="lr-motto-country">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div class="lr-motto-sub"><u>Độc lập - Tự do - Hạnh phúc</u></div>
+      <div class="lr-admin-date">{{created_date_admin}}</div>
+    </td>
+  </tr>
+</table>
+"""
+
+DEFAULT_LEAVE_REQUEST_CONTENT = """
+<div class="lr-title-block">
+  <div class="lr-doc-title">{{document_title}}</div>
+  <div class="lr-doc-subtitle">(Phân loại: {{leave_type_label}} • Trạng thái: {{status_label}})</div>
+</div>
+
+<div class="lr-salutation-block">
+  <div><strong>Kính gửi:</strong> - Ban Giám hiệu {{school_name_title}}</div>
+  <div class="lr-salutation-indent">- Thầy/Cô Giáo viên chủ nhiệm lớp {{class_name}}: <strong>{{homeroom_teacher_name}}</strong> (Người xét duyệt)</div>
+  <div class="lr-salutation-indent">- Quý Thầy/Cô giáo bộ môn giảng dạy lớp {{class_name}}</div>
+</div>
+
+<div class="lr-student-info-block">
+  <div>
+    Em tên là: <strong>{{student_name}}</strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Mã số học sinh: <strong>{{student_code}}</strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Lớp: <strong>{{class_name}}</strong>
+  </div>
+  <div>
+    Họ và tên Phụ huynh xác nhận: <strong>{{guardian_name}}</strong> ({{guardian_relationship}}){{guardian_phone_suffix}}
+  </div>
+</div>
+
+<div class="lr-intro-line">
+  Nay em làm đơn này kính xin Thầy/Cô cho phép em được nghỉ học với thông tin cụ thể như sau:
+</div>
+
+<table class="lr-info-table">
+  <tr>
+    <td class="lr-info-label">Thời gian xin nghỉ:</td>
+    <td class="lr-info-value">{{date_range_text}}</td>
+  </tr>
+  <tr>
+    <td class="lr-info-label">Số ngày &amp; Ca nghỉ:</td>
+    <td class="lr-info-value"><strong>{{total_days}} ngày</strong> ({{session_shift_label}})</td>
+  </tr>
+  <tr>
+    <td class="lr-info-label">Các môn học xin nghỉ:</td>
+    <td class="lr-info-value">{{affected_subjects}}</td>
+  </tr>
+</table>
+
+{{affected_lessons_table_html}}
+
+<div class="lr-section-block">
+  <div class="lr-section-title">Lý do xin nghỉ học chi tiết:</div>
+  <div class="lr-section-body">{{reason_html}}</div>
+</div>
+
+<div class="lr-section-block">
+  <div class="lr-section-title">Lời hứa và cam kết của học sinh:</div>
+  <div class="lr-section-body">{{commitment_html}}</div>
+</div>
+
+{{teacher_note_block_html}}
+"""
+
+DEFAULT_LEAVE_REQUEST_FOOTER = """
+<table class="lr-signature-table">
+  <tr>
+    <td>
+      <div class="lr-sig-title">XÁC NHẬN CỦA PHỤ HUYNH</div>
+      <div class="lr-sig-note">(Ký và ghi rõ họ tên)</div>
+      <div class="lr-sig-space"></div>
+      <div class="lr-sig-name">{{guardian_name}}</div>
+    </td>
+    <td>
+      <div class="lr-sig-title">GIÁO VIÊN CHỦ NHIỆM</div>
+      <div class="lr-sig-note">({{status_label}})</div>
+      <div class="lr-sig-space"></div>
+      <div class="lr-sig-name">{{reviewer_name}}</div>
+    </td>
+    <td>
+      <div class="lr-sig-title">HỌC SINH LÀM ĐƠN</div>
+      <div class="lr-sig-note">(Ký và ghi rõ họ tên)</div>
+      <div class="lr-sig-space"></div>
+      <div class="lr-sig-name">{{student_name}}</div>
+    </td>
+  </tr>
+</table>
+
+<div class="lr-audit-footer">
+  Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • Mã đơn: {{code}} • Biểu mẫu: {{template_code}} • Thời gian xuất: {{exported_at}}
+</div>
+"""
+
+DEFAULT_LEAVE_REQUEST_STYLES = """
+.print-container {
+  width: 100%;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 4px;
+}
+.lr-header-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+}
+.lr-header-left,
+.lr-header-right {
+  vertical-align: top;
+  text-align: center;
+}
+.lr-header-left {
+  width: 44%;
+}
+.lr-header-right {
+  width: 56%;
+}
+.lr-school-name,
+.lr-motto-country {
+  font-size: 11.5pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.lr-motto-sub {
+  font-size: 11.5pt;
+  font-weight: bold;
+  margin-top: 2px;
+}
+.lr-class-meta {
+  font-size: 11pt;
+  margin-top: 3px;
+}
+.lr-code-meta {
+  font-size: 10pt;
+  color: #334155;
+}
+.lr-admin-date {
+  font-size: 11pt;
+  font-style: italic;
+  text-align: right;
+  margin-top: 8px;
+}
+.lr-title-block {
+  text-align: center;
+  margin: 12px 0 16px 0;
+}
+.lr-doc-title {
+  font-size: 16pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.lr-doc-subtitle {
+  font-size: 11pt;
+  font-style: italic;
+  color: #374151;
+  margin-top: 4px;
+}
+.lr-salutation-block,
+.lr-student-info-block,
+.lr-intro-line {
+  font-size: 11.5pt;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.lr-salutation-indent {
+  padding-left: 56px;
+}
+.lr-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 14px 0;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+.lr-info-table td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  font-size: 11.5pt;
+}
+.lr-info-label {
+  width: 28%;
+  font-weight: bold;
+}
+.lr-section-block {
+  margin-bottom: 10px;
+  font-size: 11.5pt;
+  line-height: 1.55;
+}
+.lr-section-title {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+.lr-section-body {
+  text-align: justify;
+}
+.lr-signature-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 22px;
+  page-break-inside: avoid;
+}
+.lr-signature-table td {
+  width: 33.33%;
+  text-align: center;
+  vertical-align: top;
+}
+.lr-sig-title {
+  font-size: 11pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.lr-sig-note {
+  font-size: 10.5pt;
+  font-style: italic;
+  color: #475569;
+}
+.lr-sig-space {
+  height: 58px;
+}
+.lr-sig-name {
+  font-size: 11.5pt;
+  font-weight: bold;
+}
+.lr-audit-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 9pt;
+  color: #64748b;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 6px;
+}
+"""
+
+DEFAULT_LEAVE_REQUEST_PLACEHOLDERS = [
+    {"key": "document_title", "label": "Tiêu đề văn bản", "example": "ĐƠN XIN PHÉP NGHỈ HỌC"},
+    {
+        "key": "filename_pattern",
+        "label": "Mẫu tên tệp xuất ra",
+        "example": "Don_Xin_Nghi_Phep_{{code}}",
+    },
+    {
+        "key": "school_name",
+        "label": "Tên trường (In hoa)",
+        "example": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
+    },
+    {
+        "key": "school_name_title",
+        "label": "Tên trường",
+        "example": "Trường Trung học phổ thông SchoolPro",
+    },
+    {"key": "code", "label": "Mã đơn xin nghỉ phép", "example": "261012000189"},
+    {"key": "class_name", "label": "Lớp học", "example": "10A1"},
+    {
+        "key": "created_date_admin",
+        "label": "Ngày tháng làm đơn",
+        "example": "Ngày 12 tháng 10 năm 2026",
+    },
+    {
+        "key": "leave_type_label",
+        "label": "Phân loại nghỉ phép",
+        "example": "Nghỉ ốm / Khám chữa bệnh",
+    },
+    {"key": "status_label", "label": "Trạng thái phê duyệt", "example": "Đã phê duyệt"},
+    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Nguyễn Thị Mai"},
+    {"key": "reviewer_name", "label": "Người phê duyệt đơn", "example": "Nguyễn Thị Mai"},
+    {"key": "student_name", "label": "Họ và tên học sinh", "example": "Đỗ Minh Quân"},
+    {"key": "student_code", "label": "Mã số học sinh", "example": "HS20260001"},
+    {"key": "guardian_name", "label": "Họ và tên phụ huynh", "example": "Đỗ Văn Hùng"},
+    {"key": "guardian_relationship", "label": "Mối quan hệ phụ huynh", "example": "Bố"},
+    {"key": "guardian_phone", "label": "Số điện thoại phụ huynh", "example": "0912345678"},
+    {"key": "date_range_text", "label": "Khoảng thời gian nghỉ", "example": "Ngày 15/10/2026"},
+    {"key": "total_days", "label": "Tổng số ngày nghỉ", "example": "1"},
+    {"key": "session_shift_label", "label": "Ca nghỉ", "example": "Nghỉ cả ngày"},
+    {
+        "key": "affected_subjects",
+        "label": "Danh sách môn học xin nghỉ",
+        "example": "Toán, Ngữ văn, Tiếng Anh",
+    },
+    {
+        "key": "affected_lessons_table_html",
+        "label": "Bảng chi tiết các tiết học bị ảnh hưởng (HTML)",
+        "example": "",
+    },
+    {
+        "key": "reason",
+        "label": "Lý do xin nghỉ học",
+        "example": "Em bị sốt virus cần đi khám tại bệnh viện.",
+    },
+    {
+        "key": "commitment",
+        "label": "Lời hứa và cam kết",
+        "example": "Em xin hứa chép bài và làm bài tập đầy đủ.",
+    },
+    {
+        "key": "teacher_note",
+        "label": "Ý kiến giáo viên chủ nhiệm",
+        "example": "Đồng ý cho em nghỉ học có phép.",
+    },
+    {"key": "exported_at", "label": "Thời điểm xuất tệp", "example": "11:30 12/10/2026"},
+]
+
+DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
+    "title": "Đơn xin phép nghỉ học",
+    "document_title": "ĐƠN XIN PHÉP NGHỈ HỌC",
+    "filename_pattern": "Don_Xin_Nghi_Phep_{{code}}",
+    "school_name": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
+    "school_name_title": "Trường Trung học phổ thông SchoolPro",
+    "code": "261012000189",
+    "class_name": "10A1",
+    "created_date_admin": "Ngày 12 tháng 10 năm 2026",
+    "leave_type_label": "Nghỉ ốm / Khám chữa bệnh",
+    "status_label": "Đã phê duyệt",
+    "homeroom_teacher_name": "Nguyễn Thị Mai",
+    "reviewer_name": "Nguyễn Thị Mai",
+    "student_name": "Đỗ Minh Quân",
+    "student_code": "HS20260001",
+    "guardian_name": "Đỗ Văn Hùng",
+    "guardian_relationship": "Phụ huynh",
+    "guardian_phone": "0912345678",
+    "guardian_phone_suffix": " — SĐT: <strong>0912345678</strong>",
+    "date_range_text": "Ngày 15/10/2026",
+    "total_days": 1,
+    "session_shift_label": "Nghỉ cả ngày",
+    "affected_subjects": "Toán, Vật lý, Tiếng Anh",
+    "affected_lessons_table_html": "",
+    "reason": "Em bị sốt cao cần đi khám và theo dõi sức khỏe theo chỉ định của bác sĩ.",
+    "reason_html": "Em bị sốt cao cần đi khám và theo dõi sức khỏe theo chỉ định của bác sĩ.",
+    "commitment": "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.",
+    "commitment_html": "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.",
+    "teacher_note": "Đồng ý cho học sinh nghỉ học có phép.",
+    "teacher_note_block_html": "",
+    "template_code": DEFAULT_LEAVE_REQUEST_CODE,
+    "exported_at": "11:30 12/10/2026",
+}

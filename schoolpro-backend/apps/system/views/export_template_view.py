@@ -193,9 +193,13 @@ class ExportTemplateViewSet(viewsets.ModelViewSet):
 
         template = self.service.repository.get_active_by_code(code=code, school_id=school_id)
         if not template:
-            # If standard announcement, auto-seed default
-            if code.strip().upper() == "ANNOUNCEMENT_OFFICIAL_A4":
+            clean_code = code.strip().upper()
+            if clean_code == "ANNOUNCEMENT_OFFICIAL_A4":
                 template = self.service.get_or_create_default_announcement_template(
+                    school_id=school_id
+                )
+            elif clean_code == "LEAVE_REQUEST_OFFICIAL_A4":
+                template = self.service.get_or_create_default_leave_request_template(
                     school_id=school_id
                 )
             else:
@@ -223,6 +227,22 @@ class ExportTemplateViewSet(viewsets.ModelViewSet):
         return APIResponse.success(
             data=ExportTemplateDetailSerializer(template).data,
             message="Lấy biểu mẫu thông báo mặc định thành công",
+        )
+
+    @extend_schema(
+        summary="Get Default Leave Request Template",
+        description="Retrieves or seeds the default Vietnamese administrative A4 leave request template.",
+        responses={200: ExportTemplateDetailSerializer},
+    )
+    @action(detail=False, methods=["get"], url_path="default-leave-request")
+    def default_leave_request(self, request):
+        user = getattr(request, "user", None)
+        school_id = getattr(user, "school_id", None) if user else None
+
+        template = self.service.get_or_create_default_leave_request_template(school_id=school_id)
+        return APIResponse.success(
+            data=ExportTemplateDetailSerializer(template).data,
+            message="Lấy biểu mẫu đơn xin nghỉ phép mặc định thành công",
         )
 
     @extend_schema(

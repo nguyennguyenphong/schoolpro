@@ -93,3 +93,80 @@ def test_auto_approve_overdue_leave_requests_task_invokes_service():
         assert result["status"] == "success"
         assert result["auto_approved_count"] == 2
         mock_check.assert_called_once_with(qs=None)
+
+
+def test_dynamic_export_template_renders_custom_filename_html_css_word_and_pdf():
+    """
+    Verifies that LeaveRequestPdfService uses ExportTemplate ("sys"."export_templates")
+    for custom filename patterns, CSS, HTML, Word, and PDF exports.
+    """
+    from apps.academic.services.leave_request_pdf_service import LeaveRequestPdfService
+    from apps.system.models.export_template import ExportTemplate, FileFormat, TemplateType
+
+    custom_tpl = ExportTemplate(
+        code="CUSTOM_LEAVE_TPL_2026",
+        name="Biểu mẫu nghỉ phép tùy chỉnh",
+        template_type=TemplateType.LEAVE_REQUEST,
+        file_format=FileFormat.HTML_PRINT,
+        header_content="<header class='custom-hdr'>{{school_name}} - {{code}}</header>",
+        content="<main class='custom-body'>Học sinh: {{student_name}} ({{student_code}}) - Lý do: {{reason}}</main>",
+        footer_content="<footer>GVCN: {{homeroom_teacher_name}}</footer>",
+        style_content=".custom-hdr { color: #1d4ed8; font-weight: bold; }",
+        watermark_text="BẢN SAO {{code}}",
+        page_size="A4",
+        page_orientation="PORTRAIT",
+        margins={"top": "15mm", "right": "15mm", "bottom": "15mm", "left": "20mm"},
+        sample_data={
+            "filename_pattern": "DonNghi_{{student_code}}_{{code}}",
+            "school_name": "TRƯỜNG THPT CHUYÊN SCHOOLPRO",
+            "document_title": "ĐƠN XIN NGHỈ HỌC TÙY CHỈNH",
+        },
+    )
+
+    sample_item = {
+        "id": "leave-001",
+        "code": "261012999888",
+        "studentName": "Đỗ Minh Quân",
+        "studentCode": "HS202601",
+        "className": "10A1",
+        "leaveType": "sick",
+        "status": "approved",
+        "sessionShift": "all_day",
+        "startDate": "2026-10-15",
+        "endDate": "2026-10-15",
+        "totalDays": 1,
+        "reason": "Nghỉ khám sức khỏe định kỳ",
+        "homeroomTeacherName": "Nguyễn Thị Mai",
+        "guardianName": "Đỗ Văn Hùng",
+        "guardianRelationship": "Bố",
+        "guardianPhone": "0912345678",
+        "affectedSubjects": ["Toán", "Vật lý"],
+    }
+
+    with patch.object(LeaveRequestPdfService, "resolve_export_template", return_value=custom_tpl):
+        # 1. HTML export
+        html_bytes, html_filename, html_mime = LeaveRequestPdfService.export_from_item(
+            sample_item, output_format="HTML"
+        )
+        html_text = html_bytes.decode("utf-8")
+        assert html_filename == "DonNghi_HS202601_261012999888.html"
+        assert "text/html" in html_mime
+        assert "TRƯỜNG THPT CHUYÊN SCHOOLPRO - 261012999888" in html_text
+        assert ".custom-hdr { color: #1d4ed8; font-weight: bold; }" in html_text
+        assert "BẢN SAO 261012999888" in html_text
+
+        # 2. Word (.doc) export
+        word_bytes, word_filename, word_mime = LeaveRequestPdfService.export_from_item(
+            sample_item, output_format="WORD"
+        )
+        assert word_filename == "DonNghi_HS202601_261012999888.doc"
+        assert word_mime == "application/msword"
+        assert b"urn:schemas-microsoft-com:office:word" in word_bytes
+
+        # 3. PDF export honoring custom filename_pattern & template metadata
+        pdf_bytes, pdf_filename, pdf_mime = LeaveRequestPdfService.export_from_item(
+            sample_item, output_format="PDF"
+        )
+        assert pdf_filename == "DonNghi_HS202601_261012999888.pdf"
+        assert pdf_mime == "application/pdf"
+        assert pdf_bytes.startswith(b"%PDF")

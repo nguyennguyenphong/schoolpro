@@ -373,20 +373,93 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
             )
 
     @extend_schema(
-        summary="Download leave request as PDF",
-        description="Fetches latest leave request data from database and generates an official A4 PDF document.",
+        summary="Download leave request document via dynamic ExportTemplate",
+        description=(
+            "Fetches latest leave request data from database and exports it using "
+            "the active ExportTemplate in sys.export_templates (supports PDF, HTML, WORD)."
+        ),
+        parameters=[
+            OpenApiParameter(
+                "format",
+                str,
+                description="Optional output format override: pdf, html, word (defaults to template's file_format)",
+            ),
+            OpenApiParameter(
+                "templateCode",
+                str,
+                description="Optional template code override (defaults to LEAVE_REQUEST_OFFICIAL_A4)",
+            ),
+            OpenApiParameter(
+                "templateId",
+                str,
+                description="Optional specific ExportTemplate UUID",
+            ),
+        ],
     )
     @action(detail=True, methods=["get"], url_path="download")
     def download(self, request, pk=None):
+        output_format = request.query_params.get("format") or request.query_params.get(
+            "file_format"
+        )
+        template_code = request.query_params.get("templateCode") or request.query_params.get(
+            "template_code"
+        )
+        template_id = request.query_params.get("templateId") or request.query_params.get(
+            "template_id"
+        )
         try:
-            pdf_bytes, filename = LeaveRequestService.generate_leave_request_pdf(
+            file_bytes, filename, content_type = LeaveRequestService.export_leave_request_file(
                 user=request.user,
                 leave_request_id=str(pk),
+                template_code=template_code,
+                template_id=template_id,
+                output_format=output_format,
             )
-            response = HttpResponse(pdf_bytes, content_type="application/pdf")
+            response = HttpResponse(file_bytes, content_type=content_type)
             response["Content-Disposition"] = f'attachment; filename="{filename}"'
             response["Access-Control-Expose-Headers"] = "Content-Disposition"
             return response
+        except ValueError as exc:
+            return APIResponse.error(
+                message=str(exc),
+                status_code=status.HTTP_404_NOT_FOUND,
+            )
+
+    @extend_schema(
+        summary="Render leave request HTML/CSS via dynamic ExportTemplate",
+        description="Renders the leave request into full HTML & CSS using sys.export_templates for print or preview.",
+        parameters=[
+            OpenApiParameter(
+                "templateCode",
+                str,
+                description="Optional template code override (defaults to LEAVE_REQUEST_OFFICIAL_A4)",
+            ),
+            OpenApiParameter(
+                "templateId",
+                str,
+                description="Optional specific ExportTemplate UUID",
+            ),
+        ],
+    )
+    @action(detail=True, methods=["get"], url_path="export-render")
+    def export_render(self, request, pk=None):
+        template_code = request.query_params.get("templateCode") or request.query_params.get(
+            "template_code"
+        )
+        template_id = request.query_params.get("templateId") or request.query_params.get(
+            "template_id"
+        )
+        try:
+            rendered = LeaveRequestService.render_leave_request_html(
+                user=request.user,
+                leave_request_id=str(pk),
+                template_code=template_code,
+                template_id=template_id,
+            )
+            return APIResponse.success(
+                data=rendered,
+                message="Render biểu mẫu đơn xin nghỉ phép thành công.",
+            )
         except ValueError as exc:
             return APIResponse.error(
                 message=str(exc),

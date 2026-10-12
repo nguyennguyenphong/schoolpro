@@ -1509,6 +1509,61 @@ class LeaveRequestService:
         return LeaveRequestPdfService.register_vietnamese_fonts()
 
     @classmethod
-    def generate_leave_request_pdf(cls, user: Any, leave_request_id: str) -> tuple[bytes, str]:
+    def generate_leave_request_pdf(
+        cls,
+        user: Any,
+        leave_request_id: str,
+        template_code: str | None = None,
+        template_id: str | None = None,
+    ) -> tuple[bytes, str]:
         item = cls.get_leave_request_detail(user=user, leave_request_id=leave_request_id)
-        return LeaveRequestPdfService.render_pdf_from_item(item)
+        school_id = getattr(user, "school_id", None) if user else None
+        template = LeaveRequestPdfService.resolve_export_template(
+            school_id=school_id,
+            template_code=template_code,
+            template_id=template_id,
+        )
+        return LeaveRequestPdfService.render_pdf_from_item(item, template=template)
+
+    @classmethod
+    def export_leave_request_file(
+        cls,
+        user: Any,
+        leave_request_id: str,
+        template_code: str | None = None,
+        template_id: str | None = None,
+        output_format: str | None = None,
+    ) -> tuple[bytes, str, str]:
+        """
+        Exports a leave request using the dynamic ExportTemplate ("sys"."export_templates").
+        Returns (file_bytes, filename, content_type).
+        """
+        item = cls.get_leave_request_detail(user=user, leave_request_id=leave_request_id)
+        school_id = getattr(user, "school_id", None) if user else None
+        return LeaveRequestPdfService.export_from_item(
+            item=item,
+            school_id=school_id,
+            template_code=template_code,
+            template_id=template_id,
+            output_format=output_format,
+        )
+
+    @classmethod
+    def render_leave_request_html(
+        cls,
+        user: Any,
+        leave_request_id: str,
+        template_code: str | None = None,
+        template_id: str | None = None,
+    ) -> dict[str, Any]:
+        """
+        Renders the leave request into HTML/CSS using the dynamic ExportTemplate ("sys"."export_templates").
+        """
+        item = cls.get_leave_request_detail(user=user, leave_request_id=leave_request_id)
+        school_id = getattr(user, "school_id", None) if user else None
+        return LeaveRequestPdfService.render_html_from_item(
+            item=item,
+            school_id=school_id,
+            template_code=template_code,
+            template_id=template_id,
+        )

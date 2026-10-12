@@ -30,6 +30,10 @@ class ExportTemplateListSerializer(serializers.ModelSerializer):
             "template_type_display",
             "file_format",
             "file_format_display",
+            "version",
+            "watermark_text",
+            "include_digital_stamp",
+            "include_qr_verification",
             "page_size",
             "page_orientation",
             "is_default",
@@ -73,6 +77,10 @@ class ExportTemplateDetailSerializer(serializers.ModelSerializer):
             "template_type_display",
             "file_format",
             "file_format_display",
+            "version",
+            "watermark_text",
+            "include_digital_stamp",
+            "include_qr_verification",
             "content",
             "header_content",
             "footer_content",
@@ -113,6 +121,10 @@ class ExportTemplateCreateUpdateSerializer(serializers.ModelSerializer):
             "description",
             "template_type",
             "file_format",
+            "version",
+            "watermark_text",
+            "include_digital_stamp",
+            "include_qr_verification",
             "content",
             "header_content",
             "footer_content",
@@ -172,3 +184,5 @@ class ExportTemplateRenderResponseSerializer(serializers.Serializer):
     template_id = serializers.UUIDField(help_text="ID của biểu mẫu được sử dụng")
     template_code = serializers.CharField(help_text="Mã biểu mẫu")
     template_name = serializers.CharField(help_text="Tên biểu mẫu")
+    file_format = serializers.CharField(required=False, help_text="Định dạng tệp tin xuất ra")
+    filename = serializers.CharField(required=False, help_text="Tên tệp tin gợi ý sau khi render")

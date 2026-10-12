@@ -1,6 +1,12 @@
 import { httpClient } from "@/shared/api/httpClient";
 import type { ExportTemplate, RenderTemplateResponse } from "@/shared/types/exportTemplate";
 import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
+import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
+import {
+  DEFAULT_LEAVE_REQUEST_TEMPLATE_CODE,
+  buildLeaveRequestFallbackHtml,
+  buildLeaveRequestTemplateContext,
+} from "@/modules/students/features/leave-requests/utils/printLeaveRequest";
 
 /**
  * Format date string into Vietnamese administrative date string:
@@ -374,6 +380,25 @@ class ExportTemplateService {
   }
 
   /**
+   * Retrieves or auto-seeds the official default leave request template from sys.export_templates.
+   */
+  async getDefaultLeaveRequestTemplate(): Promise<ExportTemplate | null> {
+    try {
+      const response = await httpClient.get<{
+        success: boolean;
+        data: ExportTemplate;
+      }>("/system/export-templates/default-leave-request/");
+
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
    * Renders template on backend via POST /system/export-templates/:id/render/
    */
   async renderTemplateOnServer(
@@ -398,24 +423,98 @@ class ExportTemplateService {
   }
 
   /**
-   * Client-side template renderer substituting {{ placeholder }} tags.
+   * Resolves a placeholder path (including nested dot notation like school.name) from context.
+   */
+  private resolveContextValue(merged: Record<string, unknown>, keyPath: string): string {
+    const parts = keyPath.trim().split(".");
+    let current: unknown = merged;
+    for (const part of parts) {
+      if (current && typeof current === "object" && part in (current as Record<string, unknown>)) {
+        current = (current as Record<string, unknown>)[part];
+      } else {
+        return "";
+      }
+    }
+    return current !== undefined && current !== null ? String(current) : "";
+  }
+
+  /**
+   * Resolves dynamic filename based on template configuration (sample_data.filename_pattern, file_format, etc.).
+   */
+  resolveExportFilename(
+    template: ExportTemplate | null | undefined,
+    context: Record<string, unknown>,
+    defaultPrefix = "Tai_Lieu",
+    extensionOverride?: string,
+  ): string {
+    const merged: Record<string, unknown> = {
+      ...(template?.sample_data || {}),
+      ...context,
+    };
+
+    const extMap: Record<string, string> = {
+      PDF: "pdf",
+      HTML_PRINT: "html",
+      WORD: "doc",
+      EXCEL: "xlsx",
+    };
+    const ext = (
+      extensionOverride ||
+      (template?.file_format ? extMap[template.file_format] : undefined) ||
+      "pdf"
+    )
+      .replace(/^\./, "")
+      .toLowerCase();
+
+    const rawPattern = String(
+      merged.filename_pattern ||
+        template?.sample_data?.filename_pattern ||
+        `${defaultPrefix}_{{code}}`,
+    );
+
+    const interpolated = rawPattern.replace(/\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g, (_, key) =>
+      this.resolveContextValue(merged, key),
+    );
+    const safeBase =
+      interpolated.replace(/[\\/*?:"<>|#\s]+/g, "_").replace(/^_+|_+$/g, "") || defaultPrefix;
+
+    if (safeBase.toLowerCase().endsWith(`.${ext}`)) {
+      return safeBase;
+    }
+    return `${safeBase}.${ext}`;
+  }
+
+  /**
+   * Client-side template renderer substituting {{ placeholder }} tags,
+   * custom CSS (style_content), margins, page_size, page_orientation, and watermark_text.
    */
   renderClientSide(template: ExportTemplate, context: Record<string, unknown>): string {
-    const merged = { ...(template.sample_data || {}), ...context };
+    const merged: Record<string, unknown> = {
+      ...(template.sample_data || {}),
+      ...context,
+    };
 
     const replaceTags = (text: string) => {
-      return text.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
-        const val = merged[key];
-        return val !== undefined && val !== null ? String(val) : "";
-      });
+      return text.replace(/\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g, (_, key) =>
+        this.resolveContextValue(merged, key),
+      );
     };
 
     const header = replaceTags(template.header_content || "");
     const body = replaceTags(template.content || "");
     const footer = replaceTags(template.footer_content || "");
-    const style = template.style_content || "";
+    const style = replaceTags(template.style_content || "");
     const pageSize = template.page_size || "A4";
     const pageOrientation = (template.page_orientation || "PORTRAIT").toLowerCase();
+    const margins = template.margins || {};
+    const marginTop = margins.top || "20mm";
+    const marginRight = margins.right || "15mm";
+    const marginBottom = margins.bottom || "20mm";
+    const marginLeft = margins.left || "20mm";
+
+    const watermarkHtml = template.watermark_text
+      ? `<div class="export-watermark" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-35deg); font-size: 44pt; color: rgba(100, 116, 139, 0.09); font-weight: bold; white-space: nowrap; pointer-events: none; z-index: 0;">${escapeHtml(replaceTags(template.watermark_text))}</div>`
+      : "";
 
     return `<!DOCTYPE html>
 <html lang="vi">
@@ -425,7 +524,7 @@ class ExportTemplateService {
   <style>
     @page {
       size: ${pageSize} ${pageOrientation};
-      margin: 20mm 15mm 20mm 20mm;
+      margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft};
     }
     *, *::before, *::after {
       box-sizing: border-box;
@@ -444,11 +543,14 @@ class ExportTemplateService {
       max-width: 210mm;
       margin: 0 auto;
       padding: 10px;
+      position: relative;
+      z-index: 1;
     }
     ${style}
   </style>
 </head>
 <body>
+  ${watermarkHtml}
   <div class="print-container">
     ${header}
     ${body}
@@ -557,6 +659,56 @@ class ExportTemplateService {
 
     // Step 3: Local fallback
     return buildLocalFallbackHtml(item);
+  }
+
+  /**
+   * Builds standardized placeholder variables from a LeaveRequestItem.
+   */
+  buildLeaveRequestContext(item: LeaveRequestItem): Record<string, unknown> {
+    return buildLeaveRequestTemplateContext(item);
+  }
+
+  /**
+   * Generates print/export-ready HTML for a LeaveRequestItem using the dynamic
+   * ExportTemplate in sys.export_templates:
+   * 1. Fetches active template by code (or default leave request template).
+   * 2. Renders via backend /system/export-templates/:id/render/ or client-side interpolation.
+   * 3. Falls back to local administrative template if offline.
+   */
+  async renderLeaveRequest(
+    item: LeaveRequestItem,
+    options?: { templateCode?: string; templateId?: string },
+  ): Promise<string> {
+    const context = this.buildLeaveRequestContext(item);
+    const codeToResolve = options?.templateCode || DEFAULT_LEAVE_REQUEST_TEMPLATE_CODE;
+
+    try {
+      const template =
+        (await this.getActiveTemplateByCode(codeToResolve)) ||
+        (await this.getDefaultLeaveRequestTemplate());
+
+      if (template) {
+        const mergedContext = {
+          ...context,
+          template_code: template.code || codeToResolve,
+        };
+
+        if (template.id) {
+          const serverHtml = await this.renderTemplateOnServer(template.id, mergedContext);
+          if (serverHtml) {
+            return serverHtml;
+          }
+        }
+
+        if (template.content) {
+          return this.renderClientSide(template, mergedContext);
+        }
+      }
+    } catch {
+      // Ignored: fallback below
+    }
+
+    return buildLeaveRequestFallbackHtml(item);
   }
 }
 
