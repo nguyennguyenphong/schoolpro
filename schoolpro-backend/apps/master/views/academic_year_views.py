@@ -184,9 +184,7 @@ class SubjectViewSet(viewsets.GenericViewSet):
         search = request.query_params.get("search")
         if search and search.strip():
             q = search.strip()
-            qs = qs.filter(
-                Q(name__icontains=q) | Q(code__icontains=q) | Q(short_name__icontains=q)
-            )
+            qs = qs.filter(Q(name__icontains=q) | Q(code__icontains=q) | Q(short_name__icontains=q))
 
         qs = qs.order_by("order_no", "code")
         serializer = SubjectListSerializer(qs, many=True)

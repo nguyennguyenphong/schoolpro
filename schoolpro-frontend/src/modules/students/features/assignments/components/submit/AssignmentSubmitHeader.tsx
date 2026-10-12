@@ -76,21 +76,11 @@ export const AssignmentSubmitHeader: React.FC<AssignmentSubmitHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {assignment.title}
             </h1>
-            {assignment.code && (
-              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-[#f0f0f0]">
-                {assignment.code}
-              </span>
-            )}
             <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl">
               {assignment.subjectName}
             </span>
             <span className="text-xs text-slate-600 bg-slate-100 border border-[#f0f0f0] px-2 py-0.5 rounded-xl">
               {typeLabel}
-            </span>
-            <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-              {t("card:assignments.card.maxScoreBadge", {
-                max: assignment.pointsPossible,
-              })}
             </span>
             {assignment.status === "graded" && (
               <Tag color="success" className="m-0 font-semibold text-xs">

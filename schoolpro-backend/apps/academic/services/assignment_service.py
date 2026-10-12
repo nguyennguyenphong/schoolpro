@@ -613,13 +613,13 @@ class AssignmentService:
                     if isinstance(scored, dict)
                     else (scored if isinstance(scored, (int, float)) else item.get("earnedPoints"))
                 )
-                comment = (
-                    scored.get("comment") if isinstance(scored, dict) else item.get("comment")
-                )
+                comment = scored.get("comment") if isinstance(scored, dict) else item.get("comment")
                 rubric_list.append(
                     {
                         "id": crit_id,
-                        "criterion": item.get("criterion") or item.get("title") or f"Tiêu chí {idx + 1}",
+                        "criterion": item.get("criterion")
+                        or item.get("title")
+                        or f"Tiêu chí {idx + 1}",
                         "maxPoints": float(item.get("maxPoints") or item.get("points") or 0),
                         "description": item.get("description") or "",
                         "earnedPoints": float(earned) if earned is not None else None,
@@ -1253,9 +1253,7 @@ class AssignmentService:
         graded_count = sum(1 for i in all_items if i["status"] == "graded")
         overdue_count = sum(1 for i in all_items if i["status"] == "overdue")
 
-        graded_items = [
-            i for i in all_items if i["status"] == "graded" and i["score"] is not None
-        ]
+        graded_items = [i for i in all_items if i["status"] == "graded" and i["score"] is not None]
         if graded_items:
             avg_score = round(sum(i["score"] for i in graded_items) / len(graded_items), 1)
         else:
@@ -1326,7 +1324,9 @@ class AssignmentService:
             )
 
             if submission.status == "GRADED" or submission.score is not None:
-                raise ValueError("Bài tập đã được giáo viên chấm điểm, không thể chỉnh sửa bài nộp.")
+                raise ValueError(
+                    "Bài tập đã được giáo viên chấm điểm, không thể chỉnh sửa bài nộp."
+                )
 
             has_previous_submission = bool(not created and submission.submitted_at is not None)
             reopen_approved = submission.reopen_status == "APPROVED"

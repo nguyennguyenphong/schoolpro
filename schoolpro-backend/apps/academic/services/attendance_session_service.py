@@ -743,12 +743,16 @@ class AttendanceSessionService:
                 "isWithinRadius": is_within_radius,
                 "leaveRequestId": (
                     str(att.metadata.get("leave_request_id"))
-                    if att and isinstance(att.metadata, dict) and att.metadata.get("leave_request_id")
+                    if att
+                    and isinstance(att.metadata, dict)
+                    and att.metadata.get("leave_request_id")
                     else approved_leave_id
                 ),
                 "leaveRequestCode": (
                     str(att.metadata.get("leave_request_code"))
-                    if att and isinstance(att.metadata, dict) and att.metadata.get("leave_request_code")
+                    if att
+                    and isinstance(att.metadata, dict)
+                    and att.metadata.get("leave_request_code")
                     else (approved_leave_code or None)
                 ),
                 "note": note_text,
