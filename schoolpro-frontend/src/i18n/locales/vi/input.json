@@ -160,6 +160,16 @@
     "allowedRadiusLabel": "Bán kính thiết bị quét tối đa (mét) — Học sinh ở xa sẽ bị chặn",
     "durationSecondsLabel": "Thời gian giới hạn của mã (Hết hạn sẽ mất giá trị sử dụng)",
     "teacherLatitudeLabel": "Vĩ độ thiết bị Giáo viên (Latitude)",
-    "teacherLongitudeLabel": "Kinh độ thiết bị Giáo viên (Longitude)"
+    "teacherLongitudeLabel": "Kinh độ thiết bị Giáo viên (Longitude)",
+    "dateLabel": "Ngày học:",
+    "shiftLabel": "Buổi học:",
+    "allShifts": "Tất cả buổi học",
+    "shiftMorning": "Buổi sáng",
+    "shiftAfternoon": "Buổi chiều",
+    "classTypeLabel": "Hình thức:",
+    "allClassTypes": "Tất cả hình thức",
+    "sortPeriodAsc": "Tiết học sớm nhất",
+    "sortPeriodDesc": "Tiết học muộn nhất",
+    "sortStatusPriority": "Ưu tiên đang mở cổng"
   }
 }

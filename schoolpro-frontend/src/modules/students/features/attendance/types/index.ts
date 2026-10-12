@@ -5,9 +5,35 @@ export type SubjectAttendanceStatus =
   | "absent"
   | "excused";
 
+export type AttendanceStatusFilter =
+  | "all"
+  | "open"
+  | "present"
+  | "upcoming"
+  | "absent";
+
+export type AttendanceShiftFilter = "all" | "morning" | "afternoon";
+
+export type AttendanceClassTypeFilter = "all" | "theory" | "practice";
+
+export type AttendanceSortOption =
+  | "period_asc"
+  | "period_desc"
+  | "status_priority";
+
 export type AttendanceMethod = "qr_scan" | "qr_upload" | "code";
 
 export type AttendanceViewMode = "grid" | "list";
+
+export interface AttendanceFilter {
+  selectedDate: string;
+  searchQuery: string;
+  status: AttendanceStatusFilter;
+  shift: AttendanceShiftFilter;
+  classType: AttendanceClassTypeFilter;
+  sortBy: AttendanceSortOption;
+  viewMode: AttendanceViewMode;
+}
 
 export interface AttendanceRecord {
   id: string;
@@ -26,6 +52,7 @@ export interface AttendanceRecord {
   teacherAvatar?: string;
   room: string; // e.g. "Phòng A203"
   building?: string;
+  campus?: string;
   timeSlot: string; // e.g. "07:30 - 09:00"
   startTime?: string;
   endTime?: string;

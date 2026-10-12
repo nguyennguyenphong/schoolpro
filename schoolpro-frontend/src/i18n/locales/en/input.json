@@ -160,6 +160,16 @@
     "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
     "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
     "teacherLatitudeLabel": "Teacher Device Latitude",
-    "teacherLongitudeLabel": "Teacher Device Longitude"
+    "teacherLongitudeLabel": "Teacher Device Longitude",
+    "dateLabel": "Date:",
+    "shiftLabel": "Session:",
+    "allShifts": "All sessions",
+    "shiftMorning": "Morning",
+    "shiftAfternoon": "Afternoon",
+    "classTypeLabel": "Format:",
+    "allClassTypes": "All formats",
+    "sortPeriodAsc": "Earliest period",
+    "sortPeriodDesc": "Latest period",
+    "sortStatusPriority": "Open sessions first"
   }
 }

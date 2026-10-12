@@ -293,7 +293,9 @@ export function useAttendanceRealtime(
   useEffect(() => {
     if (!enabled || typeof window === "undefined") return;
 
-    void triggerSyncCheck();
+    const initialSyncTimer = setTimeout(() => {
+      void triggerSyncCheck();
+    }, 0);
 
     const intervalId = setInterval(() => {
       if (document.visibilityState === "visible") {
@@ -311,6 +313,7 @@ export function useAttendanceRealtime(
     document.addEventListener("visibilitychange", handleVisibilityOrFocus);
 
     return () => {
+      clearTimeout(initialSyncTimer);
       clearInterval(intervalId);
       window.removeEventListener("focus", handleVisibilityOrFocus);
       document.removeEventListener("visibilitychange", handleVisibilityOrFocus);

@@ -160,6 +160,16 @@
     "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
     "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
     "teacherLatitudeLabel": "Teacher Device Latitude",
-    "teacherLongitudeLabel": "Teacher Device Longitude"
+    "teacherLongitudeLabel": "Teacher Device Longitude",
+    "dateLabel": "上课日期:",
+    "shiftLabel": "上课时段:",
+    "allShifts": "全部时段",
+    "shiftMorning": "上午",
+    "shiftAfternoon": "下午",
+    "classTypeLabel": "授课形式:",
+    "allClassTypes": "全部形式",
+    "sortPeriodAsc": "最早节次优先",
+    "sortPeriodDesc": "最晚节次优先",
+    "sortStatusPriority": "正在开启优先"
   }
 }

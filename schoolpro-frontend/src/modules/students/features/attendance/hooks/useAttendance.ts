@@ -6,21 +6,38 @@ import { useSearchParams } from "react-router-dom";
 import { useAttendanceRealtime } from "@/modules/students/features/attendance/hooks/useAttendanceRealtime";
 import { attendanceService } from "@/modules/students/features/attendance/services";
 import type {
+  AttendanceClassTypeFilter,
+  AttendanceFilter,
   AttendanceRecord,
+  AttendanceShiftFilter,
+  AttendanceSortOption,
+  AttendanceStatusFilter,
   AttendanceSummary,
+  AttendanceViewMode,
   CheckInPayload,
   CheckInResult,
-  OpenAttendanceSessionPayload,
 } from "@/modules/students/features/attendance/types";
 import { computeRemainingSeconds } from "@/modules/students/features/attendance/utils";
 
 export const DEFAULT_DEMO_TODAY = "2026-09-29";
+
+const STATUS_PRIORITY_ORDER: Record<string, number> = {
+  open: 0,
+  upcoming: 1,
+  present: 2,
+  excused: 3,
+  absent: 4,
+};
 
 export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
   const { t } = useTranslation(["message"]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [shift, setShift] = useState<AttendanceShiftFilter>("all");
+  const [classType, setClassType] = useState<AttendanceClassTypeFilter>("all");
+  const [sortBy, setSortBy] = useState<AttendanceSortOption>("period_asc");
+  const [viewMode, setViewMode] = useState<AttendanceViewMode>("grid");
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [summary, setSummary] = useState<AttendanceSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,28 +50,26 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     selectedDateRef.current = selectedDate;
   }, [selectedDate]);
 
-  // Read status filter from URL query param (?status=all | open | present | absent)
-  const filterStatus = useMemo(() => {
-    const rawStatus = searchParams.get("status");
+  // Read status filter from URL query param (?status=all | open | present | upcoming | absent)
+  const filterStatus = useMemo<AttendanceStatusFilter>(() => {
+    const rawStatus = searchParams.get("status")?.toLowerCase();
     if (
-      rawStatus &&
-      ["all", "open", "present", "absent"].includes(rawStatus.toLowerCase())
+      rawStatus === "all" ||
+      rawStatus === "open" ||
+      rawStatus === "present" ||
+      rawStatus === "upcoming" ||
+      rawStatus === "absent"
     ) {
-      return rawStatus.toLowerCase();
+      return rawStatus;
     }
     return "all";
   }, [searchParams]);
 
   const setFilterStatus = useCallback(
-    (newStatus: string) => {
+    (newStatus: AttendanceStatusFilter) => {
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
-        if (
-          newStatus &&
-          ["all", "open", "present", "absent"].includes(newStatus.toLowerCase())
-        ) {
-          next.set("status", newStatus.toLowerCase());
-        } else if (newStatus) {
+        if (newStatus && newStatus !== "all") {
           next.set("status", newStatus);
         } else {
           next.delete("status");
@@ -138,7 +153,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
   }, [selectedDate, t]);
 
   // 1-second live countdown ticker for any OPEN session so UI counts down smoothly
-  // and immediately expires in real time when remainingSeconds reaches 0!
+  // and immediately expires in real time when remainingSeconds reaches 0
   useEffect(() => {
     const hasOpenWithExpiry = records.some(
       (r) => r.status === "open" && Boolean(r.expiresAt),
@@ -183,7 +198,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     return () => clearInterval(timer);
   }, [records, refreshSilently, t]);
 
-  // Keep activeRecordForModal synchronized with live `records` (e.g. countdown or teacher code regeneration)
+  // Keep activeRecordForModal synchronized with live `records`
   const resolvedActiveRecordForModal = useMemo(() => {
     if (!activeRecordForModal) return null;
     return (
@@ -256,66 +271,12 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     [refreshSilently, t],
   );
 
-  // Teacher opens or updates an attendance session (6-digit PIN + QR + radius + duration)
-  const openOrUpdateTeacherSession = useCallback(
-    async (
-      payload: OpenAttendanceSessionPayload,
-    ): Promise<AttendanceRecord | null> => {
-      try {
-        setSubmitting(true);
-        const updated =
-          await attendanceService.openOrUpdateTeacherSession(payload);
-        message.success(
-          t("message:attendance.teacherOpenedSessionSuccess", {
-            subject: updated.subjectName,
-            pinCode: updated.attendanceCode,
-            radius: updated.allowedRadiusMeters,
-            defaultValue: `Đã phát mã điểm danh 6 chữ số (${updated.attendanceCode}) & mã QR môn ${updated.subjectName} (Bán kính: ${updated.allowedRadiusMeters}m).`,
-          }),
-        );
-        await refreshSilently(payload.date);
-        return updated;
-      } catch (err: unknown) {
-        const msg =
-          err instanceof Error
-            ? err.message
-            : t("message:attendance.openSessionFailed", {
-                defaultValue: "Không thể mở phiên điểm danh.",
-              });
-        message.error(msg);
-        return null;
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    [refreshSilently, t],
-  );
-
-  // Teacher or timer expires session immediately
-  const expireSessionNow = useCallback(
-    async (recordId: string): Promise<void> => {
-      try {
-        setSubmitting(true);
-        await attendanceService.expireSessionNow(recordId, selectedDate);
-        message.warning(
-          t("message:attendance.sessionExpiredSuccess", {
-            defaultValue:
-              "Đã đóng cổng điểm danh. Mã 6 chữ số và mã QR đã hết hiệu lực sử dụng.",
-          }),
-        );
-        await refreshSilently();
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    [refreshSilently, selectedDate, t],
-  );
-
-  // Filter records by status and searchQuery
+  // Filter and sort records
   const filteredRecords = useMemo(() => {
-    return records.filter((r) => {
+    const filtered = records.filter((r) => {
       if (filterStatus === "open" && r.status !== "open") return false;
       if (filterStatus === "present" && r.status !== "present") return false;
+      if (filterStatus === "upcoming" && r.status !== "upcoming") return false;
       if (
         filterStatus === "absent" &&
         r.status !== "absent" &&
@@ -324,29 +285,89 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
         return false;
       }
 
+      if (shift !== "all" && r.shift && r.shift !== shift) {
+        return false;
+      }
+
+      if (classType !== "all" && r.classType && r.classType !== classType) {
+        return false;
+      }
+
       if (searchQuery.trim()) {
         const q = searchQuery.trim().toLowerCase();
         const hay =
-          `${r.subjectName} ${r.subjectCode} ${r.teacherName} ${r.room} ${r.period}`.toLowerCase();
+          `${r.subjectName} ${r.subjectCode} ${r.teacherName} ${r.room} ${r.building || ""} ${r.period} ${r.lessonTopic || ""}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
-  }, [records, filterStatus, searchQuery]);
 
-  const hasActiveFilters =
-    filterStatus !== "all" || Boolean(searchQuery.trim());
+    return [...filtered].sort((a, b) => {
+      if (sortBy === "period_desc") {
+        return (b.periodNumber ?? 0) - (a.periodNumber ?? 0);
+      }
+      if (sortBy === "status_priority") {
+        const prioA = STATUS_PRIORITY_ORDER[a.status] ?? 99;
+        const prioB = STATUS_PRIORITY_ORDER[b.status] ?? 99;
+        if (prioA !== prioB) return prioA - prioB;
+      }
+      return (a.periodNumber ?? 0) - (b.periodNumber ?? 0);
+    });
+  }, [records, filterStatus, shift, classType, searchQuery, sortBy]);
+
+  const filter: AttendanceFilter = useMemo(
+    () => ({
+      selectedDate,
+      searchQuery,
+      status: filterStatus,
+      shift,
+      classType,
+      sortBy,
+      viewMode,
+    }),
+    [
+      selectedDate,
+      searchQuery,
+      filterStatus,
+      shift,
+      classType,
+      sortBy,
+      viewMode,
+    ],
+  );
+
+  const hasActiveFilters = Boolean(
+    filterStatus !== "all" ||
+      searchQuery.trim() ||
+      shift !== "all" ||
+      classType !== "all" ||
+      sortBy !== "period_asc" ||
+      selectedDate !== DEFAULT_DEMO_TODAY,
+  );
 
   const resetFilters = useCallback(() => {
     setFilterStatus("all");
     setSearchQuery("");
+    setShift("all");
+    setClassType("all");
+    setSortBy("period_asc");
+    setSelectedDate(DEFAULT_DEMO_TODAY);
   }, [setFilterStatus]);
 
   return {
+    filter,
     selectedDate,
     setSelectedDate,
     searchQuery,
     setSearchQuery,
+    shift,
+    setShift,
+    classType,
+    setClassType,
+    sortBy,
+    setSortBy,
+    viewMode,
+    setViewMode,
     records,
     filteredRecords,
     summary,
@@ -364,8 +385,6 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     goToPreviousDay,
     goToNextDay,
     performCheckIn,
-    openOrUpdateTeacherSession,
-    expireSessionNow,
     reload: loadData,
   };
 };

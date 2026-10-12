@@ -3,32 +3,35 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Empty } from "@/components/ui/Empty";
+import { Icon } from "@/components/ui/Icon";
 import {
   AttendanceDetailModal,
+  AttendanceFilterBar,
+  AttendanceListView,
   AttendanceModal,
   AttendancePageHeader,
   AttendanceSkeleton,
   AttendanceSummaryCards,
-  DateSelector,
   SubjectAttendanceCard,
-  TeacherSessionConfigModal,
 } from "@/modules/students/features/attendance/components";
 import { useAttendance } from "@/modules/students/features/attendance/hooks";
 import type { AttendanceRecord } from "@/modules/students/features/attendance/types";
 
 export const AttendancePage: React.FC = () => {
-  const { t } = useTranslation(["card", "button"]);
+  const { t } = useTranslation(["card", "button", "message"]);
   const {
-    selectedDate,
+    filter,
     setSelectedDate,
-    searchQuery,
     setSearchQuery,
+    setShift,
+    setClassType,
+    setSortBy,
+    setViewMode,
     records,
     filteredRecords,
     summary,
     loading,
     submitting,
-    filterStatus,
     setFilterStatus,
     hasActiveFilters,
     resetFilters,
@@ -39,17 +42,11 @@ export const AttendancePage: React.FC = () => {
     goToPreviousDay,
     goToNextDay,
     performCheckIn,
-    openOrUpdateTeacherSession,
-    expireSessionNow,
-    reload,
   } = useAttendance();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [detailModalOpen, setDetailModalOpen] = useState<boolean>(false);
-  const [teacherConfigOpen, setTeacherConfigOpen] = useState<boolean>(false);
   const [selectedRecordForDetail, setSelectedRecordForDetail] =
-    useState<AttendanceRecord | null>(null);
-  const [selectedRecordForTeacher, setSelectedRecordForTeacher] =
     useState<AttendanceRecord | null>(null);
 
   const handleOpenCheckIn = (record: AttendanceRecord) => {
@@ -72,153 +69,120 @@ export const AttendancePage: React.FC = () => {
     setSelectedRecordForDetail(null);
   };
 
-  const handleOpenTeacherConfig = (record?: AttendanceRecord) => {
-    setSelectedRecordForTeacher(
-      record ||
-        records.find((r) => r.status === "open") ||
-        records[0] ||
-        null,
-    );
-    setTeacherConfigOpen(true);
-  };
-
-  const handleCloseTeacherConfig = () => {
-    setTeacherConfigOpen(false);
-    setSelectedRecordForTeacher(null);
-  };
-
-  // Counts for filter tabs
+  // Counts for status filter tabs (matching AnnouncementFilterBar pattern)
   const counts = {
     all: records.length,
     open: records.filter((r) => r.status === "open").length,
     present: records.filter((r) => r.status === "present").length,
+    upcoming: records.filter((r) => r.status === "upcoming").length,
     absent: records.filter(
       (r) => r.status === "absent" || r.status === "excused",
     ).length,
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-5 pb-10">
-      {/* 1. Header with Breadcrumb, Realtime Status & Teacher Session Generator Button */}
+    <div className="space-y-4 sm:space-y-5 pb-10">
+      {/* 1. Page Header with integrated Breadcrumb & Realtime Badge */}
       <AttendancePageHeader
         summary={summary}
-        loading={loading}
         isRealtimeConnected={isRealtimeConnected}
-        onOpenTeacherConfig={() => handleOpenTeacherConfig()}
-        onRefresh={() => void reload()}
       />
 
-      {/* 2. Overview Summary Cards */}
-      <AttendanceSummaryCards summary={summary} loading={loading} />
+      {/* 2. Summary Metric Cards (matching AnnouncementSummaryCards) */}
+      {summary && <AttendanceSummaryCards summary={summary} />}
 
-      {/* 3. Date Navigation, Search & Filter Tabs */}
-      <DateSelector
-        selectedDate={selectedDate}
-        onDateSelect={setSelectedDate}
-        onPreviousDay={goToPreviousDay}
-        onNextDay={goToNextDay}
-        onToday={goToToday}
-        activeFilter={filterStatus}
-        onFilterChange={setFilterStatus}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        hasActiveFilters={hasActiveFilters}
-        onResetFilters={resetFilters}
+      {/* 3. Filter Bar (Status Tabs + Search & View Toggle + Date Navigation & Dropdowns) */}
+      <AttendanceFilterBar
+        filter={filter}
         counts={counts}
+        hasActiveFilters={hasActiveFilters}
+        onStatusChange={setFilterStatus}
+        onSearchChange={setSearchQuery}
+        onViewModeChange={setViewMode}
+        onDateChange={setSelectedDate}
+        onTodayClick={goToToday}
+        onPrevDayClick={goToPreviousDay}
+        onNextDayClick={goToNextDay}
+        onShiftChange={setShift}
+        onClassTypeChange={setClassType}
+        onSortByChange={setSortBy}
+        onResetFilters={resetFilters}
       />
 
-      {/* 4. Subject Attendance List */}
-      {loading ? (
-        <AttendanceSkeleton count={4} />
-      ) : filteredRecords.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* 4. Schedule & Attendance Results Area (Grid Cards or Table List like Timetable) */}
+      {loading && records.length === 0 ? (
+        <AttendanceSkeleton count={4} viewMode={filter.viewMode} />
+      ) : filteredRecords.length === 0 ? (
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
+          <Empty
+            description={
+              <div className="space-y-1.5">
+                <p className="text-sm font-bold text-slate-700 mb-0">
+                  {hasActiveFilters
+                    ? t("message:empty.noFilteredResults", {
+                        defaultValue:
+                          "Không tìm thấy môn học phù hợp với bộ lọc",
+                      })
+                    : t("card:attendance.empty.noScheduleTitle", {
+                        defaultValue:
+                          "Không có lịch học cần điểm danh trong ngày này",
+                      })}
+                </p>
+                <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
+                  {hasActiveFilters
+                    ? t("message:empty.noFilteredDescription", {
+                        defaultValue:
+                          "Hãy thử thay đổi điều kiện lọc hoặc đặt lại bộ lọc để xem toàn bộ danh sách.",
+                      })
+                    : t("card:attendance.empty.dateHint", {
+                        defaultValue:
+                          "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác để xem lịch điểm danh.",
+                      })}
+                </p>
+              </div>
+            }
+          >
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                onClick={resetFilters}
+                className="mt-3"
+              >
+                <Icon name="refresh" size={13} />
+                <span>{t("button:reset", { defaultValue: "Đặt lại" })}</span>
+              </Button>
+            )}
+          </Empty>
+        </div>
+      ) : filter.viewMode === "grid" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredRecords.map((record) => (
             <SubjectAttendanceCard
               key={record.id}
               record={record}
               onOpenCheckIn={handleOpenCheckIn}
               onViewDetail={handleOpenDetail}
-              onConfigureSession={handleOpenTeacherConfig}
             />
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-[#f0f0f0] p-12 text-center shadow-2xs flex flex-col items-center gap-3">
-          <Empty
-            description={
-              <div className="space-y-1">
-                <p className="text-slate-800 font-bold text-sm mb-0">
-                  {filterStatus === "open"
-                    ? t("card:attendance.empty.noOpenTitle", {
-                        defaultValue:
-                          "Hiện không có môn học nào đang mở cổng điểm danh",
-                      })
-                    : filterStatus === "present"
-                      ? t("card:attendance.empty.noPresentTitle", {
-                          defaultValue:
-                            "Chưa có môn học nào được điểm danh trong ngày này",
-                        })
-                      : filterStatus === "absent"
-                        ? t("card:attendance.empty.noAbsentTitle", {
-                            defaultValue:
-                              "Không có môn học nào bị đánh dấu vắng mặt hoặc quá hạn",
-                          })
-                        : t("card:attendance.empty.noScheduleTitle", {
-                            defaultValue:
-                              "Không tìm thấy lịch điểm danh phù hợp trong ngày được chọn",
-                          })}
-                </p>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto mb-0">
-                  {hasActiveFilters
-                    ? t("card:attendance.empty.filterHint", {
-                        defaultValue:
-                          "Hãy thử đặt lại bộ lọc hoặc kiểm tra từ khóa tìm kiếm.",
-                      })
-                    : t("card:attendance.empty.dateHint", {
-                        defaultValue:
-                          "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác trong tuần để xem lịch điểm danh.",
-                      })}
-                </p>
-              </div>
-            }
-          />
-          {hasActiveFilters && (
-            <Button
-              variant="outline"
-              onClick={resetFilters}
-              className="text-xs font-semibold"
-            >
-              {t("button:viewAllSubjects", {
-                defaultValue: "Xem tất cả môn học",
-              })}
-            </Button>
-          )}
-        </div>
+        <AttendanceListView
+          records={filteredRecords}
+          onOpenCheckIn={handleOpenCheckIn}
+          onViewDetail={handleOpenDetail}
+        />
       )}
 
-      {/* 5. Student Check-in Modal (6-Digit PIN + QR Camera/Image Upload + GPS Anti-Cheat) */}
+      {/* 5. Student Check-in Modal (6-Digit PIN + QR Camera/Image Upload + GPS Verification) */}
       <AttendanceModal
         open={modalOpen}
         record={activeRecordForModal}
         onClose={handleCloseCheckIn}
         onSubmitCheckIn={performCheckIn}
-        onOpenTeacherConfig={handleOpenTeacherConfig}
         submitting={submitting}
       />
 
-      {/* 6. Teacher Session Configurator Modal (Generate 6-Digit PIN + QR + Scan Radius + Expiration) */}
-      <TeacherSessionConfigModal
-        key={`${selectedRecordForTeacher?.id || "default"}-${teacherConfigOpen ? "open" : "closed"}`}
-        open={teacherConfigOpen}
-        records={records}
-        initialRecord={selectedRecordForTeacher}
-        submitting={submitting}
-        onClose={handleCloseTeacherConfig}
-        onOpenOrUpdateSession={openOrUpdateTeacherSession}
-        onExpireSessionNow={expireSessionNow}
-      />
-
-      {/* 7. Attendance Proof & GPS Coordinates Detail Modal */}
+      {/* 6. Attendance Proof & GPS Coordinates Detail Modal */}
       <AttendanceDetailModal
         open={detailModalOpen}
         record={selectedRecordForDetail}

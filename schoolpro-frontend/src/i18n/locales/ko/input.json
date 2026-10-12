@@ -160,6 +160,16 @@
     "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
     "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
     "teacherLatitudeLabel": "Teacher Device Latitude",
-    "teacherLongitudeLabel": "Teacher Device Longitude"
+    "teacherLongitudeLabel": "Teacher Device Longitude",
+    "dateLabel": "수업일:",
+    "shiftLabel": "수업 시간대:",
+    "allShifts": "전체 시간대",
+    "shiftMorning": "오전 수업",
+    "shiftAfternoon": "오후 수업",
+    "classTypeLabel": "수업 유형:",
+    "allClassTypes": "전체 유형",
+    "sortPeriodAsc": "이른 교시순",
+    "sortPeriodDesc": "늦은 교시순",
+    "sortStatusPriority": "진행 중 우선"
   }
 }

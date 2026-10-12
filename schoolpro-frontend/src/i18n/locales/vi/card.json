@@ -504,7 +504,8 @@
       "open": "Đang mở điểm danh",
       "present": "Đã điểm danh",
       "absent": "Vắng / Quá hạn",
-      "dateSubtitle": "Danh sách các môn học có lịch điểm danh trong ngày"
+      "dateSubtitle": "Danh sách các môn học có lịch điểm danh trong ngày",
+      "upcoming": "Chưa đến giờ"
     },
     "status": {
       "open": "Đang mở điểm danh",
@@ -532,7 +533,10 @@
       "upcomingHint": "Giáo viên sẽ phát mã 6 số & QR khi vào tiết",
       "expiredHint": "Mã điểm danh đã hết thời gian sử dụng",
       "verifiedGpsHint": "Đã xác thực tọa độ GPS & chuyên cần hợp lệ",
-      "excusedHint": "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ"
+      "excusedHint": "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ",
+      "allowedRadiusLabel": "Bán kính cho phép:",
+      "countdownRowLabel": "Thời hạn mã:",
+      "verifiedRowLabel": "Xác thực GPS:"
     },
     "empty": {
       "noOpenTitle": "Hiện không có môn học nào đang mở cổng điểm danh",
@@ -541,6 +545,10 @@
       "noScheduleTitle": "Không tìm thấy lịch điểm danh phù hợp trong ngày được chọn",
       "filterHint": "Hãy thử đặt lại bộ lọc hoặc kiểm tra từ khóa tìm kiếm.",
       "dateHint": "Bạn có thể bấm 'Hôm nay' hoặc chọn ngày học khác trong tuần để xem lịch điểm danh."
+    },
+    "tableHeaders": {
+      "radiusAndTimer": "Bán kính & Thời hạn",
+      "action": "Thao tác"
     }
   }
 }

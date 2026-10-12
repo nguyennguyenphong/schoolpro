@@ -160,6 +160,16 @@
     "allowedRadiusLabel": "Max Device Scan Radius (meters) — Out-of-range students blocked",
     "durationSecondsLabel": "Code Expiration Limit (Expired codes become invalid)",
     "teacherLatitudeLabel": "Teacher Device Latitude",
-    "teacherLongitudeLabel": "Teacher Device Longitude"
+    "teacherLongitudeLabel": "Teacher Device Longitude",
+    "dateLabel": "授業日:",
+    "shiftLabel": "時間帯:",
+    "allShifts": "すべての時間帯",
+    "shiftMorning": "午前の部",
+    "shiftAfternoon": "午後の部",
+    "classTypeLabel": "授業形式:",
+    "allClassTypes": "すべての形式",
+    "sortPeriodAsc": "早い時限順",
+    "sortPeriodDesc": "遅い時限順",
+    "sortStatusPriority": "受付中を優先"
   }
 }

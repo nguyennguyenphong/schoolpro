@@ -6,22 +6,30 @@ import { Tag } from "@/components/ui/Tag";
 import type { AttendanceRecord } from "@/modules/students/features/attendance/types";
 import {
   computeRemainingSeconds,
-  formatCoordinate,
   formatCountdownMmSs,
 } from "@/modules/students/features/attendance/utils";
 
-interface SubjectAttendanceCardProps {
+export interface SubjectAttendanceCardProps {
   record: AttendanceRecord;
   onOpenCheckIn: (record: AttendanceRecord) => void;
   onViewDetail?: (record: AttendanceRecord) => void;
-  onConfigureSession?: (record: AttendanceRecord) => void;
 }
 
+/**
+ * Student SubjectAttendanceCard styled after TimetableSlotCard:
+ * - Class badge + Status badge on top
+ * - Subject title
+ * - Room & Building
+ * - Time & Periods
+ * - Teacher & Teacher Email
+ * - Learning Mode (Theory/Practice) & Allowed Scan Radius
+ * - Live Expiration Countdown / Verified GPS status
+ * - Notes & Student Check-in / View Detail action button
+ */
 export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
   record,
   onOpenCheckIn,
   onViewDetail,
-  onConfigureSession,
 }) => {
   const { t } = useTranslation(["card", "button"]);
 
@@ -30,342 +38,287 @@ export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
   const isUpcoming = record.status === "upcoming";
   const isAbsent = record.status === "absent";
   const isExcused = record.status === "excused";
+  const isPractice = record.classType === "practice";
 
   const remainingSec = isOpen
     ? computeRemainingSeconds(record.expiresAt, record.remainingSeconds ?? 300)
     : 0;
   const countdownText = formatCountdownMmSs(remainingSec);
 
-  const getMethodLabel = (method?: string) => {
-    switch (method) {
-      case "qr_scan":
-        return t("card:attendance.method.qrScan", {
-          defaultValue: "Quét Camera QR",
-        });
-      case "qr_upload":
-        return t("card:attendance.method.qrUpload", {
-          defaultValue: "Tải ảnh mã QR",
-        });
-      case "code":
-        return t("card:attendance.method.pinCode", {
-          defaultValue: "Mã 6 chữ số",
-        });
-      default:
-        return t("card:attendance.method.electronic", {
-          defaultValue: "Điểm danh trực tuyến",
-        });
+  const getStatusTag = () => {
+    if (isOpen) {
+      return (
+        <Tag color="processing" className="m-0 text-[11px] font-semibold">
+          {t("card:attendance.status.open", {
+            defaultValue: "Đang mở điểm danh",
+          })}
+        </Tag>
+      );
     }
+    if (isPresent) {
+      return (
+        <Tag color="success" className="m-0 text-[11px] font-semibold">
+          {t("card:attendance.status.present", {
+            defaultValue: "Đã điểm danh",
+          })}
+        </Tag>
+      );
+    }
+    if (isExcused) {
+      return (
+        <Tag color="cyan" className="m-0 text-[11px] font-semibold">
+          {t("card:attendance.status.excused", {
+            defaultValue: "Nghỉ có phép",
+          })}
+        </Tag>
+      );
+    }
+    if (isAbsent) {
+      return (
+        <Tag color="error" className="m-0 text-[11px] font-semibold">
+          {t("card:attendance.status.absent", {
+            defaultValue: "Vắng / Hết hạn mã",
+          })}
+        </Tag>
+      );
+    }
+    return (
+      <Tag color="default" className="m-0 text-[11px] font-semibold">
+        {t("card:attendance.status.upcoming", {
+          defaultValue: "Chưa mở cổng",
+        })}
+      </Tag>
+    );
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[#f0f0f0] hover:border-blue-300 transition-all p-5 shadow-2xs flex flex-col justify-between gap-4 h-full">
-      <div className="flex flex-col gap-3.5">
-        {/* Row 1: Period Badge, Time Slot & Status Badge */}
-        <div className="flex items-start justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-2.5">
-            <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 text-xs font-extrabold flex items-center justify-center shrink-0">
-              {record.periodNumber || record.period.split(" ")[1] || "1"}
-            </span>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-800">
-                  {record.period}
-                </span>
-                <span className="text-slate-300">•</span>
-                <span className="text-xs font-semibold text-slate-500 font-mono flex items-center gap-1">
-                  <Icon name="clock" size={12} />
-                  <span>{record.timeSlot}</span>
-                </span>
-              </div>
-              <span className="text-[11px] text-slate-400 font-medium">
-                {t("card:attendance.card.subjectCodeLabel", {
-                  defaultValue: "Mã môn học:",
-                })}{" "}
-                <strong className="text-slate-600">{record.subjectCode}</strong>
-                {record.className ? ` • Lớp ${record.className}` : ""}
-              </span>
-            </div>
-          </div>
+    <div
+      className={`w-full h-full min-h-105 bg-white border rounded-xl p-3.5 flex flex-col justify-between shadow-2xs transition-all relative ${
+        isOpen
+          ? "border-blue-300 ring-1 ring-blue-100 hover:border-blue-400"
+          : "border-[#f0f0f0] hover:border-blue-300"
+      }`}
+    >
+      {isOpen && (
+        <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600" />
+        </span>
+      )}
 
-          {/* Status Tag */}
-          <div className="flex items-center gap-2">
-            {isOpen && (
-              <span className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-full shadow-2xs">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                <span>
-                  {t("card:attendance.status.open", {
-                    defaultValue: "Đang mở điểm danh",
-                  })}
-                </span>
-              </span>
-            )}
-
-            {isPresent && (
-              <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full">
-                <Icon name="checkCircle" size={13} className="text-blue-600" />
-                <span>
-                  {t("card:attendance.status.present", {
-                    defaultValue: "Đã điểm danh",
-                  })}
-                </span>
-              </span>
-            )}
-
-            {isExcused && (
-              <span className="inline-flex items-center gap-1 text-xs font-bold text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-1 rounded-full">
-                <Icon
-                  name="file-text"
-                  size={13}
-                  className="text-cyan-600"
-                />
-                <span>
-                  {t("card:attendance.status.excused", {
-                    defaultValue: "Nghỉ có phép",
-                  })}
-                </span>
-              </span>
-            )}
-
-            {isUpcoming && (
-              <Tag
-                color="default"
-                className="m-0 text-xs font-semibold px-2.5 py-0.5"
-              >
-                {t("card:attendance.status.upcoming", {
-                  defaultValue: "Chưa mở cổng",
+      {/* Top Section: Môn học, Lớp, Phòng, Thời gian, Giáo viên & Email, Hình thức, Bán kính */}
+      <div className="space-y-2.5">
+        {/* 1. Môn học & Lớp + Trạng thái (giống TimetableSlotCard) */}
+        <div className="pb-2 border-b border-slate-100 min-h-14.5">
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-xl border border-blue-100">
+              <Icon
+                name="academic"
+                size={12}
+                className="text-blue-600 shrink-0"
+              />
+              <span>
+                {t("card:timetable.classLabel", {
+                  classCode: record.className || record.subjectCode,
+                  defaultValue: `Lớp ${record.className || record.subjectCode}`,
                 })}
-              </Tag>
-            )}
-
-            {isAbsent && (
-              <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-full">
-                <Icon name="warning" size={13} className="text-rose-500" />
-                <span>
-                  {t("card:attendance.status.absent", {
-                    defaultValue: "Vắng / Hết hạn mã",
-                  })}
-                </span>
               </span>
-            )}
+            </span>
+            {getStatusTag()}
           </div>
-        </div>
-
-        {/* Row 2: Subject Title & Teacher / Classroom Info */}
-        <div className="flex flex-col gap-2">
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug mb-0">
+          <h4
+            className="text-sm font-bold text-slate-900 leading-snug line-clamp-2 mb-0"
+            title={record.subjectName}
+          >
             {record.subjectName}
-          </h3>
+          </h4>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600">
-            <div className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded bg-slate-100 flex items-center justify-center shrink-0 text-slate-500">
-                <Icon name="user" size={12} />
-              </span>
-              <span className="truncate">
-                {t("card:attendance.card.teacherLabel", {
-                  defaultValue: "Giáo viên:",
-                })}{" "}
-                <strong className="text-slate-800">{record.teacherName}</strong>
-              </span>
+        {/* 2. Phòng học */}
+        <div className="flex items-start gap-2 text-xs text-slate-700 min-h-8.5">
+          <Icon
+            name="map-pin"
+            size={14}
+            className="text-slate-400 shrink-0 mt-0.5"
+          />
+          <div className="leading-snug space-y-0.5">
+            <div className="font-semibold text-slate-800">
+              <span>{record.room}</span>
+              {record.building && (
+                <span className="font-normal text-slate-500">
+                  {" "}
+                  • {record.building}
+                </span>
+              )}
             </div>
-
-            <div className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded bg-slate-100 flex items-center justify-center shrink-0 text-slate-500">
-                <Icon name="map-pin" size={12} />
-              </span>
-              <span className="truncate">
-                {t("card:attendance.card.roomLabel", {
-                  defaultValue: "Phòng học:",
-                })}{" "}
-                <strong className="text-slate-800">{record.room}</strong>
-              </span>
+            <div className="text-[11px] text-slate-400 font-mono">
+              {record.subjectCode}
             </div>
           </div>
         </div>
 
-        {/* Row 3: Anti-cheat GPS Radius & Live Expiration / Check-in Verification Strip */}
-        {isOpen ? (
-          <div className="bg-blue-50/60 border border-blue-200/80 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 font-bold text-blue-800 bg-white px-2 py-0.5 rounded-md border border-blue-200">
-                <Icon name="keyRound" size={12} className="text-blue-600" />
-                <span>
-                  {t("card:attendance.card.pinCodeBadge", {
-                    code: record.attendanceCode,
-                    defaultValue: `Mã 6 số: ${record.attendanceCode}`,
-                  })}
-                </span>
-              </span>
+        {/* 3. Thời gian học & Tiết mấy */}
+        <div className="flex items-center gap-2 text-xs text-slate-700">
+          <Icon name="clock" size={14} className="text-slate-400 shrink-0" />
+          <div className="font-medium">
+            <span>{record.timeSlot}</span>
+            <span className="text-slate-500 text-[11px] ml-1.5 font-normal">
+              ({record.period})
+            </span>
+          </div>
+        </div>
 
-              <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                <Icon name="map-pin" size={12} className="text-emerald-600" />
-                <span>
-                  {t("card:attendance.card.radiusBadge", {
-                    radius: record.allowedRadiusMeters,
-                    defaultValue: `Bán kính quét: ≤ ${record.allowedRadiusMeters}m`,
-                  })}
-                </span>
-              </span>
-            </div>
-
+        {/* 4. Giáo viên & Email liên hệ giáo viên */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs text-slate-700">
+            <Icon name="user" size={14} className="text-slate-400 shrink-0" />
             <span
-              className={`inline-flex items-center gap-1 font-mono font-extrabold px-2.5 py-0.5 rounded-md border ${
+              className="font-semibold text-slate-800 truncate"
+              title={record.teacherName}
+            >
+              {record.teacherName}
+            </span>
+          </div>
+          {record.teacherEmail ? (
+            <div className="flex items-center gap-2 text-xs text-slate-600">
+              <Icon name="mail" size={13} className="text-slate-400 shrink-0" />
+              <a
+                href={`mailto:${record.teacherEmail}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-blue-600 hover:text-blue-800 hover:underline truncate text-[11px] font-medium"
+                title={record.teacherEmail}
+              >
+                {record.teacherEmail}
+              </a>
+            </div>
+          ) : null}
+        </div>
+
+        {/* 5. Hình thức học */}
+        <div className="flex items-center justify-between gap-1.5 text-xs">
+          <span className="text-slate-500">
+            {t("card:timetable.learningMode", {
+              defaultValue: "Hình thức học:",
+            })}
+          </span>
+          <Tag
+            color={isPractice ? "green" : "blue"}
+            className="m-0 text-[11px] font-semibold px-2 py-0.5"
+          >
+            {isPractice
+              ? t("card:timetable.classTypes.practice", {
+                  defaultValue: "Thực hành",
+                })
+              : t("card:timetable.classTypes.theory", {
+                  defaultValue: "Lý thuyết",
+                })}
+          </Tag>
+        </div>
+
+        {/* 6. Bán kính thiết bị quét cho phép */}
+        <div className="flex items-center justify-between gap-1.5 text-xs">
+          <span className="text-slate-500">
+            {t("card:attendance.card.allowedRadiusLabel", {
+              defaultValue: "Bán kính cho phép:",
+            })}
+          </span>
+          <Tag
+            color="cyan"
+            className="m-0 text-[11px] font-semibold px-2 py-0.5"
+          >
+            {t("card:attendance.card.radiusBadge", {
+              radius: record.allowedRadiusMeters,
+              defaultValue: `≤ ${record.allowedRadiusMeters}m`,
+            })}
+          </Tag>
+        </div>
+
+        {/* 7. Thời gian hiệu lực mã / Khoảng cách GPS đã xác thực */}
+        <div className="flex items-center justify-between gap-1.5 text-xs">
+          <span className="text-slate-500">
+            {isOpen
+              ? t("card:attendance.card.countdownRowLabel", {
+                  defaultValue: "Thời hạn mã:",
+                })
+              : isPresent
+                ? t("card:attendance.card.verifiedRowLabel", {
+                    defaultValue: "Xác thực GPS:",
+                  })
+                : t("card:attendance.card.deadlineLabel", {
+                    defaultValue: "Hạn đóng mã:",
+                  })}
+          </span>
+
+          {isOpen ? (
+            <span
+              className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded border ${
                 remainingSec <= 60
-                  ? "bg-rose-100 text-rose-700 border-rose-300 animate-pulse"
-                  : "bg-amber-50 text-amber-800 border-amber-300"
+                  ? "bg-rose-50 text-rose-700 border-rose-200 animate-pulse"
+                  : "bg-amber-50 text-amber-800 border-amber-200"
               }`}
             >
-              <Icon name="clock" size={12} />
-              <span>
-                {t("card:attendance.card.expiresInLabel", {
-                  time: countdownText,
-                  defaultValue: `Hết hạn sau: ${countdownText}`,
-                })}
-              </span>
+              {t("card:attendance.card.expiresInLabel", {
+                time: countdownText,
+                defaultValue: `Còn lại: ${countdownText}`,
+              })}
             </span>
-          </div>
-        ) : isPresent && record.checkInTime ? (
-          <div className="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 text-xs text-emerald-900">
-            <div className="flex items-center gap-1.5">
-              <Icon name="check" size={14} className="text-emerald-600 shrink-0" />
-              <span>
-                {t("card:attendance.card.checkedInAt", {
-                  time: record.checkInTime,
-                  defaultValue: `Điểm danh lúc: ${record.checkInTime}`,
-                })}
-              </span>
+          ) : isPresent ? (
+            <span className="font-mono text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              {record.checkInTime}
               {record.distanceMeters !== null &&
-                record.distanceMeters !== undefined && (
-                  <span className="text-[11px] font-semibold text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                    GPS: {record.distanceMeters.toFixed(1)}m /{" "}
-                    {record.allowedRadiusMeters}m
-                  </span>
-                )}
-            </div>
-            <span className="text-[11px] font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">
-              {getMethodLabel(record.checkInMethod)}
+              record.distanceMeters !== undefined
+                ? ` • ${record.distanceMeters.toFixed(1)}m`
+                : ""}
             </span>
-          </div>
-        ) : (
-          <div className="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600">
-            <span className="inline-flex items-center gap-1.5 font-medium">
-              <Icon name="map-pin" size={12} className="text-blue-600" />
-              <span>
-                {t("card:attendance.card.teacherGpsCoord", {
-                  lat: formatCoordinate(record.teacherLatitude),
-                  lng: formatCoordinate(record.teacherLongitude),
-                  defaultValue: `Tọa độ thiết bị Giáo viên: ${formatCoordinate(record.teacherLatitude)}, ${formatCoordinate(record.teacherLongitude)}`,
-                })}
-              </span>
-            </span>
-            <span className="font-semibold text-slate-700 bg-white px-2 py-0.5 rounded border border-slate-200">
-              {t("card:attendance.card.radiusBadge", {
-                radius: record.allowedRadiusMeters,
-                defaultValue: `Bán kính quét: ≤ ${record.allowedRadiusMeters}m`,
-              })}
-            </span>
-          </div>
-        )}
-
-        {/* Row 4: Note / System Status Message */}
-        {record.note && (
-          <div className="bg-slate-50 rounded-xl p-2.5 text-xs text-slate-600 flex items-start gap-2 border border-slate-100">
-            <Icon
-              name="info"
-              size={14}
-              className="text-blue-500 shrink-0 mt-0.5"
-            />
-            <span className="leading-relaxed line-clamp-2">{record.note}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Footer Row: Deadline Info & Action Buttons */}
-      <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs text-slate-500">
-          {isOpen && record.deadlineTime && (
-            <span>
-              {t("card:attendance.card.deadlineLabel", {
-                defaultValue: "Hạn đóng mã:",
-              })}{" "}
-              <strong className="text-amber-700 font-mono">
-                {record.deadlineTime}
-              </strong>
-            </span>
-          )}
-          {isUpcoming && (
-            <span>
-              {t("card:attendance.card.upcomingHint", {
-                defaultValue: "Giáo viên sẽ phát mã 6 số & QR khi vào tiết",
-              })}
-            </span>
-          )}
-          {isAbsent && (
-            <span className="text-rose-600 font-medium">
-              {t("card:attendance.card.expiredHint", {
-                defaultValue: "Mã điểm danh đã hết thời gian sử dụng",
-              })}
-            </span>
-          )}
-          {isPresent && (
-            <span className="text-emerald-700 font-medium">
-              {t("card:attendance.card.verifiedGpsHint", {
-                defaultValue: "Đã xác thực tọa độ GPS & chuyên cần hợp lệ",
-              })}
-            </span>
-          )}
-          {isExcused && (
-            <span className="text-cyan-700 font-medium">
-              {t("card:attendance.card.excusedHint", {
-                defaultValue: "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ",
-              })}
+          ) : (
+            <span className="font-mono text-[11px] font-medium text-slate-600">
+              {record.deadlineTime || "—"}
             </span>
           )}
         </div>
+      </div>
 
-        <div className="flex items-center gap-2 ml-auto">
-          {onConfigureSession && (
-            <Button
-              variant="ghost"
-              onClick={() => onConfigureSession(record)}
-              className="text-xs font-semibold text-slate-600 hover:text-blue-600 flex items-center gap-1 px-2.5"
-              title={t("button:configureSessionTooltip", {
-                defaultValue:
-                  "Thiết lập mã 6 chữ số, mã QR, bán kính quét và thời hạn (Giáo viên)",
-              })}
-            >
-              <Icon name="settings" size={13} />
-              <span>
-                {t("button:teacherConfigShort", {
-                  defaultValue: "Cấu hình mã",
+      {/* Bottom Section: Ghi chú & Thao tác của Học sinh (giống TimetableSlotCard) */}
+      <div className="space-y-2.5 pt-2.5 border-t border-slate-100 mt-2.5">
+        {/* 8. Ghi chú */}
+        <div className="text-xs">
+          <span className="text-slate-500 font-medium block mb-1">
+            {t("card:timetable.notes", { defaultValue: "Ghi chú:" })}
+          </span>
+          <div
+            className="text-slate-700 italic text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-100/80 leading-relaxed min-h-11.5 flex items-center"
+            title={record.note || record.lessonTopic}
+          >
+            <span className="line-clamp-2">
+              {record.note ||
+                record.lessonTopic ||
+                t("card:timetable.noNotes", {
+                  defaultValue: "Không có ghi chú",
                 })}
-              </span>
-            </Button>
-          )}
+            </span>
+          </div>
+        </div>
 
-          {isOpen && (
+        {/* 9. Thao tác điểm danh dành cho Học sinh */}
+        <div className="flex items-center justify-between gap-2 pt-0.5">
+          {isOpen ? (
             <Button
               variant="primary"
               onClick={() => onOpenCheckIn(record)}
-              className="font-bold text-xs flex items-center gap-1.5 shadow-2xs"
+              className="w-full font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs"
             >
-              <Icon name="scan" size={15} />
+              <Icon name="scan" size={14} />
               <span>
                 {t("button:checkInNow", {
-                  defaultValue: "Điểm danh ngay",
+                  defaultValue: "Điểm danh ngay (Mã 6 số / QR)",
                 })}
               </span>
             </Button>
-          )}
-
-          {isPresent && onViewDetail && (
+          ) : isPresent && onViewDetail ? (
             <Button
               variant="outline"
               onClick={() => onViewDetail(record)}
-              className="font-semibold text-xs flex items-center gap-1.5"
+              className="w-full font-semibold text-xs flex items-center justify-center gap-1.5"
             >
               <Icon name="eye" size={13} />
               <span>
@@ -374,33 +327,29 @@ export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
                 })}
               </span>
             </Button>
-          )}
-
-          {isUpcoming && (
+          ) : isUpcoming ? (
             <Button
               variant="secondary"
               disabled
-              className="font-medium text-xs flex items-center gap-1.5 opacity-60 cursor-not-allowed"
+              className="w-full font-medium text-xs flex items-center justify-center gap-1.5 opacity-60 cursor-not-allowed"
             >
               <Icon name="clock" size={13} />
               <span>
                 {t("button:notYetOpen", {
-                  defaultValue: "Chưa đến giờ",
+                  defaultValue: "Chưa đến giờ mở cổng",
                 })}
               </span>
             </Button>
-          )}
-
-          {isAbsent && (
+          ) : (
             <Button
               variant="outline"
               disabled
-              className="font-medium text-xs flex items-center gap-1.5 opacity-60 cursor-not-allowed text-rose-500 border-rose-200"
+              className="w-full font-medium text-xs flex items-center justify-center gap-1.5 opacity-60 cursor-not-allowed text-rose-500 border-rose-200"
             >
               <Icon name="close" size={13} />
               <span>
                 {t("button:codeExpired", {
-                  defaultValue: "Mã đã hết hạn",
+                  defaultValue: "Đã đóng cổng điểm danh",
                 })}
               </span>
             </Button>

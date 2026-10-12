@@ -504,7 +504,8 @@
       "open": "Open for Check-In",
       "present": "Checked In",
       "absent": "Absent / Expired",
-      "dateSubtitle": "Subject attendance sessions scheduled for the selected date"
+      "dateSubtitle": "Subject attendance sessions scheduled for the selected date",
+      "upcoming": "開始前"
     },
     "status": {
       "open": "Open for Check-In",
@@ -532,7 +533,10 @@
       "upcomingHint": "Teacher will issue 6-digit PIN & QR when class starts",
       "expiredHint": "Attendance code has expired",
       "verifiedGpsHint": "GPS coordinates & attendance verified",
-      "excusedHint": "Synchronized from approved leave request"
+      "excusedHint": "Synchronized from approved leave request",
+      "allowedRadiusLabel": "許可半径:",
+      "countdownRowLabel": "有効期限:",
+      "verifiedRowLabel": "GPS認証:"
     },
     "empty": {
       "noOpenTitle": "No subjects currently have an open attendance session",
@@ -541,6 +545,10 @@
       "noScheduleTitle": "No matching attendance schedule found for the selected date",
       "filterHint": "Try resetting filters or checking your search keyword.",
       "dateHint": "Click 'Today' or select another weekday to view attendance schedules."
+    },
+    "tableHeaders": {
+      "radiusAndTimer": "許可半径・残り時間",
+      "action": "操作"
     }
   }
 }

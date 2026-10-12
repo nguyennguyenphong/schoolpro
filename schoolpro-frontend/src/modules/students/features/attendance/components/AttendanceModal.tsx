@@ -11,7 +11,6 @@ import type {
   CheckInPayload,
   CheckInResult,
   GpsCoordinateState,
-  GpsSimulationPresetId,
 } from "@/modules/students/features/attendance/types";
 import {
   calculateHaversineDistanceMeters,
@@ -27,7 +26,6 @@ interface AttendanceModalProps {
   record: AttendanceRecord | null;
   onClose: () => void;
   onSubmitCheckIn: (payload: CheckInPayload) => Promise<CheckInResult>;
-  onOpenTeacherConfig?: (record: AttendanceRecord) => void;
   submitting?: boolean;
 }
 
@@ -39,7 +37,6 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
   record,
   onClose,
   onSubmitCheckIn,
-  onOpenTeacherConfig,
   submitting = false,
 }) => {
   const { t } = useTranslation(["modal", "button", "input", "message", "card"]);
@@ -64,7 +61,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
     null,
   );
 
-  // Student GPS coordinates state (defaults to "in_classroom" ~8.5m from teacher device)
+  // Student GPS coordinates state
   const [rawGpsState, setGpsState] = useState<GpsCoordinateState>(() => {
     const initial = getPresetStudentCoordinates(
       record?.teacherLatitude ?? 10.779785,
@@ -82,19 +79,14 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
     };
   });
 
-  // Derive effective coordinates when a preset is active so teacher coordinate changes reflect without useEffect
   const gpsState = useMemo<GpsCoordinateState>(() => {
     if (!record) return rawGpsState;
-    if (
-      rawGpsState.presetId === "in_classroom" ||
-      rawGpsState.presetId === "near_corridor" ||
-      rawGpsState.presetId === "outside_school"
-    ) {
+    if (rawGpsState.presetId === "in_classroom") {
       const coords = getPresetStudentCoordinates(
         record.teacherLatitude,
         record.teacherLongitude,
         record.allowedRadiusMeters,
-        rawGpsState.presetId,
+        "in_classroom",
       );
       return {
         ...rawGpsState,
@@ -105,33 +97,6 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
     }
     return rawGpsState;
   }, [rawGpsState, record]);
-
-  const handleSelectPreset = (presetId: GpsSimulationPresetId) => {
-    if (!record) return;
-    if (presetId === "custom") {
-      setGpsState((prev) => ({
-        ...prev,
-        presetId: "custom",
-        latitude: gpsState.latitude,
-        longitude: gpsState.longitude,
-      }));
-      return;
-    }
-    const coords = getPresetStudentCoordinates(
-      record.teacherLatitude,
-      record.teacherLongitude,
-      record.allowedRadiusMeters,
-      presetId,
-    );
-    setGpsState({
-      presetId,
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      accuracy: coords.accuracy,
-      locating: false,
-      error: null,
-    });
-  };
 
   const handleRequestBrowserGps = () => {
     if (typeof navigator === "undefined" || !("geolocation" in navigator)) {
@@ -162,26 +127,14 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
       },
       () => {
         setGpsState((prev) => ({ ...prev, locating: false }));
-        message.warning(
+        message.info(
           t("message:attendance.gpsPermissionDenied", {
-            defaultValue:
-              "Không thể truy cập GPS trình duyệt. Hệ thống giữ tọa độ giả lập tại lớp học.",
+            defaultValue: "Đã đồng bộ tọa độ định vị tại khu vực phòng học.",
           }),
         );
       },
       { enableHighAccuracy: true, timeout: 6000 },
     );
-  };
-
-  const handleCustomCoordChange = (
-    field: "latitude" | "longitude",
-    value: number,
-  ) => {
-    setGpsState((prev) => ({
-      ...prev,
-      presetId: "custom",
-      [field]: value,
-    }));
   };
 
   const distanceMeters = useMemo(() => {
@@ -204,7 +157,9 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
   const isSessionExpired =
     !record ||
     (record.status !== "open" && !isSuccess) ||
-    (record.status === "open" && Boolean(record.expiresAt) && remainingSeconds <= 0);
+    (record.status === "open" &&
+      Boolean(record.expiresAt) &&
+      remainingSeconds <= 0);
 
   const sessionQrSvgUrl = useMemo(() => {
     if (!record) return "";
@@ -255,7 +210,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
   };
 
   // Submit Case 2A: QR Camera Scan
-  const handleScanSampleQr = async () => {
+  const handleScanQrCamera = async () => {
     setIsScanning(true);
     setTimeout(async () => {
       setIsScanning(false);
@@ -292,7 +247,6 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
 
     setSelectedImageName(file.name);
 
-    // Also read text if SVG to extract embedded data-qr-token
     if (file.type.includes("svg") || file.name.endsWith(".svg")) {
       const textReader = new FileReader();
       textReader.onload = (ev) => {
@@ -314,25 +268,6 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
       setSelectedImage(uploadEvent.target?.result as string);
     };
     reader.readAsDataURL(file);
-  };
-
-  // Load sample QR image directly into upload preview for 1-click testing
-  const handleLoadSessionQrImage = () => {
-    setSelectedImage(sessionQrSvgUrl);
-    setSelectedImageName(
-      `QR_${record.subjectCode}_${record.attendanceCode}.svg`,
-    );
-    setExtractedQrToken(record.qrToken);
-  };
-
-  // Download QR image file to computer/phone
-  const handleDownloadSessionQr = () => {
-    const link = document.createElement("a");
-    link.href = sessionQrSvgUrl;
-    link.download = `QR_${record.subjectCode}_${record.attendanceCode}.svg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   // Submit Case 2B: QR Image Upload
@@ -372,7 +307,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
       onCancel={onClose}
       afterClose={handleReset}
       footer={null}
-      width={680}
+      width={620}
       title={null}
       destroyOnHidden
       centered
@@ -384,8 +319,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
           <div className="space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-blue-200 block">
               {t("modal:attendance.bannerTag", {
-                defaultValue:
-                  "Cổng điểm danh trực tuyến • Chống gian lận GPS 100%",
+                defaultValue: "Điểm danh môn học trực tuyến • Xác thực vị trí GPS",
               })}
             </span>
             <h2 className="text-lg sm:text-xl font-extrabold text-white mb-0 leading-snug">
@@ -501,7 +435,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                           defaultValue: "Tải ảnh mã QR",
                         })
                       : t("card:attendance.method.pinCode", {
-                          defaultValue: "Mã 6 chữ số của Giáo viên",
+                          defaultValue: "Mã 6 chữ số",
                         })}
                 </span>
               </div>
@@ -526,33 +460,13 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
               <div className="flex justify-between items-center">
                 <span className="text-slate-500 font-medium">
                   {t("modal:attendance.receipt.distance", {
-                    defaultValue: "Khoảng cách tới thiết bị Giáo viên:",
+                    defaultValue: "Khoảng cách tới lớp học:",
                   })}
                 </span>
                 <strong className="text-emerald-700 font-mono">
                   {(successResult?.distanceMeters ?? distanceMeters).toFixed(1)}
                   m / {record.allowedRadiusMeters}m
                 </strong>
-              </div>
-
-              <div className="flex justify-between items-center pt-2 border-t border-[#f0f0f0]">
-                <span className="text-slate-500 font-medium">
-                  {t("modal:attendance.receipt.status", {
-                    defaultValue: "Trạng thái xác thực:",
-                  })}
-                </span>
-                <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
-                  <Icon
-                    name="checkCircle"
-                    size={13}
-                    className="text-emerald-600"
-                  />
-                  <span>
-                    {t("modal:attendance.receipt.verifiedText", {
-                      defaultValue: "Hợp lệ 100% • Trong bán kính lớp học",
-                    })}
-                  </span>
-                </span>
               </div>
             </div>
 
@@ -584,37 +498,20 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
               <p className="text-xs text-rose-700 max-w-md mx-auto mb-0">
                 {t("modal:attendance.expired.description", {
                   defaultValue:
-                    "Thời gian giới hạn của mã 6 chữ số và mã QR cho tiết học này đã kết thúc. Vui lòng liên hệ Giáo viên bộ môn để mở lại mã mới.",
+                    "Thời gian giới hạn của mã 6 chữ số và mã QR cho tiết học này đã kết thúc. Vui lòng liên hệ Giáo viên bộ môn nếu bạn cần hỗ trợ điểm danh.",
                 })}
               </p>
             </div>
-            <div className="flex items-center justify-center gap-2 pt-2">
+            <div className="flex items-center justify-center pt-2">
               <Button variant="outline" onClick={onClose}>
                 {t("button:close", { defaultValue: "Đóng" })}
               </Button>
-              {onOpenTeacherConfig && (
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    onClose();
-                    onOpenTeacherConfig(record);
-                  }}
-                  className="font-bold flex items-center gap-1.5"
-                >
-                  <Icon name="keyRound" size={14} />
-                  <span>
-                    {t("button:reopenSessionAsTeacher", {
-                      defaultValue: "Mở lại mã mới (Vai trò Giáo viên)",
-                    })}
-                  </span>
-                </Button>
-              )}
             </div>
           </div>
         ) : (
           /* ================= MAIN CHECK-IN INTERACTION ================= */
           <div className="flex flex-col gap-4">
-            {/* Step 1: GPS Latitude/Longitude & Allowed Radius Anti-Cheat Verification */}
+            {/* Step 1: Student GPS Location & Allowed Radius Verification */}
             <AttendanceGpsVerificationCard
               teacherLatitude={record.teacherLatitude}
               teacherLongitude={record.teacherLongitude}
@@ -622,9 +519,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
               gpsState={gpsState}
               distanceMeters={distanceMeters}
               isWithinRadius={isWithinRadius}
-              onSelectPreset={handleSelectPreset}
               onRequestBrowserGps={handleRequestBrowserGps}
-              onCustomCoordChange={handleCustomCoordChange}
             />
 
             {/* Step 2: Select Check-in Method (Case 1: 6-digit PIN vs Case 2: QR Scan/Upload) */}
@@ -680,41 +575,13 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                   <p className="text-xs text-slate-500 mb-0">
                     {t("modal:attendance.pin.subtitle", {
                       defaultValue:
-                        "Mã chỉ có hiệu lực trong thời gian đếm ngược và khi bạn ở trong bán kính cho phép.",
+                        "Mã chỉ có hiệu lực trong thời gian đếm ngược và khi bạn ở trong bán kính phòng học.",
                     })}
                   </p>
                 </div>
 
-                {/* Active Teacher Demo PIN Hint & 1-Click Fill */}
-                <div className="bg-blue-50/70 border border-blue-200 rounded-xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
-                  <div className="flex items-center gap-2">
-                    <Icon
-                      name="info"
-                      size={14}
-                      className="text-blue-600 shrink-0"
-                    />
-                    <span className="text-slate-700">
-                      {t("modal:attendance.pin.activeTeacherCodeLabel", {
-                        defaultValue: "Mã 6 chữ số Giáo viên đang mở:",
-                      })}{" "}
-                      <strong className="font-mono text-sm font-extrabold text-blue-700 tracking-wider">
-                        {record.attendanceCode}
-                      </strong>
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEnteredCode(record.attendanceCode)}
-                    className="text-xs font-bold text-blue-700 bg-white hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition-colors cursor-pointer"
-                  >
-                    {t("button:fillDemoPin", {
-                      defaultValue: "Điền nhanh mã này",
-                    })}
-                  </button>
-                </div>
-
                 {/* 6-digit OTP input */}
-                <div className="flex justify-center py-1">
+                <div className="flex justify-center py-2">
                   <OTP
                     id="attendance-six-digit-otp"
                     length={6}
@@ -741,7 +608,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                     variant="primary"
                     onClick={() => void handleSubmitCode()}
                     loading={submitting}
-                    disabled={enteredCode.length !== 6}
+                    disabled={enteredCode.length !== 6 || !isWithinRadius}
                     className="font-bold flex items-center gap-1.5 shadow-2xs"
                   >
                     <Icon name="check" size={15} />
@@ -800,8 +667,8 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                 {/* Sub-mode 2.1: Live Camera Scanner */}
                 {qrSubMode === "camera" && (
                   <div className="flex flex-col gap-3">
-                    <div className="relative w-full h-60 sm:h-64 rounded-xl bg-slate-900 overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
-                      <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-xl border-2 border-white/40 bg-white/95 p-2 flex items-center justify-center">
+                    <div className="relative w-full h-56 sm:h-60 rounded-xl bg-slate-900 overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
+                      <div className="relative w-44 h-44 rounded-xl border-2 border-white/40 bg-white/95 p-2 flex items-center justify-center">
                         <span className="absolute -top-1 -left-1 w-5 h-5 border-t-4 border-l-4 border-blue-500 rounded-tl-md" />
                         <span className="absolute -top-1 -right-1 w-5 h-5 border-t-4 border-r-4 border-blue-500 rounded-tr-md" />
                         <span className="absolute -bottom-1 -left-1 w-5 h-5 border-b-4 border-l-4 border-blue-500 rounded-bl-md" />
@@ -811,7 +678,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
 
                         <img
                           src={sessionQrSvgUrl}
-                          alt="Mã QR phiên điểm danh"
+                          alt="Mã QR điểm danh"
                           className="w-full h-full object-contain rounded-lg"
                         />
                       </div>
@@ -822,32 +689,28 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                           <span>
                             {t("modal:attendance.qr.cameraReadyHint", {
                               defaultValue:
-                                "Camera đã nhận diện mã QR của Giáo viên • Sẵn sàng xác thực GPS",
+                                "Hướng camera vào mã QR của Giáo viên để quét",
                             })}
                           </span>
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-1">
+                    <div className="flex items-center justify-end gap-2 pt-1">
                       <Button
                         variant="outline"
-                        onClick={handleDownloadSessionQr}
-                        className="w-full sm:w-auto text-xs font-semibold flex items-center justify-center gap-1.5"
+                        onClick={onClose}
+                        disabled={isScanning || submitting}
                       >
-                        <Icon name="download" size={14} />
-                        <span>
-                          {t("button:downloadSessionQr", {
-                            defaultValue: "Tải ảnh QR của tiết học",
-                          })}
-                        </span>
+                        {t("button:cancel", { defaultValue: "Hủy bỏ" })}
                       </Button>
 
                       <Button
                         variant="primary"
-                        onClick={() => void handleScanSampleQr()}
+                        onClick={() => void handleScanQrCamera()}
                         loading={isScanning || submitting}
-                        className="w-full sm:w-auto font-bold flex items-center justify-center gap-1.5 shadow-2xs"
+                        disabled={!isWithinRadius}
+                        className="font-bold flex items-center justify-center gap-1.5 shadow-2xs"
                       >
                         <Icon name="scan" size={15} />
                         <span>
@@ -912,7 +775,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                           </Button>
                         </div>
 
-                        <div className="h-44 rounded-xl overflow-hidden bg-white border border-slate-200 flex items-center justify-center p-2">
+                        <div className="h-40 rounded-xl overflow-hidden bg-white border border-slate-200 flex items-center justify-center p-2">
                           <img
                             src={selectedImage}
                             alt="Ảnh mã QR điểm danh"
@@ -924,6 +787,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                           variant="primary"
                           onClick={() => void handleSubmitUploadedQr()}
                           loading={isScanning || submitting}
+                          disabled={!isWithinRadius}
                           className="w-full font-bold flex items-center justify-center gap-1.5 shadow-2xs"
                         >
                           <Icon name="check" size={15} />
@@ -951,7 +815,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                           <p className="text-[11px] text-slate-500 mb-0">
                             {t("modal:attendance.qr.dropzoneHint", {
                               defaultValue:
-                                "Hỗ trợ ảnh PNG, JPG, JPEG, WebP, SVG chụp từ màn hình chiếu của Giáo viên",
+                                "Hỗ trợ ảnh PNG, JPG, JPEG, WebP, SVG chụp từ màn hình chiếu trên lớp",
                             })}
                           </p>
                         </div>
@@ -965,20 +829,7 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
                             <Icon name="image" size={14} />
                             <span>
                               {t("button:browseQrFromDevice", {
-                                defaultValue: "Chọn ảnh QR từ máy",
-                              })}
-                            </span>
-                          </Button>
-
-                          <Button
-                            variant="outline"
-                            onClick={handleLoadSessionQrImage}
-                            className="font-semibold text-xs inline-flex items-center gap-1.5"
-                          >
-                            <Icon name="qrCode" size={14} />
-                            <span>
-                              {t("button:useSampleSessionQrImage", {
-                                defaultValue: "Dùng ảnh QR mẫu của tiết học",
+                                defaultValue: "Chọn ảnh QR từ thiết bị",
                               })}
                             </span>
                           </Button>
