@@ -230,8 +230,6 @@ class AttendanceRealtimeService:
         """
         from apps.academic.services.attendance_session_service import AttendanceSessionService
 
-        AttendanceSessionService.ensure_schema()
-
         target_date = AttendanceSessionService.parse_target_date(date_str)
         student = AttendanceSessionService.resolve_student(user)
         resolved_class_id = class_id or (

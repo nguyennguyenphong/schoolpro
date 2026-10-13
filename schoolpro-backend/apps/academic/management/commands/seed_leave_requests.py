@@ -9,7 +9,7 @@ Usage:
 from datetime import date, timedelta
 
 from django.core.management.base import BaseCommand
-from django.db import connection, transaction
+from django.db import transaction
 from django.utils import timezone
 
 from apps.academic.models.attendance import LeaveRequest, LeaveRequestEventLog
@@ -23,43 +23,6 @@ class Command(BaseCommand):
     help = "Seeds realistic student leave requests with 12-digit codes, approval deadlines, auto-approval, and chronological event logs."
 
     def handle(self, *args, **options):
-        self.stdout.write(
-            self.style.NOTICE(
-                "Ensuring schema columns and event logs table exist in schema 'academic'..."
-            )
-        )
-        with connection.cursor() as cursor:
-            cursor.execute(
-                'ALTER TABLE "academic"."leave_requests" ADD COLUMN IF NOT EXISTS code VARCHAR(50) UNIQUE;'
-            )
-            cursor.execute(
-                'ALTER TABLE "academic"."leave_requests" ADD COLUMN IF NOT EXISTS approval_deadline TIMESTAMPTZ NULL;'
-            )
-            cursor.execute(
-                'ALTER TABLE "academic"."leave_requests" ADD COLUMN IF NOT EXISTS is_auto_approved BOOLEAN NOT NULL DEFAULT FALSE;'
-            )
-            cursor.execute(
-                """
-                CREATE TABLE IF NOT EXISTS "academic"."leave_request_event_logs" (
-                    id UUID PRIMARY KEY,
-                    leave_request_id UUID NOT NULL REFERENCES "academic"."leave_requests"(id) ON DELETE CASCADE,
-                    event_type VARCHAR(60) NOT NULL,
-                    title VARCHAR(255) NOT NULL,
-                    description TEXT NOT NULL,
-                    actor_name VARCHAR(255) NOT NULL,
-                    actor_role VARCHAR(100) NULL,
-                    badge_text VARCHAR(100) NULL,
-                    badge_color VARCHAR(30) NOT NULL DEFAULT 'blue',
-                    recipient_email VARCHAR(255) NULL,
-                    email_sent BOOLEAN NOT NULL DEFAULT FALSE,
-                    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-                );
-                CREATE INDEX IF NOT EXISTS idx_leave_request_event_logs_req_id
-                    ON "academic"."leave_request_event_logs"(leave_request_id, created_at);
-                """
-            )
-
         self.stdout.write(
             self.style.NOTICE("Seeding Student Leave Requests (academic.leave_requests)...")
         )

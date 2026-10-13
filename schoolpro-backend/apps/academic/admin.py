@@ -759,19 +759,16 @@ class AssignmentSubmissionAdmin(admin.ModelAdmin):
         "submitted_at",
     ]
     search_fields = ["student__student_code", "student__user__full_name", "assignment__title"]
-    list_filter = ["status", "submission_status", "is_late", "appeal_status"]
+    list_filter = ["status", "submission_status", "is_late", "reopen_status"]
     autocomplete_fields = [
         "assignment",
         "student",
         "graded_by",
-        "appeal_resolved_by",
         "reopen_approved_by",
     ]
     readonly_fields = [
         "submitted_at",
         "graded_at",
-        "appealed_at",
-        "appeal_resolved_at",
         "reopen_requested_at",
         "reopen_approved_at",
     ]

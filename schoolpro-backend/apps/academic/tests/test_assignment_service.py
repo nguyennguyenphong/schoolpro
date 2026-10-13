@@ -146,13 +146,6 @@ def test_format_assignment_item_graded_merges_rubric_and_exposes_solutions():
         reopen_request_reason=None,
         reopen_requested_at=None,
         reopen_approved_at=None,
-        appeal_status="NONE",
-        appeal_reason=None,
-        appeal_attachments=[],
-        appealed_at=None,
-        appeal_response=None,
-        appeal_resolved_at=None,
-        appeal_resolved_by=None,
         student=SimpleNamespace(user=SimpleNamespace(full_name="Đỗ Minh Quân")),
     )
 
@@ -189,7 +182,6 @@ def test_submit_assignment_enforces_late_and_resubmission_limits():
 
     with (
         patch("django.db.transaction.atomic", return_value=nullcontext()),
-        patch.object(AssignmentService, "ensure_schema"),
         patch.object(AssignmentService, "resolve_student", return_value=dummy_student),
         patch("apps.academic.models.assignment.Assignment.objects") as mock_asgn_mgr,
         patch("apps.academic.models.assignment.AssignmentSubmission.objects") as mock_sub_mgr,

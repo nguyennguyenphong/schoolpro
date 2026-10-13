@@ -105,7 +105,6 @@ def test_student_checkin_rejects_expired_session():
 
     with (
         patch("django.db.transaction.atomic", return_value=nullcontext()),
-        patch.object(AttendanceSessionService, "ensure_schema"),
         patch.object(AttendanceSessionService, "resolve_student", return_value=dummy_student),
         patch("apps.academic.models.attendance.AttendanceSession.objects") as mock_sess_mgr,
         patch("apps.academic.models.attendance.Attendance.objects") as mock_att_mgr,
@@ -161,7 +160,6 @@ def test_student_checkin_rejects_out_of_radius_coordinates():
 
     with (
         patch("django.db.transaction.atomic", return_value=nullcontext()),
-        patch.object(AttendanceSessionService, "ensure_schema"),
         patch.object(AttendanceSessionService, "resolve_student", return_value=dummy_student),
         patch("apps.academic.models.attendance.AttendanceSession.objects") as mock_sess_mgr,
         patch("apps.academic.models.attendance.Attendance.objects") as mock_att_mgr,

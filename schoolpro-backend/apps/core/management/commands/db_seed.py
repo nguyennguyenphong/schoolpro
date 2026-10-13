@@ -51,6 +51,19 @@ class Command(BaseCommand):
             ("seed_students", "Core: Student Profiles (10 Học sinh lớp 10A1)"),
             ("seed_class_groups", "Core: Class Groups (Tổ học tập & trực nhật lớp 10A1)"),
             ("seed_guardians", "Core: Guardian Profiles (3 Phụ huynh học sinh)"),
+            # 5. Academic Timetables, Leave Requests & Assignments
+            (
+                "seed_class_timetable",
+                "Academic: Class 10A1 Timetable & Subject Teachers (Thời khóa biểu & Phân công giảng dạy)",
+            ),
+            (
+                "seed_leave_requests",
+                "Academic: Student Leave Requests (Đơn xin nghỉ phép & Nhật ký duyệt)",
+            ),
+            (
+                "seed_assignments",
+                "Academic: Assignments & Submissions (Bài tập, Bài nộp, Rubric & Nhật ký)",
+            ),
         ]
 
         total_steps = len(seed_pipeline)

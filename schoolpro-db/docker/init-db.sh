@@ -98,6 +98,7 @@ execute_sql "$SQL_DIR/02_tables/academic/academic_attendance_sessions.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_attendance.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_attendance_logs.sql"
 execute_sql "$SQL_DIR/02_tables/academic/academic_leave_requests.sql"
+execute_sql "$SQL_DIR/02_tables/academic/academic_leave_request_event_logs.sql"
 execute_sql "$SQL_DIR/02_tables/core/core_classes_constraints.sql"
 
 # 6. Emulation 360 Tables

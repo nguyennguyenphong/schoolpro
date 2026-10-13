@@ -182,26 +182,6 @@ class AssignmentSubmission(UUIDModel):
     )
     graded_at = models.DateTimeField(null=True, blank=True)
 
-    # Score Appeal Workflow
-    appeal_status = models.CharField(
-        max_length=30,
-        default="NONE",
-        help_text="Trạng thái khiếu nại: NONE, PENDING, APPROVED, REJECTED",
-    )
-    appeal_reason = models.TextField(null=True, blank=True)
-    appeal_attachments = models.JSONField(null=True, blank=True)
-    appealed_at = models.DateTimeField(null=True, blank=True)
-    appeal_resolved_by = models.ForeignKey(
-        "core.User",
-        on_delete=models.SET_NULL,
-        db_column="appeal_resolved_by",
-        null=True,
-        blank=True,
-        related_name="+",
-    )
-    appeal_response = models.TextField(null=True, blank=True)
-    appeal_resolved_at = models.DateTimeField(null=True, blank=True)
-
     # Reopen Request Workflow
     reopen_status = models.CharField(max_length=30, default="NONE")
     reopen_request_reason = models.TextField(null=True, blank=True)

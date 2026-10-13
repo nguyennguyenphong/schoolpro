@@ -31,16 +31,6 @@ CREATE TABLE IF NOT EXISTS academic.assignment_submissions (
   graded_by             UUID REFERENCES core.users(id) ON DELETE SET NULL,
   graded_at             TIMESTAMPTZ,
 
-  -- Quy trình khiếu nại điểm (Score Appeal Workflow)
-  appeal_status         VARCHAR(30) NOT NULL DEFAULT 'NONE'
-                          CHECK (appeal_status IN ('NONE', 'PENDING', 'APPROVED', 'REJECTED')),
-  appeal_reason         TEXT,
-  appeal_attachments    JSONB,
-  appealed_at           TIMESTAMPTZ,
-  appeal_resolved_by    UUID REFERENCES core.users(id) ON DELETE SET NULL,
-  appeal_response       TEXT,
-  appeal_resolved_at    TIMESTAMPTZ,
-
   -- Quy trình yêu cầu mở lại cổng nộp bù (Reopen Request Workflow)
   reopen_status         VARCHAR(30) NOT NULL DEFAULT 'NONE'
                           CHECK (reopen_status IN ('NONE', 'PENDING', 'APPROVED', 'REJECTED')),
@@ -54,13 +44,10 @@ CREATE TABLE IF NOT EXISTS academic.assignment_submissions (
 );
 
 CREATE INDEX IF NOT EXISTS ix_submissions_student ON academic.assignment_submissions(student_id);
-CREATE INDEX IF NOT EXISTS ix_submissions_appeal ON academic.assignment_submissions(appeal_status);
 
-COMMENT ON TABLE academic.assignment_submissions IS 'Student homework answers, uploaded files, and graded feedback with appeal workflow';
+COMMENT ON TABLE academic.assignment_submissions IS 'Student homework answers, uploaded files, and graded feedback';
 COMMENT ON COLUMN academic.assignment_submissions.attempt_number IS 'Số thứ tự lần nộp bài của học sinh (1, 2, 3...)';
 COMMENT ON COLUMN academic.assignment_submissions.is_late IS 'Cờ đánh dấu bài nộp sau hạn chót quy định';
 COMMENT ON COLUMN academic.assignment_submissions.penalty_deduction IS 'Số điểm bị trừ do nộp muộn';
-COMMENT ON COLUMN academic.assignment_submissions.final_score IS 'Điểm tổng kết cuối cùng sau khi đã tính trừ điểm và giải quyết khiếu nại';
-COMMENT ON COLUMN academic.assignment_submissions.appeal_status IS 'Trạng thái khiếu nại điểm: NONE, PENDING, APPROVED, REJECTED';
-COMMENT ON COLUMN academic.assignment_submissions.appeal_reason IS 'Lý do học sinh khiếu nại điểm bài làm';
+COMMENT ON COLUMN academic.assignment_submissions.final_score IS 'Điểm tổng kết cuối cùng sau khi đã tính trừ điểm';
 COMMENT ON COLUMN academic.assignment_submissions.reopen_status IS 'Trạng thái đề xuất mở lại cổng: NONE, PENDING, APPROVED, REJECTED';

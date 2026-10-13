@@ -12,7 +12,7 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 from typing import Any
 
-from django.db import connection, transaction
+from django.db import transaction
 from django.utils import timezone
 
 from apps.academic.models.attendance import (
@@ -43,132 +43,6 @@ class AttendanceSessionService:
     Handles teacher-generated attendance sessions (6-digit PIN + QR code),
     strict expiration timers, Haversine GPS distance calculation, and student check-ins.
     """
-
-    _schema_ensured: bool = False
-
-    @classmethod
-    def ensure_schema(cls) -> None:
-        """
-        Idempotently ensures `academic.attendance_sessions` and the GPS / session columns
-        on `academic.attendance` and `academic.attendance_logs` exist in PostgreSQL.
-        """
-        if cls._schema_ensured:
-            return
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    """
-                    CREATE TABLE IF NOT EXISTS "academic"."attendance_sessions" (
-                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                        timetable_id UUID NULL REFERENCES "academic"."timetables"(id) ON DELETE SET NULL,
-                        class_id UUID NOT NULL REFERENCES "core"."classes"(id) ON DELETE CASCADE,
-                        subject_id UUID NOT NULL REFERENCES "core"."subjects"(id) ON DELETE CASCADE,
-                        period_id UUID NULL REFERENCES "academic"."periods"(id) ON DELETE SET NULL,
-                        teacher_id UUID NULL REFERENCES "core"."teachers"(id) ON DELETE SET NULL,
-                        room_id UUID NULL REFERENCES "academic"."rooms"(id) ON DELETE SET NULL,
-                        session_date DATE NOT NULL DEFAULT CURRENT_DATE,
-                        pin_code VARCHAR(6) NOT NULL,
-                        qr_token VARCHAR(128) NOT NULL UNIQUE,
-                        teacher_latitude NUMERIC(10, 7) NOT NULL DEFAULT 10.779785,
-                        teacher_longitude NUMERIC(10, 7) NOT NULL DEFAULT 106.693182,
-                        allowed_radius_meters INTEGER NOT NULL DEFAULT 50,
-                        duration_seconds INTEGER NOT NULL DEFAULT 300,
-                        opened_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-                        expires_at TIMESTAMPTZ NOT NULL,
-                        closed_at TIMESTAMPTZ NULL,
-                        status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
-                        note TEXT NULL,
-                        metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-                        created_by UUID NOT NULL REFERENCES "core"."users"(id) ON DELETE CASCADE,
-                        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-                        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-                    );
-                    CREATE INDEX IF NOT EXISTS ix_att_sessions_class_date
-                        ON "academic"."attendance_sessions"(class_id, session_date);
-                    CREATE INDEX IF NOT EXISTS ix_att_sessions_timetable_date
-                        ON "academic"."attendance_sessions"(timetable_id, session_date);
-                    CREATE INDEX IF NOT EXISTS ix_att_sessions_status_expires
-                        ON "academic"."attendance_sessions"(status, expires_at);
-                    """
-                )
-                # Ensure columns on academic.attendance
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS session_id UUID NULL REFERENCES "academic"."attendance_sessions"(id) ON DELETE SET NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS timetable_id UUID NULL REFERENCES "academic"."timetables"(id) ON DELETE SET NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS subject_id UUID NULL REFERENCES "core"."subjects"(id) ON DELETE SET NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS check_in_time TIMESTAMPTZ NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS method VARCHAR(30) NOT NULL DEFAULT \'MANUAL\';'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS check_in_code VARCHAR(64) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS check_in_latitude NUMERIC(10, 7) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS check_in_longitude NUMERIC(10, 7) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS distance_meters NUMERIC(8, 2) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS is_within_radius BOOLEAN NOT NULL DEFAULT TRUE;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS gps_accuracy_meters NUMERIC(8, 2) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS device_id VARCHAR(100) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS excuse_reason TEXT NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS excuse_document_url TEXT NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS is_parent_notified BOOLEAN NOT NULL DEFAULT FALSE;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS notification_sent_at TIMESTAMPTZ NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" ADD COLUMN IF NOT EXISTS metadata JSONB NOT NULL DEFAULT \'{}\'::jsonb;'
-                )
-                # Drop restrictive old method constraint if present so PIN_CODE, QR_SCAN, QR_UPLOAD work
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance" DROP CONSTRAINT IF EXISTS attendance_method_check;'
-                )
-                # Ensure columns on academic.attendance_logs
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS session_id UUID NULL REFERENCES "academic"."attendance_sessions"(id) ON DELETE SET NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS method VARCHAR(30) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS check_in_latitude NUMERIC(10, 7) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS check_in_longitude NUMERIC(10, 7) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS distance_meters NUMERIC(8, 2) NULL;'
-                )
-                cursor.execute(
-                    'ALTER TABLE "academic"."attendance_logs" ADD COLUMN IF NOT EXISTS is_within_radius BOOLEAN NULL;'
-                )
-            cls._schema_ensured = True
-        except Exception as exc:
-            logger.debug("AttendanceSessionService.ensure_schema skipped: %s", exc)
 
     @staticmethod
     def calculate_haversine_distance_meters(
@@ -274,7 +148,6 @@ class AttendanceSessionService:
         Finds all OPEN attendance sessions whose expires_at <= now, marks them EXPIRED,
         and broadcasts real-time expiration events.
         """
-        cls.ensure_schema()
         now = timezone.now()
         qs = AttendanceSession.objects.select_related(
             "school_class", "subject", "period", "teacher", "teacher__user", "room"
@@ -455,7 +328,6 @@ class AttendanceSessionService:
         merging Timetable slots, AttendanceSession (PIN + QR + GPS + expiration),
         Attendance check-in records, and approved LeaveRequests.
         """
-        cls.ensure_schema()
         target_date = cls.parse_target_date(date_str)
         today = timezone.localdate()
         now = timezone.now()
@@ -859,7 +731,6 @@ class AttendanceSessionService:
         - Sets strict expiration timestamp (opened_at + duration_seconds)
         - Broadcasts real-time WebSocket event to all students in the class
         """
-        cls.ensure_schema()
 
         timetable_id = data.get("timetableId") or data.get("timetable_id") or data.get("recordId")
         session_id = data.get("sessionId") or data.get("session_id")
@@ -1062,7 +933,6 @@ class AttendanceSessionService:
         """
         Immediately expires an active attendance session (used when countdown hits 0 or teacher closes session).
         """
-        cls.ensure_schema()
         session = (
             AttendanceSession.objects.select_related(
                 "school_class", "subject", "period", "teacher", "teacher__user", "room"
@@ -1139,7 +1009,6 @@ class AttendanceSessionService:
            - Rejects check-in if distance_meters > session.allowed_radius_meters.
         5. Saves Attendance record + AttendanceLog with coordinates and distance, and broadcasts via WebSocket.
         """
-        cls.ensure_schema()
 
         record_id = str(
             data.get("recordId") or data.get("sessionId") or data.get("timetableId") or ""
