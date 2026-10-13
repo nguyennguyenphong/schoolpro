@@ -14,12 +14,11 @@ interface AssignmentContentTabsCardProps {
   assignment: AssignmentItem;
   isGraded: boolean;
   onPreviewPdf: (file: { url: string; name: string; size: string }) => void;
-  onRequestAppeal: () => void;
 }
 
 export const AssignmentContentTabsCard: React.FC<
   AssignmentContentTabsCardProps
-> = ({ assignment, isGraded, onPreviewPdf, onRequestAppeal }) => {
+> = ({ assignment, isGraded, onPreviewPdf }) => {
   const { t } = useTranslation(["card"]);
 
   const hasRubric = Boolean(assignment.rubric && assignment.rubric.length > 0);
@@ -100,7 +99,6 @@ export const AssignmentContentTabsCard: React.FC<
         <div className="pt-1">
           <AssignmentGradedFeedbackCard
             assignment={assignment}
-            onRequestAppeal={onRequestAppeal}
             embedded
           />
         </div>

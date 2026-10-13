@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
+import { isDueDatePassed } from "@/modules/students/features/assignments/utils/fileUtils";
+
 interface AssignmentModalSubmitFormProps {
   assignment: AssignmentItem;
   submissionContent: string;
@@ -27,7 +29,11 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
 }) => {
   const { t } = useTranslation(["card", "button", "input"]);
 
-  if (assignment.status !== "pending" && assignment.status !== "overdue") {
+  const isExpired =
+    isDueDatePassed(assignment.dueDate) &&
+    assignment.reopenRequest?.status !== "approved";
+
+  if (assignment.status !== "pending" || isExpired) {
     return null;
   }
 

@@ -83,7 +83,6 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({
           iconTextClass: "text-emerald-700",
         };
       case "REOPEN_REQUESTED":
-      case "APPEAL_SUBMITTED":
         return {
           id: item.id,
           time: item.createdAt,
@@ -114,7 +113,9 @@ export const AssignmentOverdueLog: React.FC<AssignmentOverdueLogProps> = ({
   let events: LogEventItem[] = [];
 
   if (assignment.eventLogs && assignment.eventLogs.length > 0) {
-    events = assignment.eventLogs.map(mapBackendEvent);
+    events = assignment.eventLogs
+      .filter((item) => item.eventType !== "APPEAL_SUBMITTED")
+      .map(mapBackendEvent);
   } else {
     events = [
       {

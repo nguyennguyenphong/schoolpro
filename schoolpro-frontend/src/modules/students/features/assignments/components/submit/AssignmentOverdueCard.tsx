@@ -40,9 +40,14 @@ export const AssignmentOverdueCard: React.FC<AssignmentOverdueCardProps> = ({
         </Tag>
       </div>
 
-      <p className="text-xs text-slate-600 mb-0 leading-relaxed">
-        {t("card:assignments.detail.overdueLockedDesc")}
-      </p>
+      <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed">
+        <p className="font-semibold text-rose-800 mb-0">
+          {t("card:assignments.detail.overdueWaitExtensionDesc")}
+        </p>
+        <p className="mb-0">
+          {t("card:assignments.detail.overdueLockedDesc")}
+        </p>
+      </div>
 
       {/* 2. Reopen Request Status Preview if already sent */}
       {assignment.reopenRequest && (

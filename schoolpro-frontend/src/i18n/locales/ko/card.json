@@ -441,7 +441,13 @@
       "noteNamingRule": "파일명 작성 규칙:",
       "noteMaxSize": "파일당 최대 {{maxSize}}MB, 최대 {{maxFiles}}개까지 첨부 가능합니다.",
       "noteReopen": "기한 만료로 포털이 닫힌 경우 담당 교사에게 재오픈을 요청할 수 있습니다.",
-      "noteResubmit": "제출 전 PDF/이미지/영상을 미리보기 할 수 있으며 마감 전까지 재제출이 가능합니다."
+      "noteResubmit": "제출 전 PDF/이미지/영상을 미리보기 할 수 있으며 마감 전까지 재제출이 가능합니다.",
+      "viewOnlyTag": "열람 전용",
+      "submittedExpiredViewOnlyDesc": "제출 마감 기한({{dueDate}})이 지났습니다. 제출한 과제는 열람만 가능하며 수정하거나 다시 제출할 수 없습니다.",
+      "overdueWaitExtensionDesc": "제출 기한이 종료되어 제출 창구가 잠겼습니다. 계속 제출하려면 담당 교사의 기한 연장을 기다려야 합니다.",
+      "waitingTeacherGradeTitle": "교사 채점 대기 중",
+      "waitingTeacherGradeDesc": "과제가 담당 교사에게 전송되었습니다. 채점이 완료되면 점수와 상세 피드백이 여기에 표시됩니다.",
+      "pendingScoreBadge": "점수: 채점 대기 / {{max}}"
     },
     "uploader": {
       "selectByCategoryLabel": "파일 형식별 업로드 선택:",

@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { AssignmentSubmissionView } from "@/modules/students/features/assignments/components/submit/AssignmentSubmissionView";
 import { AssignmentOverdueCard } from "@/modules/students/features/assignments/components/submit/AssignmentOverdueCard";
 import { AssignmentSubmitForm } from "@/modules/students/features/assignments/components/submit/AssignmentSubmitForm";
+import { AssignmentGradedFeedbackCard } from "@/modules/students/features/assignments/components/submit/AssignmentGradedFeedbackCard";
 import type {
   AssignmentItem,
   SubmittedFile,
@@ -76,13 +77,16 @@ export const AssignmentSubmissionWorkspaceCard: React.FC<
             </span>
           )}
 
-          {isSubmittedAndExpired ? (
+          {isGraded ? (
+            <Tag color="success">
+              {t("card:assignments.statusLabels.gradedWithScoreUnit", {
+                score: assignment.score ?? 0,
+                max: assignment.pointsPossible,
+              })}
+            </Tag>
+          ) : isSubmittedAndExpired ? (
             <Tag color="default">
               {t("card:assignments.statusLabels.submittedClosed")}
-            </Tag>
-          ) : isGraded ? (
-            <Tag color="success">
-              {t("card:assignments.statusLabels.graded")}
             </Tag>
           ) : isSubmitted ? (
             <Tag color="processing">
@@ -107,8 +111,14 @@ export const AssignmentSubmissionWorkspaceCard: React.FC<
           isSubmittedAndExpired={isSubmittedAndExpired}
           isGraded={isGraded}
           onPreview={onPreview}
-          onRequestReopen={onRequestReopen}
           onStartResubmit={onStartResubmit}
+        />
+      )}
+
+      {!hasSubmission && isGraded && (
+        <AssignmentGradedFeedbackCard
+          assignment={assignment}
+          embedded
         />
       )}
 
@@ -137,3 +147,4 @@ export const AssignmentSubmissionWorkspaceCard: React.FC<
     </div>
   );
 };
+

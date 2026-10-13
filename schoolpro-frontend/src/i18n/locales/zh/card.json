@@ -441,7 +441,13 @@
       "noteNamingRule": "文件命名规范:",
       "noteMaxSize": "每个文件最大 {{maxSize}}MB，单次最多上传 {{maxFiles}} 个附件。",
       "noteReopen": "当提交通道因逾期关闭时，学生可向任课教师发送重新开放申请。",
-      "noteResubmit": "提交前可在线预览 PDF/图片/视频，截止前可重新提交修改。"
+      "noteResubmit": "提交前可在线预览 PDF/图片/视频，截止前可重新提交修改。",
+      "viewOnlyTag": "仅供查看",
+      "submittedExpiredViewOnlyDesc": "提交截止时间（{{dueDate}}）已过。您只能查看已提交的作业，无法修改或重新提交。",
+      "overdueWaitExtensionDesc": "提交截止时间已过，系统已锁定提交入口。您必须等待教师延长截止时间后才能继续提交。",
+      "waitingTeacherGradeTitle": "等待教师批改",
+      "waitingTeacherGradeDesc": "您的作业已发送给任课教师。教师完成批改后，分数和详细评语将立即显示在此处。",
+      "pendingScoreBadge": "分数: 待批改 / {{max}}"
     },
     "uploader": {
       "selectByCategoryLabel": "按文件格式选择上传:",

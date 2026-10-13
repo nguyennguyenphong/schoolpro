@@ -1,7 +1,6 @@
 import { httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 import type {
-  AssignmentAttachment,
   AssignmentFilter,
   AssignmentItem,
   AssignmentListResult,
@@ -172,26 +171,7 @@ class AssignmentsService {
 
     throw new Error(response.data?.message || "Không thể gửi yêu cầu mở lại nộp bài");
   }
-
-  /**
-   * Submit a score appeal request for a graded assignment.
-   */
-  async appealAssignment(
-    assignmentId: string,
-    reason: string,
-    attachments: AssignmentAttachment[] = [],
-  ): Promise<AssignmentItem> {
-    const response = await httpClient.post<ApiResponse<AssignmentItem>>(
-      `/academic/assignments/${assignmentId}/appeal/`,
-      { reason, attachments },
-    );
-
-    if (response.data?.data) {
-      return response.data.data;
-    }
-
-    throw new Error(response.data?.message || "Không thể gửi yêu cầu phúc khảo điểm");
-  }
 }
 
 export const assignmentsService = new AssignmentsService();
+

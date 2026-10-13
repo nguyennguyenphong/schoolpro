@@ -66,16 +66,6 @@ export interface ReopenRequest {
   approvedAt?: string | null;
 }
 
-export interface ScoreAppeal {
-  status: "pending" | "approved" | "rejected";
-  reason: string;
-  attachments?: AssignmentAttachment[];
-  appealedAt: string;
-  response?: string | null;
-  resolvedAt?: string | null;
-  resolvedByName?: string | null;
-}
-
 export interface AssignmentEventLogItem {
   id: string;
   eventType: string;
@@ -132,7 +122,6 @@ export interface AssignmentItem {
   solutionAttachments?: AssignmentAttachment[];
   submission?: AssignmentSubmission | null;
   reopenRequest?: ReopenRequest | null;
-  appeal?: ScoreAppeal | null;
   eventLogs?: AssignmentEventLogItem[];
 }
 

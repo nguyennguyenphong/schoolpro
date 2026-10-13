@@ -373,28 +373,6 @@ class AssignmentService:
                     }
                 )
 
-            if submission.appeal_status and submission.appeal_status != "NONE":
-                app_time = (
-                    submission.appealed_at.astimezone(tz).strftime("%Y-%m-%d %H:%M")
-                    if submission.appealed_at
-                    else timezone.now().astimezone(tz).strftime("%Y-%m-%d %H:%M")
-                )
-                events.append(
-                    {
-                        "id": f"evt-appeal-{submission.id}",
-                        "eventType": "APPEAL_SUBMITTED",
-                        "title": "Học sinh gửi yêu cầu phúc khảo điểm",
-                        "description": submission.appeal_reason or "",
-                        "actorName": (
-                            submission.student.user.full_name
-                            if submission.student and submission.student.user
-                            else "Học sinh"
-                        ),
-                        "createdAt": app_time,
-                        "metadata": {"status": submission.appeal_status.lower()},
-                    }
-                )
-
         effective_due = cls.get_effective_due_date(assignment)
         if effective_due < timezone.now() and (not submission or not submission.submitted_at):
             events.append(
@@ -494,7 +472,6 @@ class AssignmentService:
         # Format submission payload
         submission_payload = None
         reopen_payload = None
-        appeal_payload = None
 
         if submission:
             if has_submitted_work:
@@ -538,34 +515,6 @@ class AssignmentService:
                 }
             elif legacy_reopen:
                 reopen_payload = legacy_reopen
-
-            # Score Appeal resolution
-            if submission.appeal_status and submission.appeal_status != "NONE":
-                appeal_payload = {
-                    "status": submission.appeal_status.lower(),
-                    "reason": submission.appeal_reason or "",
-                    "attachments": (
-                        submission.appeal_attachments
-                        if isinstance(submission.appeal_attachments, list)
-                        else []
-                    ),
-                    "appealedAt": (
-                        submission.appealed_at.astimezone(tz).strftime("%Y-%m-%d %H:%M")
-                        if submission.appealed_at
-                        else ""
-                    ),
-                    "response": submission.appeal_response or None,
-                    "resolvedAt": (
-                        submission.appeal_resolved_at.astimezone(tz).strftime("%Y-%m-%d %H:%M")
-                        if submission.appeal_resolved_at
-                        else None
-                    ),
-                    "resolvedByName": (
-                        submission.appeal_resolved_by.full_name
-                        if submission.appeal_resolved_by
-                        else None
-                    ),
-                }
 
         # Score & Rubric resolution
         score_val = None
@@ -648,7 +597,7 @@ class AssignmentService:
             "id": str(assignment.id),
             "code": assignment_code,
             "title": assignment.title,
-            "subjectId": str(subject.id) if subject else None,
+            "subjectId": str(subject.id) if subject and getattr(subject, "id", None) else None,
             "subjectCode": subject_code,
             "subjectName": subject.name if subject else "Môn học",
             "className": school_class.name if school_class else "",
@@ -687,7 +636,6 @@ class AssignmentService:
             "solutionAttachments": solution_files,
             "submission": submission_payload,
             "reopenRequest": reopen_payload,
-            "appeal": appeal_payload,
             "eventLogs": event_logs,
         }
 
@@ -1331,20 +1279,13 @@ class AssignmentService:
             has_previous_submission = bool(not created and submission.submitted_at is not None)
             reopen_approved = submission.reopen_status == "APPROVED"
 
-            if is_late and not assignment.allow_late_submission and not reopen_approved:
+            if is_late and not reopen_approved:
                 raise ValueError(
-                    "Bài tập này đã hết hạn và không cho phép nộp muộn. Vui lòng gửi yêu cầu xin mở lại cổng nộp bài."
+                    "Bài tập này đã hết hạn và không cho phép nộp muộn. Vui lòng đợi giáo viên gia hạn thêm thời gian hoặc gửi yêu cầu xin mở lại cổng nộp bài."
                 )
 
             if has_previous_submission:
-                if not assignment.allow_resubmission and not reopen_approved:
-                    raise ValueError("Bài tập này không cho phép nộp lại sau khi đã gửi bài.")
                 current_attempts = int(submission.attempt_number or 1)
-                max_attempts = int(assignment.max_resubmission_count or 3)
-                if current_attempts >= max_attempts and not reopen_approved:
-                    raise ValueError(
-                        f"Bạn đã sử dụng hết số lần nộp lại tối đa ({max_attempts} lần)."
-                    )
                 submission.attempt_number = current_attempts + 1
             else:
                 submission.attempt_number = 1
@@ -1432,6 +1373,11 @@ class AssignmentService:
                 student=student,
             )
 
+            if submission.submitted_at is not None:
+                raise ValueError(
+                    "Bài tập đã được nộp. Khi hết hạn nộp bài, bài làm đã nộp chỉ ở chế độ xem lại."
+                )
+
             submission.reopen_status = "PENDING"
             submission.reopen_request_reason = clean_reason
             submission.reopen_requested_at = now
@@ -1474,60 +1420,3 @@ class AssignmentService:
 
         return cls.get_assignment_detail(user=user, assignment_id=assignment_id)
 
-    @classmethod
-    def submit_appeal(
-        cls,
-        user: Any,
-        assignment_id: str,
-        reason: str,
-        attachments: list[dict[str, Any]] | None = None,
-    ) -> dict[str, Any]:
-        """
-        Submits a student score appeal (phúc khảo điểm) for a graded assignment.
-        """
-        cls.ensure_schema()
-        student = cls.resolve_student(user)
-        if not student:
-            raise ValueError("Không tìm thấy hồ sơ học sinh.")
-
-        assignment = Assignment.objects.filter(id=assignment_id).first()
-        if not assignment:
-            raise ValueError("Không tìm thấy bài tập.")
-
-        submission = AssignmentSubmission.objects.filter(
-            assignment=assignment,
-            student=student,
-        ).first()
-        if not submission or (submission.status != "GRADED" and submission.score is None):
-            raise ValueError("Chỉ có thể gửi yêu cầu phúc khảo đối với bài tập đã có điểm.")
-
-        if submission.appeal_status == "PENDING":
-            raise ValueError("Yêu cầu phúc khảo điểm của bạn đang chờ giáo viên bộ môn xét duyệt.")
-
-        clean_reason = (reason or "").strip()
-        if not clean_reason:
-            raise ValueError("Vui lòng nhập nội dung và lý do đề nghị phúc khảo điểm.")
-
-        now = timezone.now()
-        with transaction.atomic():
-            submission.appeal_status = "PENDING"
-            submission.appeal_reason = clean_reason
-            submission.appeal_attachments = attachments or []
-            submission.appealed_at = now
-            submission.save()
-
-            AssignmentEventLog.objects.create(
-                assignment=assignment,
-                submission=submission,
-                student=student,
-                actor=student.user if student.user else None,
-                event_type="APPEAL_SUBMITTED",
-                title="Học sinh gửi yêu cầu phúc khảo điểm",
-                description=clean_reason,
-                metadata={
-                    "currentScore": float(submission.final_score or submission.score or 0),
-                    "status": "pending",
-                },
-            )
-
-        return cls.get_assignment_detail(user=user, assignment_id=assignment_id)

@@ -441,7 +441,13 @@
       "noteNamingRule": "ファイル命名規則:",
       "noteMaxSize": "1ファイル最大{{maxSize}}MB、最大{{maxFiles}}ファイルまで添付可能です。",
       "noteReopen": "期限切れでロックされた場合、担当教員へ受付再開の申請を送ることができます。",
-      "noteResubmit": "提出前にPDF・画像・動画をプレビュー確認でき、期限内であれば再提出可能です。"
+      "noteResubmit": "提出前にPDF・画像・動画をプレビュー確認でき、期限内であれば再提出可能です。",
+      "viewOnlyTag": "閲覧のみ",
+      "submittedExpiredViewOnlyDesc": "提出期限（{{dueDate}}）が終了しました。提出済みの課題は閲覧のみ可能で、編集や再提出はできません。",
+      "overdueWaitExtensionDesc": "提出期限が終了したため提出窓口がロックされました。続けて提出するには担当教員による期限延長を待つ必要があります。",
+      "waitingTeacherGradeTitle": "教員の採点待ち",
+      "waitingTeacherGradeDesc": "課題は担当教員に送信されました。採点が完了次第、スコアと講評がここに表示されます。",
+      "pendingScoreBadge": "スコア: 採点待ち / {{max}}"
     },
     "uploader": {
       "selectByCategoryLabel": "ファイル形式を選択してアップロード:",

@@ -6,7 +6,6 @@ import { Icon } from "@/components/ui/Icon";
 import {
   FilePreviewModal,
   ReopenRequestModal,
-  ScoreAppealModal,
   AssignmentDetailSkeleton,
 } from "@/modules/students/features/assignments/components";
 import {
@@ -52,10 +51,6 @@ export const AssignmentSubmitPage: React.FC = () => {
     setReopenModalOpen,
     requestingReopen,
     handleRequestReopen,
-    appealModalOpen,
-    setAppealModalOpen,
-    submittingAppeal,
-    handleAppealScore,
   } = useAssignmentActions({
     assignment,
     setAssignment,
@@ -153,7 +148,6 @@ export const AssignmentSubmitPage: React.FC = () => {
             assignment={assignment}
             isGraded={isGraded}
             onPreviewPdf={setPreviewPdf}
-            onRequestAppeal={() => setAppealModalOpen(true)}
           />
 
           <AssignmentSubmissionWorkspaceCard
@@ -206,14 +200,6 @@ export const AssignmentSubmitPage: React.FC = () => {
         loading={requestingReopen}
       />
 
-      <ScoreAppealModal
-        open={appealModalOpen}
-        onClose={() => setAppealModalOpen(false)}
-        assignment={assignment}
-        onSubmit={handleAppealScore}
-        loading={submittingAppeal}
-      />
-
       {previewPdf && (
         <PdfViewerModal
           isOpen={Boolean(previewPdf)}
@@ -226,3 +212,4 @@ export const AssignmentSubmitPage: React.FC = () => {
     </div>
   );
 };
+

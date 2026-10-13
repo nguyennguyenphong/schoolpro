@@ -130,18 +130,8 @@ export const AssignmentDeadlineStatusCard: React.FC<AssignmentDeadlineStatusCard
         <span className="text-slate-500">
           {t("card:assignments.detail.lateSubmissionField")}
         </span>
-        <strong
-          className={
-            assignment.allowLateSubmission ? "text-amber-700" : "text-slate-700"
-          }
-        >
-          {assignment.allowLateSubmission
-            ? (assignment.latePenaltyPercent ?? 0) > 0
-              ? t("card:assignments.detail.lateAllowedWithPenalty", {
-                  penalty: assignment.latePenaltyPercent ?? 0,
-                })
-              : t("card:assignments.detail.lateAllowedNoPenalty")
-            : t("card:assignments.detail.lateDisallowedValue")}
+        <strong className="text-slate-700">
+          {t("card:assignments.detail.lateDisallowedValue")}
         </strong>
       </div>
 

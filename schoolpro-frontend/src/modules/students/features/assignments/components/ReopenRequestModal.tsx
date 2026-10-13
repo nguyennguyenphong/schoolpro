@@ -25,12 +25,6 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
   const { t } = useTranslation(["card", "button", "message"]);
   const [reason, setReason] = useState("");
 
-  const quickReasons: string[] = [
-    t("card:assignments.modals.quickReason1"),
-    t("card:assignments.modals.quickReason2"),
-    t("card:assignments.modals.quickReason3"),
-  ];
-
   const teacherEmail =
     assignment.teacherEmail ||
     `${assignment.teacherName
@@ -105,24 +99,6 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
               {t("card:assignments.modals.expiredDeadline")}
             </span>
             <span className="text-rose-600 font-bold">{assignment.dueDate}</span>
-          </div>
-        </div>
-
-        <div>
-          <span className="text-xs font-semibold text-slate-700 block mb-1.5">
-            {t("card:assignments.modals.quickReasonsLabel")}
-          </span>
-          <div className="space-y-1.5">
-            {quickReasons.map((preset, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setReason(preset)}
-                className="w-full text-left p-2 rounded-lg text-[11px] text-slate-600 bg-white border border-[#f0f0f0] hover:border-blue-400 hover:bg-blue-50/30 transition-colors"
-              >
-                • {preset}
-              </button>
-            ))}
           </div>
         </div>
 

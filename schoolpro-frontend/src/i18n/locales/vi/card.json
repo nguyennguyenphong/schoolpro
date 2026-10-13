@@ -441,7 +441,13 @@
       "noteNamingRule": "Đặt tên tệp theo quy chuẩn:",
       "noteMaxSize": "Dung lượng tối đa {{maxSize}}MB mỗi tệp, đính kèm tối đa {{maxFiles}} tệp.",
       "noteReopen": "Khi cổng nộp bài đã đóng do hết hạn, học sinh có thể gửi yêu cầu đề xuất mở lại đến giáo viên phụ trách.",
-      "noteResubmit": "Học sinh có thể xem trước tệp PDF/Hình ảnh/Video và nộp lại bài trước thời điểm hết hạn."
+      "noteResubmit": "Học sinh có thể xem trước tệp PDF/Hình ảnh/Video và nộp lại bài trước thời điểm hết hạn.",
+      "viewOnlyTag": "Chỉ xem lại",
+      "submittedExpiredViewOnlyDesc": "Đã hết thời hạn nộp bài ({{dueDate}}). Bạn chỉ có thể xem lại bài làm đã nộp và không thể chỉnh sửa hoặc nộp lại.",
+      "overdueWaitExtensionDesc": "Thời hạn nộp bài đã kết thúc. Hệ thống đã khóa cổng nộp bài, bạn phải đợi giáo viên gia hạn thêm thời gian mới được phép nộp tiếp.",
+      "waitingTeacherGradeTitle": "Đang chờ giáo viên chấm điểm",
+      "waitingTeacherGradeDesc": "Bài làm của bạn đã được gửi tới giáo viên bộ môn. Điểm số và nhận xét chi tiết sẽ hiển thị tại đây ngay sau khi giáo viên hoàn tất chấm bài.",
+      "pendingScoreBadge": "Điểm số: Chờ chấm / {{max}}"
     },
     "uploader": {
       "selectByCategoryLabel": "Chọn tệp bài làm theo định dạng:",

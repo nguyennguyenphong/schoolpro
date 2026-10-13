@@ -441,7 +441,13 @@
       "noteNamingRule": "File naming convention:",
       "noteMaxSize": "Maximum {{maxSize}}MB per file, up to {{maxFiles}} files per submission.",
       "noteReopen": "When the portal is closed after the deadline, students can request the teacher to reopen it.",
-      "noteResubmit": "Students can preview PDF/Image/Video files and resubmit before the deadline."
+      "noteResubmit": "Students can preview PDF/Image/Video files and resubmit before the deadline.",
+      "viewOnlyTag": "View only",
+      "submittedExpiredViewOnlyDesc": "The submission deadline ({{dueDate}}) has passed. You can only view your submitted work and cannot edit or resubmit.",
+      "overdueWaitExtensionDesc": "The submission deadline has ended. The submission portal is locked; you must wait for the teacher to extend the deadline before submitting.",
+      "waitingTeacherGradeTitle": "Waiting for teacher grading",
+      "waitingTeacherGradeDesc": "Your submission has been sent to the subject teacher. Your score and detailed feedback will be displayed here once grading is complete.",
+      "pendingScoreBadge": "Score: Pending / {{max}}"
     },
     "uploader": {
       "selectByCategoryLabel": "Filter upload by file format:",

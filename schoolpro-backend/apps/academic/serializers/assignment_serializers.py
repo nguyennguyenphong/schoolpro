@@ -83,20 +83,6 @@ class ReopenRequestSerializer(serializers.Serializer):
     approvedAt = serializers.CharField(allow_blank=True, allow_null=True, required=False)
 
 
-class ScoreAppealSerializer(serializers.Serializer):
-    """
-    Metadata for student score appeal (phúc khảo điểm).
-    """
-
-    status = serializers.CharField()
-    reason = serializers.CharField()
-    attachments = AssignmentAttachmentSerializer(many=True, required=False)
-    appealedAt = serializers.CharField()
-    response = serializers.CharField(allow_blank=True, allow_null=True, required=False)
-    resolvedAt = serializers.CharField(allow_blank=True, allow_null=True, required=False)
-    resolvedByName = serializers.CharField(allow_blank=True, allow_null=True, required=False)
-
-
 class AssignmentEventLogSerializer(serializers.Serializer):
     """
     Chronological audit trail event for an assignment and student submission.
@@ -157,7 +143,6 @@ class AssignmentItemResponseSerializer(serializers.Serializer):
     solutionAttachments = AssignmentAttachmentSerializer(many=True, required=False, allow_null=True)
     submission = AssignmentSubmissionSerializer(allow_null=True, required=False)
     reopenRequest = ReopenRequestSerializer(allow_null=True, required=False)
-    appeal = ScoreAppealSerializer(allow_null=True, required=False)
     eventLogs = AssignmentEventLogSerializer(many=True, required=False)
 
 
@@ -206,11 +191,3 @@ class ReopenRequestInputSerializer(serializers.Serializer):
 
     reason = serializers.CharField(max_length=1000, required=True)
 
-
-class ScoreAppealInputSerializer(serializers.Serializer):
-    """
-    Input serializer for submitting a score appeal (phúc khảo điểm).
-    """
-
-    reason = serializers.CharField(max_length=2000, required=True)
-    attachments = serializers.ListField(child=serializers.DictField(), required=False)

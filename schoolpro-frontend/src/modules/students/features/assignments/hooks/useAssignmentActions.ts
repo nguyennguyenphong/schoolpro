@@ -22,9 +22,6 @@ export const useAssignmentActions = ({
   const [reopenModalOpen, setReopenModalOpen] = useState(false);
   const [requestingReopen, setRequestingReopen] = useState(false);
 
-  const [appealModalOpen, setAppealModalOpen] = useState(false);
-  const [submittingAppeal, setSubmittingAppeal] = useState(false);
-
   const handleRequestReopen = useCallback(
     async (reason: string) => {
       if (!assignment || requestingReopen) return;
@@ -59,40 +56,11 @@ export const useAssignmentActions = ({
     [assignment, requestingReopen, setAssignment, t],
   );
 
-  const handleAppealScore = useCallback(
-    async (reason: string) => {
-      if (!assignment || submittingAppeal) return;
-
-      try {
-        setSubmittingAppeal(true);
-
-        const updated = await assignmentsService.appealAssignment(
-          assignment.id,
-          reason,
-        );
-
-        setAssignment(updated);
-        setAppealModalOpen(false);
-
-        message.success(t("assignments.appealSuccess"));
-      } catch {
-        message.error(t("assignments.appealError"));
-      } finally {
-        setSubmittingAppeal(false);
-      }
-    },
-    [assignment, setAssignment, submittingAppeal, t],
-  );
-
   return {
     reopenModalOpen,
     setReopenModalOpen,
     requestingReopen,
     handleRequestReopen,
-
-    appealModalOpen,
-    setAppealModalOpen,
-    submittingAppeal,
-    handleAppealScore,
   };
 };
+

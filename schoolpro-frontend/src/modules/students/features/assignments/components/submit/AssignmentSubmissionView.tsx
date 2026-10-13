@@ -4,6 +4,7 @@ import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { FileItemCard } from "@/modules/students/features/assignments/components/FileItemCard";
+import { AssignmentGradedFeedbackCard } from "@/modules/students/features/assignments/components/submit/AssignmentGradedFeedbackCard";
 import type {
   AssignmentItem,
   SubmittedFile,
@@ -15,7 +16,6 @@ interface AssignmentSubmissionViewProps {
   isSubmittedAndExpired: boolean;
   isGraded: boolean;
   onPreview: (file: SubmittedFile) => void;
-  onRequestReopen: () => void;
   onStartResubmit: () => void;
 }
 
@@ -25,18 +25,62 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
   isSubmittedAndExpired,
   isGraded,
   onPreview,
-  onRequestReopen,
   onStartResubmit,
 }) => {
   const { t } = useTranslation(["card", "button"]);
 
   const attemptNumber = assignment.submission?.attemptNumber ?? 1;
   const maxAttempts = (assignment.maxResubmissionCount ?? 3) + 1;
-  const canResubmit =
-    assignment.allowResubmission !== false && attemptNumber < maxAttempts;
+  const canResubmit = !isSubmittedAndExpired && !isGraded;
 
   return (
-    <div className="space-y-3.5">
+    <div className="space-y-4">
+      {/* 1. Teacher Grading & Score Result Section */}
+      {isGraded ? (
+        <div className="p-4 border border-emerald-200 bg-emerald-50/50 rounded-xl space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-emerald-200/70">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-4 rounded-full bg-emerald-600 inline-block" />
+              <span className="text-sm font-bold text-emerald-950">
+                {t("card:assignments.detail.gradedFeedbackTitle")}
+              </span>
+            </div>
+            <Tag color="success" className="m-0 text-xs font-bold px-2.5 py-0.5">
+              {t("card:assignments.detail.scoreBadge", {
+                score: assignment.score ?? 0,
+                max: assignment.pointsPossible,
+              })}
+            </Tag>
+          </div>
+          <AssignmentGradedFeedbackCard
+            assignment={assignment}
+            embedded
+          />
+        </div>
+      ) : (
+        <div className="p-3.5 bg-amber-50/60 border border-amber-200/80 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="flex items-start gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+              <Icon name="clock" size={15} />
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-xs font-bold text-amber-950 block">
+                {t("card:assignments.detail.waitingTeacherGradeTitle")}
+              </span>
+              <p className="text-xs text-slate-600 mb-0 leading-relaxed">
+                {t("card:assignments.detail.waitingTeacherGradeDesc")}
+              </p>
+            </div>
+          </div>
+          <Tag color="warning" className="m-0 text-xs font-bold px-2.5 py-0.5 shrink-0 self-start sm:self-center">
+            {t("card:assignments.detail.pendingScoreBadge", {
+              max: assignment.pointsPossible,
+            })}
+          </Tag>
+        </div>
+      )}
+
+      {/* 2. Submitted Work Read-Only Details */}
       <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl space-y-3 text-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-blue-900 font-bold border-b border-blue-200/70 pb-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -63,23 +107,25 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
         </div>
 
         {/* List of submitted files */}
-        <div>
-          <span className="text-xs font-bold text-slate-700 block mb-2">
-            {t("card:assignments.detail.submittedFilesLabel", {
-              count: files.length,
-            })}
-          </span>
-          <div className="space-y-2">
-            {files.map((file) => (
-              <FileItemCard
-                key={file.id}
-                file={file}
-                readOnly
-                onPreview={onPreview}
-              />
-            ))}
+        {files.length > 0 && (
+          <div>
+            <span className="text-xs font-bold text-slate-700 block mb-2">
+              {t("card:assignments.detail.submittedFilesLabel", {
+                count: files.length,
+              })}
+            </span>
+            <div className="space-y-2">
+              {files.map((file) => (
+                <FileItemCard
+                  key={file.id}
+                  file={file}
+                  readOnly
+                  onPreview={onPreview}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Submission note if any */}
         {assignment.submission?.content && (
@@ -94,90 +140,53 @@ export const AssignmentSubmissionView: React.FC<AssignmentSubmissionViewProps> =
         )}
       </div>
 
-      {/* Sub-case 1A: Submission is EXPIRED -> Port CLOSED + Reopen Request Button */}
+      {/* 3A. Submitted & Expired -> View-only notice (no resubmit, no reopen request) */}
       {isSubmittedAndExpired && (
-        <div className="p-4 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#f0f0f0]/80">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
-                <Icon name="lock" size={16} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-sm">
-                    {t("card:assignments.detail.portClosedTitle")}
-                  </span>
-                  <Tag color="default">
-                    {t("card:assignments.detail.expiredTag")}
-                  </Tag>
-                </div>
-                <span className="text-xs text-slate-500">
-                  {t("card:assignments.detail.portClosedDesc", {
-                    dueDate: assignment.dueDate,
-                  })}
-                </span>
-              </div>
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+              <Icon name="lock" size={15} />
             </div>
-
-            <Button
-              variant="outline"
-              onClick={onRequestReopen}
-              className="shrink-0 text-blue-600 border-blue-200 hover:bg-blue-50 self-start sm:self-auto"
-            >
-              <Icon name="mail" size={13} className="mr-1.5 text-blue-600" />
-              <span>
-                {assignment.reopenRequest
-                  ? t("button:resendReopenRequest")
-                  : t("button:requestReopenPort")}
-              </span>
-            </Button>
-          </div>
-
-          {assignment.reopenRequest && (
-            <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs space-y-1.5">
-              <div className="flex items-center justify-between font-bold text-amber-900">
-                <span className="flex items-center gap-1.5">
-                  <Icon name="clock" size={13} className="text-amber-600" />
-                  <span>{t("card:assignments.detail.reopenSentTitle")}</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-900 text-xs sm:text-sm">
+                  {t("card:assignments.detail.portClosedTitle")}
                 </span>
-                <Tag color="warning">
-                  {t("card:assignments.detail.reopenWaitingTag")}
+                <Tag color="default" className="m-0 text-[10px]">
+                  {t("card:assignments.detail.viewOnlyTag")}
                 </Tag>
               </div>
-              <p className="text-slate-600 mb-0">
-                {t("card:assignments.detail.reopenSentMeta", {
-                  email: assignment.reopenRequest.teacherEmail,
-                  time: assignment.reopenRequest.requestedAt,
+              <span className="text-xs text-slate-500 block mt-0.5">
+                {t("card:assignments.detail.submittedExpiredViewOnlyDesc", {
+                  dueDate: assignment.dueDate,
                 })}
-              </p>
-              <div className="p-2.5 bg-white rounded border border-amber-200 text-slate-700 italic">
-                "{assignment.reopenRequest.reason}"
-              </div>
+              </span>
             </div>
-          )}
+          </div>
         </div>
       )}
 
-      {/* Sub-case 1B: Still within deadline & not graded -> Allows Re-submitting */}
-      {!isSubmittedAndExpired && !isGraded && canResubmit && (
+      {/* 3B. Still within deadline & not graded -> Allows Re-submitting */}
+      {canResubmit && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
           <span className="text-[11px] text-slate-500 italic">
             {t("card:assignments.detail.resubmitAllowedHint", {
               dueDate: assignment.dueDate,
               attempt: attemptNumber,
-              maxAttempts,
+              maxAttempts: Math.max(maxAttempts, attemptNumber + 1),
             })}
           </span>
           <Button
             variant="outline"
             onClick={onStartResubmit}
-            className="self-end sm:self-auto"
+            className="self-end sm:self-auto shrink-0"
           >
             <Icon name="refresh" size={12} />
-            {t("button:resubmitAssignment")}
+            <span>{t("button:resubmitAssignment")}</span>
           </Button>
         </div>
       )}
     </div>
   );
 };
+
