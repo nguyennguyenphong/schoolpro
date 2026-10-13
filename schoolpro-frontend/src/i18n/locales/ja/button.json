@@ -93,5 +93,6 @@
   "requestScoreAppeal": "再採点を申請",
   "submitScoreAppeal": "再採点申請を送信",
   "closePreview": "プレビューを閉じる",
-  "downloadFile": "ファイルをダウンロード"
+  "downloadFile": "ファイルをダウンロード",
+  "printTimeTable": "タイムテーブを印刷"
 }

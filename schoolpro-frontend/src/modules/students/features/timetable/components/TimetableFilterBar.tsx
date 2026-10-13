@@ -112,7 +112,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
         <div className="flex items-center gap-1.5 shrink-0">
           <Button variant="primary">
             <Icon name="print" size={13} />
-            {t("button:print")}
+            {t("button:printTimeTable")}
           </Button>
         </div>
 

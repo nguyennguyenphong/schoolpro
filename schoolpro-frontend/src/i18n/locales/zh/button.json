@@ -93,5 +93,6 @@
   "requestScoreAppeal": "申请成绩复核",
   "submitScoreAppeal": "提交复核申请",
   "closePreview": "关闭预览",
-  "downloadFile": "下载文件"
+  "downloadFile": "下载文件",
+  "printTimeTable": "打印课表"
 }

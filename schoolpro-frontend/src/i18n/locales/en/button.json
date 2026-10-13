@@ -93,5 +93,6 @@
   "requestScoreAppeal": "Request Score Appeal",
   "submitScoreAppeal": "Submit Score Appeal",
   "closePreview": "Close Preview",
-  "downloadFile": "Download File"
+  "downloadFile": "Download File",
+  "printTimeTable": "Print Timetable"
 }

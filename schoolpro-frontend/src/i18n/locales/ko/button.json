@@ -93,5 +93,6 @@
   "requestScoreAppeal": "점수 이의신청",
   "submitScoreAppeal": "이의신청 제출",
   "closePreview": "미리보기 닫기",
-  "downloadFile": "파일 다운로드"
+  "downloadFile": "파일 다운로드",
+  "printTimeTable": "테이블 출력"
 }
