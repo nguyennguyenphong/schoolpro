@@ -56,9 +56,7 @@ class Command(BaseCommand):
                 students = list(Student.objects.select_related("user").all()[:5])
 
             if not students:
-                self.stdout.write(
-                    self.style.ERROR("No Student found. Please seed students first.")
-                )
+                self.stdout.write(self.style.ERROR("No Student found. Please seed students first."))
                 return
 
             csts = list(
