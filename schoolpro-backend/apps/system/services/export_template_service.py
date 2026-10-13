@@ -805,7 +805,7 @@ DEFAULT_TIMETABLE_FOOTER = """
   </tr>
 </table>
 
-<div style="margin-top: 16px; padding-top: 4px; border-top: 1px dashed #cbd5e1; font-size: 8.5pt; color: #64748b; display: flex; justify-content: space-between;">
+<div style="margin-top: 16px; padding-top: 4px; border-top: 1px solid #cbd5e1; font-size: 8.5pt; color: #64748b; display: flex; justify-content: space-between;">
   <span>Hệ thống Quản lý Học vụ SchoolPro &bull; Mã biểu mẫu: {{template_code}}</span>
   <span>Mã tra cứu: #TT-{{class_name}}-{{week_number}}</span>
 </div>
@@ -822,55 +822,143 @@ DEFAULT_TIMETABLE_STYLES = """
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 10pt;
+  font-size: 8pt;
 }
 .tt-matrix-table th, .tt-matrix-table td {
-  border: 1px solid #64748b;
-  padding: 4px 6px;
-  text-align: center;
-  vertical-align: middle;
+  border: 1px solid #cbd5e1;
+  padding: 4px;
+  vertical-align: top;
 }
 .tt-matrix-table th {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
   font-weight: bold;
-  font-size: 10.5pt;
-  color: #0f172a;
+  text-align: center;
+  color: #1e293b;
+  padding: 6px 4px;
+}
+.tt-header-today {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+}
+.tt-header-leave {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
 }
 .tt-shift-col {
-  width: 50px;
+  width: 52px;
   font-weight: bold;
+  text-align: center !important;
+  vertical-align: middle !important;
   background-color: #f8fafc;
-}
-.tt-period-col {
-  width: 42px;
-  font-weight: bold;
-  background-color: #fafafa;
-}
-.tt-time-col {
-  width: 82px;
   font-size: 9pt;
-  color: #475569;
 }
-.tt-slot-cell {
-  height: 44px;
-  text-align: center;
-}
-.tt-slot-subject {
-  font-weight: bold;
-  color: #0f172a;
-  font-size: 10pt;
-}
-.tt-slot-subinfo {
-  font-size: 8.5pt;
+.tt-shift-timerange {
+  font-size: 7.5pt;
   color: #64748b;
-  margin-top: 1px;
+  font-weight: normal;
+  display: block;
+  margin-top: 2px;
+}
+.tt-day-col {
+  width: calc((100% - 52px) / 7);
+}
+.tt-slot-card {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  font-size: 7.5pt;
+  line-height: 1.35;
+}
+.tt-slot-card:last-child {
+  margin-bottom: 0;
 }
 .tt-slot-excused {
   background-color: #fffbeb !important;
-  border: 1.5px dashed #f59e0b !important;
+  border: 1px solid #f59e0b !important;
 }
-.tt-slot-excused .tt-slot-subject {
-  color: #b45309;
+.tt-card-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.tt-class-badge {
+  font-size: 7.5pt;
+  font-weight: bold;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 3px;
+  padding: 1px 4px;
+  display: inline-block;
+}
+.tt-leave-badge {
+  font-size: 7pt;
+  font-weight: bold;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 3px;
+  padding: 1px 4px;
+  display: inline-block;
+}
+.tt-slot-subject {
+  font-size: 8.5pt;
+  font-weight: bold;
+  color: #0f172a;
+  margin-bottom: 3px;
+  line-height: 1.25;
+}
+.tt-slot-row {
+  font-size: 7.5pt;
+  color: #334155;
+  margin-top: 2px;
+}
+.tt-slot-row strong {
+  color: #0f172a;
+}
+.tt-slot-instructor {
+  font-size: 7.5pt;
+  color: #1e293b;
+  margin-top: 2px;
+}
+.tt-slot-email {
+  font-size: 7pt;
+  color: #2563eb;
+  word-break: break-all;
+}
+.tt-slot-tags {
+  margin-top: 3px;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.tt-type-tag {
+  font-size: 7pt;
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+.tt-topic-note {
+  font-size: 7pt;
+  font-style: italic;
+  color: #475569;
+  margin-top: 3px;
+  padding: 2px 4px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 2px;
+}
+.tt-empty-cell {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 8pt;
+  font-style: italic;
+  padding: 14px 2px;
 }
 """
 

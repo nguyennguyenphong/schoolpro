@@ -44,12 +44,15 @@ def test_timetable_schedule_matrix_html_generation():
     assert "Phòng A201" in matrix_html
     assert "ThS. Hoàng Văn Nam" in matrix_html
     assert "Vật lý 10" in matrix_html
-    assert "(Nghỉ phép)" in matrix_html
+    assert "Nghỉ phép" in matrix_html
     assert "tt-slot-excused" in matrix_html
     assert "Thứ Hai" in matrix_html
     assert "Thứ Bảy" in matrix_html
     assert "Sáng" in matrix_html
     assert "Chiều" in matrix_html
+    # Verify strict requirement: Solid borders only, no dashed or dotted lines
+    assert "dashed" not in matrix_html
+    assert "dotted" not in matrix_html
 
 
 def test_timetable_print_service_renders_export_template():

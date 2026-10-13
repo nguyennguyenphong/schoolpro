@@ -68,10 +68,15 @@ describe("Timetable Print & Export Document Utility", () => {
     expect(html).toContain("THỜI KHÓA BIỂU HỌC TẬP");
     expect(html).toContain("Toán học 10");
     expect(html).toContain("Phòng A201");
+    expect(html).toContain("Tòa A");
     expect(html).toContain("ThS. Hoàng Văn Nam");
+    expect(html).toContain("nam.hoang@schoolpro.edu.vn");
     expect(html).toContain("Vật lý 10");
-    expect(html).toContain("(Nghỉ phép)");
+    expect(html).toContain("Nghỉ phép");
     expect(html).toContain("A4 landscape");
+    // Verify strict requirement: Solid borders only, absolutely NO dashed or dotted
+    expect(html).not.toContain("dashed");
+    expect(html).not.toContain("dotted");
   });
 
   it("calls printOrExportTimetable from timetableService and creates print iframe", async () => {

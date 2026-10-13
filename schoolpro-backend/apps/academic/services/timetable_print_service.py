@@ -51,101 +51,209 @@ class TimetablePrintService:
         return template
 
     @classmethod
+    def _resolve_shift(cls, slot: dict[str, Any]) -> str:
+        """
+        Resolves shift (morning/afternoon/evening) from slot dictionary,
+        falling back to periods or start_time when not explicitly present.
+        """
+        shift = str(slot.get("shift") or "").lower()
+        if shift in {"morning", "afternoon", "evening"}:
+            return shift
+
+        # Infer from periods e.g. "Tiết 1" -> morning, "Tiết 6" -> afternoon
+        periods = str(slot.get("periods") or "")
+        match = re.search(r"\d+", periods)
+        if match:
+            period_no = int(match.group(0))
+            if 1 <= period_no <= 5:
+                return "morning"
+            elif 6 <= period_no <= 10:
+                return "afternoon"
+            elif period_no > 10:
+                return "evening"
+
+        # Infer from start_time e.g. "07:15"
+        start_t = str(slot.get("startTime") or "")
+        if ":" in start_t:
+            try:
+                hour = int(start_t.split(":")[0])
+                if hour < 12:
+                    return "morning"
+                elif hour < 17:
+                    return "afternoon"
+                else:
+                    return "evening"
+            except ValueError:
+                pass
+
+        return "morning"
+
+    @classmethod
     def build_schedule_matrix_html(
         cls,
         slots: list[dict[str, Any]],
         week_start: Any,
     ) -> str:
         """
-        Generates an HTML table matrix representing morning and afternoon periods
-        across Monday through Saturday.
+        Generates an HTML table matrix matching the UI WeeklyGridView:
+        7 day columns (Monday to Sunday) across 3 shifts (Morning, Afternoon, Evening),
+        rendering full card details with solid borders (no dashed lines).
         """
         days_of_week = [
-            {"key": 2, "label": "Thứ Hai", "date": week_start + timedelta(days=0)},
-            {"key": 3, "label": "Thứ Ba", "date": week_start + timedelta(days=1)},
-            {"key": 4, "label": "Thứ Tư", "date": week_start + timedelta(days=2)},
-            {"key": 5, "label": "Thứ Năm", "date": week_start + timedelta(days=3)},
-            {"key": 6, "label": "Thứ Sáu", "date": week_start + timedelta(days=4)},
-            {"key": 7, "label": "Thứ Bảy", "date": week_start + timedelta(days=5)},
+            {"key": 2, "label": "Thứ Hai", "short": "T2", "date": week_start + timedelta(days=0)},
+            {"key": 3, "label": "Thứ Ba", "short": "T3", "date": week_start + timedelta(days=1)},
+            {"key": 4, "label": "Thứ Tư", "short": "T4", "date": week_start + timedelta(days=2)},
+            {"key": 5, "label": "Thứ Năm", "short": "T5", "date": week_start + timedelta(days=3)},
+            {"key": 6, "label": "Thứ Sáu", "short": "T6", "date": week_start + timedelta(days=4)},
+            {"key": 7, "label": "Thứ Bảy", "short": "T7", "date": week_start + timedelta(days=5)},
+            {"key": 8, "label": "Chủ Nhật", "short": "CN", "date": week_start + timedelta(days=6)},
         ]
 
-        periods_def = [
-            {"period": 1, "time": "07:15 - 08:00", "shift": "morning"},
-            {"period": 2, "time": "08:05 - 08:50", "shift": "morning"},
-            {"period": 3, "time": "09:05 - 09:50", "shift": "morning"},
-            {"period": 4, "time": "09:55 - 10:40", "shift": "morning"},
-            {"period": 5, "time": "10:45 - 11:30", "shift": "morning"},
-            {"period": 6, "time": "13:30 - 14:15", "shift": "afternoon"},
-            {"period": 7, "time": "14:20 - 15:05", "shift": "afternoon"},
-            {"period": 8, "time": "15:20 - 16:05", "shift": "afternoon"},
-            {"period": 9, "time": "16:10 - 16:55", "shift": "afternoon"},
+        shifts_def = [
+            {"key": "morning", "label": "Buổi Sáng", "timeRange": "07:00 - 11:30"},
+            {"key": "afternoon", "label": "Buổi Chiều", "timeRange": "12:30 - 17:30"},
+            {"key": "evening", "label": "Buổi Tối", "timeRange": "17:45 - 21:00"},
         ]
 
-        def find_slot(day_key: int, period_num: int) -> dict[str, Any] | None:
-            for s in slots:
-                if s.get("dayOfWeek") != day_key:
-                    continue
-                period_str = str(s.get("periods") or "")
-                match = re.search(r"\d+", period_str)
-                if match and int(match.group()) == period_num:
-                    return s
-            return None
-
-        # Build header row
-        header_cols = [
-            '<th class="tt-shift-col">Buổi</th>',
-            '<th class="tt-period-col">Tiết</th>',
-            '<th class="tt-time-col">Thời gian</th>',
-        ]
+        # Calculate leave metadata for each day
+        day_leave_info: dict[str, dict[str, Any]] = {}
         for d in days_of_week:
+            date_str = d["date"].strftime("%Y-%m-%d")
+            day_slots = [s for s in slots if s.get("date") == date_str or s.get("dayOfWeek") == d["key"]]
+            leave_slots = [s for s in day_slots if s.get("isOnLeave") or s.get("attendanceStatus") == "excused"]
+            has_leave = len(leave_slots) > 0
+            is_pending = any(s.get("leaveStatus") == "pending" for s in leave_slots)
+            day_leave_info[date_str] = {
+                "has_leave": has_leave,
+                "is_pending": is_pending,
+            }
+
+        # Build table headers
+        header_cols = ['<th class="tt-shift-col">Ca học</th>']
+        for d in days_of_week:
+            date_str = d["date"].strftime("%Y-%m-%d")
             formatted_date = d["date"].strftime("%d/%m")
-            header_cols.append(
-                f'<th>{html.escape(d["label"])}<br/><span style="font-weight: normal; font-size: 8.5pt; color: #475569;">({formatted_date})</span></th>'
-            )
+            leave_meta = day_leave_info.get(date_str, {})
+            has_leave = leave_meta.get("has_leave", False)
 
+            leave_badge_html = ""
+            th_class = "tt-day-col"
+            if has_leave:
+                th_class += " tt-header-leave"
+                badge_text = "Nghỉ phép: Chờ duyệt" if leave_meta.get("is_pending") else "Nghỉ phép: Đã duyệt"
+                leave_badge_html = f'<div style="margin-top: 2px;"><span class="tt-leave-badge">{badge_text}</span></div>'
+
+            header_cols.append(f"""
+            <th class="{th_class}">
+              <div style="font-size: 9.5pt; font-weight: bold;">{html.escape(d["label"])} ({d["short"]})</div>
+              <div style="font-size: 8pt; font-weight: normal; color: #475569;">{formatted_date}</div>
+              {leave_badge_html}
+            </th>
+            """)
+
+        # Build rows for shifts
         rows_html: list[str] = []
-        for p in periods_def:
-            p_num = p["period"]
-            cells: list[str] = []
+        for shift in shifts_def:
+            shift_cells: list[str] = []
 
-            # Rowspan for shift label
-            if p_num == 1:
-                cells.append('<td class="tt-shift-col" rowspan="5">Sáng</td>')
-            elif p_num == 6:
-                cells.append('<td class="tt-shift-col" rowspan="4">Chiều</td>')
+            # Shift column
+            shift_cells.append(f"""
+            <td class="tt-shift-col">
+              <span style="font-weight: bold; font-size: 8.5pt;">{html.escape(shift["label"])}</span>
+              <span class="tt-shift-timerange">{shift["timeRange"]}</span>
+            </td>
+            """)
 
-            cells.append(f'<td class="tt-period-col">{p_num}</td>')
-            cells.append(f'<td class="tt-time-col">{p["time"]}</td>')
-
+            # Day columns
             for d in days_of_week:
-                slot = find_slot(d["key"], p_num)
-                if not slot:
-                    cells.append('<td class="tt-slot-cell"></td>')
+                date_str = d["date"].strftime("%Y-%m-%d")
+                cell_slots = [
+                    s
+                    for s in slots
+                    if (s.get("date") == date_str or s.get("dayOfWeek") == d["key"])
+                    and cls._resolve_shift(s) == shift["key"]
+                ]
+
+                # Sort by start time if available
+                cell_slots.sort(key=lambda s: str(s.get("startTime") or s.get("periods") or ""))
+
+                if not cell_slots:
+                    shift_cells.append('<td class="tt-day-col"><div class="tt-empty-cell">—</div></td>')
                     continue
 
-                subj_name = html.escape(str(slot.get("courseName") or slot.get("subjectName") or ""))
-                room = html.escape(str(slot.get("room") or ""))
-                teacher = html.escape(str(slot.get("instructorName") or slot.get("teacherName") or ""))
-                is_on_leave = slot.get("isOnLeave", False)
+                cards_html: list[str] = []
+                for s in cell_slots:
+                    subj_name = html.escape(str(s.get("courseName") or s.get("subjectName") or "Môn học"))
+                    cls_name = html.escape(str(s.get("className") or s.get("classCode") or "10A1"))
+                    room = html.escape(str(s.get("room") or "Phòng học"))
+                    bld = html.escape(str(s.get("building") or ""))
+                    campus = html.escape(str(s.get("campus") or ""))
+                    start_t = html.escape(str(s.get("startTime") or ""))
+                    end_t = html.escape(str(s.get("endTime") or ""))
+                    periods_str = html.escape(str(s.get("periods") or ""))
+                    instructor = html.escape(str(s.get("instructorName") or s.get("teacherName") or "Giáo viên"))
+                    email = html.escape(str(s.get("instructorEmail") or ""))
+                    class_type = str(s.get("classType") or "theory").lower()
+                    type_label = "Thực hành" if class_type == "practice" else "Lý thuyết"
+                    is_online = bool(s.get("onlineUrl"))
+                    mode_label = "Trực tuyến" if is_online else "Trực tiếp"
+                    topic_or_notes = html.escape(str(s.get("lessonTopic") or s.get("notes") or "").strip())
 
-                cell_class = "tt-slot-cell"
-                leave_badge = ""
-                if is_on_leave:
-                    cell_class += " tt-slot-excused"
-                    leave_badge = '<div class="tt-slot-subinfo" style="color: #b45309; font-weight: bold;">(Nghỉ phép)</div>'
+                    is_on_leave = bool(s.get("isOnLeave") or s.get("attendanceStatus") == "excused")
+                    leave_status = str(s.get("leaveStatus") or "")
+                    leave_badge = ""
+                    card_class = "tt-slot-card"
 
-                room_teacher_parts = [p for p in [room, teacher] if p]
-                room_teacher_str = " &bull; ".join(room_teacher_parts)
+                    if is_on_leave:
+                        card_class += " tt-slot-excused"
+                        leave_text = "Nghỉ phép (Chờ duyệt)" if leave_status == "pending" else "Nghỉ phép (Đã duyệt)"
+                        leave_badge = f'<span class="tt-leave-badge">{leave_text}</span>'
 
-                cells.append(f"""
-                <td class="{cell_class}">
-                  <div class="tt-slot-subject">{subj_name}</div>
-                  {f'<div class="tt-slot-subinfo">{room_teacher_str}</div>' if room_teacher_str else ''}
-                  {leave_badge}
-                </td>
-                """)
+                    # Room location string
+                    room_parts = [f"Phòng: {room}"]
+                    if bld:
+                        room_parts.append(bld)
+                    if campus:
+                        room_parts.append(f"({campus})")
+                    room_line = " &bull; ".join(room_parts)
 
-            rows_html.append(f"<tr>{''.join(cells)}</tr>")
+                    # Time & period string
+                    time_parts = []
+                    if start_t and end_t:
+                        time_parts.append(f"{start_t} - {end_t}")
+                    if periods_str:
+                        time_parts.append(f"({periods_str})")
+                    time_line = " ".join(time_parts) or "Theo thời khóa biểu"
+
+                    instructor_line = f"GV: {instructor}"
+                    if email:
+                        instructor_line += f' &bull; <span class="tt-slot-email">{email}</span>'
+
+                    topic_html = ""
+                    if topic_or_notes:
+                        topic_html = f'<div class="tt-topic-note">Bài học / Ghi chú: {topic_or_notes}</div>'
+
+                    cards_html.append(f"""
+                    <div class="{card_class}">
+                      <div class="tt-card-badge-row">
+                        <span class="tt-class-badge">Lớp: {cls_name}</span>
+                        {leave_badge}
+                      </div>
+                      <div class="tt-slot-subject">{subj_name}</div>
+                      <div class="tt-slot-row"><strong>Địa điểm:</strong> {room_line}</div>
+                      <div class="tt-slot-row"><strong>Thời gian:</strong> {time_line}</div>
+                      <div class="tt-slot-instructor">{instructor_line}</div>
+                      <div class="tt-slot-tags">
+                        <span class="tt-type-tag">{type_label}</span>
+                        <span class="tt-type-tag">{mode_label}</span>
+                      </div>
+                      {topic_html}
+                    </div>
+                    """)
+
+                shift_cells.append(f'<td class="tt-day-col">{"".join(cards_html)}</td>')
+
+            rows_html.append(f"<tr>{''.join(shift_cells)}</tr>")
 
         return f"""
         <table class="tt-matrix-table">
