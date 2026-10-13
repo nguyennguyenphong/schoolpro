@@ -21,6 +21,8 @@ interface TimetableFilterBarProps {
   onTodayClick: () => void;
   onPrevWeekClick: () => void;
   onNextWeekClick: () => void;
+  onPrint?: () => void;
+  isPrinting?: boolean;
 }
 
 export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
@@ -37,6 +39,8 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   onTodayClick,
   onPrevWeekClick,
   onNextWeekClick,
+  onPrint,
+  isPrinting = false,
 }) => {
   const { t } = useTranslation(["card", "button"]);
   const currentDayjs = dayjs(selectedDate);
@@ -110,7 +114,12 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
 
         {/* Week Range Display Badge */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <Button variant="primary">
+          <Button
+            variant="primary"
+            onClick={onPrint}
+            loading={isPrinting}
+            disabled={isPrinting}
+          >
             <Icon name="print" size={13} />
             {t("button:printTimeTable")}
           </Button>

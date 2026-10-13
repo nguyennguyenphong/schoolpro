@@ -360,6 +360,42 @@ class ExportTemplateService:
         logger.info("Seeded official default leave request template: %s", template.id)
         return template
 
+    def get_or_create_default_timetable_template(self, school_id: Any = None) -> ExportTemplate:
+        """
+        Ensures a customizable Vietnamese educational A4 landscape timetable template exists
+        in sys.export_templates.
+        """
+        existing = (
+            self.repository.get_active_by_code(DEFAULT_TIMETABLE_CODE, school_id=school_id)
+            or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
+        )
+        if existing:
+            return existing
+
+        template = ExportTemplate.objects.create(
+            code=DEFAULT_TIMETABLE_CODE,
+            name="Mẫu Thời Khóa Biểu Tuần A4 Ngang Chuẩn",
+            description=(
+                "Biểu mẫu thời khóa biểu tuần học sinh chuẩn khổ A4 ngang (Landscape) "
+                "hỗ trợ tùy biến tên file, định dạng xuất (HTML/PDF/Excel/Word), căn lề và CSS."
+            ),
+            template_type=TemplateType.ACADEMIC,
+            file_format=FileFormat.HTML_PRINT,
+            header_content=DEFAULT_TIMETABLE_HEADER,
+            content=DEFAULT_TIMETABLE_CONTENT,
+            footer_content=DEFAULT_TIMETABLE_FOOTER,
+            style_content=DEFAULT_TIMETABLE_STYLES,
+            page_size="A4",
+            page_orientation="LANDSCAPE",
+            margins={"top": "8mm", "right": "10mm", "bottom": "8mm", "left": "10mm"},
+            placeholders_schema=DEFAULT_TIMETABLE_PLACEHOLDERS,
+            sample_data=DEFAULT_TIMETABLE_SAMPLE_DATA,
+            is_default=True,
+            is_active=True,
+        )
+        logger.info("Seeded official default timetable template: %s", template.id)
+        return template
+
 
 DEFAULT_LEAVE_REQUEST_CODE = "LEAVE_REQUEST_OFFICIAL_A4"
 
@@ -707,4 +743,177 @@ DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
     "teacher_note_block_html": "",
     "template_code": DEFAULT_LEAVE_REQUEST_CODE,
     "exported_at": "11:30 12/10/2026",
+}
+
+DEFAULT_TIMETABLE_CODE = "TIMETABLE_WEEKLY_A4_LANDSCAPE"
+
+DEFAULT_TIMETABLE_HEADER = """
+<table class="tt-header-table" style="width: 100%; border-collapse: collapse; margin-bottom: 8px; border-bottom: 1.5px solid #334155; padding-bottom: 6px;">
+  <tr>
+    <td style="width: 50%; text-align: left; vertical-align: top;">
+      <div style="font-size: 10pt; text-transform: uppercase; color: #475569;">{{school_parent_name}}</div>
+      <div style="font-size: 13pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">{{school_name}}</div>
+      <div style="font-size: 11pt; margin-top: 2px;">LỚP: <strong>{{class_name}}</strong> &bull; NIÊN KHÓA: <strong>{{academic_year}}</strong></div>
+    </td>
+    <td style="width: 50%; text-align: right; vertical-align: top;">
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div style="font-size: 10pt; font-style: italic; margin-bottom: 2px;">Độc lập - Tự do - Hạnh phúc</div>
+      <div style="font-size: 9.5pt; color: #475569;">Học kỳ: <strong>{{semester_name}}</strong> &bull; Thời gian in: {{print_date}}</div>
+    </td>
+  </tr>
+</table>
+"""
+
+DEFAULT_TIMETABLE_CONTENT = """
+<div style="text-align: center; margin: 8px 0 10px 0;">
+  <div style="font-size: 17pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #1e3a8a;">THỜI KHÓA BIỂU HỌC TẬP</div>
+  <div style="font-size: 11pt; font-style: italic; color: #334155; margin-top: 2px;">{{week_label}}</div>
+</div>
+
+<div class="tt-table-container">
+  {{schedule_matrix_html}}
+</div>
+
+<div style="margin-top: 8px; font-size: 9.5pt; color: #475569; line-height: 1.4;">
+  <div style="font-weight: bold; margin-bottom: 2px;">* Ghi chú và hướng dẫn học sinh:</div>
+  <div>- Học sinh có mặt tại phòng học trước giờ vào lớp 15 phút để chuẩn bị bài và thực hiện điểm danh.</div>
+  <div>- Trang phục đúng tác phong nhà trường, mang đầy đủ sách giáo khoa và dụng cụ học tập theo môn học.</div>
+</div>
+"""
+
+DEFAULT_TIMETABLE_FOOTER = """
+<table style="width: 100%; border-collapse: collapse; margin-top: 14px; page-break-inside: avoid;">
+  <tr>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">NGƯỜI LẬP BIỂU</div>
+      <div style="font-size: 9.5pt; font-style: italic; color: #475569;">(Ký và ghi rõ họ tên)</div>
+      <div style="height: 48px;"></div>
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">{{author_name}}</div>
+    </td>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">GIÁO VIÊN CHỦ NHIỆM</div>
+      <div style="font-size: 9.5pt; font-style: italic; color: #475569;">(Ký và ghi rõ họ tên)</div>
+      <div style="height: 48px;"></div>
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">{{homeroom_teacher_name}}</div>
+    </td>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">HIỆU TRƯỞNG / BGH</div>
+      <div style="font-size: 9.5pt; font-style: italic; color: #475569;">(Ký tên và đóng dấu)</div>
+      <div style="height: 48px;"></div>
+      <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">{{principal_name}}</div>
+    </td>
+  </tr>
+</table>
+
+<div style="margin-top: 16px; padding-top: 4px; border-top: 1px dashed #cbd5e1; font-size: 8.5pt; color: #64748b; display: flex; justify-content: space-between;">
+  <span>Hệ thống Quản lý Học vụ SchoolPro &bull; Mã biểu mẫu: {{template_code}}</span>
+  <span>Mã tra cứu: #TT-{{class_name}}-{{week_number}}</span>
+</div>
+"""
+
+DEFAULT_TIMETABLE_STYLES = """
+.print-container {
+  width: 100%;
+  max-width: 297mm;
+  margin: 0 auto;
+  padding: 4px;
+}
+.tt-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 10pt;
+}
+.tt-matrix-table th, .tt-matrix-table td {
+  border: 1px solid #64748b;
+  padding: 4px 6px;
+  text-align: center;
+  vertical-align: middle;
+}
+.tt-matrix-table th {
+  background-color: #f1f5f9;
+  font-weight: bold;
+  font-size: 10.5pt;
+  color: #0f172a;
+}
+.tt-shift-col {
+  width: 50px;
+  font-weight: bold;
+  background-color: #f8fafc;
+}
+.tt-period-col {
+  width: 42px;
+  font-weight: bold;
+  background-color: #fafafa;
+}
+.tt-time-col {
+  width: 82px;
+  font-size: 9pt;
+  color: #475569;
+}
+.tt-slot-cell {
+  height: 44px;
+  text-align: center;
+}
+.tt-slot-subject {
+  font-weight: bold;
+  color: #0f172a;
+  font-size: 10pt;
+}
+.tt-slot-subinfo {
+  font-size: 8.5pt;
+  color: #64748b;
+  margin-top: 1px;
+}
+.tt-slot-excused {
+  background-color: #fffbeb !important;
+  border: 1.5px dashed #f59e0b !important;
+}
+.tt-slot-excused .tt-slot-subject {
+  color: #b45309;
+}
+"""
+
+DEFAULT_TIMETABLE_PLACEHOLDERS = [
+    {"key": "title", "label": "Tiêu đề trang", "example": "Thời khóa biểu tuần"},
+    {"key": "school_name", "label": "Tên trường học", "example": "TRƯỜNG THPT CHUYÊN SCHOOLPRO"},
+    {
+        "key": "school_parent_name",
+        "label": "Cơ quan cấp trên",
+        "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
+    },
+    {"key": "class_name", "label": "Tên lớp học", "example": "10A1"},
+    {"key": "academic_year", "label": "Niên khóa", "example": "2026 - 2027"},
+    {"key": "semester_name", "label": "Học kỳ", "example": "Học kỳ 1"},
+    {
+        "key": "week_label",
+        "label": "Nhãn tuần học",
+        "example": "Tuần 06 (12/10/2026 - 18/10/2026)",
+    },
+    {"key": "week_number", "label": "Số thứ tự tuần", "example": "06"},
+    {"key": "print_date", "label": "Thời điểm in", "example": "14/10/2026 00:00"},
+    {"key": "author_name", "label": "Người lập biểu", "example": "Bộ phận Giáo vụ"},
+    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "ThS. Hoàng Văn Nam"},
+    {"key": "principal_name", "label": "Hiệu trưởng", "example": "TS. Lê Hồng Sơn"},
+    {"key": "template_code", "label": "Mã biểu mẫu", "example": "TIMETABLE_WEEKLY_A4_LANDSCAPE"},
+    {"key": "schedule_matrix_html", "label": "Bảng ma trận tiết học (HTML)", "example": ""},
+]
+
+DEFAULT_TIMETABLE_SAMPLE_DATA = {
+    "title": "Thời khóa biểu tuần",
+    "document_title": "THỜI KHÓA BIỂU HỌC TẬP",
+    "filename_pattern": "Thoi_Khoa_Bieu_Lop_{{class_name}}_{{week_label}}",
+    "school_name": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
+    "school_parent_name": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
+    "class_name": "10A1",
+    "academic_year": "2026 - 2027",
+    "semester_name": "Học kỳ 1",
+    "week_label": "Tuần 06 (12/10/2026 - 18/10/2026)",
+    "week_number": "06",
+    "print_date": "14/10/2026 00:00",
+    "author_name": "Bộ phận Giáo vụ",
+    "homeroom_teacher_name": "ThS. Hoàng Văn Nam",
+    "principal_name": "TS. Lê Hồng Sơn",
+    "template_code": DEFAULT_TIMETABLE_CODE,
+    "schedule_matrix_html": "",
 }

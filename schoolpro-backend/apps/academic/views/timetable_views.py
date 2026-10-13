@@ -12,6 +12,7 @@ from apps.academic.serializers.timetable_serializers import (
     TimetableSlotResponseSerializer,
     TimetableSummaryResponseSerializer,
 )
+from apps.academic.services.timetable_print_service import TimetablePrintService
 from apps.academic.services.timetable_service import TimetableService
 from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
@@ -121,4 +122,41 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         return APIResponse.success(
             data=serializer.data,
             message="Course options retrieved successfully",
+        )
+
+    @extend_schema(
+        summary="Print or export weekly timetable",
+        description="Renders the weekly timetable into full HTML & CSS using sys.export_templates (supports PDF, HTML_PRINT, EXCEL).",
+        parameters=[
+            OpenApiParameter("date", str, description="Selected date in YYYY-MM-DD format"),
+            OpenApiParameter("templateCode", str, description="Optional ExportTemplate code"),
+            OpenApiParameter("format", str, description="Optional format override (html, pdf, doc, xlsx)"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="print")
+    def print_timetable(self, request):
+        """
+        Renders weekly timetable document via active ExportTemplate.
+        """
+        user = request.user
+        selected_date = request.query_params.get("date")
+        template_code = request.query_params.get("templateCode") or request.query_params.get("template_code")
+        format_param = request.query_params.get("format")
+
+        doc_data = TimetablePrintService.render_timetable_print(
+            user=user,
+            selected_date_str=selected_date,
+            template_code=template_code,
+            format_override=format_param,
+        )
+
+        accept_header = request.headers.get("Accept", "")
+        if "text/html" in accept_header and "application/json" not in accept_header:
+            from django.http import HttpResponse
+
+            return HttpResponse(doc_data["html"], content_type="text/html; charset=utf-8")
+
+        return APIResponse.success(
+            data=doc_data,
+            message="Render bản in thời khóa biểu thành công",
         )

@@ -102,3 +102,17 @@ export interface TimetableSummary {
   ongoingSessions: number;
   completedSessions: number;
 }
+
+export interface TimetablePrintDocumentData {
+  html: string;
+  filename: string;
+  fileFormat: string;
+  pageSize?: string;
+  pageOrientation?: string;
+  template?: {
+    id: string;
+    code: string;
+    name: string;
+    fileFormat: string;
+  };
+}

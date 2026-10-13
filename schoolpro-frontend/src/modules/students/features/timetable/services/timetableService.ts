@@ -9,6 +9,7 @@ import type {
   TimetableSummary,
   TimetableMeta,
   TimetableResponseData,
+  TimetablePrintDocumentData,
 } from "@/modules/students/features/timetable/types";
 
 dayjs.extend(isBetween);
@@ -127,6 +128,28 @@ class TimetableService {
     }
 
     return [];
+  }
+
+  /**
+   * Fetches official printable timetable document rendered dynamically by backend sys.export_templates.
+   */
+  async printOrExportTimetable(params?: {
+    date?: string;
+    templateCode?: string;
+    format?: string;
+  }): Promise<TimetablePrintDocumentData | null> {
+    try {
+      const response = await httpClient.get<ApiResponse<TimetablePrintDocumentData>>(
+        "/academic/timetable/print/",
+        { params }
+      );
+      if (response.data?.data?.html) {
+        return response.data.data;
+      }
+    } catch {
+      // Fallback handled by caller
+    }
+    return null;
   }
 }
 

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Empty } from "@/components/ui/Empty";
 import { Icon } from "@/components/ui/Icon";
+import { message } from "@/components/ui/Message";
 import {
   TimetableFilterBar,
   WeeklyGridView,
@@ -11,9 +12,11 @@ import {
   TimetableSkeleton,
 } from "@/modules/students/features/timetable/components";
 import { useTimetable } from "@/modules/students/features/timetable/hooks";
+import { printTimetable } from "@/modules/students/features/timetable/utils";
 
 export const TimetablePage: React.FC = () => {
   const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
+  const [isPrinting, setIsPrinting] = useState(false);
   const {
     slots,
     filter,
@@ -34,6 +37,22 @@ export const TimetablePage: React.FC = () => {
     goToNextDay,
     refetch,
   } = useTimetable();
+
+  const handlePrint = async () => {
+    setIsPrinting(true);
+    try {
+      await printTimetable({
+        selectedDate: filter.selectedDate,
+        slots,
+        currentWeekLabel,
+        semesterLabel,
+      });
+    } catch {
+      message.error(t("message:printError", "Không thể in thời khóa biểu. Vui lòng thử lại sau."));
+    } finally {
+      setIsPrinting(false);
+    }
+  };
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
@@ -89,6 +108,8 @@ export const TimetablePage: React.FC = () => {
         onTodayClick={goToToday}
         onPrevWeekClick={goToPreviousDay}
         onNextWeekClick={goToNextDay}
+        onPrint={handlePrint}
+        isPrinting={isPrinting}
       />
 
       {/* 3. Schedule Results View (Grid & List) */}
