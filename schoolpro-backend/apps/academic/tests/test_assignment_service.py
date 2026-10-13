@@ -204,4 +204,3 @@ def test_submit_assignment_enforces_late_and_resubmission_limits():
                 content="Nộp bài trễ",
                 files=[{"id": "f1", "name": "bai.pdf", "size": "1 MB", "type": "pdf"}],
             )
-

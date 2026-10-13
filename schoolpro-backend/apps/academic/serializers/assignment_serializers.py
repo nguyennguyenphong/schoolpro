@@ -190,4 +190,3 @@ class ReopenRequestInputSerializer(serializers.Serializer):
     """
 
     reason = serializers.CharField(max_length=1000, required=True)
-

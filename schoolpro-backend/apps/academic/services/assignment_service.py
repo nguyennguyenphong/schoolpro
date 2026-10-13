@@ -1419,4 +1419,3 @@ class AssignmentService:
             )
 
         return cls.get_assignment_detail(user=user, assignment_id=assignment_id)
-

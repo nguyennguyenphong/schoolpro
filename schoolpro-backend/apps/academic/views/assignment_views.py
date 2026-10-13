@@ -238,4 +238,3 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
                 message=str(e),
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
-
