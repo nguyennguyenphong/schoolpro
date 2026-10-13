@@ -243,7 +243,19 @@
       "ongoing": "진행 중",
       "completed": "수업 완료",
       "cancelled": "휴강",
-      "upcoming": "예정"
+      "upcoming": "예정",
+      "excused": "사유 결석"
+    },
+    "leave": {
+      "fullDayApproved": "전일 결석 승인",
+      "fullDayPending": "전일 결석 승인 대기",
+      "shiftApproved": "수업 결석 승인",
+      "shiftPending": "수업 결석 승인 대기",
+      "partialDay": "일부 교시 결석",
+      "slotApproved": "사유 결석",
+      "slotPending": "승인 대기",
+      "reasonPrefix": "결석 사유:",
+      "emptyLeaveSlot": "사유 결석"
     },
     "tableHeaders": {
       "date": "수업일자",

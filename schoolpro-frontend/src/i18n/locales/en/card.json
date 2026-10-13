@@ -243,7 +243,19 @@
       "ongoing": "Ongoing",
       "completed": "Completed",
       "cancelled": "Cancelled",
-      "upcoming": "Upcoming"
+      "upcoming": "Upcoming",
+      "excused": "Excused Leave"
+    },
+    "leave": {
+      "fullDayApproved": "Full-day Leave",
+      "fullDayPending": "Pending Full-day Leave",
+      "shiftApproved": "Shift Leave",
+      "shiftPending": "Pending Shift Leave",
+      "partialDay": "Partial Leave",
+      "slotApproved": "Excused Leave",
+      "slotPending": "Pending Leave",
+      "reasonPrefix": "Leave reason:",
+      "emptyLeaveSlot": "On Leave"
     },
     "tableHeaders": {
       "date": "Date",

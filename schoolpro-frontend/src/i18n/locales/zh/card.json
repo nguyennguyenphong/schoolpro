@@ -243,7 +243,19 @@
       "ongoing": "上课中",
       "completed": "已结课",
       "cancelled": "已停课",
-      "upcoming": "待上课"
+      "upcoming": "待上课",
+      "excused": "已请假"
+    },
+    "leave": {
+      "fullDayApproved": "全天请假已批",
+      "fullDayPending": "全天请假待审",
+      "shiftApproved": "时段请假已批",
+      "shiftPending": "时段请假待审",
+      "partialDay": "有请假时段",
+      "slotApproved": "已请假",
+      "slotPending": "请假待审",
+      "reasonPrefix": "请假原因:",
+      "emptyLeaveSlot": "已请假"
     },
     "tableHeaders": {
       "date": "上课日期",

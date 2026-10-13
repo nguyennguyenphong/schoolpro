@@ -42,14 +42,27 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
   // Map each day with its specific date in this week
   const weekDays = DAYS_OF_WEEK.map((d, index) => {
     const dayDate = weekStart.add(index, "day");
+    const dateStr = dayDate.format("YYYY-MM-DD");
     const isSelected = dayDate.isSame(currentDayjs, "day");
     const isToday = dayDate.isSame(dayjs(), "day");
+    const allDaySlots = slots.filter((s) => s.date === dateStr);
+    const leaveDaySlots = allDaySlots.filter(
+      (s) => Boolean(s.isOnLeave) || s.attendanceStatus === "excused",
+    );
+    const hasLeave = leaveDaySlots.length > 0;
+    const isFullDayLeave =
+      allDaySlots.length > 0 &&
+      (leaveDaySlots.some((s) => s.leaveSessionShift === "all_day") ||
+        leaveDaySlots.length === allDaySlots.length);
+
     return {
       ...d,
-      dateStr: dayDate.format("YYYY-MM-DD"),
+      dateStr,
       formattedDate: dayDate.format("DD/MM"),
       isSelected,
       isToday,
+      hasLeave,
+      isFullDayLeave,
     };
   });
 
@@ -78,9 +91,11 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                   <th
                     key={d.dayNum}
                     className={`p-3 text-center border-r border-[#f0f0f0] last:border-r-0 transition-colors w-56 min-w-56 ${
-                      d.isToday
-                        ? "bg-blue-50/80 text-blue-700"
-                        : "text-slate-700"
+                      d.hasLeave
+                        ? "bg-amber-50/90 text-amber-800"
+                        : d.isToday
+                          ? "bg-blue-50/80 text-blue-700"
+                          : "text-slate-700"
                     }`}
                   >
                     <div className="flex flex-col items-center justify-center">
@@ -88,9 +103,11 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                       <div className="mt-0.5">
                         <span
                           className={`text-[11px] px-2.5 py-0.5 rounded-full font-medium inline-block ${
-                            d.isToday
-                              ? "bg-blue-600 text-white font-bold shadow-2xs"
-                              : "text-slate-500"
+                            d.hasLeave
+                              ? "bg-amber-500 text-white font-bold shadow-2xs"
+                              : d.isToday
+                                ? "bg-blue-600 text-white font-bold shadow-2xs"
+                                : "text-slate-500"
                           }`}
                         >
                           {d.formattedDate}
@@ -121,12 +138,21 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                     const daySlots = slots.filter(
                       (s) => s.date === d.dateStr && s.shift === shift.key,
                     );
+                    const isShiftOnLeave =
+                      d.isFullDayLeave ||
+                      daySlots.some(
+                        (s) => Boolean(s.isOnLeave) || s.attendanceStatus === "excused",
+                      );
 
                     return (
                       <td
                         key={d.dayNum}
                         className={`p-2.5 border-r border-[#f0f0f0] last:border-r-0 w-56 min-w-56 align-top transition-colors h-1 ${
-                          d.isToday ? "bg-blue-50/20" : ""
+                          isShiftOnLeave
+                            ? "bg-amber-50/50"
+                            : d.isToday
+                              ? "bg-blue-50/20"
+                              : ""
                         }`}
                       >
                         {daySlots.length === 0 ? (

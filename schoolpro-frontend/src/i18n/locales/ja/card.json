@@ -243,7 +243,19 @@
       "ongoing": "受講中",
       "completed": "完了",
       "cancelled": "休講",
-      "upcoming": "予定"
+      "upcoming": "予定",
+      "excused": "公欠・欠席届済"
+    },
+    "leave": {
+      "fullDayApproved": "終日欠席届済",
+      "fullDayPending": "終日欠席承認待ち",
+      "shiftApproved": "コマ欠席届済",
+      "shiftPending": "コマ欠席承認待ち",
+      "partialDay": "一部欠席届あり",
+      "slotApproved": "欠席届済",
+      "slotPending": "承認待ち",
+      "reasonPrefix": "欠席理由:",
+      "emptyLeaveSlot": "欠席届済"
     },
     "tableHeaders": {
       "date": "受講日",

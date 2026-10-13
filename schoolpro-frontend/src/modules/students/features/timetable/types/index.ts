@@ -28,6 +28,12 @@ export interface TimetableSlot {
   classType: ClassType;
   status: ClassStatus;
   attendanceStatus: AttendanceStatus;
+  isOnLeave?: boolean;
+  leaveStatus?: "approved" | "pending" | null;
+  leaveSessionShift?: "all_day" | "morning" | "afternoon" | null;
+  leaveType?: string | null;
+  leaveReason?: string | null;
+  leaveRequestCode?: string | null;
   onlineUrl?: string;
   lessonTopic?: string;
   notes?: string;

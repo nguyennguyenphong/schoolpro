@@ -302,38 +302,31 @@ class Command(BaseCommand):
                         deadline_dt=auto_req.approval_deadline,
                     )
 
+            week_start = today - timedelta(days=today.weekday())
+            week_end = week_start + timedelta(days=6)
+            wed_date = week_start + timedelta(days=2)
+            fri_date = week_start + timedelta(days=4)
+
             for student in students:
                 existing_count = LeaveRequest.objects.filter(student=student).count()
-                if existing_count >= 3:
-                    continue
-
-                guardian = (
-                    Guardian.objects.filter(student=student)
-                    .order_by("-is_primary_contact", "created_at")
-                    .first()
-                )
-                guardian_name = guardian.full_name if guardian else "Nguyễn Văn Phụ Huynh"
-                guardian_phone = guardian.phone if guardian else "0912345678"
-                guardian_rel = guardian.relationship if guardian else "Bố"
-
-                for idx, tpl in enumerate(sample_templates):
-                    start_dt = today + timedelta(days=tpl["offset_start"] + (idx % 2))
-                    end_dt = start_dt + timedelta(days=tpl["duration"] - 1)
-                    if start_dt.weekday() == 6:
-                        start_dt += timedelta(days=1)
-                        end_dt += timedelta(days=1)
-
-                    shift = tpl["session_shift"]
-                    affected_lessons, notified_teachers = (
-                        LeaveRequestService.compute_affected_lessons_for_class(
-                            school_class=school_class,
-                            start_date=start_dt,
-                            end_date=end_dt,
-                            session_shift=shift,
-                        )
+                if existing_count < 3:
+                    guardian = (
+                        Guardian.objects.filter(student=student)
+                        .order_by("-is_primary_contact", "created_at")
+                        .first()
                     )
-                    if not affected_lessons:
-                        shift = "all_day"
+                    guardian_name = guardian.full_name if guardian else "Nguyễn Văn Phụ Huynh"
+                    guardian_phone = guardian.phone if guardian else "0912345678"
+                    guardian_rel = guardian.relationship if guardian else "Bố"
+
+                    for idx, tpl in enumerate(sample_templates):
+                        start_dt = today + timedelta(days=tpl["offset_start"] + (idx % 2))
+                        end_dt = start_dt + timedelta(days=tpl["duration"] - 1)
+                        if start_dt.weekday() == 6:
+                            start_dt += timedelta(days=1)
+                            end_dt += timedelta(days=1)
+
+                        shift = tpl["session_shift"]
                         affected_lessons, notified_teachers = (
                             LeaveRequestService.compute_affected_lessons_for_class(
                                 school_class=school_class,
@@ -342,70 +335,193 @@ class Command(BaseCommand):
                                 session_shift=shift,
                             )
                         )
+                        if not affected_lessons:
+                            shift = "all_day"
+                            affected_lessons, notified_teachers = (
+                                LeaveRequestService.compute_affected_lessons_for_class(
+                                    school_class=school_class,
+                                    start_date=start_dt,
+                                    end_date=end_dt,
+                                    session_shift=shift,
+                                )
+                            )
 
-                    first_lesson_dt, deadline_dt = (
-                        LeaveRequestService.calculate_first_lesson_and_deadline(
+                        first_lesson_dt, deadline_dt = (
+                            LeaveRequestService.calculate_first_lesson_and_deadline(
+                                affected_lessons=affected_lessons,
+                                fallback_start_date=start_dt,
+                            )
+                        )
+
+                        is_auto = bool(tpl.get("is_auto_approved", False))
+                        reviewed_by = (
+                            None
+                            if is_auto
+                            else (reviewer if tpl["status"] in ("APPROVED", "REJECTED") else None)
+                        )
+                        reviewed_at = (
+                            deadline_dt
+                            if is_auto
+                            else (
+                                deadline_dt - timedelta(hours=2)
+                                if tpl["status"] in ("APPROVED", "REJECTED")
+                                else None
+                            )
+                        )
+
+                        metadata = {
+                            "sessionShift": shift,
+                            "commitment": "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.",
+                            "guardianName": guardian_name,
+                            "guardianPhone": guardian_phone,
+                            "guardianRelationship": guardian_rel,
+                            "attachments": tpl["attachments"],
+                            "affectedLessons": affected_lessons,
+                            "notifiedTeachers": notified_teachers,
+                            "approvalPolicy": "HOMEROOM_TEACHER_ONLY",
+                            "firstLessonStartAt": first_lesson_dt.isoformat(),
+                            "approvalDeadline": deadline_dt.isoformat(),
+                            "isAutoApproved": is_auto,
+                        }
+
+                        req = LeaveRequest.objects.create(
+                            student=student,
+                            school_class=school_class,
+                            guardian=guardian,
+                            requested_by=student.user,
+                            start_date=start_dt,
+                            end_date=end_dt,
+                            reason=tpl["reason"],
+                            leave_type=tpl["leave_type"],
+                            status=tpl["status"],
+                            supporting_document_url=tpl["supporting_document_url"],
+                            teacher_note=tpl["teacher_note"] or None,
+                            reviewed_by=reviewed_by,
+                            reviewed_at=reviewed_at,
+                            approval_deadline=deadline_dt,
+                            is_auto_approved=is_auto,
+                            metadata=metadata,
+                        )
+                        LeaveRequestService.ensure_event_logs_for_item(
+                            item=req,
                             affected_lessons=affected_lessons,
-                            fallback_start_date=start_dt,
+                            notified_teachers=notified_teachers,
+                            deadline_dt=deadline_dt,
                         )
-                    )
+                        created_count += 1
 
-                    is_auto = bool(tpl.get("is_auto_approved", False))
-                    reviewed_by = (
-                        None
-                        if is_auto
-                        else (reviewer if tpl["status"] in ("APPROVED", "REJECTED") else None)
-                    )
-                    reviewed_at = (
-                        deadline_dt
-                        if is_auto
-                        else (
-                            deadline_dt - timedelta(hours=2)
-                            if tpl["status"] in ("APPROVED", "REJECTED")
-                            else None
-                        )
-                    )
-
-                    metadata = {
-                        "sessionShift": shift,
-                        "commitment": "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học.",
-                        "guardianName": guardian_name,
-                        "guardianPhone": guardian_phone,
-                        "guardianRelationship": guardian_rel,
-                        "attachments": tpl["attachments"],
-                        "affectedLessons": affected_lessons,
-                        "notifiedTeachers": notified_teachers,
-                        "approvalPolicy": "HOMEROOM_TEACHER_ONLY",
-                        "firstLessonStartAt": first_lesson_dt.isoformat(),
-                        "approvalDeadline": deadline_dt.isoformat(),
-                        "isAutoApproved": is_auto,
-                    }
-
-                    req = LeaveRequest.objects.create(
+                # Ensure every student has at least 1 full-day APPROVED leave on Wednesday of current week
+                # and 1 morning-shift leave on Friday of current week so current week Timetable highlights both
+                current_week_leaves = list(
+                    LeaveRequest.objects.filter(
                         student=student,
-                        school_class=school_class,
-                        guardian=guardian,
-                        requested_by=student.user,
-                        start_date=start_dt,
-                        end_date=end_dt,
-                        reason=tpl["reason"],
-                        leave_type=tpl["leave_type"],
-                        status=tpl["status"],
-                        supporting_document_url=tpl["supporting_document_url"],
-                        teacher_note=tpl["teacher_note"] or None,
-                        reviewed_by=reviewed_by,
-                        reviewed_at=reviewed_at,
-                        approval_deadline=deadline_dt,
-                        is_auto_approved=is_auto,
-                        metadata=metadata,
+                        status__in=["APPROVED", "PENDING"],
+                        start_date__lte=week_end,
+                        end_date__gte=week_start,
                     )
-                    LeaveRequestService.ensure_event_logs_for_item(
-                        item=req,
-                        affected_lessons=affected_lessons,
-                        notified_teachers=notified_teachers,
-                        deadline_dt=deadline_dt,
+                )
+                has_all_day_in_week = any(
+                    (isinstance(r.metadata, dict) and r.metadata.get("sessionShift") == "all_day")
+                    for r in current_week_leaves
+                )
+                if not has_all_day_in_week:
+                    target_req = (
+                        LeaveRequest.objects.filter(student=student, status="APPROVED")
+                        .order_by("start_date")
+                        .first()
                     )
-                    created_count += 1
+                    if target_req:
+                        meta = target_req.metadata if isinstance(target_req.metadata, dict) else {}
+                        meta["sessionShift"] = "all_day"
+                        aff_lessons, notif_teachers = (
+                            LeaveRequestService.compute_affected_lessons_for_class(
+                                school_class=school_class,
+                                start_date=wed_date,
+                                end_date=wed_date,
+                                session_shift="all_day",
+                            )
+                        )
+                        first_dt, dl_dt = LeaveRequestService.calculate_first_lesson_and_deadline(
+                            affected_lessons=aff_lessons,
+                            fallback_start_date=wed_date,
+                        )
+                        meta["affectedLessons"] = aff_lessons
+                        meta["notifiedTeachers"] = notif_teachers
+                        meta["firstLessonStartAt"] = first_dt.isoformat()
+                        meta["approvalDeadline"] = dl_dt.isoformat()
+                        target_req.start_date = wed_date
+                        target_req.end_date = wed_date
+                        target_req.approval_deadline = dl_dt
+                        target_req.metadata = meta
+                        target_req.save()
+                        LeaveRequestEventLog.objects.filter(leave_request=target_req).delete()
+                        LeaveRequestService.ensure_event_logs_for_item(
+                            item=target_req,
+                            affected_lessons=aff_lessons,
+                            notified_teachers=notif_teachers,
+                            deadline_dt=dl_dt,
+                        )
+                        updated_count += 1
+
+                current_week_leaves = list(
+                    LeaveRequest.objects.filter(
+                        student=student,
+                        status__in=["APPROVED", "PENDING"],
+                        start_date__lte=week_end,
+                        end_date__gte=week_start,
+                    )
+                )
+                has_shift_in_week = any(
+                    (
+                        isinstance(r.metadata, dict)
+                        and r.metadata.get("sessionShift") in ("morning", "afternoon")
+                    )
+                    for r in current_week_leaves
+                )
+                if not has_shift_in_week:
+                    shift_req = (
+                        LeaveRequest.objects.filter(
+                            student=student, status__in=["APPROVED", "PENDING"]
+                        )
+                        .exclude(start_date=wed_date)
+                        .order_by("-start_date")
+                        .first()
+                    )
+                    if shift_req:
+                        meta = shift_req.metadata if isinstance(shift_req.metadata, dict) else {}
+                        meta["sessionShift"] = "morning"
+                        aff_lessons, notif_teachers = (
+                            LeaveRequestService.compute_affected_lessons_for_class(
+                                school_class=school_class,
+                                start_date=fri_date,
+                                end_date=fri_date,
+                                session_shift="morning",
+                            )
+                        )
+                        first_dt, dl_dt = LeaveRequestService.calculate_first_lesson_and_deadline(
+                            affected_lessons=aff_lessons,
+                            fallback_start_date=fri_date,
+                        )
+                        meta["affectedLessons"] = aff_lessons
+                        meta["notifiedTeachers"] = notif_teachers
+                        meta["firstLessonStartAt"] = first_dt.isoformat()
+                        meta["approvalDeadline"] = dl_dt.isoformat()
+                        shift_req.start_date = fri_date
+                        shift_req.end_date = fri_date
+                        if dl_dt <= now and shift_req.status == "PENDING":
+                            shift_req.status = "APPROVED"
+                            shift_req.is_auto_approved = True
+                        shift_req.approval_deadline = dl_dt
+                        shift_req.metadata = meta
+                        shift_req.save()
+                        LeaveRequestEventLog.objects.filter(leave_request=shift_req).delete()
+                        LeaveRequestService.ensure_event_logs_for_item(
+                            item=shift_req,
+                            affected_lessons=aff_lessons,
+                            notified_teachers=notif_teachers,
+                            deadline_dt=dl_dt,
+                        )
+                        updated_count += 1
 
         self.stdout.write(
             self.style.SUCCESS(

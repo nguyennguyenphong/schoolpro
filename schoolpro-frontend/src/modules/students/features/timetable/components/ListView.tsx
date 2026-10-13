@@ -13,8 +13,19 @@ interface ListViewProps {
 export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
   const { t } = useTranslation(["card", "message"]);
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
+  const getStatusBadge = (slot: TimetableSlot) => {
+    const isOnLeave =
+      Boolean(slot.isOnLeave) || slot.attendanceStatus === "excused";
+    if (isOnLeave) {
+      return (
+        <Tag color="warning">
+          {slot.leaveStatus === "pending"
+            ? t("card:timetable.leave.slotPending")
+            : t("card:timetable.leave.slotApproved")}
+        </Tag>
+      );
+    }
+    switch (slot.status) {
       case "ongoing":
         return <Tag color="processing">{t("card:timetable.status.ongoing")}</Tag>;
       case "completed":
@@ -73,21 +84,42 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
           const dayName = getDayLabel(slot.dayOfWeek);
           const isPractice = slot.classType === "practice";
           const isOnline = Boolean(slot.onlineUrl);
+          const isOnLeave =
+            Boolean(slot.isOnLeave) || slot.attendanceStatus === "excused";
+          const isPendingLeave = isOnLeave && slot.leaveStatus === "pending";
 
           return (
             <div
               key={slot.id}
               onClick={() => onSlotClick?.(slot)}
-              className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-2.5 transition-all hover:border-slate-300"
+              className={`p-3.5 rounded-xl border shadow-2xs space-y-2.5 transition-all ${
+                isOnLeave
+                  ? isPendingLeave
+                    ? "bg-orange-50/90 border-orange-300"
+                    : "bg-amber-50/95 border-amber-300"
+                  : "border-slate-200 bg-white hover:border-slate-300"
+              }`}
             >
               {/* Card Header: Date & Status */}
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div
+                className={`flex items-center justify-between pb-2 border-b ${
+                  isOnLeave ? "border-amber-200/70" : "border-slate-100"
+                }`}
+              >
                 <div className="flex items-center gap-1.5 text-xs text-slate-700">
-                  <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
+                  <Icon
+                    name="calendar"
+                    size={13}
+                    className={
+                      isOnLeave
+                        ? "text-amber-600 shrink-0"
+                        : "text-blue-600 shrink-0"
+                    }
+                  />
                   <span className="font-bold text-slate-900">{formattedDate}</span>
                   <span className="text-slate-500">({dayName})</span>
                 </div>
-                {getStatusBadge(slot.status)}
+                {getStatusBadge(slot)}
               </div>
 
               {/* Course & Class */}
@@ -101,7 +133,11 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
               </div>
 
               {/* Meta Grid */}
-              <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100 text-slate-600">
+              <div
+                className={`grid grid-cols-2 gap-2 text-xs pt-1 border-t text-slate-600 ${
+                  isOnLeave ? "border-amber-200/70" : "border-slate-100"
+                }`}
+              >
                 <div className="flex items-center gap-1.5">
                   <Icon name="clock" size={13} className="text-slate-400 shrink-0" />
                   <span className="font-medium text-slate-800">
@@ -143,7 +179,11 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
 
               {/* Online class link or note */}
               {slot.onlineUrl && (
-                <div className="pt-2 border-t border-slate-100">
+                <div
+                  className={`pt-2 border-t ${
+                    isOnLeave ? "border-amber-200/70" : "border-slate-100"
+                  }`}
+                >
                   <a
                     href={slot.onlineUrl}
                     target="_blank"
@@ -187,12 +227,21 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
                 const dayName = getDayLabel(slot.dayOfWeek);
                 const isPractice = slot.classType === "practice";
                 const isOnline = Boolean(slot.onlineUrl);
+                const isOnLeave =
+                  Boolean(slot.isOnLeave) || slot.attendanceStatus === "excused";
+                const isPendingLeave = isOnLeave && slot.leaveStatus === "pending";
 
                 return (
                   <tr
                     key={slot.id}
                     onClick={() => onSlotClick?.(slot)}
-                    className="hover:bg-slate-50/70 transition-colors whitespace-nowrap"
+                    className={`transition-colors whitespace-nowrap ${
+                      isOnLeave
+                        ? isPendingLeave
+                          ? "bg-orange-50/75 hover:bg-orange-100/70"
+                          : "bg-amber-50/85 hover:bg-amber-100/70"
+                        : "hover:bg-slate-50/70"
+                    }`}
                   >
                     {/* 1. Date Column */}
                     <td className="py-3 px-4">
@@ -263,13 +312,18 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
                     </td>
 
                     {/* 9. Note */}
-                    <td className="py-3 px-4 text-slate-600 italic text-[11px]">
-                      {slot.notes || slot.lessonTopic || "—"}
+                    <td
+                      className={`py-3 px-4 italic text-[11px] max-w-60 truncate ${
+                        isOnLeave ? "text-amber-900 font-medium" : "text-slate-600"
+                      }`}
+                      title={(isOnLeave && slot.leaveReason) || slot.notes || slot.lessonTopic || ""}
+                    >
+                      {(isOnLeave && slot.leaveReason) || slot.notes || slot.lessonTopic || "—"}
                     </td>
 
                     {/* 10. Status */}
                     <td className="py-3 px-4 text-center">
-                      {getStatusBadge(slot.status)}
+                      {getStatusBadge(slot)}
                     </td>
 
                     {/* 11. Online Link */}

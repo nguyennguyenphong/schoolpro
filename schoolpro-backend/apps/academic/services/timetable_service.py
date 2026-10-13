@@ -53,6 +53,90 @@ class TimetableService:
 
         return None
 
+    @staticmethod
+    def resolve_student(user: Any, class_id: str | None = None) -> Student | None:
+        """
+        Resolves the Student profile for the authenticated user, falling back to an enrolled
+        student with leave requests in dev/testing mode if user is staff/superuser.
+        """
+        try:
+            student = Student.objects.filter(user=user).first()
+            if student:
+                return student
+            if getattr(user, "is_staff", False) or getattr(user, "is_superuser", False):
+                from apps.academic.services.leave_request_service import LeaveRequestService
+
+                resolved = LeaveRequestService.resolve_student(user)
+                if resolved:
+                    return resolved
+            if class_id:
+                enrollment = (
+                    StudentClassEnrollment.objects.filter(
+                        school_class_id=class_id,
+                        status="ACTIVE",
+                    )
+                    .select_related("student")
+                    .first()
+                )
+                if enrollment and enrollment.student:
+                    return enrollment.student
+        except Exception as exc:
+            logger.warning("Unable to resolve student profile for timetable: %s", exc)
+        return None
+
+    @staticmethod
+    def _match_slot_leave_request(
+        slot_id: str,
+        slot_date,
+        slot_date_str: str,
+        slot_shift: str,
+        leave_requests: list[Any],
+    ) -> Any | None:
+        """
+        Matches a timetable slot against active student leave requests (APPROVED or PENDING)
+        overlapping the target week. Prioritizes APPROVED requests over PENDING ones.
+        """
+        matched_pending = None
+        for req in leave_requests:
+            if not (req.start_date <= slot_date <= req.end_date):
+                continue
+
+            meta = req.metadata if isinstance(req.metadata, dict) else {}
+            req_shift = str(meta.get("sessionShift", "all_day") or "all_day").lower()
+            selected_keys = meta.get("selectedLessonKeys")
+            affected_lessons = meta.get("affectedLessons")
+
+            lesson_key = f"{slot_date_str}_{slot_id}"
+            is_matched = False
+
+            if isinstance(selected_keys, list) and len(selected_keys) > 0:
+                selected_set = {str(k) for k in selected_keys}
+                if lesson_key in selected_set or slot_id in selected_set:
+                    is_matched = True
+            elif isinstance(affected_lessons, list) and len(affected_lessons) > 0:
+                for lesson in affected_lessons:
+                    if not isinstance(lesson, dict):
+                        continue
+                    if str(lesson.get("lessonKey")) == lesson_key or (
+                        str(lesson.get("date")) == slot_date_str
+                        and str(lesson.get("timetableId")) == slot_id
+                    ):
+                        is_matched = True
+                        break
+                if not is_matched and req_shift in ("all_day", slot_shift):
+                    is_matched = True
+            else:
+                if req_shift in ("all_day", slot_shift):
+                    is_matched = True
+
+            if is_matched:
+                if req.status == "APPROVED":
+                    return req
+                if matched_pending is None:
+                    matched_pending = req
+
+        return matched_pending
+
     @classmethod
     def get_weekly_schedule_context(
         cls,
@@ -67,9 +151,12 @@ class TimetableService:
         Retrieves timetable slots dynamically mapped to the week of the selected date,
         along with active academic year and semester boundary metadata.
         """
+        from apps.academic.models.attendance import Attendance, LeaveRequest
+        from apps.academic.services.leave_request_service import LeaveRequestService
         from apps.master.models import AcademicYear, Semester
 
         class_id = cls.get_student_class_id(user)
+        student = cls.resolve_student(user, class_id=class_id)
         today = timezone.localdate()
 
         # Parse selected date or default to today
@@ -151,6 +238,42 @@ class TimetableService:
         if not class_id:
             return {"slots": [], "meta": meta_info}
 
+        # Query active leave requests and excused attendance records for this student in the target week
+        active_leave_requests: list[LeaveRequest] = []
+        excused_attendance_dates: set[str] = set()
+        if student:
+            student_leave_qs = LeaveRequest.objects.filter(
+                student=student,
+                status__in=["APPROVED", "PENDING"],
+                start_date__lte=week_end,
+                end_date__gte=week_start,
+            ).select_related(
+                "student",
+                "student__user",
+                "school_class",
+                "school_class__homeroom_teacher",
+                "school_class__homeroom_teacher__user",
+            )
+            LeaveRequestService.check_and_auto_approve_overdue_requests(student_leave_qs)
+            active_leave_requests = list(
+                LeaveRequest.objects.filter(
+                    student=student,
+                    status__in=["APPROVED", "PENDING"],
+                    start_date__lte=week_end,
+                    end_date__gte=week_start,
+                ).order_by("-status", "-created_at")
+            )
+            excused_attendance_dates = {
+                att_date.strftime("%Y-%m-%d")
+                for att_date in Attendance.objects.filter(
+                    student=student,
+                    school_class_id=class_id,
+                    attendance_date__gte=week_start,
+                    attendance_date__lte=week_end,
+                    status="ABSENT_EXCUSED",
+                ).values_list("attendance_date", flat=True)
+            }
+
         # Query active recurring slots for the class
         queryset = (
             Timetable.objects.filter(school_class_id=class_id)
@@ -182,6 +305,7 @@ class TimetableService:
                 continue
 
             slot_date_str = slot_date.strftime("%Y-%m-%d")
+            slot_shift = item.period.shift.lower()
 
             start_t = item.period.start_time
             end_t = item.period.end_time
@@ -198,6 +322,43 @@ class TimetableService:
             else:
                 slot_status = "upcoming"
                 attendance_status = "not_yet"
+
+            # Check if student is on leave for this slot/shift/day
+            matched_leave = cls._match_slot_leave_request(
+                slot_id=str(item.id),
+                slot_date=slot_date,
+                slot_date_str=slot_date_str,
+                slot_shift=slot_shift,
+                leave_requests=active_leave_requests,
+            )
+
+            is_on_leave = False
+            leave_status = None
+            leave_session_shift = None
+            leave_type = None
+            leave_reason = None
+            leave_request_code = None
+
+            if matched_leave is not None:
+                is_on_leave = True
+                attendance_status = "excused"
+                leave_status = "approved" if matched_leave.status == "APPROVED" else "pending"
+                req_meta = (
+                    matched_leave.metadata if isinstance(matched_leave.metadata, dict) else {}
+                )
+                leave_session_shift = str(
+                    req_meta.get("sessionShift", "all_day") or "all_day"
+                ).lower()
+                leave_type = LeaveRequestService.LEAVE_TYPE_DB_TO_UI.get(
+                    matched_leave.leave_type, "other"
+                )
+                leave_reason = matched_leave.reason or ""
+                leave_request_code = matched_leave.code or ""
+            elif slot_date_str in excused_attendance_dates:
+                is_on_leave = True
+                attendance_status = "excused"
+                leave_status = "approved"
+                leave_session_shift = "all_day"
 
             cst = item.class_subject_teacher
             subject = getattr(cst, "subject", None)
@@ -218,7 +379,7 @@ class TimetableService:
                 "periods": f"Tiết {item.period.period_no}",
                 "startTime": start_str,
                 "endTime": end_str,
-                "shift": item.period.shift.lower(),
+                "shift": slot_shift,
                 "room": room.name if room else "Phòng học",
                 "building": room.building if room and room.building else "Dãy nhà B",
                 "campus": "Trường Trung học phổ thông SchoolPro",
@@ -228,6 +389,12 @@ class TimetableService:
                 "classType": item.class_type.lower() if item.class_type else "theory",
                 "status": slot_status,
                 "attendanceStatus": attendance_status,
+                "isOnLeave": is_on_leave,
+                "leaveStatus": leave_status,
+                "leaveSessionShift": leave_session_shift,
+                "leaveType": leave_type,
+                "leaveReason": leave_reason,
+                "leaveRequestCode": leave_request_code,
                 "onlineUrl": item.online_url if item.is_online else None,
                 "lessonTopic": item.lesson_topic or "",
                 "notes": item.notes or "",

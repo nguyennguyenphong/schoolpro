@@ -243,7 +243,19 @@
       "ongoing": "Đang học",
       "completed": "Đã xong",
       "cancelled": "Tạm nghỉ",
-      "upcoming": "Sắp tới"
+      "upcoming": "Sắp tới",
+      "excused": "Nghỉ có phép"
+    },
+    "leave": {
+      "fullDayApproved": "Nghỉ phép cả ngày",
+      "fullDayPending": "Chờ duyệt nghỉ cả ngày",
+      "shiftApproved": "Nghỉ phép ca học",
+      "shiftPending": "Chờ duyệt nghỉ ca học",
+      "partialDay": "Có buổi nghỉ phép",
+      "slotApproved": "Nghỉ có phép",
+      "slotPending": "Chờ duyệt phép",
+      "reasonPrefix": "Lý do xin phép:",
+      "emptyLeaveSlot": "Nghỉ phép"
     },
     "tableHeaders": {
       "date": "Ngày học",
