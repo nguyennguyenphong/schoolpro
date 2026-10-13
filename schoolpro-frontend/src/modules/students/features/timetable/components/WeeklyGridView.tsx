@@ -54,6 +54,13 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
       allDaySlots.length > 0 &&
       (leaveDaySlots.some((s) => s.leaveSessionShift === "all_day") ||
         leaveDaySlots.length === allDaySlots.length);
+    const dayLeaveStatus: "approved" | "pending" | null = leaveDaySlots.some(
+      (s) => s.leaveStatus !== "pending",
+    )
+      ? "approved"
+      : leaveDaySlots.length > 0
+        ? "pending"
+        : null;
 
     return {
       ...d,
@@ -63,6 +70,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
       isToday,
       hasLeave,
       isFullDayLeave,
+      dayLeaveStatus,
     };
   });
 
@@ -98,9 +106,9 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                           : "text-slate-700"
                     }`}
                   >
-                    <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-0.5">
                       <span className="text-xs font-bold block">{d.label}</span>
-                      <div className="mt-0.5">
+                      <div>
                         <span
                           className={`text-[11px] px-2.5 py-0.5 rounded-full font-medium inline-block ${
                             d.hasLeave
@@ -113,6 +121,32 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                           {d.formattedDate}
                         </span>
                       </div>
+                      {d.hasLeave && (
+                        <span
+                          className={`mt-1 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                            d.dayLeaveStatus === "pending"
+                              ? "bg-orange-100 text-orange-800 border-orange-300"
+                              : "bg-amber-200/80 text-amber-900 border-amber-300"
+                          }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              d.dayLeaveStatus === "pending"
+                                ? "bg-orange-500"
+                                : "bg-amber-600"
+                            }`}
+                          />
+                          <span>
+                            {d.isFullDayLeave
+                              ? d.dayLeaveStatus === "pending"
+                                ? t("card:timetable.leave.fullDayPending")
+                                : t("card:timetable.leave.fullDayApproved")
+                              : d.dayLeaveStatus === "pending"
+                                ? t("card:timetable.leave.shiftPending")
+                                : t("card:timetable.leave.shiftApproved")}
+                          </span>
+                        </span>
+                      )}
                     </div>
                   </th>
                 ))}

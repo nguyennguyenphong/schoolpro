@@ -22,15 +22,8 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
   const currentDayjs = dayjs(selectedDate);
   const fullDateStr = currentDayjs.format("DD/MM/YYYY");
 
-  const getAttendanceBadge = (slot: TimetableSlot) => {
-    if (slot.isOnLeave || slot.attendanceStatus === "excused") {
-      return (
-        <Tag color="warning">
-          {slot.leaveStatus === "pending" ? "Chờ duyệt phép" : "Nghỉ có phép"}
-        </Tag>
-      );
-    }
-    switch (slot.attendanceStatus) {
+  const getAttendanceBadge = (status: string) => {
+    switch (status) {
       case "present":
         return <Tag color="success">✓ Đã điểm danh</Tag>;
       case "absent":
@@ -99,7 +92,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                 key={slot.id}
                 className={`rounded-xl shadow-2xs transition-all hover:border-blue-300 [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5 relative ${
                   isOnLeave
-                    ? "bg-amber-50/90 border-amber-300"
+                    ? "bg-amber-50/80 border-amber-200"
                     : isOngoing
                       ? "border-blue-400 ring-2 ring-blue-500/20"
                       : ""
@@ -134,7 +127,7 @@ export const DailyAgendaView: React.FC<DailyAgendaViewProps> = ({
                         <Tag color={slot.classType === "practice" ? "green" : "blue"}>
                           {slot.classType === "practice" ? "Thực hành" : "Lý thuyết"}
                         </Tag>
-                        {getAttendanceBadge(slot)}
+                        {getAttendanceBadge(slot.attendanceStatus)}
                         {slot.onlineUrl && (
                           <Tag color="cyan">Online Meeting</Tag>
                         )}
