@@ -39,7 +39,9 @@ class SubjectViewSet(viewsets.GenericViewSet):
         school_id = self._get_effective_school_id(request)
         department_id = request.query_params.get("department_id")
         grade_level_raw = request.query_params.get("grade_level")
-        grade_level = int(grade_level_raw) if (grade_level_raw and grade_level_raw.isdigit()) else None
+        grade_level = (
+            int(grade_level_raw) if (grade_level_raw and grade_level_raw.isdigit()) else None
+        )
         evaluation_type = request.query_params.get("evaluation_type")
         is_compulsory = _parse_bool_param(request.query_params.get("is_compulsory"))
         is_active = _parse_bool_param(request.query_params.get("is_active"))
