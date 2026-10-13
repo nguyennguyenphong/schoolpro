@@ -1,0 +1,72 @@
+"""
+REST API ViewSet for Semester master reference data.
+"""
+
+from rest_framework import permissions, status, viewsets
+
+from apps.core.authentication import SchoolProJWTAuthentication
+from apps.master.serializers.semester_serializers import SemesterListSerializer
+from apps.master.services.semester_service import SemesterService
+from common.responses.response import APIResponse
+
+
+def _parse_bool_param(val: str | None) -> bool | None:
+    if val is None:
+        return None
+    lower = val.strip().lower()
+    if lower in ("true", "1"):
+        return True
+    if lower in ("false", "0"):
+        return False
+    return None
+
+
+class SemesterViewSet(viewsets.GenericViewSet):
+    """ViewSet for listing and retrieving Semesters."""
+
+    authentication_classes = [SchoolProJWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SemesterListSerializer
+
+    def _get_effective_school_id(self, request):
+        user_school_id = getattr(request.user, "school_id", None)
+        if user_school_id:
+            return user_school_id
+        return request.query_params.get("school_id")
+
+    def list(self, request, *args, **kwargs):
+        service = SemesterService()
+        school_id = self._get_effective_school_id(request)
+        academic_year_id = request.query_params.get("academic_year_id")
+        order_no_raw = request.query_params.get("order_no")
+        order_no = int(order_no_raw) if (order_no_raw and order_no_raw.isdigit()) else None
+        is_current = _parse_bool_param(request.query_params.get("is_current"))
+        is_locked = _parse_bool_param(request.query_params.get("is_locked"))
+        search = request.query_params.get("search")
+
+        qs = service.list_semesters(
+            school_id=school_id,
+            academic_year_id=academic_year_id,
+            order_no=order_no,
+            is_current=is_current,
+            is_locked=is_locked,
+            search=search,
+        )
+        serializer = SemesterListSerializer(qs, many=True)
+        return APIResponse.success(
+            data=serializer.data,
+            message="Lấy danh sách học kỳ thành công.",
+        )
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        service = SemesterService()
+        obj = service.get_semester_detail(pk)
+        if not obj:
+            return APIResponse.error(
+                message="Không tìm thấy học kỳ.",
+                code=status.HTTP_404_NOT_FOUND,
+            )
+        return APIResponse.success(
+            data=SemesterListSerializer(obj).data,
+            message="Lấy thông tin học kỳ thành công.",
+        )

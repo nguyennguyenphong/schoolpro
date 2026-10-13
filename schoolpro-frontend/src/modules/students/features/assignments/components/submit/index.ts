@@ -1,4 +1,6 @@
 export { AssignmentSubmitHeader } from "@/modules/students/features/assignments/components/submit/AssignmentSubmitHeader";
+export { AssignmentWorkflowCard } from "@/modules/students/features/assignments/components/submit/AssignmentWorkflowCard";
+export { AssignmentContentTabsCard } from "@/modules/students/features/assignments/components/submit/AssignmentContentTabsCard";
 export { AssignmentRequirementsCard } from "@/modules/students/features/assignments/components/submit/AssignmentRequirementsCard";
 export { AssignmentTeacherAttachments } from "@/modules/students/features/assignments/components/submit/AssignmentTeacherAttachments";
 export { AssignmentRubricCard } from "@/modules/students/features/assignments/components/submit/AssignmentRubricCard";
@@ -12,3 +14,4 @@ export { AssignmentDeadlineStatusCard } from "@/modules/students/features/assign
 export { AssignmentAcademicInfoCard } from "@/modules/students/features/assignments/components/submit/AssignmentAcademicInfoCard";
 export { AssignmentFileFormatGuidelinesCard } from "@/modules/students/features/assignments/components/submit/AssignmentFileFormatGuidelinesCard";
 export { AssignmentSubmissionNotesCard } from "@/modules/students/features/assignments/components/submit/AssignmentSubmissionNotesCard";
+export { AssignmentSubmissionWorkspaceCard } from "@/modules/students/features/assignments/components/submit/AssignmentSubmissionWorkspaceCard";

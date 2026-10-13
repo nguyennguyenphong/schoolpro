@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal, message } from "antd";
+import { message } from "@/components/ui/Message";
+import { Modal } from "@/components/ui/Modal";
 import { PdfViewerModal } from "@/components/pdf";
 import type {
   AssignmentItem,

@@ -16,7 +16,7 @@ Mục tiêu của bạn là tạo ra code:
 
 ### 0. Coding
 
-1. Chia file thành các file component con để dễ bảo trì, không để một file dồn vào nhiều logic. Chia ra đến các hook, utils hoặc constants để chia nhỏ ra.
+1. Chia file thành các file component con để dễ bảo trì, không để một file dồn vào nhiều logic. Chia ra đến các hook, utils hoặc constants,... để chia nhỏ ra.
 2. Nếu chưa có component Ant Design thì tạo theo cấu trúc như các component trước đó rồi dùng.
 3. Hiện tại do chưa kết nối API nên bạn dùng mockData
 4. Cấu trúc các filder và tên file đúng chuẩn.
@@ -26,6 +26,7 @@ Mục tiêu của bạn là tạo ra code:
 8. Tất cả các import phải dùng @.
 9. Các trường hợp cần thiết thì viết thêm file test để kiểm tra.
 10. Không viết tắt các từ, bắt buộc phải ghi rõ ràng. Ví dụ như HS (sai) -> Học sinh (đúng). Tương tự với các từ khác.
+11. Luôn thống nhất một font chữ trong suốt quá trình coding.
 
 ### 1. Đọc và hiểu code trước khi sửa
 

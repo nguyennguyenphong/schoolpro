@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Tag } from "@/components/ui/Tag";
 import {
   FilePreviewModal,
   ReopenRequestModal,
@@ -12,14 +11,9 @@ import {
 } from "@/modules/students/features/assignments/components";
 import {
   AssignmentSubmitHeader,
-  AssignmentRequirementsCard,
-  AssignmentTeacherAttachments,
-  AssignmentRubricCard,
-  AssignmentGradedFeedbackCard,
-  AssignmentSubmissionView,
-  AssignmentOverdueCard,
-  AssignmentOverdueLog,
-  AssignmentSubmitForm,
+  AssignmentWorkflowCard,
+  AssignmentContentTabsCard,
+  AssignmentSubmissionWorkspaceCard,
   AssignmentSubmitSidebar,
 } from "@/modules/students/features/assignments/components/submit";
 import { PdfViewerModal } from "@/components/pdf";
@@ -139,8 +133,8 @@ export const AssignmentSubmitPage: React.FC = () => {
   })();
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-8">
-      {/* 1. Page Header with Breadcrumb & Workflow Steps */}
+    <div className="flex flex-col gap-4 sm:gap-5 pb-8">
+      {/* 1. Page Header (matching LeaveRequestDetailHeader) */}
       <AssignmentSubmitHeader
         assignment={assignment}
         isPastDue={isPastDue}
@@ -148,108 +142,43 @@ export const AssignmentSubmitPage: React.FC = () => {
         onBack={() => navigate("/student/assignments")}
       />
 
-      {/* 2. Main 2-Column Responsive Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-        {/* Left Column (2 spans): Requirements, Attachments, Rubric, Feedback & Submission Area */}
+      {/* 2. Workflow Steps Card (matching LeaveRequestWorkflowCard) */}
+      <AssignmentWorkflowCard assignment={assignment} isPastDue={isPastDue} />
+
+      {/* 3. Main 2-Column Responsive Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-start">
+        {/* Left Column (2 spans): Tabbed Assignment Content + Submission Workspace */}
         <div className="lg:col-span-2 space-y-4 sm:space-y-5">
-          <AssignmentRequirementsCard
-            description={assignment.description}
-            originalDueDate={assignment.originalDueDate}
-            extensions={assignment.extensions}
-          />
-
-          <AssignmentTeacherAttachments
-            attachments={assignment.attachments}
-            onPreviewPdf={setPreviewPdf}
-          />
-
-          <AssignmentRubricCard
-            rubric={assignment.rubric}
-            solutionAttachments={assignment.solutionAttachments}
+          <AssignmentContentTabsCard
+            assignment={assignment}
             isGraded={isGraded}
             onPreviewPdf={setPreviewPdf}
-          />
-
-          <AssignmentGradedFeedbackCard
-            assignment={assignment}
             onRequestAppeal={() => setAppealModalOpen(true)}
           />
 
-          {/* Submission Container Card */}
-          <div className="p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
-                <h3 className="text-base font-bold text-slate-900 mb-0">
-                  {t("card:assignments.detail.submissionAreaTitle")}
-                </h3>
-              </div>
-              <div>
-                {isSubmittedAndExpired ? (
-                  <Tag color="default">
-                    {t("card:assignments.statusLabels.submittedClosed")}
-                  </Tag>
-                ) : isGraded ? (
-                  <Tag color="success">
-                    {t("card:assignments.statusLabels.graded")}
-                  </Tag>
-                ) : isSubmitted ? (
-                  <Tag color="processing">
-                    {t("card:assignments.statusLabels.submitted")}
-                  </Tag>
-                ) : isOverdue ? (
-                  <Tag color="error">
-                    {t("card:assignments.statusLabels.overdue")}
-                  </Tag>
-                ) : (
-                  <Tag color="warning">
-                    {t("card:assignments.statusLabels.notSubmitted")}
-                  </Tag>
-                )}
-              </div>
-            </div>
-
-            {hasSubmission && !isResubmitting && (
-              <AssignmentSubmissionView
-                assignment={assignment}
-                files={files}
-                isSubmittedAndExpired={isSubmittedAndExpired}
-                isGraded={isGraded}
-                onPreview={handlePreview}
-                onRequestReopen={() => setReopenModalOpen(true)}
-                onStartResubmit={() => setIsResubmitting(true)}
-              />
-            )}
-
-            {!hasSubmission && isOverdue && (
-              <AssignmentOverdueCard
-                assignment={assignment}
-                onRequestReopen={() => setReopenModalOpen(true)}
-              />
-            )}
-
-            {showForm && (
-              <AssignmentSubmitForm
-                files={files}
-                onFilesChange={setFiles}
-                onPreview={handlePreview}
-                submissionContent={submissionContent}
-                onContentChange={setSubmissionContent}
-                isResubmitting={isResubmitting}
-                onCancelResubmit={() => setIsResubmitting(false)}
-                submitting={submitting}
-                onSubmit={handleSubmit}
-                maxFilesCount={assignment.maxFilesCount}
-                maxFileSizeMb={assignment.maxFileSizeMb}
-              />
-            )}
-          </div>
-
-          {/* Standalone Event Timeline Log Card */}
-          <AssignmentOverdueLog assignment={assignment} />
+          <AssignmentSubmissionWorkspaceCard
+            assignment={assignment}
+            files={files}
+            onFilesChange={setFiles}
+            onPreview={handlePreview}
+            submissionContent={submissionContent}
+            onContentChange={setSubmissionContent}
+            isResubmitting={isResubmitting}
+            onStartResubmit={() => setIsResubmitting(true)}
+            onCancelResubmit={() => setIsResubmitting(false)}
+            submitting={submitting}
+            onSubmit={handleSubmit}
+            onRequestReopen={() => setReopenModalOpen(true)}
+            hasSubmission={hasSubmission}
+            isOverdue={isOverdue}
+            isSubmitted={isSubmitted}
+            isGraded={isGraded}
+            isSubmittedAndExpired={isSubmittedAndExpired}
+            showForm={showForm}
+          />
         </div>
 
-        {/* Right Column: Deadlines, Guidelines & Academic Info */}
+        {/* Right Column: Tabbed Deadlines/Academic Info + Tabbed Notes/Guidelines */}
         <AssignmentSubmitSidebar
           assignment={assignment}
           summary={summary}

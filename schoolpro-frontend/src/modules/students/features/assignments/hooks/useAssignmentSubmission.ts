@@ -1,5 +1,4 @@
-
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 
@@ -25,23 +24,26 @@ export const useAssignmentSubmission = ({
 }: UseAssignmentSubmissionParams) => {
   const { t } = useTranslation("message");
 
-  const [submissionContent, setSubmissionContent] = useState("");
-  const [files, setFiles] = useState<SubmittedFile[]>([]);
+  const assignmentSyncKey = assignment
+    ? `${assignment.id}:${assignment.submission?.submittedAt ?? "none"}:${assignment.submission?.attemptNumber ?? 0}`
+    : "null";
+
+  const [prevSyncKey, setPrevSyncKey] = useState(assignmentSyncKey);
+  const [submissionContent, setSubmissionContent] = useState(
+    () => assignment?.submission?.content ?? "",
+  );
+  const [files, setFiles] = useState<SubmittedFile[]>(() =>
+    assignment ? normalizeSubmissionFiles(assignment.submission) : [],
+  );
   const [submitting, setSubmitting] = useState(false);
   const [isResubmitting, setIsResubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!assignment) {
-      setSubmissionContent("");
-      setFiles([]);
-      setIsResubmitting(false);
-      return;
-    }
-
-    setSubmissionContent(assignment.submission?.content ?? "");
-    setFiles(normalizeSubmissionFiles(assignment.submission));
+  if (prevSyncKey !== assignmentSyncKey) {
+    setPrevSyncKey(assignmentSyncKey);
+    setSubmissionContent(assignment?.submission?.content ?? "");
+    setFiles(assignment ? normalizeSubmissionFiles(assignment.submission) : []);
     setIsResubmitting(false);
-  }, [assignment?.id, assignment?.submission]);
+  }
 
   const handleSubmit = useCallback(async () => {
     if (!assignment || submitting) return;

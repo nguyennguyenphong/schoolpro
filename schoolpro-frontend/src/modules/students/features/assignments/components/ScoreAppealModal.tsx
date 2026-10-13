@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Modal, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { TextArea } from "@/components/ui/Input";
 import { Icon } from "@/components/ui/Icon";
+import { message } from "@/components/ui/Message";
+import { Modal } from "@/components/ui/Modal";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
 interface ScoreAppealModalProps {
@@ -77,7 +78,7 @@ export const ScoreAppealModal: React.FC<ScoreAppealModalProps> = ({
             <span className="text-slate-500">
               {t("card:assignments.modals.subjectAndAssignment")}
             </span>
-            <span className="text-slate-800 font-medium truncate max-w-[260px]">
+            <span className="text-slate-800 font-medium truncate max-w-65">
               {assignment.subjectName} • {assignment.title}
             </span>
           </div>
