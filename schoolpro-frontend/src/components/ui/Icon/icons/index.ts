@@ -73,6 +73,7 @@ import {
   GraduationCap,
   Users,
   Circle,
+  PrinterCheck,
 } from "lucide-react";
 
 export const iconMap = {
@@ -173,4 +174,5 @@ export const iconMap = {
   academic: GraduationCap,
   users: Users,
   circle: Circle,
+  print: PrinterCheck,
 } as const;

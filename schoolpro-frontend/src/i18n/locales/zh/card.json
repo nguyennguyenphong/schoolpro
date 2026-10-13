@@ -712,18 +712,18 @@
     },
     "filter": {
       "all": "All Subjects",
-      "open": "Open for Check-In",
-      "present": "Checked In",
-      "absent": "Absent / Expired",
+      "open": "签到进行中",
+      "present": "已签到",
+      "absent": "已超时",
       "dateSubtitle": "Subject attendance sessions scheduled for the selected date",
-      "upcoming": "未开始"
+      "upcoming": "未到签到时间"
     },
     "status": {
-      "open": "Open for Check-In",
-      "present": "Checked In",
-      "excused": "Excused Leave",
-      "upcoming": "Not Open Yet",
-      "absent": "Absent / Expired"
+      "open": "签到进行中",
+      "present": "已签到",
+      "excused": "准假",
+      "upcoming": "未到签到时间",
+      "absent": "已超时"
     },
     "method": {
       "qrScan": "QR Camera Scan",
@@ -741,14 +741,14 @@
       "checkedInAt": "Checked in at: {{time}}",
       "teacherGpsCoord": "Teacher Device GPS: {{lat}}, {{lng}}",
       "deadlineLabel": "Expires at:",
-      "upcomingHint": "Teacher will issue 6-digit PIN & QR when class starts",
-      "expiredHint": "Attendance code has expired",
+      "upcomingHint": "未到签到时间。上课时教师将发布签到码",
+      "expiredHint": "签到时间已超时",
       "verifiedGpsHint": "GPS coordinates & attendance verified",
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "允许半径:",
       "countdownRowLabel": "代码有效期:",
       "verifiedRowLabel": "GPS验证:",
-      "expiredShort": "已关闭",
+      "expiredShort": "已超时",
       "openAtTime": "{{time}} 开启"
     },
     "empty": {

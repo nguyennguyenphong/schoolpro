@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { describe, expect, it } from "vitest";
 import { attendanceService } from "@/modules/students/features/attendance/services/attendanceService";
 import {
@@ -10,6 +11,8 @@ import {
 } from "@/modules/students/features/attendance/utils";
 
 describe("Attendance Geo Anti-Cheat, 6-Digit PIN, QR & Expiration Logic", () => {
+  const testDate = dayjs().format("YYYY-MM-DD");
+
   it("generates strictly 6-digit numeric PIN codes", () => {
     for (let i = 0; i < 20; i += 1) {
       const pin = generateSixDigitPin();
@@ -83,7 +86,7 @@ describe("Attendance Geo Anti-Cheat, 6-Digit PIN, QR & Expiration Logic", () => 
     // Open a fresh teacher session with 50m radius
     const opened = await attendanceService.openOrUpdateTeacherSession({
       recordId: "att-today-01",
-      date: "2026-09-29",
+      date: testDate,
       pinCode: "849201",
       allowedRadiusMeters: 50,
       durationSeconds: 300,
@@ -113,7 +116,7 @@ describe("Attendance Geo Anti-Cheat, 6-Digit PIN, QR & Expiration Logic", () => 
   it("accepts 6-digit PIN check-in when student is inside allowedRadiusMeters and session is active", async () => {
     const opened = await attendanceService.openOrUpdateTeacherSession({
       recordId: "att-today-02",
-      date: "2026-09-29",
+      date: testDate,
       pinCode: "652194",
       allowedRadiusMeters: 50,
       durationSeconds: 300,
@@ -146,7 +149,7 @@ describe("Attendance Geo Anti-Cheat, 6-Digit PIN, QR & Expiration Logic", () => 
   it("rejects check-in immediately once session is expired", async () => {
     const opened = await attendanceService.openOrUpdateTeacherSession({
       recordId: "att-today-01",
-      date: "2026-09-29",
+      date: testDate,
       pinCode: "123456",
       allowedRadiusMeters: 50,
       durationSeconds: 300,
@@ -154,7 +157,7 @@ describe("Attendance Geo Anti-Cheat, 6-Digit PIN, QR & Expiration Logic", () => 
       teacherLongitude: 106.693182,
     });
 
-    await attendanceService.expireSessionNow(opened.id, "2026-09-29");
+    await attendanceService.expireSessionNow(opened.id, testDate);
 
     const nearCoords = getPresetStudentCoordinates(
       opened.teacherLatitude,

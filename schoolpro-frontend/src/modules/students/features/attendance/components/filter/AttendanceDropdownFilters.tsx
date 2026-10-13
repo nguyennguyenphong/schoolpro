@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/Button";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/ui/Select";
-import { DEFAULT_DEMO_TODAY } from "@/modules/students/features/attendance/hooks";
 import type {
   AttendanceFilter,
   AttendanceShiftFilter,
@@ -41,9 +40,7 @@ export const AttendanceDropdownFilters: React.FC<
 }) => {
   const { t } = useTranslation(["input", "button"]);
   const currentDayjs = dayjs(filter.selectedDate);
-  const isToday =
-    filter.selectedDate === DEFAULT_DEMO_TODAY ||
-    currentDayjs.isSame(dayjs(), "day");
+  const isToday = currentDayjs.isSame(dayjs(), "day");
 
   const handleDatePickerChange = (date: Dayjs | Dayjs[] | null) => {
     if (date && !Array.isArray(date)) {

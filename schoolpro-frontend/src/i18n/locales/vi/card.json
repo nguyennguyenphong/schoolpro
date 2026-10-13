@@ -712,18 +712,18 @@
     },
     "filter": {
       "all": "Tất cả môn học",
-      "open": "Đang mở điểm danh",
+      "open": "Đang trong thời gian điểm danh",
       "present": "Đã điểm danh",
-      "absent": "Vắng / Quá hạn",
+      "absent": "Hết giờ",
       "dateSubtitle": "Danh sách các môn học có lịch điểm danh trong ngày",
-      "upcoming": "Chưa đến giờ"
+      "upcoming": "Chưa đến thời gian điểm danh"
     },
     "status": {
-      "open": "Đang mở điểm danh",
+      "open": "Đang trong thời gian điểm danh",
       "present": "Đã điểm danh",
       "excused": "Nghỉ có phép",
-      "upcoming": "Chưa mở cổng",
-      "absent": "Vắng / Hết hạn mã"
+      "upcoming": "Chưa đến thời gian điểm danh",
+      "absent": "Hết giờ"
     },
     "method": {
       "qrScan": "Quét Camera QR",
@@ -741,14 +741,14 @@
       "checkedInAt": "Điểm danh lúc: {{time}}",
       "teacherGpsCoord": "Tọa độ thiết bị Giáo viên: {{lat}}, {{lng}}",
       "deadlineLabel": "Hạn đóng mã:",
-      "upcomingHint": "Giáo viên sẽ phát mã 6 số & QR khi vào tiết",
-      "expiredHint": "Mã điểm danh đã hết thời gian sử dụng",
+      "upcomingHint": "Chưa đến thời gian điểm danh. Giáo viên sẽ mở mã khi vào tiết.",
+      "expiredHint": "Đã hết thời gian điểm danh",
       "verifiedGpsHint": "Đã xác thực tọa độ GPS & chuyên cần hợp lệ",
       "excusedHint": "Đã đồng bộ từ đơn xin nghỉ phép hợp lệ",
       "allowedRadiusLabel": "Bán kính cho phép:",
       "countdownRowLabel": "Thời hạn mã:",
       "verifiedRowLabel": "Xác thực GPS:",
-      "expiredShort": "Đã đóng cổng",
+      "expiredShort": "Hết giờ",
       "openAtTime": "Mở lúc {{time}}"
     },
     "empty": {

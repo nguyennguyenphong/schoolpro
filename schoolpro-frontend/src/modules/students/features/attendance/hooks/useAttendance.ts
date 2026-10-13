@@ -15,11 +15,14 @@ import type {
   CheckInPayload,
   CheckInResult,
 } from "@/modules/students/features/attendance/types";
-import { computeRemainingSeconds } from "@/modules/students/features/attendance/utils";
+import {
+  evaluateAttendanceRecordStatus,
+} from "@/modules/students/features/attendance/utils";
 
-export const DEFAULT_DEMO_TODAY = "2026-09-29";
+const getTodayDateStr = (): string => dayjs().format("YYYY-MM-DD");
+export const DEFAULT_DEMO_TODAY = getTodayDateStr();
 
-export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
+export const useAttendance = (initialDate = getTodayDateStr()) => {
   const { t } = useTranslation(["message"]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
@@ -79,10 +82,13 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
       setSearchParams(
         (prev) => {
           const next = new URLSearchParams(prev);
+          const todayStr = getTodayDateStr();
 
           const nextDate = patch.selectedDate ?? selectedDate;
-          if (nextDate) {
+          if (nextDate && nextDate !== todayStr) {
             next.set("date", nextDate);
+          } else {
+            next.delete("date");
           }
 
           const nextShift = patch.shift ?? shift;
@@ -259,25 +265,20 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
 
       setRecords((prev) =>
         prev.map((rec) => {
-          if (rec.status !== "open" || !rec.expiresAt) return rec;
-          const rem = computeRemainingSeconds(rec.expiresAt, 0);
-          if (rem <= 0) {
+          if (rec.status !== "open") return rec;
+          const evaluated = evaluateAttendanceRecordStatus(rec);
+          if (evaluated.status !== "open") {
             anyJustExpired = true;
-            const deadlineStr =
-              rec.deadlineTime ||
-              new Date(rec.expiresAt).toTimeString().slice(0, 8);
             return {
               ...rec,
-              status: "absent",
+              status: evaluated.status,
               remainingSeconds: 0,
-              note: t("message:attendance.sessionExpiredNote", {
-                time: deadlineStr,
-              }),
+              note: evaluated.note || rec.note,
             };
           }
           return {
             ...rec,
-            remainingSeconds: rem,
+            remainingSeconds: evaluated.remainingSeconds,
           };
         }),
       );
@@ -318,7 +319,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
 
   // Navigate dates via URL params
   const goToToday = useCallback(() => {
-    updateUrlParams({ selectedDate: DEFAULT_DEMO_TODAY });
+    updateUrlParams({ selectedDate: getTodayDateStr() });
   }, [updateUrlParams]);
 
   const goToPreviousDay = useCallback(() => {
@@ -378,7 +379,7 @@ export const useAttendance = (initialDate = DEFAULT_DEMO_TODAY) => {
     filterStatus !== "all" ||
       shift !== "all" ||
       searchQuery.trim() ||
-      selectedDate !== DEFAULT_DEMO_TODAY,
+      selectedDate !== getTodayDateStr(),
   );
 
   const resetFilters = useCallback(() => {

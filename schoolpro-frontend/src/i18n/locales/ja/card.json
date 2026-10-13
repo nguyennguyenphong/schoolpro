@@ -712,18 +712,18 @@
     },
     "filter": {
       "all": "All Subjects",
-      "open": "Open for Check-In",
-      "present": "Checked In",
-      "absent": "Absent / Expired",
+      "open": "点呼受付中",
+      "present": "出席済み",
+      "absent": "時間切れ",
       "dateSubtitle": "Subject attendance sessions scheduled for the selected date",
-      "upcoming": "開始前"
+      "upcoming": "点呼受付時間前"
     },
     "status": {
-      "open": "Open for Check-In",
-      "present": "Checked In",
-      "excused": "Excused Leave",
-      "upcoming": "Not Open Yet",
-      "absent": "Absent / Expired"
+      "open": "点呼受付中",
+      "present": "出席済み",
+      "excused": "公認欠席",
+      "upcoming": "点呼受付時間前",
+      "absent": "時間切れ"
     },
     "method": {
       "qrScan": "QR Camera Scan",
@@ -741,14 +741,14 @@
       "checkedInAt": "Checked in at: {{time}}",
       "teacherGpsCoord": "Teacher Device GPS: {{lat}}, {{lng}}",
       "deadlineLabel": "Expires at:",
-      "upcomingHint": "Teacher will issue 6-digit PIN & QR when class starts",
-      "expiredHint": "Attendance code has expired",
+      "upcomingHint": "点呼受付時間前です。授業開始時に教員がコードを発行します",
+      "expiredHint": "点呼受付時間は終了しました",
       "verifiedGpsHint": "GPS coordinates & attendance verified",
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "許可半径:",
       "countdownRowLabel": "有効期限:",
       "verifiedRowLabel": "GPS認証:",
-      "expiredShort": "受付終了",
+      "expiredShort": "時間切れ",
       "openAtTime": "{{time}} 開始"
     },
     "empty": {

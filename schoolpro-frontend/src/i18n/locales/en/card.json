@@ -712,18 +712,18 @@
     },
     "filter": {
       "all": "All Subjects",
-      "open": "Open for Check-In",
+      "open": "In Attendance Window",
       "present": "Checked In",
-      "absent": "Absent / Expired",
+      "absent": "Time Expired",
       "dateSubtitle": "Subject attendance sessions scheduled for the selected date",
-      "upcoming": "Upcoming"
+      "upcoming": "Not Yet Time"
     },
     "status": {
-      "open": "Open for Check-In",
+      "open": "In Attendance Window",
       "present": "Checked In",
       "excused": "Excused Leave",
-      "upcoming": "Not Open Yet",
-      "absent": "Absent / Expired"
+      "upcoming": "Not Yet Time",
+      "absent": "Time Expired"
     },
     "method": {
       "qrScan": "QR Camera Scan",
@@ -741,14 +741,14 @@
       "checkedInAt": "Checked in at: {{time}}",
       "teacherGpsCoord": "Teacher Device GPS: {{lat}}, {{lng}}",
       "deadlineLabel": "Expires at:",
-      "upcomingHint": "Teacher will issue 6-digit PIN & QR when class starts",
-      "expiredHint": "Attendance code has expired",
+      "upcomingHint": "Not yet time for attendance. Teacher will issue code when class starts",
+      "expiredHint": "Attendance period has expired",
       "verifiedGpsHint": "GPS coordinates & attendance verified",
       "excusedHint": "Synchronized from approved leave request",
       "allowedRadiusLabel": "Allowed radius:",
       "countdownRowLabel": "Code expires in:",
       "verifiedRowLabel": "GPS verified:",
-      "expiredShort": "Closed",
+      "expiredShort": "Time Expired",
       "openAtTime": "Opens at {{time}}"
     },
     "empty": {

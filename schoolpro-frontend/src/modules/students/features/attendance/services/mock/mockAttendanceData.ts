@@ -1,38 +1,25 @@
+import dayjs from "dayjs";
 import type {
   AttendanceRecord,
   AttendanceSummary,
 } from "@/modules/students/features/attendance/types";
+import { evaluateAttendanceRecordStatus } from "@/modules/students/features/attendance/utils/attendanceTimeUtils";
 
 export const DEFAULT_TEACHER_LATITUDE = 10.779785;
 export const DEFAULT_TEACHER_LONGITUDE = 106.693182;
 export const DEFAULT_ALLOWED_RADIUS_METERS = 50;
 
-export const mockAttendanceSummary: AttendanceSummary = {
-  totalToday: 5,
-  attendedToday: 1,
-  openToday: 1,
-  upcomingToday: 2,
-  pendingToday: 3,
-  absentToday: 0,
-  excusedToday: 1,
-  overallRate: 98.2,
-  disciplineScore: 96,
-  className: "10A1",
-  semesterName: "Học kỳ 1",
-  academicYear: "2026 - 2027",
-};
+const TODAY_DATE = dayjs().format("YYYY-MM-DD");
+const YESTERDAY_DATE = dayjs().subtract(1, "day").format("YYYY-MM-DD");
+const TOMORROW_DATE = dayjs().add(1, "day").format("YYYY-MM-DD");
 
-const nowMs = Date.now();
-const fiveMinutesLaterIso = new Date(nowMs + 5 * 60 * 1000).toISOString();
-const oneMinuteAgoIso = new Date(nowMs - 60 * 1000).toISOString();
-
-export const mockAttendanceRecords: AttendanceRecord[] = [
-  // ================= 2026-09-29 (Hôm nay) =================
+const rawMockAttendanceRecords: AttendanceRecord[] = [
+  // ================= Hôm nay =================
   {
     id: "att-today-01",
     sessionId: "sess-today-01",
     timetableId: "tt-today-01",
-    date: "2026-09-29",
+    date: TODAY_DATE,
     subjectCode: "MATH11",
     subjectName: "Toán học 11 - Giải tích & Đại số",
     className: "10A1",
@@ -48,13 +35,13 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     shift: "morning",
     classType: "theory",
     lessonTopic: "Hàm số lượng giác và phương trình lượng giác cơ bản",
-    status: "open",
+    status: "absent",
     attendanceCode: "849201",
     qrToken: "SP_ATT_MATH11_20260929_849201_A9F2",
-    openedAt: oneMinuteAgoIso,
-    expiresAt: fiveMinutesLaterIso,
+    openedAt: `${TODAY_DATE}T07:30:00.000Z`,
+    expiresAt: `${TODAY_DATE}T08:15:00.000Z`,
     deadlineTime: "08:15:00",
-    remainingSeconds: 300,
+    remainingSeconds: 0,
     durationSeconds: 300,
     teacherLatitude: 10.779785,
     teacherLongitude: 106.693182,
@@ -65,7 +52,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     id: "att-today-02",
     sessionId: "sess-today-02",
     timetableId: "tt-today-02",
-    date: "2026-09-29",
+    date: TODAY_DATE,
     subjectCode: "PHY11",
     subjectName: "Vật lý 11 - Quang hình học & Thấu kính",
     className: "10A1",
@@ -97,7 +84,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     sessionId: "sess-today-03",
     timetableId: "tt-today-03",
     attendanceId: "att-rec-03",
-    date: "2026-09-29",
+    date: TODAY_DATE,
     subjectCode: "ENG11",
     subjectName: "Tiếng Anh 11 - Giao tiếp Quốc tế & Thuyết trình",
     className: "10A1",
@@ -135,7 +122,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     id: "att-today-04",
     sessionId: "sess-today-04",
     timetableId: "tt-today-04",
-    date: "2026-09-29",
+    date: TODAY_DATE,
     subjectCode: "CS11",
     subjectName: "Tin học 11 - Lập trình Python & Thuật toán",
     className: "10A1",
@@ -168,7 +155,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     id: "att-today-05",
     sessionId: "sess-today-05",
     timetableId: "tt-today-05",
-    date: "2026-09-29",
+    date: TODAY_DATE,
     subjectCode: "STEM11",
     subjectName: "Chuyên đề STEM & Bồi dưỡng học sinh giỏi Toán",
     className: "10A1",
@@ -196,13 +183,13 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     note: "Mở cổng điểm danh lúc 18:00.",
   },
 
-  // ================= 2026-09-28 (Hôm qua) =================
+  // ================= Hôm qua =================
   {
     id: "att-yest-01",
     sessionId: "sess-yest-01",
     timetableId: "tt-yest-01",
     attendanceId: "att-rec-y1",
-    date: "2026-09-28",
+    date: YESTERDAY_DATE,
     subjectCode: "LIT11",
     subjectName: "Ngữ văn 11 - Văn học hiện đại Việt Nam",
     className: "10A1",
@@ -236,7 +223,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     sessionId: "sess-yest-02",
     timetableId: "tt-yest-02",
     attendanceId: "att-rec-y2",
-    date: "2026-09-28",
+    date: YESTERDAY_DATE,
     subjectCode: "CHEM11",
     subjectName: "Hóa học 11 - Hóa học hữu cơ đại cương",
     className: "10A1",
@@ -270,7 +257,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     sessionId: "sess-yest-03",
     timetableId: "tt-yest-03",
     attendanceId: "att-rec-y3",
-    date: "2026-09-28",
+    date: YESTERDAY_DATE,
     subjectCode: "HIS11",
     subjectName: "Lịch sử 11 - Lịch sử thế giới cận hiện đại",
     className: "10A1",
@@ -293,12 +280,12 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     note: "Vắng mặt do hết thời gian điểm danh.",
   },
 
-  // ================= 2026-09-30 (Ngày mai) =================
+  // ================= Ngày mai =================
   {
     id: "att-tomo-01",
     sessionId: "sess-tomo-01",
     timetableId: "tt-tomo-01",
-    date: "2026-09-30",
+    date: TOMORROW_DATE,
     subjectCode: "BIO11",
     subjectName: "Sinh học 11 - Sinh học phân tử & Di truyền",
     className: "10A1",
@@ -327,7 +314,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     id: "att-tomo-02",
     sessionId: "sess-tomo-02",
     timetableId: "tt-tomo-02",
-    date: "2026-09-30",
+    date: TOMORROW_DATE,
     subjectCode: "PE11",
     subjectName: "Giáo dục thể chất 11 - Cầu lông & Bóng rổ",
     className: "10A1",
@@ -356,7 +343,7 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     id: "att-tomo-03",
     sessionId: "sess-tomo-03",
     timetableId: "tt-tomo-03",
-    date: "2026-09-30",
+    date: TOMORROW_DATE,
     subjectCode: "CIV11",
     subjectName: "Giáo dục kinh tế & Pháp luật 11",
     className: "10A1",
@@ -382,3 +369,30 @@ export const mockAttendanceRecords: AttendanceRecord[] = [
     note: "Mở cổng lúc 13:30.",
   },
 ];
+
+export const mockAttendanceRecords: AttendanceRecord[] =
+  rawMockAttendanceRecords.map((r) => {
+    const evaluated = evaluateAttendanceRecordStatus(r);
+    return {
+      ...r,
+      status: evaluated.status,
+      remainingSeconds: evaluated.remainingSeconds,
+      note: evaluated.note || r.note,
+    };
+  });
+
+const todayRecords = mockAttendanceRecords.filter((r) => r.date === TODAY_DATE);
+export const mockAttendanceSummary: AttendanceSummary = {
+  totalToday: todayRecords.length,
+  attendedToday: todayRecords.filter((r) => r.status === "present").length,
+  openToday: todayRecords.filter((r) => r.status === "open").length,
+  upcomingToday: todayRecords.filter((r) => r.status === "upcoming").length,
+  pendingToday: todayRecords.filter((r) => r.status === "open" || r.status === "upcoming").length,
+  absentToday: todayRecords.filter((r) => r.status === "absent").length,
+  excusedToday: todayRecords.filter((r) => r.status === "excused").length,
+  overallRate: 98.2,
+  disciplineScore: 96,
+  className: "10A1",
+  semesterName: "Học kỳ 1",
+  academicYear: "2026 - 2027",
+};

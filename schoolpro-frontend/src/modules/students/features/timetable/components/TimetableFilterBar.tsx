@@ -26,8 +26,8 @@ interface TimetableFilterBarProps {
 export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   selectedDate,
   viewMode,
-  currentWeekLabel,
-  semesterLabel,
+  currentWeekLabel: _currentWeekLabel,
+  semesterLabel: _semesterLabel,
   minDate,
   maxDate,
   hasActiveFilters = false,
@@ -108,18 +108,12 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           </button>
         </div>
 
-        {/* Semester Badge */}
-        {semesterLabel && (
-          <div className="h-8 px-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 flex items-center gap-1.5 shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block" />
-            <span>{semesterLabel}</span>
-          </div>
-        )}
-
         {/* Week Range Display Badge */}
-        <div className="h-8 px-3 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-blue-700 flex items-center gap-1.5 shrink-0">
-          <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
-          <span>{t("card:timetable.weekPrefix", { label: currentWeekLabel })}</span>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <Button variant="primary">
+            <Icon name="print" size={13} />
+            {t("button:print")}
+          </Button>
         </div>
 
         {/* Week Picker for jumping directly to any week with boundary checking */}

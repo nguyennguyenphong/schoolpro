@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import i18n from "@/i18n/i18n";
 import {
   DEFAULT_ALLOWED_RADIUS_METERS,
@@ -18,14 +19,14 @@ import type {
 } from "@/modules/students/features/attendance/types";
 import {
   calculateHaversineDistanceMeters,
-  computeRemainingSeconds,
+  evaluateAttendanceRecordStatus,
   generateSixDigitPin,
 } from "@/modules/students/features/attendance/utils";
 import { API_BASE_URL, httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
 
 export const ATTENDANCE_BROADCAST_CHANNEL = "schoolpro_attendance_realtime";
-const LOCAL_STORAGE_RECORDS_KEY = "schoolpro_attendance_records_v3";
+const LOCAL_STORAGE_RECORDS_KEY = "schoolpro_attendance_records_v4";
 
 interface DailyAttendanceApiData {
   date: string;
@@ -91,7 +92,7 @@ class AttendanceService {
   }
 
   /**
-   * Synchronizes local session expiration states if `expiresAt <= Date.now()`.
+   * Synchronizes local session expiration states using timezone and slot boundaries.
    */
   public syncLocalExpirations(records?: AttendanceRecord[]): {
     updatedRecords: AttendanceRecord[];
@@ -99,34 +100,21 @@ class AttendanceService {
   } {
     const source = records ? [...records] : this.loadLocalRecords();
     let expiredChanged = false;
-    const nowMs = Date.now();
 
     const updatedRecords = source.map((rec) => {
-      if (rec.status === "open" && rec.expiresAt) {
-        const expMs = new Date(rec.expiresAt).getTime();
-        if (!Number.isNaN(expMs) && nowMs >= expMs) {
-          expiredChanged = true;
-          const deadlineStr =
-            rec.deadlineTime ||
-            new Date(expMs).toTimeString().slice(0, 8);
-          return {
-            ...rec,
-            status: "absent" as const,
-            remainingSeconds: 0,
-            note: i18n.t("message:attendance.sessionExpiredNote", {
-              time: deadlineStr,
-            }),
-          };
-        }
-        return {
-          ...rec,
-          remainingSeconds: computeRemainingSeconds(
-            rec.expiresAt,
-            rec.remainingSeconds || 0,
-          ),
-        };
+      const evaluated = evaluateAttendanceRecordStatus(rec);
+      if (
+        evaluated.status !== rec.status ||
+        evaluated.remainingSeconds !== rec.remainingSeconds
+      ) {
+        expiredChanged = true;
       }
-      return rec;
+      return {
+        ...rec,
+        status: evaluated.status,
+        remainingSeconds: evaluated.remainingSeconds,
+        note: evaluated.note || rec.note,
+      };
     });
 
     if (expiredChanged && !records) {
@@ -258,9 +246,22 @@ class AttendanceService {
       });
       const apiData = response.data?.data;
       if (apiData && Array.isArray(apiData.records) && apiData.summary) {
+        const validatedRecords = apiData.records.map((r) => {
+          const evaluated = evaluateAttendanceRecordStatus(r);
+          return {
+            ...r,
+            status: evaluated.status,
+            remainingSeconds: evaluated.remainingSeconds,
+            note: evaluated.note || r.note,
+          };
+        });
+        const localCounts = this.computeLocalSummary(validatedRecords);
         return {
-          records: apiData.records,
-          summary: apiData.summary,
+          records: validatedRecords,
+          summary: {
+            ...apiData.summary,
+            ...localCounts,
+          },
         };
       }
     } catch {
@@ -310,7 +311,9 @@ class AttendanceService {
     return res.records;
   }
 
-  async getSummary(date = "2026-09-29"): Promise<AttendanceSummary> {
+  async getSummary(
+    date = dayjs().format("YYYY-MM-DD"),
+  ): Promise<AttendanceSummary> {
     const res = await this.getDailyAttendance(date);
     return res.summary;
   }
@@ -421,6 +424,22 @@ class AttendanceService {
             ? payload.teacherLongitude
             : DEFAULT_TEACHER_LONGITUDE;
 
+        const nowH = String(now.getHours()).padStart(2, "0");
+        const nowM = String(now.getMinutes()).padStart(2, "0");
+        const nowTimeShort = `${nowH}:${nowM}`;
+        const expH = String(expiresAt.getHours()).padStart(2, "0");
+        const expM = String(expiresAt.getMinutes()).padStart(2, "0");
+        const expTimeShort = `${expH}:${expM}`;
+
+        const effectiveStartTime =
+          target.startTime && target.startTime <= nowTimeShort
+            ? target.startTime
+            : nowTimeShort;
+        const effectiveEndTime =
+          target.endTime && target.endTime >= expTimeShort
+            ? target.endTime
+            : expTimeShort;
+
         const updated: AttendanceRecord = {
           ...target,
           status: "open",
@@ -429,6 +448,9 @@ class AttendanceService {
           openedAt: now.toISOString(),
           expiresAt: expiresAt.toISOString(),
           deadlineTime,
+          startTime: effectiveStartTime,
+          endTime: effectiveEndTime,
+          timeSlot: `${effectiveStartTime} - ${effectiveEndTime}`,
           remainingSeconds: durationSec,
           durationSeconds: durationSec,
           teacherLatitude: teacherLat,

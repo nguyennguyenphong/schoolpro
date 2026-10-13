@@ -145,28 +145,49 @@ class AttendanceSessionService:
         session_date: date | None = None,
     ) -> int:
         """
-        Finds all OPEN attendance sessions whose expires_at <= now, marks them EXPIRED,
-        and broadcasts real-time expiration events.
+        Finds all OPEN attendance sessions that have expired (expires_at <= now,
+        or session_date < today, or session_date == today and period.end_time < now_local.time()),
+        marks them EXPIRED, and broadcasts real-time expiration events.
         """
         now = timezone.now()
+        tz = timezone.get_current_timezone()
+        now_local = now.astimezone(tz)
+        today = timezone.localdate()
+
         qs = AttendanceSession.objects.select_related(
             "school_class", "subject", "period", "teacher", "teacher__user", "room"
-        ).filter(status="OPEN", expires_at__lte=now)
+        ).filter(status="OPEN")
 
         if class_id:
             qs = qs.filter(school_class_id=class_id)
         if session_date:
             qs = qs.filter(session_date=session_date)
 
-        expired_sessions = list(qs)
+        expired_sessions: list[AttendanceSession] = []
+        for sess in qs:
+            should_expire = False
+            if sess.expires_at and sess.expires_at <= now:
+                should_expire = True
+            elif sess.session_date < today:
+                should_expire = True
+            elif (
+                sess.session_date == today
+                and sess.period
+                and sess.period.end_time
+                and now_local.time() > sess.period.end_time
+            ):
+                should_expire = True
+
+            if should_expire:
+                sess.status = "EXPIRED"
+                sess.closed_at = now
+                sess.save(update_fields=["status", "closed_at", "updated_at"])
+                expired_sessions.append(sess)
+
         if not expired_sessions:
             return 0
 
         for sess in expired_sessions:
-            sess.status = "EXPIRED"
-            sess.closed_at = now
-            sess.save(update_fields=["status", "closed_at", "updated_at"])
-
             try:
                 AttendanceRealtimeService.broadcast_event(
                     event_type=AttendanceRealtimeEvent.SESSION_EXPIRED,
@@ -239,28 +260,44 @@ class AttendanceSessionService:
         actor_user: Any,
     ) -> None:
         """
-        Ensures that if a student views today's schedule and no AttendanceSession exists yet,
-        an active open session is created on the first timetable slot so 6-digit PIN, QR scan/upload,
-        and GPS geofencing can be tested immediately against real PostgreSQL data.
+        Ensures that if a student views today's schedule during an active class period,
+        and no AttendanceSession exists for that period yet, an active session is created
+        so 6-digit PIN, QR scan/upload, and GPS geofencing can be tested.
+        If no period is currently in session (e.g. night, recess, before morning classes),
+        do NOT open any session for past or future periods.
         """
         today = timezone.localdate()
         if target_date != today or not timetables:
             return
 
+        tz = timezone.get_current_timezone()
+        now = timezone.now()
+        now_local = now.astimezone(tz)
+
+        # Only find a timetable slot that is CURRENTLY in session right now
+        current_tt = None
+        for tt in timetables:
+            if tt.period and tt.period.start_time <= now_local.time() <= tt.period.end_time:
+                current_tt = tt
+                break
+
+        if not current_tt:
+            return
+
         existing_sessions = AttendanceSession.objects.filter(
             school_class_id=class_id,
             session_date=target_date,
+            period_id=current_tt.period_id,
         )
-        if existing_sessions.filter(status="OPEN", expires_at__gt=timezone.now()).exists():
+        if existing_sessions.filter(status="OPEN", expires_at__gt=now).exists():
             return
         if existing_sessions.exists():
             return
 
-        first_tt = timetables[0]
-        cst = first_tt.class_subject_teacher
+        cst = current_tt.class_subject_teacher
         subject = getattr(cst, "subject", None)
         teacher = getattr(cst, "teacher", None)
-        room = first_tt.room
+        room = current_tt.room
 
         if not subject:
             return
@@ -287,14 +324,16 @@ class AttendanceSessionService:
         )
         pin_code = cls.generate_six_digit_pin()
         qr_token = cls.generate_qr_token(subject.code, target_date, pin_code)
-        now = timezone.now()
         duration_sec = 900  # 15 minutes default for active demo session
 
+        period_end_dt = datetime.combine(today, current_tt.period.end_time).replace(tzinfo=tz)
+        session_expires_at = min(now + timedelta(seconds=duration_sec), period_end_dt)
+
         AttendanceSession.objects.create(
-            timetable=first_tt,
+            timetable=current_tt,
             school_class_id=class_id,
             subject=subject,
-            period=first_tt.period,
+            period=current_tt.period,
             teacher=teacher,
             room=room,
             session_date=target_date,
@@ -305,10 +344,10 @@ class AttendanceSessionService:
             allowed_radius_meters=DEFAULT_ALLOWED_RADIUS_METERS,
             duration_seconds=duration_sec,
             opened_at=now,
-            expires_at=now + timedelta(seconds=duration_sec),
+            expires_at=session_expires_at,
             status="OPEN",
             note=(
-                "Cổng điểm danh đang mở! Học sinh nhập mã 6 chữ số hoặc quét/tải ảnh mã QR "
+                "Đang trong thời gian điểm danh! Học sinh nhập mã 6 chữ số hoặc quét/tải ảnh mã QR "
                 f"trong bán kính {DEFAULT_ALLOWED_RADIUS_METERS}m từ thiết bị của Giáo viên."
             ),
             created_by=creator,
@@ -417,21 +456,17 @@ class AttendanceSessionService:
             elif att.status == "ABSENT_EXCUSED":
                 daily_excused_att = att
 
-        # Also check approved LeaveRequest covering target_date
-        has_approved_leave = False
-        approved_leave_id: str | None = None
-        approved_leave_code = ""
+        # Also check approved LeaveRequests covering target_date
+        approved_leaves: list[LeaveRequest] = []
         if student:
-            approved_leave = LeaveRequest.objects.filter(
-                student=student,
-                status="APPROVED",
-                start_date__lte=target_date,
-                end_date__gte=target_date,
-            ).first()
-            if approved_leave:
-                has_approved_leave = True
-                approved_leave_id = str(approved_leave.id)
-                approved_leave_code = approved_leave.code
+            approved_leaves = list(
+                LeaveRequest.objects.filter(
+                    student=student,
+                    status="APPROVED",
+                    start_date__lte=target_date,
+                    end_date__gte=target_date,
+                )
+            )
 
         formatted_records: list[dict[str, Any]] = []
 
@@ -445,6 +480,21 @@ class AttendanceSessionService:
             room = tt.room
             period = tt.period
 
+            shift_code = period.shift.lower() if period and period.shift else "morning"
+
+            # Match leave request for this slot based on sessionShift (all_day or matching shift)
+            matching_leave = None
+            for lr in approved_leaves:
+                lr_meta = lr.metadata if isinstance(lr.metadata, dict) else {}
+                lr_shift = str(lr_meta.get("sessionShift", "all_day")).strip().lower()
+                if lr_shift in ("all_day", "all") or lr_shift == shift_code:
+                    matching_leave = lr
+                    break
+
+            has_approved_leave = matching_leave is not None
+            approved_leave_id = str(matching_leave.id) if matching_leave else None
+            approved_leave_code = matching_leave.code if matching_leave else ""
+
             session = session_by_timetable.get(tt_id_str) or session_by_period.get(period_id_str)
             att = (
                 att_by_timetable.get(tt_id_str)
@@ -455,7 +505,6 @@ class AttendanceSessionService:
             start_str = period.start_time.strftime("%H:%M") if period else "07:30"
             end_str = period.end_time.strftime("%H:%M") if period else "09:00"
             period_label = f"Tiết {period.period_no}" if period else f"Tiết {idx + 1}"
-            shift_code = period.shift.lower() if period and period.shift else "morning"
 
             default_lat = (
                 float(room.latitude)
@@ -541,36 +590,47 @@ class AttendanceSessionService:
                 )
             elif (att and att.status == "ABSENT_EXCUSED") or has_approved_leave:
                 ui_status = "excused"
+                remaining_seconds = 0
                 note_text = (
                     att.excuse_reason
                     if att and att.excuse_reason
                     else f"Học sinh được nghỉ có phép theo đơn #{approved_leave_code}."
                 )
-            elif session and session.status == "OPEN" and session.expires_at > now:
-                ui_status = "open"
-                note_text = (
-                    session.note
-                    or f"Cổng điểm danh đang mở! Nhập mã 6 chữ số hoặc quét/tải ảnh QR trong phạm vi {allowed_radius}m."
-                )
-            elif session and (session.status in ("EXPIRED", "CLOSED") or session.expires_at <= now):
-                ui_status = "absent"
-                note_text = (
-                    f"Mã điểm danh đã hết hạn lúc {deadline_time_str}. Cổng điểm danh đã đóng."
-                )
             elif target_date < today or (
                 target_date == today and period and now_local.time() > period.end_time
             ):
+                # Đã qua thời gian của tiết học / quá hạn điểm danh -> Hết giờ
+                ui_status = "absent"
+                remaining_seconds = 0
                 if att and att.status == "ABSENT_UNEXCUSED":
-                    ui_status = "absent"
                     note_text = (
-                        att.note or "Vắng không phép do không điểm danh trong thời gian quy định."
+                        att.note or f"Vắng không phép. Đã kết thúc thời gian điểm danh ({start_str} - {end_str}). Hết giờ."
                     )
                 else:
-                    ui_status = "absent"
-                    note_text = "Đã kết thúc thời gian điểm danh của tiết học."
-            else:
+                    note_text = f"Đã kết thúc thời gian điểm danh của tiết học ({start_str} - {end_str}). Hết giờ."
+            elif target_date > today or (
+                target_date == today and period and now_local.time() < period.start_time
+            ):
+                # Chưa đến thời gian điểm danh
                 ui_status = "upcoming"
-                note_text = f"Tiết học bắt đầu lúc {start_str}. Giáo viên sẽ mở mã 6 chữ số và mã QR đầu giờ học."
+                remaining_seconds = 0
+                note_text = f"Tiết học bắt đầu lúc {start_str}. Chưa đến thời gian điểm danh."
+            else:
+                # Tiết học đang diễn ra (period.start_time <= now_local.time() <= period.end_time)
+                if session and session.status == "OPEN" and session.expires_at > now:
+                    ui_status = "open"
+                    note_text = (
+                        session.note
+                        or f"Đang trong thời gian điểm danh! Nhập mã 6 chữ số hoặc quét/tải ảnh QR trong phạm vi {allowed_radius}m."
+                    )
+                elif session and (session.status in ("EXPIRED", "CLOSED") or session.expires_at <= now):
+                    ui_status = "absent"
+                    remaining_seconds = 0
+                    note_text = f"Mã điểm danh đã hết hạn lúc {deadline_time_str}. Hết giờ."
+                else:
+                    ui_status = "upcoming"
+                    remaining_seconds = 0
+                    note_text = f"Tiết học đang diễn ra ({start_str} - {end_str}). Chờ giáo viên mở cổng điểm danh."
 
             record_item: dict[str, Any] = {
                 "id": str(session.id) if session else tt_id_str,
