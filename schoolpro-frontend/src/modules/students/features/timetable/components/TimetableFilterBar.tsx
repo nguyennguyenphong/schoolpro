@@ -23,7 +23,6 @@ interface TimetableFilterBarProps {
   onPrevWeekClick: () => void;
   onNextWeekClick: () => void;
   onPrint?: () => void;
-  onDownloadPdf?: () => void;
 }
 
 export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
@@ -42,7 +41,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   onPrevWeekClick,
   onNextWeekClick,
   onPrint,
-  onDownloadPdf,
 }) => {
   const { t } = useTranslation(["card", "button"]);
   const currentDayjs = dayjs(selectedDate);
@@ -89,7 +87,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           <button
             type="button"
             onClick={onTodayClick}
-            className={`px-2.5 h-7 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-2.5 h-7 rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               isToday
                 ? "bg-blue-600 text-white shadow-2xs"
                 : "text-slate-700 hover:bg-white"
@@ -126,17 +124,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             <Icon name="print" size={13} />
             <span>{t("button:printTimeTable")}</span>
           </Button>
-
-          {onDownloadPdf && (
-            <Button
-              variant="outline"
-              onClick={onDownloadPdf}
-              title="Tải tệp PDF"
-            >
-              <Icon name="download" size={13} />
-              <span>PDF</span>
-            </Button>
-          )}
         </div>
 
         {/* Week Picker for jumping directly to any week with boundary checking */}

@@ -374,6 +374,12 @@ class ExportTemplateService:
             or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
         )
         if existing:
+            if "print-color-adjust" not in (existing.style_content or ""):
+                existing.style_content = DEFAULT_TIMETABLE_STYLES
+                existing.page_orientation = "LANDSCAPE"
+                existing.page_size = "A4"
+                existing.margins = {"top": "8mm", "right": "10mm", "bottom": "8mm", "left": "10mm"}
+                existing.save(update_fields=["style_content", "page_orientation", "page_size", "margins", "updated_at"])
             return existing
 
         template = ExportTemplate.objects.create(
@@ -753,64 +759,87 @@ DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
 DEFAULT_TIMETABLE_CODE = "TIMETABLE_WEEKLY_A4_LANDSCAPE"
 
 DEFAULT_TIMETABLE_HEADER = """
-<table class="tt-header-table" style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border-bottom: 2px solid #1e293b; padding-bottom: 8px;">
+<table class="tt-header-table" style="width: 100%; border-collapse: collapse; margin-bottom: 6px; padding-bottom: 4px; border: none; page-break-inside: avoid;">
   <tr>
-    <td style="width: 55%; vertical-align: top;">
-      <div style="font-size: 11pt; text-transform: uppercase; color: #475569; font-weight: 500;">{{school_name}}</div>
-      <div style="font-size: 13pt; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-top: 2px;">{{department_name}}</div>
-      <div style="font-size: 11pt; margin-top: 4px; color: #334155;">Lớp: <strong style="font-size: 12pt; color: #1e40af;">{{class_name}}</strong> &nbsp;|&nbsp; Năm học: <strong>{{academic_year}}</strong></div>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <div style="font-size: 9.5pt; text-transform: uppercase; color: #334155;">{{school_parent_name}}</div>
+      <div style="font-size: 11pt; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-top: 1px;">{{school_name}}</div>
+      <div style="width: 130px; margin: 3px auto 4px auto; border-top: 1px solid #334155;"></div>
+      <div style="font-size: 9.5pt; margin-top: 1px; color: #334155;">Lớp: <strong>{{class_name}}</strong> - Năm học: <strong>{{academic_year}}</strong></div>
     </td>
-    <td style="width: 45%; vertical-align: top; text-align: right;">
-      <div style="font-size: 12pt; font-weight: bold; color: #0f172a;">HỌC KỲ: {{semester_name}}</div>
-      <div style="font-size: 10.5pt; color: #475569; margin-top: 2px;">{{date_range}}</div>
-      <div style="font-size: 9pt; color: #64748b; margin-top: 4px;">Thời gian in: {{print_date}}</div>
+    <td style="width: 50%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div style="font-size: 10.5pt; font-weight: bold; color: #0f172a; margin-top: 1px;">Độc lập - Tự do - Hạnh phúc</div>
+      <div style="width: 140px; margin: 3px auto 4px auto; border-top: 1px solid #0f172a;"></div>
+      <div style="font-size: 9pt; font-style: italic; color: #475569; margin-top: 1px;">Học kỳ: {{semester_name}} - Ngày lập: {{print_date}}</div>
     </td>
   </tr>
 </table>
 """
 
 DEFAULT_TIMETABLE_CONTENT = """
-<div style="text-align: center; margin: 8px 0 14px 0;">
-  <div style="font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a;">THỜI KHÓA BIỂU HỌC TẬP THEO TUẦN</div>
-  <div style="font-size: 11pt; font-style: italic; color: #475569; margin-top: 3px;">Áp dụng cho {{week_label}} ({{date_range}})</div>
+<div style="text-align: center; margin: 4px 0 6px 0;">
+  <div style="font-size: 15pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a;">THỜI KHÓA BIỂU HỌC TẬP</div>
 </div>
 
 <div class="tt-table-container">
-  {{timetable_table_html}}
+  {{schedule_matrix_html}}
+</div>
+
+<div style="margin-top: 6px; font-size: 8.5pt; color: #334155; line-height: 1.35;">
+  <div><strong>Ghi chú:</strong> Thời khóa biểu này có hiệu lực từ ngày {{week_start_date}} đến ngày {{week_end_date}}</div>
 </div>
 """
 
 DEFAULT_TIMETABLE_FOOTER = """
-<table style="width: 100%; border-collapse: collapse; margin-top: 22px; page-break-inside: avoid;">
+<table class="tt-signatures-table" style="width: 100%; border-collapse: collapse; margin-top: 10px; page-break-inside: avoid;">
   <tr>
-    <td style="width: 33%; text-align: center; vertical-align: top; font-size: 10.5pt;">
-      <strong>NGƯỜI LẬP BIỂU</strong><br/>
-      <span style="font-size: 9pt; font-style: italic; color: #64748b;">(Ký và ghi rõ họ tên)</span>
-      <div style="height: 50px;"></div>
-      <div style="font-weight: bold;">Ban Học vụ</div>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">NGƯỜI LẬP BIỂU</div>
+      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
+      <div style="height: 36px;"></div>
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">{{student_name}}</div>
     </td>
-    <td style="width: 33%; text-align: center; vertical-align: top; font-size: 10.5pt;">
-      <strong>GIÁO VIÊN CHỦ NHIỆM</strong><br/>
-      <span style="font-size: 9pt; font-style: italic; color: #64748b;">(Ký xác nhận)</span>
-      <div style="height: 50px;"></div>
-      <div style="font-weight: bold;">{{homeroom_teacher}}</div>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">GIÁO VIÊN CHỦ NHIỆM</div>
+      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
+      <div style="height: 36px;"></div>
+      <div style="font-size: 10pt; font-weight: bold; color: #0f172a;">{{homeroom_teacher_name}}</div>
     </td>
-    <td style="width: 34%; text-align: center; vertical-align: top; font-size: 10.5pt;">
-      <strong>HIỆU TRƯỞNG / BGH</strong><br/>
-      <span style="font-size: 9pt; font-style: italic; color: #64748b;">(Duyệt và đóng dấu)</span>
-      <div style="height: 50px;"></div>
-      <div style="font-weight: bold; text-transform: uppercase;">Ban Giám Hiệu</div>
+    <td style="width: 33.33%; text-align: center; vertical-align: top;">
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">HIỆU TRƯỞNG / BGH</div>
+      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký tên và đóng dấu)</div>
+      <div style="height: 36px;"></div>
+      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">{{principal_name}}</div>
     </td>
   </tr>
 </table>
 
-<div style="margin-top: 16px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-size: 9pt; color: #64748b; display: flex; justify-content: space-between;">
-  <span>Hệ thống Quản lý Học vụ SchoolPro • Tra cứu trực tuyến tại: schoolpro.edu.vn</span>
-  <span>Học sinh: <strong>{{student_name}}</strong> (Mã số: {{student_code}})</span>
+<div style="margin-top: 8px; padding-top: 4px; border-top: 1px solid #cbd5e1; font-size: 8pt; color: #64748b; text-align: right;">
+  Mã biểu mẫu: {{template_code}}
 </div>
 """
 
 DEFAULT_TIMETABLE_STYLES = """
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+@page {
+  size: A4 landscape !important;
+  margin: 6mm 8mm !important;
+}
+html, body {
+  font-family: 'Times New Roman', 'Segoe UI', serif !important;
+  font-size: 8.5pt !important;
+  line-height: 1.25 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #fff !important;
+}
 .print-container {
   width: 100%;
   max-width: 297mm;
@@ -820,59 +849,112 @@ DEFAULT_TIMETABLE_STYLES = """
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 9.5pt;
+  font-size: 8pt;
+  page-break-inside: auto;
+}
+.tt-matrix-table thead {
+  display: table-header-group !important;
+}
+.tt-matrix-table tbody {
+  display: table-row-group !important;
+}
+.tt-matrix-table tr {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 .tt-matrix-table th, .tt-matrix-table td {
   border: 1px solid #475569;
-  padding: 5px 4px;
+  padding: 3px 2px;
   text-align: center;
   vertical-align: middle;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 .tt-matrix-table th {
   background-color: #f1f5f9;
   font-weight: bold;
   color: #0f172a;
-  font-size: 10pt;
+  font-size: 8.5pt;
+  padding: 4px 2px;
 }
 .tt-matrix-table .shift-col {
-  width: 48px;
+  width: 38px;
   background-color: #f8fafc;
   font-weight: bold;
+  font-size: 8.5pt;
 }
 .tt-matrix-table .period-col {
-  width: 42px;
+  width: 32px;
   font-weight: bold;
+  font-size: 8.5pt;
 }
 .tt-matrix-table .time-col {
-  width: 82px;
-  font-size: 8.5pt;
+  width: 72px;
+  font-size: 7.5pt;
   color: #334155;
+}
+.tt-slot-card {
+  text-align: left;
+  line-height: 1.25;
+  padding: 1px 2px;
 }
 .tt-slot-subject {
   font-weight: bold;
   color: #1e3a8a;
-  font-size: 9.5pt;
+  font-size: 8pt;
+  margin-bottom: 2px;
+  line-height: 1.2;
+  border-bottom: 1px dashed #cbd5e1;
+  padding-bottom: 1.5px;
+}
+.tt-slot-row {
+  font-size: 7pt;
   line-height: 1.25;
-}
-.tt-slot-room {
-  font-size: 8.5pt;
-  color: #475569;
-  margin-top: 2px;
-}
-.tt-slot-teacher {
-  font-size: 8.5pt;
+  margin-top: 1px;
   color: #334155;
+  word-break: break-word;
+}
+.tt-slot-lbl {
+  font-weight: 600;
+  color: #475569;
+}
+.tt-slot-val {
+  color: #0f172a;
+}
+.tt-slot-note {
   font-style: italic;
+  color: #475569;
+}
+.tt-slot-link {
+  color: #2563eb;
+  text-decoration: underline;
+  word-break: break-all;
 }
 .tt-slot-excused {
   background-color: #fef3c7;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 1px 3px;
   margin-top: 2px;
-  font-size: 8pt;
+  font-size: 6.5pt;
   color: #92400e;
   font-weight: 600;
   border: 1px solid #fde68a;
+  display: inline-block;
+}
+.tt-signatures-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+.tt-signatures-table td {
+  text-align: center;
+  vertical-align: top;
+}
+.tt-header-table {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 """
 

@@ -17,6 +17,28 @@ class SchoolProJWTAuthentication(JWTAuthentication):
     Validates SimpleJWT tokens and resolves against core.User instead of django.contrib.auth.User.
     """
 
+    def authenticate(self, request: Any) -> tuple[User, Any] | None:
+        """
+        Authenticates against SimpleJWT Authorization header or ?token= query parameter (for downloads).
+        """
+        header = self.get_header(request)
+        if header is None:
+            raw_token = request.query_params.get("token")
+            if not raw_token:
+                return None
+            try:
+                validated_token = self.get_validated_token(raw_token)
+                return self.get_user(validated_token), validated_token
+            except Exception:
+                return None
+
+        raw_token = self.get_raw_token(header)
+        if raw_token is None:
+            return None
+
+        validated_token = self.get_validated_token(raw_token)
+        return self.get_user(validated_token), validated_token
+
     def get_user(self, validated_token: Any) -> User:
         """
         Attempts to find and return a user using the given validated token.

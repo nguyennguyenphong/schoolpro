@@ -297,6 +297,11 @@ class ExportTemplate(BaseModel):
       size: {self.page_size or "A4"} {(self.page_orientation or "PORTRAIT").lower()};
       margin: {margins.get("top", "20mm")} {margins.get("right", "15mm")} {margins.get("bottom", "20mm")} {margins.get("left", "20mm")};
     }}
+    * {{
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }}
     body {{
       font-family: "Times New Roman", Times, serif;
       font-size: 13pt;
@@ -305,6 +310,9 @@ class ExportTemplate(BaseModel):
       margin: 0;
       padding: 0;
       background: #fff;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
     }}
     {self.style_content or ""}
   </style>

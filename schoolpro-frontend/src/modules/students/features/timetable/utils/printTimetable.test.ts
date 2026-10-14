@@ -5,6 +5,7 @@ import {
   printTimetable,
 } from "./printTimetable";
 import { timetableService } from "@/modules/students/features/timetable/services/timetableService";
+import { httpClient } from "@/shared/api/httpClient";
 import type { TimetableSlot } from "../types";
 
 describe("printTimetable & downloadTimetableFile", () => {
@@ -64,18 +65,47 @@ describe("printTimetable & downloadTimetableFile", () => {
       currentWeekLabel: "Tuần 06",
       semesterLabel: "Học kỳ 1",
       className: "10A1",
+      templateCode: "749596971572",
+      studentName: "Trần Minh Quân (Học sinh)",
     });
 
-    expect(html).toContain("THỜI KHÓA BIỂU HỌC TẬP THEO TUẦN");
+    expect(html).toContain("THỜI KHÓA BIỂU HỌC TẬP");
+    expect(html).not.toContain("Tuần 06");
     expect(html).toContain("10A1");
     expect(html).toContain("Toán học 10");
     expect(html).toContain("Học kỳ 1");
     expect(html).toContain("Thứ Hai");
+    expect(html).toContain("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM");
+    expect(html).toContain("Mã biểu mẫu: 749596971572");
+    expect(html).toContain("Ghi chú:</strong> Thời khóa biểu này có hiệu lực từ ngày");
+    expect(html).toContain("Trần Minh Quân");
+    expect(html).not.toContain("(Học sinh)");
+    expect(html).not.toContain("Bộ phận Giáo vụ");
+    expect(html).toContain("Phòng học:</span>");
+    expect(html).toContain("Giáo viên:</span>");
+    expect(html).toContain("Hình thức học:</span>");
+    expect(html).toContain("Hình thức dạy:</span>");
+    expect(html).toContain("Ghi chú:</span>");
+    expect(html).toContain("Liên kết khác:</span>");
+    expect(html).not.toContain("•");
+    expect(html).not.toContain("&bull;");
   });
 
-  it("creates hidden iframe and triggers browser print using backend template render", async () => {
+  it("creates print window and triggers browser print using backend template render", async () => {
     const focusSpy = vi.fn();
     const printSpy = vi.fn();
+    const mockDoc = {
+      open: vi.fn(),
+      write: vi.fn(),
+      close: vi.fn(),
+    };
+
+    vi.spyOn(window, "open").mockReturnValue({
+      document: mockDoc,
+      focus: focusSpy,
+      print: printSpy,
+      closed: false,
+    } as unknown as Window);
 
     vi.spyOn(timetableService, "renderTimetablePrint").mockResolvedValue({
       html: "<!DOCTYPE html><html><body><h1>Bản in thời khóa biểu backend</h1></body></html>",
@@ -83,39 +113,21 @@ describe("printTimetable & downloadTimetableFile", () => {
       template_code: "TIMETABLE_WEEKLY_A4_LANDSCAPE",
     });
 
-    const originalCreateElement = document.createElement.bind(document);
-    vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-      const el = originalCreateElement(tagName);
-      if (tagName === "iframe") {
-        Object.defineProperty(el, "contentWindow", {
-          value: {
-            focus: focusSpy,
-            print: printSpy,
-            document: {
-              open: vi.fn(),
-              write: vi.fn(),
-              close: vi.fn(),
-            },
-          },
-          configurable: true,
-        });
-      }
-      return el;
-    });
-
-    await printTimetable({
+    const printPromise = printTimetable({
       selectedDate: "2026-10-12",
       slots: mockSlots,
       className: "10A1",
     });
 
-    vi.advanceTimersByTime(300);
+    await vi.advanceTimersByTimeAsync(500);
 
     expect(focusSpy).toHaveBeenCalled();
     expect(printSpy).toHaveBeenCalled();
+    expect(mockDoc.write).toHaveBeenCalled();
+    await printPromise;
   });
 
-  it("downloads timetable file using direct URL", () => {
+  it("downloads timetable file using authenticated blob request", async () => {
     const clickSpy = vi.fn();
     const originalCreateElement = document.createElement.bind(document);
     vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
@@ -126,11 +138,40 @@ describe("printTimetable & downloadTimetableFile", () => {
       return el;
     });
 
-    downloadTimetableFile({
+    vi.spyOn(httpClient, "get").mockResolvedValue({
+      data: new Blob(["pdf content"], { type: "application/pdf" }),
+      headers: {
+        "content-disposition": 'attachment; filename="Thoi_Khoa_Bieu_10A1_20261012.pdf"',
+        "content-type": "application/pdf",
+      },
+    });
+
+    if (!window.URL.createObjectURL) {
+      window.URL.createObjectURL = vi.fn().mockReturnValue("blob:http://localhost/test");
+    } else {
+      vi.spyOn(window.URL, "createObjectURL").mockReturnValue("blob:http://localhost/test");
+    }
+    if (!window.URL.revokeObjectURL) {
+      window.URL.revokeObjectURL = vi.fn();
+    } else {
+      vi.spyOn(window.URL, "revokeObjectURL").mockImplementation(() => {});
+    }
+
+    await downloadTimetableFile({
       selectedDate: "2026-10-12",
       format: "pdf",
     });
 
+    expect(httpClient.get).toHaveBeenCalledWith(
+      "/academic/timetable/download/",
+      expect.objectContaining({
+        params: expect.objectContaining({
+          date: "2026-10-12",
+          format: "pdf",
+        }),
+        responseType: "blob",
+      })
+    );
     expect(clickSpy).toHaveBeenCalled();
   });
 });

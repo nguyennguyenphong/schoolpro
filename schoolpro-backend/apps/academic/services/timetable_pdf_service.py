@@ -6,7 +6,8 @@ can customize print layouts, margins, styles, filenames, and target formats.
 
 import html
 import logging
-from datetime import datetime
+import re
+from datetime import datetime, timedelta
 from typing import Any
 
 from django.utils import timezone
@@ -88,12 +89,12 @@ class TimetablePdfService:
         with Morning (Tiết 1-5) and Afternoon (Tiết 6-9) across Monday - Saturday.
         """
         days_of_week = [
-            {"key": 1, "label": "Thứ Hai"},
-            {"key": 2, "label": "Thứ Ba"},
-            {"key": 3, "label": "Thứ Tư"},
-            {"key": 4, "label": "Thứ Năm"},
-            {"key": 5, "label": "Thứ Sáu"},
-            {"key": 6, "label": "Thứ Bảy"},
+            {"key": 2, "label": "Thứ Hai"},
+            {"key": 3, "label": "Thứ Ba"},
+            {"key": 4, "label": "Thứ Tư"},
+            {"key": 5, "label": "Thứ Năm"},
+            {"key": 6, "label": "Thứ Sáu"},
+            {"key": 7, "label": "Thứ Bảy"},
         ]
 
         periods_definition = [
@@ -118,7 +119,8 @@ class TimetablePdfService:
                 except ValueError:
                     num = 0
 
-                if dow == day_key and num == period_num:
+                is_day_matched = dow == day_key or (day_key == 2 and dow == 1) or (dow == day_key - 1)
+                if is_day_matched and num == period_num:
                     return s
             return None
 
@@ -139,9 +141,29 @@ class TimetablePdfService:
                     day_tds.append("<td></td>")
                 else:
                     course_name = html.escape(slot.get("courseName") or "Môn học")
-                    room = html.escape(slot.get("room") or "")
-                    instructor = html.escape(slot.get("instructorName") or "")
-                    room_teacher = f"{room} • {instructor}" if room and instructor else (room or instructor)
+                    room = html.escape(slot.get("room") or "-")
+                    instructor = html.escape(slot.get("instructorName") or "-")
+
+                    class_type = slot.get("classType")
+                    class_type_map = {
+                        "practice": "Thực hành",
+                        "theory": "Lý thuyết",
+                        "seminar": "Seminar",
+                        "exam": "Kiểm tra",
+                    }
+                    learning_mode = class_type_map.get(class_type, "Lý thuyết")
+
+                    online_url = slot.get("onlineUrl")
+                    teaching_mode = "Trực tuyến" if online_url else "Trực tiếp"
+
+                    notes_text = slot.get("notes") or slot.get("lessonTopic") or "Không có"
+                    notes_escaped = html.escape(notes_text)
+
+                    if online_url:
+                        online_url_escaped = html.escape(str(online_url))
+                        link_html = f'<a href="{online_url_escaped}" target="_blank" class="tt-slot-link" title="{online_url_escaped}">Liên kết trực tuyến</a>'
+                    else:
+                        link_html = "Không có"
 
                     leave_badge = ""
                     if slot.get("isOnLeave") or slot.get("attendanceStatus") == "excused":
@@ -150,9 +172,13 @@ class TimetablePdfService:
 
                     cell_html = (
                         f"<td>"
+                        f'<div class="tt-slot-card">'
                         f'<div class="tt-slot-subject">{course_name}</div>'
-                        f'<div class="tt-slot-room">{room_teacher}</div>'
+                        f'<div class="tt-slot-row"><span class="tt-slot-lbl">Phòng học:</span> <span class="tt-slot-val">{room}</span> - <span class="tt-slot-lbl">Giáo viên:</span> <span class="tt-slot-val">{instructor}</span></div>'
+                        f'<div class="tt-slot-row"><span class="tt-slot-lbl">Hình thức học:</span> <span class="tt-slot-val">{learning_mode}</span> - <span class="tt-slot-lbl">Hình thức dạy:</span> <span class="tt-slot-val">{teaching_mode}</span></div>'
+                        f'<div class="tt-slot-row"><span class="tt-slot-lbl">Ghi chú:</span> <span class="tt-slot-val tt-slot-note">{notes_escaped}</span> - <span class="tt-slot-lbl">Liên kết khác:</span> <span class="tt-slot-val">{link_html}</span></div>'
                         f"{leave_badge}"
+                        f"</div>"
                         f"</td>"
                     )
                     day_tds.append(cell_html)
@@ -207,40 +233,86 @@ class TimetablePdfService:
 
         week_start_str = selected_week.get("startDate") or ""
         week_end_str = selected_week.get("endDate") or ""
-        date_range = ""
-        if week_start_str and week_end_str:
-            try:
-                dt_start = datetime.strptime(week_start_str, "%Y-%m-%d")
-                dt_end = datetime.strptime(week_end_str, "%Y-%m-%d")
-                date_range = f"Từ ngày {dt_start.strftime('%d/%m/%Y')} đến ngày {dt_end.strftime('%d/%m/%Y')}"
-            except ValueError:
-                date_range = f"Từ {week_start_str} đến {week_end_str}"
+        first_slot = slots[0] if slots else {}
+        now_local = timezone.localtime()
+
+        if not week_start_str or not week_end_str:
+            ref_date_str = selected_week.get("selectedDate") or (first_slot.get("date") if first_slot else None)
+            if ref_date_str:
+                try:
+                    rd = datetime.strptime(str(ref_date_str)[:10], "%Y-%m-%d").date()
+                except ValueError:
+                    rd = now_local.date()
+            else:
+                rd = now_local.date()
+            monday = rd - timedelta(days=rd.weekday())
+            sunday = monday + timedelta(days=6)
+            week_start_str = monday.strftime("%Y-%m-%d")
+            week_end_str = sunday.strftime("%Y-%m-%d")
+
+        try:
+            dt_start = datetime.strptime(str(week_start_str)[:10], "%Y-%m-%d")
+            dt_end = datetime.strptime(str(week_end_str)[:10], "%Y-%m-%d")
+            start_date_formatted = dt_start.strftime("%d/%m/%Y")
+            end_date_formatted = dt_end.strftime("%d/%m/%Y")
+        except ValueError:
+            start_date_formatted = str(week_start_str)
+            end_date_formatted = str(week_end_str)
+
+        date_range = f"Từ ngày {start_date_formatted} đến ngày {end_date_formatted}"
+        effective_date_note = f"Ghi chú: Thời khóa biểu này có hiệu lực từ ngày {start_date_formatted} đến ngày {end_date_formatted}"
 
         # Get first slot for class info if available
-        first_slot = slots[0] if slots else {}
         class_name = first_slot.get("className") or "10A1"
 
-        student_name = getattr(user, "full_name", "") or getattr(user, "username", "Học sinh")
+        raw_name = (
+            getattr(user, "full_name", "")
+            or f"{getattr(user, 'last_name', '')} {getattr(user, 'first_name', '')}".strip()
+            or getattr(user, "username", "")
+            or "Học sinh"
+        )
+        student_name = re.sub(r"\s*\((?:Học sinh|Student|HS)\)\s*", "", raw_name, flags=re.IGNORECASE).strip() or raw_name
         student_code = getattr(user, "student_code", "") or getattr(user, "username", "")
 
         matrix_table_html = cls.build_timetable_matrix_table_html(slots)
-        now_local = timezone.localtime()
 
         sample = template.sample_data if template and isinstance(template.sample_data, dict) else {}
+        homeroom_teacher = (
+            sample.get("homeroom_teacher_name")
+            or sample.get("homeroom_teacher")
+            or "ThS. Hoàng Văn Nam"
+        )
+        week_label = f"Tuần {now_local.strftime('%W')}"
         context: dict[str, Any] = {
             **sample,
+            "title": f"Thời khóa biểu - Lớp {class_name}",
             "school_name": sample.get("school_name", "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO"),
+            "school_parent_name": sample.get(
+                "school_parent_name", "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI"
+            ),
             "department_name": sample.get("department_name", "PHÒNG HỌC VỤ & ĐÀO TẠO"),
             "class_name": class_name,
             "academic_year": ay_name,
             "semester_name": sem_name,
-            "week_label": f"Tuần {now_local.strftime('%W')}",
+            "week_label": week_label,
+            "week_number": week_label,
+            "week_start_date": start_date_formatted,
+            "week_end_date": end_date_formatted,
+            "effective_date_note": effective_date_note,
             "date_range": date_range,
             "student_name": student_name,
             "student_code": student_code,
-            "homeroom_teacher": sample.get("homeroom_teacher", "Thầy/Cô Giáo viên chủ nhiệm"),
+            "homeroom_teacher": homeroom_teacher,
+            "homeroom_teacher_name": homeroom_teacher,
+            "author_name": student_name,
+            "principal_name": sample.get("principal_name", "TS. Lê Hồng Sơn"),
             "print_date": now_local.strftime("%d/%m/%Y %H:%M"),
+            "template_code": (template.code if template and template.code else "TIMETABLE_WEEKLY_A4_LANDSCAPE"),
             "timetable_table_html": matrix_table_html,
+            "schedule_matrix_html": matrix_table_html,
+            "timetable_matrix_html": matrix_table_html,
+            "schedule_table_html": matrix_table_html,
+            "table_html": matrix_table_html,
         }
         return context
 

@@ -487,7 +487,7 @@ class Command(BaseCommand):
                 "phone": "0912345810",
                 "first_name": "Quân",
                 "last_name": "Đỗ Minh",
-                "full_name": "Đỗ Minh Quân (Học sinh)",
+                "full_name": "Đỗ Minh Quân",
                 "gender": "MALE",
                 "dob": date(2010, 3, 21),
                 "address": "Số 75 Hoàng Mai, Hà Nội",

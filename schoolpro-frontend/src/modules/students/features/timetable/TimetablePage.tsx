@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Empty } from "@/components/ui/Empty";
 import { Icon } from "@/components/ui/Icon";
+import { useAuthStore } from "@/shared/store/useAuthStore";
 import {
   TimetableFilterBar,
   WeeklyGridView,
@@ -12,12 +13,12 @@ import {
 } from "@/modules/students/features/timetable/components";
 import { useTimetable } from "@/modules/students/features/timetable/hooks";
 import {
-  downloadTimetableFile,
   printTimetable,
 } from "@/modules/students/features/timetable/utils";
 
 export const TimetablePage: React.FC = () => {
   const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
+  const { user } = useAuthStore();
   const [isPrinting, setIsPrinting] = React.useState(false);
   const {
     slots,
@@ -46,19 +47,14 @@ export const TimetablePage: React.FC = () => {
       await printTimetable({
         selectedDate: filter.selectedDate,
         slots,
+        className: slots[0]?.className,
         currentWeekLabel,
         semesterLabel,
+        studentName: user?.full_name || user?.name || "Học sinh",
       });
     } finally {
       setIsPrinting(false);
     }
-  };
-
-  const handleDownloadPdf = () => {
-    downloadTimetableFile({
-      selectedDate: filter.selectedDate,
-      format: "pdf",
-    });
   };
 
   return (
@@ -117,7 +113,6 @@ export const TimetablePage: React.FC = () => {
         onPrevWeekClick={goToPreviousDay}
         onNextWeekClick={goToNextDay}
         onPrint={handlePrint}
-        onDownloadPdf={handleDownloadPdf}
       />
 
       {/* 3. Schedule Results View (Grid & List) */}
