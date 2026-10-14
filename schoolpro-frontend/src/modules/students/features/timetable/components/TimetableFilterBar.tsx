@@ -15,6 +15,7 @@ interface TimetableFilterBarProps {
   minDate?: string;
   maxDate?: string;
   hasActiveFilters?: boolean;
+  isPrinting?: boolean;
   onDateChange: (dateStr: string) => void;
   onViewModeChange: (mode: TimetableViewMode) => void;
   onResetFilters: () => void;
@@ -22,7 +23,7 @@ interface TimetableFilterBarProps {
   onPrevWeekClick: () => void;
   onNextWeekClick: () => void;
   onPrint?: () => void;
-  isPrinting?: boolean;
+  onDownloadPdf?: () => void;
 }
 
 export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
@@ -33,6 +34,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   minDate,
   maxDate,
   hasActiveFilters = false,
+  isPrinting = false,
   onDateChange,
   onViewModeChange,
   onResetFilters,
@@ -40,7 +42,7 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   onPrevWeekClick,
   onNextWeekClick,
   onPrint,
-  isPrinting = false,
+  onDownloadPdf,
 }) => {
   const { t } = useTranslation(["card", "button"]);
   const currentDayjs = dayjs(selectedDate);
@@ -112,17 +114,29 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
           </button>
         </div>
 
-        {/* Week Range Display Badge */}
+        {/* Print & Download Action Buttons */}
         <div className="flex items-center gap-1.5 shrink-0">
           <Button
             variant="primary"
             onClick={onPrint}
             loading={isPrinting}
             disabled={isPrinting}
+            title={t("button:printTimeTable")}
           >
             <Icon name="print" size={13} />
-            {t("button:printTimeTable")}
+            <span>{t("button:printTimeTable")}</span>
           </Button>
+
+          {onDownloadPdf && (
+            <Button
+              variant="outline"
+              onClick={onDownloadPdf}
+              title="Tải tệp PDF"
+            >
+              <Icon name="download" size={13} />
+              <span>PDF</span>
+            </Button>
+          )}
         </div>
 
         {/* Week Picker for jumping directly to any week with boundary checking */}

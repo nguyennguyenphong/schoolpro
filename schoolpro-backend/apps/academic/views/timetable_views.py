@@ -3,6 +3,7 @@ REST API ViewSet for Academic Timetable domain.
 Delivers weekly schedule matrices, detail lookups, and aggregate metrics.
 """
 
+from django.http import HttpResponse
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
@@ -12,7 +13,7 @@ from apps.academic.serializers.timetable_serializers import (
     TimetableSlotResponseSerializer,
     TimetableSummaryResponseSerializer,
 )
-from apps.academic.services.timetable_print_service import TimetablePrintService
+from apps.academic.services.timetable_pdf_service import TimetablePdfService
 from apps.academic.services.timetable_service import TimetableService
 from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
@@ -125,42 +126,86 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         )
 
     @extend_schema(
-        summary="Print or export weekly timetable",
-        description="Renders the weekly timetable into full HTML & CSS using sys.export_templates (supports PDF, HTML_PRINT, EXCEL).",
+        summary="Render timetable HTML/CSS via dynamic ExportTemplate",
+        description="Renders weekly timetable into full HTML & CSS using sys.export_templates for print or preview.",
         parameters=[
             OpenApiParameter("date", str, description="Selected date in YYYY-MM-DD format"),
-            OpenApiParameter("templateCode", str, description="Optional ExportTemplate code"),
             OpenApiParameter(
-                "format", str, description="Optional format override (html, pdf, doc, xlsx)"
+                "templateCode",
+                str,
+                description="Template code override (defaults to TIMETABLE_WEEKLY_A4_LANDSCAPE)",
             ),
+            OpenApiParameter("templateId", str, description="Specific ExportTemplate UUID"),
         ],
     )
-    @action(detail=False, methods=["get"], url_path="print")
-    def print_timetable(self, request):
+    @action(detail=False, methods=["get"], url_path="export-render")
+    def export_render(self, request):
         """
-        Renders weekly timetable document via active ExportTemplate.
+        Renders the weekly timetable into full HTML/CSS for browser printing or client-side preview.
         """
         user = request.user
         selected_date = request.query_params.get("date")
         template_code = request.query_params.get("templateCode") or request.query_params.get(
             "template_code"
         )
-        format_param = request.query_params.get("format")
+        template_id = request.query_params.get("templateId") or request.query_params.get(
+            "template_id"
+        )
 
-        doc_data = TimetablePrintService.render_timetable_print(
+        schedule_context = TimetableService.get_weekly_schedule_context(
             user=user,
             selected_date_str=selected_date,
+        )
+        rendered = TimetablePdfService.render_timetable_html(
+            schedule_context=schedule_context,
+            user=user,
             template_code=template_code,
-            format_override=format_param,
+            template_id=template_id,
         )
-
-        accept_header = request.headers.get("Accept", "")
-        if "text/html" in accept_header and "application/json" not in accept_header:
-            from django.http import HttpResponse
-
-            return HttpResponse(doc_data["html"], content_type="text/html; charset=utf-8")
-
         return APIResponse.success(
-            data=doc_data,
-            message="Render bản in thời khóa biểu thành công",
+            data=rendered,
+            message="Render thời khóa biểu thành công",
         )
+
+    @extend_schema(
+        summary="Download timetable document via dynamic ExportTemplate",
+        description="Exports weekly timetable using the active ExportTemplate in sys.export_templates (supports HTML, PDF).",
+        parameters=[
+            OpenApiParameter("date", str, description="Selected date in YYYY-MM-DD format"),
+            OpenApiParameter("format", str, description="Output format: pdf, html"),
+            OpenApiParameter("templateCode", str, description="Template code override"),
+            OpenApiParameter("templateId", str, description="Specific ExportTemplate UUID"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="download")
+    def download(self, request):
+        """
+        Streams downloadable timetable file with dynamic filename and content type.
+        """
+        user = request.user
+        selected_date = request.query_params.get("date")
+        output_format = request.query_params.get("format") or request.query_params.get(
+            "file_format"
+        )
+        template_code = request.query_params.get("templateCode") or request.query_params.get(
+            "template_code"
+        )
+        template_id = request.query_params.get("templateId") or request.query_params.get(
+            "template_id"
+        )
+
+        schedule_context = TimetableService.get_weekly_schedule_context(
+            user=user,
+            selected_date_str=selected_date,
+        )
+        file_bytes, filename, content_type = TimetablePdfService.export_timetable_file(
+            schedule_context=schedule_context,
+            user=user,
+            template_code=template_code,
+            template_id=template_id,
+            output_format=output_format,
+        )
+        response = HttpResponse(file_bytes, content_type=content_type)
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        response["Access-Control-Expose-Headers"] = "Content-Disposition"
+        return response

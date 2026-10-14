@@ -1,15 +1,15 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { httpClient } from "@/shared/api/httpClient";
+import { API_BASE_URL, httpClient } from "@/shared/api/httpClient";
 import type { ApiResponse } from "@/shared/types/auth";
+import type { TimetableRenderedExport } from "@/shared/types/exportTemplate";
 import type {
   TimetableSlot,
   TimetableFilter,
   TimetableSummary,
   TimetableMeta,
   TimetableResponseData,
-  TimetablePrintDocumentData,
 } from "@/modules/students/features/timetable/types";
 
 dayjs.extend(isBetween);
@@ -131,26 +131,63 @@ class TimetableService {
   }
 
   /**
-   * Fetches official printable timetable document rendered dynamically by backend sys.export_templates.
+   * Renders timetable HTML/CSS dynamically via sys.export_templates on backend.
    */
-  async printOrExportTimetable(params?: {
+  async renderTimetablePrint(params?: {
     date?: string;
     templateCode?: string;
-    format?: string;
-  }): Promise<TimetablePrintDocumentData | null> {
+    templateId?: string;
+  }): Promise<TimetableRenderedExport | null> {
     try {
-      const response = await httpClient.get<ApiResponse<TimetablePrintDocumentData>>(
-        "/academic/timetable/print/",
+      const response = await httpClient.get<ApiResponse<TimetableRenderedExport>>(
+        "/academic/timetable/export-render/",
         { params }
       );
       if (response.data?.data?.html) {
         return response.data.data;
       }
     } catch {
-      // Fallback handled by caller
+      // Return null on network error, caller can fallback
     }
     return null;
+  }
+
+  /**
+   * Builds the direct download URL for timetable files (PDF, HTML).
+   */
+  getTimetableDownloadUrl(params?: {
+    date?: string;
+    format?: string;
+    templateCode?: string;
+    templateId?: string;
+  }): string {
+    const searchParams = new URLSearchParams();
+    if (params?.date) searchParams.set("date", params.date);
+    if (params?.format) searchParams.set("format", params.format);
+    if (params?.templateCode) searchParams.set("templateCode", params.templateCode);
+    if (params?.templateId) searchParams.set("templateId", params.templateId);
+
+    let token = "";
+    try {
+      if (typeof window !== "undefined") {
+        if (typeof localStorage !== "undefined" && typeof localStorage.getItem === "function") {
+          token = localStorage.getItem("schoolpro_access_token") || "";
+        }
+        if (!token && typeof sessionStorage !== "undefined" && typeof sessionStorage.getItem === "function") {
+          token = sessionStorage.getItem("schoolpro_access_token") || "";
+        }
+      }
+    } catch {
+      // Ignore storage access errors
+    }
+    if (token) {
+      searchParams.set("token", token);
+    }
+
+    const query = searchParams.toString();
+    return `${API_BASE_URL}/academic/timetable/download/${query ? `?${query}` : ""}`;
   }
 }
 
 export const timetableService = new TimetableService();
+

@@ -72,3 +72,15 @@ export interface LeaveRequestRenderedExport {
   pageOrientation?: "PORTRAIT" | "LANDSCAPE";
   margins?: Record<string, string>;
 }
+
+export interface TimetableRenderedExport {
+  html: string;
+  filename: string;
+  file_format?: FileFormat;
+  template_id?: string;
+  template_code?: string;
+  template_name?: string;
+  page_size?: string;
+  page_orientation?: "PORTRAIT" | "LANDSCAPE";
+}
+

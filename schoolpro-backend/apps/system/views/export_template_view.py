@@ -202,7 +202,7 @@ class ExportTemplateViewSet(viewsets.ModelViewSet):
                 template = self.service.get_or_create_default_leave_request_template(
                     school_id=school_id
                 )
-            elif clean_code == "TIMETABLE_WEEKLY_A4_LANDSCAPE":
+            elif clean_code in ("TIMETABLE_WEEKLY_A4_LANDSCAPE", "TIMETABLE_OFFICIAL_A4"):
                 template = self.service.get_or_create_default_timetable_template(
                     school_id=school_id
                 )
@@ -215,22 +215,6 @@ class ExportTemplateViewSet(viewsets.ModelViewSet):
         return APIResponse.success(
             data=ExportTemplateDetailSerializer(template).data,
             message=f"Lấy biểu mẫu '{template.name}' thành công",
-        )
-
-    @extend_schema(
-        summary="Get Default Timetable Template",
-        description="Retrieves or seeds the default Vietnamese educational A4 landscape timetable template.",
-        responses={200: ExportTemplateDetailSerializer},
-    )
-    @action(detail=False, methods=["get"], url_path="default-timetable")
-    def default_timetable(self, request):
-        user = getattr(request, "user", None)
-        school_id = getattr(user, "school_id", None) if user else None
-
-        template = self.service.get_or_create_default_timetable_template(school_id=school_id)
-        return APIResponse.success(
-            data=ExportTemplateDetailSerializer(template).data,
-            message="Lấy biểu mẫu thời khóa biểu mặc định thành công",
         )
 
     @extend_schema(
@@ -263,6 +247,22 @@ class ExportTemplateViewSet(viewsets.ModelViewSet):
         return APIResponse.success(
             data=ExportTemplateDetailSerializer(template).data,
             message="Lấy biểu mẫu đơn xin nghỉ phép mặc định thành công",
+        )
+
+    @extend_schema(
+        summary="Get Default Timetable Template",
+        description="Retrieves or seeds the default Vietnamese A4 landscape weekly timetable template.",
+        responses={200: ExportTemplateDetailSerializer},
+    )
+    @action(detail=False, methods=["get"], url_path="default-timetable")
+    def default_timetable(self, request):
+        user = getattr(request, "user", None)
+        school_id = getattr(user, "school_id", None) if user else None
+
+        template = self.service.get_or_create_default_timetable_template(school_id=school_id)
+        return APIResponse.success(
+            data=ExportTemplateDetailSerializer(template).data,
+            message="Lấy biểu mẫu thời khóa biểu mặc định thành công",
         )
 
     @extend_schema(

@@ -3,6 +3,7 @@ from .attendance_realtime import AttendanceRealtimeEvent, AttendanceRealtimeServ
 from .attendance_service import AttendanceService
 from .attendance_session_service import AttendanceSessionService
 from .exam_event_service import ExamEventLogService
+from .timetable_pdf_service import TimetablePdfService
 from .timetable_service import TimetableService
 
 __all__ = [
@@ -12,5 +13,6 @@ __all__ = [
     "AttendanceService",
     "AttendanceSessionService",
     "ExamEventLogService",
+    "TimetablePdfService",
     "TimetableService",
 ]
