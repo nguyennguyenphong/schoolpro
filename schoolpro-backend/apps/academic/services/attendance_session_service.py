@@ -604,7 +604,8 @@ class AttendanceSessionService:
                 remaining_seconds = 0
                 if att and att.status == "ABSENT_UNEXCUSED":
                     note_text = (
-                        att.note or f"Vắng không phép. Đã kết thúc thời gian điểm danh ({start_str} - {end_str}). Hết giờ."
+                        att.note
+                        or f"Vắng không phép. Đã kết thúc thời gian điểm danh ({start_str} - {end_str}). Hết giờ."
                     )
                 else:
                     note_text = f"Đã kết thúc thời gian điểm danh của tiết học ({start_str} - {end_str}). Hết giờ."
@@ -623,7 +624,9 @@ class AttendanceSessionService:
                         session.note
                         or f"Đang trong thời gian điểm danh! Nhập mã 6 chữ số hoặc quét/tải ảnh QR trong phạm vi {allowed_radius}m."
                     )
-                elif session and (session.status in ("EXPIRED", "CLOSED") or session.expires_at <= now):
+                elif session and (
+                    session.status in ("EXPIRED", "CLOSED") or session.expires_at <= now
+                ):
                     ui_status = "absent"
                     remaining_seconds = 0
                     note_text = f"Mã điểm danh đã hết hạn lúc {deadline_time_str}. Hết giờ."

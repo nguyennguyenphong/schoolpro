@@ -365,10 +365,9 @@ class ExportTemplateService:
         Ensures a customizable Vietnamese educational A4 landscape timetable template exists
         in sys.export_templates.
         """
-        existing = (
-            self.repository.get_active_by_code(DEFAULT_TIMETABLE_CODE, school_id=school_id)
-            or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
-        )
+        existing = self.repository.get_active_by_code(
+            DEFAULT_TIMETABLE_CODE, school_id=school_id
+        ) or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
         if existing:
             return existing
 
@@ -981,7 +980,11 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {"key": "week_number", "label": "Số thứ tự tuần", "example": "06"},
     {"key": "print_date", "label": "Thời điểm in", "example": "14/10/2026 00:00"},
     {"key": "author_name", "label": "Người lập biểu", "example": "Bộ phận Giáo vụ"},
-    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "ThS. Hoàng Văn Nam"},
+    {
+        "key": "homeroom_teacher_name",
+        "label": "Giáo viên chủ nhiệm",
+        "example": "ThS. Hoàng Văn Nam",
+    },
     {"key": "principal_name", "label": "Hiệu trưởng", "example": "TS. Lê Hồng Sơn"},
     {"key": "template_code", "label": "Mã biểu mẫu", "example": "TIMETABLE_WEEKLY_A4_LANDSCAPE"},
     {"key": "schedule_matrix_html", "label": "Bảng ma trận tiết học (HTML)", "example": ""},

@@ -130,7 +130,9 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         parameters=[
             OpenApiParameter("date", str, description="Selected date in YYYY-MM-DD format"),
             OpenApiParameter("templateCode", str, description="Optional ExportTemplate code"),
-            OpenApiParameter("format", str, description="Optional format override (html, pdf, doc, xlsx)"),
+            OpenApiParameter(
+                "format", str, description="Optional format override (html, pdf, doc, xlsx)"
+            ),
         ],
     )
     @action(detail=False, methods=["get"], url_path="print")
@@ -140,7 +142,9 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         """
         user = request.user
         selected_date = request.query_params.get("date")
-        template_code = request.query_params.get("templateCode") or request.query_params.get("template_code")
+        template_code = request.query_params.get("templateCode") or request.query_params.get(
+            "template_code"
+        )
         format_param = request.query_params.get("format")
 
         doc_data = TimetablePrintService.render_timetable_print(

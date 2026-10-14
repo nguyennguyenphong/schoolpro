@@ -119,8 +119,12 @@ class TimetablePrintService:
         day_leave_info: dict[str, dict[str, Any]] = {}
         for d in days_of_week:
             date_str = d["date"].strftime("%Y-%m-%d")
-            day_slots = [s for s in slots if s.get("date") == date_str or s.get("dayOfWeek") == d["key"]]
-            leave_slots = [s for s in day_slots if s.get("isOnLeave") or s.get("attendanceStatus") == "excused"]
+            day_slots = [
+                s for s in slots if s.get("date") == date_str or s.get("dayOfWeek") == d["key"]
+            ]
+            leave_slots = [
+                s for s in day_slots if s.get("isOnLeave") or s.get("attendanceStatus") == "excused"
+            ]
             has_leave = len(leave_slots) > 0
             is_pending = any(s.get("leaveStatus") == "pending" for s in leave_slots)
             day_leave_info[date_str] = {
@@ -140,7 +144,11 @@ class TimetablePrintService:
             th_class = "tt-day-col"
             if has_leave:
                 th_class += " tt-header-leave"
-                badge_text = "Nghỉ phép: Chờ duyệt" if leave_meta.get("is_pending") else "Nghỉ phép: Đã duyệt"
+                badge_text = (
+                    "Nghỉ phép: Chờ duyệt"
+                    if leave_meta.get("is_pending")
+                    else "Nghỉ phép: Đã duyệt"
+                )
                 leave_badge_html = f'<div style="margin-top: 2px;"><span class="tt-leave-badge">{badge_text}</span></div>'
 
             header_cols.append(f"""
@@ -178,12 +186,16 @@ class TimetablePrintService:
                 cell_slots.sort(key=lambda s: str(s.get("startTime") or s.get("periods") or ""))
 
                 if not cell_slots:
-                    shift_cells.append('<td class="tt-day-col"><div class="tt-empty-cell">—</div></td>')
+                    shift_cells.append(
+                        '<td class="tt-day-col"><div class="tt-empty-cell">—</div></td>'
+                    )
                     continue
 
                 cards_html: list[str] = []
                 for s in cell_slots:
-                    subj_name = html.escape(str(s.get("courseName") or s.get("subjectName") or "Môn học"))
+                    subj_name = html.escape(
+                        str(s.get("courseName") or s.get("subjectName") or "Môn học")
+                    )
                     cls_name = html.escape(str(s.get("className") or s.get("classCode") or "10A1"))
                     room = html.escape(str(s.get("room") or "Phòng học"))
                     bld = html.escape(str(s.get("building") or ""))
@@ -191,13 +203,17 @@ class TimetablePrintService:
                     start_t = html.escape(str(s.get("startTime") or ""))
                     end_t = html.escape(str(s.get("endTime") or ""))
                     periods_str = html.escape(str(s.get("periods") or ""))
-                    instructor = html.escape(str(s.get("instructorName") or s.get("teacherName") or "Giáo viên"))
+                    instructor = html.escape(
+                        str(s.get("instructorName") or s.get("teacherName") or "Giáo viên")
+                    )
                     email = html.escape(str(s.get("instructorEmail") or ""))
                     class_type = str(s.get("classType") or "theory").lower()
                     type_label = "Thực hành" if class_type == "practice" else "Lý thuyết"
                     is_online = bool(s.get("onlineUrl"))
                     mode_label = "Trực tuyến" if is_online else "Trực tiếp"
-                    topic_or_notes = html.escape(str(s.get("lessonTopic") or s.get("notes") or "").strip())
+                    topic_or_notes = html.escape(
+                        str(s.get("lessonTopic") or s.get("notes") or "").strip()
+                    )
 
                     is_on_leave = bool(s.get("isOnLeave") or s.get("attendanceStatus") == "excused")
                     leave_status = str(s.get("leaveStatus") or "")
@@ -206,7 +222,11 @@ class TimetablePrintService:
 
                     if is_on_leave:
                         card_class += " tt-slot-excused"
-                        leave_text = "Nghỉ phép (Chờ duyệt)" if leave_status == "pending" else "Nghỉ phép (Đã duyệt)"
+                        leave_text = (
+                            "Nghỉ phép (Chờ duyệt)"
+                            if leave_status == "pending"
+                            else "Nghỉ phép (Đã duyệt)"
+                        )
                         leave_badge = f'<span class="tt-leave-badge">{leave_text}</span>'
 
                     # Room location string
@@ -231,7 +251,9 @@ class TimetablePrintService:
 
                     topic_html = ""
                     if topic_or_notes:
-                        topic_html = f'<div class="tt-topic-note">Bài học / Ghi chú: {topic_or_notes}</div>'
+                        topic_html = (
+                            f'<div class="tt-topic-note">Bài học / Ghi chú: {topic_or_notes}</div>'
+                        )
 
                     cards_html.append(f"""
                     <div class="{card_class}">
@@ -258,10 +280,10 @@ class TimetablePrintService:
         return f"""
         <table class="tt-matrix-table">
           <thead>
-            <tr>{''.join(header_cols)}</tr>
+            <tr>{"".join(header_cols)}</tr>
           </thead>
           <tbody>
-            {''.join(rows_html)}
+            {"".join(rows_html)}
           </tbody>
         </table>
         """
@@ -308,10 +330,14 @@ class TimetablePrintService:
         class_name = slots[0].get("className", "10A1") if slots else "10A1"
         school_name = getattr(getattr(user, "school", None), "name", "TRƯỜNG THPT CHUYÊN SCHOOLPRO")
         academic_year_name = (
-            meta.get("academicYear", {}).get("name") if isinstance(meta.get("academicYear"), dict) else "2026 - 2027"
+            meta.get("academicYear", {}).get("name")
+            if isinstance(meta.get("academicYear"), dict)
+            else "2026 - 2027"
         ) or "2026 - 2027"
         semester_name = (
-            meta.get("semester", {}).get("name") if isinstance(meta.get("semester"), dict) else "Học kỳ 1"
+            meta.get("semester", {}).get("name")
+            if isinstance(meta.get("semester"), dict)
+            else "Học kỳ 1"
         ) or "Học kỳ 1"
 
         week_label = f"Tuần {iso_week_num:02d} ({week_start.strftime('%d/%m/%Y')} - {week_end.strftime('%d/%m/%Y')})"
