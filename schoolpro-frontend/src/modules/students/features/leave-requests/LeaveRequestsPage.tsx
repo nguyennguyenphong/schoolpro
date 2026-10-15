@@ -60,7 +60,7 @@ const LeaveRequestsPage: React.FC = () => {
         />
       )}
 
-      <LeaveRequestSummaryCards summary={summary} loading={loading} />
+      <LeaveRequestSummaryCards summary={summary} loading={loading && !summary} />
 
       <LeaveRequestFilterBar
         status={filter.status}
@@ -77,7 +77,7 @@ const LeaveRequestsPage: React.FC = () => {
         onResetFilters={resetFilters}
       />
 
-      {loading ? (
+      {loading && items.length === 0 ? (
         <LeaveRequestSkeleton viewMode={filter.viewMode} />
       ) : items.length === 0 ? (
         <LeaveRequestsEmptyState
@@ -86,7 +86,12 @@ const LeaveRequestsPage: React.FC = () => {
           onCreateClick={handleOpenCreatePage}
         />
       ) : filter.viewMode === "grid" ? (
-        <Row gutter={[16, 16]}>
+        <Row
+          gutter={[16, 16]}
+          className={`transition-opacity duration-200 ${
+            loading ? "opacity-60 pointer-events-none" : "opacity-100"
+          }`}
+        >
           {items.map((item) => (
             <Col xs={24} md={12} xl={8} key={item.id}>
               <LeaveRequestCard item={item} onViewDetail={handleViewDetailPage} />
@@ -94,7 +99,11 @@ const LeaveRequestsPage: React.FC = () => {
           ))}
         </Row>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div
+          className={`flex flex-col gap-3 transition-opacity duration-200 ${
+            loading ? "opacity-60 pointer-events-none" : "opacity-100"
+          }`}
+        >
           {items.map((item) => (
             <LeaveRequestListItem
               key={item.id}
@@ -105,14 +114,20 @@ const LeaveRequestsPage: React.FC = () => {
         </div>
       )}
 
-      {!loading && total > 0 && (
-        <LeaveRequestsPagination
-          current={filter.page}
-          pageSize={filter.pageSize}
-          total={total}
-          itemsCount={items.length}
-          onChange={setPage}
-        />
+      {total > 0 && (
+        <div
+          className={`transition-opacity duration-200 ${
+            loading ? "opacity-60 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <LeaveRequestsPagination
+            current={filter.page}
+            pageSize={filter.pageSize}
+            total={total}
+            itemsCount={items.length}
+            onChange={setPage}
+          />
+        </div>
       )}
     </div>
   );

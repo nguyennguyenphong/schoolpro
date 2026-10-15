@@ -37,6 +37,25 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
   onResetFilters,
 }) => {
   const { t } = useTranslation(["input", "card", "button"]);
+  const [prevSearchQuery, setPrevSearchQuery] = React.useState<string>(searchQuery);
+  const [localSearch, setLocalSearch] = React.useState<string>(searchQuery);
+
+  // Synchronize local search state when external searchQuery prop changes (e.g. on resetFilters)
+  if (searchQuery !== prevSearchQuery) {
+    setPrevSearchQuery(searchQuery);
+    setLocalSearch(searchQuery);
+  }
+
+  // Debounce search change by 350ms to eliminate continuous UI jitter and excessive API calls
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [localSearch, searchQuery, onSearchChange]);
 
   const statusOptions = [
     { label: t("input:leaveRequests.allStatuses"), value: "all" },
@@ -74,12 +93,12 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             name="searchQuery"
             aria-label={t("input:leaveRequests.searchPlaceholder")}
             placeholder={t("input:leaveRequests.searchPlaceholder")}
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             prefix={<Icon name="search" size={15} className="text-slate-400" />}
             allowClear
-            className="w-full"
             autoFocus
+            className="w-full"
           />
         </div>
 

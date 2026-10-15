@@ -1,5 +1,5 @@
 import { message } from "@/components/ui/Message";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import i18n from "@/i18n/i18n";
 import { useLeaveRequestRealtime } from "@/modules/students/features/leave-requests/hooks/useLeaveRequestRealtime";
@@ -64,6 +64,10 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
   const [items, setItems] = useState<LeaveRequestItem[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [summary, setSummary] = useState<LeaveRequestSummary | null>(null);
+  const summaryRef = useRef<LeaveRequestSummary | null>(null);
+  useEffect(() => {
+    summaryRef.current = summary;
+  }, [summary]);
   const [loading, setLoading] = useState<boolean>(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -172,7 +176,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
         setLoading(true);
         const [listRes, sumRes] = await Promise.all([
           leaveRequestsService.getLeaveRequests(filter),
-          leaveRequestsService.getSummary(),
+          summaryRef.current ? Promise.resolve(summaryRef.current) : leaveRequestsService.getSummary(),
         ]);
         if (!ignore) {
           setItems(listRes.items);
