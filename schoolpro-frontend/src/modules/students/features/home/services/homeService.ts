@@ -50,7 +50,12 @@ class HomeService {
       profile = updatedState.profileContext;
     }
 
-    const className = profile?.class_name ? `Lớp ${profile.class_name}` : "Lớp 10A1";
+    const rawClassName = profile?.class_name || "10A1";
+    const className = `Lớp ${rawClassName}`;
+    const homeroomTeacher =
+      (profile?.homeroom_teacher_name as string) ||
+      (profile?.homeroom_teacher as string) ||
+      "Cô Nguyễn Thị Mai Hoa";
 
     return {
       id: (profile?.student_id as string) || user?.id || "student-profile-id",
@@ -66,6 +71,9 @@ class HomeService {
       avatarUrl:
         user?.avatar_url ||
         "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+      className: rawClassName,
+      homeroomTeacher,
+      homeroomTeacherName: homeroomTeacher,
     };
   }
 

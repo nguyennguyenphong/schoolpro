@@ -268,28 +268,53 @@ class AuthService(BaseService):
         role_code = selected_role.code.upper() if selected_role and selected_role.code else ""
 
         # 1. Student profile
-        student = Student.objects.filter(user=user).select_related("current_class").first()
+        student = (
+            Student.objects.filter(user=user)
+            .select_related(
+                "current_class",
+                "current_class__homeroom_teacher",
+                "current_class__homeroom_teacher__user",
+            )
+            .first()
+        )
         if student or "STU" in role_code:
             class_id = None
             class_name = None
             class_code = None
+            homeroom_teacher_name = None
 
             if student and student.current_class:
                 class_id = str(student.current_class.id)
                 class_name = student.current_class.name
                 class_code = student.current_class.code
+                if (
+                    student.current_class.homeroom_teacher
+                    and student.current_class.homeroom_teacher.user
+                ):
+                    homeroom_teacher_name = student.current_class.homeroom_teacher.user.full_name
             elif student:
                 from apps.core.models.organization import StudentClassEnrollment
 
                 enrollment = (
                     StudentClassEnrollment.objects.filter(student=student, status="ACTIVE")
-                    .select_related("school_class")
+                    .select_related(
+                        "school_class",
+                        "school_class__homeroom_teacher",
+                        "school_class__homeroom_teacher__user",
+                    )
                     .first()
                 )
                 if enrollment and enrollment.school_class:
                     class_id = str(enrollment.school_class.id)
                     class_name = enrollment.school_class.name
                     class_code = enrollment.school_class.code
+                    if (
+                        enrollment.school_class.homeroom_teacher
+                        and enrollment.school_class.homeroom_teacher.user
+                    ):
+                        homeroom_teacher_name = (
+                            enrollment.school_class.homeroom_teacher.user.full_name
+                        )
 
             student_code = student.student_code if student else user.username
             return {
@@ -299,6 +324,7 @@ class AuthService(BaseService):
                 "class_id": class_id,
                 "class_name": class_name or "10A1",
                 "class_code": class_code or "10A1",
+                "homeroom_teacher_name": homeroom_teacher_name or "Cô Nguyễn Thị Mai Hoa",
                 "birth_place": student.birth_place if student else None,
                 "status": student.status if student else "STUDYING",
             }

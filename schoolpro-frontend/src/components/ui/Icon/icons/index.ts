@@ -74,6 +74,7 @@ import {
   Users,
   Circle,
   PrinterCheck,
+  Dot,
 } from "lucide-react";
 
 export const iconMap = {
@@ -175,4 +176,5 @@ export const iconMap = {
   users: Users,
   circle: Circle,
   print: PrinterCheck,
+  dot: Dot,
 } as const;

@@ -14,6 +14,9 @@ export const mockHomeData: HomeData = {
     currentWeek: 4,
     avatarUrl:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+    className: "10A1",
+    homeroomTeacher: "Cô Nguyễn Thị Mai Hoa",
+    homeroomTeacherName: "Cô Nguyễn Thị Mai Hoa",
   },
   features: [
     {

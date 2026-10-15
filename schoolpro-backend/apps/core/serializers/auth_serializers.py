@@ -130,6 +130,7 @@ class UserProfileContextSerializer(serializers.Serializer):
     class_id = serializers.CharField(required=False, allow_null=True)
     class_name = serializers.CharField(required=False, allow_null=True)
     class_code = serializers.CharField(required=False, allow_null=True)
+    homeroom_teacher_name = serializers.CharField(required=False, allow_null=True)
     teacher_id = serializers.CharField(required=False, allow_null=True)
     teacher_code = serializers.CharField(required=False, allow_null=True)
     department_name = serializers.CharField(required=False, allow_null=True)

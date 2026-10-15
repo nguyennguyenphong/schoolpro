@@ -12,6 +12,9 @@ export interface StudentProfile {
   currentSemester: string;
   currentWeek: number;
   avatarUrl: string;
+  className?: string;
+  homeroomTeacher?: string;
+  homeroomTeacherName?: string;
 }
 
 export type FeatureIconName = IconName | (string & {});

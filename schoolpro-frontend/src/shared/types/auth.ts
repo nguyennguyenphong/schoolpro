@@ -53,6 +53,7 @@ export interface UserProfileContext {
   class_id?: string | null;
   class_name?: string;
   class_code?: string;
+  homeroom_teacher_name?: string;
   teacher_id?: string;
   teacher_code?: string;
   department_name?: string;
