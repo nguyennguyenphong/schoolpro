@@ -24,7 +24,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
   return (
     <div
       onClick={() => onSlotClick?.(slot)}
-      className={`w-full h-full min-h-105 border rounded-xl p-3.5 flex flex-col justify-between shadow-2xs transition-all relative ${
+      className={`w-full h-full min-h-105 border rounded-xl p-3.5 sm:p-4 flex flex-col justify-between shadow-2xs transition-all relative ${
         isOnLeave
           ? "bg-amber-50/80 border-amber-200"
           : "bg-white border-[#f0f0f0]"

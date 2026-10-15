@@ -88,17 +88,17 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
       {/* 2. Desktop & Tablet Large View: 7-Column Weekly Grid Table */}
       <div className="hidden md:block bg-white border border-[#f0f0f0] rounded-xl shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1600px] border-collapse table-fixed text-left">
+          <table className="w-full min-w-[2160px] border-collapse table-fixed text-left">
             {/* Table Header: 7 Days with equal width columns */}
             <thead>
               <tr className="bg-slate-50 border-b border-[#f0f0f0]">
-                <th className="w-32 min-w-32 p-3 text-center border-r border-[#f0f0f0] text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="w-36 min-w-36 p-3 text-center border-r border-[#f0f0f0] text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   {t("card:timetable.shiftColumn")}
                 </th>
                 {weekDays.map((d) => (
                   <th
                     key={d.dayNum}
-                    className={`p-3 text-center border-r border-[#f0f0f0] last:border-r-0 transition-colors w-56 min-w-56 ${
+                    className={`p-3 text-center border-r border-[#f0f0f0] last:border-r-0 transition-colors w-72 min-w-72 ${
                       d.hasLeave
                         ? "bg-amber-50/90 text-amber-800"
                         : d.isToday
@@ -158,7 +158,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
               {SHIFTS.map((shift) => (
                 <tr key={shift.key} className="align-top">
                   {/* Shift Info Column */}
-                  <td className="p-3 border-r border-[#f0f0f0] bg-slate-50/50 text-center w-32 min-w-32 align-middle h-1">
+                  <td className="p-3 border-r border-[#f0f0f0] bg-slate-50/50 text-center w-36 min-w-36 align-middle h-1">
                     <span className="text-xs font-bold text-slate-800 block">
                       {shift.label}
                     </span>
@@ -181,7 +181,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                     return (
                       <td
                         key={d.dayNum}
-                        className={`p-2.5 border-r border-[#f0f0f0] last:border-r-0 w-56 min-w-56 align-top transition-colors h-1 ${
+                        className={`p-2.5 border-r border-[#f0f0f0] last:border-r-0 w-72 min-w-72 align-top transition-colors h-1 ${
                           isShiftOnLeave
                             ? "bg-amber-50/50"
                             : d.isToday
