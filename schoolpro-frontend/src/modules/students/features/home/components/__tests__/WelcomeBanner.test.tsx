@@ -27,7 +27,7 @@ describe("WelcomeBanner", () => {
     currentWeek: 4,
     avatarUrl: "https://example.com/avatar.jpg",
     className: "10A1",
-    homeroomTeacher: "Cô Nguyễn Thị Mai Hoa",
+    homeroomTeacher: "Trần Thị Văn",
   };
 
   it("renders student name, academic badges, and homeroom teacher", () => {
@@ -42,7 +42,7 @@ describe("WelcomeBanner", () => {
 
     // Checks homeroom teacher display and label
     expect(screen.getByText("Giáo viên chủ nhiệm")).toBeInTheDocument();
-    expect(screen.getByText("Cô Nguyễn Thị Mai Hoa")).toBeInTheDocument();
+    expect(screen.getByText("Trần Thị Văn")).toBeInTheDocument();
 
     // Checks academic badges
     expect(screen.getByText(/Học kỳ 1 • 2026 - 2027/)).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe("WelcomeBanner", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Cô Nguyễn Thị Mai Hoa")).toBeInTheDocument();
+    expect(screen.getByText("Chưa phân công")).toBeInTheDocument();
   });
 
   it("navigates to student timetable when clicking view schedule button", () => {

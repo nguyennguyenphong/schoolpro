@@ -26,7 +26,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({ profile }) => {
   const homeroomTeacher =
     profile?.homeroomTeacher ||
     profile?.homeroomTeacherName ||
-    "SchoolPro Homeroom Teacher";
+    "Chưa phân công";
 
   const todayFormatted = formatDate(
     new Date(),

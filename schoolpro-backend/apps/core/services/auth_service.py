@@ -316,6 +316,28 @@ class AuthService(BaseService):
                             enrollment.school_class.homeroom_teacher.user.full_name
                         )
 
+            # If homeroom_teacher_name is not yet resolved, query directly from SchoolClass
+            if not homeroom_teacher_name:
+                from apps.core.models.organization import SchoolClass
+
+                cls_query = SchoolClass.objects.select_related("homeroom_teacher__user")
+                cls_obj = None
+                if class_id:
+                    cls_obj = cls_query.filter(id=class_id).first()
+                elif class_name:
+                    cls_obj = cls_query.filter(name=class_name).first()
+                elif student and student.current_class_id:
+                    cls_obj = cls_query.filter(id=student.current_class_id).first()
+                else:
+                    cls_obj = cls_query.filter(name="10A1").first()
+
+                if cls_obj:
+                    class_id = class_id or str(cls_obj.id)
+                    class_name = class_name or cls_obj.name
+                    class_code = class_code or cls_obj.code
+                    if cls_obj.homeroom_teacher and cls_obj.homeroom_teacher.user:
+                        homeroom_teacher_name = cls_obj.homeroom_teacher.user.full_name
+
             student_code = student.student_code if student else user.username
             return {
                 "type": "student",
@@ -324,7 +346,7 @@ class AuthService(BaseService):
                 "class_id": class_id,
                 "class_name": class_name or "10A1",
                 "class_code": class_code or "10A1",
-                "homeroom_teacher_name": homeroom_teacher_name or "Cô Nguyễn Thị Mai Hoa",
+                "homeroom_teacher_name": homeroom_teacher_name,
                 "birth_place": student.birth_place if student else None,
                 "status": student.status if student else "STUDYING",
             }

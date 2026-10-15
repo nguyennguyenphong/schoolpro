@@ -16,7 +16,7 @@ export const HomeroomTeacherBadge: React.FC<HomeroomTeacherBadgeProps> = ({
   className = "",
 }) => {
   const { t } = useTranslation(["input"]);
-  const displayName = teacherName || "Cô Nguyễn Thị Mai Hoa";
+  const displayName = teacherName || "Chưa phân công";
 
   return (
     <div

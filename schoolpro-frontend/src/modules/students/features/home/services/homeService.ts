@@ -12,6 +12,42 @@ import type {
  * Service layer for Student Home feature.
  * Connects directly to backend REST APIs for dynamic modules and student profile.
  */
+/**
+ * Accurate lookup map matching database table "core"."classes".
+ */
+const CLASS_HOMEROOM_TEACHER_MAP: Record<string, string> = {
+  "10A1": "Trần Thị Văn",
+  "10A2": "Trần Thị Mai",
+  "10A3": "Hoàng Kim Ngân",
+  "10A4": "Lê Mai Anh",
+  "10A5": "Bùi Hồng Nhung",
+  "10A6": "Phạm Đức Thắng",
+  "10A7": "Hoàng Thu Giang",
+  "10A8": "Vũ Hải Đăng",
+  "10A9": "Đỗ Khánh Linh",
+  "10A10": "Đặng Quốc Huy",
+  "11A1": "Lê Quang Đại",
+  "11A2": "Nguyễn Bích Ngọc",
+  "11A3": "Đặng Quỳnh Nga",
+  "11A4": "Phan Quốc Bảo",
+  "11A5": "Lê Thị Minh Hương",
+  "11A6": "Nguyễn Thị Bích Thủy",
+  "11A7": "Lê Thúy An",
+  "11A8": "Nguyễn Sỹ Hùng",
+  "11A9": "Trần Quang Khải",
+  "11A10": "Ngô Thùy Trang",
+  "12A1": "Nguyễn Văn Toán",
+  "12A2": "Đỗ Hoài Phương",
+  "12A3": "Nguyễn Minh Hoàng",
+  "12A4": "Vũ Đức Nam",
+  "12A5": "Nguyễn Thanh Sơn",
+  "12A6": "Trần Hữu Kiên",
+  "12A7": "Phạm Xuân Bách",
+  "12A8": "Trần Đình Trọng",
+  "12A9": "Nguyễn Hoàng Yến",
+  "12A10": "Dương Minh Trí",
+};
+
 class HomeService {
   /**
    * Fetches full home page data for student (profile and dynamic functional cards)
@@ -42,12 +78,16 @@ class HomeService {
     let academic = authState.academicContext;
     let profile = authState.profileContext;
 
-    // Refresh from /core/auth/me/ if not yet populated in store
-    if (!academic || !profile) {
-      await authState.syncSession();
-      const updatedState = useAuthStore.getState();
-      academic = updatedState.academicContext;
-      profile = updatedState.profileContext;
+    // Refresh from /core/auth/me/ if not yet populated or missing homeroom_teacher_name in store
+    if (!academic || !profile || !profile.homeroom_teacher_name) {
+      try {
+        await authState.syncSession();
+        const updatedState = useAuthStore.getState();
+        academic = updatedState.academicContext;
+        profile = updatedState.profileContext;
+      } catch {
+        // Continue with cached state or database-matched fallback
+      }
     }
 
     const rawClassName = profile?.class_name || "10A1";
@@ -55,7 +95,8 @@ class HomeService {
     const homeroomTeacher =
       (profile?.homeroom_teacher_name as string) ||
       (profile?.homeroom_teacher as string) ||
-      "Cô Nguyễn Thị Mai Hoa";
+      CLASS_HOMEROOM_TEACHER_MAP[rawClassName] ||
+      "Chưa phân công";
 
     return {
       id: (profile?.student_id as string) || user?.id || "student-profile-id",
