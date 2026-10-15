@@ -19,78 +19,78 @@
   "deleteLeaveRequestConfirmTitle": "欠席届の削除を確認しますか？",
   "deleteLeaveRequestConfirmDesc": "未承認の欠席届は完全に削除されます。",
   "attendance": {
-    "bannerTag": "Live Attendance Portal • 100% GPS Anti-Fraud",
-    "expiredBadgeTitle": "Code Status",
-    "countdownTitle": "Time Remaining",
-    "expiredShort": "EXPIRED",
+    "bannerTag": "オンライン出席ポータル • GPS 100% 不正防止",
+    "expiredBadgeTitle": "コード状態",
+    "countdownTitle": "残り時間",
+    "expiredShort": "期限切れ",
     "tabs": {
-      "pinCode": "1. 6-Digit PIN Code",
-      "qrCode": "2. Scan QR / Upload QR"
+      "pinCode": "1. 6桁の暗証番号",
+      "qrCode": "2. QRスキャン／画像アップロード"
     },
     "pin": {
-      "title": "Enter the 6-digit attendance PIN code provided by your Teacher",
-      "subtitle": "Code is only valid while the countdown is active and you are within the allowed scan radius.",
-      "activeTeacherCodeLabel": "Active Teacher 6-Digit PIN:"
+      "title": "教員から提供された6桁の出席コードを入力してください",
+      "subtitle": "コードはカウントダウン時間内かつ許可されたスキャン半径内にいる場合のみ有効です。",
+      "activeTeacherCodeLabel": "教員が現在発行中の6桁コード:"
     },
     "qr": {
-      "cameraTab": "Live Camera Scan",
-      "uploadTab": "Upload QR Image",
-      "cameraReadyHint": "Camera detected Teacher QR Code • Ready for GPS verification",
-      "qrDecodedReady": "✓ Decoded valid QR token from uploaded image",
-      "dropzoneTitle": "Select a QR code image from your device",
-      "dropzoneHint": "Supports PNG, JPG, JPEG, WebP, SVG captured from the classroom projector"
+      "cameraTab": "カメラで直接スキャン",
+      "uploadTab": "QR画像をアップロード",
+      "cameraReadyHint": "カメラが教員のQRコードを認識しました • GPS認証の準備完了",
+      "qrDecodedReady": "✓ 画像から有効なQRデータをデコードしました",
+      "dropzoneTitle": "端末からQRコード画像を選択して出席登録",
+      "dropzoneHint": "教員のプロジェクター画面から撮影したPNG、JPG、JPEG、WebP、SVGに対応"
     },
     "gps": {
-      "title": "100% Anti-Fraud GPS Verification (Latitude & Longitude)",
-      "subtitle": "Teacher device allowed scan radius: max {{radius}}m",
-      "withinRange": "In Range",
-      "outOfRange": "Too Far - Blocked",
-      "teacherDeviceLabel": "Teacher Device Coordinates (Center)",
-      "studentDeviceLabel": "Student Device Coordinates",
-      "latShort": "Lat:",
-      "lngShort": "Lng:",
-      "testPositionLabel": "Select Student Device Position (Test Radius Geofencing):",
-      "presetInClassroom": "In Classroom (~8.5m)",
-      "presetNearCorridor": "Classroom Door / Corridor",
-      "presetOutsideSchool": "Far Outside Radius (~245m)",
-      "presetCustom": "Custom Coordinates",
-      "validTag": "Valid",
-      "blockedTag": "Anti-Cheat Blocked",
-      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!",
-      "compactValidText": "有効な位置: 教室から {{distance}}m (許可範囲 ≤ {{radius}}m)"
+      "title": "100%不正防止 GPS位置認証（緯度＆経度）",
+      "subtitle": "教員端末の許容スキャン半径: 最大 {{radius}}m",
+      "withinRange": "適正範囲内",
+      "outOfRange": "範囲外 - ブロック",
+      "teacherDeviceLabel": "教員端末座標（スキャン中心）",
+      "studentDeviceLabel": "生徒端末座標",
+      "latShort": "緯度:",
+      "lngShort": "経度:",
+      "testPositionLabel": "生徒端末の位置を選択（半径ジオフェンスのテスト用）:",
+      "presetInClassroom": "教室内 (~8.5m)",
+      "presetNearCorridor": "教室前／廊下",
+      "presetOutsideSchool": "半径外の遠方 (~245m)",
+      "presetCustom": "カスタム座標",
+      "validTag": "有効",
+      "blockedTag": "不正防止ブロック",
+      "outOfRangeWarning": "現在地までの距離（{{distance}}m）が教員の許容スキャン半径（{{radius}}m）を超えています。遠隔地からの出席登録はできません！",
+      "compactValidText": "有効な位置: 教室から {{distance}}m（許容半径 ≤ {{radius}}m）"
     },
     "success": {
-      "title": "Attendance Verified Successfully!",
-      "subtitle": "Your attendance receipt and GPS Latitude & Longitude coordinates have been recorded."
+      "title": "出席が正常に認証されました！",
+      "subtitle": "出席控えとGPS緯度・経度座標が記録されました。"
     },
     "receipt": {
-      "subject": "Subject:",
-      "checkInTime": "Recorded Time:",
+      "subject": "科目:",
+      "checkInTime": "記録時刻:",
       "justNow": "たった今",
-      "method": "Verification Method:",
-      "studentCoords": "Student GPS Coordinates:",
-      "distance": "Distance to Teacher Device:",
-      "status": "Verification Status:",
-      "verifiedText": "100% Valid • Inside Classroom Radius"
+      "method": "認証方式:",
+      "studentCoords": "生徒GPS座標:",
+      "distance": "教員端末までの距離:",
+      "status": "認証状態:",
+      "verifiedText": "100% 有効 • 教室半径内"
     },
     "expired": {
-      "title": "Attendance code has expired and is no longer valid!",
-      "description": "The time limit for the 6-digit PIN and QR code has ended. Please ask your subject teacher to issue a new code."
+      "title": "出席コードの有効期限が切れました！",
+      "description": "このコマの6桁暗証番号およびQRコードの有効時間が終了しました。新しいコードの発行については教科担当教員にお問い合わせください。"
     },
     "teacherConfig": {
-      "title": "Configure Attendance Session & GPS Scan Radius (Teacher)",
-      "subtitle": "Generate 6-digit PIN, QR code, set allowed scan radius and expiration time in real time",
-      "qrPreviewTitle": "Session QR Code",
-      "qrPreviewHint": "Synced in real time to Student screens",
-      "gpsSectionTitle": "Teacher Scanning Device Latitude & Longitude"
+      "title": "出席セッション＆GPSスキャン半径の設定（教員）",
+      "subtitle": "6桁コード、QRコードの生成、スキャン半径と有効期限をリアルタイムで設定",
+      "qrPreviewTitle": "出席セッション用QRコード",
+      "qrPreviewHint": "生徒の画面へリアルタイムで自動同期されます",
+      "gpsSectionTitle": "教員スキャン端末の緯度＆経度座標"
     },
     "detail": {
-      "title": "出席詳細",
-      "verifiedBannerTitle": "Verified On-Time & 100% Within Classroom Radius",
-      "verifiedBannerDesc": "Attendance record and GPS Latitude & Longitude are stored against fraud.",
-      "timeSlotLabel": "Class Time:",
-      "gpsProofTitle": "GPS Coordinate Verification Data (Anti-Fraud)",
-      "withinRadiusTag": "Within Radius",
+      "title": "科目出席詳細",
+      "verifiedBannerTitle": "時間内かつ教室半径内100%で確認済み",
+      "verifiedBannerDesc": "出席データとGPS緯度・経度座標が不正防止のため安全に保存されています。",
+      "timeSlotLabel": "授業時間帯:",
+      "gpsProofTitle": "GPS座標照合データ（不正防止）",
+      "withinRadiusTag": "適正半径内",
       "validDistanceBadge": "有効 ({{distance}}m / {{radius}}m)",
       "onTime": "定刻"
     }

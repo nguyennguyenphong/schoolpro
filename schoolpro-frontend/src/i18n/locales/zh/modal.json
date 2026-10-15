@@ -19,79 +19,79 @@
   "deleteLeaveRequestConfirmTitle": "确认删除请假申请？",
   "deleteLeaveRequestConfirmDesc": "此待审批的请假申请将被永久删除。",
   "attendance": {
-    "bannerTag": "Live Attendance Portal • 100% GPS Anti-Fraud",
-    "expiredBadgeTitle": "Code Status",
-    "countdownTitle": "Time Remaining",
-    "expiredShort": "EXPIRED",
+    "bannerTag": "在线考勤系统 • 100% GPS 防作弊",
+    "expiredBadgeTitle": "代码状态",
+    "countdownTitle": "剩余时间",
+    "expiredShort": "已过期",
     "tabs": {
-      "pinCode": "1. 6-Digit PIN Code",
-      "qrCode": "2. Scan QR / Upload QR"
+      "pinCode": "1. 6 位数 PIN 码",
+      "qrCode": "2. 扫码 / 上传二维码"
     },
     "pin": {
-      "title": "Enter the 6-digit attendance PIN code provided by your Teacher",
-      "subtitle": "Code is only valid while the countdown is active and you are within the allowed scan radius.",
-      "activeTeacherCodeLabel": "Active Teacher 6-Digit PIN:"
+      "title": "请输入任课教师提供的 6 位数签到代码",
+      "subtitle": "代码仅在倒计时时间内且处于允许的扫描半径范围内时有效。",
+      "activeTeacherCodeLabel": "教师当前开放的 6 位数代码:"
     },
     "qr": {
-      "cameraTab": "Live Camera Scan",
-      "uploadTab": "Upload QR Image",
-      "cameraReadyHint": "Camera detected Teacher QR Code • Ready for GPS verification",
-      "qrDecodedReady": "✓ Decoded valid QR token from uploaded image",
-      "dropzoneTitle": "Select a QR code image from your device",
-      "dropzoneHint": "Supports PNG, JPG, JPEG, WebP, SVG captured from the classroom projector"
+      "cameraTab": "直接使用相机扫描",
+      "uploadTab": "上传二维码图片",
+      "cameraReadyHint": "相机已识别到教师二维码 • 准备进行 GPS 验证",
+      "qrDecodedReady": "✓ 已成功解析图片中的有效二维码数据",
+      "dropzoneTitle": "从设备中选择签到二维码图片",
+      "dropzoneHint": "支持从教师投影仪屏幕拍摄的 PNG、JPG、JPEG、WebP、SVG 图片"
     },
     "gps": {
-      "title": "100% Anti-Fraud GPS Verification (Latitude & Longitude)",
-      "subtitle": "Teacher device allowed scan radius: max {{radius}}m",
-      "withinRange": "In Range",
-      "outOfRange": "Too Far - Blocked",
-      "teacherDeviceLabel": "Teacher Device Coordinates (Center)",
-      "studentDeviceLabel": "Student Device Coordinates",
-      "latShort": "Lat:",
-      "lngShort": "Lng:",
-      "testPositionLabel": "Select Student Device Position (Test Radius Geofencing):",
-      "presetInClassroom": "In Classroom (~8.5m)",
-      "presetNearCorridor": "Classroom Door / Corridor",
-      "presetOutsideSchool": "Far Outside Radius (~245m)",
-      "presetCustom": "Custom Coordinates",
-      "validTag": "Valid",
-      "blockedTag": "Anti-Cheat Blocked",
-      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!",
-      "compactValidText": "位置有效：距教室 {{distance}}m（允许半径 ≤ {{radius}}m）"
+      "title": "100% 防作弊 GPS 位置验证（经度与纬度）",
+      "subtitle": "教师设备允许扫描半径：最大 {{radius}} 米",
+      "withinRange": "符合范围",
+      "outOfRange": "超出范围 - 已拦截",
+      "teacherDeviceLabel": "教师设备坐标（扫描中心）",
+      "studentDeviceLabel": "学生设备坐标",
+      "latShort": "纬度:",
+      "lngShort": "经度:",
+      "testPositionLabel": "选择学生设备位置（用于测试半径范围拦截）：",
+      "presetInClassroom": "教室内 (~8.5米)",
+      "presetNearCorridor": "教室门前 / 走廊",
+      "presetOutsideSchool": "超出半径较远位置 (~245米)",
+      "presetCustom": "自定义坐标",
+      "validTag": "有效",
+      "blockedTag": "拦截作弊",
+      "outOfRangeWarning": "当前距离（{{distance}}米）超过了教师允许的扫描半径（{{radius}}米）。无法进行远程异地签到！",
+      "compactValidText": "位置有效：距教室 {{distance}} 米（允许半径 ≤ {{radius}}米）"
     },
     "success": {
-      "title": "Attendance Verified Successfully!",
-      "subtitle": "Your attendance receipt and GPS Latitude & Longitude coordinates have been recorded."
+      "title": "已成功验证考勤签到！",
+      "subtitle": "系统已保存考勤记录凭证及您的 GPS 经纬度坐标。"
     },
     "receipt": {
-      "subject": "Subject:",
-      "checkInTime": "Recorded Time:",
+      "subject": "课程:",
+      "checkInTime": "记录时间:",
       "justNow": "刚刚",
-      "method": "Verification Method:",
-      "studentCoords": "Student GPS Coordinates:",
-      "distance": "Distance to Teacher Device:",
-      "status": "Verification Status:",
-      "verifiedText": "100% Valid • Inside Classroom Radius"
+      "method": "验证方式:",
+      "studentCoords": "学生 GPS 坐标:",
+      "distance": "距离教师设备:",
+      "status": "验证状态:",
+      "verifiedText": "100% 有效 • 处于教室半径范围内"
     },
     "expired": {
-      "title": "Attendance code has expired and is no longer valid!",
-      "description": "The time limit for the 6-digit PIN and QR code has ended. Please ask your subject teacher to issue a new code."
+      "title": "签到代码已过期，无法继续使用！",
+      "description": "本节课的 6 位数代码与二维码有效时间已结束。请联系任课教师重新开放代码。"
     },
     "teacherConfig": {
-      "title": "Configure Attendance Session & GPS Scan Radius (Teacher)",
-      "subtitle": "Generate 6-digit PIN, QR code, set allowed scan radius and expiration time in real time",
-      "qrPreviewTitle": "Session QR Code",
-      "qrPreviewHint": "Synced in real time to Student screens",
-      "gpsSectionTitle": "Teacher Scanning Device Latitude & Longitude"
+      "title": "设置考勤会话与 GPS 扫描半径（教师）",
+      "subtitle": "生成 6 位数代码与二维码，实时设置允许的扫描半径和有效时间",
+      "qrPreviewTitle": "签到会话二维码",
+      "qrPreviewHint": "自动实时同步至学生屏幕",
+      "gpsSectionTitle": "教师扫描设备的经度与纬度坐标"
     },
     "detail": {
-      "title": "签到详情",
-      "verifiedBannerTitle": "Verified On-Time & 100% Within Classroom Radius",
-      "verifiedBannerDesc": "Attendance record and GPS Latitude & Longitude are stored against fraud.",
-      "timeSlotLabel": "Class Time:",
-      "gpsProofTitle": "GPS Coordinate Verification Data (Anti-Fraud)",
-      "withinRadiusTag": "Within Radius",
-      "validDistanceBadge": "有效 ({{distance}}m / {{radius}}m)",
+      "title": "课程考勤详情",
+      "verifiedBannerTitle": "已验证准时出勤且 100% 处于教室半径范围内",
+      "verifiedBannerDesc": "出勤数据及 GPS 经纬度坐标已存档以防作弊。",
+      "timeSlotLabel": "授课时间段:",
+      "gpsProofTitle": "GPS 坐标核对凭证数据（防作弊）",
+      "withinRadiusTag": "符合半径要求",
+      "validDistanceBadge": "有效 ({{distance}}米 / {{radius}}米)",
       "onTime": "准时"
     }
   }

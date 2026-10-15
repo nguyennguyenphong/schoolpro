@@ -39,7 +39,7 @@
     "changePassword": "주기적인 비밀번호 변경으로 계정 보안을 철저히 유지하세요",
     "leaveRequests": "온라인 결석계를 작성하고 증빙 서류를 첨부하여 담임 교사의 승인 현황을 확인합니다",
     "leaveRequestForm": "결석 기간, 해당 수업 과목 및 보호자 확인 정보를 입력하여 담임 교사에게 승인을 요청합니다",
-    "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius."
+    "attendance": "교사 기기의 스캔 반경 내 GPS 위도·경도 인증과 6자리 PIN 코드 또는 QR 스캔/이미지 업로드를 결합한 100% 부정 방지 온라인 출석 시스템."
   },
   "welcome": "안녕하세요, {{name}}님! 활기찬 하루 되세요.",
   "welcomeUser": "안녕하세요, {{name}}님!",

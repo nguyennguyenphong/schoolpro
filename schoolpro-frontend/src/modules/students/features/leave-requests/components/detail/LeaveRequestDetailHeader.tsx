@@ -93,11 +93,6 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
                 {formatDateTimeDisplay(item.createdAt)}
               </strong>
             </span>
-            <span>•</span>
-            <span>
-              {t("card:leaveRequests.detail.classPrefix")}{" "}
-              <strong className="text-slate-700">{item.className}</strong>
-            </span>
           </div>
         </div>
 

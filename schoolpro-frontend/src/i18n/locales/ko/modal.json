@@ -19,78 +19,78 @@
   "deleteLeaveRequestConfirmTitle": "결석계를 삭제하시겠습니까?",
   "deleteLeaveRequestConfirmDesc": "미승인 상태의 이 결석계는 영구적으로 삭제됩니다.",
   "attendance": {
-    "bannerTag": "Live Attendance Portal • 100% GPS Anti-Fraud",
-    "expiredBadgeTitle": "Code Status",
-    "countdownTitle": "Time Remaining",
-    "expiredShort": "EXPIRED",
+    "bannerTag": "온라인 출석 포털 • 100% GPS 부정 방지",
+    "expiredBadgeTitle": "코드 상태",
+    "countdownTitle": "남은 시간",
+    "expiredShort": "만료됨",
     "tabs": {
-      "pinCode": "1. 6-Digit PIN Code",
-      "qrCode": "2. Scan QR / Upload QR"
+      "pinCode": "1. 6자리 PIN 코드",
+      "qrCode": "2. QR 스캔 / 이미지 업로드"
     },
     "pin": {
-      "title": "Enter the 6-digit attendance PIN code provided by your Teacher",
-      "subtitle": "Code is only valid while the countdown is active and you are within the allowed scan radius.",
-      "activeTeacherCodeLabel": "Active Teacher 6-Digit PIN:"
+      "title": "교사가 제공한 6자리 출석 코드를 입력하세요",
+      "subtitle": "코드는 카운트다운 시간 내에 교실 스캔 반경 내에 있을 때만 유효합니다.",
+      "activeTeacherCodeLabel": "교사가 현재 오픈 중인 6자리 코드:"
     },
     "qr": {
-      "cameraTab": "Live Camera Scan",
-      "uploadTab": "Upload QR Image",
-      "cameraReadyHint": "Camera detected Teacher QR Code • Ready for GPS verification",
-      "qrDecodedReady": "✓ Decoded valid QR token from uploaded image",
-      "dropzoneTitle": "Select a QR code image from your device",
-      "dropzoneHint": "Supports PNG, JPG, JPEG, WebP, SVG captured from the classroom projector"
+      "cameraTab": "카메라로 직접 스캔",
+      "uploadTab": "QR 이미지 업로드",
+      "cameraReadyHint": "카메라가 교사의 QR 코드를 인식했습니다 • GPS 인증 준비 완료",
+      "qrDecodedReady": "✓ 이미지에서 유효한 QR 데이터를 디코딩했습니다",
+      "dropzoneTitle": "기기에서 QR 코드 이미지를 선택하여 출석",
+      "dropzoneHint": "교사의 프로젝터 화면을 촬영한 PNG, JPG, JPEG, WebP, SVG 지원"
     },
     "gps": {
-      "title": "100% Anti-Fraud GPS Verification (Latitude & Longitude)",
-      "subtitle": "Teacher device allowed scan radius: max {{radius}}m",
-      "withinRange": "In Range",
-      "outOfRange": "Too Far - Blocked",
-      "teacherDeviceLabel": "Teacher Device Coordinates (Center)",
-      "studentDeviceLabel": "Student Device Coordinates",
-      "latShort": "Lat:",
-      "lngShort": "Lng:",
-      "testPositionLabel": "Select Student Device Position (Test Radius Geofencing):",
-      "presetInClassroom": "In Classroom (~8.5m)",
-      "presetNearCorridor": "Classroom Door / Corridor",
-      "presetOutsideSchool": "Far Outside Radius (~245m)",
-      "presetCustom": "Custom Coordinates",
-      "validTag": "Valid",
-      "blockedTag": "Anti-Cheat Blocked",
-      "outOfRangeWarning": "Current distance ({{distance}}m) exceeds the Teacher's allowed scan radius ({{radius}}m). Remote check-in is blocked!",
-      "compactValidText": "유효한 위치: 교실에서 {{distance}}m (허용 반경 ≤ {{radius}}m)"
+      "title": "100% 부정 방지 GPS 위치 인증 (위도 및 경도)",
+      "subtitle": "교사 기기 허용 스캔 반경: 최대 {{radius}}m",
+      "withinRange": "범위 내 적합",
+      "outOfRange": "범위 초과 - 차단됨",
+      "teacherDeviceLabel": "교사 기기 좌표 (중심점)",
+      "studentDeviceLabel": "학생 기기 좌표",
+      "latShort": "위도:",
+      "lngShort": "경도:",
+      "testPositionLabel": "학생 기기 위치 선택 (반경 테스트용):",
+      "presetInClassroom": "교실 내부 (~8.5m)",
+      "presetNearCorridor": "교실 앞 / 복도",
+      "presetOutsideSchool": "반경 밖 원거리 (~245m)",
+      "presetCustom": "사용자 지정 좌표",
+      "validTag": "유효",
+      "blockedTag": "부정 방지 차단",
+      "outOfRangeWarning": "현재 거리({{distance}}m)가 교사의 허용 스캔 반경({{radius}}m)을 초과했습니다. 원격 출석은 불가능합니다!",
+      "compactValidText": "유효한 위치: 교실로부터 {{distance}}m (허용 반경 ≤ {{radius}}m)"
     },
     "success": {
-      "title": "Attendance Verified Successfully!",
-      "subtitle": "Your attendance receipt and GPS Latitude & Longitude coordinates have been recorded."
+      "title": "정상적으로 출석 인증되었습니다!",
+      "subtitle": "출석 확인서와 GPS 위도·경도 좌표가 기록되었습니다."
     },
     "receipt": {
-      "subject": "Subject:",
-      "checkInTime": "Recorded Time:",
-      "justNow": "방금",
-      "method": "Verification Method:",
-      "studentCoords": "Student GPS Coordinates:",
-      "distance": "Distance to Teacher Device:",
-      "status": "Verification Status:",
-      "verifiedText": "100% Valid • Inside Classroom Radius"
+      "subject": "과목:",
+      "checkInTime": "기록 시각:",
+      "justNow": "방금 전",
+      "method": "인증 방식:",
+      "studentCoords": "학생 GPS 좌표:",
+      "distance": "교사 기기까지의 거리:",
+      "status": "인증 상태:",
+      "verifiedText": "100% 유효 • 교실 반경 내"
     },
     "expired": {
-      "title": "Attendance code has expired and is no longer valid!",
-      "description": "The time limit for the 6-digit PIN and QR code has ended. Please ask your subject teacher to issue a new code."
+      "title": "출석 코드가 만료되어 더 이상 유효하지 않습니다!",
+      "description": "해당 교시의 6자리 코드 및 QR 코드 유효 시간이 종료되었습니다. 새 코드 발급은 교과 교사에게 문의하세요."
     },
     "teacherConfig": {
-      "title": "Configure Attendance Session & GPS Scan Radius (Teacher)",
-      "subtitle": "Generate 6-digit PIN, QR code, set allowed scan radius and expiration time in real time",
-      "qrPreviewTitle": "Session QR Code",
-      "qrPreviewHint": "Synced in real time to Student screens",
-      "gpsSectionTitle": "Teacher Scanning Device Latitude & Longitude"
+      "title": "출석 세션 및 GPS 스캔 반경 설정 (교사)",
+      "subtitle": "6자리 코드, QR 코드 생성, 스캔 반경 및 유효 시간을 실시간으로 설정",
+      "qrPreviewTitle": "출석 세션 QR 코드",
+      "qrPreviewHint": "학생 화면에 실시간으로 자동 동기화됩니다",
+      "gpsSectionTitle": "교사 스캔 기기 위도 및 경도 좌표"
     },
     "detail": {
-      "title": "출석 상세 정보",
-      "verifiedBannerTitle": "Verified On-Time & 100% Within Classroom Radius",
-      "verifiedBannerDesc": "Attendance record and GPS Latitude & Longitude are stored against fraud.",
-      "timeSlotLabel": "Class Time:",
-      "gpsProofTitle": "GPS Coordinate Verification Data (Anti-Fraud)",
-      "withinRadiusTag": "Within Radius",
+      "title": "과목 출석 상세",
+      "verifiedBannerTitle": "정시 출석 및 교실 반경 100% 이내 확인 완료",
+      "verifiedBannerDesc": "출결 데이터와 GPS 위도·경도 좌표가 부정 방지를 위해 저장되었습니다.",
+      "timeSlotLabel": "수업 시간대:",
+      "gpsProofTitle": "GPS 좌표 대조 데이터 (부정 방지)",
+      "withinRadiusTag": "반경 내 적합",
       "validDistanceBadge": "유효 ({{distance}}m / {{radius}}m)",
       "onTime": "정시"
     }

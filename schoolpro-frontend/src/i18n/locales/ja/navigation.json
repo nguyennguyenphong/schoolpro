@@ -39,7 +39,7 @@
     "changePassword": "定期的なパスワード変更によりアカウントのセキュリティを高めましょう",
     "leaveRequests": "オンラインで欠席届を作成し、証明書類を添付して担任教員の承認状況を確認できます",
     "leaveRequestForm": "欠席期間、対象授業、保護者確認情報を入力して担任教員に承認を申請します",
-    "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius."
+    "attendance": "教員の端末スキャン半径内のGPS緯度・経度認証と、6桁の暗証番号またはQRスキャン／画像アップロードを組み合わせた100%不正防止のオンライン出席登録。"
   },
   "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
   "welcomeUser": "こんにちは、{{name}}さん！",
