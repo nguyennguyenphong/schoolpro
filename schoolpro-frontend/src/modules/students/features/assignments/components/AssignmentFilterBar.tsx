@@ -181,7 +181,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -193,7 +193,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -217,7 +217,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
               {t("card:assignments.filters.subject")}
             </label>
             <SelectSubject
-              className="w-44 sm:w-52"
+              className="w-40 sm:w-40"
               id="assignment-filter-subject"
               includeAllOption
               allOptionLabel={t("card:assignments.filters.allSubjects")}
@@ -226,7 +226,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             />
           </div>
 
-          {/* Trạng thái */}
+          {/* Status */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="assignment-filter-status"
@@ -239,11 +239,11 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
               value={status}
               onChange={onStatusChange}
               options={statusOptions}
-              className="w-36 sm:w-44"
+              className="w-36 sm:w-38"
             />
           </div>
 
-          {/* Hình thức bài tập */}
+          {/* Type of assignment */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="assignment-filter-type"
@@ -260,7 +260,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             />
           </div>
 
-          {/* Sắp xếp */}
+          {/* Sort */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="assignment-filter-sort"
@@ -273,7 +273,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
               value={sortBy || "newest"}
               onChange={onSortByChange}
               options={sortOptions}
-              className="w-40 sm:w-44"
+              className="w-40 sm:w-38"
             />
           </div>
         </div>
