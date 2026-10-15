@@ -86,7 +86,7 @@ export const AttendanceDropdownFilters: React.FC<
           <button
             type="button"
             onClick={onTodayClick}
-            className={`px-2.5 h-7 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+            className={`px-2.5 h-7 rounded-md text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
               isToday
                 ? "bg-blue-600 text-white shadow-2xs"
                 : "text-slate-700 hover:bg-white"
