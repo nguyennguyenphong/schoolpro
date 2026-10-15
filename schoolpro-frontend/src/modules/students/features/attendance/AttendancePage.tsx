@@ -80,7 +80,6 @@ export const AttendancePage: React.FC = () => {
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Page Header with integrated Breadcrumb & Leave Requests Link */}
       <AttendancePageHeader
-        summary={summary}
         isRealtimeConnected={isRealtimeConnected}
       />
 

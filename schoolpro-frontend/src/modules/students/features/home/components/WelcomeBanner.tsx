@@ -14,8 +14,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
 }) => {
   const { t, i18n } = useTranslation(["navigation", "button", "common"]);
 
-  const studentName = profile?.fullName || "Nguyễn Văn An";
-  const currentWeek = profile?.currentWeek || 1;
+  const studentName = profile?.fullName || "SchoolPro Student";
   const major = profile?.major;
 
   const todayFormatted = formatDate(
@@ -42,9 +41,6 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-md border border-white/30">
               {profile?.currentSemester || t("navigation:currentSemester")} •{" "}
               {profile?.academicYear || t("navigation:academicYear")}
-            </span>
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/25 text-emerald-100 backdrop-blur-md border border-emerald-400/40">
-              {t("navigation:currentWeek", { week: currentWeek })}
             </span>
             {major && (
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md border border-white/20 hidden sm:inline-block">

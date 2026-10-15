@@ -3,17 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { LeaveRequestSummary } from "@/modules/students/features/leave-requests/types";
 
 interface LeaveRequestsPageHeaderProps {
-  summary: LeaveRequestSummary | null;
-  loading: boolean;
   onCreateClick: () => void;
 }
 
 export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = ({
-  summary,
-  loading,
   onCreateClick,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button"]);
@@ -49,21 +44,6 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {t("navigation:pageTitle.leaveRequests")}
             </h1>
-            {summary?.className ? (
-              <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-                {t("card:leaveRequests.header.classBadge", { className: summary.className })}
-              </span>
-            ) : loading ? (
-              <span className="inline-block w-16 h-5 bg-slate-100 rounded-full animate-pulse" />
-            ) : null}
-            {summary?.semesterName ? (
-              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
-                {summary.semesterName}
-                {summary.academicYear ? ` • ${summary.academicYear}` : ""}
-              </span>
-            ) : loading ? (
-              <span className="inline-block w-28 h-5 bg-slate-100 rounded-full animate-pulse" />
-            ) : null}
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             {t("navigation:pageSubtitle.leaveRequests")}
@@ -71,21 +51,6 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {summary?.homeroomTeacherName ? (
-            <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
-              <Icon name="userCheck" size={14} className="text-blue-600 shrink-0" />
-              <span className="text-slate-500">
-                {t("card:leaveRequests.header.homeroomTeacherPrefix")}{" "}
-                <strong className="text-slate-800">{summary.homeroomTeacherName}</strong>
-              </span>
-            </div>
-          ) : loading ? (
-            <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] h-8 animate-pulse">
-              <span className="w-3.5 h-3.5 rounded-full bg-slate-200 shrink-0" />
-              <span className="w-36 h-3.5 rounded bg-slate-200" />
-            </div>
-          ) : null}
-
           <Button
             variant="primary"
             onClick={onCreateClick}

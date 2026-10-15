@@ -3,10 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { AttendanceSummary } from "@/modules/students/features/attendance/types";
 
 interface AttendancePageHeaderProps {
-  summary: AttendanceSummary | null;
   isRealtimeConnected: boolean;
 }
 
@@ -14,7 +12,6 @@ interface AttendancePageHeaderProps {
  * Clean Student Attendance Page Header with direct link to Leave Requests.
  */
 export const AttendancePageHeader: React.FC<AttendancePageHeaderProps> = ({
-  summary,
   isRealtimeConnected,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button"]);
@@ -58,15 +55,6 @@ export const AttendancePageHeader: React.FC<AttendancePageHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {t("navigation:pageTitle.attendance")}
             </h1>
-
-            {summary?.className && (
-              <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-                {t("card:attendance.header.classBadge", {
-                  className: summary.className,
-                })}
-              </span>
-            )}
-
             <span
               className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                 isRealtimeConnected

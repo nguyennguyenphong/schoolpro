@@ -66,7 +66,7 @@ export const AssignmentsPage: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">
       {/* 1. Page Header with integrated Breadcrumb */}
-      <AssignmentsPageHeader summary={summary} loading={loading && !summary} />
+      <AssignmentsPageHeader />
 
       {/* 2. Overview Summary Cards (always rendered at position 2 to prevent CLS) */}
       <AssignmentSummaryCards summary={summary} loading={loading && !summary} />

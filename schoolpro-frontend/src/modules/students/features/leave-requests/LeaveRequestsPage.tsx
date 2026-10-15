@@ -47,8 +47,6 @@ const LeaveRequestsPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 pb-6">
       <LeaveRequestsPageHeader
-        summary={summary}
-        loading={loading}
         onCreateClick={handleOpenCreatePage}
       />
 
