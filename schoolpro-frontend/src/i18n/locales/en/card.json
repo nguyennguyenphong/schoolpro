@@ -875,8 +875,27 @@
       "unansweredCount": "Unanswered:",
       "warning": "After submission, you will not be able to edit your answers. The system will automatically grade and record the result.",
       "unansweredWarning": "You still have {{count}} unanswered questions!",
+      "allAnsweredNotice": "You have answered all questions!",
+      "missingQuestionsTitle": "Incomplete questions:",
+      "clickToJump": "Click on a question to jump to it:",
       "confirmButton": "Confirm Submission",
       "confirmButtonUnfinished": "Submit Anyway"
+    },
+    "exitModal": {
+      "title": "Warning: Leaving the Exam",
+      "warningText": "You are currently taking the exam. If you leave or close the browser, the system will automatically submit your current answers!",
+      "unansweredNotice": "You currently have {{unanswered}} unanswered questions out of {{total}}.",
+      "confirmExitAndSubmit": "Submit & Exit",
+      "stayAndContinue": "Continue Exam"
+    },
+    "scoreRelease": {
+      "immediateBadge": "Released Immediately",
+      "hiddenBadge": "Score Hidden",
+      "hiddenNotice": "The teacher has hidden the score for this exam.",
+      "scheduledBadge": "Scheduled: {{date}}",
+      "scheduledNotice": "Exam score will be published on {{date}}.",
+      "unreleasedScore": "Pending Release",
+      "hiddenScore": "Hidden Score"
     },
     "messages": {
       "listLoadError": "Unable to load the list of exams.",

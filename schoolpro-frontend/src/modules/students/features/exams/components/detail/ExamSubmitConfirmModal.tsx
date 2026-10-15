@@ -1,14 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Modal } from "antd";
+import { Modal, Tag } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+
+interface UnansweredQuestionItem {
+  id: string;
+  title: string;
+  questionNumber: number;
+}
 
 interface ExamSubmitConfirmModalProps {
   open: boolean;
   examTitle: string;
   totalQuestions: number;
   answeredCount: number;
+  unansweredQuestions?: UnansweredQuestionItem[];
+  onJumpToQuestion?: (questionId: string) => void;
   submitting: boolean;
   onCancel: () => void;
   onConfirm: () => void;
@@ -19,18 +27,24 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
   examTitle,
   totalQuestions,
   answeredCount,
+  unansweredQuestions = [],
+  onJumpToQuestion,
   submitting,
   onCancel,
   onConfirm,
 }) => {
   const { t } = useTranslation(["card", "button"]);
-  const isAllAnswered = answeredCount >= totalQuestions;
+  const isAllAnswered = unansweredQuestions.length === 0;
 
   return (
     <Modal
       title={
         <div className="flex items-center gap-2 text-base font-bold text-slate-900">
-          <Icon name="checkCircle" size={18} className="text-blue-600" />
+          <Icon
+            name={isAllAnswered ? "checkCircle" : "warning"}
+            size={18}
+            className={isAllAnswered ? "text-emerald-600" : "text-amber-500"}
+          />
           <span>{t("card:exams.submitModal.title")}</span>
         </div>
       }
@@ -44,14 +58,16 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
           disabled={submitting}
           className="text-xs font-semibold"
         >
-          {t("button:cancel")}
+          {isAllAnswered ? t("button:cancel") : t("card:exams.exitModal.stayAndContinue")}
         </Button>,
         <Button
           key="submit"
           variant="primary"
           onClick={onConfirm}
           loading={submitting}
-          className="text-xs font-semibold"
+          className={`text-xs font-semibold ${
+            !isAllAnswered ? "!bg-amber-600 hover:!bg-amber-700 !border-amber-600" : ""
+          }`}
         >
           {isAllAnswered
             ? t("card:exams.submitModal.confirmButton")
@@ -73,27 +89,61 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
               size={16}
               className={isAllAnswered ? "text-emerald-600" : "text-amber-500"}
             />
-            <span className="font-semibold text-slate-700">{t("card:exams.sidebar.progress")}:</span>
+            <span className="font-semibold text-slate-700">
+              {t("card:exams.sidebar.progress")}:
+            </span>
           </div>
           <span className="font-extrabold text-slate-900">
             {answeredCount} / {totalQuestions}
           </span>
         </div>
 
-        {/* Warning / Notes Banner */}
-        <div className="bg-blue-50/70 border border-blue-200/80 rounded-xl p-3.5 text-xs text-blue-900 space-y-1.5">
-          <div className="font-bold flex items-center gap-1.5 text-blue-800">
-            <Icon name="info" size={13} />
-            <span>{t("card:exams.detail.notesTitle")}</span>
+        {/* If incomplete: Display missing question tags with jump links */}
+        {!isAllAnswered && (
+          <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-2">
+            <div className="font-bold flex items-center gap-1.5 text-amber-800">
+              <Icon name="warning" size={14} />
+              <span>
+                {t("card:exams.submitModal.unansweredWarning", {
+                  count: unansweredQuestions.length,
+                })}
+              </span>
+            </div>
+            <p className="text-[11px] text-amber-700 mb-1">
+              {t("card:exams.submitModal.clickToJump")}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {unansweredQuestions.map((q) => (
+                <Tag
+                  key={q.id}
+                  color="orange"
+                  className="cursor-pointer hover:opacity-80 px-2.5 py-0.5 rounded-lg font-bold text-xs"
+                  onClick={() => {
+                    onJumpToQuestion?.(q.id);
+                    onCancel();
+                  }}
+                  title={q.title}
+                >
+                  {t("card:exams.question.number", { index: q.questionNumber })}
+                </Tag>
+              ))}
+            </div>
           </div>
-          <ul className="list-disc list-inside space-y-1 text-slate-600 pl-0.5">
-            <li>{t("card:exams.submitModal.warning")}</li>
-            {!isAllAnswered && (
-              <li className="text-amber-700 font-semibold">
-                {t("card:exams.submitModal.unansweredWarning", { count: totalQuestions - answeredCount })}
-              </li>
-            )}
-          </ul>
+        )}
+
+        {/* If completely answered: show green success notice */}
+        {isAllAnswered && (
+          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 font-medium">
+            <Icon name="checkCircle" size={16} className="text-emerald-600 shrink-0" />
+            <span>{t("card:exams.submitModal.allAnsweredNotice")}</span>
+          </div>
+        )}
+
+        {/* Warning / Notes Banner */}
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-600">
+          <p className="mb-0 text-[11px] leading-relaxed">
+            {t("card:exams.submitModal.warning")}
+          </p>
         </div>
       </div>
     </Modal>

@@ -73,11 +73,12 @@ class ExamsService {
    */
   async submitExam(
     examId: string,
-    answers: Record<string, number | string | string[] | boolean>
-  ): Promise<{ success: boolean; score: number; message: string }> {
-    const res = await httpClient.post<ApiResponse<{ score: number; message: string }>>(
+    answers: Record<string, number | string | string[] | boolean>,
+    allowIncomplete = false
+  ): Promise<{ success: boolean; score?: number; message: string }> {
+    const res = await httpClient.post<ApiResponse<{ score?: number; message: string }>>(
       `/academic/exams/${examId}/submit/`,
-      { answers }
+      { answers, allowIncomplete }
     );
     if (res.data?.data) {
       return {

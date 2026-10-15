@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { message } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
   ExamDetailHeader,
   ExamDetailSkeleton,
   ExamSubmitConfirmModal,
+  ExamExitConfirmModal,
 } from "@/modules/students/features/exams/components/detail";
 import {
   ExamHeaderCard,
@@ -15,6 +15,7 @@ import {
   ExamTimerSidebar,
 } from "@/modules/students/features/exams/components/test-form";
 import { useExamDetail } from "@/modules/students/features/exams/hooks";
+import { isScoreReleased } from "@/modules/students/features/exams/utils";
 
 export const ExamDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,15 +29,68 @@ export const ExamDetailPage: React.FC = () => {
     answers,
     timeLeft,
     isReadOnly,
+    isCompleted,
     answeredCount,
+    unansweredQuestions,
     handleAnswerChange,
     isQuestionAnswered,
-    validateRequired,
     executeSubmit,
   } = useExamDetail(id);
 
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  const [exitModalOpen, setExitModalOpen] = useState(false);
   const [_activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
+
+  const canNavigateAway = isReadOnly || isCompleted;
+
+  // 1. Browser tab / window close guard (beforeunload)
+  useEffect(() => {
+    if (canNavigateAway || !exam) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [canNavigateAway, exam]);
+
+  // 2. Browser back button trap (popstate)
+  useEffect(() => {
+    if (canNavigateAway || !exam) return;
+
+    window.history.pushState(null, "", window.location.href);
+
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      window.history.pushState(null, "", window.location.href);
+      setExitModalOpen(true);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [canNavigateAway, exam]);
+
+  // Handle header back action
+  const handleBackRequest = () => {
+    if (!canNavigateAway) {
+      setExitModalOpen(true);
+    } else {
+      navigate("/student/exams");
+    }
+  };
+
+  // Exit and auto-submit current progress
+  const handleConfirmExit = async () => {
+    await executeSubmit({ allowIncomplete: true });
+    setExitModalOpen(false);
+    navigate("/student/exams");
+  };
 
   // Scroll smoothly to selected question
   const handleScrollToQuestion = (qId: string) => {
@@ -45,21 +99,17 @@ export const ExamDetailPage: React.FC = () => {
     elem?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  // Validation before opening submit confirm modal
+  // Open submit confirmation dialog
   const handlePreSubmit = () => {
-    const { valid, unansweredQuestion } = validateRequired();
-    if (!valid && unansweredQuestion) {
-      message.warning(t("card:exams.messages.requiredWarning", { title: unansweredQuestion.title }));
-      handleScrollToQuestion(unansweredQuestion.id);
-      return;
-    }
-    setConfirmModalOpen(true);
+    setSubmitModalOpen(true);
   };
 
   // Execute submission
   const handleConfirmSubmit = async () => {
-    await executeSubmit();
-    setConfirmModalOpen(false);
+    const success = await executeSubmit({ allowIncomplete: true });
+    if (success) {
+      setSubmitModalOpen(false);
+    }
   };
 
   if (loading) {
@@ -72,10 +122,10 @@ export const ExamDetailPage: React.FC = () => {
         <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
           <Icon name="file-text" size={24} />
         </div>
-        <h3 className="text-base font-bold text-slate-800 mb-0">{t("card:exams.detail.notFoundTitle")}</h3>
-        <p className="text-xs text-slate-500 mb-3">
-          {t("card:exams.detail.notFoundDesc")}
-        </p>
+        <h3 className="text-base font-bold text-slate-800 mb-0">
+          {t("card:exams.detail.notFoundTitle")}
+        </h3>
+        <p className="text-xs text-slate-500 mb-3">{t("card:exams.detail.notFoundDesc")}</p>
         <Button variant="primary" onClick={() => navigate("/student/exams")}>
           {t("card:exams.detail.backToList")}
         </Button>
@@ -86,10 +136,7 @@ export const ExamDetailPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 sm:gap-5 pb-16">
       {/* 1. Header Card matching LeaveRequestDetailHeader */}
-      <ExamDetailHeader
-        exam={exam}
-        onBack={() => navigate("/student/exams")}
-      />
+      <ExamDetailHeader exam={exam} onBack={handleBackRequest} />
 
       {/* 2. Top Info / Status Card */}
       <ExamHeaderCard exam={exam} />
@@ -113,7 +160,7 @@ export const ExamDetailPage: React.FC = () => {
           })}
         </div>
 
-        {/* Right Column: 3 parts - Sticky to viewport, does not scroll with page */}
+        {/* Right Column: 3 parts - Sticky to viewport */}
         <div className="lg:col-span-3 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto pr-1">
           <ExamTimerSidebar
             timeLeft={timeLeft}
@@ -125,19 +172,35 @@ export const ExamDetailPage: React.FC = () => {
             readOnly={isReadOnly}
             score={exam.score}
             maxScore={exam.maxScore}
+            scoreReleased={isScoreReleased(exam)}
+            scoreReleaseMode={
+              exam.scoreReleaseMode || exam.settings?.scoreReleaseMode || "immediate"
+            }
           />
         </div>
       </div>
 
       {/* 4. Confirmation Submit Modal */}
       <ExamSubmitConfirmModal
-        open={confirmModalOpen}
+        open={submitModalOpen}
         examTitle={exam.title}
         totalQuestions={exam.questions.length}
         answeredCount={answeredCount}
+        unansweredQuestions={unansweredQuestions}
+        onJumpToQuestion={handleScrollToQuestion}
         submitting={submitting}
-        onCancel={() => setConfirmModalOpen(false)}
+        onCancel={() => setSubmitModalOpen(false)}
         onConfirm={handleConfirmSubmit}
+      />
+
+      {/* 5. Exit Confirmation Modal */}
+      <ExamExitConfirmModal
+        open={exitModalOpen}
+        totalQuestions={exam.questions.length}
+        unansweredCount={unansweredQuestions.length}
+        submitting={submitting}
+        onCancel={() => setExitModalOpen(false)}
+        onConfirm={handleConfirmExit}
       />
     </div>
   );

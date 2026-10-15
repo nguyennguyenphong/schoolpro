@@ -22,3 +22,28 @@ export const formatExamTime = (totalSeconds: number): string => {
   const secs = Math.max(0, totalSeconds % 60);
   return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 };
+
+/**
+ * Checks if exam score is released according to teacher's release mode setting:
+ * - immediate: released immediately upon completion
+ * - hidden: completely hidden from student
+ * - scheduled: released on or after scoreReleaseDate
+ */
+export const isScoreReleased = (exam: {
+  scoreReleaseMode?: "immediate" | "hidden" | "scheduled";
+  scoreReleaseDate?: string;
+  settings?: {
+    scoreReleaseMode?: "immediate" | "hidden" | "scheduled";
+    scoreReleaseDate?: string;
+  };
+}): boolean => {
+  const mode = exam.scoreReleaseMode || exam.settings?.scoreReleaseMode || "immediate";
+  if (mode === "immediate") return true;
+  if (mode === "hidden") return false;
+  if (mode === "scheduled") {
+    const releaseDate = exam.scoreReleaseDate || exam.settings?.scoreReleaseDate;
+    if (!releaseDate) return false;
+    return new Date(releaseDate).getTime() <= Date.now();
+  }
+  return true;
+};

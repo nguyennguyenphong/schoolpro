@@ -875,8 +875,27 @@
       "unansweredCount": "未解答:",
       "warning": "提出後は解答を修正できません。システムが自動採点し結果を記録します。",
       "unansweredWarning": "まだ未解答の問題が{{count}}問あります！",
+      "allAnsweredNotice": "すべての問題に回答しました！",
+      "missingQuestionsTitle": "未回答の問題:",
+      "clickToJump": "問題をクリックして移動:",
       "confirmButton": "提出を確定する",
       "confirmButtonUnfinished": "このまま提出する"
+    },
+    "exitModal": {
+      "title": "試験退出の警告",
+      "warningText": "現在試験中です。ページを離れるかブラウザを閉じると、現在の回答が自動的に提出されます！",
+      "unansweredNotice": "全{{total}}問中、未回答の問題が{{unanswered}}問あります。",
+      "confirmExitAndSubmit": "提出して終了",
+      "stayAndContinue": "試験を続ける"
+    },
+    "scoreRelease": {
+      "immediateBadge": "即時公開",
+      "hiddenBadge": "点数非公開",
+      "hiddenNotice": "教員によりこの試験の点数は非公開に設定されています。",
+      "scheduledBadge": "公開予定: {{date}}",
+      "scheduledNotice": "試験の点数は {{date}} に公開されます。",
+      "unreleasedScore": "公開待ち",
+      "hiddenScore": "非公開"
     },
     "messages": {
       "listLoadError": "試験一覧の読み込みに失敗しました。",

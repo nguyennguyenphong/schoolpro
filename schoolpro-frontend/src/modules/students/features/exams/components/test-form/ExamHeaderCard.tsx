@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamItem } from "@/modules/students/features/exams/types";
+import { isScoreReleased } from "@/modules/students/features/exams/utils";
 
 interface ExamHeaderCardProps {
   exam: ExamItem;
@@ -10,7 +11,9 @@ interface ExamHeaderCardProps {
 export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
   const { t } = useTranslation(["card"]);
   const isCompleted = exam.status === "completed";
+  const scoreReleased = isScoreReleased(exam);
   const isPassed = exam.score !== undefined && exam.score >= (exam.passingScore ?? 5.0);
+  const mode = exam.scoreReleaseMode || exam.settings?.scoreReleaseMode;
 
   return (
     <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs overflow-hidden">
@@ -55,7 +58,7 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
         </div>
 
         {/* Completion Banner */}
-        {isCompleted && (
+        {isCompleted && scoreReleased && (
           <div
             className={`p-4 rounded-xl border flex items-center justify-between gap-4 mt-3.5 ${
               isPassed
@@ -90,6 +93,38 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
                 {exam.score}
               </span>
               <span className="text-xs opacity-75 font-bold">/{exam.maxScore}</span>
+            </div>
+          </div>
+        )}
+
+        {isCompleted && !scoreReleased && (
+          <div className="p-4 rounded-xl border flex items-center justify-between gap-4 mt-3.5 bg-blue-50/80 border-blue-200 text-blue-900">
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-blue-600 text-white">
+                <Icon name="info" size={20} />
+              </span>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold mb-0.5">
+                  {mode === "hidden"
+                    ? t("card:exams.scoreRelease.hiddenNotice")
+                    : t("card:exams.scoreRelease.scheduledNotice", {
+                        date: exam.scoreReleaseDate || exam.settings?.scoreReleaseDate,
+                      })}
+                </h4>
+                <p className="text-[11px] opacity-80 mb-0">
+                  {t("card:exams.detail.submittedAtAutoGraded", {
+                    date: exam.completedAt || t("card:exams.detail.today"),
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0">
+              <span className="text-sm sm:text-base font-extrabold text-blue-700">
+                {mode === "hidden"
+                  ? t("card:exams.scoreRelease.hiddenScore")
+                  : t("card:exams.scoreRelease.unreleasedScore")}
+              </span>
             </div>
           </div>
         )}

@@ -13,6 +13,14 @@ export type ExamQuestionType =
 
 export type ExamStatus = "pending" | "completed" | "expired";
 
+export type ScoreReleaseMode = "immediate" | "hidden" | "scheduled";
+
+export interface ExamSetting {
+  scoreReleaseMode?: ScoreReleaseMode;
+  scoreReleaseDate?: string;
+  allowReview?: boolean;
+}
+
 export interface ExamQuestion {
   id: string;
   title: string;
@@ -47,6 +55,9 @@ export interface ExamItem {
   score?: number;
   completedAt?: string;
   questions: ExamQuestion[];
+  scoreReleaseMode?: ScoreReleaseMode;
+  scoreReleaseDate?: string;
+  settings?: ExamSetting;
 }
 
 export interface ExamSummary {

@@ -875,8 +875,27 @@
       "unansweredCount": "미답변:",
       "warning": "제출 후에는 답안을 수정할 수 없습니다. 시스템에서 자동으로 채점하고 결과를 기록합니다.",
       "unansweredWarning": "아직 답변하지 않은 문항이 {{count}}개 있습니다!",
+      "allAnsweredNotice": "모든 질문에 답변했습니다!",
+      "missingQuestionsTitle": "미완료 문항:",
+      "clickToJump": "해당 문항으로 바로 이동:",
       "confirmButton": "제출 확인",
       "confirmButtonUnfinished": "그대로 제출"
+    },
+    "exitModal": {
+      "title": "시험 종료 경고",
+      "warningText": "현재 시험을 응시 중입니다. 페이지를 벗어나거나 브라우저를 닫으면 현재까지 작성된 답안이 자동으로 제출됩니다!",
+      "unansweredNotice": "총 {{total}}문항 중 아직 답변하지 않은 문항이 {{unanswered}}개 있습니다.",
+      "confirmExitAndSubmit": "제출 후 나가기",
+      "stayAndContinue": "시험 계속하기"
+    },
+    "scoreRelease": {
+      "immediateBadge": "즉시 공개",
+      "hiddenBadge": "점수 비공개",
+      "hiddenNotice": "선생님이 이 시험의 점수를 비공개로 설정했습니다.",
+      "scheduledBadge": "공개 예정: {{date}}",
+      "scheduledNotice": "시험 점수는 {{date}}에 공개될 예정입니다.",
+      "unreleasedScore": "공개 대기 중",
+      "hiddenScore": "비공개"
     },
     "messages": {
       "listLoadError": "시험 목록을 불러올 수 없습니다.",

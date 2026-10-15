@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 
+import { isScoreReleased } from "@/modules/students/features/exams/utils";
+
 interface ExamCardProps {
   item: ExamItem;
   onOpen: (item: ExamItem) => void;
@@ -18,11 +20,24 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
 
   const getStatusBadge = () => {
     if (isCompleted) {
+      const scoreReleased = isScoreReleased(item);
+      if (item.score !== undefined && scoreReleased) {
+        return (
+          <Tag color="success" className="m-0 font-semibold text-xs whitespace-nowrap">
+            {`${item.score}/${item.maxScore} ${t("card:exams.detail.pointsSuffix")}`}
+          </Tag>
+        );
+      }
+      const mode = item.scoreReleaseMode || item.settings?.scoreReleaseMode;
+      const label =
+        mode === "hidden"
+          ? t("card:exams.scoreRelease.hiddenScore")
+          : mode === "scheduled"
+            ? t("card:exams.scoreRelease.unreleasedScore")
+            : t("card:exams.statuses.completed");
       return (
-        <Tag color="success" className="m-0 font-semibold text-xs whitespace-nowrap">
-          {item.score !== undefined
-            ? `${item.score}/${item.maxScore} ${t("card:exams.detail.pointsSuffix")}`
-            : t("card:exams.statuses.completed")}
+        <Tag color="processing" className="m-0 font-semibold text-xs whitespace-nowrap">
+          {label}
         </Tag>
       );
     }

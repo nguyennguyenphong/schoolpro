@@ -5,6 +5,12 @@ import type { ExamItem } from "@/modules/students/features/exams/types";
 import { examsService } from "@/modules/students/features/exams/services";
 import { isAnswerFilled } from "@/modules/students/features/exams/utils";
 
+interface StoredTiming {
+  startTime: number;
+  durationMinutes: number;
+  endTime: number;
+}
+
 export const useExamDetail = (id?: string) => {
   const [exam, setExam] = useState<ExamItem | null>(null);
   const [loading, setLoading] = useState(true);
@@ -17,7 +23,55 @@ export const useExamDetail = (id?: string) => {
     answersRef.current = answers;
   }, [answers]);
 
-  // Load exam and saved draft / past submission
+  const submittingRef = useRef(false);
+  useEffect(() => {
+    submittingRef.current = submitting;
+  }, [submitting]);
+
+  const isCompleted = exam?.status === "completed";
+  const isExpired = exam?.status === "expired";
+  const isReadOnly = Boolean(isCompleted || isExpired);
+
+  const isReadOnlyRef = useRef(isReadOnly);
+  useEffect(() => {
+    isReadOnlyRef.current = isReadOnly;
+  }, [isReadOnly]);
+
+  // Execute submission with optional allowIncomplete bypass
+  const executeSubmit = useCallback(
+    async (options?: { allowIncomplete?: boolean }): Promise<boolean> => {
+      if (!exam || submittingRef.current || isReadOnlyRef.current) return false;
+      try {
+        setSubmitting(true);
+        const allowIncomplete = options?.allowIncomplete ?? false;
+        const res = await examsService.submitExam(exam.id, answersRef.current, allowIncomplete);
+        message.success(res.message);
+
+        // Clear local storage timing and drafts upon successful submission
+        try {
+          localStorage.removeItem(`schoolpro_exam_timing_${exam.id}`);
+          localStorage.removeItem(`schoolpro_exam_draft_${exam.id}`);
+        } catch {
+          // ignore
+        }
+
+        // Reload fresh exam state
+        const updated = await examsService.getExamById(exam.id);
+        if (updated) {
+          setExam(updated);
+        }
+        return true;
+      } catch {
+        message.error(i18n.t("card:exams.messages.submitError"));
+        return false;
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [exam]
+  );
+
+  // Load exam, handle persistent wall-clock timer and drafts
   useEffect(() => {
     let ignore = false;
 
@@ -26,24 +80,77 @@ export const useExamDetail = (id?: string) => {
       try {
         setLoading(true);
         const data = await examsService.getExamById(id);
-        if (!ignore && data) {
-          setExam(data);
-          setTimeLeft(data.durationMinutes * 60);
+        if (ignore || !data) return;
 
-          // If completed, load past submission answers
-          if (data.status === "completed") {
-            const sub = await examsService.getSubmission(id);
-            if (sub?.answers) {
-              setAnswers(sub.answers);
+        setExam(data);
+
+        if (data.status === "completed") {
+          // Clear active timers
+          try {
+            localStorage.removeItem(`schoolpro_exam_timing_${id}`);
+            localStorage.removeItem(`schoolpro_exam_draft_${id}`);
+          } catch {
+            // ignore
+          }
+          const sub = await examsService.getSubmission(id);
+          if (sub?.answers) {
+            setAnswers(sub.answers);
+          }
+          setTimeLeft(0);
+        } else if (data.status === "expired") {
+          try {
+            localStorage.removeItem(`schoolpro_exam_timing_${id}`);
+            localStorage.removeItem(`schoolpro_exam_draft_${id}`);
+          } catch {
+            // ignore
+          }
+          setTimeLeft(0);
+        } else {
+          // Pending exam: setup persistent wall-clock timer
+          const timingKey = `schoolpro_exam_timing_${id}`;
+          const draftKey = `schoolpro_exam_draft_${id}`;
+
+          let targetEndTime = 0;
+          try {
+            const storedTiming = localStorage.getItem(timingKey);
+            if (storedTiming) {
+              const parsed: StoredTiming = JSON.parse(storedTiming);
+              targetEndTime = parsed.endTime;
+            } else {
+              const now = Date.now();
+              const dur = data.durationMinutes || 45;
+              targetEndTime = now + dur * 60 * 1000;
+              const timingObj: StoredTiming = {
+                startTime: now,
+                durationMinutes: dur,
+                endTime: targetEndTime,
+              };
+              localStorage.setItem(timingKey, JSON.stringify(timingObj));
             }
-          } else {
-            // Ensure answers start completely clear/empty
-            try {
-              localStorage.removeItem(`schoolpro_exam_draft_${id}`);
-            } catch {
-              // Ignore
+          } catch {
+            targetEndTime = Date.now() + (data.durationMinutes || 45) * 60 * 1000;
+          }
+
+          const remainingSeconds = Math.max(0, Math.floor((targetEndTime - Date.now()) / 1000));
+          setTimeLeft(remainingSeconds);
+
+          // Restore draft answers if available
+          try {
+            const storedDraft = localStorage.getItem(draftKey);
+            if (storedDraft) {
+              const parsedDraft = JSON.parse(storedDraft);
+              setAnswers(parsedDraft);
+            } else {
+              setAnswers({});
             }
+          } catch {
             setAnswers({});
+          }
+
+          // If time already expired while student was away, auto-submit immediately
+          if (remainingSeconds <= 0) {
+            message.warning(i18n.t("card:exams.messages.timeExpired"));
+            void executeSubmit({ allowIncomplete: true });
           }
         }
       } catch {
@@ -59,16 +166,12 @@ export const useExamDetail = (id?: string) => {
     return () => {
       ignore = true;
     };
-  }, [id]);
+  }, [id, executeSubmit]);
 
-  const isCompleted = exam?.status === "completed";
-  const isExpired = exam?.status === "expired";
-  const isReadOnly = Boolean(isCompleted || isExpired);
-
-  // Update answer for a specific question
+  // Update answer for a specific question & persist draft to localStorage
   const handleAnswerChange = useCallback(
     (questionId: string, value: number | string | string[] | boolean) => {
-      if (isReadOnly) return;
+      if (isReadOnly || !id) return;
       setAnswers((prev) => {
         const next = { ...prev };
         if (
@@ -81,10 +184,18 @@ export const useExamDetail = (id?: string) => {
         } else {
           next[questionId] = value;
         }
+
+        // Persist draft immediately
+        try {
+          localStorage.setItem(`schoolpro_exam_draft_${id}`, JSON.stringify(next));
+        } catch {
+          // ignore
+        }
+
         return next;
       });
     },
-    [isReadOnly]
+    [id, isReadOnly]
   );
 
   const isQuestionAnswered = useCallback(
@@ -94,72 +205,50 @@ export const useExamDetail = (id?: string) => {
     [answers]
   );
 
+  // List of incomplete/unanswered questions
+  const unansweredQuestions = useMemo(() => {
+    if (!exam) return [];
+    return exam.questions
+      .map((q, idx) => ({ ...q, questionNumber: idx + 1 }))
+      .filter((q) => !isQuestionAnswered(q.id));
+  }, [exam, isQuestionAnswered]);
+
   const answeredCount = useMemo(() => {
     if (!exam) return 0;
-    return exam.questions.filter((q) => isQuestionAnswered(q.id)).length;
-  }, [exam, isQuestionAnswered]);
+    return exam.questions.length - unansweredQuestions.length;
+  }, [exam, unansweredQuestions]);
 
-  // Submit exam to backend
-  const executeSubmit = useCallback(async () => {
-    if (!exam) return;
-    try {
-      setSubmitting(true);
-      const res = await examsService.submitExam(exam.id, answersRef.current);
-      message.success(res.message);
-
-      // Reload exam state
-      const updated = await examsService.getExamById(exam.id);
-      if (updated) {
-        setExam(updated);
-      }
-    } catch {
-      message.error(i18n.t("card:exams.messages.submitError"));
-    } finally {
-      setSubmitting(false);
-    }
-  }, [exam]);
-
-  // Validate required questions before submit
-  const validateRequired = useCallback((): {
-    valid: boolean;
-    unansweredQuestion?: { id: string; title: string };
-  } => {
-    if (!exam) return { valid: false };
-
-    for (const q of exam.questions) {
-      if (q.required && !isQuestionAnswered(q.id)) {
-        return {
-          valid: false,
-          unansweredQuestion: { id: q.id, title: q.title },
-        };
-      }
-    }
-
-    return { valid: true };
-  }, [exam, isQuestionAnswered]);
-
-  // Countdown Timer
+  // Wall-clock Countdown Timer: checks wall-clock time against stored endTime
   useEffect(() => {
-    if (isReadOnly || !exam) return;
+    if (isReadOnly || !exam || !id) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 0) {
-          clearInterval(timer);
-          return 0;
+      const timingKey = `schoolpro_exam_timing_${id}`;
+      let targetEndTime = 0;
+      try {
+        const storedTiming = localStorage.getItem(timingKey);
+        if (storedTiming) {
+          const parsed: StoredTiming = JSON.parse(storedTiming);
+          targetEndTime = parsed.endTime;
         }
-        if (prev === 1) {
+      } catch {
+        // ignore
+      }
+
+      if (targetEndTime > 0) {
+        const remaining = Math.max(0, Math.floor((targetEndTime - Date.now()) / 1000));
+        setTimeLeft(remaining);
+
+        if (remaining <= 0) {
           clearInterval(timer);
           message.warning(i18n.t("card:exams.messages.timeExpired"));
-          void executeSubmit();
-          return 0;
+          void executeSubmit({ allowIncomplete: true });
         }
-        return prev - 1;
-      });
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isReadOnly, exam, executeSubmit]);
+  }, [id, isReadOnly, exam, executeSubmit]);
 
   return {
     exam,
@@ -171,9 +260,9 @@ export const useExamDetail = (id?: string) => {
     isCompleted,
     isExpired,
     answeredCount,
+    unansweredQuestions,
     handleAnswerChange,
     isQuestionAnswered,
-    validateRequired,
     executeSubmit,
   };
 };

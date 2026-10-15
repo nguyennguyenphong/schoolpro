@@ -21,6 +21,7 @@ export const mockExams: ExamItem[] = [
     startDate: "2026-09-25 08:00",
     endDate: "2026-10-28 23:59",
     status: "pending",
+    scoreReleaseMode: "immediate",
     questions: [
       {
         id: "q-1",
@@ -163,6 +164,7 @@ export const mockExams: ExamItem[] = [
     status: "completed",
     score: 9.0,
     completedAt: "2026-09-26 14:35",
+    scoreReleaseMode: "hidden",
     questions: [
       {
         id: "q-201",
@@ -243,6 +245,8 @@ export const mockExams: ExamItem[] = [
     startDate: "2026-09-01 08:00",
     endDate: "2026-09-10 23:59",
     status: "expired",
+    scoreReleaseMode: "scheduled",
+    scoreReleaseDate: "2026-10-30 08:00",
     questions: [
       {
         id: "q-301",

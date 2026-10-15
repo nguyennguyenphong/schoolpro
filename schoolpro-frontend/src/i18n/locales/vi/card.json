@@ -875,8 +875,27 @@
       "unansweredCount": "Chưa trả lời:",
       "warning": "Sau khi nộp, bạn sẽ không thể chỉnh sửa câu trả lời. Hệ thống sẽ tự động chấm điểm và ghi nhận kết quả.",
       "unansweredWarning": "Bạn vẫn còn {{count}} câu hỏi chưa trả lời!",
+      "allAnsweredNotice": "Bạn đã trả lời đầy đủ tất cả các câu hỏi!",
+      "missingQuestionsTitle": "Các câu hỏi chưa hoàn thành:",
+      "clickToJump": "Nhấp vào câu để chuyển tới câu hỏi:",
       "confirmButton": "Xác nhận nộp bài",
       "confirmButtonUnfinished": "Vẫn nộp bài"
+    },
+    "exitModal": {
+      "title": "Cảnh báo rời khỏi bài thi",
+      "warningText": "Bạn đang trong quá trình làm bài thi. Nếu bạn rời khỏi hoặc đóng trình duyệt, hệ thống sẽ tự động nộp bài làm hiện tại của bạn!",
+      "unansweredNotice": "Hiện tại bạn có {{unanswered}} câu hỏi chưa trả lời trên tổng số {{total}} câu.",
+      "confirmExitAndSubmit": "Nộp bài và thoát",
+      "stayAndContinue": "Tiếp tục làm bài"
+    },
+    "scoreRelease": {
+      "immediateBadge": "Công bố ngay",
+      "hiddenBadge": "Điểm đã ẩn",
+      "hiddenNotice": "Giáo viên đã thiết lập ẩn điểm cho bài thi này.",
+      "scheduledBadge": "Công bố lúc {{date}}",
+      "scheduledNotice": "Điểm thi sẽ được công bố vào lúc {{date}}.",
+      "unreleasedScore": "Chờ công bố",
+      "hiddenScore": "Đã ẩn điểm"
     },
     "messages": {
       "listLoadError": "Không thể tải danh sách đề thi trắc nghiệm.",

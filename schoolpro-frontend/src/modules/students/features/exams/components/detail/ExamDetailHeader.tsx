@@ -6,6 +6,8 @@ import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 
+import { isScoreReleased } from "@/modules/students/features/exams/utils";
+
 interface ExamDetailHeaderProps {
   exam: ExamItem;
   onBack: () => void;
@@ -18,16 +20,31 @@ export const ExamDetailHeader: React.FC<ExamDetailHeaderProps> = ({
   const { t } = useTranslation(["navigation", "card", "button"]);
   const isCompleted = exam.status === "completed";
   const isExpired = exam.status === "expired";
+  const scoreReleased = isScoreReleased(exam);
   const isPassed = exam.score !== undefined && exam.score >= (exam.passingScore ?? 5.0);
 
   const getStatusBadge = () => {
     if (isCompleted) {
+      if (exam.score !== undefined && scoreReleased) {
+        return (
+          <Tag
+            color={isPassed ? "success" : "error"}
+            className="m-0 text-xs font-bold px-2.5 py-0.5 whitespace-nowrap"
+          >
+            {isPassed ? t("card:exams.statuses.passed") : t("card:exams.statuses.failed")}
+          </Tag>
+        );
+      }
+      const mode = exam.scoreReleaseMode || exam.settings?.scoreReleaseMode;
+      const label =
+        mode === "hidden"
+          ? t("card:exams.scoreRelease.hiddenScore")
+          : mode === "scheduled"
+            ? t("card:exams.scoreRelease.unreleasedScore")
+            : t("card:exams.statuses.completed");
       return (
-        <Tag
-          color={isPassed ? "success" : "error"}
-          className="m-0 text-xs font-bold px-2.5 py-0.5 whitespace-nowrap"
-        >
-          {isPassed ? t("card:exams.statuses.passed") : t("card:exams.statuses.failed")}
+        <Tag color="processing" className="m-0 text-xs font-bold px-2.5 py-0.5 whitespace-nowrap">
+          {label}
         </Tag>
       );
     }

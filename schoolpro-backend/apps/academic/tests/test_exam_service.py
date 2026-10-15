@@ -79,3 +79,27 @@ class TestExamService:
         sub = ExamService.get_submission("exam-001", user=None)
         assert sub is not None
         assert sub["score"] == 10.0
+
+    def test_submit_exam_allow_incomplete_bypasses_required_validation(self):
+        # Empty answers with allow_incomplete=True does not raise ValueError
+        result = ExamService.submit_exam("exam-001", user=None, answers={}, allow_incomplete=True)
+        assert result["score"] == 0.0
+        assert result["isPassed"] is False
+        assert len(result["breakdown"]) == 8
+
+    def test_score_release_modes(self):
+        # Hidden score mode
+        exam_hidden = {"scoreReleaseMode": "hidden"}
+        assert ExamService.is_score_released(exam_hidden) is False
+
+        # Scheduled score mode in future
+        exam_future = {"scoreReleaseMode": "scheduled", "scoreReleaseDate": "2099-01-01 08:00"}
+        assert ExamService.is_score_released(exam_future) is False
+
+        # Scheduled score mode in past
+        exam_past = {"scoreReleaseMode": "scheduled", "scoreReleaseDate": "2020-01-01 08:00"}
+        assert ExamService.is_score_released(exam_past) is True
+
+        # Immediate score mode
+        exam_imm = {"scoreReleaseMode": "immediate"}
+        assert ExamService.is_score_released(exam_imm) is True

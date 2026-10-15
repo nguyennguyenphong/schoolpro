@@ -118,8 +118,11 @@ class StudentExamViewSet(viewsets.ViewSet):
             )
 
         answers = serializer.validated_data["answers"]
+        allow_incomplete = serializer.validated_data.get("allowIncomplete", False)
         try:
-            result = self.service.submit_exam(pk, request.user, answers)
+            result = self.service.submit_exam(
+                pk, request.user, answers, allow_incomplete=allow_incomplete
+            )
             resp_serializer = ExamSubmissionResponseSerializer(result)
             return APIResponse.success(
                 data=resp_serializer.data,

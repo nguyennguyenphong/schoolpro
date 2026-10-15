@@ -16,6 +16,8 @@ interface ExamTimerSidebarProps {
   readOnly?: boolean;
   score?: number;
   maxScore?: number;
+  scoreReleased?: boolean;
+  scoreReleaseMode?: "immediate" | "hidden" | "scheduled";
 }
 
 export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
@@ -28,6 +30,8 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
   readOnly = false,
   score,
   maxScore = 10,
+  scoreReleased = true,
+  scoreReleaseMode = "immediate",
 }) => {
   const { t } = useTranslation(["card"]);
   const total = questions.length;
@@ -48,12 +52,22 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               {t("card:exams.sidebar.resultTitle")}
             </span>
-            <div className="flex items-baseline justify-center gap-1.5">
-              <span className="text-3xl sm:text-4xl font-extrabold text-blue-600 tracking-tight">
-                {score ?? 0}
-              </span>
-              <span className="text-base sm:text-lg font-bold text-slate-400">/{maxScore}</span>
-            </div>
+            {scoreReleased === false || score === undefined ? (
+              <div className="py-2">
+                <span className="text-base sm:text-lg font-extrabold text-blue-600 block">
+                  {scoreReleaseMode === "hidden"
+                    ? t("card:exams.scoreRelease.hiddenScore")
+                    : t("card:exams.scoreRelease.unreleasedScore")}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-baseline justify-center gap-1.5">
+                <span className="text-3xl sm:text-4xl font-extrabold text-blue-600 tracking-tight">
+                  {score}
+                </span>
+                <span className="text-base sm:text-lg font-bold text-slate-400">/{maxScore}</span>
+              </div>
+            )}
             <p className="text-xs text-slate-500 mb-0">
               {t("card:exams.sidebar.completedQuestionsCount", { answered: answeredCount, total })}
             </p>

@@ -875,8 +875,27 @@
       "unansweredCount": "未答题目:",
       "warning": "提交后将无法修改答案。系统将自动判分并记录成绩。",
       "unansweredWarning": "您还有 {{count}} 道题目未作答！",
+      "allAnsweredNotice": "您已回答所有问题！",
+      "missingQuestionsTitle": "未完成的题目:",
+      "clickToJump": "点击题目直接跳转:",
       "confirmButton": "确认交卷",
       "confirmButtonUnfinished": "坚持交卷"
+    },
+    "exitModal": {
+      "title": "离开考试警告",
+      "warningText": "您正在进行考试。如果离开页面或关闭浏览器，系统将自动提交您当前的答卷！",
+      "unansweredNotice": "在全部 {{total}} 道题中，您还有 {{unanswered}} 道题未回答。",
+      "confirmExitAndSubmit": "交卷并退出",
+      "stayAndContinue": "继续考试"
+    },
+    "scoreRelease": {
+      "immediateBadge": "立即公布",
+      "hiddenBadge": "成绩已隐藏",
+      "hiddenNotice": "教师已设置隐藏本次考试的成绩。",
+      "scheduledBadge": "公布时间: {{date}}",
+      "scheduledNotice": "考试成绩将于 {{date}} 公布。",
+      "unreleasedScore": "待公布",
+      "hiddenScore": "已隐藏"
     },
     "messages": {
       "listLoadError": "无法加载考试列表。",

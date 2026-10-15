@@ -5,6 +5,7 @@ per-question point configuration, required validations, submissions, auto-gradin
 """
 
 import logging
+from datetime import datetime
 from decimal import Decimal
 from typing import Any
 from uuid import uuid4
@@ -60,6 +61,7 @@ class ExamService:
             "startDate": "2026-09-25 08:00",
             "endDate": "2026-10-25 23:59",
             "status": "pending",
+            "scoreReleaseMode": "immediate",
             "questions": [
                 {
                     "id": "q-1",
@@ -200,6 +202,7 @@ class ExamService:
             "status": "completed",
             "score": 9.0,
             "completedAt": "2026-09-26 14:35",
+            "scoreReleaseMode": "hidden",
             "questions": [
                 {
                     "id": "q-201",
@@ -282,6 +285,8 @@ class ExamService:
             "startDate": "2026-09-01 08:00",
             "endDate": "2026-09-10 23:59",
             "status": "expired",
+            "scoreReleaseMode": "scheduled",
+            "scoreReleaseDate": "2026-10-30 08:00",
             "questions": [
                 {
                     "id": "q-301",
@@ -457,7 +462,48 @@ class ExamService:
         if semester and semester != "all":
             results = [r for r in results if r.get("semester") == semester]
 
-        return results
+        # Check cached submissions & mask score if unreleased
+        formatted_results = []
+        for item in results:
+            item_copy = dict(item)
+            cached_sub = _IN_MEMORY_SUBMISSIONS.get(item_copy["id"])
+            if cached_sub:
+                item_copy["status"] = "completed"
+                item_copy["completedAt"] = cached_sub.get("submittedAt")
+                item_copy["score"] = cached_sub.get("actualScore", cached_sub.get("score"))
+
+            if not cls.is_score_released(item_copy):
+                item_copy["score"] = None
+
+            formatted_results.append(item_copy)
+
+        return formatted_results
+
+    @classmethod
+    def is_score_released(cls, exam: dict[str, Any]) -> bool:
+        """
+        Determines whether the score is released to the student:
+        - immediate: score is released immediately upon completion
+        - hidden: score is permanently hidden from student
+        - scheduled: score is released on or after scoreReleaseDate
+        """
+        mode = exam.get("scoreReleaseMode", "immediate")
+        if mode == "immediate":
+            return True
+        if mode == "hidden":
+            return False
+        if mode == "scheduled":
+            release_date = exam.get("scoreReleaseDate")
+            if not release_date:
+                return False
+            try:
+                dt = datetime.strptime(release_date, "%Y-%m-%d %H:%M")
+                if timezone.is_naive(dt):
+                    dt = timezone.make_aware(dt, timezone.get_current_timezone())
+                return timezone.now() >= dt
+            except Exception:
+                return False
+        return True
 
     @classmethod
     def get_summary(cls, user: Any) -> dict[str, Any]:
@@ -496,20 +542,16 @@ class ExamService:
 
         # Deep copy to ensure safe manipulation
         detail = dict(found)
-        cached_sub = _IN_MEMORY_SUBMISSIONS.get(exam_id)
-        if cached_sub:
-            detail["status"] = "completed"
-            detail["score"] = cached_sub.get("score")
-            detail["completedAt"] = cached_sub.get("submittedAt")
-
         return detail
 
     @classmethod
-    def submit_exam(cls, exam_id: str, user: Any, answers: dict[str, Any]) -> dict[str, Any]:
+    def submit_exam(
+        cls, exam_id: str, user: Any, answers: dict[str, Any], allow_incomplete: bool = False
+    ) -> dict[str, Any]:
         """
         Submits exam answers with automated grading across various question types
         (radio, checkbox, input, textarea, rating, select, boolean, date).
-        Validates required questions and writes to ExamSubmission & ExamEventLog.
+        Validates required questions (unless allow_incomplete=True) and writes to ExamSubmission & ExamEventLog.
         """
         exam = cls.get_exam_detail(exam_id, user)
         if not exam:
@@ -517,12 +559,13 @@ class ExamService:
 
         questions: list[dict[str, Any]] = exam.get("questions", [])
 
-        # 1. Validate required fields (Google Form style)
-        for q in questions:
-            if q.get("required"):
-                val = answers.get(q["id"])
-                if val is None or val == "" or (isinstance(val, list) and len(val) == 0):
-                    raise ValueError(f"Vui lòng hoàn thành câu hỏi bắt buộc: '{q['title']}'")
+        # 1. Validate required fields (Google Form style) if allow_incomplete is False
+        if not allow_incomplete:
+            for q in questions:
+                if q.get("required"):
+                    val = answers.get(q["id"])
+                    if val is None or val == "" or (isinstance(val, list) and len(val) == 0):
+                        raise ValueError(f"Vui lòng hoàn thành câu hỏi bắt buộc: '{q['title']}'")
 
         # 2. Automated evaluation and score aggregation
         breakdown: list[dict[str, Any]] = []
@@ -616,18 +659,33 @@ class ExamService:
         sub_id = f"sub-{uuid4().hex[:12]}"
         now_str = timezone.now().strftime("%Y-%m-%d %H:%M")
 
+        is_released = cls.is_score_released(exam)
+        displayed_score = final_score if is_released else None
+        displayed_passed = is_passed if is_released else None
+
+        if not is_released:
+            mode = exam.get("scoreReleaseMode", "immediate")
+            if mode == "hidden":
+                msg = "Nộp bài thi thành công! Điểm thi đã được giáo viên ẩn."
+            else:
+                release_date = exam.get("scoreReleaseDate", "")
+                msg = f"Nộp bài thi thành công! Điểm thi sẽ được công bố vào {release_date}."
+        else:
+            msg = f"Nộp bài thi thành công! Điểm của bạn: {final_score}/{max_exam_score}"
+
         # 3. Save to In-Memory store
         submission_payload = {
             "submissionId": sub_id,
             "examId": exam_id,
-            "score": final_score,
+            "score": displayed_score,
+            "actualScore": final_score,
             "maxScore": max_exam_score,
-            "isPassed": is_passed,
+            "isPassed": displayed_passed,
             "submittedAt": now_str,
             "durationSeconds": exam.get("durationMinutes", 45) * 60,
             "answers": answers,
-            "breakdown": breakdown,
-            "message": f"Nộp bài thi thành công! Điểm của bạn: {final_score}/{max_exam_score}",
+            "breakdown": breakdown if is_released else [],
+            "message": msg,
         }
         _IN_MEMORY_SUBMISSIONS[exam_id] = submission_payload
 
@@ -665,9 +723,15 @@ class ExamService:
         """
         Retrieves student submission answers and breakdown.
         """
+        exam = cls.get_exam_detail(exam_id, user)
         # 1. Check in-memory store first
         if exam_id in _IN_MEMORY_SUBMISSIONS:
-            return _IN_MEMORY_SUBMISSIONS[exam_id]
+            sub = dict(_IN_MEMORY_SUBMISSIONS[exam_id])
+            if exam and not cls.is_score_released(exam):
+                sub["score"] = None
+                sub["isPassed"] = None
+                sub["breakdown"] = []
+            return sub
 
         # 2. Check DB
         try:
@@ -679,12 +743,14 @@ class ExamService:
                     .first()
                 )
                 if db_sub:
+                    db_score = float(db_sub.total_score)
+                    is_rel = cls.is_score_released(exam) if exam else True
                     return {
                         "submissionId": str(db_sub.id),
                         "examId": exam_id,
-                        "score": float(db_sub.total_score),
+                        "score": db_score if is_rel else None,
                         "maxScore": 10.0,
-                        "isPassed": float(db_sub.total_score) >= 5.0,
+                        "isPassed": (db_score >= 5.0) if is_rel else None,
                         "submittedAt": db_sub.submitted_at.strftime("%Y-%m-%d %H:%M")
                         if db_sub.submitted_at
                         else "",

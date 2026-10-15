@@ -49,6 +49,8 @@ class ExamItemSerializer(serializers.Serializer):
     status = serializers.CharField(default="pending")
     score = serializers.FloatField(allow_null=True, required=False)
     completedAt = serializers.CharField(allow_null=True, required=False)
+    scoreReleaseMode = serializers.CharField(default="immediate", required=False)
+    scoreReleaseDate = serializers.CharField(allow_null=True, required=False)
     questions = ExamQuestionSerializer(many=True, required=False)
 
 
@@ -73,6 +75,7 @@ class ExamSubmitRequestSerializer(serializers.Serializer):
         child=serializers.JSONField(),
         help_text="Mapping from question ID to answer (string, array of strings, number, boolean)",
     )
+    allowIncomplete = serializers.BooleanField(default=False, required=False)
 
 
 class ExamQuestionResultSerializer(serializers.Serializer):
@@ -96,9 +99,9 @@ class ExamSubmissionResponseSerializer(serializers.Serializer):
 
     examId = serializers.CharField()
     submissionId = serializers.CharField()
-    score = serializers.FloatField()
+    score = serializers.FloatField(allow_null=True, required=False)
     maxScore = serializers.FloatField()
-    isPassed = serializers.BooleanField()
+    isPassed = serializers.BooleanField(allow_null=True, required=False)
     submittedAt = serializers.CharField()
     durationSeconds = serializers.IntegerField(default=0)
     answers = serializers.DictField(child=serializers.JSONField())
