@@ -12,7 +12,8 @@
     "leaveRequestCreate": "Create Leave Request",
     "leaveRequestEdit": "Edit Leave Request",
     "leaveRequestDetail": "Details & Processing Progress",
-    "attendance": "Subject Attendance"
+    "attendance": "Subject Attendance",
+    "exams": "Exams & Tests"
   },
   "pageTitle": {
     "home": "Home",
@@ -26,7 +27,8 @@
     "leaveRequestCreate": "Create Online Leave Request",
     "leaveRequestEdit": "Edit Leave Request",
     "leaveRequestDetail": "Leave Request Details",
-    "attendance": "Daily Subject Attendance"
+    "attendance": "Daily Subject Attendance",
+    "exams": "Online Exams & Tests"
   },
   "pageSubtitle": {
     "home": "School Pro Academic Management System",
@@ -39,7 +41,8 @@
     "changePassword": "Update your password periodically to maintain high account security",
     "leaveRequests": "Submit online leave requests, attach supporting documents, and track Homeroom Teacher approvals",
     "leaveRequestForm": "Complete leave dates, affected lessons, and guardian confirmation to submit for Homeroom Teacher approval",
-    "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius."
+    "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius.",
+    "exams": "Timed online testing system with auto-saving answers and instant grading after submission"
   },
   "welcome": "Hello, {{name}}! Have a productive study day.",
   "welcomeUser": "Welcome, {{name}}!",

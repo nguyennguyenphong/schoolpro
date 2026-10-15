@@ -763,5 +763,48 @@
       "radiusAndTimer": "Bán kính & Thời hạn",
       "action": "Thao tác"
     }
+  },
+  "exams": {
+    "summary": {
+      "totalTitle": "Tổng số đề thi",
+      "pendingTitle": "Cần thực hiện",
+      "completedTitle": "Đã hoàn thành",
+      "avgScoreTitle": "Điểm trung bình"
+    },
+    "tabs": {
+      "all": "Tất cả đề thi",
+      "pending": "Cần thực hiện",
+      "completed": "Đã hoàn thành",
+      "expired": "Đã kết thúc"
+    },
+    "statuses": {
+      "pending": "Chờ thực hiện",
+      "completed": "Đã hoàn thành",
+      "expired": "Đã kết thúc"
+    },
+    "filters": {
+      "searchPlaceholder": "Tìm kiếm đề thi, môn học, giáo viên...",
+      "allStatuses": "Tất cả trạng thái",
+      "viewGrid": "Lưới thẻ",
+      "viewList": "Danh sách"
+    },
+    "card": {
+      "multipleChoice": "Trắc nghiệm",
+      "duration": "~{{minutes}} phút",
+      "questionsCount": "{{count}} câu hỏi",
+      "deadline": "Hạn chót: {{date}}",
+      "submittedAt": "Đã nộp: {{date}}",
+      "startExam": "Vào làm bài thi",
+      "reviewExam": "Xem lại bài làm",
+      "closed": "Đã đóng đề thi"
+    },
+    "empty": {
+      "noPendingTitle": "Không có đề thi nào cần thực hiện",
+      "noPendingDesc": "Tất cả các đề thi của học kỳ hiện tại đã được nộp thành công.",
+      "noCompletedTitle": "Bạn chưa hoàn thành đề thi nào",
+      "noCompletedDesc": "Hãy kiểm tra danh sách đề thi cần thực hiện.",
+      "noMatchingTitle": "Không tìm thấy đề thi phù hợp với bộ lọc",
+      "noMatchingDesc": "Hãy thử tìm kiếm với từ khóa khác hoặc đặt lại bộ lọc."
+    }
   }
 }

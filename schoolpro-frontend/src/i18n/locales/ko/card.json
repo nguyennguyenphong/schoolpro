@@ -763,5 +763,48 @@
       "radiusAndTimer": "반경 및 유효시간",
       "action": "작업"
     }
+  },
+  "exams": {
+    "summary": {
+      "totalTitle": "총 시험 수",
+      "pendingTitle": "진행 대기",
+      "completedTitle": "완료됨",
+      "avgScoreTitle": "평균 점수"
+    },
+    "tabs": {
+      "all": "모든 시험",
+      "pending": "진행 대기",
+      "completed": "완료됨",
+      "expired": "마감됨"
+    },
+    "statuses": {
+      "pending": "진행 대기",
+      "completed": "완료됨",
+      "expired": "마감됨"
+    },
+    "filters": {
+      "searchPlaceholder": "시험, 과목, 교사 검색...",
+      "allStatuses": "전체 상태",
+      "viewGrid": "카드 보기",
+      "viewList": "목록 보기"
+    },
+    "card": {
+      "multipleChoice": "객관식",
+      "duration": "약 {{minutes}}분",
+      "questionsCount": "{{count}}문제",
+      "deadline": "마감: {{date}}",
+      "submittedAt": "제출일: {{date}}",
+      "startExam": "시험 응시하기",
+      "reviewExam": "답안 검토하기",
+      "closed": "시험 마감"
+    },
+    "empty": {
+      "noPendingTitle": "대기 중인 시험이 없습니다",
+      "noPendingDesc": "현재 학기의 모든 시험이 성공적으로 제출되었습니다.",
+      "noCompletedTitle": "완료된 시험이 없습니다",
+      "noCompletedDesc": "대기 중인 시험 목록을 확인해주세요.",
+      "noMatchingTitle": "일치하는 시험을 찾을 수 없습니다",
+      "noMatchingDesc": "다른 검색어로 검색하거나 필터를 초기화해보세요."
+    }
   }
 }

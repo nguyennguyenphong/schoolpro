@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "@/components/ui/Card";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -11,112 +11,112 @@ interface ExamCardProps {
 }
 
 export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
+  const { t } = useTranslation(["card", "button"]);
   const isPending = item.status === "pending";
   const isCompleted = item.status === "completed";
   const isExpired = item.status === "expired";
 
-  return (
-    <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5 flex flex-col justify-between h-full group">
-      <div>
-        {/* Top Badges Row */}
-        <div className="flex items-center justify-between gap-2 mb-2.5 flex-wrap">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <Tag color="blue" className="m-0 font-semibold text-xs">
-              {item.courseCode}
-            </Tag>
+  const getStatusBadge = () => {
+    if (isCompleted) {
+      return (
+        <Tag color="success" className="m-0 font-semibold text-xs whitespace-nowrap">
+          {item.score !== undefined
+            ? `${item.score}/${item.maxScore} đ`
+            : t("card:exams.statuses.completed")}
+        </Tag>
+      );
+    }
+    if (isPending) {
+      return (
+        <Tag color="warning" className="m-0 font-semibold text-xs whitespace-nowrap">
+          {t("card:exams.statuses.pending")}
+        </Tag>
+      );
+    }
+    return (
+      <Tag color="default" className="m-0 font-semibold text-xs whitespace-nowrap">
+        {t("card:exams.statuses.expired")}
+      </Tag>
+    );
+  };
 
-            <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-[#f0f0f0]">
+  return (
+    <div className="bg-white rounded-xl border border-[#f0f0f0] hover:border-blue-300 shadow-2xs p-4 sm:p-5 flex flex-col justify-between h-full transition-all group">
+      <div className="space-y-3">
+        {/* 1. Course Code & Status Badges */}
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl whitespace-nowrap">
+              {item.courseCode}
+            </span>
+            <span className="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap">
               {item.code}
             </span>
-
-            <Tag color="purple" className="m-0 font-semibold text-xs">
-              Trắc nghiệm
+            <Tag color="purple" className="m-0 font-semibold text-xs whitespace-nowrap">
+              {t("card:exams.card.multipleChoice")}
             </Tag>
           </div>
 
-          <div>
-            {isPending && (
-              <Tag color="warning" className="m-0 font-semibold text-xs">
-                Chờ thực hiện
-              </Tag>
-            )}
-            {isCompleted && (
-              <Tag color="success" className="m-0 font-semibold text-xs">
-                Đã hoàn thành
-              </Tag>
-            )}
-            {isExpired && (
-              <Tag color="default" className="m-0 font-semibold text-xs">
-                Đã kết thúc
-              </Tag>
-            )}
-          </div>
+          <div className="shrink-0">{getStatusBadge()}</div>
         </div>
 
-        {/* Exam Title */}
-        <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1.5 line-clamp-2">
+        {/* 2. Exam Title */}
+        <h3
+          className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-0"
+          title={item.title}
+        >
           {item.title}
         </h3>
 
-        {/* Target Subject / Teacher */}
-        <div className="flex items-center gap-2 text-xs text-slate-600 mb-2 bg-blue-50/50 px-2.5 py-1.5 rounded-lg border border-blue-100/80">
-          <Icon name="book" size={13} className="text-blue-600 shrink-0" />
-          <span className="font-semibold text-slate-800">{item.courseName}</span>
+        {/* 3. Subject Box matching LeaveRequestCard's info bar */}
+        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+          <div className="flex items-center gap-2 min-w-0">
+            <Icon name="book" size={14} className="text-blue-600 shrink-0" />
+            <span className="text-xs font-bold text-slate-800 truncate">
+              {item.courseName}
+            </span>
+          </div>
           {item.teacherName && (
-            <>
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-600">{item.teacherName}</span>
-            </>
+            <span className="text-[11px] font-semibold text-slate-500 truncate shrink-0">
+              {item.teacherName}
+            </span>
           )}
         </div>
 
-        {/* Description / Info */}
-        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-3">
-          Đề thi trắc nghiệm trực tuyến tính giờ gồm {item.totalQuestions} câu hỏi theo thang điểm {item.maxScore}.
-        </p>
-
-        {/* Meta Stats Row */}
-        <div className="mt-2 flex items-center gap-3.5 text-xs text-slate-400 flex-wrap pt-1">
-          <span className="flex items-center gap-1">
+        {/* 4. Meta row: Duration, Questions count, and Deadline */}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500 pt-0.5">
+          <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="clock" size={13} className="text-slate-400" />
-            <span>~{item.durationMinutes} phút làm</span>
+            <span>{t("card:exams.card.duration", { minutes: item.durationMinutes })}</span>
           </span>
-          <span className="flex items-center gap-1">
-            <Icon name="fileText" size={13} className="text-slate-400" />
-            <span>{item.totalQuestions} câu hỏi</span>
+          <span className="flex items-center gap-1.5 whitespace-nowrap">
+            <Icon name="file-text" size={13} className="text-slate-400" />
+            <span>{t("card:exams.card.questionsCount", { count: item.totalQuestions })}</span>
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="calendar" size={13} className="text-slate-400" />
-            <span>Hạn chót: <strong className="text-slate-700">{item.endDate}</strong></span>
-          </span>
-          <span className="flex items-center gap-1">
-            {isCompleted && item.completedAt ? (
-              <span className="flex items-center gap-1.5">
-                <span>Đã nộp: <strong>{item.completedAt}</strong></span>
-                {item.score !== undefined && (
-                  <Tag color="success" className="m-0 font-bold">
-                    {item.score} / {item.maxScore} đ
-                  </Tag>
-                )}
-              </span>
-            ) : (
-              <span>Học kỳ 1 • 2025-2026</span>
-            )}
+            <span>{t("card:exams.card.deadline", { date: item.endDate })}</span>
           </span>
         </div>
       </div>
 
-      {/* Footer Action */}
-      <div className="pt-3 mt-3 flex items-center justify-end gap-2">
-        <div>
+      {/* 5. Footer Row with Action */}
+      <div className="pt-3.5 mt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
+        <span className="text-[11px] text-slate-400 truncate">
+          {isCompleted && item.completedAt
+            ? t("card:exams.card.submittedAt", { date: item.completedAt })
+            : `${item.semester} • ${item.academicYear}`}
+        </span>
+
+        <div className="shrink-0">
           {isPending && (
             <Button
               variant="primary"
               onClick={() => onOpen(item)}
-              className="font-semibold flex items-center gap-1.5"
+              className="text-xs font-semibold h-8"
             >
-              <Icon name="edit" size={14} />
-              <span>Vào làm bài thi</span>
+              <span>{t("card:exams.card.startExam")}</span>
+              <Icon name="arrow-right" size={13} />
             </Button>
           )}
 
@@ -124,20 +124,20 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
             <Button
               variant="outline"
               onClick={() => onOpen(item)}
-              className="text-slate-700 font-semibold flex items-center gap-1.5"
+              className="text-xs font-semibold h-8 text-slate-700 hover:text-blue-600"
             >
-              <Icon name="eye" size={14} />
-              <span>Xem lại bài làm</span>
+              <Icon name="eye" size={13} />
+              <span>{t("card:exams.card.reviewExam")}</span>
             </Button>
           )}
 
           {isExpired && (
-            <span className="text-xs font-semibold text-slate-400 px-3 py-1.5 bg-slate-100 rounded-lg">
-              Đã đóng đề thi
+            <span className="text-xs font-semibold text-slate-400 px-3 py-1 bg-slate-100 rounded-lg">
+              {t("card:exams.card.closed")}
             </span>
           )}
         </div>
       </div>
-    </Card>
+    </div>
   );
 };

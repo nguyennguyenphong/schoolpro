@@ -763,5 +763,48 @@
       "radiusAndTimer": "半径与有效时间",
       "action": "操作"
     }
+  },
+  "exams": {
+    "summary": {
+      "totalTitle": "考试总数",
+      "pendingTitle": "待完成",
+      "completedTitle": "已完成",
+      "avgScoreTitle": "平均分"
+    },
+    "tabs": {
+      "all": "全部试卷",
+      "pending": "待完成",
+      "completed": "已完成",
+      "expired": "已截止"
+    },
+    "statuses": {
+      "pending": "待完成",
+      "completed": "已完成",
+      "expired": "已截止"
+    },
+    "filters": {
+      "searchPlaceholder": "搜索试卷、学科、教师...",
+      "allStatuses": "全部状态",
+      "viewGrid": "卡片视图",
+      "viewList": "列表视图"
+    },
+    "card": {
+      "multipleChoice": "客观题/选择题",
+      "duration": "约{{minutes}}分钟",
+      "questionsCount": "{{count}}道题",
+      "deadline": "截止时间: {{date}}",
+      "submittedAt": "提交时间: {{date}}",
+      "startExam": "进入考试",
+      "reviewExam": "查看答卷",
+      "closed": "考试已截止"
+    },
+    "empty": {
+      "noPendingTitle": "暂无待完成的考试",
+      "noPendingDesc": "当前学期的所有考试均已按时提交。",
+      "noCompletedTitle": "暂无已完成的考试",
+      "noCompletedDesc": "请查看待完成考试列表。",
+      "noMatchingTitle": "未找到符合筛选条件的考试",
+      "noMatchingDesc": "请尝试其他关键词或重置筛选条件。"
+    }
   }
 }

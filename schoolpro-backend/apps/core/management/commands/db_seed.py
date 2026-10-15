@@ -64,6 +64,10 @@ class Command(BaseCommand):
                 "seed_assignments",
                 "Academic: Assignments & Submissions (Bài tập, Bài nộp, Rubric & Nhật ký)",
             ),
+            (
+                "seed_exams",
+                "Academic: Exams & Question Bank (Đề thi trắc nghiệm, Ngân hàng câu hỏi, Bài nộp & Chấm điểm)",
+            ),
         ]
 
         total_steps = len(seed_pipeline)

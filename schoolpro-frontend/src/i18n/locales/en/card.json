@@ -763,5 +763,48 @@
       "radiusAndTimer": "Radius & Timer",
       "action": "Action"
     }
+  },
+  "exams": {
+    "summary": {
+      "totalTitle": "Total Exams",
+      "pendingTitle": "Pending",
+      "completedTitle": "Completed",
+      "avgScoreTitle": "Average Score"
+    },
+    "tabs": {
+      "all": "All Exams",
+      "pending": "Pending",
+      "completed": "Completed",
+      "expired": "Expired"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "completed": "Completed",
+      "expired": "Expired"
+    },
+    "filters": {
+      "searchPlaceholder": "Search exams, subjects, teachers...",
+      "allStatuses": "All Statuses",
+      "viewGrid": "Grid View",
+      "viewList": "List View"
+    },
+    "card": {
+      "multipleChoice": "Multiple Choice",
+      "duration": "~{{minutes}} min",
+      "questionsCount": "{{count}} questions",
+      "deadline": "Due: {{date}}",
+      "submittedAt": "Submitted: {{date}}",
+      "startExam": "Start Exam",
+      "reviewExam": "Review Exam",
+      "closed": "Exam Closed"
+    },
+    "empty": {
+      "noPendingTitle": "No exams pending",
+      "noPendingDesc": "All exams for the current semester have been submitted.",
+      "noCompletedTitle": "No exams completed yet",
+      "noCompletedDesc": "Please check your pending exams list.",
+      "noMatchingTitle": "No matching exams found",
+      "noMatchingDesc": "Try searching with a different keyword or reset filters."
+    }
   }
 }

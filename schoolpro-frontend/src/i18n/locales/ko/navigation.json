@@ -12,7 +12,8 @@
     "leaveRequestCreate": "결석계 작성",
     "leaveRequestEdit": "결석계 수정",
     "leaveRequestDetail": "상세 정보 및 처리 현황",
-    "attendance": "과목 출석 체크"
+    "attendance": "과목 출석 체크",
+    "exams": "시험 및 평가"
   },
   "pageTitle": {
     "home": "홈",
@@ -26,7 +27,8 @@
     "leaveRequestCreate": "온라인 결석계 작성",
     "leaveRequestEdit": "결석계 수정",
     "leaveRequestDetail": "결석계 상세 정보",
-    "attendance": "일별 과목 출석 체크"
+    "attendance": "일별 과목 출석 체크",
+    "exams": "온라인 시험 및 평가"
   },
   "pageSubtitle": {
     "home": "School Pro 학사 정보 및 학습 관리 시스템",
@@ -39,7 +41,8 @@
     "changePassword": "주기적인 비밀번호 변경으로 계정 보안을 철저히 유지하세요",
     "leaveRequests": "온라인 결석계를 작성하고 증빙 서류를 첨부하여 담임 교사의 승인 현황을 확인합니다",
     "leaveRequestForm": "결석 기간, 해당 수업 과목 및 보호자 확인 정보를 입력하여 담임 교사에게 승인을 요청합니다",
-    "attendance": "교사 기기의 스캔 반경 내 GPS 위도·경도 인증과 6자리 PIN 코드 또는 QR 스캔/이미지 업로드를 결합한 100% 부정 방지 온라인 출석 시스템."
+    "attendance": "교사 기기의 스캔 반경 내 GPS 위도·경도 인증과 6자리 PIN 코드 또는 QR 스캔/이미지 업로드를 결합한 100% 부정 방지 온라인 출석 시스템.",
+    "exams": "답안 자동 저장 및 제출 후 즉시 채점 기능이 있는 온라인 시간제한 시험 시스템"
   },
   "welcome": "안녕하세요, {{name}}님! 활기찬 하루 되세요.",
   "welcomeUser": "안녕하세요, {{name}}님!",

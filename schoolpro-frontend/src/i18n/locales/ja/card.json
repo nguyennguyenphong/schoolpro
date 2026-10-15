@@ -763,5 +763,48 @@
       "radiusAndTimer": "スキャン半径＆タイマー",
       "action": "操作"
     }
+  },
+  "exams": {
+    "summary": {
+      "totalTitle": "総試験数",
+      "pendingTitle": "未完了",
+      "completedTitle": "完了済み",
+      "avgScoreTitle": "平均点"
+    },
+    "tabs": {
+      "all": "すべての試験",
+      "pending": "未完了",
+      "completed": "完了済み",
+      "expired": "終了済み"
+    },
+    "statuses": {
+      "pending": "未完了",
+      "completed": "完了済み",
+      "expired": "終了済み"
+    },
+    "filters": {
+      "searchPlaceholder": "試験、科目、教師を検索...",
+      "allStatuses": "すべてのステータス",
+      "viewGrid": "カード表示",
+      "viewList": "リスト表示"
+    },
+    "card": {
+      "multipleChoice": "選択式",
+      "duration": "約{{minutes}}分",
+      "questionsCount": "{{count}}問",
+      "deadline": "締切: {{date}}",
+      "submittedAt": "提出日時: {{date}}",
+      "startExam": "試験を受ける",
+      "reviewExam": "解答を確認する",
+      "closed": "試験受付終了"
+    },
+    "empty": {
+      "noPendingTitle": "未完了の試験はありません",
+      "noPendingDesc": "今学期のすべての試験が正常に提出されました。",
+      "noCompletedTitle": "完了した試験はまだありません",
+      "noCompletedDesc": "未完了の試験リストを確認してください。",
+      "noMatchingTitle": "条件に一致する試験が見つかりません",
+      "noMatchingDesc": "別のキーワードで検索するか、フィルターをリセットしてください。"
+    }
   }
 }
