@@ -18,6 +18,16 @@ export const useExamDetail = (id?: string) => {
   const [answers, setAnswers] = useState<Record<string, number | string | string[] | boolean>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
+  const examRef = useRef<ExamItem | null>(null);
+  useEffect(() => {
+    examRef.current = exam;
+  }, [exam]);
+
+  const idRef = useRef<string | undefined>(id);
+  useEffect(() => {
+    idRef.current = id;
+  }, [id]);
+
   const answersRef = useRef(answers);
   useEffect(() => {
     answersRef.current = answers;
@@ -37,26 +47,34 @@ export const useExamDetail = (id?: string) => {
     isReadOnlyRef.current = isReadOnly;
   }, [isReadOnly]);
 
+  const hasAutoSubmittedRef = useRef(false);
+
   // Execute submission with optional allowIncomplete bypass
+  // Stable function reference with empty dependency array using refs to prevent render-loop triggers
   const executeSubmit = useCallback(
     async (options?: { allowIncomplete?: boolean }): Promise<boolean> => {
-      if (!exam || submittingRef.current || isReadOnlyRef.current) return false;
+      const currentExam = examRef.current;
+      if (!currentExam || submittingRef.current || isReadOnlyRef.current) return false;
       try {
         setSubmitting(true);
         const allowIncomplete = options?.allowIncomplete ?? false;
-        const res = await examsService.submitExam(exam.id, answersRef.current, allowIncomplete);
+        const res = await examsService.submitExam(
+          currentExam.id,
+          answersRef.current,
+          allowIncomplete
+        );
         message.success(res.message);
 
         // Clear local storage timing and drafts upon successful submission
         try {
-          localStorage.removeItem(`schoolpro_exam_timing_${exam.id}`);
-          localStorage.removeItem(`schoolpro_exam_draft_${exam.id}`);
+          localStorage.removeItem(`schoolpro_exam_timing_${currentExam.id}`);
+          localStorage.removeItem(`schoolpro_exam_draft_${currentExam.id}`);
         } catch {
           // ignore
         }
 
         // Reload fresh exam state
-        const updated = await examsService.getExamById(exam.id);
+        const updated = await examsService.getExamById(currentExam.id);
         if (updated) {
           setExam(updated);
         }
@@ -68,7 +86,7 @@ export const useExamDetail = (id?: string) => {
         setSubmitting(false);
       }
     },
-    [exam]
+    []
   );
 
   // Load exam, handle persistent wall-clock timer and drafts
@@ -147,8 +165,9 @@ export const useExamDetail = (id?: string) => {
             setAnswers({});
           }
 
-          // If time already expired while student was away, auto-submit immediately
-          if (remainingSeconds <= 0) {
+          // If time already expired while student was away, auto-submit once
+          if (remainingSeconds <= 0 && !hasAutoSubmittedRef.current) {
+            hasAutoSubmittedRef.current = true;
             message.warning(i18n.t("card:exams.messages.timeExpired"));
             void executeSubmit({ allowIncomplete: true });
           }
@@ -218,9 +237,11 @@ export const useExamDetail = (id?: string) => {
     return exam.questions.length - unansweredQuestions.length;
   }, [exam, unansweredQuestions]);
 
+  const hasExam = Boolean(exam);
+
   // Wall-clock Countdown Timer: checks wall-clock time against stored endTime
   useEffect(() => {
-    if (isReadOnly || !exam || !id) return;
+    if (isReadOnly || !hasExam || !id) return;
 
     const timer = setInterval(() => {
       const timingKey = `schoolpro_exam_timing_${id}`;
@@ -239,7 +260,8 @@ export const useExamDetail = (id?: string) => {
         const remaining = Math.max(0, Math.floor((targetEndTime - Date.now()) / 1000));
         setTimeLeft(remaining);
 
-        if (remaining <= 0) {
+        if (remaining <= 0 && !hasAutoSubmittedRef.current) {
+          hasAutoSubmittedRef.current = true;
           clearInterval(timer);
           message.warning(i18n.t("card:exams.messages.timeExpired"));
           void executeSubmit({ allowIncomplete: true });
@@ -248,7 +270,7 @@ export const useExamDetail = (id?: string) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [id, isReadOnly, exam, executeSubmit]);
+  }, [id, isReadOnly, hasExam, executeSubmit]);
 
   return {
     exam,
