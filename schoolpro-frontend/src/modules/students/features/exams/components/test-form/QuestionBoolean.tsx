@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Radio } from "antd";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
@@ -17,6 +18,8 @@ export const QuestionBoolean: React.FC<QuestionBooleanProps> = ({
   readOnly = false,
   correctAnswer,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <Radio.Group
       value={typeof value === "boolean" ? value : null}
@@ -25,15 +28,19 @@ export const QuestionBoolean: React.FC<QuestionBooleanProps> = ({
     >
       <div className="flex items-center gap-6">
         <Radio value={true} className="text-sm text-slate-800">
-          Đúng (True)
+          {t("card:exams.question.booleanTrue")}
         </Radio>
         <Radio value={false} className="text-sm text-slate-800">
-          Sai (False)
+          {t("card:exams.question.booleanFalse")}
         </Radio>
 
         {readOnly && correctAnswer !== undefined && (
           <Tag color="success" className="font-semibold m-0 text-xs">
-            Đáp án đúng: {correctAnswer ? "Đúng" : "Sai"}
+            {t("card:exams.question.correctAnswerIs", {
+              answer: correctAnswer
+                ? t("card:exams.question.booleanTrue")
+                : t("card:exams.question.booleanFalse"),
+            })}
           </Tag>
         )}
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Radio } from "antd";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
@@ -19,6 +20,7 @@ export const QuestionRadio: React.FC<QuestionRadioProps> = ({
   readOnly = false,
   correctAnswer,
 }) => {
+  const { t } = useTranslation(["card"]);
   const options = question.options || [];
 
   return (
@@ -48,12 +50,12 @@ export const QuestionRadio: React.FC<QuestionRadioProps> = ({
                 <div className="shrink-0">
                   {isTargetCorrect && (
                     <Tag color="success" className="font-semibold m-0 text-xs">
-                      Đáp án đúng
+                      {t("card:exams.question.correctAnswerTag")}
                     </Tag>
                   )}
                   {isSelected && !isTargetCorrect && (
                     <Tag color="error" className="font-semibold m-0 text-xs">
-                      Đã chọn
+                      {t("card:exams.question.selectedTag")}
                     </Tag>
                   )}
                 </div>

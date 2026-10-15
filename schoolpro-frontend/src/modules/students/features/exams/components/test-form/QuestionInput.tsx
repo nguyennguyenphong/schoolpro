@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
@@ -16,10 +17,12 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
   onChange,
   readOnly = false,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <div className="space-y-2">
       <Input
-        placeholder={question.placeholder || "Nhập câu trả lời của bạn vào đây"}
+        placeholder={question.placeholder || t("card:exams.question.inputPlaceholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={readOnly}

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { DatePicker } from "@/components/ui/DatePicker";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
@@ -15,6 +16,8 @@ export const QuestionDate: React.FC<QuestionDateProps> = ({
   onChange,
   readOnly = false,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <div className="space-y-2">
       <DatePicker
@@ -28,7 +31,7 @@ export const QuestionDate: React.FC<QuestionDateProps> = ({
           }
         }}
         format="DD/MM/YYYY"
-        placeholder="Chọn ngày..."
+        placeholder={t("card:exams.question.datePlaceholder")}
         className="w-full max-w-xs"
       />
     </div>

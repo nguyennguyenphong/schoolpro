@@ -780,7 +780,9 @@
     "statuses": {
       "pending": "Pending",
       "completed": "Completed",
-      "expired": "Expired"
+      "expired": "Expired",
+      "passed": "Passed",
+      "failed": "Failed"
     },
     "filters": {
       "searchPlaceholder": "Search exams, subjects, teachers...",
@@ -805,6 +807,84 @@
       "noCompletedDesc": "Please check your pending exams list.",
       "noMatchingTitle": "No matching exams found",
       "noMatchingDesc": "Try searching with a different keyword or reset filters."
+    },
+    "detail": {
+      "notFoundTitle": "Exam not found",
+      "notFoundDesc": "The exam does not exist or has been removed from the system.",
+      "backToList": "Back to exams list",
+      "durationMinutes": "{{minutes}} min duration",
+      "deadline": "Due: {{date}}",
+      "achievedScore": "Score:",
+      "infoTitle": "Exam Information",
+      "durationLabel": "Duration",
+      "totalQuestionsLabel": "Questions",
+      "maxScoreLabel": "Max Score",
+      "passingScoreLabel": "Passing Score",
+      "deadlineLabel": "Deadline",
+      "startDateLabel": "Start Date",
+      "notesTitle": "Regulations & Instructions:",
+      "noteSingleAttempt": "Single attempt only",
+      "noteAutoSubmit": "System auto-submits when time expires",
+      "noteRequiredQuestions": "Questions marked with (*) are required",
+      "completedPassed": "Congratulations! You have passed this exam.",
+      "completedFailed": "You have completed the exam (Did not meet passing score).",
+      "submittedAtAutoGraded": "Submitted at: {{date}} • Exam has been automatically graded.",
+      "pointsSuffix": "pts",
+      "today": "Today"
+    },
+    "sidebar": {
+      "resultTitle": "Exam Result",
+      "completedQuestionsCount": "Completed {{answered}}/{{total}} questions",
+      "timeLeft": "Time Remaining",
+      "urgent": "Hurry Up!",
+      "progress": "Exam Progress",
+      "progressText": "{{answered}}/{{total}} questions ({{percent}}%)",
+      "questionsList": "Questions Palette ({{count}})",
+      "answeredProgress": "Answered {{answered}}/{{total}}",
+      "answered": "Answered ({{count}})",
+      "unanswered": "Unanswered ({{count}})",
+      "submitNow": "Submit Exam Now",
+      "questionTooltip": "Question {{index}}: {{status}}",
+      "statusAnswered": "Answered",
+      "statusUnanswered": "Unanswered"
+    },
+    "question": {
+      "number": "Question {{index}}",
+      "points": "{{points}} pts",
+      "required": "* Required",
+      "requiredMark": "Required question",
+      "correctAnswerTag": "Correct Answer",
+      "selectedTag": "Selected",
+      "recordedTag": "Recorded",
+      "booleanTrue": "True",
+      "booleanFalse": "False",
+      "correctAnswerIs": "Correct Answer: {{answer}}",
+      "explanationTitle": "Detailed Explanation:",
+      "starsCount": "{{value}} / {{max}} stars",
+      "inputPlaceholder": "Enter your answer here...",
+      "textareaPlaceholder": "Enter your detailed response...",
+      "selectPlaceholder": "-- Select an answer from the list --",
+      "datePlaceholder": "Select date...",
+      "charactersCount": "{{count}} characters"
+    },
+    "submitModal": {
+      "title": "Confirm Exam Submission",
+      "confirmQuestion": "Are you sure you want to submit the exam \"{{title}}\"?",
+      "totalQuestions": "Total Questions:",
+      "answeredCount": "Answered:",
+      "unansweredCount": "Unanswered:",
+      "warning": "After submission, you will not be able to edit your answers. The system will automatically grade and record the result.",
+      "unansweredWarning": "You still have {{count}} unanswered questions!",
+      "confirmButton": "Confirm Submission",
+      "confirmButtonUnfinished": "Submit Anyway"
+    },
+    "messages": {
+      "listLoadError": "Unable to load the list of exams.",
+      "loadError": "Unable to load exam details.",
+      "requiredWarning": "Please answer the required question: \"{{title}}\"",
+      "timeExpired": "Time's up! The system is automatically submitting your exam.",
+      "submitSuccess": "Exam submitted successfully!",
+      "submitError": "An error occurred while submitting the exam. Please try again."
     }
   }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Rate } from "@/components/ui/Rate";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
@@ -15,6 +16,7 @@ export const QuestionRating: React.FC<QuestionRatingProps> = ({
   onChange,
   readOnly = false,
 }) => {
+  const { t } = useTranslation(["card"]);
   const max = question.ratingMax || 5;
 
   return (
@@ -31,7 +33,7 @@ export const QuestionRating: React.FC<QuestionRatingProps> = ({
       />
       {value > 0 && (
         <span className="text-sm font-medium text-slate-600">
-          {value} / {max} sao
+          {t("card:exams.question.starsCount", { value, max })}
         </span>
       )}
     </div>

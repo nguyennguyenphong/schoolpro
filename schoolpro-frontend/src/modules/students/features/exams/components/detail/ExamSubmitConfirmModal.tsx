@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -22,6 +23,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
   onCancel,
   onConfirm,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
   const isAllAnswered = answeredCount >= totalQuestions;
 
   return (
@@ -29,7 +31,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
       title={
         <div className="flex items-center gap-2 text-base font-bold text-slate-900">
           <Icon name="checkCircle" size={18} className="text-blue-600" />
-          <span>Xác nhận nộp bài thi</span>
+          <span>{t("card:exams.submitModal.title")}</span>
         </div>
       }
       open={open}
@@ -42,7 +44,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
           disabled={submitting}
           className="text-xs font-semibold"
         >
-          Tiếp tục làm bài
+          {t("button:cancel")}
         </Button>,
         <Button
           key="submit"
@@ -51,14 +53,16 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
           loading={submitting}
           className="text-xs font-semibold"
         >
-          Xác nhận nộp bài
+          {isAllAnswered
+            ? t("card:exams.submitModal.confirmButton")
+            : t("card:exams.submitModal.confirmButtonUnfinished")}
         </Button>,
       ]}
       centered
     >
       <div className="py-2.5 space-y-3.5 text-xs sm:text-sm text-slate-600">
         <p className="leading-relaxed mb-0">
-          Bạn có chắc chắn muốn nộp bài thi <strong className="text-slate-800">"{examTitle}"</strong> không?
+          {t("card:exams.submitModal.confirmQuestion", { title: examTitle })}
         </p>
 
         {/* Status statistics */}
@@ -69,10 +73,10 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
               size={16}
               className={isAllAnswered ? "text-emerald-600" : "text-amber-500"}
             />
-            <span className="font-semibold text-slate-700">Tiến độ câu hỏi:</span>
+            <span className="font-semibold text-slate-700">{t("card:exams.sidebar.progress")}:</span>
           </div>
           <span className="font-extrabold text-slate-900">
-            {answeredCount} / {totalQuestions} câu
+            {answeredCount} / {totalQuestions}
           </span>
         </div>
 
@@ -80,14 +84,13 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
         <div className="bg-blue-50/70 border border-blue-200/80 rounded-xl p-3.5 text-xs text-blue-900 space-y-1.5">
           <div className="font-bold flex items-center gap-1.5 text-blue-800">
             <Icon name="info" size={13} />
-            <span>Lưu ý khi nộp bài:</span>
+            <span>{t("card:exams.detail.notesTitle")}</span>
           </div>
           <ul className="list-disc list-inside space-y-1 text-slate-600 pl-0.5">
-            <li>Sau khi nộp, hệ thống sẽ khóa bài thi và bạn không thể sửa đổi câu trả lời.</li>
-            <li>Hệ thống tự động chấm điểm và hiển thị kết quả cho bạn ngay sau khi nộp.</li>
+            <li>{t("card:exams.submitModal.warning")}</li>
             {!isAllAnswered && (
               <li className="text-amber-700 font-semibold">
-                Bạn vẫn còn {totalQuestions - answeredCount} câu hỏi chưa trả lời!
+                {t("card:exams.submitModal.unansweredWarning", { count: totalQuestions - answeredCount })}
               </li>
             )}
           </ul>

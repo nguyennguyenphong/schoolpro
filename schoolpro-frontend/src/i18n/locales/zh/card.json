@@ -780,7 +780,9 @@
     "statuses": {
       "pending": "待完成",
       "completed": "已完成",
-      "expired": "已截止"
+      "expired": "已截止",
+      "passed": "合格",
+      "failed": "未通过"
     },
     "filters": {
       "searchPlaceholder": "搜索试卷、学科、教师...",
@@ -805,6 +807,84 @@
       "noCompletedDesc": "请查看待完成考试列表。",
       "noMatchingTitle": "未找到符合筛选条件的考试",
       "noMatchingDesc": "请尝试其他关键词或重置筛选条件。"
+    },
+    "detail": {
+      "notFoundTitle": "未找到考试",
+      "notFoundDesc": "该考试不存在或已被系统移除。",
+      "backToList": "返回考试列表",
+      "durationMinutes": "考试时长 {{minutes}} 分钟",
+      "deadline": "截止时间: {{date}}",
+      "achievedScore": "得分:",
+      "infoTitle": "考试详情",
+      "durationLabel": "考试时长",
+      "totalQuestionsLabel": "题目数量",
+      "maxScoreLabel": "满分",
+      "passingScoreLabel": "及格分",
+      "deadlineLabel": "答题截止",
+      "startDateLabel": "开考时间",
+      "notesTitle": "考场纪律与注意事项:",
+      "noteSingleAttempt": "仅允许参加一次考试",
+      "noteAutoSubmit": "考试倒计时结束时系统自动交卷",
+      "noteRequiredQuestions": "标有 (*) 的题目为必答题",
+      "completedPassed": "祝贺！您已通过本次考试。",
+      "completedFailed": "您已完成考试（未达到合格分数线）。",
+      "submittedAtAutoGraded": "提交于：{{date}} • 试卷已自动批改。",
+      "pointsSuffix": "分",
+      "today": "今天"
+    },
+    "sidebar": {
+      "resultTitle": "考试成绩",
+      "completedQuestionsCount": "已完成 {{answered}}/{{total}} 道题目",
+      "timeLeft": "剩余时间",
+      "urgent": "即将截卷!",
+      "progress": "答题进度",
+      "progressText": "{{answered}}/{{total}} 题 ({{percent}}%)",
+      "questionsList": "题目答题卡 ({{count}})",
+      "answeredProgress": "已答 {{answered}}/{{total}}",
+      "answered": "已答 ({{count}})",
+      "unanswered": "未答 ({{count}})",
+      "submitNow": "立即提交试卷",
+      "questionTooltip": "第 {{index}} 题: {{status}}",
+      "statusAnswered": "已解答",
+      "statusUnanswered": "未解答"
+    },
+    "question": {
+      "number": "第 {{index}} 题",
+      "points": "{{points}} 分",
+      "required": "* 必答",
+      "requiredMark": "必答题",
+      "correctAnswerTag": "正确答案",
+      "selectedTag": "已选",
+      "recordedTag": "已记录",
+      "booleanTrue": "正确 (True)",
+      "booleanFalse": "错误 (False)",
+      "correctAnswerIs": "正确答案: {{answer}}",
+      "explanationTitle": "详细解析:",
+      "starsCount": "{{value}} / {{max}} 星",
+      "inputPlaceholder": "请输入您的答案...",
+      "textareaPlaceholder": "请输入您的详细作答...",
+      "selectPlaceholder": "-- 从列表中选择答案 --",
+      "datePlaceholder": "选择日期...",
+      "charactersCount": "{{count}} 字符"
+    },
+    "submitModal": {
+      "title": "确认交卷",
+      "confirmQuestion": "您确定要提交试卷“{{title}}”吗？",
+      "totalQuestions": "总题目数:",
+      "answeredCount": "已答题目:",
+      "unansweredCount": "未答题目:",
+      "warning": "提交后将无法修改答案。系统将自动判分并记录成绩。",
+      "unansweredWarning": "您还有 {{count}} 道题目未作答！",
+      "confirmButton": "确认交卷",
+      "confirmButtonUnfinished": "坚持交卷"
+    },
+    "messages": {
+      "listLoadError": "无法加载考试列表。",
+      "loadError": "无法加载试卷信息。",
+      "requiredWarning": "请先完成必答题：“{{title}}”",
+      "timeExpired": "考试时间到！系统正在自动为您交卷。",
+      "submitSuccess": "交卷成功！",
+      "submitError": "交卷时发生错误，请重试。"
     }
   }
 }

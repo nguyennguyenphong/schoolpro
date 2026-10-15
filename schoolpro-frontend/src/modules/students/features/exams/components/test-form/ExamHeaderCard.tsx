@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 
@@ -7,6 +8,7 @@ interface ExamHeaderCardProps {
 }
 
 export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
+  const { t } = useTranslation(["card"]);
   const isCompleted = exam.status === "completed";
   const isPassed = exam.score !== undefined && exam.score >= (exam.passingScore ?? 5.0);
 
@@ -17,37 +19,37 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-              Thời gian làm bài
+              {t("card:exams.detail.durationLabel")}
             </span>
             <span className="text-sm sm:text-base font-extrabold text-slate-800">
-              {exam.durationMinutes} phút
+              {t("card:exams.card.duration", { minutes: exam.durationMinutes })}
             </span>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-              Số lượng câu hỏi
+              {t("card:exams.detail.totalQuestionsLabel")}
             </span>
             <span className="text-sm sm:text-base font-extrabold text-slate-800">
-              {exam.questions.length || exam.totalQuestions} câu
+              {t("card:exams.card.questionsCount", { count: exam.questions.length || exam.totalQuestions })}
             </span>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-              Thang điểm tối đa
+              {t("card:exams.detail.maxScoreLabel")}
             </span>
             <span className="text-sm sm:text-base font-extrabold text-blue-600">
-              {exam.maxScore} điểm
+              {t("card:exams.question.points", { points: exam.maxScore })}
             </span>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-              Điểm đạt yêu cầu
+              {t("card:exams.detail.passingScoreLabel")}
             </span>
             <span className="text-sm sm:text-base font-extrabold text-emerald-600">
-              ≥ {exam.passingScore ?? 5.0} điểm
+              ≥ {t("card:exams.question.points", { points: exam.passingScore ?? 5.0 })}
             </span>
           </div>
         </div>
@@ -71,10 +73,14 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
               </span>
               <div>
                 <h4 className="text-xs sm:text-sm font-bold mb-0.5">
-                  {isPassed ? "Chúc mừng! Bạn đã hoàn thành và đạt bài thi này." : "Bạn đã hoàn thành bài thi (Chưa đạt mức điểm yêu cầu)."}
+                  {isPassed
+                    ? t("card:exams.detail.completedPassed")
+                    : t("card:exams.detail.completedFailed")}
                 </h4>
                 <p className="text-[11px] opacity-80 mb-0">
-                  Nộp lúc: {exam.completedAt || "Hôm nay"} • Đề thi đã được chấm điểm tự động.
+                  {t("card:exams.detail.submittedAtAutoGraded", {
+                    date: exam.completedAt || t("card:exams.detail.today"),
+                  })}
                 </p>
               </div>
             </div>

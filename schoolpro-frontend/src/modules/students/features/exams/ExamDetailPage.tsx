@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "antd";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -18,6 +19,7 @@ import { useExamDetail } from "@/modules/students/features/exams/hooks";
 export const ExamDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation(["card", "button"]);
 
   const {
     exam,
@@ -47,7 +49,7 @@ export const ExamDetailPage: React.FC = () => {
   const handlePreSubmit = () => {
     const { valid, unansweredQuestion } = validateRequired();
     if (!valid && unansweredQuestion) {
-      message.warning(`Vui lòng trả lời câu hỏi bắt buộc: "${unansweredQuestion.title}"`);
+      message.warning(t("card:exams.messages.requiredWarning", { title: unansweredQuestion.title }));
       handleScrollToQuestion(unansweredQuestion.id);
       return;
     }
@@ -70,12 +72,12 @@ export const ExamDetailPage: React.FC = () => {
         <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
           <Icon name="file-text" size={24} />
         </div>
-        <h3 className="text-base font-bold text-slate-800 mb-0">Không tìm thấy bài thi</h3>
+        <h3 className="text-base font-bold text-slate-800 mb-0">{t("card:exams.detail.notFoundTitle")}</h3>
         <p className="text-xs text-slate-500 mb-3">
-          Bài thi không tồn tại hoặc đã bị gỡ khỏi hệ thống.
+          {t("card:exams.detail.notFoundDesc")}
         </p>
         <Button variant="primary" onClick={() => navigate("/student/exams")}>
-          Quay lại danh sách bài thi
+          {t("card:exams.detail.backToList")}
         </Button>
       </div>
     );

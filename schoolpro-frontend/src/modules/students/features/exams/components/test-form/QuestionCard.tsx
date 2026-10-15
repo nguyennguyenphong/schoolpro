@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
@@ -21,7 +22,6 @@ interface QuestionCardProps {
   awardedScore?: number;
 }
 
-
 export const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   index,
@@ -31,6 +31,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   isCorrect,
   awardedScore,
 }) => {
+  const { t } = useTranslation(["card"]);
   const points = question.points ?? 1.0;
   const normalizedType =
     question.type === "single_choice"
@@ -180,10 +181,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-bold text-xs border border-blue-200">
-            Câu {index + 1}
+            {t("card:exams.question.number", { index: index + 1 })}
           </span>
           <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold text-xs border border-slate-200">
-            {points.toFixed(1)} điểm
+            {t("card:exams.question.points", { points: points.toFixed(1) })}
           </span>
           {question.sectionName && (
             <span className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-xs border border-indigo-200 hidden sm:inline-block">
@@ -198,16 +199,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             {effectiveIsCorrect === true ? (
               <Tag color="success" className="font-bold flex items-center gap-1 m-0">
                 <Icon name="checkCircle" size={13} />
-                +{awardedScore ?? points} điểm
+                +{t("card:exams.question.points", { points: awardedScore ?? points })}
               </Tag>
             ) : effectiveIsCorrect === false ? (
               <Tag color="error" className="font-bold flex items-center gap-1 m-0">
                 <Icon name="close" size={13} />
-                {awardedScore ?? 0} / {points} điểm
+                {awardedScore ?? 0} / {t("card:exams.question.points", { points })}
               </Tag>
             ) : (
               <Tag color="processing" className="font-semibold m-0">
-                Đã ghi nhận
+                {t("card:exams.question.recordedTag")}
               </Tag>
             )}
           </div>
@@ -215,9 +216,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           question.required && (
             <span
               className="text-rose-500 font-bold text-xs bg-rose-50 px-2 py-0.5 rounded border border-rose-200"
-              title="Câu hỏi bắt buộc"
+              title={t("card:exams.question.requiredMark")}
             >
-              * Bắt buộc
+              {t("card:exams.question.required")}
             </span>
           )
         )}
@@ -246,7 +247,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         <div className="pt-3 border-t border-[#f0f0f0] space-y-2.5">
           {question.correctAnswer !== undefined && (
             <div className="flex items-center gap-2 text-xs sm:text-sm bg-emerald-50 text-emerald-800 p-3 rounded-xl border border-emerald-200">
-              <span className="font-bold shrink-0">Đáp án chính xác:</span>
+              <span className="font-bold shrink-0">{t("card:exams.question.correctAnswerTag")}:</span>
               <span className="font-semibold">
                 {Array.isArray(question.correctAnswer)
                   ? question.correctAnswer.join(", ")
@@ -259,7 +260,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             <div className="text-xs sm:text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
               <div className="font-bold text-slate-700 flex items-center gap-1.5">
                 <Icon name="info" size={14} className="text-blue-500" />
-                Giải thích chi tiết:
+                {t("card:exams.question.explanationTitle")}
               </div>
               <p className="leading-relaxed m-0">{question.explanation}</p>
             </div>

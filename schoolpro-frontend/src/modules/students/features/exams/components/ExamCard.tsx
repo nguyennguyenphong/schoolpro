@@ -21,7 +21,7 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
       return (
         <Tag color="success" className="m-0 font-semibold text-xs whitespace-nowrap">
           {item.score !== undefined
-            ? `${item.score}/${item.maxScore} đ`
+            ? `${item.score}/${item.maxScore} ${t("card:exams.detail.pointsSuffix")}`
             : t("card:exams.statuses.completed")}
         </Tag>
       );

@@ -780,7 +780,9 @@
     "statuses": {
       "pending": "진행 대기",
       "completed": "완료됨",
-      "expired": "마감됨"
+      "expired": "마감됨",
+      "passed": "합격",
+      "failed": "불합격"
     },
     "filters": {
       "searchPlaceholder": "시험, 과목, 교사 검색...",
@@ -805,6 +807,84 @@
       "noCompletedDesc": "대기 중인 시험 목록을 확인해주세요.",
       "noMatchingTitle": "일치하는 시험을 찾을 수 없습니다",
       "noMatchingDesc": "다른 검색어로 검색하거나 필터를 초기화해보세요."
+    },
+    "detail": {
+      "notFoundTitle": "시험을 찾을 수 없습니다",
+      "notFoundDesc": "해당 시험이 존재하지 않거나 시스템에서 삭제되었습니다.",
+      "backToList": "시험 목록으로 돌아가기",
+      "durationMinutes": "{{minutes}}분 시험",
+      "deadline": "마감: {{date}}",
+      "achievedScore": "획득 점수:",
+      "infoTitle": "시험 정보",
+      "durationLabel": "시험 시간",
+      "totalQuestionsLabel": "문항 수",
+      "maxScoreLabel": "배점",
+      "passingScoreLabel": "합격 점수",
+      "deadlineLabel": "제출 기한",
+      "startDateLabel": "시작 일시",
+      "notesTitle": "주의사항 및 응시 규정:",
+      "noteSingleAttempt": "1회만 응시 가능합니다",
+      "noteAutoSubmit": "제한 시간 종료 시 자동으로 제출됩니다",
+      "noteRequiredQuestions": "(*) 표시된 문항은 필수입니다",
+      "completedPassed": "축하합니다! 시험을 통과했습니다.",
+      "completedFailed": "시험을 완료했습니다 (합격 기준 미달).",
+      "submittedAtAutoGraded": "제출 시간: {{date}} • 시험이 자동 채점되었습니다.",
+      "pointsSuffix": "점",
+      "today": "오늘"
+    },
+    "sidebar": {
+      "resultTitle": "시험 결과",
+      "completedQuestionsCount": "{{total}}문항 중 {{answered}}문항 완료",
+      "timeLeft": "남은 시간",
+      "urgent": "마감 임박!",
+      "progress": "진행률",
+      "progressText": "{{answered}}/{{total}}문항 ({{percent}}%)",
+      "questionsList": "문항 답안지 ({{count}})",
+      "answeredProgress": "답변 완료 {{answered}}/{{total}}",
+      "answered": "답변 완료 ({{count}})",
+      "unanswered": "미답변 ({{count}})",
+      "submitNow": "시험 제출하기",
+      "questionTooltip": "문항 {{index}}: {{status}}",
+      "statusAnswered": "답변 완료",
+      "statusUnanswered": "미답변"
+    },
+    "question": {
+      "number": "문항 {{index}}",
+      "points": "{{points}}점",
+      "required": "* 필수",
+      "requiredMark": "필수 문항",
+      "correctAnswerTag": "정답",
+      "selectedTag": "선택됨",
+      "recordedTag": "기록됨",
+      "booleanTrue": "참 (True)",
+      "booleanFalse": "거짓 (False)",
+      "correctAnswerIs": "정답: {{answer}}",
+      "explanationTitle": "해설:",
+      "starsCount": "{{value}} / {{max}} 점",
+      "inputPlaceholder": "답안을 입력하세요...",
+      "textareaPlaceholder": "서술형 답안을 입력하세요...",
+      "selectPlaceholder": "-- 목록에서 답안을 선택하세요 --",
+      "datePlaceholder": "날짜 선택...",
+      "charactersCount": "{{count}}자"
+    },
+    "submitModal": {
+      "title": "시험 제출 확인",
+      "confirmQuestion": "\"{{title}}\" 시험을 제출하시겠습니까?",
+      "totalQuestions": "총 문항 수:",
+      "answeredCount": "답변 완료:",
+      "unansweredCount": "미답변:",
+      "warning": "제출 후에는 답안을 수정할 수 없습니다. 시스템에서 자동으로 채점하고 결과를 기록합니다.",
+      "unansweredWarning": "아직 답변하지 않은 문항이 {{count}}개 있습니다!",
+      "confirmButton": "제출 확인",
+      "confirmButtonUnfinished": "그대로 제출"
+    },
+    "messages": {
+      "listLoadError": "시험 목록을 불러올 수 없습니다.",
+      "loadError": "시험 정보를 불러올 수 없습니다.",
+      "requiredWarning": "필수 문항에 답변해주세요: \"{{title}}\"",
+      "timeExpired": "시험 시간이 종료되었습니다! 시험이 자동으로 제출됩니다.",
+      "submitSuccess": "시험이 성공적으로 제출되었습니다!",
+      "submitError": "시험 제출 중 오류가 발생했습니다. 다시 시도해주세요."
     }
   }
 }

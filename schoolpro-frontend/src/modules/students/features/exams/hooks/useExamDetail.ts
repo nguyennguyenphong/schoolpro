@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { message } from "antd";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 import { examsService } from "@/modules/students/features/exams/services";
 import { isAnswerFilled } from "@/modules/students/features/exams/utils";
 
 export const useExamDetail = (id?: string) => {
+  const { t } = useTranslation(["card"]);
   const [exam, setExam] = useState<ExamItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +43,7 @@ export const useExamDetail = (id?: string) => {
           }
         }
       } catch {
-        message.error("Không thể tải thông tin đề thi.");
+        message.error(t("card:exams.messages.loadError"));
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -53,7 +55,7 @@ export const useExamDetail = (id?: string) => {
     return () => {
       ignore = true;
     };
-  }, [id]);
+  }, [id, t]);
 
   const isCompleted = exam?.status === "completed";
   const isExpired = exam?.status === "expired";
@@ -107,11 +109,11 @@ export const useExamDetail = (id?: string) => {
         setExam(updated);
       }
     } catch {
-      message.error("Đã xảy ra lỗi khi nộp bài thi. Vui lòng thử lại.");
+      message.error(t("card:exams.messages.submitError"));
     } finally {
       setSubmitting(false);
     }
-  }, [exam, answers]);
+  }, [exam, answers, t]);
 
   // Validate required questions before submit
   const validateRequired = useCallback((): {
@@ -140,7 +142,7 @@ export const useExamDetail = (id?: string) => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          message.warning("Hết thời gian làm bài! Hệ thống đang tự động nộp bài thi.");
+          message.warning(t("card:exams.messages.timeExpired"));
           executeSubmit();
           return 0;
         }
@@ -149,7 +151,7 @@ export const useExamDetail = (id?: string) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isReadOnly, exam, timeLeft, executeSubmit]);
+  }, [isReadOnly, exam, timeLeft, executeSubmit, t]);
 
   return {
     exam,

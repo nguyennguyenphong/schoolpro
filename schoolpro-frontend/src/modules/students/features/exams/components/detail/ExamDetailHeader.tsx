@@ -27,7 +27,7 @@ export const ExamDetailHeader: React.FC<ExamDetailHeaderProps> = ({
           color={isPassed ? "success" : "error"}
           className="m-0 text-xs font-bold px-2.5 py-0.5 whitespace-nowrap"
         >
-          {isPassed ? t("card:exams.statuses.completed") : "Chưa đạt"}
+          {isPassed ? t("card:exams.statuses.passed") : t("card:exams.statuses.failed")}
         </Tag>
       );
     }
@@ -104,11 +104,11 @@ export const ExamDetailHeader: React.FC<ExamDetailHeaderProps> = ({
             )}
             <span className="flex items-center gap-1.5 whitespace-nowrap">
               <Icon name="clock" size={13} className="text-slate-400" />
-              <span>{exam.durationMinutes} phút làm bài</span>
+              <span>{t("card:exams.detail.durationMinutes", { minutes: exam.durationMinutes })}</span>
             </span>
             <span className="flex items-center gap-1.5 whitespace-nowrap">
               <Icon name="calendar" size={13} className="text-slate-400" />
-              <span>Hạn: {exam.endDate}</span>
+              <span>{t("card:exams.detail.deadline", { date: exam.endDate })}</span>
             </span>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 import type {
   ExamItem,
@@ -9,6 +10,7 @@ import type {
 import { examsService } from "@/modules/students/features/exams/services";
 
 export const useExams = () => {
+  const { t } = useTranslation(["card"]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Read status from URL param
@@ -85,11 +87,11 @@ export const useExams = () => {
       setExams(list);
       setSummary(sum);
     } catch {
-      message.error("Không thể tải danh sách đề thi trắc nghiệm.");
+      message.error(t("card:exams.messages.listLoadError"));
     } finally {
       setLoading(false);
     }
-  }, [filter]);
+  }, [filter, t]);
 
   useEffect(() => {
     let ignore = false;
@@ -106,7 +108,7 @@ export const useExams = () => {
         }
       } catch {
         if (!ignore) {
-          message.error("Lỗi khi tải dữ liệu bài thi.");
+          message.error(t("card:exams.messages.listLoadError"));
         }
       } finally {
         if (!ignore) {
@@ -119,7 +121,7 @@ export const useExams = () => {
     return () => {
       ignore = true;
     };
-  }, [filter]);
+  }, [filter, t]);
 
   return {
     filter,

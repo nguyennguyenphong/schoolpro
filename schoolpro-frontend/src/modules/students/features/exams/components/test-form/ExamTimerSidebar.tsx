@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Progress } from "antd";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -28,6 +29,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
   score,
   maxScore = 10,
 }) => {
+  const { t } = useTranslation(["card"]);
   const total = questions.length;
   const answeredCount = questions.filter((q) => isQuestionAnswered(q.id)).length;
   const progressPercent = total > 0 ? Math.round((answeredCount / total) * 100) : 0;
@@ -44,7 +46,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
         {readOnly ? (
           <div className="text-center space-y-1.5">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Kết quả bài thi
+              {t("card:exams.sidebar.resultTitle")}
             </span>
             <div className="flex items-baseline justify-center gap-1.5">
               <span className="text-3xl sm:text-4xl font-extrabold text-blue-600 tracking-tight">
@@ -53,7 +55,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
               <span className="text-base sm:text-lg font-bold text-slate-400">/{maxScore}</span>
             </div>
             <p className="text-xs text-slate-500 mb-0">
-              Đã hoàn thành {answeredCount}/{total} câu hỏi
+              {t("card:exams.sidebar.completedQuestionsCount", { answered: answeredCount, total })}
             </p>
           </div>
         ) : (
@@ -61,11 +63,11 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                 <Icon name="clock" size={14} className={isUrgent ? "text-rose-500" : "text-blue-500"} />
-                Thời gian còn lại
+                {t("card:exams.sidebar.timeLeft")}
               </span>
               {isUrgent && (
                 <span className="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 animate-pulse">
-                  Sắp hết giờ!
+                  {t("card:exams.sidebar.urgent")}
                 </span>
               )}
             </div>
@@ -85,9 +87,9 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
         {/* 2. Progress */}
         <div className="pt-2 mt-3">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
-            <span>Tiến độ làm bài</span>
+            <span>{t("card:exams.sidebar.progress")}</span>
             <span>
-              {answeredCount}/{total} câu ({progressPercent}%)
+              {t("card:exams.sidebar.progressText", { answered: answeredCount, total, percent: progressPercent })}
             </span>
           </div>
           <Progress
@@ -105,10 +107,10 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
         <Card className="shadow-2xs">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-0">
-              Danh sách câu hỏi ({total})
+              {t("card:exams.sidebar.questionsList", { count: total })}
             </h4>
             <span className="text-[11px] font-medium text-blue-600">
-              Đã làm {answeredCount}/{total}
+              {t("card:exams.sidebar.answeredProgress", { answered: answeredCount, total })}
             </span>
           </div>
 
@@ -127,7 +129,12 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
                       ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 font-bold shadow-xs"
                       : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 font-medium"
                   }`}
-                  title={`Câu ${idx + 1}: ${isAnswered ? "Đã trả lời" : "Chưa trả lời"}`}
+                  title={t("card:exams.sidebar.questionTooltip", {
+                    index: idx + 1,
+                    status: isAnswered
+                      ? t("card:exams.sidebar.statusAnswered")
+                      : t("card:exams.sidebar.statusUnanswered"),
+                  })}
                 >
                   {idx + 1}
                 </button>
@@ -139,11 +146,15 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
           <div className="flex items-center justify-center gap-4 pt-2.5 text-[11px] text-slate-500 mt-3">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded bg-emerald-600 inline-block shrink-0" />
-              <span className="font-medium text-slate-700">Đã làm ({answeredCount})</span>
+              <span className="font-medium text-slate-700">
+                {t("card:exams.sidebar.answered", { count: answeredCount })}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded bg-white border border-slate-300 inline-block shrink-0" />
-              <span>Chưa làm ({total - answeredCount})</span>
+              <span>
+                {t("card:exams.sidebar.unanswered", { count: total - answeredCount })}
+              </span>
             </div>
           </div>
         </Card>
@@ -158,7 +169,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
           className="w-full h-11 text-xs sm:text-sm font-bold shadow-md shadow-blue-500/15"
         >
           <Icon name="checkCircle" size={16} className="mr-1.5" />
-          <span>Nộp bài thi ngay</span>
+          <span>{t("card:exams.sidebar.submitNow")}</span>
         </Button>
       )}
     </div>

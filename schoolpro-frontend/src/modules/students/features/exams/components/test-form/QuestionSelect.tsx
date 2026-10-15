@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Select } from "@/components/ui/Select";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
@@ -16,6 +17,7 @@ export const QuestionSelect: React.FC<QuestionSelectProps> = ({
   onChange,
   readOnly = false,
 }) => {
+  const { t } = useTranslation(["card"]);
   const options = (question.options || []).map((opt) => ({
     label: opt,
     value: opt,
@@ -24,7 +26,7 @@ export const QuestionSelect: React.FC<QuestionSelectProps> = ({
   return (
     <div className="space-y-1">
       <Select
-        placeholder={question.placeholder || "Chọn câu trả lời từ danh sách"}
+        placeholder={question.placeholder || t("card:exams.question.selectPlaceholder")}
         value={value || undefined}
         onChange={(val) => onChange(String(val))}
         disabled={readOnly}

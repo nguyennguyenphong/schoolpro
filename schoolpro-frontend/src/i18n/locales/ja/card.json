@@ -780,7 +780,9 @@
     "statuses": {
       "pending": "未完了",
       "completed": "完了済み",
-      "expired": "終了済み"
+      "expired": "終了済み",
+      "passed": "合格",
+      "failed": "不合格"
     },
     "filters": {
       "searchPlaceholder": "試験、科目、教師を検索...",
@@ -805,6 +807,84 @@
       "noCompletedDesc": "未完了の試験リストを確認してください。",
       "noMatchingTitle": "条件に一致する試験が見つかりません",
       "noMatchingDesc": "別のキーワードで検索するか、フィルターをリセットしてください。"
+    },
+    "detail": {
+      "notFoundTitle": "試験が見つかりません",
+      "notFoundDesc": "試験が存在しないか、システムから削除されました。",
+      "backToList": "試験一覧に戻る",
+      "durationMinutes": "試験時間: {{minutes}}分",
+      "deadline": "締切: {{date}}",
+      "achievedScore": "得点:",
+      "infoTitle": "試験情報",
+      "durationLabel": "所要時間",
+      "totalQuestionsLabel": "問題数",
+      "maxScoreLabel": "満点",
+      "passingScoreLabel": "合格点",
+      "deadlineLabel": "解答期限",
+      "startDateLabel": "開始日時",
+      "notesTitle": "注意事項・規定:",
+      "noteSingleAttempt": "受験は1回のみ可能です",
+      "noteAutoSubmit": "制限時間終了時に自動提出されます",
+      "noteRequiredQuestions": "(*) マークのある問題は必須です",
+      "completedPassed": "おめでとうございます！試験に合格しました。",
+      "completedFailed": "試験を完了しました（合格点に達していません）。",
+      "submittedAtAutoGraded": "提出日時: {{date}} • 試験は自動採点されました。",
+      "pointsSuffix": "点",
+      "today": "本日"
+    },
+    "sidebar": {
+      "resultTitle": "試験結果",
+      "completedQuestionsCount": "{{total}}問中{{answered}}問解答済み",
+      "timeLeft": "残り時間",
+      "urgent": "まもなく終了!",
+      "progress": "進捗状況",
+      "progressText": "{{answered}}/{{total}}問 ({{percent}}%)",
+      "questionsList": "問題一覧 ({{count}})",
+      "answeredProgress": "解答済み {{answered}}/{{total}}",
+      "answered": "解答済み ({{count}})",
+      "unanswered": "未解答 ({{count}})",
+      "submitNow": "試験を提出する",
+      "questionTooltip": "第{{index}}問: {{status}}",
+      "statusAnswered": "解答済み",
+      "statusUnanswered": "未解答"
+    },
+    "question": {
+      "number": "第{{index}}問",
+      "points": "{{points}}点",
+      "required": "* 必須",
+      "requiredMark": "必須問題",
+      "correctAnswerTag": "正解",
+      "selectedTag": "選択中",
+      "recordedTag": "記録済み",
+      "booleanTrue": "正しい (True)",
+      "booleanFalse": "誤り (False)",
+      "correctAnswerIs": "正解: {{answer}}",
+      "explanationTitle": "解説:",
+      "starsCount": "{{value}} / {{max}} 星",
+      "inputPlaceholder": "解答を入力してください...",
+      "textareaPlaceholder": "記述式解答を入力してください...",
+      "selectPlaceholder": "-- 一覧から解答を選択 --",
+      "datePlaceholder": "日付を選択...",
+      "charactersCount": "{{count}}文字"
+    },
+    "submitModal": {
+      "title": "試験提出の確認",
+      "confirmQuestion": "試験「{{title}}」を提出してもよろしいですか？",
+      "totalQuestions": "総問題数:",
+      "answeredCount": "解答済み:",
+      "unansweredCount": "未解答:",
+      "warning": "提出後は解答を修正できません。システムが自動採点し結果を記録します。",
+      "unansweredWarning": "まだ未解答の問題が{{count}}問あります！",
+      "confirmButton": "提出を確定する",
+      "confirmButtonUnfinished": "このまま提出する"
+    },
+    "messages": {
+      "listLoadError": "試験一覧の読み込みに失敗しました。",
+      "loadError": "試験情報を読み込めませんでした。",
+      "requiredWarning": "必須問題に解答してください:「{{title}}」",
+      "timeExpired": "試験時間が終了しました！自動提出しています。",
+      "submitSuccess": "試験を正常に提出しました！",
+      "submitError": "試験の提出中にエラーが発生しました。もう一度お試しください。"
     }
   }
 }

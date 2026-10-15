@@ -780,7 +780,9 @@
     "statuses": {
       "pending": "Chờ thực hiện",
       "completed": "Đã hoàn thành",
-      "expired": "Đã kết thúc"
+      "expired": "Đã kết thúc",
+      "passed": "Đạt",
+      "failed": "Chưa đạt"
     },
     "filters": {
       "searchPlaceholder": "Tìm kiếm đề thi, môn học, giáo viên...",
@@ -805,6 +807,84 @@
       "noCompletedDesc": "Hãy kiểm tra danh sách đề thi cần thực hiện.",
       "noMatchingTitle": "Không tìm thấy đề thi phù hợp với bộ lọc",
       "noMatchingDesc": "Hãy thử tìm kiếm với từ khóa khác hoặc đặt lại bộ lọc."
+    },
+    "detail": {
+      "notFoundTitle": "Không tìm thấy bài thi",
+      "notFoundDesc": "Bài thi không tồn tại hoặc đã bị gỡ khỏi hệ thống.",
+      "backToList": "Quay lại danh sách bài thi",
+      "durationMinutes": "{{minutes}} phút làm bài",
+      "deadline": "Hạn: {{date}}",
+      "achievedScore": "Điểm đạt:",
+      "infoTitle": "Thông tin bài thi",
+      "durationLabel": "Thời lượng",
+      "totalQuestionsLabel": "Số lượng câu",
+      "maxScoreLabel": "Điểm tối đa",
+      "passingScoreLabel": "Điểm đạt",
+      "deadlineLabel": "Thời hạn làm bài",
+      "startDateLabel": "Thời gian bắt đầu",
+      "notesTitle": "Quy chế & Lưu ý khi làm bài:",
+      "noteSingleAttempt": "Được phép làm 1 lần",
+      "noteAutoSubmit": "Hệ thống tự động nộp bài khi hết giờ",
+      "noteRequiredQuestions": "Các câu hỏi có dấu (*) là bắt buộc",
+      "completedPassed": "Chúc mừng! Bạn đã hoàn thành và đạt bài thi này.",
+      "completedFailed": "Bạn đã hoàn thành bài thi (Chưa đạt mức điểm yêu cầu).",
+      "submittedAtAutoGraded": "Nộp lúc: {{date}} • Đề thi đã được chấm điểm tự động.",
+      "pointsSuffix": "đ",
+      "today": "Hôm nay"
+    },
+    "sidebar": {
+      "resultTitle": "Kết quả bài thi",
+      "completedQuestionsCount": "Đã hoàn thành {{answered}}/{{total}} câu hỏi",
+      "timeLeft": "Thời gian còn lại",
+      "urgent": "Sắp hết giờ!",
+      "progress": "Tiến độ làm bài",
+      "progressText": "{{answered}}/{{total}} câu ({{percent}}%)",
+      "questionsList": "Danh sách câu hỏi ({{count}})",
+      "answeredProgress": "Đã làm {{answered}}/{{total}}",
+      "answered": "Đã làm ({{count}})",
+      "unanswered": "Chưa làm ({{count}})",
+      "submitNow": "Nộp bài thi ngay",
+      "questionTooltip": "Câu {{index}}: {{status}}",
+      "statusAnswered": "Đã trả lời",
+      "statusUnanswered": "Chưa trả lời"
+    },
+    "question": {
+      "number": "Câu {{index}}",
+      "points": "{{points}} điểm",
+      "required": "* Bắt buộc",
+      "requiredMark": "Câu hỏi bắt buộc",
+      "correctAnswerTag": "Đáp án đúng",
+      "selectedTag": "Đã chọn",
+      "recordedTag": "Đã ghi nhận",
+      "booleanTrue": "Đúng (True)",
+      "booleanFalse": "Sai (False)",
+      "correctAnswerIs": "Đáp án chính xác: {{answer}}",
+      "explanationTitle": "Giải thích chi tiết:",
+      "starsCount": "{{value}} / {{max}} sao",
+      "inputPlaceholder": "Nhập câu trả lời của bạn vào đây...",
+      "textareaPlaceholder": "Nhập câu trả lời tự luận của bạn...",
+      "selectPlaceholder": "-- Chọn câu trả lời từ danh sách --",
+      "datePlaceholder": "Chọn ngày...",
+      "charactersCount": "{{count}} ký tự"
+    },
+    "submitModal": {
+      "title": "Xác nhận nộp bài thi",
+      "confirmQuestion": "Bạn có chắc chắn muốn nộp bài thi \"{{title}}\" không?",
+      "totalQuestions": "Tổng số câu hỏi:",
+      "answeredCount": "Đã trả lời:",
+      "unansweredCount": "Chưa trả lời:",
+      "warning": "Sau khi nộp, bạn sẽ không thể chỉnh sửa câu trả lời. Hệ thống sẽ tự động chấm điểm và ghi nhận kết quả.",
+      "unansweredWarning": "Bạn vẫn còn {{count}} câu hỏi chưa trả lời!",
+      "confirmButton": "Xác nhận nộp bài",
+      "confirmButtonUnfinished": "Vẫn nộp bài"
+    },
+    "messages": {
+      "listLoadError": "Không thể tải danh sách đề thi trắc nghiệm.",
+      "loadError": "Không thể tải thông tin đề thi.",
+      "requiredWarning": "Vui lòng trả lời câu hỏi bắt buộc: \"{{title}}\"",
+      "timeExpired": "Hết thời gian làm bài! Hệ thống đang tự động nộp bài thi.",
+      "submitSuccess": "Nộp bài thi thành công!",
+      "submitError": "Đã xảy ra lỗi khi nộp bài thi. Vui lòng thử lại."
     }
   }
 }
