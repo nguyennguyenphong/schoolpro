@@ -863,7 +863,7 @@
       "starsCount": "{{value}} / {{max}} 점",
       "inputPlaceholder": "답안을 입력하세요...",
       "textareaPlaceholder": "서술형 답안을 입력하세요...",
-      "selectPlaceholder": "-- 목록에서 답안을 선택하세요 --",
+      "selectPlaceholder": "목록에서 답안을 선택하세요",
       "datePlaceholder": "날짜 선택...",
       "charactersCount": "{{count}}자"
     },

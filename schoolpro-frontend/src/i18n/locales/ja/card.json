@@ -863,7 +863,7 @@
       "starsCount": "{{value}} / {{max}} 星",
       "inputPlaceholder": "解答を入力してください...",
       "textareaPlaceholder": "記述式解答を入力してください...",
-      "selectPlaceholder": "-- 一覧から解答を選択 --",
+      "selectPlaceholder": "一覧から解答を選択",
       "datePlaceholder": "日付を選択...",
       "charactersCount": "{{count}}文字"
     },

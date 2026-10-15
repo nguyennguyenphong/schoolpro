@@ -16,13 +16,17 @@ export const QuestionTextarea: React.FC<QuestionTextareaProps> = ({
   onChange,
   readOnly = false,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t, i18n } = useTranslation(["card"]);
+  const placeholder =
+    question.placeholder && i18n.language === "vi"
+      ? question.placeholder
+      : t("card:exams.question.textareaPlaceholder");
 
   return (
     <div className="space-y-1">
       <Input.TextArea
         rows={4}
-        placeholder={question.placeholder || t("card:exams.question.textareaPlaceholder")}
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={readOnly}

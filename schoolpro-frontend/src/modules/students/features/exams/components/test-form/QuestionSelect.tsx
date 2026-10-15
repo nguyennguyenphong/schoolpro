@@ -17,16 +17,20 @@ export const QuestionSelect: React.FC<QuestionSelectProps> = ({
   onChange,
   readOnly = false,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t, i18n } = useTranslation(["card"]);
   const options = (question.options || []).map((opt) => ({
     label: opt,
     value: opt,
   }));
+  const placeholder =
+    question.placeholder && i18n.language === "vi"
+      ? question.placeholder
+      : t("card:exams.question.selectPlaceholder");
 
   return (
     <div className="space-y-1">
       <Select
-        placeholder={question.placeholder || t("card:exams.question.selectPlaceholder")}
+        placeholder={placeholder}
         value={value || undefined}
         onChange={(val) => onChange(String(val))}
         disabled={readOnly}

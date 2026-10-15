@@ -863,7 +863,7 @@
       "starsCount": "{{value}} / {{max}} 星",
       "inputPlaceholder": "请输入您的答案...",
       "textareaPlaceholder": "请输入您的详细作答...",
-      "selectPlaceholder": "-- 从列表中选择答案 --",
+      "selectPlaceholder": "从列表中选择答案",
       "datePlaceholder": "选择日期...",
       "charactersCount": "{{count}} 字符"
     },

@@ -863,7 +863,7 @@
       "starsCount": "{{value}} / {{max}} sao",
       "inputPlaceholder": "Nhập câu trả lời của bạn vào đây...",
       "textareaPlaceholder": "Nhập câu trả lời tự luận của bạn...",
-      "selectPlaceholder": "-- Chọn câu trả lời từ danh sách --",
+      "selectPlaceholder": "Chọn câu trả lời từ danh sách",
       "datePlaceholder": "Chọn ngày...",
       "charactersCount": "{{count}} ký tự"
     },

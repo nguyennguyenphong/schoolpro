@@ -17,12 +17,16 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
   onChange,
   readOnly = false,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t, i18n } = useTranslation(["card"]);
+  const placeholder =
+    question.placeholder && i18n.language === "vi"
+      ? question.placeholder
+      : t("card:exams.question.inputPlaceholder");
 
   return (
     <div className="space-y-2">
       <Input
-        placeholder={question.placeholder || t("card:exams.question.inputPlaceholder")}
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={readOnly}

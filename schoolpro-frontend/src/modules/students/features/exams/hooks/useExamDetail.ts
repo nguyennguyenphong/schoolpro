@@ -1,17 +1,21 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { message } from "antd";
+import { i18n } from "@/i18n";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 import { examsService } from "@/modules/students/features/exams/services";
 import { isAnswerFilled } from "@/modules/students/features/exams/utils";
 
 export const useExamDetail = (id?: string) => {
-  const { t } = useTranslation(["card"]);
   const [exam, setExam] = useState<ExamItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [answers, setAnswers] = useState<Record<string, number | string | string[] | boolean>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  const answersRef = useRef(answers);
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
 
   // Load exam and saved draft / past submission
   useEffect(() => {
@@ -43,7 +47,7 @@ export const useExamDetail = (id?: string) => {
           }
         }
       } catch {
-        message.error(t("card:exams.messages.loadError"));
+        message.error(i18n.t("card:exams.messages.loadError"));
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -55,7 +59,7 @@ export const useExamDetail = (id?: string) => {
     return () => {
       ignore = true;
     };
-  }, [id, t]);
+  }, [id]);
 
   const isCompleted = exam?.status === "completed";
   const isExpired = exam?.status === "expired";
@@ -100,7 +104,7 @@ export const useExamDetail = (id?: string) => {
     if (!exam) return;
     try {
       setSubmitting(true);
-      const res = await examsService.submitExam(exam.id, answers);
+      const res = await examsService.submitExam(exam.id, answersRef.current);
       message.success(res.message);
 
       // Reload exam state
@@ -109,11 +113,11 @@ export const useExamDetail = (id?: string) => {
         setExam(updated);
       }
     } catch {
-      message.error(t("card:exams.messages.submitError"));
+      message.error(i18n.t("card:exams.messages.submitError"));
     } finally {
       setSubmitting(false);
     }
-  }, [exam, answers, t]);
+  }, [exam]);
 
   // Validate required questions before submit
   const validateRequired = useCallback((): {
@@ -136,14 +140,18 @@ export const useExamDetail = (id?: string) => {
 
   // Countdown Timer
   useEffect(() => {
-    if (isReadOnly || !exam || timeLeft <= 0) return;
+    if (isReadOnly || !exam) return;
 
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev <= 1) {
+        if (prev <= 0) {
           clearInterval(timer);
-          message.warning(t("card:exams.messages.timeExpired"));
-          executeSubmit();
+          return 0;
+        }
+        if (prev === 1) {
+          clearInterval(timer);
+          message.warning(i18n.t("card:exams.messages.timeExpired"));
+          void executeSubmit();
           return 0;
         }
         return prev - 1;
@@ -151,7 +159,7 @@ export const useExamDetail = (id?: string) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isReadOnly, exam, timeLeft, executeSubmit, t]);
+  }, [isReadOnly, exam, executeSubmit]);
 
   return {
     exam,

@@ -863,7 +863,7 @@
       "starsCount": "{{value}} / {{max}} stars",
       "inputPlaceholder": "Enter your answer here...",
       "textareaPlaceholder": "Enter your detailed response...",
-      "selectPlaceholder": "-- Select an answer from the list --",
+      "selectPlaceholder": "Select an answer from the list",
       "datePlaceholder": "Select date...",
       "charactersCount": "{{count}} characters"
     },
