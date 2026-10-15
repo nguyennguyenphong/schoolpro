@@ -69,7 +69,7 @@ export const AttendanceDropdownFilters: React.FC<
   ];
 
   return (
-    <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+    <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
       <div className="flex flex-wrap items-center gap-2.5">
         {/* 1. Hôm nay & Date Navigation (< | Hôm nay | >) */}
         <div className="flex items-center h-8 bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0">

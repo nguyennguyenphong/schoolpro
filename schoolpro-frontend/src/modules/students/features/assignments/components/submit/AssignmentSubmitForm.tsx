@@ -72,7 +72,7 @@ export const AssignmentSubmitForm: React.FC<AssignmentSubmitFormProps> = ({
         />
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+      <div className="flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
         <div>
           {isResubmitting && (
             <Button

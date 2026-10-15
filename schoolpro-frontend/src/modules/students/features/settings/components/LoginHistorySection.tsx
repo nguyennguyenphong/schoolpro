@@ -159,7 +159,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Header with Title and Action Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f0f0f0] pb-4">
         <div className="flex items-center gap-3">
           <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
             <Icon name="device" size={20} />
@@ -335,7 +335,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
 
       {/* 4. Pagination (Synced with URL) */}
       {filteredSessions.length > pageSize && (
-        <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+        <div className="flex items-center justify-between border-t border-[#f0f0f0] pt-4">
           <span className="text-xs text-slate-500">
             Hiển thị {(currentPage - 1) * pageSize + 1} -{" "}
             {Math.min(currentPage * pageSize, filteredSessions.length)} trên tổng{" "}

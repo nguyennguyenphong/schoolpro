@@ -116,7 +116,6 @@ export const ExamDetailPage: React.FC = () => {
           <ExamTimerSidebar
             timeLeft={timeLeft}
             questions={exam.questions}
-            activeQuestionId={activeQuestionId ?? undefined}
             isQuestionAnswered={isQuestionAnswered}
             onScrollToQuestion={handleScrollToQuestion}
             onSubmit={handlePreSubmit}

@@ -63,7 +63,7 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
         </div>
 
         {/* Right: Key Class & Homeroom Information */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-[#f0f0f0] text-xs">
           {/* Box 1: Class & Stream */}
           <div className="bg-slate-50/80 rounded-xl p-2.5 sm:p-3 border border-[#f0f0f0]/80">
             <div className="text-[11px] text-slate-400 font-medium mb-0.5 flex items-center gap-1">

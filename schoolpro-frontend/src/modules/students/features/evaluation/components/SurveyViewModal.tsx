@@ -36,7 +36,7 @@ export const SurveyViewModal: React.FC<SurveyViewModalProps> = ({
     >
       <div className="space-y-4 pt-1 max-h-[75vh] overflow-y-auto pr-1">
         {/* Header */}
-        <div className="border-b border-slate-100 pb-3 space-y-1.5">
+        <div className="border-b border-[#f0f0f0] pb-3 space-y-1.5">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="w-1.5 h-5 rounded-full bg-emerald-600 inline-block" />
             <h2 className="text-lg font-bold text-slate-900 mb-0">

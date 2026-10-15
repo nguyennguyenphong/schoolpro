@@ -198,7 +198,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
       </div>
 
       {/* 3. Bên dưới là các bộ lọc dropdown (Dropdown Filters) */}
-      <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+      <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Môn học */}
           {onSubjectChange && subjects.length > 0 && (

@@ -40,7 +40,7 @@ export const AssignmentSkeleton: React.FC<AssignmentSkeletonProps> = ({
                 </div>
 
                 {/* Row 3: Highlighted Due Date Box */}
-                <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+                <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-[#f0f0f0]">
                   <div className="flex items-center gap-2">
                     <div className="w-3.5 h-3.5 rounded bg-slate-200 shrink-0" />
                     <div className="h-3.5 w-36 bg-slate-200 rounded" />
@@ -56,7 +56,7 @@ export const AssignmentSkeleton: React.FC<AssignmentSkeletonProps> = ({
               </div>
 
               {/* Footer Row: Type Badge & Action Button */}
-              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
                 <div className="h-5.5 w-28 bg-slate-100 rounded-md" />
                 <div className="h-8 w-24 bg-slate-200 rounded-lg shrink-0" />
               </div>

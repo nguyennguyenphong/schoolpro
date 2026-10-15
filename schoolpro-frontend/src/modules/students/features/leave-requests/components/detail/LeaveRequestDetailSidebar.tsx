@@ -24,14 +24,14 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
         {/* Phần Giáo viên chủ nhiệm */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+          <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
             <h3 className="text-sm font-bold text-slate-900 mb-0">
               {t("card:leaveRequests.detail.homeroomCardTitle")}
             </h3>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-2">
+          <div className="p-3 bg-slate-50 rounded-xl border border-[#f0f0f0] text-xs space-y-2">
             <div className="flex items-center justify-between gap-2">
               <span className="text-slate-500">
                 {t("card:leaveRequests.detail.homeroomFullNameLabel")}
@@ -89,7 +89,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
         </div>
 
         {/* Phần Giáo viên bộ môn nhận thông báo */}
-        <div className="space-y-2.5 pt-3 border-t border-slate-100">
+        <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800">
               {t("card:leaveRequests.detail.subjectTeachersCardTitle")}
@@ -127,7 +127,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
               ))}
             </div>
           ) : !homeroomAsSubject ? (
-            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-500">
+            <div className="p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0] text-xs text-slate-500">
               {t("card:leaveRequests.detail.noOtherSubjectTeachers")}
             </div>
           ) : null}
@@ -138,7 +138,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
         {/* Học sinh */}
         <div className="space-y-2.5">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+          <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
             <span className="w-1.5 h-4 rounded-full bg-slate-700 inline-block" />
             <h3 className="text-sm font-bold text-slate-900 mb-0">
               {t("card:leaveRequests.detail.studentInfoCardTitle")}
@@ -166,7 +166,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
         </div>
 
         {/* Phụ huynh / Người giám hộ */}
-        <div className="space-y-2.5 pt-3 border-t border-slate-100">
+        <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-3.5 rounded-full bg-emerald-600 inline-block" />
             <span className="text-xs font-bold text-slate-800">
@@ -201,7 +201,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
 
       {/* 3. Tài liệu minh chứng đính kèm */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+        <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
           <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
           <h3 className="text-sm font-bold text-slate-900 mb-0">
             {t("card:leaveRequests.detail.attachmentsCardTitle")}

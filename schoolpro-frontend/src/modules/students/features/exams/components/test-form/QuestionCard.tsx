@@ -243,7 +243,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
       {/* 4. Review Mode / Feedback Section */}
       {readOnly && (question.correctAnswer !== undefined || question.explanation) && (
-        <div className="pt-3 border-t border-slate-100 space-y-2.5">
+        <div className="pt-3 border-t border-[#f0f0f0] space-y-2.5">
           {question.correctAnswer !== undefined && (
             <div className="flex items-center gap-2 text-xs sm:text-sm bg-emerald-50 text-emerald-800 p-3 rounded-xl border border-emerald-200">
               <span className="font-bold shrink-0">Đáp án chính xác:</span>

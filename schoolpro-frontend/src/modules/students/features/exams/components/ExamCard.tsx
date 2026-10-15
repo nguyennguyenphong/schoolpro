@@ -69,7 +69,7 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
         </h3>
 
         {/* 3. Subject Box matching LeaveRequestCard's info bar */}
-        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-[#f0f0f0]">
           <div className="flex items-center gap-2 min-w-0">
             <Icon name="book" size={14} className="text-blue-600 shrink-0" />
             <span className="text-xs font-bold text-slate-800 truncate">
@@ -101,7 +101,7 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
       </div>
 
       {/* 5. Footer Row with Action */}
-      <div className="pt-3.5 mt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
+      <div className="pt-3.5 mt-3.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <span className="text-[11px] text-slate-400 truncate">
           {isCompleted && item.completedAt
             ? t("card:exams.card.submittedAt", { date: item.completedAt })

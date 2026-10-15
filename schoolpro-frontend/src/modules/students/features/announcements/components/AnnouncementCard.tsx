@@ -170,7 +170,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
         </p>
       </div>
 
-      <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5">
+      <div className="mt-3 pt-2.5 border-t border-[#f0f0f0] space-y-1.5">
         <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
           <div className="flex items-center gap-1.5 min-w-0">
             <Icon name="user" size={13} className="text-slate-400 shrink-0" />

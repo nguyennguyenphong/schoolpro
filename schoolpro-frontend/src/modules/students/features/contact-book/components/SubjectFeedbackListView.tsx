@@ -203,7 +203,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
                 </div>
 
                 {/* Scores pill row */}
-                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between text-xs mb-3">
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-[#f0f0f0] flex items-center justify-between text-xs mb-3">
                   <div>
                     <span className="text-[11px] text-slate-400 block mb-1">Kiểm tra thường xuyên:</span>
                     <div className="flex flex-wrap gap-1">
@@ -237,7 +237,7 @@ export const SubjectFeedbackListView: React.FC<SubjectFeedbackListViewProps> = (
                 </div>
               </div>
 
-              <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+              <div className="pt-3 mt-3 border-t border-[#f0f0f0] flex items-center justify-between text-xs text-slate-400">
                 <span>Mã học phần: {item.subjectCode}</span>
                 <span className="text-blue-600 font-medium">Học kỳ 1</span>
               </div>

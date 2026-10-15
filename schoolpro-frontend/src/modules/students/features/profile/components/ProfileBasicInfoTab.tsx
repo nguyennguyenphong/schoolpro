@@ -30,7 +30,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
 
   return (
     <>
-      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="user" size={20} />
         </span>
@@ -91,7 +91,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
         </div>
 
         {/* Editable Contact Section */}
-        <div className="pt-4 border-t border-slate-100">
+        <div className="pt-4 border-t border-[#f0f0f0]">
           <h4 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
             <Icon name="mail" size={15} className="text-blue-600" />
             <span>Thông tin liên lạc học sinh (Có thể cập nhật)</span>

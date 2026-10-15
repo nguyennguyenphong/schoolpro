@@ -34,7 +34,7 @@ export const LeaveRequestSkeleton: React.FC<LeaveRequestSkeletonProps> = ({
                 </div>
 
                 {/* Row 2: Highlighted Date Range & Days/Shift Badge Box */}
-                <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2.5 border border-slate-100">
+                <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2.5 border border-[#f0f0f0]">
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-4 h-4 rounded bg-slate-200 shrink-0" />
                     <div className="h-4 w-36 bg-slate-200 rounded" />
@@ -58,7 +58,7 @@ export const LeaveRequestSkeleton: React.FC<LeaveRequestSkeletonProps> = ({
               </div>
 
               {/* Footer Row: CreatedAt Timestamp & View Detail Button */}
-              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
                 <div className="h-3.5 w-28 bg-slate-100 rounded" />
                 <div className="h-7 w-24 bg-slate-200 rounded-lg shrink-0" />
               </div>

@@ -84,7 +84,7 @@ export const ExamFilterBar: React.FC<ExamFilterBarProps> = ({
   return (
     <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* 1. Status Filter Tabs with Counts */}
-      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100">
+      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-[#f0f0f0]">
         {tabs.map((tab) => {
           const isActive = status === tab.key;
           return (

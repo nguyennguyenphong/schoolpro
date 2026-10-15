@@ -63,7 +63,7 @@ export const ChangePasswordPage: React.FC = () => {
         {/* Left Column: Form */}
         <div className="lg:col-span-7">
           <div className="bg-white p-5 sm:p-7 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-5">
-            <div className="border-b border-slate-100 pb-4">
+            <div className="border-b border-[#f0f0f0] pb-4">
               <div className="flex items-center gap-2.5 mb-1">
                 <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
                   <Icon name="lock" size={18} />
@@ -91,7 +91,7 @@ export const ChangePasswordPage: React.FC = () => {
         {/* Right Column: Security Guidelines Card */}
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+            <div className="flex items-center gap-2.5 border-b border-[#f0f0f0] pb-3">
               <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
                 <Icon name="info" size={18} />
               </span>
@@ -106,7 +106,7 @@ export const ChangePasswordPage: React.FC = () => {
             </div>
 
             <ul className="space-y-3 text-xs text-slate-600 list-none p-0 m-0">
-              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
                 <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
                   1
                 </span>
@@ -115,7 +115,7 @@ export const ChangePasswordPage: React.FC = () => {
                 </span>
               </li>
 
-              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
                 <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
                   2
                 </span>
@@ -124,7 +124,7 @@ export const ChangePasswordPage: React.FC = () => {
                 </span>
               </li>
 
-              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
                 <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
                   3
                 </span>
@@ -133,7 +133,7 @@ export const ChangePasswordPage: React.FC = () => {
                 </span>
               </li>
 
-              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <li className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
                 <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
                   4
                 </span>

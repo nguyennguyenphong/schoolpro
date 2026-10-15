@@ -83,7 +83,7 @@ export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
         )}
       </div>
 
-      <div className="flex items-center justify-end pt-3 border-t border-slate-100">
+      <div className="flex items-center justify-end pt-3 border-t border-[#f0f0f0]">
         <Button variant="primary" onClick={onClose}>
           Đóng
         </Button>

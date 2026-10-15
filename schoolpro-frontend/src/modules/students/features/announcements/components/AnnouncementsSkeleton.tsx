@@ -53,7 +53,7 @@ export const AnnouncementsSkeleton: React.FC = () => {
               <div className="h-4 w-full bg-slate-100 rounded-xl mb-1" />
               <div className="h-4 w-2/3 bg-slate-100 rounded-xl" />
             </div>
-            <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <div className="pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
               <div className="h-3.5 w-32 bg-slate-200 rounded" />
               <div className="h-3.5 w-20 bg-slate-200 rounded" />
             </div>

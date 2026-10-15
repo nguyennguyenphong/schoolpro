@@ -220,7 +220,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
         )}
 
         {/* Modal Actions */}
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#f0f0f0]">
           {file.previewUrl && (
             <a
               href={file.previewUrl}

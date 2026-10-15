@@ -190,7 +190,7 @@ export const WeeklyGridView: React.FC<WeeklyGridViewProps> = ({
                         }`}
                       >
                         {daySlots.length === 0 ? (
-                          <div className="w-full h-full min-h-105 flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-slate-100 rounded-xl bg-slate-50/30 select-none">
+                          <div className="w-full h-full min-h-105 flex items-center justify-center text-xs text-slate-300 italic border border-dashed border-[#f0f0f0] rounded-xl bg-slate-50/30 select-none">
                             <span>{t("card:timetable.emptySlot")}</span>
                           </div>
                         ) : (

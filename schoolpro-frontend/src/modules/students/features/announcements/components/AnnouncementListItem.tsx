@@ -180,7 +180,7 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
         </div>
 
         {/* Right action area */}
-        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#f0f0f0]">
           {item.attachments && item.attachments.length > 0 && (
             <div className="flex items-center gap-1 text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 font-medium">
               <Icon name="download" size={12} />

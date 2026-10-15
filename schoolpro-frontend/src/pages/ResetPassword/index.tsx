@@ -130,7 +130,7 @@ export const ResetPasswordPage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="text-center pt-4 mt-6 border-t border-slate-100">
+        <div className="text-center pt-4 mt-6 border-t border-[#f0f0f0]">
           <p className="text-slate-500 text-sm mb-0">
             {t("auth:login.supportTroubleText")}{" "}
             <span className="text-blue-600 font-medium cursor-pointer hover:underline">

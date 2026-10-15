@@ -50,7 +50,7 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Học lực: <strong className="text-slate-700">Giỏi xuất sắc</strong></span>
           <span className="text-blue-600 font-medium">8 môn đánh giá</span>
         </div>
@@ -86,7 +86,7 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Xếp loại: <strong className="text-slate-700">Tổ 1 xuất sắc</strong></span>
           <span className="text-emerald-600 font-medium">Đạt tiêu chuẩn</span>
         </div>
@@ -116,7 +116,7 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Không phép: <strong className="text-slate-700">{summary.unexcusedAbsence}</strong></span>
           <span className="text-slate-500 font-medium">Đi muộn: {summary.lateCount}</span>
         </div>
@@ -151,7 +151,7 @@ export const ContactBookSummaryCards: React.FC<ContactBookSummaryCardsProps> = (
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span className="truncate">SĐT: <strong className="text-slate-700">{summary.parentInfo?.fatherPhone || "0912.345.678"}</strong></span>
           <span className="text-purple-600 font-medium shrink-0">
             {summary.parentFeedbackCount} phiếu ghi ý kiến

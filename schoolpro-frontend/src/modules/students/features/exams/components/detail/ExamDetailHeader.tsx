@@ -86,32 +86,26 @@ export const ExamDetailHeader: React.FC<ExamDetailHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0 truncate">
               {exam.title}
             </h1>
-            <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-200 whitespace-nowrap">
-              {exam.courseCode}
-            </span>
-            <span className="text-xs font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-[#f0f0f0] whitespace-nowrap">
-              {exam.code}
-            </span>
             {getStatusBadge()}
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500">
-            <span className="font-medium text-slate-700 truncate">{exam.courseName}</span>
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <Icon name="book" size={13} className="text-slate-400" />
+              <span>{exam.courseName}</span>
+            </span>
             {exam.teacherName && (
               <>
-                <span className="hidden sm:inline">•</span>
                 <span className="flex items-center gap-1.5 truncate">
                   <Icon name="user" size={13} className="text-slate-400" />
                   <span>{exam.teacherName}</span>
                 </span>
               </>
             )}
-            <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1.5 whitespace-nowrap">
               <Icon name="clock" size={13} className="text-slate-400" />
               <span>{exam.durationMinutes} phút làm bài</span>
             </span>
-            <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1.5 whitespace-nowrap">
               <Icon name="calendar" size={13} className="text-slate-400" />
               <span>Hạn: {exam.endDate}</span>

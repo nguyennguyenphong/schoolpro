@@ -307,7 +307,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
         </div>
 
         {/* Submit Actions */}
-        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#f0f0f0]">
           <Button variant="outline" onClick={onCancel} disabled={submitting}>
             {t("button:cancel")}
           </Button>

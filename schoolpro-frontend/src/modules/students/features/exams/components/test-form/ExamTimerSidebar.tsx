@@ -8,7 +8,6 @@ import type { ExamQuestion } from "@/modules/students/features/exams/types";
 interface ExamTimerSidebarProps {
   timeLeft: number;
   questions: ExamQuestion[];
-  activeQuestionId?: string;
   isQuestionAnswered: (qId: string) => boolean;
   onScrollToQuestion: (qId: string) => void;
   onSubmit: () => void;
@@ -21,7 +20,6 @@ interface ExamTimerSidebarProps {
 export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
   timeLeft,
   questions,
-  activeQuestionId,
   isQuestionAnswered,
   onScrollToQuestion,
   onSubmit,
@@ -42,7 +40,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
   return (
     <div className="space-y-4">
       {/* 1. Timer / Score Box */}
-      <Card className="rounded-xl shadow-2xs border-[#f0f0f0] p-4 sm:p-5 space-y-3.5">
+      <Card className="shadow-2xs">
         {readOnly ? (
           <div className="text-center space-y-1.5">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -85,7 +83,7 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
         )}
 
         {/* 2. Progress */}
-        <div className="space-y-1.5 pt-2 border-t border-slate-100">
+        <div className="pt-2 mt-3">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
             <span>Tiến độ làm bài</span>
             <span>
@@ -103,60 +101,49 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
       </Card>
 
       {/* 3. Question Palette Card */}
-      <Card className="rounded-xl shadow-2xs border-[#f0f0f0] p-4 sm:p-5 space-y-3">
-        <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-0">
-            Danh sách câu hỏi ({total})
-          </h4>
-          <span className="text-[11px] font-medium text-blue-600">
-            Đã làm {answeredCount}/{total}
-          </span>
-        </div>
-
-        {/* Question numbers grid */}
-        <div className="grid grid-cols-5 gap-2 max-h-64 sm:max-h-80 overflow-y-auto pr-1">
-          {questions.map((q, idx) => {
-            const isAnswered = isQuestionAnswered(q.id);
-            const isActive = activeQuestionId === q.id;
-
-            let buttonClass =
-              "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300 font-semibold";
-
-            if (isAnswered) {
-              buttonClass =
-                "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 font-bold shadow-xs";
-            }
-
-            if (isActive) {
-              buttonClass += " ring-2 ring-blue-500 ring-offset-2 z-10";
-            }
-
-            return (
-              <button
-                key={q.id}
-                type="button"
-                onClick={() => onScrollToQuestion(q.id)}
-                className={`h-9 rounded-lg text-xs transition-all flex items-center justify-center cursor-pointer border ${buttonClass}`}
-                title={`Câu ${idx + 1}: ${isAnswered ? "Đã trả lời" : "Chưa trả lời"}`}
-              >
-                {idx + 1}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Legend */}
-        <div className="flex items-center justify-center gap-4 pt-2.5 text-[11px] text-slate-500 border-t border-slate-100">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-emerald-600 inline-block shrink-0" />
-            <span className="font-medium text-slate-700">Đã làm ({answeredCount})</span>
+      <div className="mt-4">
+        <Card className="shadow-2xs">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-0">
+              Danh sách câu hỏi ({total})
+            </h4>
+            <span className="text-[11px] font-medium text-blue-600">
+              Đã làm {answeredCount}/{total}
+            </span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-white border border-slate-300 inline-block shrink-0" />
-            <span>Chưa làm ({total - answeredCount})</span>
+
+          {/* Question numbers grid */}
+          <div className="grid grid-cols-5 gap-2 max-h-64 sm:max-h-80 overflow-y-auto pr-1 mt-3">
+            {questions.map((q, idx) => {
+              const isAnswered = isQuestionAnswered(q.id);
+        
+              return (
+                <button
+                  key={q.id}
+                  type="button"
+                  onClick={() => onScrollToQuestion(q.id)}
+                  className="h-9 rounded-lg text-xs transition-all flex items-center justify-center cursor-pointer border border-[#f0f0f0]"
+                  title={`Câu ${idx + 1}: ${isAnswered ? "Đã trả lời" : "Chưa trả lời"}`}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
           </div>
-        </div>
-      </Card>
+
+          {/* Legend */}
+          <div className="flex items-center justify-center gap-4 pt-2.5 text-[11px] text-slate-500 mt-3">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded bg-emerald-600 inline-block shrink-0" />
+              <span className="font-medium text-slate-700">Đã làm ({answeredCount})</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded bg-white border border-slate-300 inline-block shrink-0" />
+              <span>Chưa làm ({total - answeredCount})</span>
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* 4. Submit Action */}
       {!readOnly && (

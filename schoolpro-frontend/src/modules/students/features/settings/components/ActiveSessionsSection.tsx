@@ -60,7 +60,7 @@ export const ActiveSessionsSection: React.FC<ActiveSessionsSectionProps> = ({
   return (
     <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs bg-white p-5 sm:p-6 space-y-6">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f0f0f0] pb-4">
         <div className="flex items-center gap-3">
           <span className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 border border-[#f0f0f0] flex items-center justify-center shrink-0">
             <Icon name="device" size={20} />

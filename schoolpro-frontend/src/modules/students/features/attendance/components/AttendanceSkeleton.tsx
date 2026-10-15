@@ -53,7 +53,7 @@ export const AttendanceSkeleton: React.FC<AttendanceSkeletonProps> = ({
             </div>
 
             {/* 2. TimeSlot & Shift Box */}
-            <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+            <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-[#f0f0f0]">
               <div className="h-4 w-28 bg-slate-200 rounded" />
               <div className="h-5 w-20 bg-blue-100/70 rounded-full border border-blue-200/60 shrink-0" />
             </div>
@@ -72,7 +72,7 @@ export const AttendanceSkeleton: React.FC<AttendanceSkeletonProps> = ({
           </div>
 
           {/* 5. Footer */}
-          <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+          <div className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
             <div className="h-4 w-24 bg-slate-100 rounded" />
             <div className="h-7 w-28 bg-slate-200 rounded-lg shrink-0" />
           </div>

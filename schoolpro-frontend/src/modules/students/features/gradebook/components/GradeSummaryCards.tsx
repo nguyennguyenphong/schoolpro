@@ -32,7 +32,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Phạm vi: <strong className="text-slate-700">13 môn học</strong></span>
           <span className="text-blue-600 font-medium">Xuất sắc</span>
         </div>
@@ -58,7 +58,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Đạt chuẩn: <strong className="text-slate-700">Thông tư 22 BGD</strong></span>
           <span className="text-purple-600 font-medium">Khen thưởng</span>
         </div>
@@ -85,7 +85,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Vi phạm nề nếp: <strong className="text-slate-700">0 lần</strong></span>
           <span className="text-emerald-600 font-medium">Tích cực</span>
         </div>
@@ -112,7 +112,7 @@ export const GradeSummaryCards: React.FC<GradeSummaryCardsProps> = ({ summary })
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Danh hiệu: <strong className="text-slate-700">Học sinh Giỏi</strong></span>
           <span className="text-amber-600 font-medium">Xuất sắc</span>
         </div>

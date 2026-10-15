@@ -159,7 +159,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
 
         {/* Simulated Document Preview Page */}
         <div className="mt-4 p-4 bg-white rounded-lg border border-[#f0f0f0] shadow-2xs">
-          <div className="flex items-center justify-between text-xs text-slate-400 pb-2 mb-2 border-b border-slate-100">
+          <div className="flex items-center justify-between text-xs text-slate-400 pb-2 mb-2 border-b border-[#f0f0f0]">
             <span>Trang 1 / 15</span>
             <span className="text-emerald-600 font-medium flex items-center gap-1">
               <Icon name="checkCircle" size={13} />
@@ -185,7 +185,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
     >
       <div className="space-y-5 pt-2">
         {/* Row 1: Badges & Semester */}
-        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-slate-100 pb-3">
+        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-[#f0f0f0] pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             {getFormatBadge(item.format)}
             <Tag color="blue" className="font-medium">
@@ -232,7 +232,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
 
         {/* Row 4: Table of contents if present */}
         {item.tableOfContents && item.tableOfContents.length > 0 && (
-          <div className="space-y-2 pt-2 border-t border-slate-100">
+          <div className="space-y-2 pt-2 border-t border-[#f0f0f0]">
             <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
               <Icon name="fileText" size={14} className="text-blue-600" />
               <span>Nội dung chính / Mục lục tài liệu</span>
@@ -251,7 +251,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
         )}
 
         {/* Row 5: Footer Actions (No size prop) */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-between pt-4 border-t border-[#f0f0f0]">
           <Button
             variant="outline"
             onClick={onClose}

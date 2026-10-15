@@ -111,7 +111,7 @@ export const AvatarUploadModal: React.FC<AvatarUploadModalProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#f0f0f0]">
           <Button variant="outline" onClick={onClose} disabled={isSubmitting}>
             {t("button:cancel")}
           </Button>

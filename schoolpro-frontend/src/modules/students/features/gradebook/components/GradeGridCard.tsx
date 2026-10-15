@@ -154,7 +154,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
 
         {/* Row 5: Teacher Comment (line-clamp-2) */}
         <p
-          className="text-xs text-slate-500 italic line-clamp-2 leading-relaxed mb-0 bg-slate-50/70 p-2.5 rounded-lg border border-slate-100"
+          className="text-xs text-slate-500 italic line-clamp-2 leading-relaxed mb-0 bg-slate-50/70 p-2.5 rounded-lg border border-[#f0f0f0]"
           title={item.teacherComment}
         >
           "{item.teacherComment}"
@@ -162,7 +162,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
       </div>
 
       {/* Row 6: Footer Action (Button standard size) */}
-      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+      <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <span className="text-xs text-slate-400 font-medium">
           Học kỳ 1 • 2025-2026
         </span>

@@ -43,7 +43,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
     >
       <div className="space-y-4 pt-1">
         {/* Header */}
-        <div className="border-b border-slate-100 pb-3">
+        <div className="border-b border-[#f0f0f0] pb-3">
           <div className="flex items-center gap-2 mb-1">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">
@@ -76,7 +76,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
             </div>
           </div>
 
-          <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <div className="bg-slate-50 p-3 rounded-xl border border-[#f0f0f0]">
             <div className="text-[11px] font-semibold text-slate-500 uppercase">
               Xếp loại môn
             </div>
@@ -87,7 +87,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
 
           {!isFeedback && (
             <>
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <div className="bg-slate-50 p-3 rounded-xl border border-[#f0f0f0]">
                 <div className="text-[11px] font-semibold text-slate-500 uppercase">
                   TB của Lớp 11A1
                 </div>
@@ -96,7 +96,7 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
                 </div>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+              <div className="bg-slate-50 p-3 rounded-xl border border-[#f0f0f0]">
                 <div className="text-[11px] font-semibold text-slate-500 uppercase">
                   Điểm cao nhất lớp
                 </div>

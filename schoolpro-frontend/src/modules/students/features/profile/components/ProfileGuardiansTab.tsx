@@ -26,7 +26,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="users" size={20} />
         </span>
@@ -51,7 +51,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
             key={g.id}
             className="rounded-xl border border-[#f0f0f0] shadow-2xs p-5 bg-white space-y-3.5 relative overflow-hidden"
           >
-            <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+            <div className="flex items-start justify-between gap-3 border-b border-[#f0f0f0] pb-3">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">
                   {getRelationshipLabel(g.relationship)}

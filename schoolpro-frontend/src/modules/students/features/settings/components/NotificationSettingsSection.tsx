@@ -94,7 +94,7 @@ export const NotificationSettingsSection: React.FC<NotificationSettingsSectionPr
               className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border transition-all ${
                 checked
                   ? "bg-slate-50/70 border-[#f0f0f0]"
-                  : "bg-white border-slate-100 opacity-75"
+                  : "bg-white border-[#f0f0f0] opacity-75"
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">

@@ -99,7 +99,7 @@ export const AppearanceSettingsSection: React.FC<AppearanceSettingsSectionProps>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-slate-50 border border-slate-100 rounded-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl">
           <div>
             <span className="font-bold text-slate-800 text-sm block">
               {t("card:settings.density.title")}

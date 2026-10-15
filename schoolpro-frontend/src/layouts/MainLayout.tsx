@@ -103,7 +103,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       key: "user-info",
       disabled: true,
       label: (
-        <div className="py-2 px-2 border-b border-slate-100 min-w-52.5">
+        <div className="py-2 px-2 border-b border-[#f0f0f0] min-w-52.5">
           <div className="flex items-center gap-2 mb-1">
             <span className="font-bold text-slate-800 text-sm truncate max-w-40">
               {displayName}

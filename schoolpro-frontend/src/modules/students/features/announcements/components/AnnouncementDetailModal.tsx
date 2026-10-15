@@ -72,7 +72,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
     >
       <div className="space-y-5 pt-2">
         {/* Header tags & date */}
-        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-slate-100 pb-3">
+        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-[#f0f0f0] pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
             <Tag color="blue" className="m-0 font-medium">
               {item.department}
@@ -132,7 +132,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
 
         {/* Attachments */}
         {item.attachments && item.attachments.length > 0 && (
-          <div className="space-y-2 pt-3 border-t border-slate-100">
+          <div className="space-y-2 pt-3 border-t border-[#f0f0f0]">
             <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
               <Icon name="download" size={14} className="text-blue-600" />
               <span>
@@ -205,7 +205,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
         )}
 
         {/* Footer actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-between pt-4 border-t border-[#f0f0f0]">
           <Button
             variant="outline"
             onClick={handlePrint}

@@ -98,7 +98,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
           className={`flex items-center justify-between gap-2 rounded-lg px-2.5 py-2 border text-xs ${
             assignment.status === "overdue"
               ? "bg-rose-50/60 border-rose-200/70"
-              : "bg-slate-50 border-slate-100"
+              : "bg-slate-50 border-[#f0f0f0]"
           }`}
         >
           <div className="flex items-center gap-1.5 min-w-0">
@@ -152,7 +152,7 @@ export const AssignmentCard: React.FC<AssignmentCardProps> = ({
       </div>
 
       {/* Footer Row: Type Badge & Action Button */}
-      <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-slate-100">
+      <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-[#f0f0f0]">
         <span className="text-[11px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded flex items-center gap-1 whitespace-nowrap truncate">
           <Icon name="file" size={11} className="text-slate-400 shrink-0" />
           <span className="truncate">{getTypeLabel()}</span>

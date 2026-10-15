@@ -97,7 +97,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
         {/* Right action button */}
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-2 shrink-0 md:self-center border-t md:border-t-0 pt-3 md:pt-0 border-slate-100 justify-end"
+          className="flex items-center gap-2 shrink-0 md:self-center border-t md:border-t-0 pt-3 md:pt-0 border-[#f0f0f0] justify-end"
         >
           <Button
             variant="outline"

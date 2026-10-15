@@ -101,7 +101,7 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
       centered
       width={600}
       title={
-        <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+        <div className="flex items-center gap-3 pb-3 border-b border-[#f0f0f0]">
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-200 shadow-2xs">
             <Icon name="fileText" size={17} />
           </span>
@@ -227,7 +227,7 @@ export const ParentFeedbackModal: React.FC<ParentFeedbackModalProps> = ({
         </Form.Item>
 
         {/* Actions */}
-        <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <div className="pt-4 border-t border-[#f0f0f0] flex items-center justify-end gap-2.5">
           <Button variant="outline" onClick={onClose} disabled={submitting}>
             Hủy bỏ
           </Button>

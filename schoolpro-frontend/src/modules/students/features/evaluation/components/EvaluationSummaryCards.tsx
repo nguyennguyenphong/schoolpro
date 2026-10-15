@@ -34,7 +34,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Phạm vi: <strong className="text-slate-700">Toàn trường & Lớp</strong></span>
           <span className="text-blue-600 font-medium">Chính thức</span>
         </div>
@@ -64,7 +64,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Hạn nộp gần nhất: <strong className="text-slate-700">15/01/2026</strong></span>
           <span className="text-amber-600 font-medium">Đang mở</span>
         </div>
@@ -91,7 +91,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Tỷ lệ hoàn thành: <strong className="text-slate-700">{summary.completionRate}%</strong></span>
           <span className="text-emerald-600 font-medium">Đã ghi nhận</span>
         </div>
@@ -118,7 +118,7 @@ export const EvaluationSummaryCards: React.FC<EvaluationSummaryCardsProps> = ({
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Trạng thái: <strong className="text-slate-700">Đã khóa biểu mẫu</strong></span>
           <span className="text-slate-500 font-medium">Lưu trữ</span>
         </div>

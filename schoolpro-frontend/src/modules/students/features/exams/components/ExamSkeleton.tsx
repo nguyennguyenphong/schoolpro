@@ -45,10 +45,10 @@ export const ExamSkeleton: React.FC<ExamSkeletonProps> = ({ viewMode = "grid" })
               <div className="h-5 w-20 bg-slate-100 rounded-full" />
             </div>
             <div className="h-5 w-4/5 bg-slate-200 rounded" />
-            <div className="h-9 w-full bg-slate-50 rounded-lg border border-slate-100" />
+            <div className="h-9 w-full bg-slate-50 rounded-lg border border-[#f0f0f0]" />
             <div className="h-4 w-2/3 bg-slate-100 rounded" />
           </div>
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <div className="pt-2 border-t border-[#f0f0f0] flex items-center justify-between">
             <div className="h-4 w-24 bg-slate-100 rounded" />
             <div className="h-8 w-24 bg-slate-200 rounded-lg" />
           </div>

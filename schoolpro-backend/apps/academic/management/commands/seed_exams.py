@@ -46,7 +46,9 @@ class Command(BaseCommand):
                 SchoolClass.objects.filter(name="10A1").first() or SchoolClass.objects.first()
             )
             if not school_class:
-                self.stdout.write(self.style.ERROR("No SchoolClass found. Please seed classes first."))
+                self.stdout.write(
+                    self.style.ERROR("No SchoolClass found. Please seed classes first.")
+                )
                 return
 
             grade = school_class.grade or Grade.objects.first()
@@ -281,7 +283,9 @@ class Command(BaseCommand):
                     question_type=qd["db_type"],
                     content=qd["content"],
                     options=qd["options"],
-                    correct_answers=qd["correct"] if isinstance(qd["correct"], list) else [qd["correct"]],
+                    correct_answers=qd["correct"]
+                    if isinstance(qd["correct"], list)
+                    else [qd["correct"]],
                     solution_explanation=qd["explanation"],
                     default_score=qd["points"],
                     author=creator,
@@ -393,7 +397,9 @@ class Command(BaseCommand):
                     question_type=qd["db_type"],
                     content=qd["content"],
                     options=qd["options"],
-                    correct_answers=[qd["correct"]] if not isinstance(qd["correct"], list) else qd["correct"],
+                    correct_answers=[qd["correct"]]
+                    if not isinstance(qd["correct"], list)
+                    else qd["correct"],
                     solution_explanation=qd["explanation"],
                     default_score=qd["points"],
                     author=creator,
@@ -445,7 +451,15 @@ class Command(BaseCommand):
             # =========================================================================
             # EXAM 3: Ngoại ngữ 1 - Kiểm tra 15 phút (Expired)
             # =========================================================================
-            cst_eng = next((c for c in csts if "ngoại ngữ" in c.subject.name.lower() or "tiếng anh" in c.subject.name.lower()), pick_cst(2))
+            cst_eng = next(
+                (
+                    c
+                    for c in csts
+                    if "ngoại ngữ" in c.subject.name.lower()
+                    or "tiếng anh" in c.subject.name.lower()
+                ),
+                pick_cst(2),
+            )
             exam3 = Exam.objects.create(
                 class_subject_teacher=cst_eng,
                 score_type=st_regular or default_st,

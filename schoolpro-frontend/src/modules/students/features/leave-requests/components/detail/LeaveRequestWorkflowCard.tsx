@@ -35,7 +35,7 @@ export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> =
 
   return (
     <div className="w-full bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f0f0f0] pb-3.5">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">

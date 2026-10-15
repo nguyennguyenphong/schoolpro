@@ -34,7 +34,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Phạm vi: <strong className="text-slate-700">Khối 11 - Lớp 11A1</strong></span>
           <span className="text-blue-600 font-medium">Bản chuẩn</span>
         </div>
@@ -61,7 +61,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Nguồn: <strong className="text-slate-700">Tổ Chuyên môn</strong></span>
           <span className="text-indigo-600 font-medium">Trực quan</span>
         </div>
@@ -88,7 +88,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Trọng tâm: <strong className="text-slate-700">Giữa kỳ & Cuối kỳ</strong></span>
           <span className="text-amber-600 font-medium">Ôn tập tốt</span>
         </div>
@@ -115,7 +115,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Tài nguyên: <strong className="text-slate-700">Mở miễn phí 100%</strong></span>
           <span className="text-emerald-600 font-medium">Tốc độ cao</span>
         </div>

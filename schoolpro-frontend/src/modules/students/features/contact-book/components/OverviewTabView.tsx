@@ -39,7 +39,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
           </div>
 
           {/* Thông tin học sinh */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-slate-100 mb-4 bg-slate-50/60 rounded-xl px-4 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-[#f0f0f0] mb-4 bg-slate-50/60 rounded-xl px-4 text-xs">
             <div>
               <span className="text-[11px] font-medium text-slate-400 block">Họ và tên</span>
               <span className="text-xs sm:text-sm font-bold text-slate-800">{summary.studentName}</span>
@@ -70,7 +70,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                 Thông tin Cha Mẹ / Người giám hộ học sinh
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-[#f0f0f0] space-y-1">
                   <span className="text-slate-400 text-[11px] block">Họ tên Bố & Nghề nghiệp:</span>
                   <span className="font-bold text-slate-800 block">
                     {summary.parentInfo.fatherName} — {summary.parentInfo.fatherJob}
@@ -81,7 +81,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                   </span>
                 </div>
 
-                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 space-y-1">
+                <div className="p-2.5 rounded-lg bg-slate-50 border border-[#f0f0f0] space-y-1">
                   <span className="text-slate-400 text-[11px] block">Họ tên Mẹ & Nghề nghiệp:</span>
                   <span className="font-bold text-slate-800 block">
                     {summary.parentInfo.motherName} — {summary.parentInfo.motherJob}
@@ -171,7 +171,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
               </div>
             </div>
 
-            <div className="space-y-2.5 py-3 border-y border-slate-100 text-xs">
+            <div className="space-y-2.5 py-3 border-y border-[#f0f0f0] text-xs">
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
                   <Icon name="phone" size={13} className="text-slate-400" />
@@ -249,7 +249,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-center">
+            <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0] text-center">
               <span className="text-lg sm:text-xl font-bold text-slate-800 block">
                 {Math.round((summary.attendanceRate / 100) * 48)}
               </span>
@@ -342,7 +342,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             </div>
           </div>
 
-          <div className="pt-4 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 mt-3">
+          <div className="pt-4 flex items-center justify-between text-xs text-slate-500 border-t border-[#f0f0f0] mt-3">
             <span>Tổng số lần Cha Mẹ ghi ý kiến vào sổ:</span>
             <span className="font-bold text-blue-600">{summary.parentFeedbackCount} phiếu ghi</span>
           </div>

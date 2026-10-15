@@ -100,7 +100,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         </div>
 
         {/* Teacher Info */}
-        <div className="flex items-center gap-2 text-xs text-slate-600 mb-3 bg-slate-50/80 px-2.5 py-1.5 rounded-lg border border-slate-100">
+        <div className="flex items-center gap-2 text-xs text-slate-600 mb-3 bg-slate-50/80 px-2.5 py-1.5 rounded-lg border border-[#f0f0f0]">
           <Icon name="user" size={13} className="text-slate-400 shrink-0" />
           <span className="font-semibold text-slate-700">{item.teacher}</span>
           <span className="text-slate-400">•</span>
@@ -113,7 +113,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         </p>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-slate-50/60 rounded-xl border border-slate-100 mb-3 text-center">
+        <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-slate-50/60 rounded-xl border border-[#f0f0f0] mb-3 text-center">
           <div>
             <div className="text-sm font-bold text-slate-800">{item.lecturesCount}</div>
             <div className="text-[10px] text-slate-400 font-medium">Bài giảng</div>
@@ -130,7 +130,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
       </div>
 
       {/* Footer Action */}
-      <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+      <div className="pt-3 border-t border-[#f0f0f0] flex items-center justify-between gap-3">
         <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
           <Icon name="download" size={13} className="text-slate-400" />
           {item.totalDownloads} lượt tải

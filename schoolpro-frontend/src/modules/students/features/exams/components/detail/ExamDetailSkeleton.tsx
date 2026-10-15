@@ -38,7 +38,7 @@ export const ExamDetailSkeleton: React.FC = () => {
         <div className="h-6 w-1/3 bg-slate-200 rounded" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-2">
+            <div key={i} className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0] space-y-2">
               <div className="h-3 w-20 bg-slate-200 rounded" />
               <div className="h-6 w-16 bg-slate-200 rounded" />
             </div>
@@ -61,9 +61,9 @@ export const ExamDetailSkeleton: React.FC = () => {
               </div>
               <div className="h-5 w-4/5 bg-slate-200 rounded" />
               <div className="space-y-2 pt-2">
-                <div className="h-10 w-full bg-slate-50 rounded-lg border border-slate-100" />
-                <div className="h-10 w-full bg-slate-50 rounded-lg border border-slate-100" />
-                <div className="h-10 w-full bg-slate-50 rounded-lg border border-slate-100" />
+                <div className="h-10 w-full bg-slate-50 rounded-lg border border-[#f0f0f0]" />
+                <div className="h-10 w-full bg-slate-50 rounded-lg border border-[#f0f0f0]" />
+                <div className="h-10 w-full bg-slate-50 rounded-lg border border-[#f0f0f0]" />
               </div>
             </div>
           ))}

@@ -82,7 +82,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                 className="w-full rounded-xl border border-[#f0f0f0]/90 shadow-xs"
               >
                 {/* Header của phiếu ghi ý kiến */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#f0f0f0]">
                   <div className="flex items-center gap-3">
                     <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 font-extrabold text-sm flex items-center justify-center border border-blue-200 shrink-0 shadow-2xs">
                       T{note.weekNumber}
@@ -104,7 +104,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs text-slate-500 self-start sm:self-auto px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 self-start sm:self-auto px-3 py-1.5 bg-slate-50 rounded-lg border border-[#f0f0f0]">
                     <Icon name="clock" size={13} className="text-slate-400" />
                     <span>Ký ngày: <strong className="text-slate-700">{note.signedAt}</strong></span>
                   </div>
@@ -157,7 +157,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                     </span>
                   </div>
                 ) : (
-                  <div className="text-xs text-slate-500 flex items-center justify-between pt-3 border-t border-slate-100">
+                  <div className="text-xs text-slate-500 flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
                     <span className="flex items-center gap-1.5 text-slate-400">
                       <Icon name="check" size={13} className="text-emerald-500" />
                       Ý kiến đã được lưu trữ chính thức vào hồ sơ Sổ liên lạc của học sinh

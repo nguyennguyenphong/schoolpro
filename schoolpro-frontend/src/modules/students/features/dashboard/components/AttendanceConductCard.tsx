@@ -105,7 +105,7 @@ export const AttendanceConductCard: React.FC<AttendanceConductCardProps> = ({
         </div>
       </div>
 
-      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+      <div className="pt-3 mt-3 border-t border-[#f0f0f0] flex items-center justify-between text-xs text-slate-500">
         <span>Điểm rèn luyện: <strong className="text-slate-800">{attendance.disciplineScore}/100</strong></span>
         <span>Xếp loại: <strong className="text-emerald-600">Gương mẫu</strong></span>
       </div>

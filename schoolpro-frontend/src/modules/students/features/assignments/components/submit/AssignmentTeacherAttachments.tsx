@@ -126,7 +126,7 @@ export const AssignmentTeacherAttachments: React.FC<AssignmentTeacherAttachments
   );
 
   if (embedded) {
-    return <div className="pt-3.5 border-t border-slate-100">{content}</div>;
+    return <div className="pt-3.5 border-t border-[#f0f0f0]">{content}</div>;
   }
 
   return (

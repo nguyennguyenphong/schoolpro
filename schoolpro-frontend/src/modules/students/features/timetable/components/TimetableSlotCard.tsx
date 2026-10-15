@@ -40,7 +40,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
       {/* Top Section: Môn học, Lớp, Phòng, Thời gian, Giáo viên & Email, Hình thức */}
       <div className="space-y-2.5">
         {/* 1. Môn học & Lớp (Không hiển thị mã code) */}
-        <div className="pb-2 border-b border-slate-100 min-h-14.5">
+        <div className="pb-2 border-b border-[#f0f0f0] min-h-14.5">
           <div className="flex items-center justify-between gap-1 mb-1">
             <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-xl border border-blue-100">
               <Icon name="academic" size={12} className="text-blue-600 shrink-0" />
@@ -157,14 +157,14 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
       </div>
 
       {/* Bottom Section: Ghi chú & Liên kết khác */}
-      <div className="space-y-2 pt-2.5 border-t border-slate-100">
+      <div className="space-y-2 pt-2.5 border-t border-[#f0f0f0]">
         {/* 7. Ghi chú */}
         <div className="text-xs">
           <span className="text-slate-500 font-medium block mb-1">
             {t("card:timetable.notes")}
           </span>
           <div
-            className="text-slate-700 italic text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-100/80 leading-relaxed min-h-11.5 flex items-center"
+            className="text-slate-700 italic text-[11px] bg-slate-50 p-2 rounded-lg border border-[#f0f0f0]/80 leading-relaxed min-h-11.5 flex items-center"
             title={slot.notes || slot.lessonTopic}
           >
             <span className="line-clamp-2">

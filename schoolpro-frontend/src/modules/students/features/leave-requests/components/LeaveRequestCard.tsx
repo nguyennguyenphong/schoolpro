@@ -48,7 +48,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
         </div>
 
         {/* 2. Time and Number of days */}
-        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2.5 border border-slate-100">
+        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2.5 border border-[#f0f0f0]">
           <div className="flex items-center gap-2 min-w-0">
             <Icon name="calendar" size={15} className="text-blue-600 shrink-0" />
             <span className="text-xs sm:text-sm font-bold text-slate-800 truncate">
@@ -95,7 +95,7 @@ export const LeaveRequestCard: React.FC<LeaveRequestCardProps> = ({
 
       {/* 4. Send Date and Detail Button */}
       <div
-        className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2"
+        className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2"
         onClick={(e) => e.stopPropagation()}
       >
         <span className="text-[11px] text-slate-400 truncate">

@@ -10,7 +10,7 @@ export const AssignmentModalHeader: React.FC<AssignmentModalHeaderProps> = ({
   assignment,
 }) => {
   return (
-    <div className="border-b border-slate-100 pb-3">
+    <div className="border-b border-[#f0f0f0] pb-3">
       <div className="flex flex-wrap items-center gap-2 mb-2">
         <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl">
           {assignment.subjectName}

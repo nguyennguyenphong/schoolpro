@@ -28,7 +28,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="heart" size={20} />
         </span>
@@ -104,28 +104,28 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
         </h4>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.vision")}</span>
             <p className="font-bold text-slate-800 text-sm mb-0">
               Trái: {healthRecord.visionLeft} • Phải: {healthRecord.visionRight}
             </p>
           </div>
 
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.insuranceCode")}</span>
             <p className="font-bold text-slate-800 text-sm mb-0">
               {healthRecord.insuranceCode}
             </p>
           </div>
 
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.allergies")}</span>
             <p className="font-medium text-slate-700 mb-0 leading-relaxed">
               {healthRecord.allergies}
             </p>
           </div>
 
-          <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+          <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.chronicIllness")}</span>
             <p className="font-medium text-slate-700 mb-0 leading-relaxed">
               {healthRecord.chronicIllness}
@@ -133,7 +133,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
           </div>
         </div>
 
-        <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1">
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl text-xs space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.healthNotes")}</span>
           <p className="font-medium text-slate-700 mb-0 leading-relaxed">
             {healthRecord.notes}

@@ -132,7 +132,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
       </div>
 
       {/* Bottom row: Filter Dropdowns */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* 1. Loại nghỉ phép */}
           <div className="flex items-center gap-1.5">

@@ -21,7 +21,7 @@ export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = (
 
   return (
     <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-5">
-      <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+      <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-3">
         <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
         <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
           {t("leaveRequests.detail.contentCardTitle")}
@@ -29,7 +29,7 @@ export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = (
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
           <span className="text-[11px] text-slate-500 block mb-1">
             {t("leaveRequests.detail.dateRangeBoxLabel")}
           </span>
@@ -39,7 +39,7 @@ export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = (
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
           <span className="text-[11px] text-slate-500 block mb-1">
             {t("leaveRequests.detail.daysAndShiftBoxLabel")}
           </span>
@@ -54,7 +54,7 @@ export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = (
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-[#f0f0f0]">
           <span className="text-[11px] text-slate-500 block mb-1">
             {t("leaveRequests.detail.reasonCategoryBoxLabel")}
           </span>
@@ -89,7 +89,7 @@ export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = (
         )}
       </div>
 
-      <div className="space-y-2.5 pt-1 border-t border-slate-100">
+      <div className="space-y-2.5 pt-1 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
           <span className="text-xs font-bold text-slate-700">
             {t("leaveRequests.detail.affectedLessonsListTitle", {

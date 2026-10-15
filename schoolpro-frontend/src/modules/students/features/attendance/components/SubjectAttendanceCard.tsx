@@ -120,7 +120,7 @@ export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
         </div>
 
         {/* 2. TimeSlot & Shift Box (Matching LeaveRequestCard layout) */}
-        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-3 py-2 border border-[#f0f0f0]">
           <div className="flex items-center gap-1.5 min-w-0">
             <Icon name="clock" size={14} className="text-blue-600 shrink-0" />
             <span className="text-xs sm:text-sm font-bold text-slate-800 whitespace-nowrap">
@@ -157,7 +157,7 @@ export const SubjectAttendanceCard: React.FC<SubjectAttendanceCardProps> = ({
       </div>
 
       {/* 5. Footer: Concise Status Info & Student Action / Leave Request Link */}
-      <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+      <div className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <div className="text-xs min-w-0 whitespace-nowrap">
           {isOpen ? (
             <span

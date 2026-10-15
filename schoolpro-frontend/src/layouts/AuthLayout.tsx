@@ -31,7 +31,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
         </div>
 
         <div className="relative z-10 h-full flex flex-col justify-between w-full max-w-xl">
-          <div className="text-xs text-slate-500 flex justify-between items-center bg-white/80 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-sm border border-slate-100">
+          <div className="text-xs text-slate-500 flex justify-between items-center bg-white/80 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-sm border border-[#f0f0f0]">
             <span>{t("common:footer.copyright")}</span>
             <span className="hover:text-blue-600 transition-colors cursor-pointer font-medium">
               {t("common:footer.technicalSupport")}

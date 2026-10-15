@@ -158,20 +158,20 @@ export const SubjectMaterialsPage: React.FC = () => {
 
         {/* Quick summary stats strip */}
         {summary && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100 text-xs">
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 flex items-center justify-between">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#f0f0f0] text-xs">
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
               <span className="text-slate-500 font-medium">Tổng số tài liệu:</span>
               <strong className="text-slate-800 text-sm">{summary.total}</strong>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 flex items-center justify-between">
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
               <span className="text-slate-500 font-medium">Bài giảng điện tử:</span>
               <strong className="text-blue-600 text-sm">{summary.lecturesCount}</strong>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 flex items-center justify-between">
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
               <span className="text-slate-500 font-medium">Đề cương & Đề thi:</span>
               <strong className="text-orange-600 text-sm">{summary.outlinesCount + summary.examPrepsCount}</strong>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 flex items-center justify-between">
+            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
               <span className="text-slate-500 font-medium">Lượt tải về:</span>
               <strong className="text-emerald-600 text-sm">{summary.totalDownloads}</strong>
             </div>

@@ -87,7 +87,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
               }`}
             >
               {/* Card Header: Date & Status */}
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <div className="flex items-center justify-between pb-2 border-b border-[#f0f0f0]">
                 <div className="flex items-center gap-1.5 text-xs text-slate-700">
                   <Icon name="calendar" size={13} className="text-blue-600 shrink-0" />
                   <span className="font-bold text-slate-900">{formattedDate}</span>
@@ -107,7 +107,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
               </div>
 
               {/* Meta Grid */}
-              <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100 text-slate-600">
+              <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-[#f0f0f0] text-slate-600">
                 <div className="flex items-center gap-1.5">
                   <Icon name="clock" size={13} className="text-slate-400 shrink-0" />
                   <span className="font-medium text-slate-800">
@@ -149,7 +149,7 @@ export const ListView: React.FC<ListViewProps> = ({ slots, onSlotClick }) => {
 
               {/* Online class link or note */}
               {slot.onlineUrl && (
-                <div className="pt-2 border-t border-slate-100">
+                <div className="pt-2 border-t border-[#f0f0f0]">
                   <a
                     href={slot.onlineUrl}
                     target="_blank"

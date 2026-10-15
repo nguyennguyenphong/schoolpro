@@ -107,7 +107,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
         </div>
 
         {/* 8. Submit Actions */}
-        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#f0f0f0]">
           <div className="h-9 w-24 bg-slate-100 border border-slate-200 rounded-lg" />
           <div className="h-9 w-36 bg-slate-200 rounded-lg" />
         </div>

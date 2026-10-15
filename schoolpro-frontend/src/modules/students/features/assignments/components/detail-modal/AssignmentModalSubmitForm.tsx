@@ -38,7 +38,7 @@ export const AssignmentModalSubmitForm: React.FC<AssignmentModalSubmitFormProps>
   }
 
   return (
-    <div className="border-t border-slate-100 pt-3 space-y-3">
+    <div className="border-t border-[#f0f0f0] pt-3 space-y-3">
       <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
         {t("card:assignments.detail.submissionAreaTitle")}
       </h4>

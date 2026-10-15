@@ -121,7 +121,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
       </div>
 
       {/* 2. Dưới đó là input search và hành động nhanh */}
-      <div className="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Input Search */}
         <div className="flex-1 w-full sm:w-auto">
           <Input
@@ -150,7 +150,7 @@ export const ContactBookFilterBar: React.FC<ContactBookFilterBarProps> = ({
       </div>
 
       {/* 3. Bên dưới là các bộ lọc dropdown */}
-      <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+      <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">

@@ -52,7 +52,7 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
 
   return (
     <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="flex items-center justify-between border-b border-[#f0f0f0] pb-3">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-4 rounded-full bg-emerald-600 inline-block" />
           <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">

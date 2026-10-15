@@ -57,7 +57,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
               className="w-full rounded-xl border border-[#f0f0f0]/90 shadow-xs hover:shadow-md transition-all duration-200 bg-white overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6"
             >
               {/* Header: Week number, dates & tags */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#f0f0f0]">
                 <div className="flex items-center gap-3">
                   <span className="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 font-extrabold text-sm flex items-center justify-center shrink-0 shadow-2xs">
                     T{report.weekNumber}

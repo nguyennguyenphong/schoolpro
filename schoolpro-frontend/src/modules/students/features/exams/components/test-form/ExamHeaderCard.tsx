@@ -1,5 +1,4 @@
 import React from "react";
-import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 
@@ -13,50 +12,10 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
 
   return (
     <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs overflow-hidden">
-      {/* Top Color Accent Bar */}
-      <div className="h-2 bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600" />
-
-      <div className="p-5 sm:p-6 space-y-4">
-        {/* Meta tags */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <Tag color="processing" className="font-semibold m-0 text-xs">
-            {exam.courseName} ({exam.courseCode})
-          </Tag>
-          <Tag color="default" className="font-semibold m-0 text-xs">
-            {exam.semester} • {exam.academicYear}
-          </Tag>
-          {isCompleted ? (
-            <Tag color={isPassed ? "success" : "error"} className="font-bold m-0 text-xs">
-              {isPassed ? "Đạt yêu cầu" : "Chưa đạt"}
-            </Tag>
-          ) : exam.status === "expired" ? (
-            <Tag color="default" className="font-semibold m-0 text-xs">
-              Đã kết thúc
-            </Tag>
-          ) : (
-            <Tag color="warning" className="font-semibold m-0 text-xs">
-              Đang diễn ra
-            </Tag>
-          )}
-        </div>
-
-        {/* Title & Teacher */}
-        <div className="space-y-1">
-          <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight mb-0">
-            {exam.title}
-          </h2>
-          {exam.teacherName && (
-            <p className="text-xs text-slate-500 flex items-center gap-1.5 font-medium mb-0">
-              <Icon name="user" size={13} className="text-slate-400" />
-              <span>Giáo viên phụ trách: </span>
-              <strong className="text-slate-700">{exam.teacherName}</strong>
-            </p>
-          )}
-        </div>
-
+      <div className="p-4 sm:p-4 space-y-2">
         {/* Exam Information 4-Grid matching summary cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100">
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
               Thời gian làm bài
             </span>
@@ -65,7 +24,7 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
               Số lượng câu hỏi
             </span>
@@ -74,7 +33,7 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
               Thang điểm tối đa
             </span>
@@ -83,7 +42,7 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+          <div className="p-3 rounded-xl bg-slate-50 border border-[#f0f0f0]">
             <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
               Điểm đạt yêu cầu
             </span>

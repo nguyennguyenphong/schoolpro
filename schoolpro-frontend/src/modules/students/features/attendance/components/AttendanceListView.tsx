@@ -85,7 +85,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
               key={rec.id}
               className="p-3.5 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-2.5"
             >
-              <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-100">
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-[#f0f0f0]">
                 <div className="flex items-center gap-1.5 text-xs text-slate-700 font-semibold whitespace-nowrap">
                   <Tag
                     color="blue"
@@ -125,7 +125,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div className="pt-2 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
                 <span className="text-xs text-slate-500 whitespace-nowrap">
                   {isOpen
                     ? formatCountdownMmSs(remainingSec)

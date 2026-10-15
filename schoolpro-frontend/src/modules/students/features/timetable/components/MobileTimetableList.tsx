@@ -198,7 +198,7 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                             </Tag>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100 text-slate-600">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1 border-t border-[#f0f0f0] text-slate-600">
                             <div className="flex items-center gap-1.5">
                               <Icon name="clock" size={13} className="text-slate-400 shrink-0" />
                               <span className="font-medium text-slate-800">
@@ -258,7 +258,7 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                           </div>
 
                           {slot.notes && (
-                            <div className="pt-1.5 border-t border-slate-100 text-[11px] text-slate-500 italic">
+                            <div className="pt-1.5 border-t border-[#f0f0f0] text-[11px] text-slate-500 italic">
                               <span className="font-medium text-slate-600 not-italic">
                                 {t("card:timetable.notes")}{" "}
                               </span>

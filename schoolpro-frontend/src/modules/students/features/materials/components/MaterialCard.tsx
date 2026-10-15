@@ -204,7 +204,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
       </div>
 
       {/* Row 5 & 6: Metadata + Direct Download Button */}
-      <div className="mt-3.5 pt-3 border-t border-slate-100 space-y-3">
+      <div className="mt-3.5 pt-3 border-t border-[#f0f0f0] space-y-3">
         <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
           <div className="flex items-center gap-1.5 min-w-0">
             <Icon name="user" size={13} className="text-slate-400 shrink-0" />

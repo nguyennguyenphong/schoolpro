@@ -63,7 +63,7 @@ export const SurveyFormModal: React.FC<SurveyFormModalProps> = ({
       open={isOpen}
       onCancel={onClose}
       footer={
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-[#f0f0f0]">
           <div className="text-xs text-slate-400 flex items-center gap-1.5">
             <Icon name="lock" size={13} className="text-emerald-600" />
             <span>Phản hồi được bảo vệ và xử lý ẩn danh</span>
@@ -92,7 +92,7 @@ export const SurveyFormModal: React.FC<SurveyFormModalProps> = ({
     >
       <div className="space-y-4 pt-1 max-h-[75vh] overflow-y-auto pr-1">
         {/* Header */}
-        <div className="border-b border-slate-100 pb-3.5 space-y-1.5">
+        <div className="border-b border-[#f0f0f0] pb-3.5 space-y-1.5">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
             <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-0">

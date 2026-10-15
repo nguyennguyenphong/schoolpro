@@ -125,7 +125,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   return (
     <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
       {/* 1. Status Filter Tabs with Counts */}
-      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100">
+      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-[#f0f0f0]">
         {statusTabs.map((tab) => {
           const isActive = status === tab.key;
           return (
@@ -206,7 +206,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
       </div>
 
       {/* 3. Filter Dropdowns */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Môn học */}
           <div className="flex items-center gap-1.5">

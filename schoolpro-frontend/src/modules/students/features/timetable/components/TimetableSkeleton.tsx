@@ -21,8 +21,8 @@ export const TimetableSkeleton: React.FC = () => {
 
             {/* Day Slots List Skeleton */}
             <div className="p-3 space-y-3">
-              <div className="p-3.5 border border-slate-100 rounded-xl bg-white space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <div className="p-3.5 border border-[#f0f0f0] rounded-xl bg-white space-y-3">
+                <div className="flex justify-between items-center pb-2 border-b border-[#f0f0f0]">
                   <div className="h-5 w-24 bg-blue-100/80 rounded-xl" />
                   <div className="h-4 w-16 bg-slate-100 rounded" />
                 </div>
@@ -87,7 +87,7 @@ export const TimetableSkeleton: React.FC = () => {
                             {/* Top Info */}
                             <div className="space-y-3">
                               {/* Class Badge & Course Title */}
-                              <div className="pb-2 border-b border-slate-100 space-y-2">
+                              <div className="pb-2 border-b border-[#f0f0f0] space-y-2">
                                 <div className="h-5 w-24 bg-blue-100/70 rounded-xl" />
                                 <div className="h-4 w-4/5 bg-slate-200 rounded" />
                                 <div className="h-3.5 w-3/5 bg-slate-100 rounded" />
@@ -126,13 +126,13 @@ export const TimetableSkeleton: React.FC = () => {
                             </div>
 
                             {/* Bottom Notes & Actions */}
-                            <div className="pt-2.5 border-t border-slate-100 space-y-2">
-                              <div className="h-10 w-full bg-slate-50 rounded-lg border border-slate-100" />
+                            <div className="pt-2.5 border-t border-[#f0f0f0] space-y-2">
+                              <div className="h-10 w-full bg-slate-50 rounded-lg border border-[#f0f0f0]" />
                               <div className="h-6 w-28 bg-slate-100 rounded-lg" />
                             </div>
                           </div>
                         ) : (
-                          <div className="w-full h-full min-h-105 border border-dashed border-slate-100 rounded-xl bg-slate-50/30 flex items-center justify-center">
+                          <div className="w-full h-full min-h-105 border border-dashed border-[#f0f0f0] rounded-xl bg-slate-50/30 flex items-center justify-center">
                             <div className="h-3 w-20 bg-slate-100 rounded" />
                           </div>
                         )}

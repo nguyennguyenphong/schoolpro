@@ -152,7 +152,7 @@ export const AssignmentDeadlineStatusCard: React.FC<AssignmentDeadlineStatusCard
 
   return (
     <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-3">
-      <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+      <div className="flex items-center gap-2 pb-2.5 border-b border-[#f0f0f0]">
         <span className="w-1.5 h-4 rounded-full bg-amber-500 inline-block" />
         <h3 className="text-sm font-bold text-slate-900 mb-0">
           {t("card:assignments.detail.deadlineCardTitle")}

@@ -30,7 +30,7 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
   return (
     <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs">
       {/* Header of Table Card */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#f0f0f0]">
         <div>
           <div className="flex items-center gap-2 mb-0.5">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -133,12 +133,12 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
                 className="hover:bg-blue-50/30 transition-colors"
               >
                 {/* 1. STT */}
-                <td className="py-2.5 px-2.5 text-center font-bold text-slate-400 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2.5 text-center font-bold text-slate-400 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.stt}
                 </td>
 
                 {/* 2. Subject Name */}
-                <td className="py-2.5 px-3 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-3 border-r border-[#f0f0f0] whitespace-nowrap">
                   <div className="font-bold text-slate-900 text-xs">
                     {item.subjectName}
                   </div>
@@ -148,47 +148,47 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
                 </td>
 
                 {/* 3. Teacher Name */}
-                <td className="py-2.5 px-3 text-slate-700 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-3 text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.teacherName}
                 </td>
 
                 {/* 4. Periods Per Week */}
-                <td className="py-2.5 px-2 text-center text-slate-500 font-medium border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center text-slate-500 font-medium border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.periodsPerWeek} tiết
                 </td>
 
                 {/* 5. TX1 */}
-                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.regularScores[0] !== undefined ? item.regularScores[0].toFixed(1) : "—"}
                 </td>
 
                 {/* 6. TX2 */}
-                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.regularScores[1] !== undefined ? item.regularScores[1].toFixed(1) : "—"}
                 </td>
 
                 {/* 7. TX3 */}
-                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.regularScores[2] !== undefined ? item.regularScores[2].toFixed(1) : "—"}
                 </td>
 
                 {/* 8. TX4 */}
-                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-semibold text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.regularScores[3] !== undefined ? item.regularScores[3].toFixed(1) : "—"}
                 </td>
 
                 {/* 9. Midterm Score (ĐGGK) */}
-                <td className="py-2.5 px-2 text-center font-bold text-amber-700 bg-amber-50/20 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-bold text-amber-700 bg-amber-50/20 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.midtermScore.toFixed(1)}
                 </td>
 
                 {/* 10. Final Score (ĐGCK) */}
-                <td className="py-2.5 px-2 text-center font-bold text-amber-700 bg-amber-50/20 border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2 text-center font-bold text-amber-700 bg-amber-50/20 border-r border-[#f0f0f0] whitespace-nowrap">
                   {item.finalScore.toFixed(1)}
                 </td>
 
                 {/* 11. Average Score (ĐTB HK1) */}
-                <td className="py-2.5 px-2 text-center border-r border-slate-100 whitespace-nowrap bg-emerald-50/20">
+                <td className="py-2.5 px-2 text-center border-r border-[#f0f0f0] whitespace-nowrap bg-emerald-50/20">
                   <span
                     className={`inline-block px-2 py-0.5 rounded-xl font-extrabold text-xs ${
                       item.averageScore >= 8.0
@@ -203,12 +203,12 @@ export const SubjectGradesTable: React.FC<SubjectGradesTableProps> = ({
                 </td>
 
                 {/* 12. Annual Average Score (ĐTB Cả năm) */}
-                <td className="py-2.5 px-2 text-center font-bold text-slate-700 border-r border-slate-100 whitespace-nowrap bg-emerald-50/10">
+                <td className="py-2.5 px-2 text-center font-bold text-slate-700 border-r border-[#f0f0f0] whitespace-nowrap bg-emerald-50/10">
                   {item.annualAverageScore ? item.annualAverageScore.toFixed(2) : "—"}
                 </td>
 
                 {/* 13. Rank */}
-                <td className="py-2.5 px-2.5 text-center border-r border-slate-100 whitespace-nowrap">
+                <td className="py-2.5 px-2.5 text-center border-r border-[#f0f0f0] whitespace-nowrap">
                   <Tag color={getRankColor(item.rank)} className="m-0 font-semibold px-2 py-0.5">
                     {item.rank}
                   </Tag>

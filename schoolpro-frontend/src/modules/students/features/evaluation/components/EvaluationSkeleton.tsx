@@ -48,7 +48,7 @@ export const EvaluationSkeleton: React.FC = () => {
             <div className="h-6 w-3/4 bg-slate-200 rounded" />
             <div className="h-4 w-full bg-slate-100 rounded" />
             <div className="h-4 w-2/3 bg-slate-100 rounded" />
-            <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
+            <div className="pt-3 border-t border-[#f0f0f0] flex justify-between items-center">
               <div className="h-4 w-32 bg-slate-200 rounded" />
               <div className="h-8 w-28 bg-slate-200 rounded-lg" />
             </div>

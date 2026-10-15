@@ -68,7 +68,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
 
       {/* 2. Workflow Steps Card Skeleton */}
       <div className="w-full bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-5">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f0f0f0] pb-3.5">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
             <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-0">
@@ -98,7 +98,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
         <div className="lg:col-span-2 space-y-4 sm:space-y-5">
           {/* Card 1: Tabbed Requirements & Attachments */}
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
-            <div className="flex items-center gap-3 pb-2.5 border-b border-slate-100">
+            <div className="flex items-center gap-3 pb-2.5 border-b border-[#f0f0f0]">
               <SkeletonButton active size="small" style={{ width: 160, height: 24 }} />
               <SkeletonButton active size="small" style={{ width: 150, height: 24 }} />
               <SkeletonButton active size="small" style={{ width: 140, height: 24 }} />
@@ -106,7 +106,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
             <div className="p-4 bg-slate-50/70 border border-[#f0f0f0] rounded-xl">
               <Skeleton active paragraph={{ rows: 3 }} title={false} />
             </div>
-            <div className="pt-3.5 border-t border-slate-100 space-y-2.5">
+            <div className="pt-3.5 border-t border-[#f0f0f0] space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Icon name="paperclip" size={14} className="text-blue-600 shrink-0" />
@@ -139,7 +139,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
 
           {/* Card 2: Submission Form Area */}
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
-            <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-2.5 border-b border-[#f0f0f0]">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
                 <h3 className="text-base font-bold text-slate-900 mb-0">
@@ -157,7 +157,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
               <Skeleton active paragraph={{ rows: 2 }} title={{ width: "25%" }} />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f0f0f0]">
               <SkeletonButton active size="default" style={{ width: 130 }} />
             </div>
           </div>
@@ -166,7 +166,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
         {/* Right Column (1 span): 2 Tabbed Sidebar Cards */}
         <div className="lg:col-span-1 space-y-4 sm:space-y-5">
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2 pb-2 border-b border-[#f0f0f0]">
               <SkeletonButton active size="small" style={{ width: 120, height: 22 }} />
               <SkeletonButton active size="small" style={{ width: 110, height: 22 }} />
             </div>
@@ -174,7 +174,7 @@ export const AssignmentDetailSkeleton: React.FC = () => {
           </div>
 
           <div className="p-4 sm:p-5 border border-[#f0f0f0] bg-white rounded-xl shadow-2xs space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+            <div className="flex items-center gap-2 pb-2 border-b border-[#f0f0f0]">
               <SkeletonButton active size="small" style={{ width: 110, height: 22 }} />
               <SkeletonButton active size="small" style={{ width: 130, height: 22 }} />
             </div>

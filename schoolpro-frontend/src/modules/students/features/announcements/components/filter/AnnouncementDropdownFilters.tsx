@@ -83,7 +83,7 @@ export const AnnouncementDropdownFilters: React.FC<AnnouncementDropdownFiltersPr
     );
 
   return (
-    <div className="pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+    <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Chuyên mục */}
         <div className="flex items-center gap-1.5">

@@ -32,7 +32,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Xếp loại: <strong className="text-slate-700">Học sinh {overview.academicRank}</strong></span>
           <span className="text-emerald-600 font-semibold flex items-center gap-0.5">
             +{overview.gpaChange} so với kỳ trước
@@ -60,7 +60,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Nề nếp kỷ luật:</span>
           <strong className="text-slate-700">0 lỗi vi phạm</strong>
         </div>
@@ -89,7 +89,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Vắng phép: <strong className="text-slate-700">{overview.excusedAbsences}</strong> • K.Phép: <strong className="text-slate-700">{overview.unexcusedAbsences}</strong></span>
           <span className="text-amber-600 font-medium">Muộn: {overview.lateCount}</span>
         </div>
@@ -118,7 +118,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
           </Tag>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
           <span>Toàn khối 11:</span>
           <strong className="text-blue-600 font-bold">
             #{overview.gradeRank} / {overview.totalStudentsInGrade} Học sinh

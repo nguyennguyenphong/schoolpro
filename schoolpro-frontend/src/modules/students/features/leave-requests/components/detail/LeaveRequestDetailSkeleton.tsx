@@ -53,7 +53,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
       {/* 2. Full-Width Workflow Card Skeleton (LeaveRequestWorkflowCard) */}
       <div className="w-full bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-5">
         {/* Card header */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f0f0f0] pb-3.5">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
             <div className="h-5 w-64 bg-slate-200 rounded" />
@@ -91,7 +91,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
           {/* Card 3A: LeaveRequestContentCard */}
           <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-5">
             {/* Header */}
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-3">
               <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
               <div className="h-5 w-48 bg-slate-200 rounded" />
             </div>
@@ -101,7 +101,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
               {[1, 2, 3].map((box) => (
                 <div
                   key={box}
-                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex flex-col gap-1.5"
+                  className="p-3.5 rounded-xl bg-slate-50 border border-[#f0f0f0] flex flex-col gap-1.5"
                 >
                   <div className="h-3 w-24 bg-slate-200/80 rounded" />
                   <div className="h-5 w-36 bg-slate-200 rounded" />
@@ -128,7 +128,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
             </div>
 
             {/* Affected Lessons Section */}
-            <div className="flex flex-col gap-2.5 pt-3 border-t border-slate-100">
+            <div className="flex flex-col gap-2.5 pt-3 border-t border-[#f0f0f0]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="h-4 w-52 bg-slate-200 rounded" />
                 <div className="flex flex-wrap gap-1.5">
@@ -157,7 +157,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
 
           {/* Card 3B: LeaveRequestActivityLogCard */}
           <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex items-center justify-between border-b border-[#f0f0f0] pb-3">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-4 rounded-full bg-emerald-600 inline-block" />
                 <div className="h-5 w-52 bg-slate-200 rounded" />
@@ -195,12 +195,12 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
           <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-4">
             {/* Homeroom section (4 rows) */}
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+              <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
                 <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
                 <div className="h-4.5 w-48 bg-slate-200 rounded" />
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col gap-2.5">
+              <div className="p-3 bg-slate-50 rounded-xl border border-[#f0f0f0] flex flex-col gap-2.5">
                 {[1, 2, 3, 4].map((row) => (
                   <div key={row} className="flex items-center justify-between gap-2">
                     <div className="h-3.5 w-24 bg-slate-200/70 rounded" />
@@ -211,7 +211,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
             </div>
 
             {/* Subject teachers section (2 teacher cards) */}
-            <div className="flex flex-col gap-2.5 pt-3 border-t border-slate-100">
+            <div className="flex flex-col gap-2.5 pt-3 border-t border-[#f0f0f0]">
               <div className="flex items-center justify-between">
                 <div className="h-4 w-44 bg-slate-200 rounded" />
                 <div className="h-5 w-16 bg-slate-100 rounded-md" />
@@ -238,7 +238,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
           <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-4">
             {/* Student Info (3 rows) */}
             <div className="flex flex-col gap-2.5">
-              <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+              <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
                 <span className="w-1.5 h-4 rounded-full bg-slate-700 inline-block" />
                 <div className="h-4.5 w-40 bg-slate-200 rounded" />
               </div>
@@ -254,7 +254,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
             </div>
 
             {/* Guardian Info (3 rows) */}
-            <div className="flex flex-col gap-2.5 pt-3 border-t border-slate-100">
+            <div className="flex flex-col gap-2.5 pt-3 border-t border-[#f0f0f0]">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-3.5 rounded-full bg-emerald-600 inline-block" />
                 <div className="h-4 w-44 bg-slate-200 rounded" />
@@ -273,7 +273,7 @@ export const LeaveRequestDetailSkeleton: React.FC = () => {
 
           {/* Sidebar Card 3: Attachments */}
           <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3">
-            <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+            <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
               <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
               <div className="h-4.5 w-44 bg-slate-200 rounded" />
             </div>

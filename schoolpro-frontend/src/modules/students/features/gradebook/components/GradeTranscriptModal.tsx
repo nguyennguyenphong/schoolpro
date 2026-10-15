@@ -24,7 +24,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
       open={isOpen}
       onCancel={onClose}
       footer={
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[#f0f0f0]">
           <div className="text-xs text-slate-500 flex items-center gap-1.5">
             <Icon name="checkCircle" size={14} />
             <span>Xác thực bởi Cổng Học bạ Điện tử Quốc gia (Bộ GD&ĐT)</span>
