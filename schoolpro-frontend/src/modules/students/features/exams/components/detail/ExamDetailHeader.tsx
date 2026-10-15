@@ -115,14 +115,6 @@ export const ExamDetailHeader: React.FC<ExamDetailHeaderProps> = ({
 
         {/* Right action buttons */}
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          {isCompleted && exam.score !== undefined && (
-            <div className="flex items-baseline gap-1 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg text-emerald-800">
-              <span className="text-xs font-bold">Điểm đạt:</span>
-              <span className="text-base font-extrabold text-emerald-700">{exam.score}</span>
-              <span className="text-xs font-bold text-emerald-600">/{exam.maxScore}</span>
-            </div>
-          )}
-
           <Button
             variant="outline"
             onClick={onBack}

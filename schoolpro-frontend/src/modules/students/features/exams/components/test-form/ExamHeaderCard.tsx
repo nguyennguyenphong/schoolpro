@@ -55,7 +55,7 @@ export const ExamHeaderCard: React.FC<ExamHeaderCardProps> = ({ exam }) => {
         {/* Completion Banner */}
         {isCompleted && (
           <div
-            className={`p-4 rounded-xl border flex items-center justify-between gap-4 ${
+            className={`p-4 rounded-xl border flex items-center justify-between gap-4 mt-3.5 ${
               isPassed
                 ? "bg-emerald-50/80 border-emerald-200 text-emerald-900"
                 : "bg-rose-50/80 border-rose-200 text-rose-900"
