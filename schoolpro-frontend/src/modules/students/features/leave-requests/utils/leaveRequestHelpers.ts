@@ -91,10 +91,9 @@ export function formatLeaveDateRange(startDate: string, endDate: string): string
   const start = dayjs(startDate);
   const end = dayjs(endDate || startDate);
   if (!start.isValid()) return startDate;
-  if (!end.isValid() || start.isSame(end, "day")) {
-    return start.format("DD/MM/YYYY");
-  }
-  return `${start.format("DD/MM/YYYY")} - ${end.format("DD/MM/YYYY")}`;
+  const startFmt = start.format("DD/MM/YYYY");
+  const endFmt = end.isValid() ? end.format("DD/MM/YYYY") : startFmt;
+  return `${startFmt} - ${endFmt}`;
 }
 
 export function formatDateDisplay(dateStr?: string | null): string {
