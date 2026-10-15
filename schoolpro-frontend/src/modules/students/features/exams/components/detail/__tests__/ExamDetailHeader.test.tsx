@@ -33,7 +33,7 @@ describe("ExamDetailHeader", () => {
     );
 
     expect(screen.getAllByText("Kiểm tra 15 phút Toán học").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("MATH101")).toBeInTheDocument();
-    expect(screen.getByText("EXAM-101")).toBeInTheDocument();
+    expect(screen.getByText("Toán học 11")).toBeInTheDocument();
+    expect(screen.getByText("Thầy Trần Văn Bình")).toBeInTheDocument();
   });
 });

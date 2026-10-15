@@ -23,7 +23,7 @@ export const QuestionRadio: React.FC<QuestionRadioProps> = ({
 
   return (
     <Radio.Group
-      value={value}
+      value={value ?? null}
       onChange={(e) => onChange(e.target.value)}
       disabled={readOnly}
       className="w-full"

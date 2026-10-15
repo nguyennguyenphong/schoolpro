@@ -19,7 +19,7 @@ export const QuestionBoolean: React.FC<QuestionBooleanProps> = ({
 }) => {
   return (
     <Radio.Group
-      value={value}
+      value={typeof value === "boolean" ? value : null}
       onChange={(e) => onChange(e.target.value)}
       disabled={readOnly}
     >

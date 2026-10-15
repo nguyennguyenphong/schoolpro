@@ -41,17 +41,11 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[#f0f0f0] hover:border-blue-300 shadow-2xs p-4 sm:p-5 flex flex-col justify-between h-full transition-all group">
+    <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs p-4 sm:p-5 flex flex-col justify-between h-full transition-all group">
       <div className="space-y-3">
         {/* 1. Course Code & Status Badges */}
         <div className="flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl whitespace-nowrap">
-              {item.courseCode}
-            </span>
-            <span className="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap">
-              {item.code}
-            </span>
             <Tag color="purple" className="m-0 font-semibold text-xs whitespace-nowrap">
               {t("card:exams.card.multipleChoice")}
             </Tag>
@@ -62,7 +56,7 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
 
         {/* 2. Exam Title */}
         <h3
-          className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-0"
+          className="text-sm sm:text-base font-bold text-slate-900 transition-colors line-clamp-2 mb-2"
           title={item.title}
         >
           {item.title}
@@ -104,8 +98,7 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
       <div className="pt-3.5 mt-3.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <span className="text-[11px] text-slate-400 truncate">
           {isCompleted && item.completedAt
-            ? t("card:exams.card.submittedAt", { date: item.completedAt })
-            : `${item.semester} • ${item.academicYear}`}
+            && t("card:exams.card.submittedAt", { date: item.completedAt })}
         </span>
 
         <div className="shrink-0">
@@ -132,9 +125,13 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
           )}
 
           {isExpired && (
-            <span className="text-xs font-semibold text-slate-400 px-3 py-1 bg-slate-100 rounded-lg">
-              {t("card:exams.card.closed")}
-            </span>
+            <Button
+              variant="ghost"
+              disabled
+            >
+              <Icon name="close" size={13} />
+              <span>{t("card:exams.card.closed")}</span>
+            </Button>
           )}
         </div>
       </div>

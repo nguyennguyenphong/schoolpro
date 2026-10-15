@@ -31,18 +31,13 @@ export const useExamDetail = (id?: string) => {
               setAnswers(sub.answers);
             }
           } else {
-            // Restore draft from localStorage
+            // Ensure answers start completely clear/empty
             try {
-              const savedDraft = localStorage.getItem(`schoolpro_exam_draft_${id}`);
-              if (savedDraft) {
-                const parsed = JSON.parse(savedDraft);
-                if (typeof parsed === "object" && parsed !== null) {
-                  setAnswers(parsed);
-                }
-              }
+              localStorage.removeItem(`schoolpro_exam_draft_${id}`);
             } catch {
-              // Ignore draft parse failure
+              // Ignore
             }
+            setAnswers({});
           }
         }
       } catch {
@@ -64,7 +59,7 @@ export const useExamDetail = (id?: string) => {
   const isExpired = exam?.status === "expired";
   const isReadOnly = Boolean(isCompleted || isExpired);
 
-  // Update answer for a specific question with auto-draft persistence
+  // Update answer for a specific question
   const handleAnswerChange = useCallback(
     (questionId: string, value: number | string | string[] | boolean) => {
       if (isReadOnly) return;
@@ -80,18 +75,10 @@ export const useExamDetail = (id?: string) => {
         } else {
           next[questionId] = value;
         }
-
-        if (id) {
-          try {
-            localStorage.setItem(`schoolpro_exam_draft_${id}`, JSON.stringify(next));
-          } catch {
-            // Ignore quota errors
-          }
-        }
         return next;
       });
     },
-    [id, isReadOnly]
+    [isReadOnly]
   );
 
   const isQuestionAnswered = useCallback(
@@ -113,13 +100,6 @@ export const useExamDetail = (id?: string) => {
       setSubmitting(true);
       const res = await examsService.submitExam(exam.id, answers);
       message.success(res.message);
-
-      // Clean local draft
-      try {
-        localStorage.removeItem(`schoolpro_exam_draft_${exam.id}`);
-      } catch {
-        // Ignore
-      }
 
       // Reload exam state
       const updated = await examsService.getExamById(exam.id);

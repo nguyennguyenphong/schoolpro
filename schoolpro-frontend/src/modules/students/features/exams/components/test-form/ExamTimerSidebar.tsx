@@ -116,13 +116,17 @@ export const ExamTimerSidebar: React.FC<ExamTimerSidebarProps> = ({
           <div className="grid grid-cols-5 gap-2 max-h-64 sm:max-h-80 overflow-y-auto pr-1 mt-3">
             {questions.map((q, idx) => {
               const isAnswered = isQuestionAnswered(q.id);
-        
+
               return (
                 <button
                   key={q.id}
                   type="button"
                   onClick={() => onScrollToQuestion(q.id)}
-                  className="h-9 rounded-lg text-xs transition-all flex items-center justify-center cursor-pointer border border-[#f0f0f0]"
+                  className={`h-9 rounded-lg text-xs transition-all flex items-center justify-center cursor-pointer border ${
+                    isAnswered
+                      ? "bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 font-bold shadow-xs"
+                      : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 font-medium"
+                  }`}
                   title={`Câu ${idx + 1}: ${isAnswered ? "Đã trả lời" : "Chưa trả lời"}`}
                 >
                   {idx + 1}
