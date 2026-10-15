@@ -11,15 +11,11 @@ import {
   ListView,
   TimetableSkeleton,
 } from "@/modules/students/features/timetable/components";
-import { useTimetable } from "@/modules/students/features/timetable/hooks";
-import {
-  printTimetable,
-} from "@/modules/students/features/timetable/utils";
+import { useTimetable, usePrintTimetable } from "@/modules/students/features/timetable/hooks";
 
 export const TimetablePage: React.FC = () => {
   const { t } = useTranslation(["navigation", "button", "message", "common", "card"]);
   const { user } = useAuthStore();
-  const [isPrinting, setIsPrinting] = React.useState(false);
   const {
     slots,
     filter,
@@ -41,21 +37,13 @@ export const TimetablePage: React.FC = () => {
     refetch,
   } = useTimetable();
 
-  const handlePrint = async () => {
-    setIsPrinting(true);
-    try {
-      await printTimetable({
-        selectedDate: filter.selectedDate,
-        slots,
-        className: slots[0]?.className,
-        currentWeekLabel,
-        semesterLabel,
-        studentName: user?.full_name || user?.name || "Học sinh",
-      });
-    } finally {
-      setIsPrinting(false);
-    }
-  };
+  const { handlePrint, isPrinting } = usePrintTimetable({
+    filter: { ...filter, selectedDate: new Date(filter.selectedDate) },
+    slots,
+    currentWeekLabel,
+    semesterLabel,
+    user,
+  });
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-8">

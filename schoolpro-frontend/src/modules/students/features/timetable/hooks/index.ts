@@ -9,3 +9,4 @@ export type {
   UseTimetableNavigationProps,
   UseTimetableNavigationResult,
 } from "@/modules/students/features/timetable/hooks/useTimetableNavigation";
+export { usePrintTimetable } from "@/modules/students/features/timetable/hooks/usePrintTimetable";

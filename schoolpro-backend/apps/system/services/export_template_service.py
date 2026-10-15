@@ -369,17 +369,24 @@ class ExportTemplateService:
         2. Default template for TemplateType.ACADEMIC
         3. Auto-seeds TIMETABLE_WEEKLY_A4_LANDSCAPE if missing.
         """
-        existing = (
-            self.repository.get_active_by_code(DEFAULT_TIMETABLE_CODE, school_id=school_id)
-            or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
-        )
+        existing = self.repository.get_active_by_code(
+            DEFAULT_TIMETABLE_CODE, school_id=school_id
+        ) or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
         if existing:
             if "print-color-adjust" not in (existing.style_content or ""):
                 existing.style_content = DEFAULT_TIMETABLE_STYLES
                 existing.page_orientation = "LANDSCAPE"
                 existing.page_size = "A4"
                 existing.margins = {"top": "8mm", "right": "10mm", "bottom": "8mm", "left": "10mm"}
-                existing.save(update_fields=["style_content", "page_orientation", "page_size", "margins", "updated_at"])
+                existing.save(
+                    update_fields=[
+                        "style_content",
+                        "page_orientation",
+                        "page_size",
+                        "margins",
+                        "updated_at",
+                    ]
+                )
             return existing
 
         template = ExportTemplate.objects.create(
@@ -988,4 +995,3 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "print_date": "14/10/2026 09:30",
     "timetable_table_html": "",
 }
-

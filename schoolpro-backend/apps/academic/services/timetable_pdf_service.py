@@ -119,7 +119,9 @@ class TimetablePdfService:
                 except ValueError:
                     num = 0
 
-                is_day_matched = dow == day_key or (day_key == 2 and dow == 1) or (dow == day_key - 1)
+                is_day_matched = (
+                    dow == day_key or (day_key == 2 and dow == 1) or (dow == day_key - 1)
+                )
                 if is_day_matched and num == period_num:
                     return s
             return None
@@ -168,7 +170,9 @@ class TimetablePdfService:
                     leave_badge = ""
                     if slot.get("isOnLeave") or slot.get("attendanceStatus") == "excused":
                         leave_reason = html.escape(slot.get("leaveReason") or "Nghỉ phép")
-                        leave_badge = f'<div class="tt-slot-excused" title="{leave_reason}">Nghỉ phép</div>'
+                        leave_badge = (
+                            f'<div class="tt-slot-excused" title="{leave_reason}">Nghỉ phép</div>'
+                        )
 
                     cell_html = (
                         f"<td>"
@@ -188,7 +192,7 @@ class TimetablePdfService:
                 f"{shift_td}"
                 f'<td class="period-col">{p_num}</td>'
                 f'<td class="time-col">{p["time"]}</td>'
-                f'{"".join(day_tds)}'
+                f"{''.join(day_tds)}"
                 f"</tr>"
             )
             rows_html.append(row_html)
@@ -237,7 +241,9 @@ class TimetablePdfService:
         now_local = timezone.localtime()
 
         if not week_start_str or not week_end_str:
-            ref_date_str = selected_week.get("selectedDate") or (first_slot.get("date") if first_slot else None)
+            ref_date_str = selected_week.get("selectedDate") or (
+                first_slot.get("date") if first_slot else None
+            )
             if ref_date_str:
                 try:
                     rd = datetime.strptime(str(ref_date_str)[:10], "%Y-%m-%d").date()
@@ -271,7 +277,10 @@ class TimetablePdfService:
             or getattr(user, "username", "")
             or "Học sinh"
         )
-        student_name = re.sub(r"\s*\((?:Học sinh|Student|HS)\)\s*", "", raw_name, flags=re.IGNORECASE).strip() or raw_name
+        student_name = (
+            re.sub(r"\s*\((?:Học sinh|Student|HS)\)\s*", "", raw_name, flags=re.IGNORECASE).strip()
+            or raw_name
+        )
         student_code = getattr(user, "student_code", "") or getattr(user, "username", "")
 
         matrix_table_html = cls.build_timetable_matrix_table_html(slots)
@@ -307,7 +316,9 @@ class TimetablePdfService:
             "author_name": student_name,
             "principal_name": sample.get("principal_name", "TS. Lê Hồng Sơn"),
             "print_date": now_local.strftime("%d/%m/%Y %H:%M"),
-            "template_code": (template.code if template and template.code else "TIMETABLE_WEEKLY_A4_LANDSCAPE"),
+            "template_code": (
+                template.code if template and template.code else "TIMETABLE_WEEKLY_A4_LANDSCAPE"
+            ),
             "timetable_table_html": matrix_table_html,
             "schedule_matrix_html": matrix_table_html,
             "timetable_matrix_html": matrix_table_html,
