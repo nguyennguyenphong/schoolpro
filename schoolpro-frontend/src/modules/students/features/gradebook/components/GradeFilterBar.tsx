@@ -171,85 +171,81 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
           />
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto">
-          {hasActiveFilters && (
-            <Button
-              variant="outline"
-              onClick={onResetFilters}
-              className="text-slate-600 hover:text-blue-600 whitespace-nowrap text-xs h-8"
-            >
-              <Icon name="refresh" size={12} />
-              <span>{t("button:resetFilters")}</span>
-            </Button>
-          )}
-
-          {/* View Mode Toggle: Table vs Grid */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0">
-            <button
-              type="button"
-              onClick={() => onViewModeChange("table")}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                viewMode === "table"
-                  ? "bg-white text-blue-600 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Icon name="menu" size={13} />
-              <span>{t("card:gradebook.filters.viewTable")}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onViewModeChange("grid")}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                viewMode === "grid"
-                  ? "bg-white text-blue-600 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Icon name="chart" size={13} />
-              <span>{t("card:gradebook.filters.viewGrid")}</span>
-            </button>
-          </div>
+        {/* View Mode Toggle: Table vs Grid */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
+          <button
+            type="button"
+            onClick={() => onViewModeChange("table")}
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              viewMode === "table"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Icon name="menu" size={13} />
+            <span>{t("card:gradebook.filters.viewTable")}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onViewModeChange("grid")}
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              viewMode === "grid"
+                ? "bg-white text-blue-600 shadow-xs"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Icon name="chart" size={13} />
+            <span>{t("card:gradebook.filters.viewGrid")}</span>
+          </button>
         </div>
       </div>
 
-      {/* 3. Secondary Dropdown Filters: Academic Year, Semester, Sort */}
-      <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-[#f0f0f0]">
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-            {t("card:gradebook.filters.academicYear")}:
-          </span>
-          <Select
-            value={academicYear}
-            onChange={onAcademicYearChange}
-            options={academicYearOptions}
-            className="w-36 sm:w-40"
-          />
+      {/* 3. Secondary Dropdown Filters: Academic Year, Semester, Sort & Reset Filters button */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:gradebook.filters.academicYear")}:
+            </span>
+            <Select
+              value={academicYear}
+              onChange={onAcademicYearChange}
+              options={academicYearOptions}
+              className="w-36 sm:w-40"
+            />
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:gradebook.filters.semester")}:
+            </span>
+            <Select
+              value={semester}
+              onChange={onSemesterChange}
+              options={semesterOptions}
+              className="w-32 sm:w-36"
+            />
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:gradebook.filters.sort")}:
+            </span>
+            <Select
+              value={sortBy}
+              onChange={onSortByChange}
+              options={sortOptions}
+              className="w-44 sm:w-60"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-            {t("card:gradebook.filters.semester")}:
-          </span>
-          <Select
-            value={semester}
-            onChange={onSemesterChange}
-            options={semesterOptions}
-            className="w-32 sm:w-36"
-          />
-        </div>
-
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-            {t("card:gradebook.filters.sort")}:
-          </span>
-          <Select
-            value={sortBy}
-            onChange={onSortByChange}
-            options={sortOptions}
-            className="w-44 sm:w-60"
-          />
-        </div>
+        {hasActiveFilters && (
+          <Button variant="outline" onClick={onResetFilters}>
+            <Icon name="refresh" size={13} />
+            <span>{t("button:resetFilters")}</span>
+          </Button>
+        )}
       </div>
     </div>
   );
