@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "@/components/ui/Input";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
 interface QuestionTextareaProps {
@@ -15,25 +16,21 @@ export const QuestionTextarea: React.FC<QuestionTextareaProps> = ({
   readOnly = false,
 }) => {
   return (
-    <div className="space-y-2">
-      <textarea
+    <div className="space-y-1">
+      <Input.TextArea
         rows={4}
-        placeholder={question.placeholder || "Nhập bài làm tự luận hoặc giải thích chi tiết..."}
+        placeholder={question.placeholder || "Nhập câu trả lời tự luận của bạn"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={readOnly}
-        className={`w-full text-sm sm:text-base p-3.5 rounded-xl border transition-all resize-y outline-none ${
-          readOnly
-            ? "bg-slate-50 border-slate-200 text-slate-800"
-            : "border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-        }`}
+        className="w-full"
       />
       {!readOnly && (
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <span>Câu trả lời dạng văn bản dài</span>
+        <div className="text-right text-xs text-slate-400 mt-1">
           <span>{value.length} ký tự</span>
         </div>
       )}
     </div>
   );
 };
+

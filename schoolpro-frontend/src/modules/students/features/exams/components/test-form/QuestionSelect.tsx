@@ -1,4 +1,5 @@
 import React from "react";
+import { Select } from "@/components/ui/Select";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
 interface QuestionSelectProps {
@@ -11,35 +12,27 @@ interface QuestionSelectProps {
 
 export const QuestionSelect: React.FC<QuestionSelectProps> = ({
   question,
-  value = "",
+  value,
   onChange,
   readOnly = false,
-  correctAnswer,
 }) => {
-  const options = question.options || [];
-  const isMatch = readOnly && correctAnswer && value === correctAnswer;
+  const options = (question.options || []).map((opt) => ({
+    label: opt,
+    value: opt,
+  }));
 
   return (
-    <div className="space-y-2">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+    <div className="space-y-1">
+      <Select
+        placeholder={question.placeholder || "Chọn câu trả lời từ danh sách"}
+        value={value || undefined}
+        onChange={(val) => onChange(String(val))}
         disabled={readOnly}
-        className={`w-full text-sm sm:text-base px-3.5 py-2.5 rounded-xl border bg-white cursor-pointer outline-none transition-all ${
-          readOnly
-            ? isMatch
-              ? "bg-emerald-50/70 border-emerald-500 text-emerald-900 font-semibold cursor-default"
-              : "bg-rose-50/70 border-rose-400 text-rose-900 font-semibold cursor-default"
-            : "border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-        }`}
-      >
-        <option value="">-- Chọn câu trả lời từ danh sách --</option>
-        {options.map((opt, i) => (
-          <option key={i} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
+        options={options}
+        className="w-full"
+        allowClear
+      />
     </div>
   );
 };
+

@@ -1,1 +1,2 @@
-export { useExams } from "@/modules/students/features/exams/hooks/useExams";
+export { useExams } from "./useExams";
+export { useExamDetail } from "./useExamDetail";

@@ -15,18 +15,17 @@ interface QuestionCardProps {
   question: ExamQuestion;
   index: number;
   value?: number | string | string[] | boolean;
-  isActive?: boolean;
   onChange: (value: number | string | string[] | boolean) => void;
   readOnly?: boolean;
   isCorrect?: boolean | null;
   awardedScore?: number;
 }
 
+
 export const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   index,
   value,
-  isActive = false,
   onChange,
   readOnly = false,
   isCorrect,
@@ -175,11 +174,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <div
       id={`question-${question.id}`}
-      className={`bg-white rounded-xl border transition-all space-y-4 ${
-        isActive
-          ? "border-blue-500 shadow-md ring-2 ring-blue-500/30"
-          : "border-[#f0f0f0] shadow-2xs hover:border-blue-300"
-      } p-5 sm:p-6`}
+      className="bg-white rounded-xl border transition-all space-y-4 border-[#f0f0f0] shadow-2xs p-4 sm:p-4"
     >
       {/* 1. Header: Question Index, Points badge, Required marker */}
       <div className="flex items-start justify-between gap-3">
