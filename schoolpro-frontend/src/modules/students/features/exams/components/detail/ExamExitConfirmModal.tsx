@@ -48,7 +48,7 @@ export const ExamExitConfirmModal: React.FC<ExamExitConfirmModalProps> = ({
           variant="primary"
           onClick={onConfirm}
           loading={submitting}
-          className="text-xs font-semibold !bg-rose-600 hover:!bg-rose-700 !border-rose-600"
+          className="text-xs font-semibold bg-rose-600! hover:bg-rose-700! border-rose-600!"
         >
           {t("card:exams.exitModal.confirmExitAndSubmit")}
         </Button>,
@@ -61,7 +61,7 @@ export const ExamExitConfirmModal: React.FC<ExamExitConfirmModalProps> = ({
         </p>
 
         {unansweredCount > 0 && (
-          <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+          <div className="p-3 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-xs mt-2">
             <span className="font-bold">
               {t("card:exams.exitModal.unansweredNotice", {
                 unanswered: unansweredCount,

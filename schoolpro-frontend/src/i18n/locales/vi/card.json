@@ -905,5 +905,135 @@
       "submitSuccess": "Nộp bài thi thành công!",
       "submitError": "Đã xảy ra lỗi khi nộp bài thi. Vui lòng thử lại."
     }
+  },
+  "gradebook": {
+    "header": {
+      "title": "Bảng điểm & Học bạ Điện tử",
+      "subtitle": "Bảng điểm chi tiết kết quả học tập và rèn luyện chính thức của học sinh theo Thông tư số 22/2021/TT-BGDĐT",
+      "studentCode": "Mã Học sinh: {{code}}",
+      "className": "Lớp: {{name}}",
+      "semesterYear": "Học kỳ {{semester}} • {{year}}",
+      "viewTranscript": "Xem Học bạ Điện tử",
+      "exportPdf": "Tải PDF Ký số"
+    },
+    "summary": {
+      "gpaTitle": "Điểm TB Học kỳ (GPA)",
+      "academicRankTitle": "Xếp loại Học lực",
+      "conductRankTitle": "Xếp loại Rèn luyện",
+      "classPositionTitle": "Xếp hạng Lớp",
+      "subjectsCountTitle": "Môn Đạt / Giỏi",
+      "periodsCountTitle": "Tổng số tiết học",
+      "attendanceRateTitle": "Tỷ lệ chuyên cần",
+      "homeroomTeacher": "Giáo viên chủ nhiệm:",
+      "homeroomRemarks": "Nhận xét của Giáo viên chủ nhiệm:",
+      "classRankText": "Hạng {{rank}} / {{total}} học sinh",
+      "excellentSubjectsText": "{{excellent}} / {{total}} môn Giỏi",
+      "passSubjectsText": "{{pass}} môn Đạt",
+      "periodsText": "{{count}} tiết / tuần"
+    },
+    "filters": {
+      "searchPlaceholder": "Tìm kiếm theo môn học, mã môn, giáo viên, nhận xét...",
+      "academicYear": "Niên khóa",
+      "semester": "Học kỳ",
+      "allSemesters": "Tất cả học kỳ",
+      "semester1": "Học kỳ 1",
+      "semester2": "Học kỳ 2",
+      "classification": "Xếp loại môn",
+      "allClassifications": "Tất cả xếp loại",
+      "excellent": "Môn Giỏi (≥ 8.0)",
+      "good": "Môn Khá (6.5 - 7.9)",
+      "average": "Môn Đạt (< 6.5)",
+      "feedbackOnly": "Môn Đánh giá nhận xét",
+      "sort": "Sắp xếp theo",
+      "sortGpaDesc": "Điểm trung bình (Cao → Thấp)",
+      "sortGpaAsc": "Điểm trung bình (Thấp → Cao)",
+      "sortNameAsc": "Tên môn học (A → Z)",
+      "viewTable": "Xem Bảng",
+      "viewGrid": "Xem Lưới",
+      "reset": "Đặt lại bộ lọc"
+    },
+    "table": {
+      "subject": "Môn học",
+      "teacher": "Giáo viên",
+      "periods": "Số tiết/tuần",
+      "regularScores": "Đánh giá thường xuyên",
+      "midtermScore": "Giữa kỳ",
+      "finalScore": "Cuối kỳ",
+      "averageScore": "ĐTB môn",
+      "gradeLevel": "Xếp loại",
+      "teacherComment": "Nhận xét giáo viên bộ môn",
+      "action": "Thao tác",
+      "viewDetail": "Chi tiết",
+      "classAverageShort": "Lớp: {{score}}",
+      "highestShort": "Cao: {{score}}"
+    },
+    "levels": {
+      "excellent": "Tốt / Giỏi",
+      "good": "Khá",
+      "average": "Đạt",
+      "pass": "Đạt",
+      "fail": "Chưa đạt"
+    },
+    "evaluationType": {
+      "score": "Tính điểm",
+      "feedback": "Đánh giá nhận xét"
+    },
+    "detailModal": {
+      "title": "Bảng điểm chi tiết môn học",
+      "subjectInfo": "Thông tin môn học",
+      "periodsPerWeek": "{{count}} tiết / tuần",
+      "evaluationMethod": "Hình thức đánh giá:",
+      "scoreStructureTitle": "Thành phần điểm số chi tiết",
+      "regularScoresTitle": "Điểm đánh giá thường xuyên (Hệ số 1)",
+      "midtermScoreTitle": "Điểm giữa kỳ (Hệ số 2)",
+      "finalScoreTitle": "Điểm cuối kỳ (Hệ số 3)",
+      "notRecorded": "Chưa có",
+      "weightLabel": "Hệ số {{weight}}",
+      "averageScoreTitle": "Điểm trung bình môn (ĐTBm)",
+      "classComparisonTitle": "Thống kê so sánh phổ điểm lớp",
+      "classAverageLabel": "Điểm trung bình lớp:",
+      "highestScoreLabel": "Điểm cao nhất lớp:",
+      "teacherCommentTitle": "Nhận xét của Giáo viên bộ môn"
+    },
+    "transcriptModal": {
+      "nationalHeader": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+      "nationalMotto": "Độc lập - Tự do - Hạnh phúc",
+      "title": "HỌC BẠ ĐIỆN TỬ - KẾT QUẢ ĐÁNH GIÁ HỌC TẬP & RÈN LUYỆN",
+      "standardNote": "Theo Thông tư số 22/2021/TT-BGDĐT của Bộ Giáo dục và Đào tạo",
+      "studentInfoTitle": "Thông tin học sinh",
+      "fullName": "Họ và tên học sinh:",
+      "studentCode": "Mã định danh học sinh:",
+      "className": "Lớp học:",
+      "schoolYear": "Năm học:",
+      "semester": "Học kỳ:",
+      "school": "Trường:",
+      "principal": "Hiệu trưởng:",
+      "resultsTableTitle": "Kết quả học tập các môn học",
+      "summaryResultsTitle": "Kết quả tổng hợp cuối kỳ",
+      "gpa": "Điểm trung bình học kỳ:",
+      "academicRank": "Kết quả học tập:",
+      "conductRank": "Kết quả rèn luyện:",
+      "titleAwarded": "Khen thưởng / Danh hiệu:",
+      "rankInClass": "Xếp loại thứ hạng lớp:",
+      "homeroomTeacherRemarks": "Nhận xét của Giáo viên chủ nhiệm:",
+      "digitalSignatureNotice": "Học bạ điện tử được xác thực và ký số bảo mật theo quy định của Bộ GD&ĐT",
+      "digitalSignature": "Chữ ký số hợp lệ:",
+      "verifiedAt": "Thời điểm chứng thực:",
+      "close": "Đóng",
+      "print": "In Bảng điểm",
+      "downloadPdf": "Tải PDF Ký số"
+    },
+    "empty": {
+      "noMatchingTitle": "Không tìm thấy môn học phù hợp",
+      "noMatchingDesc": "Hãy thử tìm kiếm với từ khóa khác hoặc đặt lại bộ lọc.",
+      "noDataTitle": "Chưa có dữ liệu bảng điểm",
+      "noDataDesc": "Dữ liệu điểm của học kỳ này chưa được cập nhật."
+    },
+    "messages": {
+      "loadError": "Không thể tải dữ liệu bảng điểm. Vui lòng thử lại sau.",
+      "exportLoading": "Đang chuẩn bị và xác thực chữ ký số tệp PDF học bạ điện tử...",
+      "exportSuccess": "Tải bảng điểm học bạ điện tử thành công!",
+      "exportError": "Không thể xuất tệp PDF học bạ điện tử. Vui lòng thử lại sau."
+    }
   }
 }

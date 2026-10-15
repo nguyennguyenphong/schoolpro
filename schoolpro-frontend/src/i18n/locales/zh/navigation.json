@@ -13,7 +13,8 @@
     "leaveRequestEdit": "编辑请假申请",
     "leaveRequestDetail": "详情与处理进度",
     "attendance": "课程考勤签到",
-    "exams": "考试与测验"
+    "exams": "考试与测验",
+    "gradebook": "成绩单与学籍"
   },
   "pageTitle": {
     "home": "首页",
@@ -28,7 +29,8 @@
     "leaveRequestEdit": "编辑请假申请",
     "leaveRequestDetail": "请假申请详情",
     "attendance": "每日课程考勤签到",
-    "exams": "在线考试与测验"
+    "exams": "在线考试与测验",
+    "gradebook": "成绩单与电子学籍簿"
   },
   "pageSubtitle": {
     "home": "School Pro 教学管理与学生服务系统",
@@ -42,7 +44,8 @@
     "leaveRequests": "在线提交请假申请、上传证明材料并跟踪班主任审批反馈",
     "leaveRequestForm": "完整填写请假时间、涉及课程与家长确认信息，提交班主任审批",
     "attendance": "结合教师设备扫描半径内的 GPS 经纬度定位验证，通过 6 位数 PIN 码或扫描/上传二维码图片，实现 100% 防作弊在线考勤签到。",
-    "exams": "支持自动保存答卷和提交后即时评分的在线定时考试系统"
+    "exams": "支持自动保存答卷和提交后即时评分的在线定时考试系统",
+    "gradebook": "依据越南教育培训部第22/2021/TT-BGDĐT号通达制定的官方学业与操行评价成绩册"
   },
   "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
   "welcomeUser": "你好，{{name}}！",

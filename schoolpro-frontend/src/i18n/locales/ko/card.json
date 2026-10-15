@@ -905,5 +905,135 @@
       "submitSuccess": "시험이 성공적으로 제출되었습니다!",
       "submitError": "시험 제출 중 오류가 발생했습니다. 다시 시도해주세요."
     }
+  },
+  "gradebook": {
+    "header": {
+      "title": "성적표 및 전자 학교생활기록부",
+      "subtitle": "교육훈련부 시행규칙 제22/2021/TT-BGDĐT호에 따른 공식 학업 및 행동 평가 기록",
+      "studentCode": "학번: {{code}}",
+      "className": "학급: {{name}}",
+      "semesterYear": "학기 {{semester}} • {{year}}",
+      "viewTranscript": "전자 생활기록부 보기",
+      "exportPdf": "전자서명 PDF 다운로드"
+    },
+    "summary": {
+      "gpaTitle": "학기 평균 평점 (GPA)",
+      "academicRankTitle": "학업 성취도",
+      "conductRankTitle": "행동 특성 및 종합의견",
+      "classPositionTitle": "학급 석차",
+      "subjectsCountTitle": "이수/우수 과목 수",
+      "periodsCountTitle": "주당 총 수업 시수",
+      "attendanceRateTitle": "출석률",
+      "homeroomTeacher": "담임 교사:",
+      "homeroomRemarks": "담임 교사 종합의견:",
+      "classRankText": "전체 {{total}}명 중 {{rank}}등",
+      "excellentSubjectsText": "{{total}}개 과목 중 {{excellent}}과목 우수",
+      "passSubjectsText": "{{pass}}과목 이수",
+      "periodsText": "주당 {{count}}시간"
+    },
+    "filters": {
+      "searchPlaceholder": "과목명, 코드, 담당 교사, 평가의견 검색...",
+      "academicYear": "학년도",
+      "semester": "학기",
+      "allSemesters": "전체 학기",
+      "semester1": "1학기",
+      "semester2": "2학기",
+      "classification": "과목 등급",
+      "allClassifications": "전체 등급",
+      "excellent": "우수 (≥ 8.0)",
+      "good": "보통 (6.5 - 7.9)",
+      "average": "이수 (< 6.5)",
+      "feedbackOnly": "서술형 평가 과목",
+      "sort": "정렬 기준",
+      "sortGpaDesc": "평균 점수 (높은 순)",
+      "sortGpaAsc": "평균 점수 (낮은 순)",
+      "sortNameAsc": "과목명 (가나다순)",
+      "viewTable": "표 보기",
+      "viewGrid": "그리드 보기",
+      "reset": "필터 초기화"
+    },
+    "table": {
+      "subject": "과목",
+      "teacher": "담당 교사",
+      "periods": "주당 시수",
+      "regularScores": "수행평가/상시평가",
+      "midtermScore": "중간고사",
+      "finalScore": "기말고사",
+      "averageScore": "과목 평균",
+      "gradeLevel": "등급",
+      "teacherComment": "교과 세부능력 및 특기사항",
+      "action": "작업",
+      "viewDetail": "상세보기",
+      "classAverageShort": "학급평균: {{score}}",
+      "highestShort": "최고점: {{score}}"
+    },
+    "levels": {
+      "excellent": "매우 우수 / 우수",
+      "good": "보통",
+      "average": "이수",
+      "pass": "이수",
+      "fail": "미이수"
+    },
+    "evaluationType": {
+      "score": "점수 산출",
+      "feedback": "서술형 평가"
+    },
+    "detailModal": {
+      "title": "과목별 성적 상세 내역",
+      "subjectInfo": "과목 정보",
+      "periodsPerWeek": "주당 {{count}}시간",
+      "evaluationMethod": "평가 방식:",
+      "scoreStructureTitle": "성적 산출 세부 내역",
+      "regularScoresTitle": "상시/수행평가 (가중치 1)",
+      "midtermScoreTitle": "중간고사 성적 (가중치 2)",
+      "finalScoreTitle": "기말고사 성적 (가중치 3)",
+      "notRecorded": "미입력",
+      "weightLabel": "가중치 {{weight}}",
+      "averageScoreTitle": "과목 학기말 평균점 (ĐTBm)",
+      "classComparisonTitle": "학급 성적 분포 비교",
+      "classAverageLabel": "학급 평균 점수:",
+      "highestScoreLabel": "학급 최고 점수:",
+      "teacherCommentTitle": "담당 교사 평가 및 특기사항"
+    },
+    "transcriptModal": {
+      "nationalHeader": "베트남 사회주의 공화국",
+      "nationalMotto": "독립 - 자유 - 행복",
+      "title": "전자 학교생활기록부 - 학업 및 인성 평가 결과표",
+      "standardNote": "베트남 교육훈련부 시행규칙 제22/2021/TT-BGDĐT호 준수",
+      "studentInfoTitle": "학생 기본 정보",
+      "fullName": "학생 성명:",
+      "studentCode": "학생 식별 번호:",
+      "className": "소속 학급:",
+      "schoolYear": "학년도:",
+      "semester": "학기:",
+      "school": "학교명:",
+      "principal": "학교장:",
+      "resultsTableTitle": "교과별 학업 성취 결과",
+      "summaryResultsTitle": "학기말 종합 평가 결과",
+      "gpa": "학기 총 평점 평균:",
+      "academicRank": "학업 평가:",
+      "conductRank": "행동 발달 평가:",
+      "titleAwarded": "표창 및 수상:",
+      "rankInClass": "학급 석차:",
+      "homeroomTeacherRemarks": "담임 교사 종합의견:",
+      "digitalSignatureNotice": "본 전자 생활기록부는 교육훈련부 규정에 따라 전자 서명으로 공인 인증되었습니다",
+      "digitalSignature": "유효한 전자 서명:",
+      "verifiedAt": "인증 일시:",
+      "close": "닫기",
+      "print": "성적표 인쇄",
+      "downloadPdf": "전자서명 PDF 다운로드"
+    },
+    "empty": {
+      "noMatchingTitle": "일치하는 과목을 찾을 수 없습니다",
+      "noMatchingDesc": "다른 검색어를 입력하거나 필터를 재설정해보세요.",
+      "noDataTitle": "성적 데이터가 없습니다",
+      "noDataDesc": "해당 학기의 성적 데이터가 아직 입력되지 않았습니다."
+    },
+    "messages": {
+      "loadError": "성적표 데이터를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.",
+      "exportLoading": "전자 학교생활기록부 PDF의 전자서명을 준비 및 검증하고 있습니다...",
+      "exportSuccess": "전자 학교생활기록부를 성공적으로 다운로드했습니다!",
+      "exportError": "전자 학교생활기록부 PDF 파일을 내보내지 못했습니다. 잠시 후 다시 시도해주세요."
+    }
   }
 }

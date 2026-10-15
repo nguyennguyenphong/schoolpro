@@ -905,5 +905,135 @@
       "submitSuccess": "交卷成功！",
       "submitError": "交卷时发生错误，请重试。"
     }
+  },
+  "gradebook": {
+    "header": {
+      "title": "成绩单与电子学籍簿",
+      "subtitle": "依据越南教育培训部第22/2021/TT-BGDĐT号通达制定的官方学业与操行评价成绩册",
+      "studentCode": "学号: {{code}}",
+      "className": "班级: {{name}}",
+      "semesterYear": "学期 {{semester}} • {{year}}",
+      "viewTranscript": "查看电子学籍簿",
+      "exportPdf": "下载数字签名PDF"
+    },
+    "summary": {
+      "gpaTitle": "学期平均绩点 (GPA)",
+      "academicRankTitle": "学业评级",
+      "conductRankTitle": "操行评级",
+      "classPositionTitle": "班级排名",
+      "subjectsCountTitle": "合格/优秀科目数",
+      "periodsCountTitle": "周总课时",
+      "attendanceRateTitle": "出勤率",
+      "homeroomTeacher": "班主任:",
+      "homeroomRemarks": "班主任评语:",
+      "classRankText": "全班 {{total}} 人中第 {{rank}} 名",
+      "excellentSubjectsText": "{{total}} 科目中 {{excellent}} 门优秀",
+      "passSubjectsText": "{{pass}} 门及格",
+      "periodsText": "每周 {{count}} 节"
+    },
+    "filters": {
+      "searchPlaceholder": "按科目名称、代码、任课教师或评语搜索...",
+      "academicYear": "学年",
+      "semester": "学期",
+      "allSemesters": "全部学期",
+      "semester1": "第1学期",
+      "semester2": "第2学期",
+      "classification": "科目分类",
+      "allClassifications": "全部分类",
+      "excellent": "优秀 (≥ 8.0)",
+      "good": "良好 (6.5 - 7.9)",
+      "average": "及格 (< 6.5)",
+      "feedbackOnly": "评语考核科目",
+      "sort": "排序方式",
+      "sortGpaDesc": "平均分 (从高到低)",
+      "sortGpaAsc": "平均分 (从低到高)",
+      "sortNameAsc": "科目名称 (A → Z)",
+      "viewTable": "表格视图",
+      "viewGrid": "网格视图",
+      "reset": "重置筛选"
+    },
+    "table": {
+      "subject": "科目",
+      "teacher": "任课教师",
+      "periods": "周课时",
+      "regularScores": "平时成绩",
+      "midtermScore": "期中考",
+      "finalScore": "期末考",
+      "averageScore": "科目平均分",
+      "gradeLevel": "评级",
+      "teacherComment": "教师评语",
+      "action": "操作",
+      "viewDetail": "详情",
+      "classAverageShort": "班均: {{score}}",
+      "highestShort": "最高: {{score}}"
+    },
+    "levels": {
+      "excellent": "优秀 / 优",
+      "good": "良好 / 良",
+      "average": "及格",
+      "pass": "及格",
+      "fail": "不及格"
+    },
+    "evaluationType": {
+      "score": "记分制",
+      "feedback": "评语制"
+    },
+    "detailModal": {
+      "title": "科目详细成绩单",
+      "subjectInfo": "科目信息",
+      "periodsPerWeek": "每周 {{count}} 节",
+      "evaluationMethod": "考核方式:",
+      "scoreStructureTitle": "成绩构成细则",
+      "regularScoresTitle": "平时考核成绩 (权重 1)",
+      "midtermScoreTitle": "期中考成绩 (权重 2)",
+      "finalScoreTitle": "期末考成绩 (权重 3)",
+      "notRecorded": "未录入",
+      "weightLabel": "权重 {{weight}}",
+      "averageScoreTitle": "科目期末总评 (ĐTBm)",
+      "classComparisonTitle": "班级成绩分布对照",
+      "classAverageLabel": "班级平均分:",
+      "highestScoreLabel": "班级最高分:",
+      "teacherCommentTitle": "任课教师综合评价与反馈"
+    },
+    "transcriptModal": {
+      "nationalHeader": "越南社会主义共和国",
+      "nationalMotto": "独立 - 自由 - 幸福",
+      "title": "电子学籍簿 - 学业与操行评价成绩总表",
+      "standardNote": "依据越南教育培训部第22/2021/TT-BGDĐT号通达标准",
+      "studentInfoTitle": "学生基本信息",
+      "fullName": "学生姓名:",
+      "studentCode": "全国统一学号:",
+      "className": "班级:",
+      "schoolYear": "学年:",
+      "semester": "学期:",
+      "school": "学校:",
+      "principal": "校长:",
+      "resultsTableTitle": "各学科学习成果明细",
+      "summaryResultsTitle": "期末综合评定结果",
+      "gpa": "学期综合平均分:",
+      "academicRank": "学业等级:",
+      "conductRank": "操行等级:",
+      "titleAwarded": "表彰 / 荣誉称号:",
+      "rankInClass": "班级总排名:",
+      "homeroomTeacherRemarks": "班主任总评语:",
+      "digitalSignatureNotice": "本电子学籍簿已依据越南教育培训部规范完成数字签名与时间戳认证",
+      "digitalSignature": "有效数字签名:",
+      "verifiedAt": "认证时间戳:",
+      "close": "关闭",
+      "print": "打印成绩单",
+      "downloadPdf": "下载数字签名PDF"
+    },
+    "empty": {
+      "noMatchingTitle": "未找到符合条件的科目",
+      "noMatchingDesc": "请尝试更换关键词搜索或重置筛选条件。",
+      "noDataTitle": "暂无成绩数据",
+      "noDataDesc": "本学期成绩尚未录入更新。"
+    },
+    "messages": {
+      "loadError": "无法加载成绩单数据，请稍后重试。",
+      "exportLoading": "正在准备并验证电子学籍簿PDF的数字签名...",
+      "exportSuccess": "成功下载电子学籍簿！",
+      "exportError": "无法导出电子学籍簿PDF文件，请稍后重试。"
+    }
   }
 }

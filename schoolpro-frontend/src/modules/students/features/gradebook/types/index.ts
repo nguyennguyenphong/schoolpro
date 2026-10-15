@@ -40,6 +40,8 @@ export interface SubjectGradeItem {
   // Thống kê so sánh
   classAverage?: number;
   highestScore?: number;
+  academicYear?: string;
+  semester?: string;
 }
 
 export interface GradeSummary {
@@ -56,6 +58,9 @@ export interface GradeSummary {
   homeroomComment: string;
   titleAwarded: string; // "Học sinh Giỏi Học kỳ 1"
   attendanceRate: number; // 98.8%
+  className?: string;
+  academicYear?: string;
+  semester?: string;
 }
 
 export interface GradeFilter {
@@ -66,3 +71,51 @@ export interface GradeFilter {
   sortBy: "gpa_desc" | "gpa_asc" | "name_asc";
   viewMode: GradeViewMode;
 }
+
+export interface TranscriptSubjectItem {
+  code: string;
+  name: string;
+  teacher: string;
+  periodsPerWeek: number;
+  evaluationType: EvaluationType;
+  regularScoresStr: string;
+  midtermScore?: number;
+  finalScore?: number;
+  averageScore?: number;
+  feedbackResult?: "pass" | "not_pass";
+  gradeLevel: GradeLevel;
+  teacherComment: string;
+}
+
+export interface TranscriptData {
+  studentName: string;
+  studentCode: string;
+  className: string;
+  academicYear: string;
+  semester: string;
+  schoolName: string;
+  principalName: string;
+  homeroomTeacher: string;
+  homeroomComment: string;
+  gpa: number;
+  academicRank: string;
+  conductRank: string;
+  titleAwarded: string;
+  rankInClass: number;
+  totalStudents: number;
+  isPromoted: boolean;
+  decisionNumber: string;
+  digitalSignature: string;
+  verifiedAt: string;
+  subjects: TranscriptSubjectItem[];
+}
+
+export interface ExportPdfResponse {
+  success: boolean;
+  fileName: string;
+  downloadUrl: string;
+  digitalSignature: string;
+  verifiedAt: string;
+  message: string;
+}
+

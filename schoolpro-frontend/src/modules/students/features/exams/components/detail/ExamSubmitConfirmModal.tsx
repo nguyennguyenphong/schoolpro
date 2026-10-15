@@ -66,7 +66,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
           onClick={onConfirm}
           loading={submitting}
           className={`text-xs font-semibold ${
-            !isAllAnswered ? "!bg-amber-600 hover:!bg-amber-700 !border-amber-600" : ""
+            !isAllAnswered ? "bg-amber-600! hover:bg-amber-700! border-amber-600!" : ""
           }`}
         >
           {isAllAnswered
@@ -82,7 +82,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
         </p>
 
         {/* Status statistics */}
-        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+        <div className="flex items-center justify-between p-3 rounded-md bg-slate-50 border border-slate-200 mt-2">
           <div className="flex items-center gap-2">
             <Icon
               name={isAllAnswered ? "checkCircle" : "warning"}
@@ -100,7 +100,7 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
 
         {/* If incomplete: Display missing question tags with jump links */}
         {!isAllAnswered && (
-          <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-2">
+          <div className="p-3.5 rounded-md bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-2">
             <div className="font-bold flex items-center gap-1.5 text-amber-800">
               <Icon name="warning" size={14} />
               <span>
@@ -133,14 +133,14 @@ export const ExamSubmitConfirmModal: React.FC<ExamSubmitConfirmModalProps> = ({
 
         {/* If completely answered: show green success notice */}
         {isAllAnswered && (
-          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 font-medium">
+          <div className="p-3 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 font-medium">
             <Icon name="checkCircle" size={16} className="text-emerald-600 shrink-0" />
             <span>{t("card:exams.submitModal.allAnsweredNotice")}</span>
           </div>
         )}
 
         {/* Warning / Notes Banner */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-600">
+        <div className="bg-slate-50 border border-slate-200 rounded-md p-3 text-xs text-slate-600">
           <p className="mb-0 text-[11px] leading-relaxed">
             {t("card:exams.submitModal.warning")}
           </p>

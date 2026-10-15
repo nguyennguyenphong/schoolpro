@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Select } from "antd";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -7,10 +8,12 @@ import type {
   GradeFilter,
   GradeViewMode,
   GradeClassification,
+  GradeSummary,
 } from "@/modules/students/features/gradebook/types";
 
 interface GradeFilterBarProps {
   filter: GradeFilter;
+  summary?: GradeSummary | null;
   hasActiveFilters?: boolean;
   onSearchChange: (value: string) => void;
   onAcademicYearChange: (value: string) => void;
@@ -23,6 +26,7 @@ interface GradeFilterBarProps {
 
 export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
   filter,
+  summary,
   hasActiveFilters = false,
   onSearchChange,
   onAcademicYearChange,
@@ -32,144 +36,220 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
   onViewModeChange,
   onResetFilters,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
   const { searchQuery, academicYear, semester, classification, sortBy, viewMode } = filter;
 
-  useEffect(() => {
-    const inputEl = document.getElementById("grade-search-input");
-    inputEl?.focus();
-  }, []);
+  const [prevSearchQuery, setPrevSearchQuery] = React.useState<string>(searchQuery);
+  const [localSearch, setLocalSearch] = React.useState<string>(searchQuery);
+
+  // Synchronize local search state when external searchQuery prop changes (e.g. on resetFilters)
+  if (searchQuery !== prevSearchQuery) {
+    setPrevSearchQuery(searchQuery);
+    setLocalSearch(searchQuery);
+  }
+
+  // Debounce search change by 350ms to eliminate continuous UI jitter and excessive calls
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [localSearch, searchQuery, onSearchChange]);
 
   const academicYearOptions = [
-    { label: "Năm học 2025-2026", value: "2025-2026" },
-    { label: "Năm học 2024-2025", value: "2024-2025" },
-    { label: "Năm học 2023-2024", value: "2023-2024" },
+    { label: "2025-2026", value: "2025-2026" },
+    { label: "2024-2025", value: "2024-2025" },
+    { label: "2023-2024", value: "2023-2024" },
   ];
 
   const semesterOptions = [
-    { label: "Học kỳ 1", value: "HK1" },
-    { label: "Học kỳ 2", value: "HK2" },
-    { label: "Cả năm học", value: "all" },
-  ];
-
-  const classificationOptions = [
-    { label: "Tất cả môn học", value: "all" },
-    { label: "Môn Giỏi (ĐTB ≥ 8.0)", value: "excellent" },
-    { label: "Môn Khá (6.5 - 7.9)", value: "good" },
-    { label: "Môn Trung bình (< 6.5)", value: "average" },
-    { label: "Môn Đánh giá nhận xét", value: "feedback_only" },
+    { label: t("card:gradebook.filters.allSemesters"), value: "all" },
+    { label: t("card:gradebook.filters.semester1"), value: "HK1" },
+    { label: t("card:gradebook.filters.semester2"), value: "HK2" },
   ];
 
   const sortOptions = [
-    { label: "ĐTB cao nhất trước", value: "gpa_desc" },
-    { label: "ĐTB thấp nhất trước", value: "gpa_asc" },
-    { label: "Tên môn học (A - Z)", value: "name_asc" },
+    { label: t("card:gradebook.filters.sortGpaDesc"), value: "gpa_desc" },
+    { label: t("card:gradebook.filters.sortGpaAsc"), value: "gpa_asc" },
+    { label: t("card:gradebook.filters.sortNameAsc"), value: "name_asc" },
+  ];
+
+  const tabs: Array<{
+    key: GradeClassification;
+    label: string;
+    icon: "book" | "sparkles" | "checkCircle" | "check" | "fileText";
+    count?: number;
+  }> = [
+    {
+      key: "all",
+      label: t("card:gradebook.filters.allClassifications"),
+      icon: "book",
+      count: summary?.totalSubjectsCount ?? 13,
+    },
+    {
+      key: "excellent",
+      label: t("card:gradebook.filters.excellent"),
+      icon: "sparkles",
+      count: summary?.excellentSubjectsCount ?? 9,
+    },
+    {
+      key: "good",
+      label: t("card:gradebook.filters.good"),
+      icon: "checkCircle",
+      count: 2,
+    },
+    {
+      key: "average",
+      label: t("card:gradebook.filters.average"),
+      icon: "check",
+      count: 0,
+    },
+    {
+      key: "feedback_only",
+      label: t("card:gradebook.filters.feedbackOnly"),
+      icon: "fileText",
+      count: summary?.passSubjectsCount ?? 2,
+    },
   ];
 
   return (
     <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
-      {/* Top row: Search input & View mode toggle (Identical to AssignmentFilterBar) */}
+      {/* 1. Status Filter Tabs with Counts matching ExamFilterBar and AttendanceFilterBar */}
+      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-[#f0f0f0]">
+        {tabs.map((tab) => {
+          const isActive = classification === tab.key;
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => onClassificationChange(tab.key)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <Icon
+                name={tab.icon}
+                size={13}
+                className={isActive ? "text-white shrink-0" : "text-slate-400 shrink-0"}
+              />
+              <span>{tab.label}</span>
+              {tab.count !== undefined && (
+                <span
+                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 2. Search input, View Mode & Reset filters row */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">
           <Input
             id="grade-search-input"
-            autoFocus
-            placeholder="Tìm kiếm môn học, giáo viên phụ trách, nhận xét..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            name="gradeSearchQuery"
+            aria-label={t("card:gradebook.filters.searchPlaceholder")}
+            placeholder={t("card:gradebook.filters.searchPlaceholder")}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             prefix={<Icon name="search" size={15} className="text-slate-400" />}
             allowClear
+            autoFocus
             className="w-full"
           />
         </div>
 
-        {/* View Mode Toggle: Bảng điểm vs Lưới thẻ */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
-          <button
-            type="button"
-            onClick={() => onViewModeChange("table")}
-            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
-              viewMode === "table"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="menu" size={13} />
-            <span>Bảng điểm</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
-              viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="chart" size={13} />
-            <span>Lưới thẻ</span>
-          </button>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              onClick={onResetFilters}
+              className="text-slate-600 hover:text-blue-600 whitespace-nowrap text-xs h-8"
+            >
+              <Icon name="refresh" size={12} />
+              <span>{t("button:resetFilters")}</span>
+            </Button>
+          )}
+
+          {/* View Mode Toggle: Table vs Grid */}
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0">
+            <button
+              type="button"
+              onClick={() => onViewModeChange("table")}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                viewMode === "table"
+                  ? "bg-white text-blue-600 shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Icon name="menu" size={13} />
+              <span>{t("card:gradebook.filters.viewTable")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onViewModeChange("grid")}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                viewMode === "grid"
+                  ? "bg-white text-blue-600 shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Icon name="chart" size={13} />
+              <span>{t("card:gradebook.filters.viewGrid")}</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Bottom row: Filter Dropdowns (NO 'Bộ lọc' text, identical to AssignmentFilterBar) */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
-        <div className="flex flex-wrap items-center gap-2.5">
-          {/* 1. Năm học */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Năm học:</span>
-            <Select
-              value={academicYear}
-              onChange={onAcademicYearChange}
-              options={academicYearOptions}
-              className="w-40 sm:w-44"
-            />
-          </div>
-
-          {/* 2. Học kỳ */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Học kỳ:</span>
-            <Select
-              value={semester}
-              onChange={onSemesterChange}
-              options={semesterOptions}
-              className="w-32 sm:w-36"
-            />
-          </div>
-
-          {/* 3. Xếp loại */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Xếp loại:</span>
-            <Select
-              value={classification}
-              onChange={(val: string) => onClassificationChange(val as GradeClassification)}
-              options={classificationOptions}
-              className="w-44 sm:w-48"
-            />
-          </div>
-
-          {/* 4. Sắp xếp */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Sắp xếp:</span>
-            <Select
-              value={sortBy}
-              onChange={onSortByChange}
-              options={sortOptions}
-              className="w-44 sm:w-48"
-            />
-          </div>
+      {/* 3. Secondary Dropdown Filters: Academic Year, Semester, Sort */}
+      <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-[#f0f0f0]">
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("card:gradebook.filters.academicYear")}:
+          </span>
+          <Select
+            value={academicYear}
+            onChange={onAcademicYearChange}
+            options={academicYearOptions}
+            className="w-36 sm:w-40"
+          />
         </div>
 
-        {/* Reset filter button */}
-        {hasActiveFilters && (
-          <Button
-            variant="outline"
-            onClick={onResetFilters}
-            className="text-slate-600 hover:text-blue-600"
-          >
-            <Icon name="refresh" size={12} />
-            <span>Đặt lại bộ lọc</span>
-          </Button>
-        )}
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("card:gradebook.filters.semester")}:
+          </span>
+          <Select
+            value={semester}
+            onChange={onSemesterChange}
+            options={semesterOptions}
+            className="w-32 sm:w-36"
+          />
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+            {t("card:gradebook.filters.sort")}:
+          </span>
+          <Select
+            value={sortBy}
+            onChange={onSortByChange}
+            options={sortOptions}
+            className="w-44 sm:w-60"
+          />
+        </div>
       </div>
     </div>
   );

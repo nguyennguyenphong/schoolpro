@@ -905,5 +905,135 @@
       "submitSuccess": "Exam submitted successfully!",
       "submitError": "An error occurred while submitting the exam. Please try again."
     }
+  },
+  "gradebook": {
+    "header": {
+      "title": "Gradebook & Electronic Transcript",
+      "subtitle": "Detailed official academic and conduct assessment records under MOET Circular No. 22/2021/TT-BGDĐT",
+      "studentCode": "Student ID: {{code}}",
+      "className": "Class: {{name}}",
+      "semesterYear": "Semester {{semester}} • {{year}}",
+      "viewTranscript": "View Electronic Transcript",
+      "exportPdf": "Download Signed PDF"
+    },
+    "summary": {
+      "gpaTitle": "Semester GPA",
+      "academicRankTitle": "Academic Performance",
+      "conductRankTitle": "Conduct / Training",
+      "classPositionTitle": "Class Rank",
+      "subjectsCountTitle": "Passed / Good Subjects",
+      "periodsCountTitle": "Total Periods / Week",
+      "attendanceRateTitle": "Attendance Rate",
+      "homeroomTeacher": "Homeroom Teacher:",
+      "homeroomRemarks": "Homeroom Teacher's Remarks:",
+      "classRankText": "Rank {{rank}} / {{total}} students",
+      "excellentSubjectsText": "{{excellent}} / {{total}} Good Subjects",
+      "passSubjectsText": "{{pass}} Passed Subjects",
+      "periodsText": "{{count}} periods / week"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by subject, code, teacher, comments...",
+      "academicYear": "Academic Year",
+      "semester": "Semester",
+      "allSemesters": "All Semesters",
+      "semester1": "Semester 1",
+      "semester2": "Semester 2",
+      "classification": "Classification",
+      "allClassifications": "All Classifications",
+      "excellent": "Excellent (≥ 8.0)",
+      "good": "Good (6.5 - 7.9)",
+      "average": "Pass (< 6.5)",
+      "feedbackOnly": "Feedback Only",
+      "sort": "Sort By",
+      "sortGpaDesc": "Average Score (High → Low)",
+      "sortGpaAsc": "Average Score (Low → High)",
+      "sortNameAsc": "Subject Name (A → Z)",
+      "viewTable": "Table View",
+      "viewGrid": "Grid View",
+      "reset": "Reset Filters"
+    },
+    "table": {
+      "subject": "Subject",
+      "teacher": "Teacher",
+      "periods": "Periods/week",
+      "regularScores": "Regular Assessment",
+      "midtermScore": "Mid-term",
+      "finalScore": "Final",
+      "averageScore": "Subject GPA",
+      "gradeLevel": "Classification",
+      "teacherComment": "Teacher Comments",
+      "action": "Actions",
+      "viewDetail": "Details",
+      "classAverageShort": "Class: {{score}}",
+      "highestShort": "High: {{score}}"
+    },
+    "levels": {
+      "excellent": "Excellent / Good",
+      "good": "Good",
+      "average": "Pass",
+      "pass": "Pass",
+      "fail": "Fail"
+    },
+    "evaluationType": {
+      "score": "Score-based",
+      "feedback": "Feedback-based"
+    },
+    "detailModal": {
+      "title": "Subject Grade Details",
+      "subjectInfo": "Subject Information",
+      "periodsPerWeek": "{{count}} periods / week",
+      "evaluationMethod": "Evaluation Method:",
+      "scoreStructureTitle": "Score Breakdown",
+      "regularScoresTitle": "Regular Assessment Scores (Weight 1)",
+      "midtermScoreTitle": "Mid-term Score (Weight 2)",
+      "finalScoreTitle": "Final Exam Score (Weight 3)",
+      "notRecorded": "Not recorded",
+      "weightLabel": "Weight {{weight}}",
+      "averageScoreTitle": "Subject Grade Point Average (ĐTBm)",
+      "classComparisonTitle": "Class Grade Distribution",
+      "classAverageLabel": "Class Average:",
+      "highestScoreLabel": "Class Highest:",
+      "teacherCommentTitle": "Teacher's Evaluation & Feedback"
+    },
+    "transcriptModal": {
+      "nationalHeader": "SOCIALIST REPUBLIC OF VIETNAM",
+      "nationalMotto": "Independence - Freedom - Happiness",
+      "title": "ELECTRONIC REPORT CARD - ACADEMIC & CONDUCT EVALUATION RESULTS",
+      "standardNote": "In accordance with Circular No. 22/2021/TT-BGDĐT of the Ministry of Education and Training",
+      "studentInfoTitle": "Student Information",
+      "fullName": "Student Full Name:",
+      "studentCode": "Student ID Code:",
+      "className": "Class:",
+      "schoolYear": "Academic Year:",
+      "semester": "Semester:",
+      "school": "School:",
+      "principal": "Principal:",
+      "resultsTableTitle": "Subject Academic Results",
+      "summaryResultsTitle": "End-of-Term Summary Results",
+      "gpa": "Semester GPA:",
+      "academicRank": "Academic Evaluation:",
+      "conductRank": "Conduct Evaluation:",
+      "titleAwarded": "Commendation / Title:",
+      "rankInClass": "Class Ranking:",
+      "homeroomTeacherRemarks": "Homeroom Teacher's Remarks:",
+      "digitalSignatureNotice": "This electronic report card is verified and digitally signed in accordance with MOET regulations",
+      "digitalSignature": "Valid Digital Signature:",
+      "verifiedAt": "Timestamp:",
+      "close": "Close",
+      "print": "Print Transcript",
+      "downloadPdf": "Download Signed PDF"
+    },
+    "empty": {
+      "noMatchingTitle": "No Matching Subjects Found",
+      "noMatchingDesc": "Try searching with a different keyword or resetting your filters.",
+      "noDataTitle": "No Grade Data Available",
+      "noDataDesc": "Grades for this semester have not been recorded yet."
+    },
+    "messages": {
+      "loadError": "Unable to load gradebook data. Please try again later.",
+      "exportLoading": "Preparing and validating digital signature for electronic transcript PDF...",
+      "exportSuccess": "Electronic report card downloaded successfully!",
+      "exportError": "Failed to export electronic report card PDF. Please try again later."
+    }
   }
 }

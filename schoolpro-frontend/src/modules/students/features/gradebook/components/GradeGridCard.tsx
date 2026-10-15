@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
@@ -11,6 +12,7 @@ interface GradeGridCardProps {
 }
 
 export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail }) => {
+  const { t } = useTranslation(["card"]);
   const isFeedback = item.evaluationType === "feedback";
   const score = item.averageScore || 0;
 
@@ -19,34 +21,30 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
       return {
         bg: "bg-emerald-50 border-emerald-200 text-emerald-700",
         badge: "bg-emerald-600 text-white",
-        label: "Đạt chuẩn",
-      };
-    }
-    if (score >= 9.0) {
-      return {
-        bg: "bg-indigo-50 border-indigo-200 text-indigo-700",
-        badge: "bg-indigo-600 text-white",
-        label: "Xuất sắc",
+        label:
+          item.feedbackResult === "pass"
+            ? t("card:gradebook.levels.pass")
+            : t("card:gradebook.levels.fail"),
       };
     }
     if (score >= 8.0) {
       return {
         bg: "bg-blue-50 border-blue-200 text-blue-700",
         badge: "bg-blue-600 text-white",
-        label: "Giỏi",
+        label: t("card:gradebook.levels.excellent"),
       };
     }
     if (score >= 6.5) {
       return {
         bg: "bg-amber-50 border-amber-200 text-amber-700",
         badge: "bg-amber-600 text-white",
-        label: "Khá",
+        label: t("card:gradebook.levels.good"),
       };
     }
     return {
       bg: "bg-rose-50 border-rose-200 text-rose-700",
       badge: "bg-rose-600 text-white",
-      label: "Đạt",
+      label: t("card:gradebook.levels.average"),
     };
   };
 
@@ -65,7 +63,9 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
               {item.code}
             </span>
             <span className="text-xs text-slate-400 font-medium">
-              {item.periodsPerWeek} tiết/tuần
+              {t("card:gradebook.detailModal.periodsPerWeek", {
+                count: item.periodsPerWeek,
+              })}
             </span>
           </div>
 
@@ -89,13 +89,17 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
         <div className={`p-3 rounded-xl border mb-3 flex items-center justify-between ${theme.bg}`}>
           <div>
             <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-              {isFeedback ? "Kết quả đánh giá" : "Điểm trung bình (ĐTBm)"}
+              {isFeedback
+                ? t("card:gradebook.table.gradeLevel")
+                : t("card:gradebook.table.averageScore")}
             </div>
             <div className="flex items-baseline gap-1 mt-0.5">
               {isFeedback ? (
                 <span className="text-lg font-extrabold text-emerald-700 flex items-center gap-1">
                   <Icon name="check" size={16} />
-                  Hoàn thành tốt
+                  {item.feedbackResult === "pass"
+                    ? t("card:gradebook.levels.pass")
+                    : t("card:gradebook.levels.fail")}
                 </span>
               ) : (
                 <>
@@ -110,7 +114,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
 
           {!isFeedback && item.classAverage && (
             <div className="text-right text-xs">
-              <div className="text-slate-400">TB cả lớp:</div>
+              <div className="text-slate-400">{t("card:gradebook.detailModal.classAverageLabel")}</div>
               <strong className="text-slate-700 font-bold text-sm">
                 {item.classAverage.toFixed(1)}
               </strong>
@@ -121,7 +125,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
         {/* Row 4: Component Scores Breakdown Chips */}
         <div className="space-y-1.5 mb-3 text-xs">
           <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-            Các cột điểm thành phần:
+            {t("card:gradebook.detailModal.scoreStructureTitle")}:
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
             {item.regularScores.map((sc, i) => (
@@ -136,23 +140,23 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
             {item.midtermScore && (
               <span
                 className="bg-amber-50 text-amber-800 px-2 py-0.5 rounded text-[11px] font-bold border border-amber-200"
-                title={`Giữa kỳ: ${item.midtermScore.score}`}
+                title={`GK: ${item.midtermScore.score}`}
               >
-                GK (x2): <strong>{item.midtermScore.score}</strong>
+                GK: <strong>{item.midtermScore.score}</strong>
               </span>
             )}
             {item.finalScore && (
               <span
                 className="bg-purple-50 text-purple-800 px-2 py-0.5 rounded text-[11px] font-bold border border-purple-200"
-                title={`Cuối kỳ: ${item.finalScore.score}`}
+                title={`CK: ${item.finalScore.score}`}
               >
-                CK (x3): <strong>{item.finalScore.score}</strong>
+                CK: <strong>{item.finalScore.score}</strong>
               </span>
             )}
           </div>
         </div>
 
-        {/* Row 5: Teacher Comment (line-clamp-2) */}
+        {/* Row 5: Teacher Comment */}
         <p
           className="text-xs text-slate-500 italic line-clamp-2 leading-relaxed mb-0 bg-slate-50/70 p-2.5 rounded-lg border border-[#f0f0f0]"
           title={item.teacherComment}
@@ -161,10 +165,10 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
         </p>
       </div>
 
-      {/* Row 6: Footer Action (Button standard size) */}
+      {/* Row 6: Footer Action */}
       <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <span className="text-xs text-slate-400 font-medium">
-          Học kỳ 1 • 2025-2026
+          {item.academicYear} • {item.semester}
         </span>
 
         <Button
@@ -175,7 +179,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
           }}
           className="text-slate-700 group-hover:text-blue-600 group-hover:border-blue-300 font-semibold flex items-center gap-1.5"
         >
-          <span>Xem chi tiết điểm</span>
+          <span>{t("card:gradebook.table.viewDetail")}</span>
           <Icon name="arrow-right" size={13} />
         </Button>
       </div>

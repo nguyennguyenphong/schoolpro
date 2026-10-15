@@ -13,7 +13,8 @@
     "leaveRequestEdit": "Edit Leave Request",
     "leaveRequestDetail": "Details & Processing Progress",
     "attendance": "Subject Attendance",
-    "exams": "Exams & Tests"
+    "exams": "Exams & Tests",
+    "gradebook": "Gradebook & Transcript"
   },
   "pageTitle": {
     "home": "Home",
@@ -28,7 +29,8 @@
     "leaveRequestEdit": "Edit Leave Request",
     "leaveRequestDetail": "Leave Request Details",
     "attendance": "Daily Subject Attendance",
-    "exams": "Online Exams & Tests"
+    "exams": "Online Exams & Tests",
+    "gradebook": "Gradebook & Electronic Transcript"
   },
   "pageSubtitle": {
     "home": "School Pro Academic Management System",
@@ -42,7 +44,8 @@
     "leaveRequests": "Submit online leave requests, attach supporting documents, and track Homeroom Teacher approvals",
     "leaveRequestForm": "Complete leave dates, affected lessons, and guardian confirmation to submit for Homeroom Teacher approval",
     "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius.",
-    "exams": "Timed online testing system with auto-saving answers and instant grading after submission"
+    "exams": "Timed online testing system with auto-saving answers and instant grading after submission",
+    "gradebook": "Official academic and conduct evaluation records in accordance with MOET Circular No. 22/2021/TT-BGDĐT"
   },
   "welcome": "Hello, {{name}}! Have a productive study day.",
   "welcomeUser": "Welcome, {{name}}!",

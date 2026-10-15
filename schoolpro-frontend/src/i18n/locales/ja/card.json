@@ -905,5 +905,135 @@
       "submitSuccess": "試験を正常に提出しました！",
       "submitError": "試験の提出中にエラーが発生しました。もう一度お試しください。"
     }
+  },
+  "gradebook": {
+    "header": {
+      "title": "成績表・電子指導要録",
+      "subtitle": "教育訓練省通達第22/2021/TT-BGDĐT号に基づく公式な学習評価および指導記録",
+      "studentCode": "学籍番号: {{code}}",
+      "className": "クラス: {{name}}",
+      "semesterYear": "学期 {{semester}} • {{year}}",
+      "viewTranscript": "電子指導要録を表示",
+      "exportPdf": "署名付きPDF出力"
+    },
+    "summary": {
+      "gpaTitle": "学期評定平均 (GPA)",
+      "academicRankTitle": "学習評価",
+      "conductRankTitle": "行動・訓練評価",
+      "classPositionTitle": "クラス順位",
+      "subjectsCountTitle": "合格・優良科目数",
+      "periodsCountTitle": "総授業時数",
+      "attendanceRateTitle": "出席率",
+      "homeroomTeacher": "担任教員:",
+      "homeroomRemarks": "担任教員の所見:",
+      "classRankText": "{{total}}人中 {{rank}}位",
+      "excellentSubjectsText": "{{total}}科目中 {{excellent}}科目「優」",
+      "passSubjectsText": "{{pass}}科目合格",
+      "periodsText": "週 {{count}} コマ"
+    },
+    "filters": {
+      "searchPlaceholder": "科目名、コード、教員、所見等で検索...",
+      "academicYear": "年度",
+      "semester": "学期",
+      "allSemesters": "全学期",
+      "semester1": "第1学期",
+      "semester2": "第2学期",
+      "classification": "評価区分",
+      "allClassifications": "全区分",
+      "excellent": "優 (≥ 8.0)",
+      "good": "良 (6.5 - 7.9)",
+      "average": "可 (< 6.5)",
+      "feedbackOnly": "所見評価科目",
+      "sort": "並び替え",
+      "sortGpaDesc": "評定平均 (高い順)",
+      "sortGpaAsc": "評定平均 (低い順)",
+      "sortNameAsc": "科目名 (五十音順)",
+      "viewTable": "テーブル表示",
+      "viewGrid": "グリッド表示",
+      "reset": "条件リセット"
+    },
+    "table": {
+      "subject": "科目",
+      "teacher": "担当教員",
+      "periods": "コマ数/週",
+      "regularScores": "平常点評価",
+      "midtermScore": "中間点",
+      "finalScore": "期末点",
+      "averageScore": "科目平均",
+      "gradeLevel": "区分",
+      "teacherComment": "担当教員所見",
+      "action": "操作",
+      "viewDetail": "詳細",
+      "classAverageShort": "学級平均: {{score}}",
+      "highestShort": "最高: {{score}}"
+    },
+    "levels": {
+      "excellent": "優秀 / 優",
+      "good": "良好 / 良",
+      "average": "可",
+      "pass": "合格",
+      "fail": "不合格"
+    },
+    "evaluationType": {
+      "score": "点数評価",
+      "feedback": "所見評価"
+    },
+    "detailModal": {
+      "title": "科目別詳細成績表",
+      "subjectInfo": "科目情報",
+      "periodsPerWeek": "週 {{count}} コマ",
+      "evaluationMethod": "評価方式:",
+      "scoreStructureTitle": "成績構成の内訳",
+      "regularScoresTitle": "平常点評価 (比重 1)",
+      "midtermScoreTitle": "中間考査点 (比重 2)",
+      "finalScoreTitle": "期末考査点 (比重 3)",
+      "notRecorded": "未入力",
+      "weightLabel": "比重 {{weight}}",
+      "averageScoreTitle": "科目評定平均点 (ĐTBm)",
+      "classComparisonTitle": "クラス得点分布比較",
+      "classAverageLabel": "クラス平均:",
+      "highestScoreLabel": "クラス最高点:",
+      "teacherCommentTitle": "担当教員の所見・フィードバック"
+    },
+    "transcriptModal": {
+      "nationalHeader": "ベトナム社会主義共和国",
+      "nationalMotto": "独立 - 自由 - 幸福",
+      "title": "電子指導要録 - 学習及び行動評価結果表",
+      "standardNote": "教育訓練省通達第22/2021/TT-BGDĐT号準拠",
+      "studentInfoTitle": "生徒情報",
+      "fullName": "氏名:",
+      "studentCode": "学籍番号:",
+      "className": "クラス:",
+      "schoolYear": "年度:",
+      "semester": "学期:",
+      "school": "学校:",
+      "principal": "校長:",
+      "resultsTableTitle": "各科目学習成績",
+      "summaryResultsTitle": "期末総合評価",
+      "gpa": "学期総合平均点:",
+      "academicRank": "学業成績評価:",
+      "conductRank": "行動・訓練評価:",
+      "titleAwarded": "表彰・称号:",
+      "rankInClass": "学級順位:",
+      "homeroomTeacherRemarks": "担任教員の所見:",
+      "digitalSignatureNotice": "本電子指導要録は教育訓練省の規定に則り、電子署名により認証されています",
+      "digitalSignature": "有効な電子署名:",
+      "verifiedAt": "認証日時:",
+      "close": "閉じる",
+      "print": "印刷",
+      "downloadPdf": "署名付きPDF出力"
+    },
+    "empty": {
+      "noMatchingTitle": "該当する科目が見つかりません",
+      "noMatchingDesc": "検索キーワードを変更するか、フィルター条件をリセットしてください。",
+      "noDataTitle": "成績データがありません",
+      "noDataDesc": "今学期の成績データはまだ登録されていません。"
+    },
+    "messages": {
+      "loadError": "成績表データを読み込めませんでした。後でもう一度お試しください。",
+      "exportLoading": "電子指導要録PDFのデジタル署名を準備・検証しています...",
+      "exportSuccess": "電子指導要録のダウンロードに成功しました！",
+      "exportError": "電子指導要録PDFのエクスポートに失敗しました。後でもう一度お試しください。"
+    }
   }
 }

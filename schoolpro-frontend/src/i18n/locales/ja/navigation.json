@@ -13,7 +13,8 @@
     "leaveRequestEdit": "欠席届の編集",
     "leaveRequestDetail": "詳細・処理状況",
     "attendance": "科目出席登録",
-    "exams": "試験・小テスト"
+    "exams": "試験・小テスト",
+    "gradebook": "成績表・指導要録"
   },
   "pageTitle": {
     "home": "ホーム",
@@ -28,7 +29,8 @@
     "leaveRequestEdit": "欠席届の編集",
     "leaveRequestDetail": "欠席届の詳細",
     "attendance": "日別科目出席管理",
-    "exams": "オンライン試験・テスト"
+    "exams": "オンライン試験・テスト",
+    "gradebook": "成績表・電子指導要録"
   },
   "pageSubtitle": {
     "home": "School Pro 学習・教務管理システム",
@@ -42,7 +44,8 @@
     "leaveRequests": "オンラインで欠席届を作成し、証明書類を添付して担任教員の承認状況を確認できます",
     "leaveRequestForm": "欠席期間、対象授業、保護者確認情報を入力して担任教員に承認を申請します",
     "attendance": "教員の端末スキャン半径内のGPS緯度・経度認証と、6桁の暗証番号またはQRスキャン／画像アップロードを組み合わせた100%不正防止のオンライン出席登録。",
-    "exams": "自動保存および提出後の即時採点を備えたオンライン制限時間付きテストシステム"
+    "exams": "自動保存および提出後の即時採点を備えたオンライン制限時間付きテストシステム",
+    "gradebook": "教育訓練省通達第22/2021/TT-BGDĐT号に基づく公式な学習評価および指導記録"
   },
   "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
   "welcomeUser": "こんにちは、{{name}}さん！",

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 import type {
   SubjectGradeItem,
@@ -7,12 +8,15 @@ import type {
   GradeFilter,
   GradeViewMode,
   GradeClassification,
+  TranscriptData,
 } from "@/modules/students/features/gradebook/types";
 import { gradebookService } from "@/modules/students/features/gradebook/services";
 
 export const useGradebook = () => {
+  const { t } = useTranslation(["card", "common", "button"]);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Read initial filter from URL params once on mount
   const initialFilter = useMemo<GradeFilter>(() => {
     return {
       searchQuery: searchParams.get("q") || "",
@@ -22,7 +26,8 @@ export const useGradebook = () => {
       sortBy: (searchParams.get("sort") as GradeFilter["sortBy"]) || "gpa_desc",
       viewMode: (searchParams.get("view") as GradeViewMode) || "table",
     };
-  }, [searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [filter, setFilter] = useState<GradeFilter>(initialFilter);
   const [summary, setSummary] = useState<GradeSummary | null>(null);
@@ -35,10 +40,12 @@ export const useGradebook = () => {
   const [selectedSubject, setSelectedSubject] = useState<SubjectGradeItem | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // Print/Export transcript modal
+  // Transcript data and modal
+  const [transcriptData, setTranscriptData] = useState<TranscriptData | null>(null);
   const [isTranscriptModalOpen, setIsTranscriptModalOpen] = useState(false);
+  const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
 
-  // Sync state to URL params
+  // Helper to sync state to URL params
   const updateUrlParams = useCallback((newFilter: GradeFilter) => {
     const params = new URLSearchParams();
     if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
@@ -50,7 +57,7 @@ export const useGradebook = () => {
     return params;
   }, []);
 
-  // Fetch summary on mount
+  // Fetch summary once on mount
   useEffect(() => {
     let ignore = false;
     gradebookService
@@ -59,7 +66,7 @@ export const useGradebook = () => {
         if (!ignore) setSummary(res);
       })
       .catch(() => {
-        // Fallback
+        // Fallback handled in service
       });
 
     return () => {
@@ -67,7 +74,7 @@ export const useGradebook = () => {
     };
   }, []);
 
-  // Fetch subject grades
+  // Fetch subject grades when filter parameters change
   useEffect(() => {
     let ignore = false;
 
@@ -83,7 +90,7 @@ export const useGradebook = () => {
         }
       } catch (err: unknown) {
         if (!ignore) {
-          setError(err instanceof Error ? err.message : "Không thể tải bảng điểm.");
+          setError(err instanceof Error ? err.message : t("card:gradebook.messages.loadError"));
           setLoading(false);
         }
       }
@@ -94,7 +101,14 @@ export const useGradebook = () => {
     return () => {
       ignore = true;
     };
-  }, [filter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    filter.searchQuery,
+    filter.academicYear,
+    filter.semester,
+    filter.classification,
+    filter.sortBy,
+  ]);
 
   // Filter setters
   const updateFilter = useCallback(
@@ -148,23 +162,51 @@ export const useGradebook = () => {
     setSelectedSubject(null);
   };
 
-  const openTranscriptModal = () => {
+  const openTranscriptModal = async () => {
     setIsTranscriptModalOpen(true);
+    if (!transcriptData) {
+      try {
+        setIsTranscriptLoading(true);
+        const data = await gradebookService.getTranscript();
+        setTranscriptData(data);
+      } catch {
+        // Service provides fallback
+      } finally {
+        setIsTranscriptLoading(false);
+      }
+    }
   };
 
   const closeTranscriptModal = () => {
     setIsTranscriptModalOpen(false);
   };
 
-  const handleExportPdf = () => {
-    message.loading({ content: "Đang tạo bản sao Học bạ điện tử PDF có chữ ký số...", key: "export-pdf" });
-    setTimeout(() => {
+  const handleExportPdf = async () => {
+    try {
+      message.loading({
+        content: t("card:gradebook.messages.exportLoading"),
+        key: "export-pdf",
+      });
+      const res = await gradebookService.exportTranscriptPdf();
+      if (res?.downloadUrl) {
+        const link = document.createElement("a");
+        link.href = res.downloadUrl;
+        link.setAttribute("download", res.fileName || "Hoc_Ba_Dien_Tu_2025_2026.pdf");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
       message.success({
-        content: "Học bạ điện tử (PDF) đã được tạo thành công! Đang tự động tải về...",
+        content: t("card:gradebook.messages.exportSuccess"),
         key: "export-pdf",
         duration: 3,
       });
-    }, 1200);
+    } catch {
+      message.error({
+        content: t("card:gradebook.messages.exportError"),
+        key: "export-pdf",
+      });
+    }
   };
 
   return {
@@ -176,6 +218,8 @@ export const useGradebook = () => {
     filter,
     hasActiveFilters,
     selectedSubject,
+    transcriptData,
+    isTranscriptLoading,
     isDetailModalOpen,
     isTranscriptModalOpen,
     setSearchQuery,

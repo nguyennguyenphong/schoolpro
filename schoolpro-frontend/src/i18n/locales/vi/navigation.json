@@ -13,7 +13,8 @@
     "leaveRequestEdit": "Chỉnh sửa đơn xin nghỉ phép",
     "leaveRequestDetail": "Chi tiết & Tiến trình xử lý",
     "attendance": "Điểm danh môn học",
-    "exams": "Khảo thí & Đề thi"
+    "exams": "Khảo thí & Đề thi",
+    "gradebook": "Bảng điểm & Học bạ"
   },
   "pageTitle": {
     "home": "Trang chủ",
@@ -28,7 +29,8 @@
     "leaveRequestEdit": "Chỉnh sửa đơn xin nghỉ phép",
     "leaveRequestDetail": "Chi tiết đơn xin nghỉ phép",
     "attendance": "Điểm danh môn học theo ngày",
-    "exams": "Khảo thí & Đề thi Trắc nghiệm"
+    "exams": "Khảo thí & Đề thi Trắc nghiệm",
+    "gradebook": "Bảng điểm & Học bạ Điện tử"
   },
   "pageSubtitle": {
     "home": "Hệ thống quản lý thông tin học tập và đào tạo School Pro",
@@ -42,7 +44,8 @@
     "leaveRequests": "Tạo đơn xin nghỉ phép trực tuyến, đính kèm giấy tờ minh chứng và theo dõi phản hồi phê duyệt từ Giáo viên chủ nhiệm",
     "leaveRequestForm": "Điền đầy đủ thông tin thời gian, môn học xin nghỉ và xác nhận của phụ huynh để gửi Giáo viên chủ nhiệm phê duyệt",
     "attendance": "Điểm danh chống gian lận 100% qua Mã 6 chữ số hoặc Quét/Tải ảnh mã QR kết hợp xác thực tọa độ Kinh độ & Vĩ độ GPS theo bán kính thiết bị Giáo viên.",
-    "exams": "Hệ thống thi trắc nghiệm trực tuyến tính giờ, tự động lưu câu trả lời và chấm điểm tức thì sau khi nộp"
+    "exams": "Hệ thống thi trắc nghiệm trực tuyến tính giờ, tự động lưu câu trả lời và chấm điểm tức thì sau khi nộp",
+    "gradebook": "Bảng điểm chi tiết kết quả học tập và rèn luyện chính thức của học sinh theo Thông tư số 22/2021/TT-BGDĐT"
   },
   "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
   "welcomeUser": "Xin chào, {{name}}!",

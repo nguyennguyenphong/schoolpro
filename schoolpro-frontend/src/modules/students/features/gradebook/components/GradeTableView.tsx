@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Tag } from "antd";
 import type { TableColumnsType } from "antd";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { SubjectGradeItem, GradeSummary } from "@/modules/students/features/gradebook/types";
@@ -16,12 +17,17 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
   summary,
   onOpenDetail,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   const getAverageScoreBadge = (score?: number, isFeedback?: boolean, feedbackResult?: string) => {
     if (isFeedback) {
+      const isPass = feedbackResult === "pass";
       return (
         <span className="inline-flex items-center justify-center gap-1 px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
           <Icon name="check" size={12} />
-          <span>{feedbackResult === "pass" ? "ĐẠT" : "CHƯA ĐẠT"}</span>
+          <span>
+            {isPass ? t("card:gradebook.levels.pass") : t("card:gradebook.levels.fail")}
+          </span>
         </span>
       );
     }
@@ -52,36 +58,31 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
     if (item.evaluationType === "feedback") {
       return (
         <Tag color="green" className="m-0 font-semibold text-xs whitespace-nowrap">
-          Hoàn thành tốt
+          {item.feedbackResult === "pass"
+            ? t("card:gradebook.levels.pass")
+            : t("card:gradebook.levels.fail")}
         </Tag>
       );
     }
 
     const score = item.averageScore || 0;
-    if (score >= 9.0) {
-      return (
-        <Tag color="geekblue" className="m-0 font-bold text-xs whitespace-nowrap">
-          Xuất sắc
-        </Tag>
-      );
-    }
     if (score >= 8.0) {
       return (
         <Tag color="blue" className="m-0 font-bold text-xs whitespace-nowrap">
-          Giỏi
+          {t("card:gradebook.levels.excellent")}
         </Tag>
       );
     }
     if (score >= 6.5) {
       return (
         <Tag color="orange" className="m-0 font-semibold text-xs whitespace-nowrap">
-          Khá
+          {t("card:gradebook.levels.good")}
         </Tag>
       );
     }
     return (
       <Tag color="red" className="m-0 font-semibold text-xs whitespace-nowrap">
-        Đạt
+        {t("card:gradebook.levels.average")}
       </Tag>
     );
   };
@@ -98,7 +99,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
       ),
     },
     {
-      title: "Môn học",
+      title: t("card:gradebook.table.subject"),
       key: "name",
       width: 220,
       className: "whitespace-nowrap",
@@ -116,13 +117,17 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
             <Icon name="user" size={11} className="text-slate-400" />
             <span>{record.teacher}</span>
             <span>•</span>
-            <span>{record.periodsPerWeek} tiết/tuần</span>
+            <span>
+              {t("card:gradebook.detailModal.periodsPerWeek", {
+                count: record.periodsPerWeek,
+              })}
+            </span>
           </div>
         </div>
       ),
     },
     {
-      title: "Thường xuyên (x1)",
+      title: `${t("card:gradebook.table.regularScores")} (x1)`,
       dataIndex: "regularScores",
       key: "regularScores",
       align: "center",
@@ -143,11 +148,11 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
       ),
     },
     {
-      title: "Giữa kỳ (x2)",
+      title: `${t("card:gradebook.table.midtermScore")} (x2)`,
       dataIndex: "midtermScore",
       key: "midtermScore",
       align: "center",
-      width: 105,
+      width: 110,
       className: "whitespace-nowrap",
       render: (midterm?: SubjectGradeItem["midtermScore"]) =>
         midterm ? (
@@ -162,11 +167,11 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
         ),
     },
     {
-      title: "Cuối kỳ (x3)",
+      title: `${t("card:gradebook.table.finalScore")} (x3)`,
       dataIndex: "finalScore",
       key: "finalScore",
       align: "center",
-      width: 105,
+      width: 110,
       className: "whitespace-nowrap",
       render: (final?: SubjectGradeItem["finalScore"]) =>
         final ? (
@@ -181,11 +186,11 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
         ),
     },
     {
-      title: "ĐTB Môn",
+      title: t("card:gradebook.table.averageScore"),
       dataIndex: "averageScore",
       key: "averageScore",
       align: "center",
-      width: 105,
+      width: 115,
       className: "whitespace-nowrap",
       render: (_value, record) =>
         getAverageScoreBadge(
@@ -195,19 +200,19 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
         ),
     },
     {
-      title: "Xếp loại",
+      title: t("card:gradebook.table.gradeLevel"),
       dataIndex: "gradeLevel",
       key: "gradeLevel",
       align: "center",
-      width: 110,
+      width: 115,
       className: "whitespace-nowrap",
       render: (_value, record) => getGradeLevelTag(record),
     },
     {
-      title: "Thao tác",
+      title: t("card:gradebook.table.action"),
       key: "action",
       align: "center",
-      width: 90,
+      width: 95,
       className: "whitespace-nowrap",
       render: (_value, record) => (
         <Button
@@ -218,7 +223,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
           }}
           className="text-slate-700 font-medium"
         >
-          Chi tiết
+          {t("card:gradebook.table.viewDetail")}
         </Button>
       ),
     },
@@ -243,17 +248,21 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
                 <Table.Summary.Cell index={0} colSpan={2} className="whitespace-nowrap">
                   <div className="py-1 px-1">
                     <span className="text-sm font-bold text-blue-900 whitespace-nowrap">
-                      TỔNG KẾT HỌC KỲ 1 (2025 - 2026)
+                      {summary.academicYear} • {summary.semester}
                     </span>
                     <div className="text-xs text-slate-500 font-normal mt-0.5 whitespace-nowrap">
-                      Giáo viên chủ nhiệm: <strong>{summary.homeroomTeacher}</strong> • Học bạ điện tử xác thực
+                      {t("card:gradebook.summary.homeroomTeacher")}{" "}
+                      <strong>{summary.homeroomTeacher}</strong>
                     </div>
                   </div>
                 </Table.Summary.Cell>
 
                 <Table.Summary.Cell index={1} colSpan={3} align="center" className="whitespace-nowrap">
                   <span className="text-xs text-slate-600 font-normal whitespace-nowrap">
-                    11 môn tính điểm số • 2 môn nhận xét Đạt
+                    {t("card:gradebook.summary.excellentSubjectsText", {
+                      excellent: summary.excellentSubjectsCount,
+                      total: summary.totalSubjectsCount,
+                    })}
                   </span>
                 </Table.Summary.Cell>
 
@@ -271,9 +280,13 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
 
                 <Table.Summary.Cell index={4} colSpan={2} className="whitespace-nowrap">
                   <div className="text-xs text-slate-600 py-1 whitespace-nowrap">
-                    Hạnh kiểm: <strong className="text-emerald-700">{summary.conductRank}</strong>
+                    {t("card:gradebook.summary.conductRankTitle")}:{" "}
+                    <strong className="text-emerald-700">{summary.conductRank}</strong>
                     <span className="mx-2">•</span>
-                    Thứ hạng: <strong className="text-amber-700">Hạng {summary.classPosition}/{summary.totalClassStudents}</strong>
+                    {t("card:gradebook.summary.classRankText", {
+                      rank: summary.classPosition,
+                      total: summary.totalClassStudents,
+                    })}
                   </div>
                 </Table.Summary.Cell>
               </Table.Summary.Row>

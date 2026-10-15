@@ -13,6 +13,7 @@ from apps.academic.views.attendance_views import (
 )
 from apps.academic.views.exam_log_views import ExamEventLogViewSet
 from apps.academic.views.exam_views import StudentExamViewSet
+from apps.academic.views.gradebook_views import StudentGradebookViewSet
 from apps.academic.views.timetable_views import TimetableStudentViewSet
 
 app_name = "academic"
@@ -24,6 +25,7 @@ router.register(r"attendance-logs", AttendanceLogViewSet, basename="attendance-l
 router.register(r"leave-requests", LeaveRequestViewSet, basename="leave-request")
 router.register(r"exam-logs", ExamEventLogViewSet, basename="exam-log")
 router.register(r"exams", StudentExamViewSet, basename="exam")
+router.register(r"gradebook", StudentGradebookViewSet, basename="gradebook")
 
 urlpatterns = [
     path("", include(router.urls)),
