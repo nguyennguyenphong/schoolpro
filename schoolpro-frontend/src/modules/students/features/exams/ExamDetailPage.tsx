@@ -34,7 +34,7 @@ export const ExamDetailPage: React.FC = () => {
   } = useExamDetail(id);
 
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
+  const [_activeQuestionId, setActiveQuestionId] = useState<string | null>(null);
 
   // Scroll smoothly to selected question
   const handleScrollToQuestion = (qId: string) => {
