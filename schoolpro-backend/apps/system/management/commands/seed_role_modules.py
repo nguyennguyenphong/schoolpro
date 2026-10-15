@@ -61,7 +61,6 @@ class Command(BaseCommand):
         ROUTE_FEES = "/student/fees"
         ROUTE_ATTENDANCE = "/student/attendance"
         ROUTE_TRACK = "/student/track"
-        ROUTE_ONLINE_TEST = "/student/online-test"
         ROUTE_JOURNAL = "/teacher/journal"
         ROUTE_TEACHER_GRADES = "/teacher/grades"
         ROUTE_TEACHER_ATTENDANCE = "/teacher/attendance"
@@ -88,7 +87,6 @@ class Command(BaseCommand):
             card(ROUTE_LEAVE_REQUEST, pinned=False, col_span=1, order=2, badge="Gửi đơn"),
             card(ROUTE_ATTENDANCE, pinned=False, col_span=1, order=3, badge="Điểm danh"),
             card(ROUTE_ASSIGNMENTS, pinned=True, col_span=1, order=4, badge="Bài tập"),
-            card(ROUTE_ONLINE_TEST, pinned=False, col_span=1, order=5, badge="Online"),
             card(ROUTE_EXAMS, pinned=False, col_span=1, order=6, badge="Sắp tới"),
             card(ROUTE_GRADEBOOK, pinned=True, col_span=1, order=7, badge="Điểm số"),
             card(ROUTE_MATERIALS, pinned=False, col_span=1, order=8, badge="18"),

@@ -3769,7 +3769,7 @@ INSERT INTO sys.modules (code, name, short_name, description, icon, route, modul
   ('MOD_STT_839201', 'Thời khóa biểu',            'TKB',        'Tra cứu lịch học tuần, ca sáng/chiều, phòng học và giảng viên', 'calendar',   '/student/timetable',    'CARD', 'ACADEMIC',      '#10B981', 'Hôm nay'),
   ('MOD_SMA_748292', 'Tài liệu môn học',          'Tài liệu',   'Giáo trình điện tử, slide bài giảng, đề cương ôn tập tải về',   'download',   '/student/materials',    'CARD', 'ACADEMIC',      '#9333EA', '18'),
   ('MOD_SAS_659183', 'Bài tập & Đồ án',           'Bài tập',    'Danh sách bài tập về nhà, nộp bài trực tuyến và nhận xét giáo viên',    'edit',       '/student/assignments',  'CARD', 'ACADEMIC',      '#E11D48', '3'),
-  ('MOD_SEX_568294', 'Bài kiểm tra & Phòng thi',  'Kiểm tra',   'Lịch thi định kỳ, trắc nghiệm trực tuyến, số báo danh',         'file',       '/student/exams',        'CARD', 'ACADEMIC',      '#DB2777', 'Sắp tới'),
+  ('MOD_SEX_568294', 'Bài kiểm trai',  'Kiểm tra',   'Lịch thi định kỳ, trắc nghiệm trực tuyến, số báo danh',         'file',       '/student/exams',        'CARD', 'ACADEMIC',      '#DB2777', 'Sắp tới'),
   ('MOD_SRC_479105', 'Bảng điểm & Học bạ',        'Bảng điểm',  'Xem điểm thường xuyên, giữa kỳ, cuối kỳ và xếp loại học lực',   'chart',      '/student/gradebook',    'CARD', 'ACADEMIC',      '#7C3AED', 'GPA'),
   ('MOD_SRM_389216', 'Nhắc nhở học tập',          'Nhắc nhở',   'Hạn nộp bài, lịch trực nhật, lịch họp chi đoàn',                'clock',      '/student/reminders',    'CARD', 'COMMUNICATION', '#CA8A04', '4'),
   ('MOD_SAN_298307', 'Thông báo nhà trường',      'Thông báo',  'Tin tức chính thức từ BGH, Đoàn trường và Giáo viên chủ nhiệm', 'info',        '/student/notices',      'CARD', 'COMMUNICATION', '#3B82F6', '10'),
@@ -3781,7 +3781,6 @@ INSERT INTO sys.modules (code, name, short_name, description, icon, route, modul
   ('MOD_SFE_532163', 'Học phí & Khoản thu',       'Học phí',    'Tra cứu hóa đơn học phí, bảo hiểm y tế và thanh toán online', 'settings',   '/student/fees',         'CARD', 'MANAGEMENT',    '#0D9488', 'Học phí'),
   ('MOD_SAT_482910', 'Điểm danh chuyên cần',      'Điểm danh',  'Theo dõi tình trạng chuyên cần, vắng có phép, vắng không phép', 'check',      '/student/attendance',   'CARD', 'ACADEMIC',      '#06B6D4', 'Điểm danh'),
   ('MOD_STR_421054', 'Tổ hợp môn Giáo dục phổ thông & Trung học phổ thông',    'Tổ hợp môn', 'Thông tin ban học tập, cụm chuyên đề lựa chọn',               'layers',     '/student/track',        'CARD', 'ACADEMIC',      '#6366F1', 'Tổ hợp'),
-  ('MOD_SOT_310945', 'Khảo thí Trắc nghiệm',      'Thi online', 'Làm bài kiểm tra trực tuyến, trắc nghiệm tính giờ',           'check-circle','/student/online-test', 'CARD', 'ACADEMIC',      '#F43F5E', 'Online'),
   ('MOD_TJR_209836', 'Sổ đầu bài điện tử',        'Sổ đầu bài', 'Ghi nhận bài học, sĩ số, nhận xét và xếp loại tiết học A/B/C/D','book',       '/teacher/journal',      'CARD', 'ACADEMIC',      '#10B981', 'Ký sổ'),
   ('MOD_TGE_198725', 'Sổ điểm điện tử',           'Nhập điểm',  'Nhập điểm thường xuyên, giữa kỳ, cuối kỳ theo chuẩn TT22',      'edit',       '/teacher/grades',       'CARD', 'ACADEMIC',      '#3B82F6', 'Sổ điểm'),
   ('MOD_TAT_087614', 'Điểm danh lớp học',         'Điểm danh',  'Điểm danh chuyên cần theo tiết hoặc theo buổi học',             'check',      '/teacher/attendance',   'CARD', 'ACADEMIC',      '#059669', 'Điểm danh'),
@@ -3826,7 +3825,6 @@ FROM (
     ('MOD_TEV_187498', 12::smallint, TRUE, FALSE, NULL, '{"id": "feat-evaluations", "translationKey": "evaluations", "iconName": "edit", "iconBgColor": "bg-orange-50 border border-orange-200", "iconColor": "text-orange-600", "badgeColor": "cyan", "route": "/student/evaluations"}'::jsonb),
     ('MOD_SCL_643272', 13::smallint, TRUE, FALSE, NULL, '{"id": "feat-clubs", "translationKey": "clubs", "iconName": "users", "route": "/student/clubs"}'::jsonb),
     ('MOD_STR_421054', 14::smallint, TRUE, FALSE, NULL, '{"id": "feat-track", "translationKey": "track", "iconName": "layers", "route": "/student/track"}'::jsonb),
-    ('MOD_SOT_310945', 15::smallint, TRUE, FALSE, NULL, '{"id": "feat-online-test", "translationKey": "onlineTest", "iconName": "check-circle", "route": "/student/online-test"}'::jsonb)
 ) AS f(code, order_no, is_visible, is_pinned, custom_badge, config)
 JOIN sys.modules m ON m.code = f.code
 CROSS JOIN core.roles r
