@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     {
         "id": "grade-math",
-        "code": "MATH11",
+        "code": "605392632441",
         "name": "Toán học 11",
         "teacher": "ThS. Hoàng Văn Nam",
         "teacherTitle": "Tổ trưởng Chuyên môn Toán - Giáo viên chủ nhiệm",
@@ -82,7 +82,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-phys",
-        "code": "PHYS11",
+        "code": "264254317526",
         "name": "Vật lý 11",
         "teacher": "Thầy Trần Quốc Tuấn",
         "teacherTitle": "Tổ phó Bộ môn Vật lý",
@@ -133,7 +133,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-chem",
-        "code": "CHEM11",
+        "code": "480527818687",
         "name": "Hóa học 11",
         "teacher": "Cô Phạm Quỳnh Nga",
         "teacherTitle": "Giáo viên Giỏi cấp Tỉnh",
@@ -184,7 +184,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-bio",
-        "code": "BIO11",
+        "code": "300420943355",
         "name": "Sinh học 11",
         "teacher": "Thầy Vũ Hải Đăng",
         "teacherTitle": "Giáo viên Bộ môn Sinh học",
@@ -235,7 +235,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-it",
-        "code": "IT11",
+        "code": "733282721675",
         "name": "Tin học 11",
         "teacher": "Thầy Lê Tuấn Anh",
         "teacherTitle": "Phụ trách Phòng máy & Đội tuyển HSG",
@@ -286,7 +286,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-lit",
-        "code": "LIT11",
+        "code": "574994945429",
         "name": "Ngữ văn 11",
         "teacher": "Cô Nguyễn Mai Hương",
         "teacherTitle": "Tổ trưởng Bộ môn Ngữ văn",
@@ -344,7 +344,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-hist",
-        "code": "HIST11",
+        "code": "884239834707",
         "name": "Lịch sử 11",
         "teacher": "Thầy Bùi Quang Huy",
         "teacherTitle": "Giáo viên Bộ môn Lịch sử",
@@ -395,7 +395,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-geo",
-        "code": "GEO11",
+        "code": "303681574939",
         "name": "Địa lý 11",
         "teacher": "Cô Đặng Thu Hà",
         "teacherTitle": "Giáo viên Bộ môn Địa lý",
@@ -446,7 +446,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-eng",
-        "code": "ENG11",
+        "code": "528246878668",
         "name": "Tiếng Anh 11 (Global Success)",
         "teacher": "Cô Jennifer Miller & Thầy Lê Nam",
         "teacherTitle": "Tổ Ngoại ngữ - Chuyên gia Anh ngữ",
@@ -497,7 +497,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-gdcd",
-        "code": "GDKT11",
+        "code": "695611866823",
         "name": "Giáo dục Kinh tế & Pháp luật 11",
         "teacher": "Cô Lương Thị Ánh",
         "teacherTitle": "Giáo viên Bộ môn GD Kinh tế & Pháp luật",
@@ -548,7 +548,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-tech",
-        "code": "TECH11",
+        "code": "270285753024",
         "name": "Công nghệ 11 (Công nghệ Cơ khí)",
         "teacher": "Thầy Nguyễn Hữu Đức",
         "teacherTitle": "Giáo viên Bộ môn Công nghệ",
@@ -592,7 +592,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-pe",
-        "code": "PE11",
+        "code": "269627163754",
         "name": "Giáo dục Thể chất 11 (Bóng rổ)",
         "teacher": "Thầy Đỗ Minh Khoa",
         "teacherTitle": "Trưởng Ban Thể dục Thể thao",
@@ -605,7 +605,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
     },
     {
         "id": "grade-gdqp",
-        "code": "GDQP11",
+        "code": "382934557836",
         "name": "Giáo dục Quốc phòng & An ninh 11",
         "teacher": "Trung tá Nguyễn Văn Cường",
         "teacherTitle": "Giáo viên Biệt phái Bộ môn GDQP-AN",
@@ -632,6 +632,9 @@ _SEEDED_SUMMARY: dict[str, Any] = {
     "homeroomComment": "Học sinh Nguyễn Văn An chăm ngoan, lễ phép, có ý thức tự giác và kỷ luật học tập rất cao. Tiếp thu bài nhanh, tư duy logic sắc bén ở các môn khoa học tự nhiên và có tiến bộ vượt bậc ở môn Tiếng Anh. Tích cực tham gia các hoạt động tập thể của lớp 11A1.",
     "titleAwarded": "Học sinh Giỏi Học kỳ 1 • Khối 11",
     "attendanceRate": 98.8,
+    "academicYear": "Năm học 2025 - 2026",
+    "semester": "Học kỳ 1",
+    "className": "Lớp 11A1",
 }
 
 
@@ -755,11 +758,51 @@ class GradebookService:
                         or _SEEDED_SUMMARY["homeroomComment"],
                         "titleAwarded": record.honor_title or _SEEDED_SUMMARY["titleAwarded"],
                         "attendanceRate": 98.8,
+                        "academicYear": (
+                            record.academic_year.name
+                            if record.academic_year
+                            else _SEEDED_SUMMARY["academicYear"]
+                        ),
+                        "semester": (
+                            record.semester.name if record.semester else _SEEDED_SUMMARY["semester"]
+                        ),
+                        "className": (
+                            record.school_class.name
+                            if record.school_class
+                            else _SEEDED_SUMMARY["className"]
+                        ),
                     }
         except Exception as exc:
             logger.debug("DB StudentTermSummary query fallback: %s", exc)
 
-        return dict(_SEEDED_SUMMARY)
+        summary_data = dict(_SEEDED_SUMMARY)
+        # Dynamically reflect selected semester and academic year names if available
+        try:
+            if academic_year and academic_year != "all":
+                ay_obj = cls._resolve_academic_year(academic_year)
+                if ay_obj:
+                    summary_data["academicYear"] = ay_obj.name
+            else:
+                from apps.master.models import AcademicYear
+
+                current_ay = AcademicYear.objects.filter(is_current=True).first()
+                if current_ay:
+                    summary_data["academicYear"] = current_ay.name
+
+            if semester and semester != "all":
+                sem_obj = cls._resolve_semester(semester)
+                if sem_obj:
+                    summary_data["semester"] = sem_obj.name
+            else:
+                from apps.master.models import Semester
+
+                current_sem = Semester.objects.filter(is_current=True).first()
+                if current_sem:
+                    summary_data["semester"] = current_sem.name
+        except Exception as exc:
+            logger.debug("Failed to resolve year/term names for summary: %s", exc)
+
+        return summary_data
 
     @classmethod
     def list_subject_grades(
@@ -775,6 +818,32 @@ class GradebookService:
         Retrieves list of subject grade records with dynamic search, filter, and sorting.
         """
         results = [dict(item) for item in _SEEDED_SUBJECT_GRADES]
+
+        # Dynamically map actual subject codes from database core.subjects if available
+        try:
+            from apps.master.models import Subject
+
+            db_subjects = list(Subject.objects.all())
+            if db_subjects:
+                for r in results:
+                    r_name = r.get("name", "").lower()
+                    for s in db_subjects:
+                        s_name = s.name.lower()
+                        norm_r = (
+                            r_name.replace("học", "").replace("lý", "lí").replace("11", "").strip()
+                        )
+                        norm_s = s_name.replace("học", "").replace("lý", "lí").strip()
+                        if (
+                            norm_s == norm_r
+                            or norm_s in norm_r
+                            or norm_r in norm_s
+                            or (s.short_name and s.short_name.lower() in norm_r)
+                        ):
+                            if s.code:
+                                r["code"] = s.code
+                            break
+        except Exception as exc:
+            logger.debug("DB Subject code resolution fallback: %s", exc)
 
         # 0. Semester & Academic Year Filter
         # If semester is specified (e.g. Semester 2 / HK2, or unmatched UUID), return empty if no grades recorded

@@ -75,6 +75,7 @@ import {
   Circle,
   PrinterCheck,
   Dot,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const iconMap = {
@@ -177,4 +178,5 @@ export const iconMap = {
   circle: Circle,
   print: PrinterCheck,
   dot: Dot,
+  dashboard: LayoutDashboard,
 } as const;

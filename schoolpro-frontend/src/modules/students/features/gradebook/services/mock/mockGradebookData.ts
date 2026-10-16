@@ -15,12 +15,15 @@ export const mockGradeSummary: GradeSummary = {
     "Học sinh Nguyễn Văn An chăm ngoan, lễ phép, có ý thức tự giác và kỷ luật học tập rất cao. Tiếp thu bài nhanh, tư duy logic sắc bén ở các môn khoa học tự nhiên và có tiến bộ vượt bậc ở môn Tiếng Anh. Tích cực tham gia các hoạt động tập thể của lớp 11A1.",
   titleAwarded: "Học sinh Giỏi Học kỳ 1 • Khối 11",
   attendanceRate: 98.8,
+  academicYear: "Năm học 2025 - 2026",
+  semester: "Học kỳ 1",
+  className: "Lớp 11A1",
 };
 
 export const mockSubjectGrades: SubjectGradeItem[] = [
   {
     id: "grade-math",
-    code: "MATH11",
+    code: "605392632441",
     name: "Toán học 11",
     teacher: "ThS. Hoàng Văn Nam",
     teacherTitle: "Tổ trưởng Chuyên môn Toán - Giáo viên chủ nhiệm",
@@ -55,7 +58,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-phys",
-    code: "PHYS11",
+    code: "264254317526",
     name: "Vật lý 11",
     teacher: "Thầy Trần Quốc Tuấn",
     teacherTitle: "Tổ phó Bộ môn Vật lý",
@@ -88,7 +91,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-chem",
-    code: "CHEM11",
+    code: "480527818687",
     name: "Hóa học 11",
     teacher: "Cô Phạm Quỳnh Nga",
     teacherTitle: "Giáo viên Giỏi cấp Tỉnh",
@@ -121,7 +124,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-bio",
-    code: "BIO11",
+    code: "300420943355",
     name: "Sinh học 11",
     teacher: "Thầy Lê Hoàng Đức",
     teacherTitle: "Giáo viên Bộ môn Sinh học",
@@ -154,7 +157,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-inf",
-    code: "INF11",
+    code: "733282721675",
     name: "Tin học 11",
     teacher: "ThS. Đỗ Minh Triết",
     teacherTitle: "Trưởng phòng CNTT Nhà trường",
@@ -187,7 +190,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-lit",
-    code: "LIT11",
+    code: "574994945429",
     name: "Ngữ văn 11",
     teacher: "Cô Nguyễn Thị Mai Hoa",
     teacherTitle: "Tổ trưởng Chuyên môn Ngữ văn",
@@ -220,7 +223,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-hist",
-    code: "HIST11",
+    code: "884239834707",
     name: "Lịch sử 11",
     teacher: "ThS. Vũ Tiến Đạt",
     teacherTitle: "Giáo viên Bộ môn Lịch sử",
@@ -253,7 +256,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-geo",
-    code: "GEO11",
+    code: "303681574939",
     name: "Địa lý 11",
     teacher: "Cô Bùi Thu Trang",
     teacherTitle: "Giáo viên Giỏi cấp Thành phố",
@@ -286,7 +289,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-eng",
-    code: "ENG11",
+    code: "528246878668",
     name: "Tiếng Anh 11",
     teacher: "Cô Trần Diệu Linh",
     teacherTitle: "Tổ phó Ngoại ngữ - IELTS 8.5",
@@ -319,7 +322,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-law",
-    code: "LAW11",
+    code: "695611866823",
     name: "GDKT & Pháp luật 11",
     teacher: "Thầy Phan Đình Trọng",
     teacherTitle: "Thạc sĩ Luật học",
@@ -352,7 +355,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-tech",
-    code: "TECH11",
+    code: "270285753024",
     name: "Công nghệ 11",
     teacher: "Thầy Nguyễn Hữu Trí",
     teacherTitle: "Kỹ sư Cơ khí Chế tạo",
@@ -384,7 +387,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-pe",
-    code: "PE11",
+    code: "269627163754",
     name: "Giáo dục Thể chất 11",
     teacher: "Thầy Đặng Hữu Thắng",
     teacherTitle: "Huấn luyện viên Điền kinh Quốc gia",
@@ -414,7 +417,7 @@ export const mockSubjectGrades: SubjectGradeItem[] = [
   },
   {
     id: "grade-exp",
-    code: "EXP11",
+    code: "109330543103",
     name: "Hoạt động Trải nghiệm, Hướng nghiệp",
     teacher: "ThS. Hoàng Văn Nam",
     teacherTitle: "Chủ nhiệm Lớp 11A1",

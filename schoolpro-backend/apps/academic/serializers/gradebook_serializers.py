@@ -60,6 +60,9 @@ class GradeSummarySerializer(serializers.Serializer):
     homeroomComment = serializers.CharField()
     titleAwarded = serializers.CharField()
     attendanceRate = serializers.FloatField(default=100.0)
+    academicYear = serializers.CharField(required=False, allow_null=True)
+    semester = serializers.CharField(required=False, allow_null=True)
+    className = serializers.CharField(required=False, allow_null=True)
 
 
 class GradebookTranscriptSubjectSerializer(serializers.Serializer):

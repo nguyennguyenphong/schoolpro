@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import type { SubjectGradeItem, GradeSummary } from "@/modules/students/features/gradebook/types";
+import { useAuthStore } from "@/shared/store/useAuthStore";
 
 interface GradeTableViewProps {
   grades: SubjectGradeItem[];
@@ -13,6 +14,15 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
   grades,
   summary,
 }) => {
+  const academicContext = useAuthStore((state) => state.academicContext);
+  const profileContext = useAuthStore((state) => state.profileContext);
+
+  const displayAcademicYear =
+    summary?.academicYear || academicContext?.academic_year || "Năm học 2025 - 2026";
+  const displaySemester =
+    summary?.semester || academicContext?.semester || "Học kỳ 1";
+  const displayHomeroomTeacher =
+    summary?.homeroomTeacher || profileContext?.homeroom_teacher_name || "Thầy Nguyễn Văn Nam";
   const formatScore = (score?: number): string => {
     if (score === undefined || score === null) return "--";
     return score.toFixed(1);
@@ -42,7 +52,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
     {
       title: "Môn học",
       key: "name",
-      width: 190,
+      width: 200,
       fixed: "left",
       render: (_value, record) => (
         <div>
@@ -54,7 +64,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
     {
       title: "Giáo viên bộ môn",
       key: "teacher",
-      width: 170,
+      width: 200,
       render: (_value, record) => (
         <div>
           <div className="font-medium text-slate-800">{record.teacher}</div>
@@ -225,10 +235,10 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
                 <Table.Summary.Cell index={0} colSpan={3}>
                   <div className="py-1 text-slate-800">
                     <div>
-                      {summary.academicYear} • {summary.semester}
+                      {displayAcademicYear} / {displaySemester}
                     </div>
                     <div className="text-xs font-normal text-slate-500 mt-0.5">
-                      Giáo viên chủ nhiệm: <strong>{summary.homeroomTeacher}</strong>
+                      Giáo viên chủ nhiệm: <strong>{displayHomeroomTeacher}</strong>
                     </div>
                   </div>
                 </Table.Summary.Cell>

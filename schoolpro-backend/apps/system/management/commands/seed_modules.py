@@ -230,6 +230,18 @@ class Command(BaseCommand):
                 "default_badge": "Khảo sát",
                 "order": 18,
             },
+            {
+                "name": "Thống kê học tập",
+                "short_name": "Thống kê",
+                "description": "Thống kê phổ điểm của bạn ở các môn học/Tổng quan thành tích học tập của bạn so với cả lớp",
+                "icon": "dashboard",
+                "route": "/student/dashboard",
+                "module_type": "CARD",
+                "category": "ACADEMIC",
+                "default_color": "#9C5732",
+                "default_badge": "Thống kê",
+                "order": 19,
+            },
             # =================================================================
             # 2. NHÓM GIÁO VIÊN & GIẢNG DẠY (Teacher & Homeroom)
             # =================================================================
