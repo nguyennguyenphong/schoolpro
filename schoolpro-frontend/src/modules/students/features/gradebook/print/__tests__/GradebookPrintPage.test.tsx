@@ -1,7 +1,7 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
-import { GradebookPrintPage } from "../GradebookPrintPage";
+import { GradebookPrintPage } from "@/modules/students/features/gradebook/print/GradebookPrintPage";
 
 describe("GradebookPrintPage Component", () => {
   beforeEach(() => {
@@ -32,16 +32,16 @@ describe("GradebookPrintPage Component", () => {
     const printNowButton = screen.getByRole("button", { name: /In ngay|Print Now/i });
     expect(printNowButton).toBeInTheDocument();
 
-    // Verify absence of old extraction text and presence of left/right footer
+    // Verify absence of old extraction text and footer authentication/date
     expect(
       screen.queryByText(/Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro/i)
     ).not.toBeInTheDocument();
     expect(
-      screen.getByText(/Mã chứng thực|Authentication Code|Auth Code/i)
-    ).toBeInTheDocument();
+      screen.queryByText(/Mã chứng thực|Authentication Code|Auth Code/i)
+    ).not.toBeInTheDocument();
     expect(
-      screen.getByText(/Ngày tạo|Created Date/i)
-    ).toBeInTheDocument();
+      screen.queryByText(/Ngày tạo|Created Date/i)
+    ).not.toBeInTheDocument();
 
     // Mock window.print
     const printSpy = vi.spyOn(window, "print").mockImplementation(() => {});

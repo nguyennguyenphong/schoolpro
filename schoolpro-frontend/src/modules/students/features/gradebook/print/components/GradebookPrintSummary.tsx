@@ -21,7 +21,7 @@ export const GradebookPrintSummary: React.FC<GradebookPrintSummaryProps> = ({ su
       }}
     >
       <div className="font-bold uppercase text-[11.5pt] mb-1.5 tracking-wide">
-        TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ VÀ RÈN LUYỆN:
+        {t("card:gradebook.print.summaryTitle")}:
       </div>
 
       <table
@@ -70,7 +70,7 @@ export const GradebookPrintSummary: React.FC<GradebookPrintSummaryProps> = ({ su
                 {t("card:gradebook.print.homeroomComment")}:
               </div>
               <div className="italic pl-2 leading-relaxed text-[10.5pt]">
-                "{summary.homeroomComment || "Học sinh chăm ngoan, có ý thức kỷ luật tốt, tích cực trong học tập và tham gia các hoạt động tập thể."}"
+                "{summary.homeroomComment || t("card:gradebook.print.defaultHomeroomComment")}"
               </div>
             </td>
           </tr>

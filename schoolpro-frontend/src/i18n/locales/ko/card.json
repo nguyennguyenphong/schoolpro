@@ -1085,7 +1085,18 @@
       "printNow": "지금 인쇄",
       "auditFooter": "SchoolPro 학무 관리 시스템에서 추출 • 인증 코드: {{signature}} • 생성 일시: {{time}}",
       "authCodeLabel": "인증 코드",
-      "createdDateLabel": "생성 일시"
+      "createdDateLabel": "생성 일시",
+      "documentNo": "문서번호",
+      "salutationLabel": "수신",
+      "salutationRecipient": "학부모님 및 학생 {{name}} 귀하",
+      "cohort": "기수/과정",
+      "tableTitle": "교과별 평가 및 성적 결과표",
+      "summaryTitle": "학업 및 생활 태도 종합 평가",
+      "signatureParent": "학부모 의견",
+      "sealPlaceholder": "[학교 직인]",
+      "defaultHomeroomComment": "품행이 단정하고 준법정신이 투철하며, 학업에 성실하고 단체 활동에 적극적으로 참여함.",
+      "loading": "성적표 인쇄 미리보기를 준비하는 중...",
+      "errorTitle": "성적표 인쇄 미리보기를 표시할 수 없습니다"
     },
     "empty": {
       "noMatchingTitle": "일치하는 과목을 찾을 수 없습니다",

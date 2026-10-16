@@ -17,7 +17,11 @@ export const GradebookPrintHeader: React.FC<GradebookPrintHeaderProps> = ({ prof
       ? `Hà Nội, ngày ${now.format("DD")} tháng ${now.format("MM")} năm ${now.format("YYYY")}`
       : currentLang === "en"
       ? `Hanoi, ${now.format("MMMM DD, YYYY")}`
-      : `Hanoi, ${now.format("YYYY/MM/DD")}`;
+      : currentLang === "ja"
+      ? `ハノイ、${now.format("YYYY年MM月DD日")}`
+      : currentLang === "ko"
+      ? `하노이, ${now.format("YYYY년 MM월 DD일")}`
+      : `河内，${now.format("YYYY年MM月DD日")}`;
 
   return (
     <div
@@ -38,7 +42,7 @@ export const GradebookPrintHeader: React.FC<GradebookPrintHeaderProps> = ({ prof
               </div>
               <div className="w-28 h-[1px] bg-black mx-auto mt-1" />
               <div className="text-[10.5pt] text-black mt-1 font-normal">
-                Số: {profile.studentCode ? `${profile.studentCode}/PĐ-THPT` : "......./PĐ-THPT"}
+                {t("card:gradebook.print.documentNo")}: {profile.studentCode ? `${profile.studentCode}/PĐ-THPT` : "......./PĐ-THPT"}
               </div>
             </td>
 

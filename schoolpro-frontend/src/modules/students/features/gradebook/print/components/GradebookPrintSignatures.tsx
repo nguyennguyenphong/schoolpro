@@ -11,8 +11,6 @@ interface GradebookPrintSignaturesProps {
 
 export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> = ({
   profile,
-  digitalSignature,
-  verifiedAt,
 }) => {
   const { t, i18n } = useTranslation(["card"]);
   const now = dayjs();
@@ -23,10 +21,11 @@ export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> =
       ? `Ngày ${now.format("DD")} tháng ${now.format("MM")} năm ${now.format("YYYY")}`
       : currentLang === "en"
       ? `${now.format("MMMM DD, YYYY")}`
-      : `${now.format("YYYY/MM/DD")}`;
-
-  const signatureCode = digitalSignature;
-  const nowStr = verifiedAt || dayjs().format("DD/MM/YYYY HH:mm");
+      : currentLang === "ja"
+      ? `${now.format("YYYY年MM月DD日")}`
+      : currentLang === "ko"
+      ? `${now.format("YYYY년 MM월 DD일")}`
+      : `${now.format("YYYY年MM月DD日")}`;
 
   return (
     <div
@@ -56,14 +55,14 @@ export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> =
 
             <td className="w-1/3 align-top p-1">
               <div className="font-bold uppercase text-[11.5pt] leading-tight">
-                Ý KIẾN CỦA PHỤ HUYNH
+                {t("card:gradebook.print.signatureParent")}
               </div>
               <div className="text-[10pt] italic text-slate-700 print:text-black mt-0.5">
                 {t("card:gradebook.print.signNote")}
               </div>
               <div className="h-14" />
               <div className="text-[10pt] text-slate-400 print:text-transparent">
-                (Ký và ghi rõ họ tên)
+                {t("card:gradebook.print.signNote")}
               </div>
             </td>
 
@@ -95,7 +94,7 @@ export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> =
               </div>
               <div className="h-16 flex items-center justify-center">
                 <div className="border border-dashed border-slate-400 print:border-black rounded-xs px-3 py-1 text-[9.5pt] text-slate-500 print:text-black uppercase tracking-wider">
-                  [Đóng dấu nhà trường]
+                  {t("card:gradebook.print.sealPlaceholder")}
                 </div>
               </div>
               <div className="font-bold text-[11.5pt]">
@@ -105,22 +104,6 @@ export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> =
           </tr>
         </tbody>
       </table>
-
-      {/* Footer bar: Mã chứng thực tay trái, Ngày tạo tay phải */}
-      <div className="mt-6 pt-2 border-t border-black text-[9pt] text-slate-700 print:text-black flex justify-between items-center italic">
-        <div className="text-left">
-          {signatureCode ? (
-            <span>
-              {t("card:gradebook.print.authCodeLabel", { defaultValue: "Mã chứng thực" })}: {signatureCode}
-            </span>
-          ) : null}
-        </div>
-        <div className="text-right">
-          <span>
-            {t("card:gradebook.print.createdDateLabel", { defaultValue: "Ngày tạo" })}: {nowStr}
-          </span>
-        </div>
-      </div>
     </div>
   );
 };

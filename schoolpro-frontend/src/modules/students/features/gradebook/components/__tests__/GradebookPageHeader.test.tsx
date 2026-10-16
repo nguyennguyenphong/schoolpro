@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
-import { GradebookPageHeader } from "../GradebookPageHeader";
+import { GradebookPageHeader } from "@/modules/students/features/gradebook/components/GradebookPageHeader";
 
 describe("GradebookPageHeader Component", () => {
   it("renders only ONE action button for printing the gradebook", () => {

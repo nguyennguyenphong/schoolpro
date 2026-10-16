@@ -1085,7 +1085,18 @@
       "printNow": "In ngay",
       "auditFooter": "Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • Mã chứng thực: {{signature}} • Ngày tạo: {{time}}",
       "authCodeLabel": "Mã chứng thực",
-      "createdDateLabel": "Ngày tạo"
+      "createdDateLabel": "Ngày tạo",
+      "documentNo": "Số",
+      "salutationLabel": "Kính gửi",
+      "salutationRecipient": "Quý Cha Mẹ học sinh và em {{name}}",
+      "cohort": "Khóa học",
+      "tableTitle": "Bảng kết quả đánh giá các môn học",
+      "summaryTitle": "Tổng hợp kết quả đánh giá và rèn luyện",
+      "signatureParent": "Ý kiến của Phụ huynh",
+      "sealPlaceholder": "[Đóng dấu nhà trường]",
+      "defaultHomeroomComment": "Học sinh chăm ngoan, có ý thức kỷ luật tốt, tích cực trong học tập và tham gia các hoạt động tập thể.",
+      "loading": "Đang chuẩn bị mẫu phiếu in điểm...",
+      "errorTitle": "Không thể hiển thị phiếu in điểm"
     },
     "empty": {
       "noMatchingTitle": "Không tìm thấy môn học phù hợp",

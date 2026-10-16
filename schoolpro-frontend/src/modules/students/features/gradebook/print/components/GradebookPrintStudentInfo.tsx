@@ -16,7 +16,10 @@ export const GradebookPrintStudentInfo: React.FC<GradebookPrintStudentInfoProps>
     >
       {/* Salutation line like an official school report / application */}
       <div className="mb-1.5 italic">
-        Kính gửi: <span className="font-bold not-italic">Quý Cha Mẹ học sinh và em {profile.studentName}</span>
+        {t("card:gradebook.print.salutationLabel")}:{" "}
+        <span className="font-bold not-italic">
+          {t("card:gradebook.print.salutationRecipient", { name: profile.studentName })}
+        </span>
       </div>
 
       <table className="w-full border-collapse border-none">
@@ -37,7 +40,8 @@ export const GradebookPrintStudentInfo: React.FC<GradebookPrintStudentInfoProps>
               <strong>{profile.className}</strong>
             </td>
             <td className="py-0.5 pl-0">
-              Khóa học: <strong>2024 - 2027</strong>
+              {t("card:gradebook.print.cohort")}:{" "}
+              <strong>{profile.cohort || "2024 - 2027"}</strong>
             </td>
           </tr>
           <tr>

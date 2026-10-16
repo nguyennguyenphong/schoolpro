@@ -1,5 +1,5 @@
 import type React from "react";
-import { Alert } from "antd";
+import { Alert } from "@/components/ui/Alert";
 import { useTranslation } from "react-i18next";
 import {
   GradebookPageHeader,

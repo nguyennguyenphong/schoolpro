@@ -1085,7 +1085,18 @@
       "printNow": "立即打印",
       "auditFooter": "从SchoolPro教务管理系统提取 • 认证代码: {{signature}} • 生成时间: {{time}}",
       "authCodeLabel": "认证代码",
-      "createdDateLabel": "生成时间"
+      "createdDateLabel": "生成时间",
+      "documentNo": "文号",
+      "salutationLabel": "致",
+      "salutationRecipient": "尊敬的家长及学生 {{name}}",
+      "cohort": "学届",
+      "tableTitle": "各学科评价与成绩结果表",
+      "summaryTitle": "学业与日常表现综合评价",
+      "signatureParent": "家长意见",
+      "sealPlaceholder": "[学校印章]",
+      "defaultHomeroomComment": "品学兼优，纪律性强，学习勤奋刻苦，积极参加各项集体活动。",
+      "loading": "正在准备成绩单打印预览...",
+      "errorTitle": "无法显示成绩单打印预览"
     },
     "empty": {
       "noMatchingTitle": "未找到符合条件的科目",

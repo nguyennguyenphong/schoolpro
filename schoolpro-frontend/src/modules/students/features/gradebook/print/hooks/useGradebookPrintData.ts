@@ -17,6 +17,7 @@ export interface GradebookPrintStudentProfile {
   schoolName: string;
   principalName: string;
   homeroomTeacher: string;
+  cohort?: string;
 }
 
 export const useGradebookPrintData = () => {

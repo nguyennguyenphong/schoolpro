@@ -1085,7 +1085,18 @@
       "printNow": "今すぐ印刷",
       "auditFooter": "SchoolPro学務管理システムから抽出 • 認証コード: {{signature}} • 発行日時: {{time}}",
       "authCodeLabel": "認証コード",
-      "createdDateLabel": "発行日時"
+      "createdDateLabel": "発行日時",
+      "documentNo": "番号",
+      "salutationLabel": "宛先",
+      "salutationRecipient": "保護者の皆様ならびに生徒 {{name}} 様",
+      "cohort": "学年期",
+      "tableTitle": "各科目評価・成績一覧表",
+      "summaryTitle": "学習成績および生活態度の総合評価",
+      "signatureParent": "保護者所見",
+      "sealPlaceholder": "[学校印]",
+      "defaultHomeroomComment": "真面目で規律正しく、学習に熱心に取り組み、集団活動にも積極的に参加しています。",
+      "loading": "成績印刷プレビューを準備中...",
+      "errorTitle": "成績印刷プレビューを表示できません"
     },
     "empty": {
       "noMatchingTitle": "該当する科目が見つかりません",

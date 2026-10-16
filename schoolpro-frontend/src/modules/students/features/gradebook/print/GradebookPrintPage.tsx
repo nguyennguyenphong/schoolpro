@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Spin } from "@/components/ui/Spin";
-import { Alert } from "antd";
+import { Alert } from "@/components/ui/Alert";
 import {
   GradebookPrintActionBar,
   GradebookPrintHeader,
@@ -9,10 +10,11 @@ import {
   GradebookPrintTable,
   GradebookPrintSummary,
   GradebookPrintSignatures,
-} from "./components";
-import { useGradebookPrintData } from "./hooks";
+} from "@/modules/students/features/gradebook/print/components";
+import { useGradebookPrintData } from "@/modules/students/features/gradebook/print/hooks";
 
 export const GradebookPrintPage: React.FC = () => {
+  const { t } = useTranslation(["card"]);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const {
@@ -20,7 +22,6 @@ export const GradebookPrintPage: React.FC = () => {
     error,
     summary,
     grades,
-    transcriptData,
     studentProfile,
   } = useGradebookPrintData();
 
@@ -119,10 +120,10 @@ export const GradebookPrintPage: React.FC = () => {
       {/* Main Print Container mimicking A4 Paper Document */}
       <div className="flex-1 flex justify-center p-0 sm:p-6 print:p-0">
         {loading ? (
-          <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
+          <div className="flex flex-col items-center justify-center min-h-100 gap-3">
             <Spin size="large" />
             <span className="text-sm font-serif text-slate-700 font-medium">
-              Đang chuẩn bị mẫu phiếu in điểm...
+              {t("card:gradebook.print.loading")}
             </span>
           </div>
         ) : error ? (
@@ -130,7 +131,7 @@ export const GradebookPrintPage: React.FC = () => {
             <Alert
               type="error"
               showIcon
-              title="Không thể hiển thị phiếu in điểm"
+              title={t("card:gradebook.print.errorTitle")}
               description={error}
             />
           </div>
@@ -142,18 +143,14 @@ export const GradebookPrintPage: React.FC = () => {
             {/* 2. Official Student Salutation & Information (như 1 đơn) */}
             <GradebookPrintStudentInfo profile={studentProfile} />
 
-            {/* 3. ERP Standard Grades Table with Column Indexing (1)..(9) */}
+            {/* 3. ERP Standard Grades Table with Column Indexing (1)..(11) */}
             <GradebookPrintTable grades={grades} />
 
             {/* 4. Academic Evaluation & Homeroom Teacher Remarks */}
             <GradebookPrintSummary summary={summary} />
 
             {/* 5. Official Vietnamese 3-Party Signatures & Seal */}
-            <GradebookPrintSignatures
-              profile={studentProfile}
-              digitalSignature={transcriptData?.digitalSignature}
-              verifiedAt={transcriptData?.verifiedAt}
-            />
+            <GradebookPrintSignatures profile={studentProfile} />
           </div>
         )}
       </div>

@@ -1085,7 +1085,18 @@
       "printNow": "Print Now",
       "auditFooter": "Extracted from SchoolPro Academic System • Auth Code: {{signature}} • Generated: {{time}}",
       "authCodeLabel": "Authentication Code",
-      "createdDateLabel": "Created Date"
+      "createdDateLabel": "Created Date",
+      "documentNo": "No.",
+      "salutationLabel": "To",
+      "salutationRecipient": "Parents/Guardians and Student {{name}}",
+      "cohort": "Academic Cohort",
+      "tableTitle": "Subject Assessment and Evaluation Results",
+      "summaryTitle": "Summary of Academic and Conduct Evaluation",
+      "signatureParent": "Parent / Guardian Feedback",
+      "sealPlaceholder": "[School Official Seal]",
+      "defaultHomeroomComment": "Well-behaved student with good discipline, diligent in studies and active in community activities.",
+      "loading": "Preparing gradebook print preview...",
+      "errorTitle": "Unable to display gradebook print preview"
     },
     "empty": {
       "noMatchingTitle": "No Matching Subjects Found",

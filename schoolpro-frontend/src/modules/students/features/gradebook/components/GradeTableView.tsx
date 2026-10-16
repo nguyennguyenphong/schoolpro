@@ -1,6 +1,6 @@
 import React from "react";
-import { Table } from "antd";
-import type { TableColumnsType } from "antd";
+import { Table } from "@/components/ui/Table";
+import type { TableColumnsType } from "@/components/ui/Table";
 import { useTranslation } from "react-i18next";
 import type { SubjectGradeItem, GradeSummary } from "@/modules/students/features/gradebook/types";
 import { useAuthStore } from "@/shared/store/useAuthStore";

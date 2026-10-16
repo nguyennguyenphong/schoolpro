@@ -15,7 +15,7 @@ export const GradebookPrintTable: React.FC<GradebookPrintTableProps> = ({ grades
       style={{ fontFamily: '"Times New Roman", Times, "Liberation Serif", serif' }}
     >
       <div className="font-bold uppercase text-[11pt] mb-1.5 tracking-wide">
-        BẢNG KẾT QUẢ ĐÁNH GIÁ CÁC MÔN HỌC:
+        {t("card:gradebook.print.tableTitle")}:
       </div>
 
       <table
@@ -131,7 +131,18 @@ export const GradebookPrintTable: React.FC<GradebookPrintTableProps> = ({ grades
           </tr>
         </thead>
         <tbody>
-          {grades.map((item, idx) => {
+          {grades.length === 0 ? (
+            <tr>
+              <td
+                colSpan={11}
+                className="text-center py-4 italic text-slate-500 print:text-black"
+                style={{ border: "1px solid #000000" }}
+              >
+                {t("card:gradebook.empty.noDataTitle")}
+              </td>
+            </tr>
+          ) : (
+            grades.map((item, idx) => {
             const isFeedback = item.evaluationType === "feedback";
             const score1 =
               !isFeedback && item.regularScores && item.regularScores[0]
@@ -255,7 +266,7 @@ export const GradebookPrintTable: React.FC<GradebookPrintTableProps> = ({ grades
                 </td>
               </tr>
             );
-          })}
+          }))}
         </tbody>
       </table>
     </div>
