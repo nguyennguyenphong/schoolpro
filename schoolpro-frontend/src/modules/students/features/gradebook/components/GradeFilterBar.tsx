@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type {
   GradeFilter,
-  GradeViewMode,
   GradeClassification,
   GradeSummary,
 } from "@/modules/students/features/gradebook/types";

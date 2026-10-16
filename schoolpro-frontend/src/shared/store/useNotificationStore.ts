@@ -15,6 +15,7 @@ export const useNotificationStore = create<NotificationStoreState>((set) => ({
   isLoading: false,
 
   fetchUnreadCount: async () => {
+    if (useNotificationStore.getState().isLoading) return;
     try {
       set({ isLoading: true });
       const count = await announcementService.getUnreadCount();

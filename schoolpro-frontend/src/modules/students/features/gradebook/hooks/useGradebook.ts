@@ -142,13 +142,15 @@ export const useGradebook = () => {
     [setSearchParams, updateUrlParams],
   );
 
-  const setSearchQuery = (query: string) => updateFilter({ searchQuery: query });
-  const setAcademicYear = (year: string) => updateFilter({ academicYear: year });
-  const setSemester = (semester: string) => updateFilter({ semester });
-  const setClassification = (classification: GradeClassification) =>
-    updateFilter({ classification });
-  const setSortBy = (sortBy: GradeFilter["sortBy"]) => updateFilter({ sortBy });
-  const setViewMode = (viewMode: GradeViewMode) => updateFilter({ viewMode });
+  const setSearchQuery = useCallback((query: string) => updateFilter({ searchQuery: query }), [updateFilter]);
+  const setAcademicYear = useCallback((year: string) => updateFilter({ academicYear: year }), [updateFilter]);
+  const setSemester = useCallback((semester: string) => updateFilter({ semester }), [updateFilter]);
+  const setClassification = useCallback(
+    (classification: GradeClassification) => updateFilter({ classification }),
+    [updateFilter]
+  );
+  const setSortBy = useCallback((sortBy: GradeFilter["sortBy"]) => updateFilter({ sortBy }), [updateFilter]);
+  const setViewMode = useCallback((viewMode: GradeViewMode) => updateFilter({ viewMode }), [updateFilter]);
 
   const resetFilters = useCallback(() => {
     const reset: GradeFilter = {

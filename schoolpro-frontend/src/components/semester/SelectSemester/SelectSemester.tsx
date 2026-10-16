@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectSemesterProps,
@@ -97,16 +97,25 @@ export const SelectSemester = ({
     enabled: !customSemesters || customSemesters.length === 0,
   });
 
+  const hasAutoSelectedRef = useRef(false);
+
+  // Reset auto-select flag when academicYearId changes
+  useEffect(() => {
+    hasAutoSelectedRef.current = false;
+  }, [academicYearId]);
+
   // Automatically select the active semester if defaultToCurrent is enabled and value is unset
   useEffect(() => {
     if (
       defaultToCurrent &&
-      value === undefined &&
+      (value === undefined || value === "") &&
+      !hasAutoSelectedRef.current &&
       semesters.length > 0 &&
       onChange
     ) {
       const targetSem = currentSemester || semesters[0];
       if (targetSem) {
+        hasAutoSelectedRef.current = true;
         onChange(targetSem.id, {
           label: showCodePrefix
             ? `[${targetSem.code}] ${targetSem.name}`

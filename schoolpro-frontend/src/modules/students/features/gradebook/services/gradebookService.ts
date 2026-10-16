@@ -20,11 +20,9 @@ class GradebookService {
     try {
       const apiParams: Record<string, string | undefined> = {};
       if (params?.semester && params.semester !== "all") {
-        apiParams.semester = params.semester;
         apiParams.semester_id = params.semester;
       }
       if (params?.academicYear && params.academicYear !== "all") {
-        apiParams.academicYear = params.academicYear;
         apiParams.academic_year_id = params.academicYear;
       }
 
@@ -50,14 +48,11 @@ class GradebookService {
       const params: Record<string, string | number | undefined> = {};
       if (filter?.searchQuery?.trim()) {
         params.q = filter.searchQuery.trim();
-        params.search = filter.searchQuery.trim();
       }
       if (filter?.semester && filter.semester !== "all") {
-        params.semester = filter.semester;
         params.semester_id = filter.semester;
       }
       if (filter?.academicYear && filter.academicYear !== "all") {
-        params.academicYear = filter.academicYear;
         params.academic_year_id = filter.academicYear;
       }
       if (filter?.classification && filter.classification !== "all") {

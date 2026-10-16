@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectAcademicYearProps,
@@ -77,11 +77,20 @@ export const SelectAcademicYear = ({
     enabled: !customAcademicYears || customAcademicYears.length === 0,
   });
 
+  const hasAutoSelectedRef = useRef(false);
+
   // Automatically select the active academic year if defaultToCurrent is enabled and value is unset
   useEffect(() => {
-    if (defaultToCurrent && value === undefined && academicYears.length > 0 && onChange) {
+    if (
+      defaultToCurrent &&
+      (value === undefined || value === "") &&
+      !hasAutoSelectedRef.current &&
+      academicYears.length > 0 &&
+      onChange
+    ) {
       const targetYear = currentAcademicYear || academicYears[0];
       if (targetYear) {
+        hasAutoSelectedRef.current = true;
         onChange(targetYear.id, {
           label: showCodePrefix ? `[${targetYear.code}] ${targetYear.name}` : targetYear.name,
           value: targetYear.id,

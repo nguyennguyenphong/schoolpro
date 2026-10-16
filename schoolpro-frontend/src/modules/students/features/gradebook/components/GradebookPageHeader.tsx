@@ -5,17 +5,11 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 interface GradebookPageHeaderProps {
-  className?: string;
-  semesterText?: string;
-  studentCode?: string;
   onOpenTranscript: () => void;
   onExportPdf: () => void;
 }
 
 export const GradebookPageHeader: React.FC<GradebookPageHeaderProps> = ({
-  className = "Lớp 11A1",
-  semesterText = "Học kỳ 1 • 2025-2026",
-  studentCode = "SV202688",
   onOpenTranscript,
   onExportPdf,
 }) => {
@@ -52,15 +46,6 @@ export const GradebookPageHeader: React.FC<GradebookPageHeaderProps> = ({
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {t("navigation:pageTitle.gradebook")}
             </h1>
-            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-              {className}
-            </span>
-            <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
-              {semesterText}
-            </span>
-            <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
-              {t("card:gradebook.header.studentCode", { code: studentCode })}
-            </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             {t("navigation:pageSubtitle.gradebook")}
