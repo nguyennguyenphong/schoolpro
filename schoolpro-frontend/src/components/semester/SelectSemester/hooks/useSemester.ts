@@ -96,9 +96,14 @@ export const useSemester = (
     setIsError(false);
     setError(null);
 
+    const cleanAcademicYearId =
+      academicYearId && academicYearId !== "all" ? academicYearId : undefined;
+    const cleanSchoolId =
+      schoolId && schoolId !== "all" ? schoolId : undefined;
+
     const queryParams: SemesterQueryParams = {
-      academic_year_id: academicYearId,
-      school_id: schoolId,
+      academic_year_id: cleanAcademicYearId,
+      school_id: cleanSchoolId,
       is_current: filterCurrentOnly ? true : undefined,
       is_locked: excludeLocked ? false : undefined,
       search: search?.trim() || undefined,
@@ -142,9 +147,14 @@ export const useSemester = (
     let isSubscribed = true;
 
     const loadAsync = async () => {
+      const cleanAcademicYearId =
+        academicYearId && academicYearId !== "all" ? academicYearId : undefined;
+      const cleanSchoolId =
+        schoolId && schoolId !== "all" ? schoolId : undefined;
+
       const queryParams: SemesterQueryParams = {
-        academic_year_id: academicYearId,
-        school_id: schoolId,
+        academic_year_id: cleanAcademicYearId,
+        school_id: cleanSchoolId,
         is_current: filterCurrentOnly ? true : undefined,
         is_locked: excludeLocked ? false : undefined,
         search: search?.trim() || undefined,

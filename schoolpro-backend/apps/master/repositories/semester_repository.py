@@ -39,10 +39,25 @@ class SemesterRepository(BaseRepository[Semester]):
         qs = self.get_queryset()
 
         if school_id:
-            qs = qs.filter(academic_year__school_id=school_id)
+            s_str = str(school_id).strip()
+            if s_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(s_str)
+                    qs = qs.filter(academic_year__school_id=s_str)
+                except ValueError:
+                    qs = qs.filter(academic_year__school__code__iexact=s_str)
 
         if academic_year_id:
-            qs = qs.filter(academic_year_id=academic_year_id)
+            ay_str = str(academic_year_id).strip()
+            if ay_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(ay_str)
+                    qs = qs.filter(academic_year_id=ay_str)
+                except ValueError:
+                    qs = qs.filter(
+                        Q(academic_year__code__iexact=ay_str)
+                        | Q(academic_year__name__icontains=ay_str)
+                    )
 
         if order_no is not None:
             qs = qs.filter(order_no=order_no)
@@ -71,9 +86,24 @@ class SemesterRepository(BaseRepository[Semester]):
         """Retrieve the current active semester, optionally scoped to school and/or academic year."""
         qs = self.get_queryset().filter(is_current=True)
         if academic_year_id:
-            qs = qs.filter(academic_year_id=academic_year_id)
+            ay_str = str(academic_year_id).strip()
+            if ay_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(ay_str)
+                    qs = qs.filter(academic_year_id=ay_str)
+                except ValueError:
+                    qs = qs.filter(
+                        Q(academic_year__code__iexact=ay_str)
+                        | Q(academic_year__name__icontains=ay_str)
+                    )
         if school_id:
-            qs = qs.filter(academic_year__school_id=school_id)
+            s_str = str(school_id).strip()
+            if s_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(s_str)
+                    qs = qs.filter(academic_year__school_id=s_str)
+                except ValueError:
+                    qs = qs.filter(academic_year__school__code__iexact=s_str)
         return qs.first()
 
     def get_semester_detail(self, identifier: UUID | str) -> Semester | None:

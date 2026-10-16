@@ -142,6 +142,57 @@ export const SelectSemester = ({
     showCodePrefix,
   ]);
 
+  // When semesters list changes (e.g. academicYearId changed), verify if current value is still valid
+  useEffect(() => {
+    if (isLoading || semesters.length === 0) return;
+
+    const isAll =
+      value === allOptionValue ||
+      (typeof value === "string" && value.toLowerCase().trim() === "all");
+
+    // "all" is always valid if includeAllOption is true
+    if (isAll) return;
+
+    if (value !== undefined && value !== null && value !== "") {
+      const exists = findSemesterByValueOrCode(value, semesters);
+      if (!exists && onChange) {
+        // Value does not belong to the selected academic year, auto-select current or first semester
+        const targetSem = defaultToCurrent
+          ? currentSemester || semesters[0]
+          : null;
+        if (targetSem) {
+          onChange(targetSem.id, {
+            label: showCodePrefix
+              ? `[${targetSem.code}] ${targetSem.name}`
+              : targetSem.name,
+            value: targetSem.id,
+            key: targetSem.id,
+            title: targetSem.name,
+            semester: targetSem,
+          });
+        } else if (includeAllOption) {
+          onChange(allOptionValue, {
+            label: allOptionLabel,
+            value: allOptionValue,
+            key: allOptionValue,
+            title: allOptionLabel,
+          });
+        }
+      }
+    }
+  }, [
+    semesters,
+    isLoading,
+    value,
+    defaultToCurrent,
+    currentSemester,
+    includeAllOption,
+    allOptionValue,
+    allOptionLabel,
+    showCodePrefix,
+    onChange,
+  ]);
+
   // Resolve incoming value: if value is "all", semester code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
     if (

@@ -104,14 +104,22 @@ export const semesterApi = {
       return this.filterMockSemesters(params);
     }
 
+    const cleanParams: Record<string, unknown> = {
+      pageSize: params.pageSize || 100,
+      ...params,
+    };
+    if (cleanParams.academic_year_id === "all") {
+      delete cleanParams.academic_year_id;
+    }
+    if (cleanParams.school_id === "all") {
+      delete cleanParams.school_id;
+    }
+
     try {
       const response = await httpClient.get<
         SemesterApiResponse | { results: SemesterItem[] } | SemesterItem[]
       >("/master/semesters/", {
-        params: {
-          pageSize: params.pageSize || 100,
-          ...params,
-        },
+        params: cleanParams,
       });
 
       const raw = response.data;
@@ -258,13 +266,13 @@ export const semesterApi = {
   filterMockSemesters(params: SemesterQueryParams): SemesterItem[] {
     let result = [...MOCK_SEMESTERS];
 
-    if (params.academic_year_id) {
+    if (params.academic_year_id && params.academic_year_id !== "all") {
       result = result.filter(
         (sem) => sem.academic_year_id === params.academic_year_id,
       );
     }
 
-    if (params.school_id) {
+    if (params.school_id && params.school_id !== "all") {
       result = result.filter((sem) => sem.school_id === params.school_id);
     }
 

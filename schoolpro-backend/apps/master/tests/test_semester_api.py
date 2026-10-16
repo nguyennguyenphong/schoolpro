@@ -102,3 +102,38 @@ def test_semester_viewset_current():
         response = view(request)
         assert response.status_code == status.HTTP_404_NOT_FOUND
         assert response.data["success"] is False
+
+
+def test_semester_filter_all_sanitization():
+    """Verify that passing academic_year_id='all' does not trigger UUID error and strips filter."""
+    factory = APIRequestFactory()
+    request = factory.get("/api/v1/master/semesters/?academic_year_id=all")
+
+    view = SemesterViewSet.as_view({"get": "list"})
+
+    with patch("apps.master.views.semester_views.SemesterService") as mock_service_cls:
+        mock_instance = MagicMock()
+        mock_instance.list_semesters.return_value = []
+        mock_service_cls.return_value = mock_instance
+
+        response = view(request)
+        assert response.status_code == status.HTTP_200_OK
+        mock_instance.list_semesters.assert_called_with(
+            school_id=None,
+            academic_year_id=None,
+            order_no=None,
+            is_current=None,
+            is_locked=None,
+            search=None,
+        )
+
+    # Repository check with 'all'
+    repo = SemesterRepository()
+    mock_qs = MagicMock()
+    mock_qs.select_related.return_value = mock_qs
+    mock_qs.all.return_value = mock_qs
+    mock_qs.order_by.return_value = mock_qs
+    with patch.object(Semester.objects, "select_related", return_value=mock_qs):
+        repo.get_semesters_list(academic_year_id="all", school_id="all")
+        # Should not call filter(academic_year_id=...) when 'all'
+        assert not mock_qs.filter.called

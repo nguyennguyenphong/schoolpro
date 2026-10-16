@@ -831,12 +831,22 @@ class GradebookService:
                         "titleAwarded": record.honor_title or _SEEDED_SUMMARY["titleAwarded"],
                         "attendanceRate": 98.8,
                         "academicYear": (
-                            record.academic_year.name
-                            if record.academic_year
-                            else _SEEDED_SUMMARY["academicYear"]
+                            "Tất cả năm học"
+                            if academic_year == "all"
+                            else (
+                                record.academic_year.name
+                                if record.academic_year
+                                else _SEEDED_SUMMARY["academicYear"]
+                            )
                         ),
                         "semester": (
-                            record.semester.name if record.semester else _SEEDED_SUMMARY["semester"]
+                            "Tất cả học kỳ"
+                            if semester == "all"
+                            else (
+                                record.semester.name
+                                if record.semester
+                                else _SEEDED_SUMMARY["semester"]
+                            )
                         ),
                         "className": c_name,
                     }
@@ -871,9 +881,13 @@ class GradebookService:
                             empty_summary["homeroomTeacher"] = homeroom_teacher_name
                         if class_name:
                             empty_summary["className"] = class_name
-                        if sem_obj:
+                        if semester == "all":
+                            empty_summary["semester"] = "Tất cả học kỳ"
+                        elif sem_obj:
                             empty_summary["semester"] = sem_obj.name
-                        if academic_year and academic_year != "all":
+                        if academic_year == "all":
+                            empty_summary["academicYear"] = "Tất cả năm học"
+                        elif academic_year:
                             ay_obj = cls._resolve_academic_year(academic_year)
                             if ay_obj:
                                 empty_summary["academicYear"] = ay_obj.name
@@ -888,7 +902,9 @@ class GradebookService:
             summary_data["className"] = class_name
         # Dynamically reflect selected semester and academic year names if available
         try:
-            if academic_year and academic_year != "all":
+            if academic_year == "all":
+                summary_data["academicYear"] = "Tất cả năm học"
+            elif academic_year:
                 ay_obj = cls._resolve_academic_year(academic_year)
                 if ay_obj:
                     summary_data["academicYear"] = ay_obj.name
@@ -899,7 +915,9 @@ class GradebookService:
                 if current_ay:
                     summary_data["academicYear"] = current_ay.name
 
-            if semester and semester != "all":
+            if semester == "all":
+                summary_data["semester"] = "Tất cả học kỳ"
+            elif semester:
                 sem_obj = cls._resolve_semester(semester)
                 if sem_obj:
                     summary_data["semester"] = sem_obj.name
@@ -950,6 +968,8 @@ class GradebookService:
                             Q(semester__code__iexact=semester)
                             | Q(semester__name__icontains=semester)
                         )
+                elif semester == "all":
+                    pass
                 else:
                     from apps.master.models import Semester
 

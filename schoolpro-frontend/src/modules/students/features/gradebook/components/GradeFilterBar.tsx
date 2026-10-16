@@ -18,7 +18,7 @@ interface GradeFilterBarProps {
   hasActiveFilters?: boolean;
   onSearchChange: (value: string) => void;
   onAcademicYearChange: (value: string) => void;
-  onSemesterChange: (value: string) => void;
+  onSemesterChange: (value: string, option?: unknown) => void;
   onClassificationChange: (value: GradeClassification) => void;
   onSortByChange: (value: GradeFilter["sortBy"]) => void;
   onResetFilters: () => void;

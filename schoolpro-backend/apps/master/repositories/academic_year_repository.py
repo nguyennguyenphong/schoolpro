@@ -34,7 +34,13 @@ class AcademicYearRepository(BaseRepository[AcademicYear]):
         qs = self.get_queryset()
 
         if school_id:
-            qs = qs.filter(school_id=school_id)
+            s_str = str(school_id).strip()
+            if s_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(s_str)
+                    qs = qs.filter(school_id=s_str)
+                except ValueError:
+                    qs = qs.filter(school__code__iexact=s_str)
 
         if is_current is not None:
             qs = qs.filter(is_current=is_current)
@@ -52,7 +58,13 @@ class AcademicYearRepository(BaseRepository[AcademicYear]):
         """Retrieve the current active academic year, optionally scoped to school_id."""
         qs = self.get_queryset().filter(is_current=True)
         if school_id:
-            qs = qs.filter(school_id=school_id)
+            s_str = str(school_id).strip()
+            if s_str.lower() not in ("all", "none", "null", "undefined", ""):
+                try:
+                    UUID(s_str)
+                    qs = qs.filter(school_id=s_str)
+                except ValueError:
+                    qs = qs.filter(school__code__iexact=s_str)
         return qs.first()
 
     def get_academic_year_detail(self, identifier: UUID | str) -> AcademicYear | None:

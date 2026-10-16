@@ -79,25 +79,27 @@ export const GradebookPage: React.FC = () => {
       {/* 4. Grade Content: Skeleton, Empty State, or Grid / Table view with loading transition */}
       {loading && grades.length === 0 ? (
         <GradeSkeleton viewMode={filter.viewMode} />
-      ) : grades.length === 0 ? (
-        <GradeEmptyState
-          hasActiveFilters={hasActiveFilters}
-          onResetFilters={resetFilters}
-        />
       ) : filter.viewMode === "grid" ? (
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200 ${
-            loading ? "opacity-60 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          {grades.map((item) => (
-            <GradeGridCard
-              key={item.id}
-              item={item}
-              onOpenDetail={openSubjectDetail}
-            />
-          ))}
-        </div>
+        grades.length === 0 ? (
+          <GradeEmptyState
+            hasActiveFilters={hasActiveFilters}
+            onResetFilters={resetFilters}
+          />
+        ) : (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200 ${
+              loading ? "opacity-60 pointer-events-none" : "opacity-100"
+            }`}
+          >
+            {grades.map((item) => (
+              <GradeGridCard
+                key={item.id}
+                item={item}
+                onOpenDetail={openSubjectDetail}
+              />
+            ))}
+          </div>
+        )
       ) : (
         <div
           className={`transition-opacity duration-200 ${

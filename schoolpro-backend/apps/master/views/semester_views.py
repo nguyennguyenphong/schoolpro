@@ -73,6 +73,13 @@ class SemesterViewSet(viewsets.GenericViewSet):
         service = SemesterService()
         school_id = self._get_effective_school_id(request)
         academic_year_id = request.query_params.get("academic_year_id")
+        if academic_year_id and str(academic_year_id).strip().lower() in (
+            "all",
+            "null",
+            "undefined",
+            "none",
+        ):
+            academic_year_id = None
         order_no_raw = request.query_params.get("order_no")
         order_no = int(order_no_raw) if (order_no_raw and order_no_raw.isdigit()) else None
         is_current = _parse_bool_param(request.query_params.get("is_current"))
@@ -108,6 +115,13 @@ class SemesterViewSet(viewsets.GenericViewSet):
         service = SemesterService()
         school_id = self._get_effective_school_id(request)
         academic_year_id = request.query_params.get("academic_year_id")
+        if academic_year_id and str(academic_year_id).strip().lower() in (
+            "all",
+            "null",
+            "undefined",
+            "none",
+        ):
+            academic_year_id = None
 
         obj = service.get_current_semester(
             school_id=school_id,

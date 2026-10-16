@@ -147,8 +147,36 @@ export const useGradebook = () => {
   );
 
   const setSearchQuery = useCallback((query: string) => updateFilter({ searchQuery: query }), [updateFilter]);
-  const setAcademicYear = useCallback((year: string) => updateFilter({ academicYear: year }), [updateFilter]);
-  const setSemester = useCallback((semester: string) => updateFilter({ semester }), [updateFilter]);
+
+  const setAcademicYear = useCallback(
+    (year: string) => {
+      if (year === "all") {
+        updateFilter({ academicYear: "all", semester: "all" });
+      } else {
+        updateFilter({
+          academicYear: year,
+          semester: filter.semester === "all" ? "all" : "",
+        });
+      }
+    },
+    [filter.semester, updateFilter],
+  );
+
+  const setSemester = useCallback(
+    (semester: string, option?: unknown) => {
+      const semObj = (option as { semester?: { academic_year_id?: string } })?.semester;
+      if (semester !== "all" && semObj?.academic_year_id && filter.academicYear === "all") {
+        updateFilter({
+          semester,
+          academicYear: semObj.academic_year_id,
+        });
+      } else {
+        updateFilter({ semester });
+      }
+    },
+    [filter.academicYear, updateFilter],
+  );
+
   const setClassification = useCallback(
     (classification: GradeClassification) => updateFilter({ classification }),
     [updateFilter]
@@ -156,46 +184,70 @@ export const useGradebook = () => {
   const setSortBy = useCallback((sortBy: GradeFilter["sortBy"]) => updateFilter({ sortBy }), [updateFilter]);
   const setViewMode = useCallback((viewMode: GradeViewMode) => updateFilter({ viewMode }), [updateFilter]);
 
-  // Keep track of default active academic year and semester
-  const initialAcademicYearRef = useRef<string | null>(null);
-  const initialSemesterRef = useRef<string | null>(null);
+  // Keep track of default baseline active academic year and semester
+  const defaultYearRef = useRef<string>("");
+  const defaultSemesterRef = useRef<string>("");
 
   useEffect(() => {
-    if (!initialAcademicYearRef.current && filter.academicYear) {
-      initialAcademicYearRef.current = filter.academicYear;
+    if (!defaultYearRef.current) {
+      if (academicContext?.academic_year_id) {
+        defaultYearRef.current = academicContext.academic_year_id;
+      } else if (filter.academicYear && filter.academicYear !== "all") {
+        defaultYearRef.current = filter.academicYear;
+      }
     }
-  }, [filter.academicYear]);
+  }, [academicContext?.academic_year_id, filter.academicYear]);
 
   useEffect(() => {
-    if (!initialSemesterRef.current && filter.semester) {
-      initialSemesterRef.current = filter.semester;
+    if (!defaultSemesterRef.current) {
+      if (academicContext?.semester_id) {
+        defaultSemesterRef.current = academicContext.semester_id;
+      } else if (filter.semester && filter.semester !== "all") {
+        defaultSemesterRef.current = filter.semester;
+      }
     }
-  }, [filter.semester]);
+  }, [academicContext?.semester_id, filter.semester]);
 
-  const defaultYear = academicContext?.academic_year_id || initialAcademicYearRef.current || "";
-  const defaultSemester = academicContext?.semester_id || initialSemesterRef.current || "";
+  const hasActiveFilters = useMemo(() => {
+    const isSearchActive = Boolean(filter.searchQuery.trim());
+    const isClassificationActive = filter.classification !== "all";
+    const isSortActive = filter.sortBy !== "gpa_desc";
 
-  const isYearFiltered = Boolean(
-    filter.academicYear &&
-      (defaultYear ? filter.academicYear !== defaultYear : filter.academicYear !== "all"),
-  );
+    const baseYear = defaultYearRef.current || academicContext?.academic_year_id;
+    const baseSemester = defaultSemesterRef.current || academicContext?.semester_id;
 
-  const isSemesterFiltered = Boolean(
-    filter.semester &&
-      (defaultSemester ? filter.semester !== defaultSemester : filter.semester !== "all"),
-  );
+    const isYearActive = Boolean(
+      baseYear
+        ? filter.academicYear && filter.academicYear !== baseYear
+        : filter.academicYear && filter.academicYear !== "all",
+    );
 
-  const hasActiveFilters = Boolean(
-    filter.searchQuery.trim() ||
-      filter.classification !== "all" ||
-      filter.sortBy !== "gpa_desc" ||
-      isYearFiltered ||
-      isSemesterFiltered,
-  );
+    const isSemesterActive = Boolean(
+      baseSemester
+        ? filter.semester && filter.semester !== baseSemester
+        : filter.semester && filter.semester !== "all",
+    );
+
+    return (
+      isSearchActive ||
+      isClassificationActive ||
+      isSortActive ||
+      isYearActive ||
+      isSemesterActive
+    );
+  }, [
+    filter.searchQuery,
+    filter.classification,
+    filter.sortBy,
+    filter.academicYear,
+    filter.semester,
+    academicContext?.academic_year_id,
+    academicContext?.semester_id,
+  ]);
 
   const resetFilters = useCallback(() => {
-    const targetYear = academicContext?.academic_year_id || initialAcademicYearRef.current || "";
-    const targetSemester = academicContext?.semester_id || initialSemesterRef.current || "";
+    const targetYear = defaultYearRef.current || academicContext?.academic_year_id || "";
+    const targetSemester = defaultSemesterRef.current || academicContext?.semester_id || "";
 
     const reset: GradeFilter = {
       searchQuery: "",
@@ -206,10 +258,7 @@ export const useGradebook = () => {
       viewMode: "table",
     };
     setFilter(reset);
-    const params = new URLSearchParams();
-    if (targetYear) params.set("academicYear", targetYear);
-    if (targetSemester) params.set("semester", targetSemester);
-    setSearchParams(params, { replace: true });
+    setSearchParams(new URLSearchParams(), { replace: true });
   }, [academicContext, setSearchParams]);
 
   // Modal actions
