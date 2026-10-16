@@ -51,7 +51,7 @@ export const GradeSkeleton: React.FC<GradeSkeletonProps> = ({ viewMode = "table"
         {[1, 2, 3, 4, 5, 6, 7].map((j) => (
           <div key={j} className="h-14 flex items-center px-4 gap-4">
             <div className="h-4 w-6 bg-slate-100 rounded" />
-            <div className="space-y-1.5 flex-1 max-w-[200px]">
+            <div className="space-y-1.5 flex-1 max-w-50">
               <div className="h-4 w-32 bg-slate-200 rounded" />
               <div className="h-3 w-20 bg-slate-100 rounded" />
             </div>

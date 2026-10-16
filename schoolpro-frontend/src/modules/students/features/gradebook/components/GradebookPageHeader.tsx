@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 interface GradebookPageHeaderProps {
-  className?: string;
-  semesterText?: string;
-  studentCode?: string;
   onOpenTranscript: () => void;
   onExportPdf: () => void;
 }
