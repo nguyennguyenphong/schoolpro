@@ -6,6 +6,7 @@ interface BannerAcademicBadgesProps {
   currentSemester?: string;
   academicYear?: string;
   classNameDisplay?: string;
+  studentCode?: string;
 }
 
 /**
@@ -16,6 +17,7 @@ export const BannerAcademicBadges: React.FC<BannerAcademicBadgesProps> = ({
   currentSemester,
   academicYear,
   classNameDisplay,
+  studentCode,
 }) => {
   const { t } = useTranslation(["navigation"]);
 
@@ -32,6 +34,9 @@ export const BannerAcademicBadges: React.FC<BannerAcademicBadgesProps> = ({
           {classNameDisplay}
         </span>
       )}
+      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/15 text-white backdrop-blur-md border border-white/25">
+        {t("navigation:studentCode", { code: studentCode })}
+      </span>
     </div>
   );
 };

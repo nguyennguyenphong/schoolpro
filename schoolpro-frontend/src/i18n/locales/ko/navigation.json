@@ -50,6 +50,7 @@
   "welcome": "안녕하세요, {{name}}님! 활기찬 하루 되세요.",
   "welcomeUser": "안녕하세요, {{name}}님!",
   "workspace": "워크스페이스",
+  "studentCode": "학번: {{code}}",
   "currentSemester": "1학기",
   "academicYear": "2026 - 2027 학년도",
   "currentWeek": "{{week}}주차",

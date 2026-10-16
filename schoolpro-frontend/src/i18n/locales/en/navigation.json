@@ -53,6 +53,7 @@
   "currentSemester": "Semester 1",
   "academicYear": "Academic Year 2026 - 2027",
   "currentWeek": "Academic Week {{week}}",
+  "studentCode": "Code: {{code}}",
   "header": {
     "searchPlaceholder": "Search courses, lectures, materials...",
     "profile": "Profile",

@@ -50,6 +50,7 @@
   "welcome": "こんにちは、{{name}}さん！今日も充実した一日にしましょう。",
   "welcomeUser": "こんにちは、{{name}}さん！",
   "workspace": "ワークスペース",
+  "studentCode": "学籍番号: {{code}}",
   "currentSemester": "第1学期",
   "academicYear": "2026 - 2027年度",
   "currentWeek": "第{{week}}週",

@@ -50,6 +50,7 @@
   "welcome": "你好，{{name}}！祝你学习愉快，收获满满。",
   "welcomeUser": "你好，{{name}}！",
   "workspace": "工作空间",
+  "studentCode": "学号: {{code}}",
   "currentSemester": "第1学期",
   "academicYear": "2026 - 2027学年",
   "currentWeek": "第 {{week}} 周",

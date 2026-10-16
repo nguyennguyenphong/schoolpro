@@ -49,6 +49,7 @@
   },
   "welcome": "Xin chào, {{name}}! Chúc bạn một ngày học tập hiệu quả.",
   "welcomeUser": "Xin chào, {{name}}!",
+  "studentCode": "Mã Học sinh: {{code}}",
   "workspace": "Không gian làm việc",
   "currentSemester": "Học kỳ 1",
   "academicYear": "Năm học 2026 - 2027",

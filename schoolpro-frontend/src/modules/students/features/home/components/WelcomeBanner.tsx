@@ -48,6 +48,7 @@ export const WelcomeBanner: React.FC<WelcomeBannerProps> = ({ profile }) => {
             currentSemester={profile?.currentSemester}
             academicYear={profile?.academicYear}
             classNameDisplay={classDisplayName}
+            studentCode={profile?.code}
           />
 
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-0">
