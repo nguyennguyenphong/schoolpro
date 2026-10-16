@@ -14,139 +14,176 @@ import {
 import { useAuthStore } from "@/shared/store/useAuthStore";
 
 class GradebookService {
+  private summaryInFlight = new Map<string, Promise<GradeSummary>>();
+  private gradesInFlight = new Map<string, Promise<{ items: SubjectGradeItem[]; total: number }>>();
+
   /**
    * Lấy tổng quan học lực, điểm trung bình (GPA) và danh hiệu
+   * Tự động deduplicate các request đồng thời với cùng tham số.
    */
   async getGradeSummary(params?: { semester?: string; academicYear?: string }): Promise<GradeSummary> {
-    try {
-      const apiParams: Record<string, string | undefined> = {};
-      if (params?.semester && params.semester !== "all") {
-        apiParams.semester_id = params.semester;
-      }
-      if (params?.academicYear && params.academicYear !== "all") {
-        apiParams.academic_year_id = params.academicYear;
-      }
-
-      const res = await httpClient.get<ApiResponse<GradeSummary>>("/academic/gradebook/summary/", {
-        params: apiParams,
-      });
-      if (res.data?.data) {
-        return res.data.data;
-      }
-    } catch {
-      // Graceful fallback to mock data
+    const key = `${params?.academicYear || "none"}_${params?.semester || "none"}`;
+    const pending = this.summaryInFlight.get(key);
+    if (pending) {
+      return pending;
     }
-    return mockGradeSummary;
+
+    const promise = (async () => {
+      try {
+        const apiParams: Record<string, string | undefined> = {};
+        if (params?.semester && params.semester !== "all") {
+          apiParams.semester_id = params.semester;
+        }
+        if (params?.academicYear && params.academicYear !== "all") {
+          apiParams.academic_year_id = params.academicYear;
+        }
+
+        const res = await httpClient.get<ApiResponse<GradeSummary>>("/academic/gradebook/summary/", {
+          params: apiParams,
+        });
+        if (res.data?.data) {
+          return res.data.data;
+        }
+      } catch {
+        // Graceful fallback to mock data
+      }
+      return mockGradeSummary;
+    })();
+
+    this.summaryInFlight.set(key, promise);
+    try {
+      return await promise;
+    } finally {
+      this.summaryInFlight.delete(key);
+    }
   }
 
   /**
    * Lấy danh sách bảng điểm chi tiết các môn học (hỗ trợ tìm kiếm, lọc xếp loại, sắp xếp)
+   * Tự động deduplicate các request đồng thời với cùng filter.
    */
   async getSubjectGrades(
     filter?: Partial<GradeFilter>
   ): Promise<{ items: SubjectGradeItem[]; total: number }> {
-    try {
-      const params: Record<string, string | number | undefined> = {};
-      if (filter?.searchQuery?.trim()) {
-        params.q = filter.searchQuery.trim();
-      }
-      if (filter?.semester && filter.semester !== "all") {
-        params.semester_id = filter.semester;
-      }
-      if (filter?.academicYear && filter.academicYear !== "all") {
-        params.academic_year_id = filter.academicYear;
-      }
-      if (filter?.classification && filter.classification !== "all") {
-        params.classification = filter.classification;
-      }
-      if (filter?.sortBy) {
-        params.sortBy = filter.sortBy;
-      }
-
-      const res = await httpClient.get<ApiResponse<{ items: SubjectGradeItem[]; total: number }>>(
-        "/academic/gradebook/",
-        { params }
-      );
-      if (res.data?.data?.items && Array.isArray(res.data.data.items)) {
-        return res.data.data;
-      }
-    } catch {
-      // Graceful fallback to mock data filter
+    const key = `${filter?.academicYear || "none"}_${filter?.semester || "none"}_${filter?.classification || "all"}_${filter?.sortBy || "gpa_desc"}_${filter?.searchQuery || ""}`;
+    const pending = this.gradesInFlight.get(key);
+    if (pending) {
+      return pending;
     }
 
-    // Mock calculation fallback
-    let result = [...mockSubjectGrades];
+    const promise = (async () => {
+      try {
+        const params: Record<string, string | number | undefined> = {};
+        if (filter?.searchQuery?.trim()) {
+          params.q = filter.searchQuery.trim();
+        }
+        if (filter?.semester && filter.semester !== "all") {
+          params.semester_id = filter.semester;
+        }
+        if (filter?.academicYear && filter.academicYear !== "all") {
+          params.academic_year_id = filter.academicYear;
+        }
+        if (filter?.classification && filter.classification !== "all") {
+          params.classification = filter.classification;
+        }
+        if (filter?.sortBy) {
+          params.sortBy = filter.sortBy;
+        }
 
-    // Filter by semester if specified (Term 2 has no recorded grades yet)
-    if (filter?.semester && filter.semester !== "all") {
-      const sem = filter.semester.toLowerCase().trim();
-      const isHk2 =
-        sem === "hk2" ||
-        sem === "2" ||
-        sem.includes("sem_20262027_2") ||
-        sem.endsWith("000000000002");
-      if (isHk2) {
-        result = [];
-      }
-    }
-
-    // Filter by academic year if specified
-    if (filter?.academicYear && filter.academicYear !== "all") {
-      const ay = filter.academicYear.toLowerCase().trim();
-      const isKnownYear =
-        ay.includes("2026") ||
-        ay.includes("2025") ||
-        ay.endsWith("000000002026") ||
-        ay.endsWith("000000002025");
-      if (!isKnownYear) {
-        result = [];
-      }
-    }
-    if (filter?.searchQuery && filter.searchQuery.trim()) {
-      const q = filter.searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (item) =>
-          item.name.toLowerCase().includes(q) ||
-          item.code.toLowerCase().includes(q) ||
-          item.teacher.toLowerCase().includes(q) ||
-          item.teacherComment.toLowerCase().includes(q)
-      );
-    }
-    if (filter?.classification && filter.classification !== "all") {
-      if (filter.classification === "feedback_only") {
-        result = result.filter((item) => item.evaluationType === "feedback");
-      } else if (filter.classification === "excellent") {
-        result = result.filter(
-          (item) => item.evaluationType === "score" && (item.averageScore || 0) >= 8.0
+        const res = await httpClient.get<ApiResponse<{ items: SubjectGradeItem[]; total: number }>>(
+          "/academic/gradebook/",
+          { params }
         );
-      } else if (filter.classification === "good") {
+        if (res.data?.data?.items && Array.isArray(res.data.data.items)) {
+          return res.data.data;
+        }
+      } catch {
+        // Graceful fallback to mock data filter
+      }
+
+      // Mock calculation fallback
+      let result = [...mockSubjectGrades];
+
+      if (filter?.semester && filter.semester !== "all") {
+        const sem = filter.semester.toLowerCase().trim();
+        const isHk2 =
+          sem === "hk2" ||
+          sem === "2" ||
+          sem.includes("sem_20262027_2") ||
+          sem.endsWith("000000000002");
+        if (isHk2) {
+          result = [];
+        }
+      }
+
+      if (filter?.academicYear && filter.academicYear !== "all") {
+        const ay = filter.academicYear.toLowerCase().trim();
+        const isKnownYear =
+          ay.includes("2026") ||
+          ay.includes("2025") ||
+          ay.endsWith("000000002026") ||
+          ay.endsWith("000000002025");
+        if (!isKnownYear) {
+          result = [];
+        }
+      }
+
+      if (filter?.searchQuery && filter.searchQuery.trim()) {
+        const q = filter.searchQuery.toLowerCase().trim();
         result = result.filter(
           (item) =>
-            item.evaluationType === "score" &&
-            (item.averageScore || 0) >= 6.5 &&
-            (item.averageScore || 0) < 8.0
-        );
-      } else if (filter.classification === "average") {
-        result = result.filter(
-          (item) => item.evaluationType === "score" && (item.averageScore || 0) < 6.5
+            item.name.toLowerCase().includes(q) ||
+            item.code.toLowerCase().includes(q) ||
+            item.teacher.toLowerCase().includes(q) ||
+            item.teacherComment.toLowerCase().includes(q)
         );
       }
-    }
-    if (filter?.sortBy) {
-      switch (filter.sortBy) {
-        case "gpa_desc":
-          result.sort((a, b) => (b.averageScore || 0) - (a.averageScore || 0));
-          break;
-        case "gpa_asc":
-          result.sort((a, b) => (a.averageScore || 0) - (b.averageScore || 0));
-          break;
-        case "name_asc":
-        default:
-          result.sort((a, b) => a.name.localeCompare(b.name, "vi"));
-          break;
+
+      if (filter?.classification && filter.classification !== "all") {
+        if (filter.classification === "feedback_only") {
+          result = result.filter((item) => item.evaluationType === "feedback");
+        } else if (filter.classification === "excellent") {
+          result = result.filter(
+            (item) => item.evaluationType === "score" && (item.averageScore || 0) >= 8.0
+          );
+        } else if (filter.classification === "good") {
+          result = result.filter(
+            (item) =>
+              item.evaluationType === "score" &&
+              (item.averageScore || 0) >= 6.5 &&
+              (item.averageScore || 0) < 8.0
+          );
+        } else if (filter.classification === "average") {
+          result = result.filter(
+            (item) => item.evaluationType === "score" && (item.averageScore || 0) < 6.5
+          );
+        }
       }
+
+      if (filter?.sortBy) {
+        switch (filter.sortBy) {
+          case "gpa_desc":
+            result.sort((a, b) => (b.averageScore || 0) - (a.averageScore || 0));
+            break;
+          case "gpa_asc":
+            result.sort((a, b) => (a.averageScore || 0) - (b.averageScore || 0));
+            break;
+          case "name_asc":
+          default:
+            result.sort((a, b) => a.name.localeCompare(b.name, "vi"));
+            break;
+        }
+      }
+
+      return { items: result, total: result.length };
+    })();
+
+    this.gradesInFlight.set(key, promise);
+    try {
+      return await promise;
+    } finally {
+      this.gradesInFlight.delete(key);
     }
-    return { items: result, total: result.length };
   }
 
   /**

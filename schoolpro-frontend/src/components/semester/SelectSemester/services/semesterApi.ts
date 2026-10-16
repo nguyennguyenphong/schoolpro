@@ -89,16 +89,21 @@ export const MOCK_SEMESTERS: SemesterItem[] = [
 
 const IS_MOCK_ENABLED = import.meta.env.VITE_ENABLE_MOCK === "true";
 
+const inFlightMap = new Map<string, Promise<SemesterItem[]>>();
+const cacheMap = new Map<string, { data: SemesterItem[]; timestamp: number }>();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
 /**
  * Service to communicate with Master Semester API endpoints.
  */
 export const semesterApi = {
   /**
    * Fetches semesters list from backend API with optional filters.
-   * Uses authenticated httpClient and falls back to MOCK_SEMESTERS on network failure.
+   * Uses in-flight deduplication and caching to prevent duplicate network calls.
    */
   async fetchSemesters(
     params: SemesterQueryParams = {},
+    forceRefresh = false,
   ): Promise<SemesterItem[]> {
     if (IS_MOCK_ENABLED) {
       return this.filterMockSemesters(params);
@@ -115,54 +120,72 @@ export const semesterApi = {
       delete cleanParams.school_id;
     }
 
-    try {
-      const response = await httpClient.get<
-        SemesterApiResponse | { results: SemesterItem[] } | SemesterItem[]
-      >("/master/semesters/", {
-        params: cleanParams,
-      });
+    const key = JSON.stringify(cleanParams);
+    const now = Date.now();
 
-      const raw = response.data;
-
-      // Handle standard envelope: { success: true, code: 200, data: [...] }
-      if (raw && typeof raw === "object" && "data" in raw) {
-        if (Array.isArray(raw.data)) {
-          return raw.data;
-        }
-        if (
-          raw.data &&
-          typeof raw.data === "object" &&
-          "results" in raw.data
-        ) {
-          return (raw.data as { results: SemesterItem[] }).results;
-        }
+    if (!forceRefresh) {
+      const cached = cacheMap.get(key);
+      if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+        return cached.data;
       }
-
-      // Handle direct pagination object: { count: 4, results: [...] }
-      if (
-        raw &&
-        typeof raw === "object" &&
-        "results" in raw &&
-        Array.isArray(raw.results)
-      ) {
-        return raw.results;
+      const pending = inFlightMap.get(key);
+      if (pending) {
+        return pending;
       }
-
-      // Handle raw array
-      if (Array.isArray(raw)) {
-        return raw;
-      }
-
-      return MOCK_SEMESTERS;
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.warn(
-          "[semesterApi] Could not connect to Master Semester API endpoint. Falling back to local mock data.",
-          error,
-        );
-      }
-      return this.filterMockSemesters(params);
     }
+
+    const promise = (async () => {
+      try {
+        const response = await httpClient.get<
+          SemesterApiResponse | { results: SemesterItem[] } | SemesterItem[]
+        >("/master/semesters/", {
+          params: cleanParams,
+        });
+
+        const raw = response.data;
+        let data: SemesterItem[] = MOCK_SEMESTERS;
+
+        // Handle standard envelope: { success: true, code: 200, data: [...] }
+        if (raw && typeof raw === "object" && "data" in raw) {
+          if (Array.isArray(raw.data)) {
+            data = raw.data;
+          } else if (
+            raw.data &&
+            typeof raw.data === "object" &&
+            "results" in raw.data
+          ) {
+            data = (raw.data as { results: SemesterItem[] }).results;
+          }
+        } else if (
+          raw &&
+          typeof raw === "object" &&
+          "results" in raw &&
+          Array.isArray(raw.results)
+        ) {
+          // Handle direct pagination object: { count: 4, results: [...] }
+          data = raw.results;
+        } else if (Array.isArray(raw)) {
+          // Handle raw array
+          data = raw;
+        }
+
+        cacheMap.set(key, { data, timestamp: Date.now() });
+        return data;
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn(
+            "[semesterApi] Could not connect to Master Semester API endpoint. Falling back to local mock data.",
+            error,
+          );
+        }
+        return this.filterMockSemesters(params);
+      } finally {
+        inFlightMap.delete(key);
+      }
+    })();
+
+    inFlightMap.set(key, promise);
+    return promise;
   },
 
   /**

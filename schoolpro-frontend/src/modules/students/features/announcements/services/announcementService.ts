@@ -104,18 +104,41 @@ class AnnouncementService {
     }
   }
 
+  private unreadCountCache: number | null = null;
+  private unreadCountTimestamp = 0;
+  private unreadInFlight: Promise<number> | null = null;
+
   /**
    * Fetch unread notifications count for header navigation badge.
+   * Deduplicates concurrent in-flight requests and caches result for 15 seconds.
    */
-  async getUnreadCount(): Promise<number> {
-    try {
-      const response = await httpClient.get<ApiResponse<{ unreadCount: number }>>(
-        "/notification/announcements/unread-count/"
-      );
-      return response.data?.data?.unreadCount ?? 0;
-    } catch {
-      return 0;
+  async getUnreadCount(forceRefresh = false): Promise<number> {
+    const now = Date.now();
+    if (!forceRefresh && this.unreadCountCache !== null && now - this.unreadCountTimestamp < 15000) {
+      return this.unreadCountCache;
     }
+
+    if (!forceRefresh && this.unreadInFlight) {
+      return this.unreadInFlight;
+    }
+
+    this.unreadInFlight = (async () => {
+      try {
+        const response = await httpClient.get<ApiResponse<{ unreadCount: number }>>(
+          "/notification/announcements/unread-count/"
+        );
+        const count = response.data?.data?.unreadCount ?? 0;
+        this.unreadCountCache = count;
+        this.unreadCountTimestamp = Date.now();
+        return count;
+      } catch {
+        return this.unreadCountCache ?? 0;
+      } finally {
+        this.unreadInFlight = null;
+      }
+    })();
+
+    return this.unreadInFlight;
   }
 
   /**

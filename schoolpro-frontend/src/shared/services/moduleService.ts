@@ -280,51 +280,86 @@ const FALLBACK_STUDENT_MODULES: UserModuleItem[] = [
 ];
 
 class ModuleService {
+  private cache: UserModuleItem[] | null = null;
+  private cacheTimestamp = 0;
+  private inFlightPromise: Promise<UserModuleItem[]> | null = null;
+  private readonly CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache
+
   /**
    * Fetches active user modules from backend API /system/modules/
+   * Deduplicates concurrent in-flight requests and caches result for CACHE_TTL_MS.
    */
-  async getUserModules(): Promise<UserModuleItem[]> {
-    try {
-      const response = await httpClient.get<ApiResponse<BackendModuleCard[]>>(
-        "/system/modules/"
-      );
-
-      const cards = response.data?.data;
-      if (!Array.isArray(cards) || cards.length === 0) {
-        return FALLBACK_STUDENT_MODULES;
-      }
-
-      return cards
-        .filter((card) => !card.is_hidden)
-        .map((card) => {
-          const { bg, text, badge } = resolveModuleColorStyles(
-            card.default_color,
-            card.category
-          );
-
-          return {
-            id: card.id || card.code,
-            moduleId: card.module_id,
-            code: card.code,
-            name: card.name,
-            shortName: card.short_name,
-            description: card.description,
-            icon: sanitizeIcon(card.icon),
-            iconBgColor: bg,
-            iconColor: text,
-            route: card.route || "/student/home",
-            category: card.category || "general",
-            color: card.default_color,
-            badgeText: card.badge_text || card.default_badge || undefined,
-            badgeColor: badge,
-            isPinned: card.is_pinned ?? false,
-            orderNo: card.order_no ?? 0,
-          };
-        });
-    } catch {
-      // In case network or API is temporarily unavailable, gracefully fallback
-      return FALLBACK_STUDENT_MODULES;
+  async getUserModules(forceRefresh = false): Promise<UserModuleItem[]> {
+    const now = Date.now();
+    if (!forceRefresh && this.cache && now - this.cacheTimestamp < this.CACHE_TTL_MS) {
+      return this.cache;
     }
+
+    if (!forceRefresh && this.inFlightPromise) {
+      return this.inFlightPromise;
+    }
+
+    this.inFlightPromise = (async () => {
+      try {
+        const response = await httpClient.get<ApiResponse<BackendModuleCard[]>>(
+          "/system/modules/"
+        );
+
+        const cards = response.data?.data;
+        if (!Array.isArray(cards) || cards.length === 0) {
+          this.cache = FALLBACK_STUDENT_MODULES;
+          this.cacheTimestamp = Date.now();
+          return FALLBACK_STUDENT_MODULES;
+        }
+
+        const items = cards
+          .filter((card) => !card.is_hidden)
+          .map((card) => {
+            const { bg, text, badge } = resolveModuleColorStyles(
+              card.default_color,
+              card.category
+            );
+
+            return {
+              id: card.id || card.code,
+              moduleId: card.module_id,
+              code: card.code,
+              name: card.name,
+              shortName: card.short_name,
+              description: card.description,
+              icon: sanitizeIcon(card.icon),
+              iconBgColor: bg,
+              iconColor: text,
+              route: card.route || "/student/home",
+              category: card.category || "general",
+              color: card.default_color,
+              badgeText: card.badge_text || card.default_badge || undefined,
+              badgeColor: badge,
+              isPinned: card.is_pinned ?? false,
+              orderNo: card.order_no ?? 0,
+            };
+          });
+
+        this.cache = items;
+        this.cacheTimestamp = Date.now();
+        return items;
+      } catch {
+        return this.cache || FALLBACK_STUDENT_MODULES;
+      } finally {
+        this.inFlightPromise = null;
+      }
+    })();
+
+    return this.inFlightPromise;
+  }
+
+  /**
+   * Explicitly clear cache when user session or permissions change.
+   */
+  clearCache(): void {
+    this.cache = null;
+    this.cacheTimestamp = 0;
+    this.inFlightPromise = null;
   }
 }
 

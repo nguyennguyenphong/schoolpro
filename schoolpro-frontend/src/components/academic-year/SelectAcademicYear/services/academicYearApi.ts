@@ -61,74 +61,102 @@ export const MOCK_ACADEMIC_YEARS: AcademicYearItem[] = [
 
 const IS_MOCK_ENABLED = import.meta.env.VITE_ENABLE_MOCK === "true";
 
+const inFlightMap = new Map<string, Promise<AcademicYearItem[]>>();
+const cacheMap = new Map<string, { data: AcademicYearItem[]; timestamp: number }>();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
 /**
  * Service to communicate with Master AcademicYear API endpoints.
  */
 export const academicYearApi = {
   /**
    * Fetches academic years list from backend API with optional filters.
-   * Uses authenticated httpClient and falls back to MOCK_ACADEMIC_YEARS on network failure.
+   * Uses in-flight deduplication and caching to prevent duplicate network calls.
    */
   async fetchAcademicYears(
     params: AcademicYearQueryParams = {},
+    forceRefresh = false,
   ): Promise<AcademicYearItem[]> {
     if (IS_MOCK_ENABLED) {
       return this.filterMockAcademicYears(params);
     }
 
-    try {
-      const response = await httpClient.get<
-        | AcademicYearApiResponse
-        | { results: AcademicYearItem[] }
-        | AcademicYearItem[]
-      >("/master/academic-years/", {
-        params: {
-          pageSize: params.pageSize || 100,
-          ...params,
-        },
-      });
-
-      const raw = response.data;
-
-      // Handle standard envelope: { success: true, code: 200, data: [...] }
-      if (raw && typeof raw === "object" && "data" in raw) {
-        if (Array.isArray(raw.data)) {
-          return raw.data;
-        }
-        if (
-          raw.data &&
-          typeof raw.data === "object" &&
-          "results" in raw.data
-        ) {
-          return (raw.data as { results: AcademicYearItem[] }).results;
-        }
-      }
-
-      // Handle direct pagination object: { count: 3, results: [...] }
-      if (
-        raw &&
-        typeof raw === "object" &&
-        "results" in raw &&
-        Array.isArray(raw.results)
-      ) {
-        return raw.results;
-      }
-
-      // Handle raw array
-      if (Array.isArray(raw)) {
-        return raw;
-      }
-
-      return MOCK_ACADEMIC_YEARS;
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.warn(
-          "[academicYearApi] Could not connect to Master AcademicYear API endpoint. Falling back to local mock data.",
-          error,
-        );
-      }
-      return this.filterMockAcademicYears(params);
+    const cleanParams: Record<string, unknown> = {
+      pageSize: params.pageSize || 100,
+      ...params,
+    };
+    if (cleanParams.school_id === "all") {
+      delete cleanParams.school_id;
     }
+
+    const key = JSON.stringify(cleanParams);
+    const now = Date.now();
+
+    if (!forceRefresh) {
+      const cached = cacheMap.get(key);
+      if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+        return cached.data;
+      }
+      const pending = inFlightMap.get(key);
+      if (pending) {
+        return pending;
+      }
+    }
+
+    const promise = (async () => {
+      try {
+        const response = await httpClient.get<
+          | AcademicYearApiResponse
+          | { results: AcademicYearItem[] }
+          | AcademicYearItem[]
+        >("/master/academic-years/", {
+          params: cleanParams,
+        });
+
+        const raw = response.data;
+        let data: AcademicYearItem[] = MOCK_ACADEMIC_YEARS;
+
+        // Handle standard envelope: { success: true, code: 200, data: [...] }
+        if (raw && typeof raw === "object" && "data" in raw) {
+          if (Array.isArray(raw.data)) {
+            data = raw.data;
+          } else if (
+            raw.data &&
+            typeof raw.data === "object" &&
+            "results" in raw.data
+          ) {
+            data = (raw.data as { results: AcademicYearItem[] }).results;
+          }
+        } else if (
+          raw &&
+          typeof raw === "object" &&
+          "results" in raw &&
+          Array.isArray(raw.results)
+        ) {
+          // Handle direct pagination object: { count: 3, results: [...] }
+          data = raw.results;
+        } else if (Array.isArray(raw)) {
+          // Handle raw array
+          data = raw;
+        }
+
+        cacheMap.set(key, { data, timestamp: Date.now() });
+        return data;
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn(
+            "[academicYearApi] Could not connect to Master AcademicYear API endpoint. Falling back to local mock data.",
+            error,
+          );
+        }
+        return this.filterMockAcademicYears(params);
+      } finally {
+        inFlightMap.delete(key);
+      }
+    })();
+
+    inFlightMap.set(key, promise);
+    return promise;
   },
 
   /**
