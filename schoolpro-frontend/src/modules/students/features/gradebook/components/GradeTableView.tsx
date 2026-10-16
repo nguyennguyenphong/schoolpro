@@ -42,9 +42,9 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
 
   const columns: TableColumnsType<SubjectGradeItem> = [
     {
-      title: "Số thứ tự",
+      title: "#",
       key: "index",
-      width: 75,
+      width: 60,
       align: "center",
       fixed: "left",
       render: (_value, _record, index) => index + 1,
@@ -164,7 +164,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
       dataIndex: "gradeLevel",
       key: "gradeLevel",
       align: "center",
-      width: 120,
+      width: 150,
       render: (_value, record) => getEvaluationResultText(record),
     },
     {
