@@ -10,6 +10,7 @@ import type {
   GradeClassification,
   GradeSummary,
 } from "@/modules/students/features/gradebook/types";
+import { SelectAcademicYear } from "@/components/academic-year/SelectAcademicYear";
 
 interface GradeFilterBarProps {
   filter: GradeFilter;
@@ -58,12 +59,6 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
 
     return () => clearTimeout(timer);
   }, [localSearch, searchQuery, onSearchChange]);
-
-  const academicYearOptions = [
-    { label: "2025-2026", value: "2025-2026" },
-    { label: "2024-2025", value: "2024-2025" },
-    { label: "2023-2024", value: "2023-2024" },
-  ];
 
   const semesterOptions = [
     { label: t("card:gradebook.filters.allSemesters"), value: "all" },
@@ -207,11 +202,10 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
               {t("card:gradebook.filters.academicYear")}:
             </span>
-            <Select
+            <SelectAcademicYear
               value={academicYear}
               onChange={onAcademicYearChange}
-              options={academicYearOptions}
-              className="w-36 sm:w-40"
+              className="w-36 sm:w-50"
             />
           </div>
 
