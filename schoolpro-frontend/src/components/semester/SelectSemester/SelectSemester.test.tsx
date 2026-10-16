@@ -121,6 +121,24 @@ describe("SelectSemester Component", () => {
       );
       expect(screen.getByText("Học kỳ 1 (2026 - 2027)")).toBeInTheDocument();
     });
+
+    it("resolves value given by short code (HK1, HK2)", () => {
+      const { rerender } = render(
+        <SelectSemester
+          value="HK1"
+          customSemesters={TEST_SEMESTERS}
+        />,
+      );
+      expect(screen.getByText("Học kỳ 1 (2026 - 2027)")).toBeInTheDocument();
+
+      rerender(
+        <SelectSemester
+          value="HK2"
+          customSemesters={TEST_SEMESTERS}
+        />,
+      );
+      expect(screen.getByText("Học kỳ 2 (2026 - 2027)")).toBeInTheDocument();
+    });
   });
 
   describe("Selection & Change handling", () => {
@@ -161,6 +179,26 @@ describe("SelectSemester Component", () => {
 
       expect(screen.getByText("Tất cả học kỳ")).toBeInTheDocument();
     });
+
+    it("selects current semester automatically when defaultToCurrent is true", () => {
+      const handleChange = vi.fn();
+
+      render(
+        <SelectSemester
+          customSemesters={TEST_SEMESTERS}
+          defaultToCurrent
+          onChange={handleChange}
+        />,
+      );
+
+      expect(handleChange).toHaveBeenCalledWith(
+        "b1c2d3e4-2026-4027-8001-000000000001",
+        expect.objectContaining({
+          value: "b1c2d3e4-2026-4027-8001-000000000001",
+          label: "Học kỳ 1 (2026 - 2027)",
+        }),
+      );
+    });
   });
 
   describe("API integration", () => {
@@ -181,6 +219,19 @@ describe("SelectSemester Component", () => {
       await waitFor(() => {
         expect(screen.getByTitle("Học kỳ 1 (2026 - 2027)")).toBeInTheDocument();
       });
+
+      spy.mockRestore();
+    });
+
+    it("fetches current semester from semesterApi", async () => {
+      const currentSem = TEST_SEMESTERS[0];
+      const spy = vi
+        .spyOn(semesterApi, "fetchCurrentSemester")
+        .mockResolvedValueOnce(currentSem);
+
+      const result = await semesterApi.fetchCurrentSemester({ schoolId: "school-1" });
+      expect(result).toEqual(currentSem);
+      expect(spy).toHaveBeenCalledWith({ schoolId: "school-1" });
 
       spy.mockRestore();
     });

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import type {
   SemesterItem,
   SemesterQueryParams,
@@ -50,6 +50,7 @@ export interface UseSemesterOptions {
 
 export interface UseSemesterReturn {
   semesters: SemesterItem[];
+  currentSemester: SemesterItem | null;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
@@ -193,8 +194,13 @@ export const useSemester = (
     initialSemesters,
   ]);
 
+  const currentSemester = useMemo(() => {
+    return semesters.find((sem) => sem.is_current) || semesters[0] || null;
+  }, [semesters]);
+
   return {
     semesters,
+    currentSemester,
     isLoading,
     isError,
     error,

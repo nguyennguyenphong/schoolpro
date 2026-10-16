@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectAcademicYearProps,
@@ -7,7 +7,7 @@ import type {
 import { useAcademicYear } from "@/components/academic-year/SelectAcademicYear/hooks/useAcademicYear";
 
 /**
- * Helper to match academic year by UUID, code (e.g. AY_20262027), or exact name.
+ * Helper to match academic year by UUID, code (e.g. AY_20262027), year span (e.g. 2026-2027), or exact name.
  */
 const findAcademicYearByValueOrCode = (
   val: unknown,
@@ -16,6 +16,7 @@ const findAcademicYearByValueOrCode = (
   if (!val || typeof val !== "string") return undefined;
   const lower = val.toLowerCase().trim();
   const upper = val.toUpperCase().trim();
+  const stripped = lower.replace(/\s*-\s*|\s+/g, "");
 
   // 1. Direct ID match
   const matchId = academicYearList.find(
@@ -23,16 +24,24 @@ const findAcademicYearByValueOrCode = (
   );
   if (matchId) return matchId;
 
-  // 2. Direct Code match (e.g. AY_20262027)
+  // 2. Direct Code match (e.g. AY_20262027 or 20262027)
   const matchCode = academicYearList.find(
-    (ay) => ay.code === val || ay.code.toUpperCase() === upper,
+    (ay) =>
+      ay.code === val ||
+      ay.code.toUpperCase() === upper ||
+      (stripped.length >= 8 &&
+        ay.code.toLowerCase().replace(/[^0-9]/g, "") ===
+          stripped.replace(/[^0-9]/g, "")),
   );
   if (matchCode) return matchCode;
 
-  // 3. Exact Name match
-  const matchName = academicYearList.find(
-    (ay) => ay.name.toLowerCase().trim() === lower,
-  );
+  // 3. Exact Name match or substring match for year spans (e.g. "2025-2026" inside "Năm học 2025 - 2026")
+  const matchName = academicYearList.find((ay) => {
+    const ayLower = ay.name.toLowerCase().trim();
+    if (ayLower === lower) return true;
+    const ayStripped = ayLower.replace(/\s*-\s*|\s+/g, "");
+    return ayStripped.includes(stripped) || (stripped.length >= 8 && stripped.includes(ayStripped));
+  });
   if (matchName) return matchName;
 
   return undefined;
@@ -54,19 +63,35 @@ export const SelectAcademicYear = ({
   placeholder = "Chọn năm học",
   allowClear = true,
   showSearch = true,
-  optionFilterProp = "label",
   disabled = false,
   value,
   onChange,
+  defaultToCurrent = false,
   ...props
 }: SelectAcademicYearProps) => {
-  const { academicYears, isLoading } = useAcademicYear({
+  const { academicYears, currentAcademicYear, isLoading } = useAcademicYear({
     filterCurrentOnly,
     excludeLocked,
     schoolId,
     initialAcademicYears: customAcademicYears,
     enabled: !customAcademicYears || customAcademicYears.length === 0,
   });
+
+  // Automatically select the active academic year if defaultToCurrent is enabled and value is unset
+  useEffect(() => {
+    if (defaultToCurrent && value === undefined && academicYears.length > 0 && onChange) {
+      const targetYear = currentAcademicYear || academicYears[0];
+      if (targetYear) {
+        onChange(targetYear.id, {
+          label: showCodePrefix ? `[${targetYear.code}] ${targetYear.name}` : targetYear.name,
+          value: targetYear.id,
+          key: targetYear.id,
+          title: targetYear.name,
+          academicYear: targetYear,
+        });
+      }
+    }
+  }, [defaultToCurrent, value, academicYears, currentAcademicYear, onChange, showCodePrefix]);
 
   // Resolve incoming value: if value is "all", academic year code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
@@ -150,7 +175,6 @@ export const SelectAcademicYear = ({
             }
           : false
       }
-      optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}
       options={options}

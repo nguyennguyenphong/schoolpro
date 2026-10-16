@@ -54,7 +54,6 @@ export const SelectDepartment = ({
   placeholder = "Chọn phòng / tổ chuyên môn",
   allowClear = true,
   showSearch = true,
-  optionFilterProp = "label",
   disabled = false,
   value,
   onChange,
@@ -128,7 +127,6 @@ export const SelectDepartment = ({
             }
           : false
       }
-      optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}
       options={options}

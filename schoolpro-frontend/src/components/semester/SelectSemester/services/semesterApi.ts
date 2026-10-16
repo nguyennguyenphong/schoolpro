@@ -184,6 +184,75 @@ export const semesterApi = {
   },
 
   /**
+   * Fetches the currently active semester, optionally filtered by academicYearId or schoolId.
+   */
+  async fetchCurrentSemester(params?: {
+    academicYearId?: string;
+    schoolId?: string;
+  }): Promise<SemesterItem | null> {
+    if (IS_MOCK_ENABLED) {
+      if (params?.academicYearId) {
+        return (
+          MOCK_SEMESTERS.find(
+            (sem) =>
+              sem.academic_year_id === params.academicYearId && sem.is_current,
+          ) ||
+          MOCK_SEMESTERS.find(
+            (sem) => sem.academic_year_id === params.academicYearId,
+          ) ||
+          null
+        );
+      }
+      return (
+        MOCK_SEMESTERS.find((sem) => sem.is_current) ||
+        MOCK_SEMESTERS[0] ||
+        null
+      );
+    }
+
+    try {
+      const response = await httpClient.get<{
+        success: boolean;
+        data: SemesterItem;
+      }>("/master/semesters/current/", {
+        params: {
+          academic_year_id: params?.academicYearId,
+          school_id: params?.schoolId,
+        },
+      });
+
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return null;
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.warn(
+          "[semesterApi] Could not fetch current semester from API. Falling back to mock data.",
+          error,
+        );
+      }
+      if (params?.academicYearId) {
+        return (
+          MOCK_SEMESTERS.find(
+            (sem) =>
+              sem.academic_year_id === params.academicYearId && sem.is_current,
+          ) ||
+          MOCK_SEMESTERS.find(
+            (sem) => sem.academic_year_id === params.academicYearId,
+          ) ||
+          null
+        );
+      }
+      return (
+        MOCK_SEMESTERS.find((sem) => sem.is_current) ||
+        MOCK_SEMESTERS[0] ||
+        null
+      );
+    }
+  },
+
+  /**
    * Helper to filter mock semesters locally based on query params.
    */
   filterMockSemesters(params: SemesterQueryParams): SemesterItem[] {

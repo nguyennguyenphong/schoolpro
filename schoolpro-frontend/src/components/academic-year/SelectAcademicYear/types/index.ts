@@ -109,4 +109,10 @@ export interface SelectAcademicYearProps
    * @default "all"
    */
   allOptionValue?: string;
+
+  /**
+   * If true and value is undefined, automatically select the current active academic year once loaded
+   * @default false
+   */
+  defaultToCurrent?: boolean;
 }

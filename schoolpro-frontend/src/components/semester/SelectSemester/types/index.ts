@@ -119,4 +119,10 @@ export interface SelectSemesterProps
    * @default "all"
    */
   allOptionValue?: string;
+
+  /**
+   * If true and value is undefined, automatically select the current active semester once loaded
+   * @default false
+   */
+  defaultToCurrent?: boolean;
 }

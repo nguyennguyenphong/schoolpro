@@ -1,0 +1,1 @@
+"""Master domain tests package."""

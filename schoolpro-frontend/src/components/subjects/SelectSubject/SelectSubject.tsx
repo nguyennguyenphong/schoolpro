@@ -59,7 +59,6 @@ export const SelectSubject = ({
   placeholder = "Chọn môn học",
   allowClear = true,
   showSearch = true,
-  optionFilterProp = "label",
   disabled = false,
   value,
   onChange,
@@ -160,7 +159,6 @@ export const SelectSubject = ({
             }
           : false
       }
-      optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}
       options={options}

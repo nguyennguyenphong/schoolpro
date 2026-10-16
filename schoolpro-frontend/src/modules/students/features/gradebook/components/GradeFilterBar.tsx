@@ -1,5 +1,4 @@
 import React from "react";
-import { Select } from "antd";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -11,6 +10,8 @@ import type {
   GradeSummary,
 } from "@/modules/students/features/gradebook/types";
 import { SelectAcademicYear } from "@/components/academic-year/SelectAcademicYear";
+import { SelectSemester } from "@/components/semester/SelectSemester";
+import { SelectSort } from "@/components/sort/SelectSort";
 
 interface GradeFilterBarProps {
   filter: GradeFilter;
@@ -59,12 +60,6 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
 
     return () => clearTimeout(timer);
   }, [localSearch, searchQuery, onSearchChange]);
-
-  const semesterOptions = [
-    { label: t("card:gradebook.filters.allSemesters"), value: "all" },
-    { label: t("card:gradebook.filters.semester1"), value: "HK1" },
-    { label: t("card:gradebook.filters.semester2"), value: "HK2" },
-  ];
 
   const sortOptions = [
     { label: t("card:gradebook.filters.sortGpaDesc"), value: "gpa_desc" },
@@ -205,7 +200,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             <SelectAcademicYear
               value={academicYear}
               onChange={onAcademicYearChange}
-              className="w-36 sm:w-50"
+              className="w-50 sm:w-50"
             />
           </div>
 
@@ -213,11 +208,10 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
               {t("card:gradebook.filters.semester")}:
             </span>
-            <Select
+            <SelectSemester
               value={semester}
               onChange={onSemesterChange}
-              options={semesterOptions}
-              className="w-32 sm:w-36"
+              className="w-50 sm:w-50"
             />
           </div>
 
@@ -225,7 +219,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
               {t("card:gradebook.filters.sort")}:
             </span>
-            <Select
+            <SelectSort
               value={sortBy}
               onChange={onSortByChange}
               options={sortOptions}

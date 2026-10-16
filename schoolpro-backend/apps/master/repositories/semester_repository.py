@@ -63,6 +63,19 @@ class SemesterRepository(BaseRepository[Semester]):
 
         return qs.order_by("-academic_year__start_date", "order_no")
 
+    def get_current_semester(
+        self,
+        school_id: UUID | str | None = None,
+        academic_year_id: UUID | str | None = None,
+    ) -> Semester | None:
+        """Retrieve the current active semester, optionally scoped to school and/or academic year."""
+        qs = self.get_queryset().filter(is_current=True)
+        if academic_year_id:
+            qs = qs.filter(academic_year_id=academic_year_id)
+        if school_id:
+            qs = qs.filter(academic_year__school_id=school_id)
+        return qs.first()
+
     def get_semester_detail(self, identifier: UUID | str) -> Semester | None:
         """Retrieve single semester by UUID or code."""
         qs = self.get_queryset()

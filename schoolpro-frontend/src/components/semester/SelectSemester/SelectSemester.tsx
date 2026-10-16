@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectSemesterProps,
@@ -7,7 +7,7 @@ import type {
 import { useSemester } from "@/components/semester/SelectSemester/hooks/useSemester";
 
 /**
- * Helper to match semester by UUID, code (e.g. SEM_20262027_1), or exact name.
+ * Helper to match semester by UUID, code (e.g. SEM_20262027_1), short term (e.g. HK1, HK2), or exact name.
  */
 const findSemesterByValueOrCode = (
   val: unknown,
@@ -29,10 +29,37 @@ const findSemesterByValueOrCode = (
   );
   if (matchCode) return matchCode;
 
-  // 3. Exact Name match
-  const matchName = semesterList.find(
-    (sem) => sem.name.toLowerCase().trim() === lower,
-  );
+  // 3. Short term code match (e.g. "HK1" -> order_no: 1, "HK2" -> order_no: 2)
+  if (
+    upper === "HK1" ||
+    lower === "hk1" ||
+    lower === "1" ||
+    lower === "hoc ky 1" ||
+    lower === "học kỳ 1"
+  ) {
+    const matchHk1 = semesterList.find((sem) => sem.order_no === 1);
+    if (matchHk1) return matchHk1;
+  }
+  if (
+    upper === "HK2" ||
+    lower === "hk2" ||
+    lower === "2" ||
+    lower === "hoc ky 2" ||
+    lower === "học kỳ 2"
+  ) {
+    const matchHk2 = semesterList.find((sem) => sem.order_no === 2);
+    if (matchHk2) return matchHk2;
+  }
+
+  // 4. Exact or substring Name match
+  const matchName = semesterList.find((sem) => {
+    const semLower = sem.name.toLowerCase().trim();
+    return (
+      semLower === lower ||
+      semLower.includes(lower) ||
+      lower.includes(semLower)
+    );
+  });
   if (matchName) return matchName;
 
   return undefined;
@@ -55,13 +82,13 @@ export const SelectSemester = ({
   placeholder = "Chọn học kỳ",
   allowClear = true,
   showSearch = true,
-  optionFilterProp = "label",
   disabled = false,
   value,
   onChange,
+  defaultToCurrent = false,
   ...props
 }: SelectSemesterProps) => {
-  const { semesters, isLoading } = useSemester({
+  const { semesters, currentSemester, isLoading } = useSemester({
     academicYearId,
     schoolId,
     filterCurrentOnly,
@@ -69,6 +96,36 @@ export const SelectSemester = ({
     initialSemesters: customSemesters,
     enabled: !customSemesters || customSemesters.length === 0,
   });
+
+  // Automatically select the active semester if defaultToCurrent is enabled and value is unset
+  useEffect(() => {
+    if (
+      defaultToCurrent &&
+      value === undefined &&
+      semesters.length > 0 &&
+      onChange
+    ) {
+      const targetSem = currentSemester || semesters[0];
+      if (targetSem) {
+        onChange(targetSem.id, {
+          label: showCodePrefix
+            ? `[${targetSem.code}] ${targetSem.name}`
+            : targetSem.name,
+          value: targetSem.id,
+          key: targetSem.id,
+          title: targetSem.name,
+          semester: targetSem,
+        });
+      }
+    }
+  }, [
+    defaultToCurrent,
+    value,
+    semesters,
+    currentSemester,
+    onChange,
+    showCodePrefix,
+  ]);
 
   // Resolve incoming value: if value is "all", semester code, or name, resolve to option value
   const resolvedValue = useMemo(() => {
@@ -154,7 +211,6 @@ export const SelectSemester = ({
             }
           : false
       }
-      optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}
       options={options}

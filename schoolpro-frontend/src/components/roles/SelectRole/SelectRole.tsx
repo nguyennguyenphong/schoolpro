@@ -175,7 +175,6 @@ export const SelectRole = ({
   placeholder = "Chọn vai trò",
   allowClear = true,
   showSearch = true,
-  optionFilterProp = "label",
   disabled = false,
   value,
   onChange,
@@ -256,7 +255,6 @@ export const SelectRole = ({
             }
           : false
       }
-      optionFilterProp={optionFilterProp}
       disabled={disabled || isLoading}
       loading={isLoading}
       options={options}

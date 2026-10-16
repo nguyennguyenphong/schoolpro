@@ -118,6 +118,31 @@ describe("SelectAcademicYear Component", () => {
       );
       expect(screen.getByText("Năm học 2026 - 2027")).toBeInTheDocument();
     });
+
+    it("resolves value given by year span (2026-2027)", () => {
+      render(
+        <SelectAcademicYear
+          value="2026-2027"
+          customAcademicYears={TEST_ACADEMIC_YEARS}
+        />,
+      );
+      expect(screen.getByText("Năm học 2026 - 2027")).toBeInTheDocument();
+    });
+
+    it("automatically triggers onChange with current academic year when defaultToCurrent is true", () => {
+      const handleChange = vi.fn();
+      render(
+        <SelectAcademicYear
+          defaultToCurrent
+          customAcademicYears={TEST_ACADEMIC_YEARS}
+          onChange={handleChange}
+        />,
+      );
+      expect(handleChange).toHaveBeenCalledWith(
+        "a1b2c3d4-2026-4027-8001-000000002026",
+        expect.anything(),
+      );
+    });
   });
 
   describe("Selection & Change handling", () => {

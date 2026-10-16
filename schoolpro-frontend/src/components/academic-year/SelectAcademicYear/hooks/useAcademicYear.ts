@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import type {
   AcademicYearItem,
   AcademicYearQueryParams,
@@ -45,6 +45,7 @@ export interface UseAcademicYearOptions {
 
 export interface UseAcademicYearReturn {
   academicYears: AcademicYearItem[];
+  currentAcademicYear: AcademicYearItem | null;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
@@ -186,8 +187,13 @@ export const useAcademicYear = (
     initialAcademicYears,
   ]);
 
+  const currentAcademicYear = useMemo(() => {
+    return academicYears.find((ay) => ay.is_current) || academicYears[0] || null;
+  }, [academicYears]);
+
   return {
     academicYears,
+    currentAcademicYear,
     isLoading,
     isError,
     error,

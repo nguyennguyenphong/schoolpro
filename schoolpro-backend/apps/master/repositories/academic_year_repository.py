@@ -48,6 +48,13 @@ class AcademicYearRepository(BaseRepository[AcademicYear]):
 
         return qs.order_by("-start_date", "code")
 
+    def get_current_academic_year(self, school_id: UUID | str | None = None) -> AcademicYear | None:
+        """Retrieve the current active academic year, optionally scoped to school_id."""
+        qs = self.get_queryset().filter(is_current=True)
+        if school_id:
+            qs = qs.filter(school_id=school_id)
+        return qs.first()
+
     def get_academic_year_detail(self, identifier: UUID | str) -> AcademicYear | None:
         """Retrieve single academic year by UUID or code."""
         qs = self.get_queryset()

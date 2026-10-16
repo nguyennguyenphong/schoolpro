@@ -158,6 +158,45 @@ export const academicYearApi = {
   },
 
   /**
+   * Fetches the currently active academic year.
+   */
+  async fetchCurrentAcademicYear(schoolId?: string): Promise<AcademicYearItem | null> {
+    if (IS_MOCK_ENABLED) {
+      return (
+        MOCK_ACADEMIC_YEARS.find((ay) => ay.is_current) ||
+        MOCK_ACADEMIC_YEARS[0] ||
+        null
+      );
+    }
+
+    try {
+      const response = await httpClient.get<{
+        success: boolean;
+        data: AcademicYearItem;
+      }>("/master/academic-years/current/", {
+        params: schoolId ? { school_id: schoolId } : undefined,
+      });
+
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return null;
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.warn(
+          "[academicYearApi] Could not fetch current academic year from API. Falling back to mock data.",
+          error,
+        );
+      }
+      return (
+        MOCK_ACADEMIC_YEARS.find((ay) => ay.is_current) ||
+        MOCK_ACADEMIC_YEARS[0] ||
+        null
+      );
+    }
+  },
+
+  /**
    * Helper to filter mock academic years locally based on query params.
    */
   filterMockAcademicYears(
