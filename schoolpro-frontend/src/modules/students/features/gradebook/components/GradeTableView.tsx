@@ -58,9 +58,6 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
       render: (_value, record) => (
         <div>
           <div className="font-medium text-slate-800">{record.teacher}</div>
-          {record.teacherTitle && (
-            <div className="text-xs text-slate-500">{record.teacherTitle}</div>
-          )}
         </div>
       ),
     },
