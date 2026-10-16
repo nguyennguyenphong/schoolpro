@@ -1,63 +1,44 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Empty } from "@/components/ui/Empty";
-import { Pagination } from "@/components/ui/Pagination";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
   MaterialSummaryCards,
   MaterialFilterBar,
-  SubjectFilterBar,
   MaterialSelectionBar,
-  SubjectCard,
-  SubjectListItem,
   MaterialCard,
   MaterialListItem,
   MaterialDetailModal,
+  MaterialsPagination,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
-import { useMaterials, useSubjects } from "@/modules/students/features/materials/hooks";
+import { useMaterials } from "@/modules/students/features/materials/hooks";
 
 export const MaterialsPage: React.FC = () => {
-  const { t } = useTranslation();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentTab = (searchParams.get("tab") as "subjects" | "all") || "subjects";
-
-  // 1. Data hooks
-  const {
-    subjects,
-    total: subjectsTotal,
-    loading: subjectsLoading,
-    filter: subjectFilter,
-    setSearchQuery: setSubjectSearch,
-    setSemester: setSubjectSemester,
-    setSortBy: setSubjectSortBy,
-    setViewMode: setSubjectViewMode,
-    setPage: setSubjectPage,
-    resetFilters: resetSubjectFilters,
-  } = useSubjects();
+  const { t } = useTranslation(["card", "button"]);
 
   const {
     materials,
-    total: materialsTotal,
+    total,
     summary,
-    subjects: availableSubjects,
-    loading: materialsLoading,
-    filter: materialFilter,
+    subjects,
+    loading,
+    filter,
     selectedMaterial,
     isDetailOpen,
     selectedIds,
     isAllCurrentPageSelected,
-    setSearchQuery: setMaterialSearch,
-    setSubject: setMaterialSubject,
-    setCategory: setMaterialCategory,
-    setSemester: setMaterialSemester,
-    setSortBy: setMaterialSortBy,
-    setViewMode: setMaterialViewMode,
-    setPage: setMaterialPage,
-    resetFilters: resetMaterialFilters,
+    setSearchQuery,
+    setAcademicYear,
+    setSemester,
+    setSubject,
+    setCategory,
+    setSortBy,
+    setViewMode,
+    setPage,
+    resetFilters,
     toggleSelect,
     selectAll,
     clearSelection,
@@ -68,33 +49,16 @@ export const MaterialsPage: React.FC = () => {
     closeDetail,
   } = useMaterials();
 
-  const handleTabChange = (tab: "subjects" | "all") => {
-    const nextParams = new URLSearchParams(searchParams);
-    if (tab === "subjects") {
-      nextParams.delete("tab");
-    } else {
-      nextParams.set("tab", tab);
-    }
-    setSearchParams(nextParams, { replace: true });
-  };
-
-  const hasActiveSubjectFilters = Boolean(
-    subjectFilter.searchQuery.trim() ||
-      subjectFilter.semester !== "all" ||
-      subjectFilter.sortBy !== "name_asc",
+  const hasActiveFilters = Boolean(
+    filter.searchQuery.trim() ||
+      (filter.academicYear && filter.academicYear !== "all") ||
+      (filter.semester && filter.semester !== "all") ||
+      (filter.subject && filter.subject !== "all") ||
+      (filter.category && filter.category !== "all") ||
+      filter.sortBy !== "newest",
   );
 
-  const hasActiveMaterialFilters = Boolean(
-    materialFilter.searchQuery.trim() ||
-      materialFilter.subject !== "all" ||
-      materialFilter.category !== "all" ||
-      materialFilter.semester !== "all" ||
-      materialFilter.sortBy !== "newest",
-  );
-
-  const isLoading = currentTab === "subjects" ? subjectsLoading : materialsLoading;
-
-  if (isLoading && ((currentTab === "subjects" && subjects.length === 0) || (currentTab === "all" && materials.length === 0))) {
+  if (loading && materials.length === 0) {
     return <MaterialsSkeleton />;
   }
 
@@ -139,243 +103,103 @@ export const MaterialsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Summary Metric Cards */}
-      {summary && <MaterialSummaryCards summary={summary} />}
+      {/* 2. Summary Metric Cards (Dashboard style) */}
+      <MaterialSummaryCards summary={summary} loading={loading && !summary} />
 
-      {/* 3. Navigation View Switcher (Theo môn học vs Tất cả tài liệu) */}
-      <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#f0f0f0] shadow-2xs flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => handleTabChange("subjects")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-            currentTab === "subjects"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-          }`}
-        >
-          <Icon
-            name="book"
-            size={14}
-            className={currentTab === "subjects" ? "text-white" : "text-slate-400"}
-          />
-          <span>{t("card:materials.header.tabBySubjects", "Theo môn học")}</span>
-          <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
-              currentTab === "subjects"
-                ? "bg-white/20 text-white"
-                : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
-            }`}
-          >
-            {subjectsTotal || 10}
-          </span>
-        </button>
+      {/* 3. Multi-criteria Filter Bar with Category Tabs, Search, Academic Year, Semester, Subject, Sort */}
+      <MaterialFilterBar
+        filter={filter}
+        summary={summary}
+        subjects={subjects}
+        onSearchChange={setSearchQuery}
+        onAcademicYearChange={setAcademicYear}
+        onSemesterChange={setSemester}
+        onSubjectChange={setSubject}
+        onCategoryChange={setCategory}
+        onSortByChange={setSortBy}
+        onViewModeChange={setViewMode}
+        onResetFilters={resetFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
 
-        <button
-          type="button"
-          onClick={() => handleTabChange("all")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-            currentTab === "all"
-              ? "bg-blue-600 text-white shadow-xs"
-              : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-          }`}
-        >
-          <Icon
-            name="fileText"
-            size={14}
-            className={currentTab === "all" ? "text-white" : "text-slate-400"}
-          />
-          <span>{t("card:materials.header.tabAllMaterials", "Tất cả tài liệu")}</span>
-          <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
-              currentTab === "all"
-                ? "bg-white/20 text-white"
-                : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
-            }`}
-          >
-            {materialsTotal}
-          </span>
-        </button>
-      </div>
+      {/* 4. Multi-selection Bar */}
+      <MaterialSelectionBar
+        selectedCount={selectedIds.length}
+        totalOnPage={materials.length}
+        isAllSelected={isAllCurrentPageSelected}
+        onSelectAll={selectAll}
+        onClearSelection={clearSelection}
+        onDownloadSelected={downloadSelected}
+      />
 
-      {/* 4. Content Area based on Tab */}
-      {currentTab === "subjects" ? (
-        /* TAB 1: DANH MỤC THEO MÔN HỌC */
-        <div className="space-y-4 sm:space-y-5">
-          <SubjectFilterBar
-            filter={subjectFilter}
-            totalSubjects={subjectsTotal}
-            onSearchChange={setSubjectSearch}
-            onSemesterChange={setSubjectSemester}
-            onSortByChange={setSubjectSortBy}
-            onViewModeChange={setSubjectViewMode}
-            onResetFilters={resetSubjectFilters}
-            hasActiveFilters={hasActiveSubjectFilters}
-          />
-
-          {subjects.length === 0 ? (
-            <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
-              <Empty
-                description={
-                  <div className="space-y-1.5">
-                    <p className="text-sm font-bold text-slate-700 mb-0">
-                      {t("card:materials.empty.noSubjectsTitle", "Không tìm thấy môn học")}
-                    </p>
-                    <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                      {t("card:materials.empty.noSubjectsDesc", "Không có môn học nào phù hợp với từ khóa hoặc bộ lọc đã chọn.")}
-                    </p>
-                  </div>
-                }
-              >
-                {hasActiveSubjectFilters && (
-                  <Button
-                    variant="outline"
-                    onClick={resetSubjectFilters}
-                    className="mt-3"
-                  >
-                    {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
-                  </Button>
-                )}
-              </Empty>
-            </div>
-          ) : subjectFilter.viewMode === "list" ? (
-            <div className="flex flex-col gap-3 sm:gap-3.5">
-              {subjects.map((item) => (
-                <SubjectListItem key={item.id} item={item} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {subjects.map((item) => (
-                <SubjectCard key={item.id} item={item} />
-              ))}
-            </div>
-          )}
-
-          {/* Phân trang danh sách môn học */}
-          {subjectsTotal > 0 && (
-            <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-slate-500">
-                Hiển thị <strong className="text-slate-800">{subjects.length}</strong> trên tổng số{" "}
-                <strong className="text-slate-800">{subjectsTotal}</strong>
+      {/* 5. Results Area */}
+      {materials.length === 0 ? (
+        <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
+          <Empty
+            description={
+              <div className="space-y-1.5">
+                <p className="text-sm font-bold text-slate-700 mb-0">
+                  {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu học tập")}
+                </p>
+                <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
+                  {hasActiveFilters
+                    ? t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.")
+                    : "Hiện tại chưa có tài liệu nào trong danh mục này."}
+                </p>
               </div>
-
-              <Pagination
-                current={subjectFilter.page}
-                pageSize={subjectFilter.pageSize}
-                total={subjectsTotal}
-                onChange={(page, pageSize) => setSubjectPage(page, pageSize)}
-                showSizeChanger
-                pageSizeOptions={["6", "9", "12", "18"]}
-              />
-            </div>
-          )}
+            }
+          >
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                onClick={resetFilters}
+                className="mt-3"
+              >
+                {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
+              </Button>
+            )}
+          </Empty>
+        </div>
+      ) : filter.viewMode === "grid" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {materials.map((item) => (
+            <MaterialCard
+              key={item.id}
+              item={item}
+              isSelected={selectedIds.includes(item.id)}
+              onToggleSelect={toggleSelect}
+              onDownload={downloadMaterial}
+              onToggleBookmark={toggleBookmark}
+              onClick={openDetail}
+            />
+          ))}
         </div>
       ) : (
-        /* TAB 2: TẤT CẢ TÀI LIỆU */
-        <div className="space-y-4 sm:space-y-5">
-          {/* Multi-criteria Filter Bar */}
-          <MaterialFilterBar
-            filter={materialFilter}
-            summary={summary}
-            subjects={availableSubjects}
-            onSearchChange={setMaterialSearch}
-            onSubjectChange={setMaterialSubject}
-            onCategoryChange={setMaterialCategory}
-            onSemesterChange={setMaterialSemester}
-            onSortByChange={setMaterialSortBy}
-            onViewModeChange={setMaterialViewMode}
-            onResetFilters={resetMaterialFilters}
-            hasActiveFilters={hasActiveMaterialFilters}
-          />
-
-          {/* Multi-selection Bar */}
-          <MaterialSelectionBar
-            selectedCount={selectedIds.length}
-            totalOnPage={materials.length}
-            isAllSelected={isAllCurrentPageSelected}
-            onSelectAll={selectAll}
-            onClearSelection={clearSelection}
-            onDownloadSelected={downloadSelected}
-          />
-
-          {/* Results Area */}
-          {materials.length === 0 ? (
-            <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
-              <Empty
-                description={
-                  <div className="space-y-1.5">
-                    <p className="text-sm font-bold text-slate-700 mb-0">
-                      {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu học tập")}
-                    </p>
-                    <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                      {t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.")}
-                    </p>
-                  </div>
-                }
-              >
-                {hasActiveMaterialFilters && (
-                  <Button
-                    variant="outline"
-                    onClick={resetMaterialFilters}
-                    className="mt-3"
-                  >
-                    {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
-                  </Button>
-                )}
-              </Empty>
-            </div>
-          ) : materialFilter.viewMode === "grid" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {materials.map((item) => (
-                <MaterialCard
-                  key={item.id}
-                  item={item}
-                  isSelected={selectedIds.includes(item.id)}
-                  onToggleSelect={toggleSelect}
-                  onDownload={downloadMaterial}
-                  onToggleBookmark={toggleBookmark}
-                  onClick={openDetail}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3 sm:gap-3.5">
-              {materials.map((item) => (
-                <MaterialListItem
-                  key={item.id}
-                  item={item}
-                  isSelected={selectedIds.includes(item.id)}
-                  onToggleSelect={toggleSelect}
-                  onDownload={downloadMaterial}
-                  onToggleBookmark={toggleBookmark}
-                  onClick={openDetail}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Phân trang danh sách tài liệu */}
-          {materialsTotal > 0 && (
-            <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-slate-500">
-                Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
-                <strong className="text-slate-800">{materialsTotal}</strong>
-              </div>
-
-              <Pagination
-                current={materialFilter.page}
-                pageSize={materialFilter.pageSize}
-                total={materialsTotal}
-                onChange={(page, pageSize) => setMaterialPage(page, pageSize)}
-                showSizeChanger
-                pageSizeOptions={["9", "18", "36", "72"]}
-              />
-            </div>
-          )}
+        <div className="flex flex-col gap-3 sm:gap-3.5">
+          {materials.map((item) => (
+            <MaterialListItem
+              key={item.id}
+              item={item}
+              isSelected={selectedIds.includes(item.id)}
+              onToggleSelect={toggleSelect}
+              onDownload={downloadMaterial}
+              onToggleBookmark={toggleBookmark}
+              onClick={openDetail}
+            />
+          ))}
         </div>
       )}
 
-      {/* 5. Detail Modal */}
+      {/* 6. Synchronized Pagination matching leave-requests / attendance */}
+      <MaterialsPagination
+        current={filter.page}
+        pageSize={filter.pageSize}
+        total={total}
+        itemsCount={materials.length}
+        onChange={(page, pageSize) => setPage(page, pageSize)}
+      />
+
+      {/* 7. Detail Modal */}
       <MaterialDetailModal
         item={selectedMaterial}
         isOpen={isDetailOpen}

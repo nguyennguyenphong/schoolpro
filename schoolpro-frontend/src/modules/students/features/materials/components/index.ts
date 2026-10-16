@@ -8,3 +8,4 @@ export { MaterialCard } from "@/modules/students/features/materials/components/M
 export { MaterialListItem } from "@/modules/students/features/materials/components/MaterialListItem";
 export { MaterialDetailModal } from "@/modules/students/features/materials/components/MaterialDetailModal";
 export { MaterialsSkeleton } from "@/modules/students/features/materials/components/MaterialsSkeleton";
+export { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";

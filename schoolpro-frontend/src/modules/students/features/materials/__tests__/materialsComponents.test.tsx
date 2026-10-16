@@ -3,7 +3,10 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MaterialCard } from "@/modules/students/features/materials/components/MaterialCard";
 import { MaterialSelectionBar } from "@/modules/students/features/materials/components/MaterialSelectionBar";
-import type { MaterialItem } from "@/modules/students/features/materials/types";
+import { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";
+import { MaterialFilterBar } from "@/modules/students/features/materials/components/MaterialFilterBar";
+import { MaterialSummaryCards } from "@/modules/students/features/materials/components/MaterialSummaryCards";
+import type { MaterialItem, MaterialFilter } from "@/modules/students/features/materials/types";
 
 const mockMaterial: MaterialItem = {
   id: "test-mat-1",
@@ -24,6 +27,18 @@ const mockMaterial: MaterialItem = {
   description: "Bộ 5 đề thi thử có ma trận và đáp án chi tiết.",
   tableOfContents: ["Phần 1: Trắc nghiệm", "Phần 2: Tự luận"],
   isBookmarked: false,
+};
+
+const mockFilter: MaterialFilter = {
+  searchQuery: "",
+  academicYear: "all",
+  subject: "all",
+  category: "all",
+  semester: "all",
+  sortBy: "newest",
+  viewMode: "grid",
+  page: 1,
+  pageSize: 9,
 };
 
 describe("Materials Components", () => {
@@ -87,5 +102,65 @@ describe("Materials Components", () => {
     expect(clearBtn).toBeInTheDocument();
     fireEvent.click(clearBtn);
     expect(handleClear).toHaveBeenCalled();
+  });
+
+  it("renders MaterialsPagination with count and total", () => {
+    const handleChange = vi.fn();
+
+    render(
+      <MaterialsPagination
+        current={1}
+        pageSize={9}
+        total={25}
+        itemsCount={9}
+        onChange={handleChange}
+      />,
+    );
+
+    expect(screen.getByText(/trên tổng số 25/)).toBeInTheDocument();
+  });
+
+  it("renders MaterialFilterBar with category tabs and search input", () => {
+    const handleSearchChange = vi.fn();
+    const handleCategoryChange = vi.fn();
+
+    render(
+      <MaterialFilterBar
+        filter={mockFilter}
+        onSearchChange={handleSearchChange}
+        onAcademicYearChange={vi.fn()}
+        onSemesterChange={vi.fn()}
+        onSubjectChange={vi.fn()}
+        onCategoryChange={handleCategoryChange}
+        onSortByChange={vi.fn()}
+        onViewModeChange={vi.fn()}
+        onResetFilters={vi.fn()}
+        hasActiveFilters={false}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText(/Tìm kiếm bài giảng/)).toBeInTheDocument();
+    const lectureTab = screen.getByText("Bài giảng");
+    expect(lectureTab).toBeInTheDocument();
+    fireEvent.click(lectureTab);
+    expect(handleCategoryChange).toHaveBeenCalledWith("lecture");
+  });
+
+  it("renders MaterialSummaryCards with 4 unified metric cards", () => {
+    const mockSummary = {
+      total: 45,
+      lecturesCount: 15,
+      outlinesCount: 10,
+      textbooksCount: 8,
+      examPrepsCount: 12,
+      totalDownloads: 1250,
+    };
+
+    render(<MaterialSummaryCards summary={mockSummary} />);
+
+    expect(screen.getByText("45")).toBeInTheDocument();
+    expect(screen.getByText("15")).toBeInTheDocument();
+    expect(screen.getByText("22")).toBeInTheDocument();
+    expect(screen.getByText("1,250")).toBeInTheDocument();
   });
 });

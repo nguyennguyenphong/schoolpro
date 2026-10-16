@@ -1127,6 +1127,7 @@
       "lectures": "Digital Lectures",
       "outlines": "Revision Outlines",
       "examPreps": "Exams & Tests",
+      "outlinesAndExams": "Outlines & Exams",
       "textbooks": "Textbooks",
       "totalDownloads": "Total Downloads"
     },
@@ -1137,6 +1138,8 @@
       "allSubjects": "All Subjects",
       "categoryLabel": "Category:",
       "allCategories": "All Categories",
+      "academicYearLabel": "Academic Year:",
+      "allAcademicYears": "All Academic Years",
       "semesterLabel": "Semester:",
       "allSemesters": "All Semesters",
       "semester1": "Semester 1",
@@ -1154,7 +1157,8 @@
       "reset": "Reset",
       "resetTooltip": "Reset all filters",
       "totalSubjectsCount": "Total {{count}} subjects",
-      "totalMaterialsCount": "Total {{count}} materials"
+      "totalMaterialsCount": "Total {{count}} materials",
+      "paginationShowing": "Showing {{count}} of {{total}} learning materials"
     },
     "categories": {
       "lecture": "Lecture",

@@ -1127,6 +1127,7 @@
       "lectures": "电子课件",
       "outlines": "复习大纲",
       "examPreps": "试题试卷",
+      "outlinesAndExams": "复习大纲与试卷",
       "textbooks": "电子教材",
       "totalDownloads": "总下载量"
     },
@@ -1137,6 +1138,8 @@
       "allSubjects": "全部学科",
       "categoryLabel": "分类:",
       "allCategories": "全部分类",
+      "academicYearLabel": "学年:",
+      "allAcademicYears": "全部学年",
       "semesterLabel": "学期:",
       "allSemesters": "全部学期",
       "semester1": "第一学期",
@@ -1154,7 +1157,8 @@
       "reset": "重置",
       "resetTooltip": "重置所有筛选",
       "totalSubjectsCount": "共 {{count}} 门学科",
-      "totalMaterialsCount": "共 {{count}} 份资料"
+      "totalMaterialsCount": "共 {{count}} 份资料",
+      "paginationShowing": "显示第 {{count}} 条 / 共 {{total}} 条学习资料"
     },
     "categories": {
       "lecture": "课件讲义",

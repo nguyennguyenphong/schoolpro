@@ -1127,6 +1127,7 @@
       "lectures": "講義スライド",
       "outlines": "復習要綱",
       "examPreps": "試験問題集",
+      "outlinesAndExams": "復習要綱・試験問題",
       "textbooks": "電子教科書",
       "totalDownloads": "総ダウンロード数"
     },
@@ -1137,6 +1138,8 @@
       "allSubjects": "すべての科目",
       "categoryLabel": "カテゴリ:",
       "allCategories": "すべてのカテゴリ",
+      "academicYearLabel": "年度:",
+      "allAcademicYears": "すべての年度",
       "semesterLabel": "学期:",
       "allSemesters": "すべての学期",
       "semester1": "第1学期",
@@ -1154,7 +1157,8 @@
       "reset": "リセット",
       "resetTooltip": "すべてのフィルターをリセット",
       "totalSubjectsCount": "合計 {{count}} 科目",
-      "totalMaterialsCount": "合計 {{count}} 件の資料"
+      "totalMaterialsCount": "合計 {{count}} 件の資料",
+      "paginationShowing": "全 {{total}} 件中 {{count}} 件を表示"
     },
     "categories": {
       "lecture": "講義資料",

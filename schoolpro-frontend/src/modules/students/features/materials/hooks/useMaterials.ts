@@ -20,6 +20,7 @@ export function useMaterials() {
   const initialFilter: MaterialFilter = useMemo(
     () => ({
       searchQuery: searchParams.get("q") || "",
+      academicYear: searchParams.get("academicYear") || "all",
       subject: searchParams.get("subject") || "all",
       category: (searchParams.get("category") as MaterialCategory) || "all",
       format: (searchParams.get("format") as MaterialFormat) || "all",
@@ -66,6 +67,11 @@ export function useMaterials() {
         params.set("q", newFilter.searchQuery.trim());
       } else {
         params.delete("q");
+      }
+      if (newFilter.academicYear && newFilter.academicYear !== "all") {
+        params.set("academicYear", newFilter.academicYear);
+      } else {
+        params.delete("academicYear");
       }
       if (newFilter.subject !== "all") {
         params.set("subject", newFilter.subject);
@@ -142,6 +148,7 @@ export function useMaterials() {
         const next = { ...prev, ...partial };
         if (
           partial.searchQuery !== undefined ||
+          partial.academicYear !== undefined ||
           partial.subject !== undefined ||
           partial.category !== undefined ||
           partial.semester !== undefined
@@ -156,6 +163,7 @@ export function useMaterials() {
   );
 
   const setSearchQuery = (query: string) => updateFilter({ searchQuery: query });
+  const setAcademicYear = (ay: string) => updateFilter({ academicYear: ay });
   const setSubject = (sub: string) => updateFilter({ subject: sub });
   const setCategory = (cat: string) => updateFilter({ category: cat });
   const setSemester = (sem: string) => updateFilter({ semester: sem });
@@ -168,6 +176,7 @@ export function useMaterials() {
   const resetFilters = useCallback(() => {
     const cleared: MaterialFilter = {
       searchQuery: "",
+      academicYear: "all",
       subject: "all",
       category: "all",
       semester: "all",
@@ -273,6 +282,7 @@ export function useMaterials() {
     selectedIds,
     isAllCurrentPageSelected,
     setSearchQuery,
+    setAcademicYear,
     setSubject,
     setCategory,
     setSemester,

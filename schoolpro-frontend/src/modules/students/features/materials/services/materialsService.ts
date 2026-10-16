@@ -222,6 +222,7 @@ class MaterialsService {
     try {
       const params: Record<string, string | number | undefined> = {};
       if (filter?.searchQuery) params.search = filter.searchQuery;
+      if (filter?.academicYear && filter.academicYear !== "all") params.academic_year = filter.academicYear;
       if (filter?.subject && filter.subject !== "all") params.subject = filter.subject;
       if (filter?.category && filter.category !== "all") params.category = filter.category;
       if (filter?.semester && filter.semester !== "all") params.semester = filter.semester;
@@ -257,6 +258,15 @@ class MaterialsService {
       );
     }
 
+    if (filter?.academicYear && filter.academicYear !== "all") {
+      const yearClean = filter.academicYear.replace(/[^0-9]/g, "");
+      result = result.filter(
+        (item) =>
+          item.academicYear.includes(filter.academicYear!) ||
+          (yearClean && item.academicYear.replace(/[^0-9]/g, "").includes(yearClean)),
+      );
+    }
+
     if (filter?.subject && filter.subject !== "all") {
       result = result.filter(
         (item) => item.subjectCode.toLowerCase() === filter.subject!.toLowerCase(),
@@ -268,7 +278,13 @@ class MaterialsService {
     }
 
     if (filter?.semester && filter.semester !== "all") {
-      result = result.filter((item) => item.semester === filter.semester);
+      const sem = filter.semester.toLowerCase();
+      result = result.filter((item) => {
+        const itemSem = item.semester.toLowerCase();
+        if (sem.includes("1") || sem.includes("hk1")) return itemSem.includes("hk1") || itemSem.includes("1");
+        if (sem.includes("2") || sem.includes("hk2")) return itemSem.includes("hk2") || itemSem.includes("2");
+        return itemSem.includes(sem);
+      });
     }
 
     if (filter?.sortBy) {

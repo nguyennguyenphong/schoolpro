@@ -1127,6 +1127,7 @@
       "lectures": "Bài giảng điện tử",
       "outlines": "Đề cương ôn tập",
       "examPreps": "Đề thi & Đề ôn",
+      "outlinesAndExams": "Đề cương & Đề thi",
       "textbooks": "Sách giáo khoa",
       "totalDownloads": "Tổng lượt tải về"
     },
@@ -1137,6 +1138,8 @@
       "allSubjects": "Tất cả môn học",
       "categoryLabel": "Danh mục:",
       "allCategories": "Tất cả danh mục",
+      "academicYearLabel": "Năm học:",
+      "allAcademicYears": "Tất cả năm học",
       "semesterLabel": "Học kỳ:",
       "allSemesters": "Tất cả học kỳ",
       "semester1": "Học kỳ 1",
@@ -1154,7 +1157,8 @@
       "reset": "Đặt lại",
       "resetTooltip": "Đặt lại tất cả bộ lọc",
       "totalSubjectsCount": "Tổng số {{count}} môn học",
-      "totalMaterialsCount": "Tổng số {{count}} tài liệu"
+      "totalMaterialsCount": "Tổng số {{count}} tài liệu",
+      "paginationShowing": "Hiển thị {{count}} trên tổng số {{total}} tài liệu học tập"
     },
     "categories": {
       "lecture": "Bài giảng",

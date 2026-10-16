@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Empty } from "@/components/ui/Empty";
-import { Pagination } from "@/components/ui/Pagination";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import {
+  MaterialSummaryCards,
   MaterialFilterBar,
   MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
   MaterialDetailModal,
+  MaterialsPagination,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
 import { useSubjectMaterials } from "@/modules/students/features/materials/hooks";
@@ -32,6 +33,7 @@ export const SubjectMaterialsPage: React.FC = () => {
     selectedIds,
     isAllCurrentPageSelected,
     setSearchQuery,
+    setAcademicYear,
     setCategory,
     setSemester,
     setSortBy,
@@ -61,8 +63,9 @@ export const SubjectMaterialsPage: React.FC = () => {
 
   const hasActiveFilters = Boolean(
     filter.searchQuery.trim() ||
-      filter.category !== "all" ||
-      filter.semester !== "all" ||
+      (filter.academicYear && filter.academicYear !== "all") ||
+      (filter.semester && filter.semester !== "all") ||
+      (filter.category && filter.category !== "all") ||
       filter.sortBy !== "newest",
   );
 
@@ -166,35 +169,17 @@ export const SubjectMaterialsPage: React.FC = () => {
             <span>{t("card:materials.header.backToSubjects", "Quay lại danh mục môn học")}</span>
           </Button>
         </div>
-
-        {/* Quick summary stats strip */}
-        {summary && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#f0f0f0] text-xs">
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">{t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}:</span>
-              <strong className="text-slate-800 text-sm">{summary.total}</strong>
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">{t("card:materials.summary.lectures", "Bài giảng điện tử")}:</span>
-              <strong className="text-blue-600 text-sm">{summary.lecturesCount}</strong>
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">{t("card:materials.summary.outlines", "Đề cương")} &amp; {t("card:materials.summary.examPreps", "Đề thi")}:</span>
-              <strong className="text-orange-600 text-sm">{summary.outlinesCount + summary.examPrepsCount}</strong>
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">{t("card:materials.summary.totalDownloads", "Lượt tải về")}:</span>
-              <strong className="text-emerald-600 text-sm">{summary.totalDownloads}</strong>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* 2. Filter Bar */}
+      {/* 2. Summary Metric Cards */}
+      <MaterialSummaryCards summary={summary} loading={loading && !summary} />
+
+      {/* 3. Filter Bar */}
       <MaterialFilterBar
         filter={filter}
         summary={summary}
         onSearchChange={setSearchQuery}
+        onAcademicYearChange={setAcademicYear}
         onCategoryChange={setCategory}
         onSemesterChange={setSemester}
         onSortByChange={setSortBy}
@@ -271,24 +256,14 @@ export const SubjectMaterialsPage: React.FC = () => {
         </div>
       )}
 
-      {/* 5. Pagination with Border Framing */}
-      {total > 0 && (
-        <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-xs text-slate-500">
-            Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
-            <strong className="text-slate-800">{total}</strong>
-          </div>
-
-          <Pagination
-            current={filter.page}
-            pageSize={filter.pageSize}
-            total={total}
-            onChange={(page, pageSize) => setPage(page, pageSize)}
-            showSizeChanger
-            pageSizeOptions={["6", "9", "18", "36"]}
-          />
-        </div>
-      )}
+      {/* 5. Synchronized Pagination */}
+      <MaterialsPagination
+        current={filter.page}
+        pageSize={filter.pageSize}
+        total={total}
+        itemsCount={materials.length}
+        onChange={(page, pageSize) => setPage(page, pageSize)}
+      />
 
       {/* 6. Detail Modal */}
       <MaterialDetailModal

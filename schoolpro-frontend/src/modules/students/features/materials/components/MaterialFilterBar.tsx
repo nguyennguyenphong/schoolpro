@@ -1,24 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { SelectAcademicYear } from "@/components/academic-year/SelectAcademicYear";
+import { SelectSemester } from "@/components/semester/SelectSemester";
+import { SelectSort } from "@/components/sort/SelectSort";
 import type {
   MaterialFilter,
   MaterialViewMode,
   MaterialCategory,
   MaterialSummary,
 } from "@/modules/students/features/materials/types";
+import { SelectSubject } from "@/components/subjects/SelectSubject";
 
 interface MaterialFilterBarProps {
   filter: MaterialFilter;
   summary?: MaterialSummary | null;
   subjects?: { code: string; name: string }[];
   onSearchChange: (value: string) => void;
+  onAcademicYearChange: (value: string) => void;
+  onSemesterChange: (value: string, option?: unknown) => void;
   onSubjectChange?: (value: string) => void;
   onCategoryChange: (value: string) => void;
-  onSemesterChange: (value: string) => void;
   onSortByChange: (value: MaterialFilter["sortBy"]) => void;
   onViewModeChange: (mode: MaterialViewMode) => void;
   onResetFilters: () => void;
@@ -30,29 +34,42 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   summary,
   subjects = [],
   onSearchChange,
+  onAcademicYearChange,
+  onSemesterChange,
   onSubjectChange,
   onCategoryChange,
-  onSemesterChange,
   onSortByChange,
   onViewModeChange,
   onResetFilters,
   hasActiveFilters = false,
 }) => {
-  const { t } = useTranslation();
-  const { searchQuery, subject, category, semester, sortBy, viewMode } = filter;
+  const { t } = useTranslation(["card", "button"]);
+  const { searchQuery, academicYear, subject, category, semester, sortBy, viewMode } = filter;
 
+  const [prevSearchQuery, setPrevSearchQuery] = useState<string>(searchQuery);
+  const [localSearch, setLocalSearch] = useState<string>(searchQuery);
+
+  // Synchronize local search state when external searchQuery prop changes (e.g. on resetFilters)
+  if (searchQuery !== prevSearchQuery) {
+    setPrevSearchQuery(searchQuery);
+    setLocalSearch(searchQuery);
+  }
+
+  // Debounce search change by 350ms to eliminate continuous UI jitter and excessive API calls
   useEffect(() => {
     const timer = setTimeout(() => {
-      const inputEl = document.getElementById("material-search-input");
-      inputEl?.focus();
-    }, 50);
+      if (localSearch !== searchQuery) {
+        onSearchChange(localSearch);
+      }
+    }, 350);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [localSearch, searchQuery, onSearchChange]);
 
   const tabs: Array<{
     key: MaterialCategory | "all";
     label: string;
-    icon: "file" | "presentation" | "book" | "fileText";
+    icon: "file" | "presentation" | "book" | "fileText" | "bookmark";
     count?: number;
   }> = [
     {
@@ -63,21 +80,15 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
     },
     {
       key: "lecture",
-      label: t("card:materials.categories.lecture", "Bài giảng"),
+      label: t("card:materials.categories.lecture", "Bài giảng điện tử"),
       icon: "presentation",
       count: summary?.lecturesCount,
     },
     {
       key: "outline",
-      label: t("card:materials.categories.outline", "Đề cương"),
+      label: t("card:materials.categories.outline", "Đề cương ôn tập"),
       icon: "book",
       count: summary?.outlinesCount,
-    },
-    {
-      key: "exam_prep",
-      label: t("card:materials.categories.exam_prep", "Đề thi"),
-      icon: "fileText",
-      count: summary?.examPrepsCount,
     },
     {
       key: "textbook",
@@ -85,26 +96,22 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
       icon: "book",
       count: summary?.textbooksCount,
     },
+    {
+      key: "exam_prep",
+      label: t("card:materials.categories.exam_prep", "Đề thi & Đề ôn"),
+      icon: "fileText",
+      count: summary?.examPrepsCount,
+    },
+    {
+      key: "reference",
+      label: t("card:materials.categories.reference", "Tài liệu tham khảo"),
+      icon: "bookmark",
+    },
   ];
 
   const subjectOptions = [
     { label: t("card:materials.filter.allSubjects", "Tất cả môn học"), value: "all" },
     ...subjects.map((s) => ({ label: s.name, value: s.code })),
-  ];
-
-  const categoryOptions = [
-    { label: t("card:materials.filter.allCategories", "Tất cả danh mục"), value: "all" },
-    { label: t("card:materials.categories.lecture", "Bài giảng"), value: "lecture" },
-    { label: t("card:materials.categories.outline", "Đề cương"), value: "outline" },
-    { label: t("card:materials.categories.textbook", "Sách giáo khoa"), value: "textbook" },
-    { label: t("card:materials.categories.exam_prep", "Đề thi"), value: "exam_prep" },
-    { label: t("card:materials.categories.reference", "Tham khảo"), value: "reference" },
-  ];
-
-  const semesterOptions = [
-    { label: t("card:materials.filter.allSemesters", "Tất cả học kỳ"), value: "all" },
-    { label: t("card:materials.filter.semester1", "Học kỳ 1"), value: "HK1" },
-    { label: t("card:materials.filter.semester2", "Học kỳ 2"), value: "HK2" },
   ];
 
   const sortOptions = [
@@ -115,9 +122,9 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   ];
 
   return (
-    <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
-      {/* 1. Status Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5">
+    <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
+      {/* 1. Category Status Tabs at the top */}
+      <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-[#f0f0f0]">
         {tabs.map((tab) => {
           const isActive = category === tab.key;
           return (
@@ -125,7 +132,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
               key={tab.key}
               type="button"
               onClick={() => onCategoryChange(tab.key)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 isActive
                   ? "bg-blue-600 text-white shadow-xs"
                   : "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -133,7 +140,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             >
               <Icon
                 name={tab.icon}
-                size={14}
+                size={13}
                 className={isActive ? "text-white shrink-0" : "text-slate-400 shrink-0"}
               />
               <span>{tab.label}</span>
@@ -153,27 +160,28 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
         })}
       </div>
 
-      {/* 2. Search Input + View Mode Toggle */}
+      {/* 2. Search input & View Mode Toggle */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div className="flex-1 w-full sm:w-auto">
+        <div className="relative flex-1">
           <Input
             id="material-search-input"
+            name="searchQuery"
             autoFocus
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             placeholder={t("card:materials.filter.searchMaterialPlaceholder", "Tìm kiếm bài giảng, đề cương, tác giả, tài liệu...")}
-            prefix={<Icon name="search" size={14} className="text-slate-400" />}
+            prefix={<Icon name="search" size={15} className="text-slate-400" />}
             allowClear
-            className="rounded-lg text-xs w-full"
+            className="w-full"
           />
         </div>
 
         {/* View Mode Toggle: Grid vs List */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg shrink-0 self-end sm:self-auto">
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
           <button
             type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "grid"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -185,7 +193,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           <button
             type="button"
             onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
               viewMode === "list"
                 ? "bg-white text-blue-600 shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -197,34 +205,20 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
         </div>
       </div>
 
-      {/* 3. Dropdown Filters */}
-      <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
+      {/* 3. Secondary Dropdown Filters: Academic Year, Semester, Subject, Sort & Reset button */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Môn học */}
-          {onSubjectChange && subjects.length > 0 && (
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-                {t("card:materials.filter.subjectLabel", "Môn học:")}
-              </span>
-              <Select
-                value={subject}
-                onChange={onSubjectChange}
-                options={subjectOptions}
-                className="w-40 sm:w-44"
-              />
-            </div>
-          )}
-
-          {/* Danh mục */}
+          {/* Năm học */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.categoryLabel", "Danh mục:")}
+              {t("card:materials.filter.academicYearLabel", "Năm học:")}
             </span>
-            <Select
-              value={category}
-              onChange={(val: string) => onCategoryChange(val as MaterialCategory)}
-              options={categoryOptions}
-              className="w-40 sm:w-44"
+            <SelectAcademicYear
+              value={academicYear || undefined}
+              onChange={onAcademicYearChange}
+              allOptionLabel={t("card:materials.filter.allAcademicYears", "Tất cả năm học")}
+              defaultToCurrent
+              className="w-44 sm:w-50"
             />
           </div>
 
@@ -233,24 +227,40 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
               {t("card:materials.filter.semesterLabel", "Học kỳ:")}
             </span>
-            <Select
-              value={semester}
+            <SelectSemester
+              value={semester || undefined}
+              academicYearId={academicYear}
               onChange={onSemesterChange}
-              options={semesterOptions}
-              className="w-32 sm:w-36"
+              allOptionLabel={t("card:materials.filter.allSemesters", "Tất cả học kỳ")}
+              defaultToCurrent
+              className="w-40 sm:w-46"
             />
           </div>
+
+          {/* Môn học */}
+          {subjects.length > 0 && onSubjectChange && (
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+                {t("card:materials.filter.subjectLabel", "Môn học:")}
+              </span>
+              <SelectSubject
+                value={subject}
+                onChange={onSubjectChange}
+                className="w-44 sm:w-50"
+              />
+            </div>
+          )}
 
           {/* Sắp xếp */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
               {t("card:materials.filter.sortByLabel", "Sắp xếp:")}
             </span>
-            <Select
+            <SelectSort
               value={sortBy}
               onChange={onSortByChange}
               options={sortOptions}
-              className="w-38 sm:w-42"
+              className="w-44 sm:w-52"
             />
           </div>
         </div>
@@ -262,7 +272,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             onClick={onResetFilters}
             title={t("card:materials.filter.resetTooltip", "Đặt lại tất cả bộ lọc")}
           >
-            <Icon name="check" size={13} className="text-rose-500" />
+            <Icon name="refresh" size={13} />
             <span>{t("card:materials.filter.reset", "Đặt lại")}</span>
           </Button>
         )}

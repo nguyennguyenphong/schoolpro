@@ -1127,6 +1127,7 @@
       "lectures": "전자 강의 자료",
       "outlines": "복습 요약본",
       "examPreps": "시험 대비 문제",
+      "outlinesAndExams": "요약본 및 시험문제",
       "textbooks": "디지털 교과서",
       "totalDownloads": "총 다운로드 수"
     },
@@ -1137,6 +1138,8 @@
       "allSubjects": "전체 과목",
       "categoryLabel": "카테고리:",
       "allCategories": "전체 카테고리",
+      "academicYearLabel": "학년도:",
+      "allAcademicYears": "전체 학년도",
       "semesterLabel": "학기:",
       "allSemesters": "전체 학기",
       "semester1": "1학기",
@@ -1154,7 +1157,8 @@
       "reset": "초기화",
       "resetTooltip": "모든 필터 초기화",
       "totalSubjectsCount": "총 {{count}}개 과목",
-      "totalMaterialsCount": "총 {{count}}개 자료"
+      "totalMaterialsCount": "총 {{count}}개 자료",
+      "paginationShowing": "총 {{total}}개 중 {{count}}개 표시"
     },
     "categories": {
       "lecture": "강의 자료",

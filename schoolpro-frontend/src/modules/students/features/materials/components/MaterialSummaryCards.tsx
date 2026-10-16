@@ -1,24 +1,55 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
-import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { MaterialSummary } from "@/modules/students/features/materials/types";
 
 interface MaterialSummaryCardsProps {
-  summary: MaterialSummary;
+  summary?: MaterialSummary | null;
+  loading?: boolean;
 }
 
-export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summary }) => {
-  const { t } = useTranslation();
+/**
+ * Student Material Summary Cards matching the clean, responsive layout of LeaveRequestSummaryCards,
+ * AttendanceSummaryCards, and AssignmentSummaryCards.
+ */
+export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
+  summary,
+  loading = false,
+}) => {
+  const { t } = useTranslation(["card"]);
+
+  if (loading || !summary) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <Card key={i} className="rounded-xl shadow-2xs border-[#f0f0f0]">
+            <div className="animate-pulse">
+              <div className="flex items-center justify-between gap-2">
+                <div className="h-4 w-28 bg-slate-200 rounded" />
+                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200/70 shrink-0" />
+              </div>
+              <div className="flex items-baseline gap-2 mt-2">
+                <div className="h-8 sm:h-9 w-14 bg-slate-200 rounded-lg" />
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   const outlinesAndExams = summary.outlinesCount + summary.examPrepsCount;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số tài liệu */}
-      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all">
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
+            title={t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}
+          >
             {t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -26,26 +57,20 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </span>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight whitespace-nowrap">
             {summary.total}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">tài liệu</span>
-          <Tag color="processing" className="ml-auto m-0 font-semibold">
-            HK1 2026-2027
-          </Tag>
-        </div>
-
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
-          <span>Phạm vi: <strong className="text-slate-700">Khối 11 - Lớp 11A1</strong></span>
-          <span className="text-blue-600 font-medium">Bản chuẩn</span>
         </div>
       </Card>
 
-      {/* 2. Bài giảng điện tử & Slide */}
-      <Card className="rounded-xl shadow-2xs hover:border-indigo-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+      {/* 2. Bài giảng điện tử */}
+      <Card className="rounded-xl shadow-2xs hover:border-indigo-400 transition-all">
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
+            title={t("card:materials.summary.lectures", "Bài giảng điện tử")}
+          >
             {t("card:materials.summary.lectures", "Bài giảng điện tử")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center shrink-0">
@@ -53,53 +78,41 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </span>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 tracking-tight">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 tracking-tight whitespace-nowrap">
             {summary.lecturesCount}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">bài học</span>
-          <Tag color="blue" className="ml-auto m-0 font-semibold">
-            PPTX / Video
-          </Tag>
-        </div>
-
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
-          <span>Nguồn: <strong className="text-slate-700">Tổ Chuyên môn</strong></span>
-          <span className="text-indigo-600 font-medium">Trực quan</span>
         </div>
       </Card>
 
-      {/* 3. Đề cương & Đề thi thử */}
-      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {t("card:materials.summary.outlines", "Đề cương ôn tập")} &amp; {t("card:materials.summary.examPreps", "Đề thi")}
+      {/* 3. Đề cương & Đề thi */}
+      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all">
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
+            title={t("card:materials.summary.outlinesAndExams", "Đề cương & Đề thi")}
+          >
+            {t("card:materials.summary.outlinesAndExams", "Đề cương & Đề thi")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="book" size={17} />
           </span>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight whitespace-nowrap">
             {outlinesAndExams}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">bộ đề</span>
-          <Tag color="warning" className="ml-auto m-0 font-semibold">
-            Có đáp án
-          </Tag>
-        </div>
-
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
-          <span>Trọng tâm: <strong className="text-slate-700">Giữa kỳ & Cuối kỳ</strong></span>
-          <span className="text-amber-600 font-medium">Ôn tập tốt</span>
         </div>
       </Card>
 
       {/* 4. Tổng lượt tải về */}
-      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all">
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
+            title={t("card:materials.summary.totalDownloads", "Tổng lượt tải về")}
+          >
             {t("card:materials.summary.totalDownloads", "Tổng lượt tải về")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
@@ -107,19 +120,10 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </span>
         </div>
 
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight whitespace-nowrap">
             {summary.totalDownloads.toLocaleString()}
           </span>
-          <span className="text-xs text-slate-400 font-semibold">lượt tải</span>
-          <Tag color="success" className="ml-auto m-0 font-semibold">
-            Phổ biến
-          </Tag>
-        </div>
-
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
-          <span>Tài nguyên: <strong className="text-slate-700">Mở miễn phí 100%</strong></span>
-          <span className="text-emerald-600 font-medium">Tốc độ cao</span>
         </div>
       </Card>
     </div>

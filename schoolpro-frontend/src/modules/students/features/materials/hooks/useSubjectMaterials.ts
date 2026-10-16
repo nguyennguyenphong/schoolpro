@@ -20,6 +20,7 @@ export const useSubjectMaterials = () => {
   const initialFilter = useMemo<MaterialFilter>(() => {
     return {
       searchQuery: searchParams.get("q") || "",
+      academicYear: searchParams.get("academicYear") || "all",
       subject: subjectCode || "all",
       category: searchParams.get("category") || "all",
       semester: searchParams.get("semester") || "all",
@@ -57,6 +58,7 @@ export const useSubjectMaterials = () => {
   const updateUrlParams = useCallback((newFilter: MaterialFilter) => {
     const params = new URLSearchParams();
     if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
+    if (newFilter.academicYear && newFilter.academicYear !== "all") params.set("academicYear", newFilter.academicYear);
     if (newFilter.category !== "all") params.set("category", newFilter.category);
     if (newFilter.semester !== "all") params.set("semester", newFilter.semester);
     if (newFilter.sortBy !== "newest") params.set("sort", newFilter.sortBy);
@@ -104,6 +106,7 @@ export const useSubjectMaterials = () => {
         const next = { ...prev, ...partial };
         if (
           partial.searchQuery !== undefined ||
+          partial.academicYear !== undefined ||
           partial.category !== undefined ||
           partial.semester !== undefined
         ) {
@@ -117,6 +120,7 @@ export const useSubjectMaterials = () => {
   );
 
   const setSearchQuery = (query: string) => updateFilter({ searchQuery: query });
+  const setAcademicYear = (ay: string) => updateFilter({ academicYear: ay });
   const setCategory = (cat: string) => updateFilter({ category: cat });
   const setSemester = (sem: string) => updateFilter({ semester: sem });
   const setSortBy = (sort: MaterialFilter["sortBy"]) => updateFilter({ sortBy: sort });
@@ -127,6 +131,7 @@ export const useSubjectMaterials = () => {
   const resetFilters = useCallback(() => {
     const reset: MaterialFilter = {
       searchQuery: "",
+      academicYear: "all",
       subject: subjectCode || "all",
       category: "all",
       semester: "all",
@@ -200,6 +205,7 @@ export const useSubjectMaterials = () => {
     selectedIds,
     isAllCurrentPageSelected,
     setSearchQuery,
+    setAcademicYear,
     setCategory,
     setSemester,
     setSortBy,

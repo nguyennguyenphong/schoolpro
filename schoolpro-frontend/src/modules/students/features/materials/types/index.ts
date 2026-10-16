@@ -67,6 +67,7 @@ export interface MaterialSummary {
 
 export interface MaterialFilter {
   searchQuery: string;
+  academicYear: string;
   subject: string;
   category: string;
   semester: string;
