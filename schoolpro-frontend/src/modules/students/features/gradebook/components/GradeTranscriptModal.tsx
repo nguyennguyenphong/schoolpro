@@ -8,6 +8,7 @@ import type {
   GradeSummary,
   TranscriptData,
 } from "@/modules/students/features/gradebook/types";
+import { useAuthStore } from "@/shared/store/useAuthStore";
 
 interface GradeTranscriptModalProps {
   isOpen: boolean;
@@ -49,6 +50,8 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
         principalName: "ThS. Phạm Quốc Tuấn",
       };
 
+  const profileContext = useAuthStore((state) => state.profileContext);
+
   const currentSummary = transcriptData
     ? {
         gpa: transcriptData.gpa,
@@ -57,10 +60,21 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
         titleAwarded: transcriptData.titleAwarded,
         classPosition: transcriptData.rankInClass,
         totalClassStudents: transcriptData.totalStudents,
-        homeroomTeacher: transcriptData.homeroomTeacher,
+        homeroomTeacher:
+          profileContext?.homeroom_teacher_name ||
+          transcriptData.homeroomTeacher ||
+          "SchoolPro Homeroom Teacher",
         homeroomComment: transcriptData.homeroomComment,
       }
-    : summary;
+    : summary
+      ? {
+          ...summary,
+          homeroomTeacher:
+            profileContext?.homeroom_teacher_name ||
+            summary.homeroomTeacher ||
+            "SchoolPro Homeroom Teacher",
+        }
+      : null;
 
   const certification = {
     isDigitallySigned: true,

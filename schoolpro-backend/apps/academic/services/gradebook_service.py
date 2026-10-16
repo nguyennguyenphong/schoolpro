@@ -27,7 +27,7 @@ _SEEDED_SUBJECT_GRADES: list[dict[str, Any]] = [
         "code": "605392632441",
         "name": "Toán học 11",
         "teacher": "ThS. Hoàng Văn Nam",
-        "teacherTitle": "Tổ trưởng Chuyên môn Toán - Giáo viên chủ nhiệm",
+        "teacherTitle": "Tổ trưởng Chuyên môn Toán",
         "periodsPerWeek": 4,
         "evaluationType": "score",
         "regularScores": [
@@ -628,13 +628,13 @@ _SEEDED_SUMMARY: dict[str, Any] = {
     "totalSubjectsCount": 13,
     "passSubjectsCount": 2,
     "totalCreditsOrPeriods": 29,
-    "homeroomTeacher": "ThS. Hoàng Văn Nam",
-    "homeroomComment": "Học sinh Nguyễn Văn An chăm ngoan, lễ phép, có ý thức tự giác và kỷ luật học tập rất cao. Tiếp thu bài nhanh, tư duy logic sắc bén ở các môn khoa học tự nhiên và có tiến bộ vượt bậc ở môn Tiếng Anh. Tích cực tham gia các hoạt động tập thể của lớp 11A1.",
-    "titleAwarded": "Học sinh Giỏi Học kỳ 1 • Khối 11",
+    "homeroomTeacher": "Cô Trần Thị Văn",
+    "homeroomComment": "Học sinh Đỗ Minh Quân chăm ngoan, lễ phép, có ý thức tự giác và kỷ luật học tập rất cao. Tiếp thu bài nhanh, tư duy logic sắc bén ở các môn khoa học tự nhiên và có tiến bộ vượt bậc ở môn Tiếng Anh. Tích cực tham gia các hoạt động tập thể của lớp 10A1.",
+    "titleAwarded": "Học sinh Giỏi Học kỳ 1 • Khối 10",
     "attendanceRate": 98.8,
     "academicYear": "Năm học 2025 - 2026",
     "semester": "Học kỳ 1",
-    "className": "Lớp 11A1",
+    "className": "Lớp 10A1",
 }
 
 
@@ -690,14 +690,16 @@ class GradebookService:
         try:
             if user and getattr(user, "is_authenticated", False):
                 student = (
-                    Student.objects.select_related("user", "current_class")
+                    Student.objects.select_related("user", "current_class__homeroom_teacher__user")
                     .filter(user=user)
                     .first()
                 )
                 if student:
                     return student
                 if getattr(user, "is_staff", False) or getattr(user, "is_superuser", False):
-                    return Student.objects.select_related("user", "current_class").first()
+                    return Student.objects.select_related(
+                        "user", "current_class__homeroom_teacher__user"
+                    ).first()
         except Exception as exc:
             logger.debug("Database Student resolution skipped: %s", exc)
         return None
@@ -713,6 +715,20 @@ class GradebookService:
         Retrieves top-level academic metrics (GPA, academic rating, conduct, rank, remarks).
         """
         student = cls.resolve_student(user)
+        homeroom_teacher_name = None
+        class_name = None
+        if student and student.current_class:
+            class_name = (
+                f"Lớp {student.current_class.name}"
+                if not student.current_class.name.startswith("Lớp ")
+                else student.current_class.name
+            )
+            if (
+                student.current_class.homeroom_teacher
+                and student.current_class.homeroom_teacher.user
+            ):
+                homeroom_teacher_name = student.current_class.homeroom_teacher.user.full_name
+
         try:
             if student:
                 query = StudentTermSummary.objects.filter(student=student)
@@ -743,17 +759,73 @@ class GradebookService:
 
                 record = query.order_by("-created_at").first()
                 if record:
+                    ht_name = homeroom_teacher_name
+                    if (
+                        not ht_name
+                        and record.school_class
+                        and record.school_class.homeroom_teacher
+                        and record.school_class.homeroom_teacher.user
+                    ):
+                        ht_name = record.school_class.homeroom_teacher.user.full_name
+                    if not ht_name:
+                        ht_name = _SEEDED_SUMMARY["homeroomTeacher"]
+
+                    c_name = class_name
+                    if not c_name and record.school_class:
+                        c_name = (
+                            f"Lớp {record.school_class.name}"
+                            if not record.school_class.name.startswith("Lớp ")
+                            else record.school_class.name
+                        )
+                    if not c_name:
+                        c_name = _SEEDED_SUMMARY["className"]
+
+                    from apps.academic.models.grading import ReportCard
+
+                    rc_qs = ReportCard.objects.filter(student=student, semester=record.semester)
+                    total_subjects = rc_qs.count() or 12
+                    excellent_count = rc_qs.filter(average_score__gte=8.0).count()
+                    pass_count = rc_qs.filter(
+                        Q(subject_eval="pass") | Q(average_score__gte=5.0)
+                    ).count()
+
+                    class_students_count = 10
+                    if student.current_class:
+                        class_students_count = (
+                            Student.objects.filter(current_class=student.current_class).count()
+                            or 10
+                        )
+
+                    rating_code = record.academic_rating or "GOOD"
+                    rating_map = {
+                        "OUTSTANDING": "Học sinh Xuất sắc",
+                        "GOOD": "Học sinh Giỏi",
+                        "FAIR": "Học sinh Khá",
+                        "PASS": "Đạt",
+                        "FAIL": "Chưa đạt",
+                    }
+                    academic_rank = rating_map.get(rating_code, rating_code)
+
+                    conduct_code = record.conduct_rating or "EXCELLENT"
+                    conduct_map = {
+                        "EXCELLENT": "Tốt",
+                        "GOOD": "Khá",
+                        "PASS": "Đạt",
+                        "FAIL": "Chưa đạt",
+                    }
+                    conduct_rank = conduct_map.get(conduct_code, conduct_code)
+
                     return {
                         "gpa": float(record.gpa_score or 0.0),
-                        "academicRank": record.academic_rating or "Học sinh Giỏi",
-                        "conductRank": record.conduct_rating or "Tốt",
+                        "academicRank": academic_rank,
+                        "conductRank": conduct_rank,
                         "classPosition": record.rank_in_class or 1,
-                        "totalClassStudents": 42,
-                        "excellentSubjectsCount": 10,
-                        "totalSubjectsCount": 13,
-                        "passSubjectsCount": 2,
+                        "totalClassStudents": class_students_count,
+                        "excellentSubjectsCount": excellent_count,
+                        "totalSubjectsCount": total_subjects,
+                        "passSubjectsCount": pass_count,
                         "totalCreditsOrPeriods": 29,
-                        "homeroomTeacher": "ThS. Hoàng Văn Nam",
+                        "homeroomTeacher": ht_name,
                         "homeroomComment": record.homeroom_remarks
                         or _SEEDED_SUMMARY["homeroomComment"],
                         "titleAwarded": record.honor_title or _SEEDED_SUMMARY["titleAwarded"],
@@ -766,16 +838,54 @@ class GradebookService:
                         "semester": (
                             record.semester.name if record.semester else _SEEDED_SUMMARY["semester"]
                         ),
-                        "className": (
-                            record.school_class.name
-                            if record.school_class
-                            else _SEEDED_SUMMARY["className"]
-                        ),
+                        "className": c_name,
                     }
+
+                # If student exists and a specific semester was requested that has no records
+                if semester and semester != "all":
+                    from apps.academic.models.grading import ReportCard
+
+                    sem_obj = cls._resolve_semester(semester)
+                    has_rc = False
+                    if sem_obj:
+                        has_rc = ReportCard.objects.filter(
+                            student=student, semester=sem_obj
+                        ).exists()
+                    elif cls._is_uuid(semester):
+                        has_rc = ReportCard.objects.filter(
+                            student=student, semester_id=semester
+                        ).exists()
+
+                    if not has_rc:
+                        empty_summary = dict(_SEEDED_SUMMARY)
+                        empty_summary["gpa"] = 0.0
+                        empty_summary["academicRank"] = "Chưa xếp loại"
+                        empty_summary["conductRank"] = "Chưa đánh giá"
+                        empty_summary["classPosition"] = 0
+                        empty_summary["excellentSubjectsCount"] = 0
+                        empty_summary["totalSubjectsCount"] = 0
+                        empty_summary["passSubjectsCount"] = 0
+                        empty_summary["titleAwarded"] = "Chưa có danh hiệu"
+                        empty_summary["homeroomComment"] = "Chưa có nhận xét học kỳ này."
+                        if homeroom_teacher_name:
+                            empty_summary["homeroomTeacher"] = homeroom_teacher_name
+                        if class_name:
+                            empty_summary["className"] = class_name
+                        if sem_obj:
+                            empty_summary["semester"] = sem_obj.name
+                        if academic_year and academic_year != "all":
+                            ay_obj = cls._resolve_academic_year(academic_year)
+                            if ay_obj:
+                                empty_summary["academicYear"] = ay_obj.name
+                        return empty_summary
         except Exception as exc:
             logger.debug("DB StudentTermSummary query fallback: %s", exc)
 
         summary_data = dict(_SEEDED_SUMMARY)
+        if homeroom_teacher_name:
+            summary_data["homeroomTeacher"] = homeroom_teacher_name
+        if class_name:
+            summary_data["className"] = class_name
         # Dynamically reflect selected semester and academic year names if available
         try:
             if academic_year and academic_year != "all":
@@ -815,73 +925,138 @@ class GradebookService:
         sort_by: str | None = None,
     ) -> list[dict[str, Any]]:
         """
-        Retrieves list of subject grade records with dynamic search, filter, and sorting.
+        Retrieves list of subject grade records for authenticated student with dynamic search, filter, and sorting.
+        Queries real database ReportCards and ClassSubjectTeachers.
         """
-        results = [dict(item) for item in _SEEDED_SUBJECT_GRADES]
+        results: list[dict[str, Any]] = []
+        has_db_records = False
 
-        # Dynamically map actual subject codes from database core.subjects if available
         try:
-            from apps.master.models import Subject
+            student = cls.resolve_student(user)
+            if student:
+                from apps.academic.models.grading import ReportCard
+                from apps.core.models.organization import ClassSubjectTeacher
 
-            db_subjects = list(Subject.objects.all())
-            if db_subjects:
-                for r in results:
-                    r_name = r.get("name", "").lower()
-                    for s in db_subjects:
-                        s_name = s.name.lower()
-                        norm_r = (
-                            r_name.replace("học", "").replace("lý", "lí").replace("11", "").strip()
+                rc_query = ReportCard.objects.filter(student=student)
+
+                if semester and semester != "all":
+                    sem_obj = cls._resolve_semester(semester)
+                    if sem_obj:
+                        rc_query = rc_query.filter(Q(semester=sem_obj) | Q(semester_id=sem_obj.id))
+                    elif cls._is_uuid(semester):
+                        rc_query = rc_query.filter(semester_id=semester)
+                    else:
+                        rc_query = rc_query.filter(
+                            Q(semester__code__iexact=semester)
+                            | Q(semester__name__icontains=semester)
                         )
-                        norm_s = s_name.replace("học", "").replace("lý", "lí").strip()
-                        if (
-                            norm_s == norm_r
-                            or norm_s in norm_r
-                            or norm_r in norm_s
-                            or (s.short_name and s.short_name.lower() in norm_r)
-                        ):
-                            if s.code:
-                                r["code"] = s.code
-                            break
-        except Exception as exc:
-            logger.debug("DB Subject code resolution fallback: %s", exc)
+                else:
+                    from apps.master.models import Semester
 
-        # 0. Semester & Academic Year Filter
-        # If semester is specified (e.g. Semester 2 / HK2, or unmatched UUID), return empty if no grades recorded
-        if semester and semester != "all":
-            sem_str = semester.strip().lower()
-            sem_obj = cls._resolve_semester(semester)
-            # Check if requested semester is Term 2 / HK2
-            is_term_2 = (
-                (sem_obj and sem_obj.order_no == 2)
-                or sem_str in ("hk2", "2", "học kỳ 2", "hoc ky 2")
-                or "sem_20262027_2" in sem_str
-                or sem_str.endswith("000000000002")
-            )
-            # If user asks for Term 2 and no Term 2 scores are recorded yet, return empty list
-            if is_term_2:
-                results = []
+                    current_sem = Semester.objects.filter(is_current=True).first()
+                    if current_sem:
+                        rc_query = rc_query.filter(semester=current_sem)
 
-        if academic_year and academic_year != "all":
-            ay_str = academic_year.strip().lower()
-            ay_obj = cls._resolve_academic_year(academic_year)
-            # If academic year is explicitly filtered and doesn't match default seeded year (2025-2026 or 2026-2027)
-            if ay_obj:
-                code_lower = ay_obj.code.lower()
-                name_lower = ay_obj.name.lower()
-                is_known_year = (
-                    "2026" in code_lower
-                    or "2025" in code_lower
-                    or "2026" in name_lower
-                    or "2025" in name_lower
-                    or "2026" in ay_str
-                    or "2025" in ay_str
+                if academic_year and academic_year != "all":
+                    ay_obj = cls._resolve_academic_year(academic_year)
+                    if ay_obj:
+                        rc_query = rc_query.filter(
+                            Q(academic_year=ay_obj) | Q(academic_year_id=ay_obj.id)
+                        )
+                    elif cls._is_uuid(academic_year):
+                        rc_query = rc_query.filter(academic_year_id=academic_year)
+                    else:
+                        rc_query = rc_query.filter(
+                            Q(academic_year__code__iexact=academic_year)
+                            | Q(academic_year__name__icontains=academic_year)
+                        )
+
+                rc_list = list(
+                    rc_query.select_related(
+                        "subject", "school_class", "semester", "academic_year"
+                    ).order_by("subject__order_no", "subject__code")
                 )
-                if not is_known_year:
-                    results = []
-            else:
-                is_known_year = "2026" in ay_str or "2025" in ay_str
-                if not is_known_year:
-                    results = []
+
+                cst_map = {}
+                if student.current_class:
+                    for cst in ClassSubjectTeacher.objects.filter(
+                        school_class=student.current_class
+                    ).select_related("teacher__user", "subject"):
+                        cst_map[cst.subject_id] = cst
+
+                if rc_list:
+                    has_db_records = True
+                    for rc in rc_list:
+                        subject = rc.subject
+                        cst = cst_map.get(subject.id)
+                        teacher_name = (
+                            cst.teacher.user.full_name
+                            if (cst and cst.teacher and cst.teacher.user)
+                            else "Giáo viên bộ môn"
+                        )
+                        teacher_title = (
+                            cst.teacher.qualification
+                            if (cst and cst.teacher and cst.teacher.qualification)
+                            else "Giáo viên bộ môn"
+                        )
+                        periods = cst.periods_per_week if cst else 3
+                        details = rc.score_details or {}
+                        eval_type = (
+                            "feedback"
+                            if rc.average_score is None
+                            or details.get("evaluationType") == "feedback"
+                            else "score"
+                        )
+
+                        avg_float = (
+                            float(rc.average_score) if rc.average_score is not None else None
+                        )
+                        grade_level = (
+                            "excellent"
+                            if (avg_float is not None and avg_float >= 8.0)
+                            else (
+                                "good"
+                                if (avg_float is not None and avg_float >= 6.5)
+                                else ("average" if avg_float is not None else "pass")
+                            )
+                        )
+                        feedback_res = (
+                            rc.subject_eval
+                            if eval_type == "feedback"
+                            else (
+                                "pass" if (avg_float is not None and avg_float >= 5.0) else "fail"
+                            )
+                        )
+
+                        results.append(
+                            {
+                                "id": str(rc.id),
+                                "code": subject.code or str(subject.id),
+                                "name": subject.name,
+                                "teacher": teacher_name,
+                                "teacherTitle": teacher_title,
+                                "periodsPerWeek": periods,
+                                "evaluationType": eval_type,
+                                "regularScores": details.get("regularScores", []),
+                                "midtermScore": details.get("midtermScore"),
+                                "finalScore": details.get("finalScore"),
+                                "averageScore": avg_float,
+                                "gradeLevel": grade_level,
+                                "feedbackResult": feedback_res,
+                                "teacherComment": rc.teacher_comment or "",
+                                "classAverage": details.get("classAverage", 7.5),
+                                "highestScore": details.get("highestScore", 9.5),
+                            }
+                        )
+                else:
+                    # Student found, but no scores exist in DB for this query/term
+                    # "môn nào có điểm thì hiển thị không có thì thôi" -> results remain []
+                    has_db_records = True
+        except Exception as exc:
+            logger.debug("Database ReportCard resolution skipped: %s", exc)
+
+        if not has_db_records:
+            results = [dict(item) for item in _SEEDED_SUBJECT_GRADES]
 
         # 1. Search Query filter (name, code, teacher, comment)
         if search_query and search_query.strip():

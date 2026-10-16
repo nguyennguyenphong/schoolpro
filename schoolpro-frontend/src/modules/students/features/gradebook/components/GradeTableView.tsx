@@ -22,7 +22,9 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
   const displaySemester =
     summary?.semester || academicContext?.semester || "Học kỳ 1";
   const displayHomeroomTeacher =
-    summary?.homeroomTeacher || profileContext?.homeroom_teacher_name || "Thầy Nguyễn Văn Nam";
+    profileContext?.homeroom_teacher_name ||
+    summary?.homeroomTeacher ||
+    "SchoolPro Homeroom Teacher";
   const formatScore = (score?: number): string => {
     if (score === undefined || score === null) return "--";
     return score.toFixed(1);
@@ -264,7 +266,7 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
                 <Table.Summary.Cell index={4} colSpan={3}>
                   <div className="text-xs text-slate-600 py-1">
                     Xếp loại rèn luyện: <strong>{summary.conductRank}</strong>
-                    <span className="mx-2">•</span>
+                    <span className="mx-2">|</span>
                     Xếp hạng lớp: <strong>{summary.classPosition}</strong> / {summary.totalClassStudents} học sinh
                   </div>
                 </Table.Summary.Cell>

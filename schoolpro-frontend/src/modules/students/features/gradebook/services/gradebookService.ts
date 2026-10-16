@@ -11,6 +11,7 @@ import {
   mockGradeSummary,
   mockSubjectGrades,
 } from "@/modules/students/features/gradebook/services/mock/mockGradebookData";
+import { useAuthStore } from "@/shared/store/useAuthStore";
 
 class GradebookService {
   /**
@@ -184,15 +185,24 @@ class GradebookService {
       // Graceful fallback
     }
 
+    const authState = useAuthStore.getState();
+    const profile = authState.profileContext;
+    const user = authState.user;
+    const homeroomTeacher =
+      profile?.homeroom_teacher_name || mockGradeSummary.homeroomTeacher;
+    const className =
+      (profile?.class_name ? `Lớp ${profile.class_name}` : mockGradeSummary.className) ||
+      "Lớp 10A1";
+
     return {
-      studentName: "Nguyễn Văn An",
-      studentCode: "SV202688",
-      className: "11A1",
+      studentName: user?.full_name || user?.name || "Đỗ Minh Quân",
+      studentCode: profile?.student_code || user?.username || "105494395865",
+      className: className,
       academicYear: params?.academicYear || "2025-2026",
       semester: params?.semester || "Học kỳ 1",
       schoolName: "Trường Trung học Phổ thông Chuyên Khoa học Tự nhiên",
       principalName: "PGS.TS. Trần Quốc Tuấn",
-      homeroomTeacher: mockGradeSummary.homeroomTeacher,
+      homeroomTeacher: homeroomTeacher,
       homeroomComment: mockGradeSummary.homeroomComment,
       gpa: mockGradeSummary.gpa,
       academicRank: mockGradeSummary.academicRank,
