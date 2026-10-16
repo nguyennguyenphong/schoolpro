@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
+import { useAuthStore } from "@/shared/store/useAuthStore";
 import type {
   SubjectGradeItem,
   GradeSummary,
@@ -15,6 +16,7 @@ import { gradebookService } from "@/modules/students/features/gradebook/services
 export const useGradebook = () => {
   const { t } = useTranslation(["card", "common", "button"]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const academicContext = useAuthStore((state) => state.academicContext);
 
   // Read initial filter from URL params once on mount
   const initialFilter = useMemo<GradeFilter>(() => {
@@ -23,12 +25,14 @@ export const useGradebook = () => {
       searchParams.get("academic_year_id") ||
       searchParams.get("academicYearId") ||
       searchParams.get("year") ||
+      academicContext?.academic_year_id ||
       "";
 
     const urlSemester =
       searchParams.get("semester") ||
       searchParams.get("semester_id") ||
       searchParams.get("semesterId") ||
+      academicContext?.semester_id ||
       "";
 
     return {
@@ -152,26 +156,61 @@ export const useGradebook = () => {
   const setSortBy = useCallback((sortBy: GradeFilter["sortBy"]) => updateFilter({ sortBy }), [updateFilter]);
   const setViewMode = useCallback((viewMode: GradeViewMode) => updateFilter({ viewMode }), [updateFilter]);
 
+  // Keep track of default active academic year and semester
+  const initialAcademicYearRef = useRef<string | null>(null);
+  const initialSemesterRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!initialAcademicYearRef.current && filter.academicYear) {
+      initialAcademicYearRef.current = filter.academicYear;
+    }
+  }, [filter.academicYear]);
+
+  useEffect(() => {
+    if (!initialSemesterRef.current && filter.semester) {
+      initialSemesterRef.current = filter.semester;
+    }
+  }, [filter.semester]);
+
+  const defaultYear = academicContext?.academic_year_id || initialAcademicYearRef.current || "";
+  const defaultSemester = academicContext?.semester_id || initialSemesterRef.current || "";
+
+  const isYearFiltered = Boolean(
+    filter.academicYear &&
+      (defaultYear ? filter.academicYear !== defaultYear : filter.academicYear !== "all"),
+  );
+
+  const isSemesterFiltered = Boolean(
+    filter.semester &&
+      (defaultSemester ? filter.semester !== defaultSemester : filter.semester !== "all"),
+  );
+
+  const hasActiveFilters = Boolean(
+    filter.searchQuery.trim() ||
+      filter.classification !== "all" ||
+      filter.sortBy !== "gpa_desc" ||
+      isYearFiltered ||
+      isSemesterFiltered,
+  );
+
   const resetFilters = useCallback(() => {
+    const targetYear = academicContext?.academic_year_id || initialAcademicYearRef.current || "";
+    const targetSemester = academicContext?.semester_id || initialSemesterRef.current || "";
+
     const reset: GradeFilter = {
       searchQuery: "",
-      academicYear: "",
-      semester: "",
+      academicYear: targetYear,
+      semester: targetSemester,
       classification: "all",
       sortBy: "gpa_desc",
       viewMode: "table",
     };
     setFilter(reset);
-    setSearchParams(new URLSearchParams(), { replace: true });
-  }, [setSearchParams]);
-
-  const hasActiveFilters = Boolean(
-    filter.searchQuery.trim() ||
-      (filter.academicYear && filter.academicYear !== "all") ||
-      (filter.semester && filter.semester !== "all") ||
-      filter.classification !== "all" ||
-      filter.sortBy !== "gpa_desc",
-  );
+    const params = new URLSearchParams();
+    if (targetYear) params.set("academicYear", targetYear);
+    if (targetSemester) params.set("semester", targetSemester);
+    setSearchParams(params, { replace: true });
+  }, [academicContext, setSearchParams]);
 
   // Modal actions
   const openSubjectDetail = (item: SubjectGradeItem) => {

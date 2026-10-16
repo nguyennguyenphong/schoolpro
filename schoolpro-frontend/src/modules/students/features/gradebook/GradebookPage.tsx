@@ -135,7 +135,6 @@ export const GradebookPage: React.FC = () => {
           <GradeTableView
             grades={grades}
             summary={summary}
-            onOpenDetail={openSubjectDetail}
           />
         </div>
       )}

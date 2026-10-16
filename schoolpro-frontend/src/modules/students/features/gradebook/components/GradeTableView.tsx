@@ -1,307 +1,264 @@
 import React from "react";
-import { Table, Tag } from "antd";
+import { Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import type { SubjectGradeItem, GradeSummary } from "@/modules/students/features/gradebook/types";
 
 interface GradeTableViewProps {
   grades: SubjectGradeItem[];
   summary: GradeSummary | null;
-  onOpenDetail: (item: SubjectGradeItem) => void;
+  onOpenDetail?: (item: SubjectGradeItem) => void;
 }
 
 export const GradeTableView: React.FC<GradeTableViewProps> = ({
   grades,
   summary,
-  onOpenDetail,
 }) => {
-  const { t } = useTranslation(["card"]);
-
-  const getAverageScoreBadge = (score?: number, isFeedback?: boolean, feedbackResult?: string) => {
-    if (isFeedback) {
-      const isPass = feedbackResult === "pass";
-      return (
-        <span className="inline-flex items-center justify-center gap-1 px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
-          <Icon name="check" size={12} />
-          <span>
-            {isPass ? t("card:gradebook.levels.pass") : t("card:gradebook.levels.fail")}
-          </span>
-        </span>
-      );
-    }
-
-    if (score === undefined) return <span className="text-slate-300">--</span>;
-
-    let badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
-    if (score >= 9.0) {
-      badgeColor = "bg-indigo-50 text-indigo-700 border-indigo-200";
-    } else if (score >= 8.0) {
-      badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
-    } else if (score >= 6.5) {
-      badgeColor = "bg-amber-50 text-amber-800 border-amber-200";
-    } else {
-      badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
-    }
-
-    return (
-      <span
-        className={`inline-flex items-center justify-center font-black text-sm min-w-[40px] py-0.5 px-2 rounded border shadow-2xs whitespace-nowrap ${badgeColor}`}
-      >
-        {score.toFixed(1)}
-      </span>
-    );
+  const formatScore = (score?: number): string => {
+    if (score === undefined || score === null) return "--";
+    return score.toFixed(1);
   };
 
-  const getGradeLevelTag = (item: SubjectGradeItem) => {
+  const getEvaluationResultText = (item: SubjectGradeItem): string => {
     if (item.evaluationType === "feedback") {
-      return (
-        <Tag color="green" className="m-0 font-semibold text-xs whitespace-nowrap">
-          {item.feedbackResult === "pass"
-            ? t("card:gradebook.levels.pass")
-            : t("card:gradebook.levels.fail")}
-        </Tag>
-      );
+      return item.feedbackResult === "pass" ? "Đạt" : "Chưa đạt";
     }
 
     const score = item.averageScore || 0;
-    if (score >= 8.0) {
-      return (
-        <Tag color="blue" className="m-0 font-bold text-xs whitespace-nowrap">
-          {t("card:gradebook.levels.excellent")}
-        </Tag>
-      );
-    }
-    if (score >= 6.5) {
-      return (
-        <Tag color="orange" className="m-0 font-semibold text-xs whitespace-nowrap">
-          {t("card:gradebook.levels.good")}
-        </Tag>
-      );
-    }
-    return (
-      <Tag color="red" className="m-0 font-semibold text-xs whitespace-nowrap">
-        {t("card:gradebook.levels.average")}
-      </Tag>
-    );
+    if (score >= 8.0) return "Học sinh Giỏi";
+    if (score >= 6.5) return "Học sinh Khá";
+    if (score >= 5.0) return "Đạt";
+    return "Chưa đạt";
   };
 
   const columns: TableColumnsType<SubjectGradeItem> = [
     {
-      title: "STT",
+      title: "Số thứ tự",
       key: "index",
-      width: 55,
+      width: 75,
       align: "center",
-      className: "whitespace-nowrap",
-      render: (_value, _record, index) => (
-        <span className="text-slate-400 font-medium text-xs">{index + 1}</span>
-      ),
+      fixed: "left",
+      render: (_value, _record, index) => index + 1,
     },
     {
-      title: t("card:gradebook.table.subject"),
+      title: "Môn học",
       key: "name",
-      width: 220,
-      className: "whitespace-nowrap",
+      width: 190,
+      fixed: "left",
       render: (_value, record) => (
-        <div className="space-y-0.5">
-          <div className="flex items-center gap-2 whitespace-nowrap">
-            <span className="font-bold text-slate-900 text-sm">
-              {record.name}
-            </span>
-            <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-bold">
-              {record.code}
-            </span>
-          </div>
-          <div className="text-xs text-slate-400 whitespace-nowrap flex items-center gap-1">
-            <Icon name="user" size={11} className="text-slate-400" />
-            <span>{record.teacher}</span>
-            <span>•</span>
-            <span>
-              {t("card:gradebook.detailModal.periodsPerWeek", {
-                count: record.periodsPerWeek,
-              })}
-            </span>
-          </div>
+        <div>
+          <div className="font-bold text-slate-900">{record.name}</div>
+          <div className="text-xs text-slate-500">Mã môn học: {record.code}</div>
         </div>
       ),
     },
     {
-      title: `${t("card:gradebook.table.regularScores")} (x1)`,
-      dataIndex: "regularScores",
-      key: "regularScores",
-      align: "center",
-      width: 175,
-      className: "whitespace-nowrap",
-      render: (scores: SubjectGradeItem["regularScores"]) => (
-        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-          {scores.map((s) => (
-            <span
-              key={s.id}
-              className="inline-flex items-center justify-center w-7 h-7 rounded bg-slate-100 text-slate-800 font-semibold text-xs"
-              title={`${s.name}: ${s.score}`}
-            >
-              {s.score.toFixed(1)}
-            </span>
-          ))}
+      title: "Giáo viên bộ môn",
+      key: "teacher",
+      width: 170,
+      render: (_value, record) => (
+        <div>
+          <div className="font-medium text-slate-800">{record.teacher}</div>
+          {record.teacherTitle && (
+            <div className="text-xs text-slate-500">{record.teacherTitle}</div>
+          )}
         </div>
       ),
     },
     {
-      title: `${t("card:gradebook.table.midtermScore")} (x2)`,
+      title: "Đánh giá thường xuyên (Hệ số 1)",
+      children: [
+        {
+          title: "Lần 1",
+          key: "regularScore1",
+          align: "center",
+          width: 75,
+          render: (_value, record) => {
+            if (record.evaluationType === "feedback") return "--";
+            return record.regularScores[0]
+              ? formatScore(record.regularScores[0].score)
+              : "--";
+          },
+        },
+        {
+          title: "Lần 2",
+          key: "regularScore2",
+          align: "center",
+          width: 75,
+          render: (_value, record) => {
+            if (record.evaluationType === "feedback") return "--";
+            return record.regularScores[1]
+              ? formatScore(record.regularScores[1].score)
+              : "--";
+          },
+        },
+        {
+          title: "Lần 3",
+          key: "regularScore3",
+          align: "center",
+          width: 75,
+          render: (_value, record) => {
+            if (record.evaluationType === "feedback") return "--";
+            return record.regularScores[2]
+              ? formatScore(record.regularScores[2].score)
+              : "--";
+          },
+        },
+        {
+          title: "Lần 4",
+          key: "regularScore4",
+          align: "center",
+          width: 75,
+          render: (_value, record) => {
+            if (record.evaluationType === "feedback") return "--";
+            return record.regularScores[3]
+              ? formatScore(record.regularScores[3].score)
+              : "--";
+          },
+        },
+      ],
+    },
+    {
+      title: "Đánh giá giữa kỳ (Hệ số 2)",
       dataIndex: "midtermScore",
       key: "midtermScore",
       align: "center",
       width: 110,
-      className: "whitespace-nowrap",
-      render: (midterm?: SubjectGradeItem["midtermScore"]) =>
-        midterm ? (
-          <span
-            className="inline-block px-2 py-0.5 rounded bg-amber-50 text-amber-800 font-bold text-xs border border-amber-200 whitespace-nowrap"
-            title={`${midterm.name}: ${midterm.score}`}
-          >
-            {midterm.score.toFixed(1)}
-          </span>
-        ) : (
-          <span className="text-slate-300">--</span>
-        ),
+      render: (midterm?: SubjectGradeItem["midtermScore"], record?: SubjectGradeItem) => {
+        if (record?.evaluationType === "feedback") return "--";
+        return midterm ? formatScore(midterm.score) : "--";
+      },
     },
     {
-      title: `${t("card:gradebook.table.finalScore")} (x3)`,
+      title: "Đánh giá cuối kỳ (Hệ số 3)",
       dataIndex: "finalScore",
       key: "finalScore",
       align: "center",
       width: 110,
-      className: "whitespace-nowrap",
-      render: (final?: SubjectGradeItem["finalScore"]) =>
-        final ? (
-          <span
-            className="inline-block px-2 py-0.5 rounded bg-purple-50 text-purple-800 font-bold text-xs border border-purple-200 whitespace-nowrap"
-            title={`${final.name}: ${final.score}`}
-          >
-            {final.score.toFixed(1)}
-          </span>
-        ) : (
-          <span className="text-slate-300">--</span>
-        ),
+      render: (final?: SubjectGradeItem["finalScore"], record?: SubjectGradeItem) => {
+        if (record?.evaluationType === "feedback") return "--";
+        return final ? formatScore(final.score) : "--";
+      },
     },
     {
-      title: t("card:gradebook.table.averageScore"),
+      title: "Điểm trung bình môn học",
       dataIndex: "averageScore",
       key: "averageScore",
       align: "center",
-      width: 115,
-      className: "whitespace-nowrap",
-      render: (_value, record) =>
-        getAverageScoreBadge(
-          record.averageScore,
-          record.evaluationType === "feedback",
-          record.feedbackResult,
-        ),
+      width: 120,
+      render: (_value, record) => {
+        if (record.evaluationType === "feedback") {
+          return record.feedbackResult === "pass" ? "Đạt" : "Chưa đạt";
+        }
+        return <span className="font-bold text-slate-900">{formatScore(record.averageScore)}</span>;
+      },
     },
     {
-      title: t("card:gradebook.table.gradeLevel"),
+      title: "Xếp loại môn học",
       dataIndex: "gradeLevel",
       key: "gradeLevel",
       align: "center",
-      width: 115,
-      className: "whitespace-nowrap",
-      render: (_value, record) => getGradeLevelTag(record),
+      width: 120,
+      render: (_value, record) => getEvaluationResultText(record),
     },
     {
-      title: t("card:gradebook.table.action"),
-      key: "action",
-      align: "center",
-      width: 95,
-      className: "whitespace-nowrap",
-      render: (_value, record) => (
-        <Button
-          variant="outline"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenDetail(record);
-          }}
-          className="text-slate-700 font-medium"
-        >
-          {t("card:gradebook.table.viewDetail")}
-        </Button>
-      ),
+      title: "Thống kê lớp học",
+      children: [
+        {
+          title: "Điểm trung bình lớp",
+          dataIndex: "classAverage",
+          key: "classAverage",
+          align: "center",
+          width: 100,
+          render: (classAvg?: number, record?: SubjectGradeItem) => {
+            if (record?.evaluationType === "feedback" || classAvg === undefined) {
+              return "--";
+            }
+            return formatScore(classAvg);
+          },
+        },
+        {
+          title: "Điểm cao nhất lớp",
+          dataIndex: "highestScore",
+          key: "highestScore",
+          align: "center",
+          width: 100,
+          render: (highest?: number, record?: SubjectGradeItem) => {
+            if (record?.evaluationType === "feedback" || highest === undefined) {
+              return "--";
+            }
+            return formatScore(highest);
+          },
+        },
+      ],
+    },
+    {
+      title: "Nhận xét của giáo viên bộ môn",
+      dataIndex: "teacherComment",
+      key: "teacherComment",
+      width: 280,
+      render: (comment: string) => comment || "--",
     },
   ];
 
   return (
-    <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs overflow-hidden">
+    <div className="bg-white rounded-lg shadow-2xs">
       <Table<SubjectGradeItem>
         rowKey="id"
+        bordered
         columns={columns}
         dataSource={grades}
         pagination={false}
-        scroll={{ x: 1150 }}
+        scroll={{ x: 1450 }}
         locale={{
           emptyText: (
-            <div className="py-12 text-center text-slate-500 space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mx-auto">
-                <Icon name="book" size={22} />
+            <div className="py-12 text-center text-slate-500">
+              <div className="text-base font-semibold text-slate-700">
+                Không tìm thấy môn học nào phù hợp
               </div>
-              <h4 className="text-sm font-bold text-slate-800 mb-0">
-                {t("card:gradebook.empty.noMatchingTitle")}
-              </h4>
-              <p className="text-xs text-slate-400 mb-0 max-w-sm mx-auto">
-                {t("card:gradebook.empty.noMatchingDesc")}
-              </p>
+              <div className="text-xs text-slate-400 mt-1">
+                Vui lòng thử thay đổi điều kiện tìm kiếm hoặc chọn học kỳ khác.
+              </div>
             </div>
           ),
         }}
-        onRow={(record) => ({
-          onClick: () => onOpenDetail(record),
-          className: "cursor-pointer",
-        })}
         summary={() =>
           summary ? (
             <Table.Summary fixed>
-              <Table.Summary.Row className="bg-slate-50/80 font-bold">
-                <Table.Summary.Cell index={0} colSpan={2} className="whitespace-nowrap">
-                  <div className="py-1 px-1">
-                    <span className="text-sm font-bold text-blue-900 whitespace-nowrap">
+              <Table.Summary.Row className="bg-slate-50 font-bold">
+                <Table.Summary.Cell index={0} colSpan={3}>
+                  <div className="py-1 text-slate-800">
+                    <div>
                       {summary.academicYear} • {summary.semester}
-                    </span>
-                    <div className="text-xs text-slate-500 font-normal mt-0.5 whitespace-nowrap">
-                      {t("card:gradebook.summary.homeroomTeacher")}{" "}
-                      <strong>{summary.homeroomTeacher}</strong>
+                    </div>
+                    <div className="text-xs font-normal text-slate-500 mt-0.5">
+                      Giáo viên chủ nhiệm: <strong>{summary.homeroomTeacher}</strong>
                     </div>
                   </div>
                 </Table.Summary.Cell>
 
-                <Table.Summary.Cell index={1} colSpan={3} align="center" className="whitespace-nowrap">
-                  <span className="text-xs text-slate-600 font-normal whitespace-nowrap">
-                    {t("card:gradebook.summary.excellentSubjectsText", {
-                      excellent: summary.excellentSubjectsCount,
-                      total: summary.totalSubjectsCount,
-                    })}
+                <Table.Summary.Cell index={1} colSpan={6} align="center">
+                  <span className="text-xs font-normal text-slate-600">
+                    Tổng số môn học: {summary.totalSubjectsCount} | Môn Giỏi: {summary.excellentSubjectsCount} | Môn Đạt: {summary.passSubjectsCount}
                   </span>
                 </Table.Summary.Cell>
 
-                <Table.Summary.Cell index={2} align="center" className="whitespace-nowrap">
-                  <span className="inline-flex items-center justify-center font-black text-sm px-2.5 py-1 rounded bg-blue-600 text-white whitespace-nowrap">
+                <Table.Summary.Cell index={2} align="center">
+                  <span className="font-bold text-slate-900">
                     {summary.gpa.toFixed(2)}
                   </span>
                 </Table.Summary.Cell>
 
-                <Table.Summary.Cell index={3} align="center" className="whitespace-nowrap">
-                  <Tag color="geekblue" className="font-bold m-0 whitespace-nowrap">
+                <Table.Summary.Cell index={3} align="center">
+                  <span className="font-semibold text-slate-800">
                     {summary.academicRank}
-                  </Tag>
+                  </span>
                 </Table.Summary.Cell>
 
-                <Table.Summary.Cell index={4} colSpan={2} className="whitespace-nowrap">
-                  <div className="text-xs text-slate-600 py-1 whitespace-nowrap">
-                    {t("card:gradebook.summary.conductRankTitle")}:{" "}
-                    <strong className="text-emerald-700">{summary.conductRank}</strong>
+                <Table.Summary.Cell index={4} colSpan={3}>
+                  <div className="text-xs text-slate-600 py-1">
+                    Xếp loại rèn luyện: <strong>{summary.conductRank}</strong>
                     <span className="mx-2">•</span>
-                    {t("card:gradebook.summary.classRankText", {
-                      rank: summary.classPosition,
-                      total: summary.totalClassStudents,
-                    })}
+                    Xếp hạng lớp: <strong>{summary.classPosition}</strong> / {summary.totalClassStudents} học sinh
                   </div>
                 </Table.Summary.Cell>
               </Table.Summary.Row>

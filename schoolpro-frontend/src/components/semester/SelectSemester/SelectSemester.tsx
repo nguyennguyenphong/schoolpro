@@ -99,10 +99,16 @@ export const SelectSemester = ({
 
   const hasAutoSelectedRef = useRef(false);
 
-  // Reset auto-select flag when academicYearId changes
+  // Reset auto-select flag when academicYearId changes or value is cleared
   useEffect(() => {
     hasAutoSelectedRef.current = false;
   }, [academicYearId]);
+
+  useEffect(() => {
+    if (value === undefined || value === "") {
+      hasAutoSelectedRef.current = false;
+    }
+  }, [value]);
 
   // Automatically select the active semester if defaultToCurrent is enabled and value is unset
   useEffect(() => {

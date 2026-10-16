@@ -79,6 +79,13 @@ export const SelectAcademicYear = ({
 
   const hasAutoSelectedRef = useRef(false);
 
+  // Reset auto-select flag when value is cleared
+  useEffect(() => {
+    if (value === undefined || value === "") {
+      hasAutoSelectedRef.current = false;
+    }
+  }, [value]);
+
   // Automatically select the active academic year if defaultToCurrent is enabled and value is unset
   useEffect(() => {
     if (
