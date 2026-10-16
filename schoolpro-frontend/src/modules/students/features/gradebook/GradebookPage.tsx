@@ -41,38 +41,10 @@ export const GradebookPage: React.FC = () => {
     resetFilters,
   } = useGradebook();
 
-  const isHk2 =
-    filter.semester === "HK2" ||
-    filter.semester === "2" ||
-    filter.semester.toLowerCase().includes("sem_20262027_2") ||
-    filter.semester.endsWith("000000000002");
-
-  const isHk1 =
-    filter.semester === "HK1" ||
-    filter.semester === "1" ||
-    filter.semester.toLowerCase().includes("sem_20262027_1") ||
-    filter.semester.endsWith("000000000001");
-
-  const semesterLabel = isHk1
-    ? t("card:gradebook.filters.semester1")
-    : isHk2
-    ? t("card:gradebook.filters.semester2")
-    : summary?.semester || t("card:gradebook.filters.allSemesters");
-
-  const academicYearLabel =
-    filter.academicYear &&
-    !filter.academicYear.includes("-0000") &&
-    !filter.academicYear.includes("-402")
-      ? filter.academicYear
-      : summary?.academicYear || "2026 - 2027";
-
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
       {/* 1. Unified Page Header with Breadcrumb & Actions matching LeaveRequests & Attendance */}
       <GradebookPageHeader
-        className={summary?.className || "Lớp 11A1"}
-        semesterText={`${semesterLabel} • ${academicYearLabel}`}
-        studentCode="SV202688"
         onOpenTranscript={openTranscriptModal}
         onExportPdf={handleExportPdf}
       />
