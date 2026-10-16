@@ -14,7 +14,9 @@
     "address": "Enter residential address...",
     "currentPassword": "Enter current password...",
     "newPassword": "Enter new password (min 8 characters)...",
-    "confirmPassword": "Re-enter new password..."
+    "confirmPassword": "Re-enter new password...",
+    "academicYear": "Select academic year",
+    "semester": "Select semester"
   },
   "filter": {
     "category": "Category:",
@@ -25,6 +27,8 @@
     "allDepartments": "All departments",
     "allCategories": "All categories",
     "allPriorities": "All priorities",
+    "allAcademicYears": "All academic years",
+    "allSemesters": "All semesters",
     "resetTooltip": "Reset all filters"
   },
   "categories": {

@@ -160,8 +160,12 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
                   <th className="py-2.5 px-3">
                     {t("card:gradebook.detailModal.evaluationMethod")}
                   </th>
-                  <th className="py-2.5 px-3">Ngày</th>
-                  <th className="py-2.5 px-3 text-right">Điểm</th>
+                  <th className="py-2.5 px-3">
+                    {t("card:gradebook.detailModal.dateColumn")}
+                  </th>
+                  <th className="py-2.5 px-3 text-right">
+                    {t("card:gradebook.detailModal.scoreColumn")}
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">

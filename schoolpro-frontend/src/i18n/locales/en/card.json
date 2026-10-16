@@ -934,6 +934,7 @@
     "filters": {
       "searchPlaceholder": "Search by subject, code, teacher, comments...",
       "academicYear": "Academic Year",
+      "allAcademicYears": "All Academic Years",
       "semester": "Semester",
       "allSemesters": "All Semesters",
       "semester1": "Semester 1",
@@ -953,19 +954,43 @@
       "reset": "Reset Filters"
     },
     "table": {
+      "index": "#",
       "subject": "Subject",
+      "subjectCode": "Subject Code: {{code}}",
       "teacher": "Teacher",
+      "teacherHeading": "Subject Teacher",
       "periods": "Periods/week",
       "regularScores": "Regular Assessment",
+      "regularScoresHeading": "Continuous Assessment (Weight 1)",
+      "regularScore1": "Attempt 1",
+      "regularScore2": "Attempt 2",
+      "regularScore3": "Attempt 3",
+      "regularScore4": "Attempt 4",
       "midtermScore": "Mid-term",
+      "midtermScoreHeading": "Midterm Assessment (Weight 2)",
       "finalScore": "Final",
+      "finalScoreHeading": "Final Assessment (Weight 3)",
       "averageScore": "Subject GPA",
+      "averageScoreHeading": "Subject Average Score",
       "gradeLevel": "Classification",
+      "gradeLevelHeading": "Subject Classification",
+      "classStatsHeading": "Class Statistics",
+      "classAverageScore": "Class Average",
+      "highestScore": "Highest in Class",
       "teacherComment": "Teacher Comments",
+      "teacherCommentHeading": "Teacher's Remarks",
       "action": "Actions",
       "viewDetail": "Details",
       "classAverageShort": "Class: {{score}}",
-      "highestShort": "High: {{score}}"
+      "highestShort": "High: {{score}}",
+      "summarySubjectsStats": "Total Subjects: {{total}} | Excellent: {{excellent}} | Passed: {{pass}}",
+      "conductRankLabel": "Conduct Classification:",
+      "classRankSummary": "Class Rank: {{rank}} / {{total}} students",
+      "studentExcellent": "Excellent Student",
+      "studentGood": "Good Student",
+      "regularScoreAbbr": "CA{{index}}",
+      "midtermScoreAbbr": "Mid",
+      "finalScoreAbbr": "Final"
     },
     "levels": {
       "excellent": "Excellent / Good",
@@ -993,7 +1018,9 @@
       "classComparisonTitle": "Class Grade Distribution",
       "classAverageLabel": "Class Average:",
       "highestScoreLabel": "Class Highest:",
-      "teacherCommentTitle": "Teacher's Evaluation & Feedback"
+      "teacherCommentTitle": "Teacher's Evaluation & Feedback",
+      "dateColumn": "Date",
+      "scoreColumn": "Score"
     },
     "transcriptModal": {
       "nationalHeader": "SOCIALIST REPUBLIC OF VIETNAM",
@@ -1019,6 +1046,8 @@
       "digitalSignatureNotice": "This electronic report card is verified and digitally signed in accordance with MOET regulations",
       "digitalSignature": "Valid Digital Signature:",
       "verifiedAt": "Timestamp:",
+      "authority": "National Electronic Transcript Portal (MOET)",
+      "stt": "No.",
       "close": "Close",
       "print": "Print Transcript",
       "downloadPdf": "Download Signed PDF"

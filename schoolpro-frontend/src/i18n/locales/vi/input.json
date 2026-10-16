@@ -14,7 +14,9 @@
     "address": "Nhập địa chỉ cư trú...",
     "currentPassword": "Nhập mật khẩu hiện tại...",
     "newPassword": "Nhập mật khẩu mới (tối thiểu 8 ký tự)...",
-    "confirmPassword": "Nhập lại mật khẩu mới..."
+    "confirmPassword": "Nhập lại mật khẩu mới...",
+    "academicYear": "Chọn năm học",
+    "semester": "Chọn học kỳ"
   },
   "filter": {
     "category": "Chuyên mục:",
@@ -25,6 +27,8 @@
     "allDepartments": "Tất cả đơn vị",
     "allCategories": "Tất cả chuyên mục",
     "allPriorities": "Tất cả mức độ",
+    "allAcademicYears": "Tất cả năm học",
+    "allSemesters": "Tất cả học kỳ",
     "resetTooltip": "Đặt lại tất cả bộ lọc"
   },
   "categories": {

@@ -932,8 +932,9 @@
       "periodsText": "週 {{count}} コマ"
     },
     "filters": {
-      "searchPlaceholder": "科目名、コード、教員、所見等で検索...",
+      "searchPlaceholder": "科目名、コード、教員、所见等で検索...",
       "academicYear": "年度",
+      "allAcademicYears": "全年度",
       "semester": "学期",
       "allSemesters": "全学期",
       "semester1": "第1学期",
@@ -953,19 +954,43 @@
       "reset": "条件リセット"
     },
     "table": {
+      "index": "#",
       "subject": "科目",
+      "subjectCode": "科目コード: {{code}}",
       "teacher": "担当教員",
+      "teacherHeading": "教科担当教員",
       "periods": "コマ数/週",
       "regularScores": "平常点評価",
+      "regularScoresHeading": "平常点評価 (比重 1)",
+      "regularScore1": "第1回",
+      "regularScore2": "第2回",
+      "regularScore3": "第3回",
+      "regularScore4": "第4回",
       "midtermScore": "中間点",
+      "midtermScoreHeading": "中間評価 (比重 2)",
       "finalScore": "期末点",
+      "finalScoreHeading": "期末評価 (比重 3)",
       "averageScore": "科目平均",
+      "averageScoreHeading": "科目平均点",
       "gradeLevel": "区分",
+      "gradeLevelHeading": "科目成績区分",
+      "classStatsHeading": "学級統計",
+      "classAverageScore": "学級平均点",
+      "highestScore": "学級最高点",
       "teacherComment": "担当教員所見",
+      "teacherCommentHeading": "担当教員の所見",
       "action": "操作",
       "viewDetail": "詳細",
       "classAverageShort": "学級平均: {{score}}",
-      "highestShort": "最高: {{score}}"
+      "highestShort": "最高: {{score}}",
+      "summarySubjectsStats": "総科目数: {{total}} | 優秀: {{excellent}} | 合格: {{pass}}",
+      "conductRankLabel": "行動評価:",
+      "classRankSummary": "学級順位: {{rank}} / {{total}} 名",
+      "studentExcellent": "優等生",
+      "studentGood": "良好生",
+      "regularScoreAbbr": "平常{{index}}",
+      "midtermScoreAbbr": "中間",
+      "finalScoreAbbr": "期末"
     },
     "levels": {
       "excellent": "優秀 / 優",
@@ -993,7 +1018,9 @@
       "classComparisonTitle": "クラス得点分布比較",
       "classAverageLabel": "クラス平均:",
       "highestScoreLabel": "クラス最高点:",
-      "teacherCommentTitle": "担当教員の所見・フィードバック"
+      "teacherCommentTitle": "担当教員の所見・フィードバック",
+      "dateColumn": "日付",
+      "scoreColumn": "得点"
     },
     "transcriptModal": {
       "nationalHeader": "ベトナム社会主義共和国",
@@ -1019,6 +1046,8 @@
       "digitalSignatureNotice": "本電子指導要録は教育訓練省の規定に則り、電子署名により認証されています",
       "digitalSignature": "有効な電子署名:",
       "verifiedAt": "認証日時:",
+      "authority": "国家電子成績証明書ポータル (教育訓練省)",
+      "stt": "番号",
       "close": "閉じる",
       "print": "印刷",
       "downloadPdf": "署名付きPDF出力"

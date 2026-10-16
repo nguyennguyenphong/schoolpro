@@ -14,7 +14,9 @@
     "address": "输入居住地址...",
     "currentPassword": "输入当前密码...",
     "newPassword": "输入新密码 (至少8位)...",
-    "confirmPassword": "再次输入新密码..."
+    "confirmPassword": "再次输入新密码...",
+    "academicYear": "选择学年",
+    "semester": "选择学期"
   },
   "filter": {
     "category": "分类:",
@@ -25,6 +27,8 @@
     "allDepartments": "所有部门",
     "allCategories": "所有分类",
     "allPriorities": "所有优先级",
+    "allAcademicYears": "全部学年",
+    "allSemesters": "全部学期",
     "resetTooltip": "重置所有筛选"
   },
   "categories": {

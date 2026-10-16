@@ -934,6 +934,7 @@
     "filters": {
       "searchPlaceholder": "과목명, 코드, 담당 교사, 평가의견 검색...",
       "academicYear": "학년도",
+      "allAcademicYears": "전체 학년도",
       "semester": "학기",
       "allSemesters": "전체 학기",
       "semester1": "1학기",
@@ -953,19 +954,43 @@
       "reset": "필터 초기화"
     },
     "table": {
+      "index": "#",
       "subject": "과목",
+      "subjectCode": "과목 코드: {{code}}",
       "teacher": "담당 교사",
+      "teacherHeading": "담당 교과 교사",
       "periods": "주당 시수",
       "regularScores": "수행평가/상시평가",
+      "regularScoresHeading": "상시/수행평가 (가중치 1)",
+      "regularScore1": "1차",
+      "regularScore2": "2차",
+      "regularScore3": "3차",
+      "regularScore4": "4차",
       "midtermScore": "중간고사",
+      "midtermScoreHeading": "중간평가 (가중치 2)",
       "finalScore": "기말고사",
+      "finalScoreHeading": "기말평가 (가중치 3)",
       "averageScore": "과목 평균",
+      "averageScoreHeading": "과목 평균 점수",
       "gradeLevel": "등급",
+      "gradeLevelHeading": "과목 등급",
+      "classStatsHeading": "학급 통계",
+      "classAverageScore": "학급 평균",
+      "highestScore": "학급 최고점",
       "teacherComment": "교과 세부능력 및 특기사항",
+      "teacherCommentHeading": "담당 교사 종합의견",
       "action": "작업",
       "viewDetail": "상세보기",
       "classAverageShort": "학급평균: {{score}}",
-      "highestShort": "최고점: {{score}}"
+      "highestShort": "최고점: {{score}}",
+      "summarySubjectsStats": "전체 과목: {{total}} | 우수 과목: {{excellent}} | 이수 과목: {{pass}}",
+      "conductRankLabel": "행동특성 및 종합의견:",
+      "classRankSummary": "학급 석차: {{rank}} / {{total}}명",
+      "studentExcellent": "우수 학생",
+      "studentGood": "보통 학생",
+      "regularScoreAbbr": "수행{{index}}",
+      "midtermScoreAbbr": "중간",
+      "finalScoreAbbr": "기말"
     },
     "levels": {
       "excellent": "매우 우수 / 우수",
@@ -993,7 +1018,9 @@
       "classComparisonTitle": "학급 성적 분포 비교",
       "classAverageLabel": "학급 평균 점수:",
       "highestScoreLabel": "학급 최고 점수:",
-      "teacherCommentTitle": "담당 교사 평가 및 특기사항"
+      "teacherCommentTitle": "담당 교사 평가 및 특기사항",
+      "dateColumn": "일자",
+      "scoreColumn": "점수"
     },
     "transcriptModal": {
       "nationalHeader": "베트남 사회주의 공화국",
@@ -1019,6 +1046,8 @@
       "digitalSignatureNotice": "본 전자 생활기록부는 교육훈련부 규정에 따라 전자 서명으로 공인 인증되었습니다",
       "digitalSignature": "유효한 전자 서명:",
       "verifiedAt": "인증 일시:",
+      "authority": "국가 전자 학교생활기록부 포털 (교육훈련부)",
+      "stt": "번호",
       "close": "닫기",
       "print": "성적표 인쇄",
       "downloadPdf": "전자서명 PDF 다운로드"

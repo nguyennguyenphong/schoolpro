@@ -934,6 +934,7 @@
     "filters": {
       "searchPlaceholder": "按科目名称、代码、任课教师或评语搜索...",
       "academicYear": "学年",
+      "allAcademicYears": "全部学年",
       "semester": "学期",
       "allSemesters": "全部学期",
       "semester1": "第1学期",
@@ -953,19 +954,43 @@
       "reset": "重置筛选"
     },
     "table": {
+      "index": "#",
       "subject": "科目",
+      "subjectCode": "科目代码: {{code}}",
       "teacher": "任课教师",
+      "teacherHeading": "学科任课教师",
       "periods": "周课时",
       "regularScores": "平时成绩",
+      "regularScoresHeading": "平时考核 (权重 1)",
+      "regularScore1": "第1次",
+      "regularScore2": "第2次",
+      "regularScore3": "第3次",
+      "regularScore4": "第4次",
       "midtermScore": "期中考",
+      "midtermScoreHeading": "期中考核 (权重 2)",
       "finalScore": "期末考",
+      "finalScoreHeading": "期末考核 (权重 3)",
       "averageScore": "科目平均分",
+      "averageScoreHeading": "科目平均分",
       "gradeLevel": "评级",
+      "gradeLevelHeading": "科目评级",
+      "classStatsHeading": "班级统计",
+      "classAverageScore": "班级平均分",
+      "highestScore": "班级最高分",
       "teacherComment": "教师评语",
+      "teacherCommentHeading": "任课教师评语",
       "action": "操作",
       "viewDetail": "详情",
       "classAverageShort": "班均: {{score}}",
-      "highestShort": "最高: {{score}}"
+      "highestShort": "最高: {{score}}",
+      "summarySubjectsStats": "科目总数: {{total}} | 优秀科目: {{excellent}} | 达标科目: {{pass}}",
+      "conductRankLabel": "品行评定:",
+      "classRankSummary": "班级排名: {{rank}} / {{total}} 名学生",
+      "studentExcellent": "优秀学生",
+      "studentGood": "良好学生",
+      "regularScoreAbbr": "平时{{index}}",
+      "midtermScoreAbbr": "期中",
+      "finalScoreAbbr": "期末"
     },
     "levels": {
       "excellent": "优秀 / 优",
@@ -993,7 +1018,9 @@
       "classComparisonTitle": "班级成绩分布对照",
       "classAverageLabel": "班级平均分:",
       "highestScoreLabel": "班级最高分:",
-      "teacherCommentTitle": "任课教师综合评价与反馈"
+      "teacherCommentTitle": "任课教师综合评价与反馈",
+      "dateColumn": "日期",
+      "scoreColumn": "得分"
     },
     "transcriptModal": {
       "nationalHeader": "越南社会主义共和国",
@@ -1019,6 +1046,8 @@
       "digitalSignatureNotice": "本电子学籍簿已依据越南教育培训部规范完成数字签名与时间戳认证",
       "digitalSignature": "有效数字签名:",
       "verifiedAt": "认证时间戳:",
+      "authority": "国家电子学籍档案门户 (教育部)",
+      "stt": "序号",
       "close": "关闭",
       "print": "打印成绩单",
       "downloadPdf": "下载数字签名PDF"

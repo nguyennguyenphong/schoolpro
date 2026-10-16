@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectAcademicYearProps,
@@ -58,9 +59,9 @@ export const SelectAcademicYear = ({
   customAcademicYears,
   showCodePrefix = false,
   includeAllOption = true,
-  allOptionLabel = "Tất cả năm học",
+  allOptionLabel,
   allOptionValue = "all",
-  placeholder = "Chọn năm học",
+  placeholder,
   allowClear = true,
   showSearch = true,
   disabled = false,
@@ -69,6 +70,10 @@ export const SelectAcademicYear = ({
   defaultToCurrent = false,
   ...props
 }: SelectAcademicYearProps) => {
+  const { t } = useTranslation(["input"]);
+  const effectiveAllOptionLabel = allOptionLabel ?? t("input:filter.allAcademicYears", "Tất cả năm học");
+  const effectivePlaceholder = placeholder ?? t("input:placeholder.academicYear", "Chọn năm học");
+
   const { academicYears, currentAcademicYear, isLoading } = useAcademicYear({
     filterCurrentOnly,
     excludeLocked,
@@ -147,10 +152,10 @@ export const SelectAcademicYear = ({
     if (shouldIncludeAllOption) {
       return [
         {
-          label: allOptionLabel,
+          label: effectiveAllOptionLabel,
           value: allOptionValue,
           key: allOptionValue,
-          title: allOptionLabel,
+          title: effectiveAllOptionLabel,
         },
         ...yearOptions,
       ];
@@ -161,7 +166,7 @@ export const SelectAcademicYear = ({
     academicYears,
     showCodePrefix,
     shouldIncludeAllOption,
-    allOptionLabel,
+    effectiveAllOptionLabel,
     allOptionValue,
   ]);
 
@@ -169,7 +174,7 @@ export const SelectAcademicYear = ({
     if (!onChange) return;
     if (val === undefined && shouldIncludeAllOption && value !== undefined) {
       onChange(allOptionValue, {
-        label: allOptionLabel,
+        label: effectiveAllOptionLabel,
         value: allOptionValue,
       });
       return;
@@ -179,7 +184,7 @@ export const SelectAcademicYear = ({
 
   return (
     <Select
-      placeholder={placeholder}
+      placeholder={effectivePlaceholder}
       allowClear={allowClear}
       showSearch={
         showSearch

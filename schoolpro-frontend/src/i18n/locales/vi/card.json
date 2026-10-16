@@ -934,6 +934,7 @@
     "filters": {
       "searchPlaceholder": "Tìm kiếm theo môn học, mã môn, giáo viên, nhận xét...",
       "academicYear": "Niên khóa",
+      "allAcademicYears": "Tất cả năm học",
       "semester": "Học kỳ",
       "allSemesters": "Tất cả học kỳ",
       "semester1": "Học kỳ 1",
@@ -953,19 +954,43 @@
       "reset": "Đặt lại bộ lọc"
     },
     "table": {
+      "index": "#",
       "subject": "Môn học",
+      "subjectCode": "Mã môn học: {{code}}",
       "teacher": "Giáo viên",
+      "teacherHeading": "Giáo viên bộ môn",
       "periods": "Số tiết/tuần",
       "regularScores": "Đánh giá thường xuyên",
+      "regularScoresHeading": "Đánh giá thường xuyên (Hệ số 1)",
+      "regularScore1": "Lần 1",
+      "regularScore2": "Lần 2",
+      "regularScore3": "Lần 3",
+      "regularScore4": "Lần 4",
       "midtermScore": "Giữa kỳ",
+      "midtermScoreHeading": "Đánh giá giữa kỳ (Hệ số 2)",
       "finalScore": "Cuối kỳ",
+      "finalScoreHeading": "Đánh giá cuối kỳ (Hệ số 3)",
       "averageScore": "ĐTB môn",
+      "averageScoreHeading": "Điểm trung bình môn học",
       "gradeLevel": "Xếp loại",
+      "gradeLevelHeading": "Xếp loại môn học",
+      "classStatsHeading": "Thống kê lớp học",
+      "classAverageScore": "Điểm trung bình lớp",
+      "highestScore": "Điểm cao nhất lớp",
       "teacherComment": "Nhận xét giáo viên bộ môn",
+      "teacherCommentHeading": "Nhận xét của giáo viên bộ môn",
       "action": "Thao tác",
       "viewDetail": "Chi tiết",
       "classAverageShort": "Lớp: {{score}}",
-      "highestShort": "Cao: {{score}}"
+      "highestShort": "Cao: {{score}}",
+      "summarySubjectsStats": "Tổng số môn học: {{total}} | Môn Giỏi: {{excellent}} | Môn Đạt: {{pass}}",
+      "conductRankLabel": "Xếp loại rèn luyện:",
+      "classRankSummary": "Xếp hạng lớp: {{rank}} / {{total}} học sinh",
+      "studentExcellent": "Học sinh Giỏi",
+      "studentGood": "Học sinh Khá",
+      "regularScoreAbbr": "TX{{index}}",
+      "midtermScoreAbbr": "GK",
+      "finalScoreAbbr": "CK"
     },
     "levels": {
       "excellent": "Tốt / Giỏi",
@@ -993,7 +1018,9 @@
       "classComparisonTitle": "Thống kê so sánh phổ điểm lớp",
       "classAverageLabel": "Điểm trung bình lớp:",
       "highestScoreLabel": "Điểm cao nhất lớp:",
-      "teacherCommentTitle": "Nhận xét của Giáo viên bộ môn"
+      "teacherCommentTitle": "Nhận xét của Giáo viên bộ môn",
+      "dateColumn": "Ngày",
+      "scoreColumn": "Điểm"
     },
     "transcriptModal": {
       "nationalHeader": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
@@ -1019,6 +1046,8 @@
       "digitalSignatureNotice": "Học bạ điện tử được xác thực và ký số bảo mật theo quy định của Bộ GD&ĐT",
       "digitalSignature": "Chữ ký số hợp lệ:",
       "verifiedAt": "Thời điểm chứng thực:",
+      "authority": "Cổng Học bạ Điện tử Quốc gia (Bộ GD&ĐT)",
+      "stt": "STT",
       "close": "Đóng",
       "print": "In Bảng điểm",
       "downloadPdf": "Tải PDF Ký số"

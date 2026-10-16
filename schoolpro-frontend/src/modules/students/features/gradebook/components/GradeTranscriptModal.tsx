@@ -80,7 +80,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
     isDigitallySigned: true,
     digitalSignature: transcriptData?.digitalSignature || "MOET-BGDDT-CERT-2026-X992",
     verifiedAt: transcriptData?.verifiedAt || new Date().toISOString(),
-    authority: "Cổng Học bạ Điện tử Quốc gia (Bộ GD&ĐT)",
+    authority: t("card:gradebook.transcriptModal.authority"),
   };
 
   return (
@@ -172,7 +172,9 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
           <table className="w-full text-left text-xs border-collapse border border-slate-300">
             <thead className="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider">
               <tr>
-                <th className="py-2.5 px-3 w-10 text-center border border-slate-300">STT</th>
+                <th className="py-2.5 px-3 w-10 text-center border border-slate-300">
+                  {t("card:gradebook.transcriptModal.stt")}
+                </th>
                 <th className="py-2.5 px-3 border border-slate-300">
                   {t("card:gradebook.table.subject")}
                 </th>

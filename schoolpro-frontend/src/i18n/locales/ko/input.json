@@ -14,7 +14,9 @@
     "address": "거주지 주소 입력...",
     "currentPassword": "현재 비밀번호 입력...",
     "newPassword": "새 비밀번호 입력 (최소 8자)...",
-    "confirmPassword": "새 비밀번호 다시 입력..."
+    "confirmPassword": "새 비밀번호 다시 입력...",
+    "academicYear": "학년도 선택",
+    "semester": "학기 선택"
   },
   "filter": {
     "category": "카테고리:",
@@ -25,6 +27,8 @@
     "allDepartments": "모든 부서",
     "allCategories": "모든 카테고리",
     "allPriorities": "모든 우선순위",
+    "allAcademicYears": "전체 학년도",
+    "allSemesters": "전체 학기",
     "resetTooltip": "모든 필터 초기화"
   },
   "categories": {

@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Select } from "@/components/ui/Select";
 import type {
   SelectSemesterProps,
@@ -77,9 +78,9 @@ export const SelectSemester = ({
   customSemesters,
   showCodePrefix = false,
   includeAllOption = true,
-  allOptionLabel = "Tất cả học kỳ",
+  allOptionLabel,
   allOptionValue = "all",
-  placeholder = "Chọn học kỳ",
+  placeholder,
   allowClear = true,
   showSearch = true,
   disabled = false,
@@ -88,6 +89,10 @@ export const SelectSemester = ({
   defaultToCurrent = false,
   ...props
 }: SelectSemesterProps) => {
+  const { t } = useTranslation(["input"]);
+  const effectiveAllOptionLabel = allOptionLabel ?? t("input:filter.allSemesters", "Tất cả học kỳ");
+  const effectivePlaceholder = placeholder ?? t("input:placeholder.semester", "Chọn học kỳ");
+
   const { semesters, currentSemester, isLoading } = useSemester({
     academicYearId,
     schoolId,
@@ -233,10 +238,10 @@ export const SelectSemester = ({
     if (shouldIncludeAllOption) {
       return [
         {
-          label: allOptionLabel,
+          label: effectiveAllOptionLabel,
           value: allOptionValue,
           key: allOptionValue,
-          title: allOptionLabel,
+          title: effectiveAllOptionLabel,
         },
         ...semesterOptions,
       ];
@@ -247,7 +252,7 @@ export const SelectSemester = ({
     semesters,
     showCodePrefix,
     shouldIncludeAllOption,
-    allOptionLabel,
+    effectiveAllOptionLabel,
     allOptionValue,
   ]);
 
@@ -255,7 +260,7 @@ export const SelectSemester = ({
     if (!onChange) return;
     if (val === undefined && shouldIncludeAllOption && value !== undefined) {
       onChange(allOptionValue, {
-        label: allOptionLabel,
+        label: effectiveAllOptionLabel,
         value: allOptionValue,
       });
       return;
@@ -265,7 +270,7 @@ export const SelectSemester = ({
 
   return (
     <Select
-      placeholder={placeholder}
+      placeholder={effectivePlaceholder}
       allowClear={allowClear}
       showSearch={
         showSearch

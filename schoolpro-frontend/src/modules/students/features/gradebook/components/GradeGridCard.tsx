@@ -134,23 +134,26 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
                 className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-semibold border border-[#f0f0f0]"
                 title={`${sc.name}: ${sc.score}`}
               >
-                TX{i + 1}: <strong>{sc.score}</strong>
+                {t("card:gradebook.table.regularScoreAbbr", { index: i + 1 })}:{" "}
+                <strong>{sc.score}</strong>
               </span>
             ))}
             {item.midtermScore && (
               <span
                 className="bg-amber-50 text-amber-800 px-2 py-0.5 rounded text-[11px] font-bold border border-amber-200"
-                title={`GK: ${item.midtermScore.score}`}
+                title={`${t("card:gradebook.table.midtermScore")}: ${item.midtermScore.score}`}
               >
-                GK: <strong>{item.midtermScore.score}</strong>
+                {t("card:gradebook.table.midtermScoreAbbr")}:{" "}
+                <strong>{item.midtermScore.score}</strong>
               </span>
             )}
             {item.finalScore && (
               <span
                 className="bg-purple-50 text-purple-800 px-2 py-0.5 rounded text-[11px] font-bold border border-purple-200"
-                title={`CK: ${item.finalScore.score}`}
+                title={`${t("card:gradebook.table.finalScore")}: ${item.finalScore.score}`}
               >
-                CK: <strong>{item.finalScore.score}</strong>
+                {t("card:gradebook.table.finalScoreAbbr")}:{" "}
+                <strong>{item.finalScore.score}</strong>
               </span>
             )}
           </div>

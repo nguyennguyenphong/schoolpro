@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { SelectSemester } from "@/components/semester/SelectSemester";
 import { semesterApi } from "@/components/semester/SelectSemester/services/semesterApi";
@@ -178,6 +178,27 @@ describe("SelectSemester Component", () => {
       );
 
       expect(screen.getByText("Tất cả học kỳ")).toBeInTheDocument();
+    });
+
+    it("renders translated all option label when language changes", async () => {
+      const { default: i18n } = await import("@/i18n/i18n");
+      await act(async () => {
+        await i18n.changeLanguage("en");
+      });
+
+      render(
+        <SelectSemester
+          customSemesters={TEST_SEMESTERS}
+          includeAllOption
+          value="all"
+        />,
+      );
+
+      expect(screen.getByText("All semesters")).toBeInTheDocument();
+
+      await act(async () => {
+        await i18n.changeLanguage("vi");
+      });
     });
 
     it("selects current semester automatically when defaultToCurrent is true", () => {

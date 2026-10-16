@@ -169,6 +169,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             <SelectAcademicYear
               value={academicYear || undefined}
               onChange={onAcademicYearChange}
+              allOptionLabel={t("card:gradebook.filters.allAcademicYears")}
               defaultToCurrent
               className="w-50 sm:w-50"
             />
@@ -182,6 +183,7 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
               value={semester || undefined}
               academicYearId={academicYear}
               onChange={onSemesterChange}
+              allOptionLabel={t("card:gradebook.filters.allSemesters")}
               defaultToCurrent
               className="w-50 sm:w-50"
             />

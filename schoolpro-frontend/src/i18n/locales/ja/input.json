@@ -14,7 +14,9 @@
     "address": "住所を入力...",
     "currentPassword": "現在のパスワードを入力...",
     "newPassword": "新しいパスワードを入力 (8文字以上)...",
-    "confirmPassword": "新しいパスワードを再入力..."
+    "confirmPassword": "新しいパスワードを再入力...",
+    "academicYear": "年度を選択",
+    "semester": "学期を選択"
   },
   "filter": {
     "category": "カテゴリー:",
@@ -25,6 +27,8 @@
     "allDepartments": "すべての部門",
     "allCategories": "すべてのカテゴリー",
     "allPriorities": "すべての優先度",
+    "allAcademicYears": "全年度",
+    "allSemesters": "全学期",
     "resetTooltip": "すべてのフィルターをリセット"
   },
   "categories": {

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { SelectAcademicYear } from "@/components/academic-year/SelectAcademicYear";
 import { academicYearApi } from "@/components/academic-year/SelectAcademicYear/services/academicYearApi";
@@ -182,6 +182,27 @@ describe("SelectAcademicYear Component", () => {
       );
 
       expect(screen.getByText("Tất cả năm học")).toBeInTheDocument();
+    });
+
+    it("renders translated all option label when language changes", async () => {
+      const { default: i18n } = await import("@/i18n/i18n");
+      await act(async () => {
+        await i18n.changeLanguage("en");
+      });
+
+      render(
+        <SelectAcademicYear
+          customAcademicYears={TEST_ACADEMIC_YEARS}
+          includeAllOption
+          value="all"
+        />,
+      );
+
+      expect(screen.getByText("All academic years")).toBeInTheDocument();
+
+      await act(async () => {
+        await i18n.changeLanguage("vi");
+      });
     });
   });
 
