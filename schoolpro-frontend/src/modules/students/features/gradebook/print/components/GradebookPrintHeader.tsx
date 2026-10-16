@@ -40,7 +40,7 @@ export const GradebookPrintHeader: React.FC<GradebookPrintHeaderProps> = ({ prof
               <div className="text-[11.5pt] font-bold uppercase tracking-tight text-black mt-0.5 leading-tight">
                 {profile.schoolName || t("card:gradebook.print.school")}
               </div>
-              <div className="w-28 h-[1px] bg-black mx-auto mt-1" />
+              <div className="w-28 h-px bg-black mx-auto mt-1" />
               <div className="text-[10.5pt] text-black mt-1 font-normal">
                 {t("card:gradebook.print.documentNo")}: {profile.studentCode ? `${profile.studentCode}/PĐ-THPT` : "......./PĐ-THPT"}
               </div>
@@ -54,7 +54,7 @@ export const GradebookPrintHeader: React.FC<GradebookPrintHeaderProps> = ({ prof
               <div className="text-[12.5pt] font-bold text-black mt-0.5 leading-tight">
                 {t("card:gradebook.print.nationalMotto")}
               </div>
-              <div className="w-40 h-[1px] bg-black mx-auto mt-1" />
+              <div className="w-40 h-px bg-black mx-auto mt-1" />
               <div className="text-[11.5pt] italic text-black mt-1 font-normal">
                 {adminDateStr}
               </div>

@@ -11,7 +11,7 @@ export const GradebookPrintStudentInfo: React.FC<GradebookPrintStudentInfoProps>
 
   return (
     <div
-      className="text-black text-[11.5pt] leading-[1.5] my-2.5"
+      className="text-black text-[11.5pt] leading-normal my-2.5"
       style={{ fontFamily: '"Times New Roman", Times, "Liberation Serif", serif' }}
     >
       {/* Salutation line like an official school report / application */}
