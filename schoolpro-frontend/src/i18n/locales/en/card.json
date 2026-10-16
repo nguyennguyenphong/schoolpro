@@ -1083,7 +1083,9 @@
       "back": "Back",
       "close": "Close Window",
       "printNow": "Print Now",
-      "auditFooter": "Extracted from SchoolPro Academic System • Auth Code: {{signature}} • Generated: {{time}}"
+      "auditFooter": "Extracted from SchoolPro Academic System • Auth Code: {{signature}} • Generated: {{time}}",
+      "authCodeLabel": "Authentication Code",
+      "createdDateLabel": "Created Date"
     },
     "empty": {
       "noMatchingTitle": "No Matching Subjects Found",

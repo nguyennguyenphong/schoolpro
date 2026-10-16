@@ -14,60 +14,112 @@ export const GradebookPrintSignatures: React.FC<GradebookPrintSignaturesProps> =
   digitalSignature,
   verifiedAt,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t, i18n } = useTranslation(["card"]);
+  const now = dayjs();
+  const currentLang = i18n.language || "vi";
+
+  const adminDateStr =
+    currentLang === "vi"
+      ? `Ngày ${now.format("DD")} tháng ${now.format("MM")} năm ${now.format("YYYY")}`
+      : currentLang === "en"
+      ? `${now.format("MMMM DD, YYYY")}`
+      : `${now.format("YYYY/MM/DD")}`;
+
+  const signatureCode = digitalSignature;
   const nowStr = verifiedAt || dayjs().format("DD/MM/YYYY HH:mm");
-  const signatureCode = digitalSignature || "MOET-BGDDT-CERT-2026-X992";
 
   return (
-    <div className="pt-4 space-y-6 text-xs sm:text-sm text-slate-900 page-break-inside-avoid">
-      <div className="grid grid-cols-3 gap-4 text-center items-start">
-        {/* Student signature */}
-        <div className="space-y-1">
-          <div className="font-bold uppercase tracking-wide">
-            {t("card:gradebook.print.signatureStudent")}
-          </div>
-          <div className="text-[11px] italic text-slate-600">
-            {t("card:gradebook.print.signNote")}
-          </div>
-          <div className="h-20" />
-          <div className="font-bold uppercase text-slate-900">{profile.studentName}</div>
-        </div>
+    <div
+      className="w-full my-4 text-black page-break-inside-avoid"
+      style={{
+        fontFamily: '"Times New Roman", Times, "Liberation Serif", serif',
+        pageBreakInside: "avoid",
+        breakInside: "avoid",
+      }}
+    >
+      {/* 3-column Signatures block */}
+      <table className="w-full border-collapse border-none text-center">
+        <tbody>
+          <tr>
+            <td className="w-1/3 align-top p-1">
+              <div className="font-bold uppercase text-[11.5pt] leading-tight">
+                {t("card:gradebook.print.signatureStudent")}
+              </div>
+              <div className="text-[10pt] italic text-slate-700 print:text-black mt-0.5">
+                {t("card:gradebook.print.signNote")}
+              </div>
+              <div className="h-14" />
+              <div className="font-bold uppercase text-[11.5pt] tracking-wide">
+                {profile.studentName}
+              </div>
+            </td>
 
-        {/* Homeroom teacher signature */}
-        <div className="space-y-1">
-          <div className="font-bold uppercase tracking-wide">
-            {t("card:gradebook.print.signatureTeacher")}
-          </div>
-          <div className="text-[11px] italic text-slate-600">
-            {t("card:gradebook.print.signNote")}
-          </div>
-          <div className="h-20" />
-          <div className="font-bold text-slate-900">{profile.homeroomTeacher}</div>
-        </div>
+            <td className="w-1/3 align-top p-1">
+              <div className="font-bold uppercase text-[11.5pt] leading-tight">
+                Ý KIẾN CỦA PHỤ HUYNH
+              </div>
+              <div className="text-[10pt] italic text-slate-700 print:text-black mt-0.5">
+                {t("card:gradebook.print.signNote")}
+              </div>
+              <div className="h-14" />
+              <div className="text-[10pt] text-slate-400 print:text-transparent">
+                (Ký và ghi rõ họ tên)
+              </div>
+            </td>
 
-        {/* Principal signature */}
-        <div className="space-y-1">
-          <div className="font-bold uppercase tracking-wide">
-            {t("card:gradebook.print.signaturePrincipal")}
-          </div>
-          <div className="text-[11px] italic text-slate-600">
-            {t("card:gradebook.print.sealNote")}
-          </div>
-          <div className="h-20 flex items-center justify-center">
-            <div className="border border-dashed border-slate-400 rounded-sm px-2 py-1 text-[10px] text-slate-500 uppercase tracking-widest">
-              [Dấu xác nhận]
-            </div>
-          </div>
-          <div className="font-bold text-slate-900">{profile.principalName}</div>
-        </div>
-      </div>
+            <td className="w-1/3 align-top p-1">
+              <div className="text-[10.5pt] italic text-slate-800 print:text-black mb-0.5">
+                {adminDateStr}
+              </div>
+              <div className="font-bold uppercase text-[11.5pt] leading-tight">
+                {t("card:gradebook.print.signatureTeacher")}
+              </div>
+              <div className="text-[10pt] italic text-slate-700 print:text-black mt-0.5">
+                {t("card:gradebook.print.signNote")}
+              </div>
+              <div className="h-14" />
+              <div className="font-bold text-[11.5pt]">
+                {profile.homeroomTeacher}
+              </div>
+            </td>
+          </tr>
 
-      {/* Audit trail footer */}
-      <div className="pt-6 border-t border-slate-300 text-[10px] sm:text-[11px] text-slate-500 text-center">
-        {t("card:gradebook.print.auditFooter", {
-          signature: signatureCode,
-          time: nowStr,
-        })}
+          {/* Principal confirmation block */}
+          <tr>
+            <td colSpan={3} className="pt-4 text-center">
+              <div className="font-bold uppercase text-[11.5pt] leading-tight">
+                {t("card:gradebook.print.signaturePrincipal")}
+              </div>
+              <div className="text-[10pt] italic text-slate-700 print:text-black mt-0.5">
+                {t("card:gradebook.print.sealNote")}
+              </div>
+              <div className="h-16 flex items-center justify-center">
+                <div className="border border-dashed border-slate-400 print:border-black rounded-xs px-3 py-1 text-[9.5pt] text-slate-500 print:text-black uppercase tracking-wider">
+                  [Đóng dấu nhà trường]
+                </div>
+              </div>
+              <div className="font-bold text-[11.5pt]">
+                {profile.principalName}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Footer bar: Mã chứng thực tay trái, Ngày tạo tay phải */}
+      <div className="mt-6 pt-2 border-t border-black text-[9pt] text-slate-700 print:text-black flex justify-between items-center italic">
+        <div className="text-left">
+          {signatureCode ? (
+            <span>
+              {t("card:gradebook.print.authCodeLabel", { defaultValue: "Mã chứng thực" })}: {signatureCode}
+            </span>
+          ) : null}
+        </div>
+        <div className="text-right">
+          <span>
+            {t("card:gradebook.print.createdDateLabel", { defaultValue: "Ngày tạo" })}: {nowStr}
+          </span>
+        </div>
       </div>
     </div>
   );

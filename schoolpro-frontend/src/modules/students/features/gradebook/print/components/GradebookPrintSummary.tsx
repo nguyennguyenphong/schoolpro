@@ -12,70 +12,70 @@ export const GradebookPrintSummary: React.FC<GradebookPrintSummaryProps> = ({ su
   if (!summary) return null;
 
   return (
-    <div className="border border-slate-800 rounded-sm bg-white text-xs text-slate-900">
-      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-800">
-        {/* Left column: Metrics */}
-        <div className="p-3 space-y-1.5">
-          <div className="font-bold text-slate-900 uppercase tracking-wider text-xs pb-1 border-b border-slate-300">
-            {t("card:gradebook.transcriptModal.summaryResultsTitle")}
-          </div>
-          <div className="flex justify-between py-0.5">
-            <span className="font-medium text-slate-700">
-              {t("card:gradebook.print.gpa")}
-            </span>
-            <strong className="text-slate-900 text-sm font-black">
-              {summary.gpa.toFixed(2)} / 10
-            </strong>
-          </div>
-          <div className="flex justify-between py-0.5">
-            <span className="font-medium text-slate-700">
-              {t("card:gradebook.print.academicRank")}
-            </span>
-            <strong className="text-slate-900 font-bold">{summary.academicRank}</strong>
-          </div>
-          <div className="flex justify-between py-0.5">
-            <span className="font-medium text-slate-700">
-              {t("card:gradebook.print.conductRank")}
-            </span>
-            <strong className="text-slate-900 font-bold">{summary.conductRank}</strong>
-          </div>
-          <div className="flex justify-between py-0.5">
-            <span className="font-medium text-slate-700">
-              {t("card:gradebook.print.classPosition")}
-            </span>
-            <strong className="text-slate-900 font-bold">
-              {t("card:gradebook.summary.classRankText", {
-                rank: summary.classPosition,
-                total: summary.totalClassStudents,
-              })}
-            </strong>
-          </div>
-          <div className="flex justify-between py-0.5">
-            <span className="font-medium text-slate-700">
-              {t("card:gradebook.print.titleAwarded")}
-            </span>
-            <strong className="text-slate-900 font-bold">{summary.titleAwarded}</strong>
-          </div>
-        </div>
-
-        {/* Right column: Homeroom remarks */}
-        <div className="p-3 flex flex-col justify-between space-y-2">
-          <div>
-            <div className="font-bold text-slate-900 uppercase tracking-wider text-xs pb-1 border-b border-slate-300">
-              {t("card:gradebook.print.homeroomComment")}
-            </div>
-            <p className="italic text-slate-800 leading-relaxed mt-2 mb-0">
-              "{summary.homeroomComment || "Học sinh chăm ngoan, có ý thức tự giác học tập cao, chấp hành tốt nội quy nhà trường."}"
-            </p>
-          </div>
-          <div className="pt-2 border-t border-slate-300 text-[11px] text-slate-600 flex justify-between items-center">
-            <span>
-              {t("card:gradebook.summary.homeroomTeacher")} <strong>{summary.homeroomTeacher}</strong>
-            </span>
-            <span className="font-semibold text-slate-700">✓ Đã xác nhận học bạ</span>
-          </div>
-        </div>
+    <div
+      className="w-full my-3 text-black text-[11pt] leading-[1.5] page-break-inside-avoid"
+      style={{
+        fontFamily: '"Times New Roman", Times, "Liberation Serif", serif',
+        pageBreakInside: "avoid",
+        breakInside: "avoid",
+      }}
+    >
+      <div className="font-bold uppercase text-[11.5pt] mb-1.5 tracking-wide">
+        TỔNG HỢP KẾT QUẢ ĐÁNH GIÁ VÀ RÈN LUYỆN:
       </div>
+
+      <table
+        className="w-full border-collapse border border-black text-[10.5pt] text-black"
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          border: "1px solid #000000",
+        }}
+      >
+        <tbody>
+          <tr>
+            <td style={{ border: "1px solid #000000", padding: "5px 8px", width: "50%" }}>
+              <span className="font-normal">{t("card:gradebook.print.gpa")} </span>
+              <strong className="text-[11pt]">{summary.gpa.toFixed(2)} / 10</strong>
+            </td>
+            <td style={{ border: "1px solid #000000", padding: "5px 8px", width: "50%" }}>
+              <span className="font-normal">{t("card:gradebook.print.academicRank")} </span>
+              <strong className="text-[11pt]">{summary.academicRank}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ border: "1px solid #000000", padding: "5px 8px" }}>
+              <span className="font-normal">{t("card:gradebook.print.conductRank")} </span>
+              <strong className="text-[11pt]">{summary.conductRank}</strong>
+            </td>
+            <td style={{ border: "1px solid #000000", padding: "5px 8px" }}>
+              <span className="font-normal">{t("card:gradebook.print.classPosition")} </span>
+              <strong className="text-[11pt]">
+                {t("card:gradebook.summary.classRankText", {
+                  rank: summary.classPosition,
+                  total: summary.totalClassStudents,
+                })}
+              </strong>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ border: "1px solid #000000", padding: "5px 8px" }} colSpan={2}>
+              <span className="font-normal">{t("card:gradebook.print.titleAwarded")} </span>
+              <strong className="uppercase text-[11pt]">{summary.titleAwarded}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ border: "1px solid #000000", padding: "6px 8px" }} colSpan={2}>
+              <div className="font-bold text-[11pt] mb-0.5">
+                {t("card:gradebook.print.homeroomComment")}:
+              </div>
+              <div className="italic pl-2 leading-relaxed text-[10.5pt]">
+                "{summary.homeroomComment || "Học sinh chăm ngoan, có ý thức kỷ luật tốt, tích cực trong học tập và tham gia các hoạt động tập thể."}"
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1083,7 +1083,9 @@
       "back": "Quay lại",
       "close": "Đóng trang",
       "printNow": "In ngay",
-      "auditFooter": "Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • Mã chứng thực: {{signature}} • Ngày tạo: {{time}}"
+      "auditFooter": "Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • Mã chứng thực: {{signature}} • Ngày tạo: {{time}}",
+      "authCodeLabel": "Mã chứng thực",
+      "createdDateLabel": "Ngày tạo"
     },
     "empty": {
       "noMatchingTitle": "Không tìm thấy môn học phù hợp",

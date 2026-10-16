@@ -1083,7 +1083,9 @@
       "back": "돌아가기",
       "close": "창 닫기",
       "printNow": "지금 인쇄",
-      "auditFooter": "SchoolPro 학무 관리 시스템에서 추출 • 인증 코드: {{signature}} • 생성 일시: {{time}}"
+      "auditFooter": "SchoolPro 학무 관리 시스템에서 추출 • 인증 코드: {{signature}} • 생성 일시: {{time}}",
+      "authCodeLabel": "인증 코드",
+      "createdDateLabel": "생성 일시"
     },
     "empty": {
       "noMatchingTitle": "일치하는 과목을 찾을 수 없습니다",

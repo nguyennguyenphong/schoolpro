@@ -1083,7 +1083,9 @@
       "back": "戻る",
       "close": "閉じる",
       "printNow": "今すぐ印刷",
-      "auditFooter": "SchoolPro学務管理システムから抽出 • 認証コード: {{signature}} • 発行日時: {{time}}"
+      "auditFooter": "SchoolPro学務管理システムから抽出 • 認証コード: {{signature}} • 発行日時: {{time}}",
+      "authCodeLabel": "認証コード",
+      "createdDateLabel": "発行日時"
     },
     "empty": {
       "noMatchingTitle": "該当する科目が見つかりません",

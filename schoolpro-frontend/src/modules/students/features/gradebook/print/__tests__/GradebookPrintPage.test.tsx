@@ -32,6 +32,17 @@ describe("GradebookPrintPage Component", () => {
     const printNowButton = screen.getByRole("button", { name: /In ngay|Print Now/i });
     expect(printNowButton).toBeInTheDocument();
 
+    // Verify absence of old extraction text and presence of left/right footer
+    expect(
+      screen.queryByText(/Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro/i)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/Mã chứng thực|Authentication Code|Auth Code/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Ngày tạo|Created Date/i)
+    ).toBeInTheDocument();
+
     // Mock window.print
     const printSpy = vi.spyOn(window, "print").mockImplementation(() => {});
     fireEvent.click(printNowButton);

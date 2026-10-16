@@ -1083,7 +1083,9 @@
       "back": "返回",
       "close": "关闭窗口",
       "printNow": "立即打印",
-      "auditFooter": "从SchoolPro教务管理系统提取 • 认证代码: {{signature}} • 生成时间: {{time}}"
+      "auditFooter": "从SchoolPro教务管理系统提取 • 认证代码: {{signature}} • 生成时间: {{time}}",
+      "authCodeLabel": "认证代码",
+      "createdDateLabel": "生成时间"
     },
     "empty": {
       "noMatchingTitle": "未找到符合条件的科目",
