@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
@@ -29,6 +30,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   onClick,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -40,7 +42,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
       case "pdf":
         return (
           <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1 shrink-0">
-            <Icon name="fileText" size={12} />
+            <Icon name="file" size={12} />
             PDF • {size}
           </span>
         );
@@ -93,16 +95,16 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   const getCategoryConfig = (cat: MaterialCategory) => {
     switch (cat) {
       case "lecture":
-        return { label: "Bài giảng", color: "blue" };
+        return { label: t("card:materials.categories.lecture", "Bài giảng"), color: "blue" };
       case "outline":
-        return { label: "Đề cương", color: "orange" };
+        return { label: t("card:materials.categories.outline", "Đề cương"), color: "orange" };
       case "textbook":
-        return { label: "Sách GK", color: "purple" };
+        return { label: t("card:materials.categories.textbook", "Sách giáo khoa"), color: "purple" };
       case "exam_prep":
-        return { label: "Đề thi", color: "green" };
+        return { label: t("card:materials.categories.exam_prep", "Đề thi"), color: "green" };
       case "reference":
       default:
-        return { label: "Tham khảo", color: "default" };
+        return { label: t("card:materials.categories.reference", "Tham khảo"), color: "default" };
     }
   };
 
@@ -145,7 +147,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
                 color="blue"
                 className="m-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
                 onClick={handleSubjectClick}
-                title={`Xem danh sách tài liệu môn ${item.subjectName}`}
+                title={t("card:materials.meta.viewSubjectMaterials", { name: item.subjectName, defaultValue: `Xem danh sách tài liệu môn ${item.subjectName}` })}
               >
                 {item.subjectName}
               </Tag>
@@ -177,7 +179,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
               </span>
               <span className="flex items-center gap-1">
                 <Icon name="download" size={13} className="text-slate-400" />
-                {item.downloadsCount} lượt tải
+                {t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}
               </span>
             </div>
           </div>
@@ -191,8 +193,8 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
           <button
             type="button"
             onClick={() => onToggleBookmark(item.id)}
-            title={item.isBookmarked ? "Bỏ lưu trữ" : "Lưu vào mục quan trọng"}
-            className={`p-2.5 rounded-lg border transition-colors flex items-center justify-center ${
+            title={item.isBookmarked ? t("card:materials.actions.unbookmark", "Bỏ lưu yêu thích") : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
+            className={`p-2.5 rounded-lg border transition-colors flex items-center justify-center cursor-pointer ${
               item.isBookmarked
                 ? "bg-amber-50 border-amber-300 text-amber-600"
                 : "border-[#f0f0f0] text-slate-400 hover:text-amber-500 hover:border-amber-200"
@@ -206,7 +208,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
             onClick={() => onClick?.(item)}
             className="text-blue-600 hover:text-blue-700 font-semibold"
           >
-            <span>Chi tiết</span>
+            <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
             <Icon name="arrow-right" size={13} />
           </Button>
 
@@ -216,7 +218,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
             className="font-semibold"
           >
             <Icon name="download" size={14} />
-            <span>Tải về ({item.fileSize})</span>
+            <span>{t("card:materials.actions.download", { size: item.fileSize, defaultValue: `Tải về (${item.fileSize})` })}</span>
           </Button>
         </div>
       </div>

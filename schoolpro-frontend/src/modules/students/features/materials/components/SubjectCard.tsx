@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +11,7 @@ interface SubjectCardProps {
 }
 
 export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
+  const { t } = useTranslation();
 
   const getColorStyles = (scheme: SubjectItem["colorScheme"]) => {
     switch (scheme) {
@@ -116,15 +118,15 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         <div className="grid grid-cols-3 gap-2 py-2 px-3 bg-slate-50/60 rounded-xl border border-[#f0f0f0] mb-3 text-center">
           <div>
             <div className="text-sm font-bold text-slate-800">{item.lecturesCount}</div>
-            <div className="text-[10px] text-slate-400 font-medium">Bài giảng</div>
+            <div className="text-[10px] text-slate-400 font-medium">{t("card:materials.categories.lecture", "Bài giảng")}</div>
           </div>
           <div className="border-x border-[#f0f0f0]/80">
             <div className="text-sm font-bold text-slate-800">{item.outlinesCount}</div>
-            <div className="text-[10px] text-slate-400 font-medium">Đề cương</div>
+            <div className="text-[10px] text-slate-400 font-medium">{t("card:materials.categories.outline", "Đề cương")}</div>
           </div>
           <div>
             <div className="text-sm font-bold text-slate-800">{item.examsCount}</div>
-            <div className="text-[10px] text-slate-400 font-medium">Đề thi</div>
+            <div className="text-[10px] text-slate-400 font-medium">{t("card:materials.categories.exam_prep", "Đề thi")}</div>
           </div>
         </div>
       </div>
@@ -133,7 +135,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
       <div className="pt-3 border-t border-[#f0f0f0] flex items-center justify-between gap-3">
         <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
           <Icon name="download" size={13} className="text-slate-400" />
-          {item.totalDownloads} lượt tải
+          {t("card:materials.meta.downloadsCount", { count: item.totalDownloads, defaultValue: `${item.totalDownloads} lượt tải` })}
         </span>
 
         <Button
@@ -145,7 +147,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
           href={`/student/materials/${item.code}`}
         >
           <Icon name="fileText" size={14} />
-          <span>Xem tài liệu ({item.totalMaterials})</span>
+          <span>{t("card:materials.actions.viewMaterials", { count: item.totalMaterials, defaultValue: `Xem tài liệu (${item.totalMaterials})` })}</span>
         </Button>
       </div>
     </Card>

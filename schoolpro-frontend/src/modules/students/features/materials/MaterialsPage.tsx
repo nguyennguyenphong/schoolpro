@@ -1,6 +1,8 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { Empty, Pagination } from "antd";
+import { useTranslation } from "react-i18next";
+import { Empty } from "@/components/ui/Empty";
+import { Pagination } from "@/components/ui/Pagination";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -19,6 +21,7 @@ import {
 import { useMaterials, useSubjects } from "@/modules/students/features/materials/hooks";
 
 export const MaterialsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentTab = (searchParams.get("tab") as "subjects" | "all") || "subjects";
 
@@ -106,7 +109,7 @@ export const MaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("card:materials.header.breadcrumbHome", "Trang chủ")}</span>
                 </span>
               ),
             },
@@ -114,7 +117,7 @@ export const MaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                   <Icon name="download" size={13} className="text-blue-600 shrink-0" />
-                  <span>Kho tài liệu học tập</span>
+                  <span>{t("card:materials.header.breadcrumbMaterials", "Tài liệu học tập")}</span>
                 </span>
               ),
             },
@@ -126,17 +129,17 @@ export const MaterialsPage: React.FC = () => {
             <div className="flex items-center gap-2 mb-1">
               <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-                Kho tài liệu & Bài giảng số
+                {t("card:materials.header.title", "Tài liệu học tập")}
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              Tra cứu và tải xuống sách giáo khoa, đề cương ôn tập, bài giảng điện tử và đề thi của các bộ môn
+              {t("card:materials.header.subtitle", "Kho bài giảng số, đề cương ôn tập, đề thi thử và giáo trình điện tử phục vụ học tập")}
             </p>
           </div>
         </div>
       </div>
 
-      {/* 2. Summary Metric Cards (Dashboard style) */}
+      {/* 2. Summary Metric Cards */}
       {summary && <MaterialSummaryCards summary={summary} />}
 
       {/* 3. Navigation View Switcher (Theo môn học vs Tất cả tài liệu) */}
@@ -155,7 +158,7 @@ export const MaterialsPage: React.FC = () => {
             size={14}
             className={currentTab === "subjects" ? "text-white" : "text-slate-400"}
           />
-          <span>Danh mục theo môn học</span>
+          <span>{t("card:materials.header.tabBySubjects", "Theo môn học")}</span>
           <span
             className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
               currentTab === "subjects"
@@ -163,7 +166,7 @@ export const MaterialsPage: React.FC = () => {
                 : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
             }`}
           >
-            {subjectsTotal || 10} môn
+            {subjectsTotal || 10}
           </span>
         </button>
 
@@ -181,7 +184,7 @@ export const MaterialsPage: React.FC = () => {
             size={14}
             className={currentTab === "all" ? "text-white" : "text-slate-400"}
           />
-          <span>Tất cả tài liệu</span>
+          <span>{t("card:materials.header.tabAllMaterials", "Tất cả tài liệu")}</span>
           <span
             className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-5 text-center ${
               currentTab === "all"
@@ -189,7 +192,7 @@ export const MaterialsPage: React.FC = () => {
                 : "bg-slate-100 text-slate-600 border border-[#f0f0f0]"
             }`}
           >
-            {materialsTotal} tài liệu
+            {materialsTotal}
           </span>
         </button>
       </div>
@@ -215,12 +218,10 @@ export const MaterialsPage: React.FC = () => {
                 description={
                   <div className="space-y-1.5">
                     <p className="text-sm font-bold text-slate-700 mb-0">
-                      Không tìm thấy môn học phù hợp
+                      {t("card:materials.empty.noSubjectsTitle", "Không tìm thấy môn học")}
                     </p>
                     <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                      {hasActiveSubjectFilters
-                        ? "Không có môn học nào khớp với từ khóa hoặc điều kiện lọc đã chọn."
-                        : "Hiện tại chưa có môn học nào trong danh mục."}
+                      {t("card:materials.empty.noSubjectsDesc", "Không có môn học nào phù hợp với từ khóa hoặc bộ lọc đã chọn.")}
                     </p>
                   </div>
                 }
@@ -231,7 +232,7 @@ export const MaterialsPage: React.FC = () => {
                     onClick={resetSubjectFilters}
                     className="mt-3"
                   >
-                    Đặt lại bộ lọc
+                    {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
                   </Button>
                 )}
               </Empty>
@@ -255,7 +256,7 @@ export const MaterialsPage: React.FC = () => {
             <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-xs text-slate-500">
                 Hiển thị <strong className="text-slate-800">{subjects.length}</strong> trên tổng số{" "}
-                <strong className="text-slate-800">{subjectsTotal}</strong> môn học
+                <strong className="text-slate-800">{subjectsTotal}</strong>
               </div>
 
               <Pagination
@@ -304,12 +305,10 @@ export const MaterialsPage: React.FC = () => {
                 description={
                   <div className="space-y-1.5">
                     <p className="text-sm font-bold text-slate-700 mb-0">
-                      Không tìm thấy tài liệu phù hợp
+                      {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu học tập")}
                     </p>
                     <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
-                      {hasActiveMaterialFilters
-                        ? "Không có tài liệu nào khớp với các điều kiện lọc đã chọn. Hãy thử tìm kiếm bằng từ khóa hoặc điều kiện khác."
-                        : "Hiện tại chưa có tài liệu nào trong danh mục này."}
+                      {t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.")}
                     </p>
                   </div>
                 }
@@ -320,7 +319,7 @@ export const MaterialsPage: React.FC = () => {
                     onClick={resetMaterialFilters}
                     className="mt-3"
                   >
-                    Đặt lại tất cả bộ lọc
+                    {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
                   </Button>
                 )}
               </Empty>
@@ -360,7 +359,7 @@ export const MaterialsPage: React.FC = () => {
             <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-xs text-slate-500">
                 Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
-                <strong className="text-slate-800">{materialsTotal}</strong> tài liệu học tập
+                <strong className="text-slate-800">{materialsTotal}</strong>
               </div>
 
               <Pagination

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Empty, Pagination } from "antd";
+import { useTranslation } from "react-i18next";
+import { Empty } from "@/components/ui/Empty";
+import { Pagination } from "@/components/ui/Pagination";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -18,6 +20,7 @@ import type { MaterialItem } from "@/modules/students/features/materials/types";
 
 export const SubjectMaterialsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     subject,
     subjectCode,
@@ -78,7 +81,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>Trang chủ</span>
+                  <span>{t("card:materials.header.breadcrumbHome", "Trang chủ")}</span>
                 </span>
               ),
             },
@@ -87,7 +90,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="download" size={13} className="text-slate-400 shrink-0" />
-                  <span>Kho tài liệu</span>
+                  <span>{t("card:materials.header.breadcrumbMaterials", "Kho tài liệu")}</span>
                 </span>
               ),
             },
@@ -109,7 +112,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                 variant="ghost"
                 onClick={() => navigate("/student/materials")}
                 className="text-slate-600 hover:text-blue-600 hover:bg-slate-100 p-1.5"
-                title="Quay lại danh sách môn học"
+                title={t("card:materials.header.backToSubjects", "Quay lại danh mục môn học")}
               >
                 <Icon name="arrow-left" size={18} />
               </Button>
@@ -117,7 +120,15 @@ export const SubjectMaterialsPage: React.FC = () => {
               <span className="w-1.5 h-6 rounded-full bg-blue-600 inline-block" />
 
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0 leading-tight">
-                {subject ? subject.name : `Tài liệu môn ${subjectCode}`}
+                {subject
+                  ? t("card:materials.header.subjectMaterialsTitle", {
+                      subject: subject.name,
+                      defaultValue: `Tài liệu môn ${subject.name}`,
+                    })
+                  : t("card:materials.header.subjectMaterialsTitle", {
+                      subject: subjectCode,
+                      defaultValue: `Tài liệu môn ${subjectCode}`,
+                    })}
               </h1>
 
               {subject && (
@@ -139,7 +150,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                   {subject.teacher} ({subject.teacherTitle})
                 </span>
                 <span>•</span>
-                <span>Lớp 11A1</span>
+                <span>Khối 11 - Lớp 11A1</span>
                 <span>•</span>
                 <span>{subject.description}</span>
               </div>
@@ -152,7 +163,7 @@ export const SubjectMaterialsPage: React.FC = () => {
             className="text-slate-700 font-medium self-start md:self-center"
           >
             <Icon name="arrow-left" size={14} />
-            <span>Đổi môn học khác</span>
+            <span>{t("card:materials.header.backToSubjects", "Quay lại danh mục môn học")}</span>
           </Button>
         </div>
 
@@ -160,19 +171,19 @@ export const SubjectMaterialsPage: React.FC = () => {
         {summary && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#f0f0f0] text-xs">
             <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">Tổng số tài liệu:</span>
+              <span className="text-slate-500 font-medium">{t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}:</span>
               <strong className="text-slate-800 text-sm">{summary.total}</strong>
             </div>
             <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">Bài giảng điện tử:</span>
+              <span className="text-slate-500 font-medium">{t("card:materials.summary.lectures", "Bài giảng điện tử")}:</span>
               <strong className="text-blue-600 text-sm">{summary.lecturesCount}</strong>
             </div>
             <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">Đề cương & Đề thi:</span>
+              <span className="text-slate-500 font-medium">{t("card:materials.summary.outlines", "Đề cương")} &amp; {t("card:materials.summary.examPreps", "Đề thi")}:</span>
               <strong className="text-orange-600 text-sm">{summary.outlinesCount + summary.examPrepsCount}</strong>
             </div>
             <div className="bg-slate-50 p-2.5 rounded-lg border border-[#f0f0f0] flex items-center justify-between">
-              <span className="text-slate-500 font-medium">Lượt tải về:</span>
+              <span className="text-slate-500 font-medium">{t("card:materials.summary.totalDownloads", "Lượt tải về")}:</span>
               <strong className="text-emerald-600 text-sm">{summary.totalDownloads}</strong>
             </div>
           </div>
@@ -209,11 +220,11 @@ export const SubjectMaterialsPage: React.FC = () => {
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
-                  Không tìm thấy tài liệu phù hợp trong môn học này
+                  {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu phù hợp")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
-                    ? "Không có tài liệu nào khớp với các điều kiện lọc đã chọn. Hãy thử tìm kiếm bằng từ khóa hoặc điều kiện khác."
+                    ? t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào khớp với các điều kiện lọc đã chọn.")
                     : "Hiện tại môn học này chưa có tài liệu nào."}
                 </p>
               </div>
@@ -225,7 +236,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                 onClick={resetFilters}
                 className="mt-3"
               >
-                Đặt lại tất cả bộ lọc
+                {t("card:materials.empty.resetFilterBtn", "Đặt lại tất cả bộ lọc")}
               </Button>
             )}
           </Empty>
@@ -265,7 +276,7 @@ export const SubjectMaterialsPage: React.FC = () => {
         <div className="p-3.5 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-500">
             Hiển thị <strong className="text-slate-800">{materials.length}</strong> trên tổng số{" "}
-            <strong className="text-slate-800">{total}</strong> tài liệu môn {subject?.name || subjectCode}
+            <strong className="text-slate-800">{total}</strong>
           </div>
 
           <Pagination

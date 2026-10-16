@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
@@ -9,6 +10,7 @@ interface MaterialSummaryCardsProps {
 }
 
 export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summary }) => {
+  const { t } = useTranslation();
   const outlinesAndExams = summary.outlinesCount + summary.examPrepsCount;
 
   return (
@@ -17,7 +19,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
       <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Kho tài liệu học tập
+            {t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
             <Icon name="file" size={17} />
@@ -30,7 +32,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
           </span>
           <span className="text-xs text-slate-400 font-semibold">tài liệu</span>
           <Tag color="processing" className="ml-auto m-0 font-semibold">
-            HK1 2025-2026
+            HK1 2026-2027
           </Tag>
         </div>
 
@@ -44,7 +46,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
       <Card className="rounded-xl shadow-2xs hover:border-indigo-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Bài giảng & Slide điện tử
+            {t("card:materials.summary.lectures", "Bài giảng điện tử")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center shrink-0">
             <Icon name="presentation" size={17} />
@@ -71,7 +73,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
       <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Đề cương & Đề thi thử
+            {t("card:materials.summary.outlines", "Đề cương ôn tập")} &amp; {t("card:materials.summary.examPreps", "Đề thi")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="book" size={17} />
@@ -98,7 +100,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
       <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-5">
         <div className="flex items-center justify-between gap-2 mb-3">
           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Tổng lượt tải tài liệu
+            {t("card:materials.summary.totalDownloads", "Tổng lượt tải về")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
             <Icon name="download" size={17} />
@@ -107,7 +109,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({ summ
 
         <div className="flex items-baseline gap-2 mb-2">
           <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">
-            {summary.totalDownloads.toLocaleString("vi-VN")}
+            {summary.totalDownloads.toLocaleString()}
           </span>
           <span className="text-xs text-slate-400 font-semibold">lượt tải</span>
           <Tag color="success" className="ml-auto m-0 font-semibold">

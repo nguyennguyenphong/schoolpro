@@ -1110,5 +1110,111 @@
       "exportSuccess": "Electronic report card downloaded successfully!",
       "exportError": "Failed to export electronic report card PDF. Please try again later."
     }
+  },
+  "materials": {
+    "header": {
+      "breadcrumbHome": "Home",
+      "breadcrumbMaterials": "Learning Materials",
+      "title": "Learning Materials",
+      "subtitle": "Digital lectures, revision outlines, mock exam tests, and digital textbooks for learning support",
+      "tabBySubjects": "By Subject",
+      "tabAllMaterials": "All Materials",
+      "subjectMaterialsTitle": "Materials for {{subject}}",
+      "backToSubjects": "Back to Subject Catalog"
+    },
+    "summary": {
+      "totalMaterials": "Total Materials",
+      "lectures": "Digital Lectures",
+      "outlines": "Revision Outlines",
+      "examPreps": "Exams & Tests",
+      "textbooks": "Textbooks",
+      "totalDownloads": "Total Downloads"
+    },
+    "filter": {
+      "searchMaterialPlaceholder": "Search lectures, outlines, authors, materials...",
+      "searchSubjectPlaceholder": "Search subjects, teachers, topics...",
+      "subjectLabel": "Subject:",
+      "allSubjects": "All Subjects",
+      "categoryLabel": "Category:",
+      "allCategories": "All Categories",
+      "semesterLabel": "Semester:",
+      "allSemesters": "All Semesters",
+      "semester1": "Semester 1",
+      "semester2": "Semester 2",
+      "sortByLabel": "Sort by:",
+      "newest": "Newest",
+      "mostDownloaded": "Most Downloaded",
+      "titleAsc": "Material Name (A - Z)",
+      "sizeAsc": "Smallest Size",
+      "nameAsc": "Subject Name (A - Z)",
+      "mostMaterials": "Most Materials",
+      "mostDownloads": "Most Downloads",
+      "viewGrid": "Grid View",
+      "viewList": "List View",
+      "reset": "Reset",
+      "resetTooltip": "Reset all filters",
+      "totalSubjectsCount": "Total {{count}} subjects",
+      "totalMaterialsCount": "Total {{count}} materials"
+    },
+    "categories": {
+      "lecture": "Lecture",
+      "outline": "Outline",
+      "textbook": "Textbook",
+      "exam_prep": "Exam Test",
+      "reference": "Reference"
+    },
+    "actions": {
+      "viewMaterials": "View Materials ({{count}})",
+      "viewDetail": "Details",
+      "download": "Download ({{size}})",
+      "downloadSimple": "Download",
+      "preview": "Preview Material",
+      "bookmark": "Save to Bookmarks",
+      "unbookmark": "Remove from Bookmarks",
+      "bookmarked": "Bookmarked",
+      "close": "Close"
+    },
+    "meta": {
+      "teacher": "Teacher:",
+      "lecturesCount": "Lectures:",
+      "outlinesCount": "Outlines:",
+      "examsCount": "Exams:",
+      "downloadsCount": "{{count}} downloads",
+      "viewsCount": "{{count}} views",
+      "uploadDate": "Uploaded: {{date}}",
+      "author": "Author: {{author}}",
+      "viewSubjectMaterials": "View learning materials for {{name}}"
+    },
+    "selection": {
+      "selectAllOnPage": "Select all ({{count}} materials on page)",
+      "selectedCount": "Selected: {{count}} materials",
+      "downloadZipPackage": "Download ZIP Package ({{count}})",
+      "clearSelection": "Clear"
+    },
+    "modal": {
+      "title": "Learning Material Details",
+      "subject": "Subject",
+      "category": "Category",
+      "author": "Author",
+      "uploadDate": "Upload Date",
+      "format": "Format",
+      "fileSize": "File Size",
+      "downloads": "Downloads",
+      "views": "Views",
+      "descriptionTitle": "Content Description",
+      "tableOfContentsTitle": "Table of Contents",
+      "attachmentsTitle": "Attached Files",
+      "bookmarkSuccess": "Material added to bookmarks",
+      "unbookmarkSuccess": "Material removed from bookmarks",
+      "downloadStarted": "Starting download: {{fileName}}",
+      "downloadBatchStarted": "Compressing and preparing download for {{count}} materials..."
+    },
+    "empty": {
+      "noSubjectsTitle": "No Subjects Found",
+      "noSubjectsDesc": "No subjects match your keywords or selected filters.",
+      "noMaterialsTitle": "No Learning Materials Found",
+      "noMaterialsDesc": "No materials match the current filters. Try selecting different criteria.",
+      "resetFilterBtn": "Reset Filters"
+    }
   }
 }

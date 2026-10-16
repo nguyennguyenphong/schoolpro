@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -20,6 +21,7 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
   onClearSelection,
   onDownloadSelected,
 }) => {
+  const { t } = useTranslation();
   if (selectedCount === 0) return null;
 
   return (
@@ -32,14 +34,20 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           onChange={onSelectAll}
         >
           <span className="text-xs font-semibold text-slate-800">
-            Chọn tất cả ({totalOnPage} tài liệu trên trang)
+            {t("card:materials.selection.selectAllOnPage", {
+              count: totalOnPage,
+              defaultValue: `Chọn tất cả (${totalOnPage} tài liệu trên trang)`,
+            })}
           </span>
         </Checkbox>
 
         <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
 
         <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-xl border border-blue-200">
-          Đã chọn: {selectedCount} tài liệu
+          {t("card:materials.selection.selectedCount", {
+            count: selectedCount,
+            defaultValue: `Đã chọn: ${selectedCount} tài liệu`,
+          })}
         </div>
       </div>
 
@@ -50,14 +58,19 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           onClick={onDownloadSelected}
         >
           <Icon name="download" size={13} />
-          <span>Tải xuống gói ZIP ({selectedCount})</span>
+          <span>
+            {t("card:materials.selection.downloadZipPackage", {
+              count: selectedCount,
+              defaultValue: `Tải xuống gói ZIP (${selectedCount})`,
+            })}
+          </span>
         </Button>
 
         <Button
           variant="ghost"
           onClick={onClearSelection}
         >
-          <span>Bỏ chọn</span>
+          <span>{t("card:materials.selection.clearSelection", "Bỏ chọn")}</span>
         </Button>
       </div>
     </div>

@@ -15,6 +15,12 @@ from .exam_log_serializers import (
     ExamEventLogSerializer,
     RecordExamEventInputSerializer,
 )
+from .material_serializers import (
+    MaterialAttachmentItemSerializer,
+    MaterialItemSerializer,
+    MaterialSummarySerializer,
+    SubjectMaterialItemSerializer,
+)
 from .timetable_serializers import (
     CourseOptionSerializer,
     TimetableSlotResponseSerializer,
@@ -36,4 +42,8 @@ __all__ = [
     "CourseOptionSerializer",
     "TimetableSlotResponseSerializer",
     "TimetableSummaryResponseSerializer",
+    "MaterialItemSerializer",
+    "SubjectMaterialItemSerializer",
+    "MaterialSummarySerializer",
+    "MaterialAttachmentItemSerializer",
 ]

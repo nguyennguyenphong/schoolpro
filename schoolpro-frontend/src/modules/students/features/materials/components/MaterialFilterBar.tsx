@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Select } from "antd";
+import { useTranslation } from "react-i18next";
+import { Select } from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -37,10 +38,10 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   onResetFilters,
   hasActiveFilters = false,
 }) => {
+  const { t } = useTranslation();
   const { searchQuery, subject, category, semester, sortBy, viewMode } = filter;
 
   useEffect(() => {
-    // Auto focus search input on mount
     const timer = setTimeout(() => {
       const inputEl = document.getElementById("material-search-input");
       inputEl?.focus();
@@ -56,66 +57,66 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   }> = [
     {
       key: "all",
-      label: "Tất cả danh mục",
+      label: t("card:materials.filter.allCategories", "Tất cả danh mục"),
       icon: "file",
       count: summary?.total,
     },
     {
       key: "lecture",
-      label: "Bài giảng & Slide",
+      label: t("card:materials.categories.lecture", "Bài giảng"),
       icon: "presentation",
       count: summary?.lecturesCount,
     },
     {
       key: "outline",
-      label: "Đề cương ôn tập",
+      label: t("card:materials.categories.outline", "Đề cương"),
       icon: "book",
       count: summary?.outlinesCount,
     },
     {
       key: "exam_prep",
-      label: "Đề thi & Đáp án",
+      label: t("card:materials.categories.exam_prep", "Đề thi"),
       icon: "fileText",
       count: summary?.examPrepsCount,
     },
     {
       key: "textbook",
-      label: "Sách giáo khoa",
+      label: t("card:materials.categories.textbook", "Sách giáo khoa"),
       icon: "book",
       count: summary?.textbooksCount,
     },
   ];
 
   const subjectOptions = [
-    { label: "Tất cả môn học", value: "all" },
+    { label: t("card:materials.filter.allSubjects", "Tất cả môn học"), value: "all" },
     ...subjects.map((s) => ({ label: s.name, value: s.code })),
   ];
 
   const categoryOptions = [
-    { label: "Tất cả danh mục", value: "all" },
-    { label: "Bài giảng điện tử", value: "lecture" },
-    { label: "Đề cương ôn tập", value: "outline" },
-    { label: "Sách giáo khoa", value: "textbook" },
-    { label: "Đề thi & Đáp án", value: "exam_prep" },
-    { label: "Tài liệu tham khảo", value: "reference" },
+    { label: t("card:materials.filter.allCategories", "Tất cả danh mục"), value: "all" },
+    { label: t("card:materials.categories.lecture", "Bài giảng"), value: "lecture" },
+    { label: t("card:materials.categories.outline", "Đề cương"), value: "outline" },
+    { label: t("card:materials.categories.textbook", "Sách giáo khoa"), value: "textbook" },
+    { label: t("card:materials.categories.exam_prep", "Đề thi"), value: "exam_prep" },
+    { label: t("card:materials.categories.reference", "Tham khảo"), value: "reference" },
   ];
 
   const semesterOptions = [
-    { label: "Tất cả học kỳ", value: "all" },
-    { label: "Học kỳ 1", value: "HK1" },
-    { label: "Học kỳ 2", value: "HK2" },
+    { label: t("card:materials.filter.allSemesters", "Tất cả học kỳ"), value: "all" },
+    { label: t("card:materials.filter.semester1", "Học kỳ 1"), value: "HK1" },
+    { label: t("card:materials.filter.semester2", "Học kỳ 2"), value: "HK2" },
   ];
 
   const sortOptions = [
-    { label: "Mới nhất trước", value: "newest" },
-    { label: "Tải nhiều nhất", value: "most_downloaded" },
-    { label: "Tên tài liệu (A-Z)", value: "title_asc" },
-    { label: "Dung lượng nhỏ nhất", value: "size_asc" },
+    { label: t("card:materials.filter.newest", "Mới nhất"), value: "newest" },
+    { label: t("card:materials.filter.mostDownloaded", "Lượt tải nhiều nhất"), value: "most_downloaded" },
+    { label: t("card:materials.filter.titleAsc", "Tên tài liệu (A - Z)"), value: "title_asc" },
+    { label: t("card:materials.filter.sizeAsc", "Dung lượng nhỏ nhất"), value: "size_asc" },
   ];
 
   return (
     <div className="bg-white p-3 sm:p-4 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
-      {/* 1. Bộ lọc trạng thái / danh mục ở trên (Status Filter Tabs) */}
+      {/* 1. Status Filter Tabs */}
       <div className="flex flex-wrap items-center gap-1.5">
         {tabs.map((tab) => {
           const isActive = category === tab.key;
@@ -152,16 +153,15 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
         })}
       </div>
 
-      {/* 2. Dưới đó là input search và chế độ xem (Search Input + View Mode Toggle) */}
+      {/* 2. Search Input + View Mode Toggle */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        {/* Input Search - luôn focus */}
         <div className="flex-1 w-full sm:w-auto">
           <Input
             id="material-search-input"
             autoFocus
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm kiếm tài liệu theo tên, chuyên đề, giáo viên..."
+            placeholder={t("card:materials.filter.searchMaterialPlaceholder", "Tìm kiếm bài giảng, đề cương, tác giả, tài liệu...")}
             prefix={<Icon name="search" size={14} className="text-slate-400" />}
             allowClear
             className="rounded-lg text-xs w-full"
@@ -180,7 +180,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             }`}
           >
             <Icon name="chart" size={13} />
-            <span>Lưới thẻ</span>
+            <span>{t("card:materials.filter.viewGrid", "Lưới thẻ")}</span>
           </button>
           <button
             type="button"
@@ -192,18 +192,20 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             }`}
           >
             <Icon name="menu" size={13} />
-            <span>Danh sách</span>
+            <span>{t("card:materials.filter.viewList", "Danh sách")}</span>
           </button>
         </div>
       </div>
 
-      {/* 3. Bên dưới là các bộ lọc dropdown (Dropdown Filters) */}
+      {/* 3. Dropdown Filters */}
       <div className="pt-2.5 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Môn học */}
           {onSubjectChange && subjects.length > 0 && (
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Môn học:</span>
+              <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+                {t("card:materials.filter.subjectLabel", "Môn học:")}
+              </span>
               <Select
                 value={subject}
                 onChange={onSubjectChange}
@@ -213,9 +215,11 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             </div>
           )}
 
-          {/* Danh mục chi tiết */}
+          {/* Danh mục */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Danh mục:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:materials.filter.categoryLabel", "Danh mục:")}
+            </span>
             <Select
               value={category}
               onChange={(val: string) => onCategoryChange(val as MaterialCategory)}
@@ -226,7 +230,9 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
 
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Học kỳ:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:materials.filter.semesterLabel", "Học kỳ:")}
+            </span>
             <Select
               value={semester}
               onChange={onSemesterChange}
@@ -237,7 +243,9 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
 
           {/* Sắp xếp */}
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">Sắp xếp:</span>
+            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              {t("card:materials.filter.sortByLabel", "Sắp xếp:")}
+            </span>
             <Select
               value={sortBy}
               onChange={onSortByChange}
@@ -252,10 +260,10 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           <Button
             variant="outline"
             onClick={onResetFilters}
-            title="Đặt lại tất cả bộ lọc"
+            title={t("card:materials.filter.resetTooltip", "Đặt lại tất cả bộ lọc")}
           >
             <Icon name="check" size={13} className="text-rose-500" />
-            <span>Đặt lại</span>
+            <span>{t("card:materials.filter.reset", "Đặt lại")}</span>
           </Button>
         )}
       </div>

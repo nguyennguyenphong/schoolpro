@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
-import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { Checkbox } from "@/components/ui/Checkbox";
 import type {
   MaterialItem,
@@ -29,6 +30,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   onClick,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -40,7 +42,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
       case "pdf":
         return (
           <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1 shrink-0">
-            <Icon name="fileText" size={12} />
+            <Icon name="file" size={12} />
             PDF • {size}
           </span>
         );
@@ -93,16 +95,16 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   const getCategoryConfig = (cat: MaterialCategory) => {
     switch (cat) {
       case "lecture":
-        return { label: "Bài giảng", color: "blue" };
+        return { label: t("card:materials.categories.lecture", "Bài giảng"), color: "blue" };
       case "outline":
-        return { label: "Đề cương", color: "orange" };
+        return { label: t("card:materials.categories.outline", "Đề cương"), color: "orange" };
       case "textbook":
-        return { label: "Sách GK", color: "purple" };
+        return { label: t("card:materials.categories.textbook", "Sách giáo khoa"), color: "purple" };
       case "exam_prep":
-        return { label: "Đề thi", color: "green" };
+        return { label: t("card:materials.categories.exam_prep", "Đề thi"), color: "green" };
       case "reference":
       default:
-        return { label: "Tham khảo", color: "default" };
+        return { label: t("card:materials.categories.reference", "Tham khảo"), color: "default" };
     }
   };
 
@@ -143,7 +145,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
               color="blue"
               className="m-0 shrink-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
               onClick={handleSubjectClick}
-              title={`Xem danh sách tài liệu môn ${item.subjectName}`}
+              title={t("card:materials.meta.viewSubjectMaterials", { name: item.subjectName, defaultValue: `Xem danh sách tài liệu môn ${item.subjectName}` })}
             >
               {item.subjectName}
             </Tag>
@@ -161,18 +163,18 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
               e.stopPropagation();
               onToggleBookmark(item.id);
             }}
-            className={`p-1.5 rounded-lg border transition-colors shrink-0 ${
+            className={`p-1.5 rounded-lg border transition-colors shrink-0 cursor-pointer ${
               item.isBookmarked
                 ? "bg-amber-50 border-amber-300 text-amber-500"
                 : "border-[#f0f0f0] text-slate-300 hover:text-amber-500 hover:border-amber-200"
             }`}
-            title={item.isBookmarked ? "Bỏ lưu yêu thích" : "Lưu vào yêu thích"}
+            title={item.isBookmarked ? t("card:materials.actions.unbookmark", "Bỏ lưu yêu thích") : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
           >
             <Icon name="bookmark" size={14} />
           </button>
         </div>
 
-        {/* Row 2: Title (Equal Height: h-12 line-clamp-2 leading-6) */}
+        {/* Row 2: Title */}
         <h3
           className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-1.5 line-clamp-2 h-12 leading-6"
           title={item.title}
@@ -180,7 +182,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
           {item.title}
         </h3>
 
-        {/* Row 3: Description (Equal Height: h-10 line-clamp-2 leading-5) */}
+        {/* Row 3: Description */}
         <p
           className="text-xs text-slate-500 mb-0 leading-5 line-clamp-2 h-10 font-normal"
           title={item.description}
@@ -222,7 +224,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
         <div className="flex items-center justify-between gap-2 pt-0.5">
           <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
             <Icon name="download" size={13} className="text-slate-400" />
-            {item.downloadsCount} lượt tải
+            {t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}
           </span>
 
           <Button
@@ -234,7 +236,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
             }}
           >
             <Icon name="download" size={14} />
-            <span>Tải về ({item.fileSize})</span>
+            <span>{t("card:materials.actions.download", { size: item.fileSize, defaultValue: `Tải về (${item.fileSize})` })}</span>
           </Button>
         </div>
       </div>

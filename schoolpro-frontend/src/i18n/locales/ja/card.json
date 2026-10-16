@@ -1110,5 +1110,111 @@
       "exportSuccess": "電子指導要録のダウンロードに成功しました！",
       "exportError": "電子指導要録PDFのエクスポートに失敗しました。後でもう一度お試しください。"
     }
+  },
+  "materials": {
+    "header": {
+      "breadcrumbHome": "ホーム",
+      "breadcrumbMaterials": "教材・学習資料",
+      "title": "教材・学習資料",
+      "subtitle": "講義スライド、復習要綱、模擬試験、電子教科書などのデジタル学習リソース",
+      "tabBySubjects": "科目別",
+      "tabAllMaterials": "すべての資料",
+      "subjectMaterialsTitle": "「{{subject}}」の教材一覧",
+      "backToSubjects": "科目一覧に戻る"
+    },
+    "summary": {
+      "totalMaterials": "総教材数",
+      "lectures": "講義スライド",
+      "outlines": "復習要綱",
+      "examPreps": "試験問題集",
+      "textbooks": "電子教科書",
+      "totalDownloads": "総ダウンロード数"
+    },
+    "filter": {
+      "searchMaterialPlaceholder": "講義、要綱、著者、資料を検索...",
+      "searchSubjectPlaceholder": "科目、担当教員、トピックを検索...",
+      "subjectLabel": "科目:",
+      "allSubjects": "すべての科目",
+      "categoryLabel": "カテゴリ:",
+      "allCategories": "すべてのカテゴリ",
+      "semesterLabel": "学期:",
+      "allSemesters": "すべての学期",
+      "semester1": "第1学期",
+      "semester2": "第2学期",
+      "sortByLabel": "並び替え:",
+      "newest": "最新順",
+      "mostDownloaded": "ダウンロード数順",
+      "titleAsc": "教材名 (昇順)",
+      "sizeAsc": "ファイルサイズが小さい順",
+      "nameAsc": "科目名 (昇順)",
+      "mostMaterials": "教材数が多い順",
+      "mostDownloads": "ダウンロード数順",
+      "viewGrid": "グリッド表示",
+      "viewList": "リスト表示",
+      "reset": "リセット",
+      "resetTooltip": "すべてのフィルターをリセット",
+      "totalSubjectsCount": "合計 {{count}} 科目",
+      "totalMaterialsCount": "合計 {{count}} 件の資料"
+    },
+    "categories": {
+      "lecture": "講義資料",
+      "outline": "復習要綱",
+      "textbook": "電子教科書",
+      "exam_prep": "試験問題",
+      "reference": "参考資料"
+    },
+    "actions": {
+      "viewMaterials": "資料を見る ({{count}})",
+      "viewDetail": "詳細",
+      "download": "ダウンロード ({{size}})",
+      "downloadSimple": "ダウンロード",
+      "preview": "プレビュー",
+      "bookmark": "お気に入りに追加",
+      "unbookmark": "お気に入り解除",
+      "bookmarked": "お気に入り登録済み",
+      "close": "閉じる"
+    },
+    "meta": {
+      "teacher": "担当教員:",
+      "lecturesCount": "講義資料:",
+      "outlinesCount": "要綱:",
+      "examsCount": "問題集:",
+      "downloadsCount": "{{count}} 回ダウンロード",
+      "viewsCount": "{{count}} 回閲覧",
+      "uploadDate": "登録日: {{date}}",
+      "author": "作成者: {{author}}",
+      "viewSubjectMaterials": "「{{name}}」の教材一覧を表示"
+    },
+    "selection": {
+      "selectAllOnPage": "すべて選択 (ページ内 {{count}} 件)",
+      "selectedCount": "{{count}} 件選択中",
+      "downloadZipPackage": "一括ZIPダウンロード ({{count}})",
+      "clearSelection": "選択解除"
+    },
+    "modal": {
+      "title": "教材・学習資料の詳細",
+      "subject": "科目",
+      "category": "カテゴリ",
+      "author": "作成者",
+      "uploadDate": "登録日",
+      "format": "ファイル形式",
+      "fileSize": "ファイルサイズ",
+      "downloads": "ダウンロード数",
+      "views": "閲覧数",
+      "descriptionTitle": "概要説明",
+      "tableOfContentsTitle": "目次構成",
+      "attachmentsTitle": "添付ファイル一覧",
+      "bookmarkSuccess": "資料をお気に入りに追加しました",
+      "unbookmarkSuccess": "資料をお気に入りから解除しました",
+      "downloadStarted": "ファイルのダウンロードを開始しています: {{fileName}}",
+      "downloadBatchStarted": "{{count}} 件の教材を圧縮してダウンロード準備中..."
+    },
+    "empty": {
+      "noSubjectsTitle": "科目が見つかりません",
+      "noSubjectsDesc": "検索キーワードまたは指定したフィルターに該当する科目はありません。",
+      "noMaterialsTitle": "教材・学習資料が見つかりません",
+      "noMaterialsDesc": "現在のフィルター条件に一致する資料はありません。条件を変更してお試しください。",
+      "resetFilterBtn": "フィルターをリセット"
+    }
   }
 }

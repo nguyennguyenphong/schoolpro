@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 import type {
   MaterialItem,
@@ -11,6 +12,7 @@ import type {
 import { materialsService } from "@/modules/students/features/materials/services";
 
 export const useSubjectMaterials = () => {
+  const { t } = useTranslation();
   const { subjectCode } = useParams<{ subjectCode: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -160,29 +162,32 @@ export const useSubjectMaterials = () => {
   // Download actions
   const handleDownload = useCallback((item: MaterialItem) => {
     materialsService.incrementDownload(item.id);
-    message.success(`Đang bắt đầu tải tệp: ${item.fileName}`);
-  }, []);
+    message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName, defaultValue: `Đang bắt đầu tải tệp: ${item.fileName}` }));
+  }, [t]);
 
   const handleDownloadSelected = useCallback(() => {
     if (selectedIds.length === 0) return;
     message.success(
-      `Đang khởi tạo gói nén ZIP gồm ${selectedIds.length} tài liệu... Vui lòng đợi trong giây lát!`,
+      t("card:materials.modal.downloadBatchStarted", {
+        count: selectedIds.length,
+        defaultValue: `Đang nén và chuẩn bị tải xuống ${selectedIds.length} tài liệu...`,
+      }),
     );
     clearSelection();
-  }, [selectedIds, clearSelection]);
+  }, [selectedIds, clearSelection, t]);
 
   // Bookmark toggle
   const toggleBookmark = useCallback((id: string) => {
     const isBookmarked = materialsService.toggleBookmark(id);
     message.success(
       isBookmarked
-        ? "Đã lưu tài liệu vào mục quan trọng"
-        : "Đã hủy lưu trữ tài liệu",
+        ? t("card:materials.modal.bookmarkSuccess", "Đã thêm tài liệu vào mục lưu trữ quan trọng")
+        : t("card:materials.modal.unbookmarkSuccess", "Đã gỡ tài liệu khỏi mục lưu trữ"),
     );
     setMaterials((prev) =>
       prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),
     );
-  }, []);
+  }, [t]);
 
   return {
     subject,

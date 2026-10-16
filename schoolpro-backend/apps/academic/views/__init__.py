@@ -5,6 +5,8 @@ from .attendance_views import (
     LeaveRequestViewSet,
 )
 from .exam_log_views import ExamEventLogViewSet
+from .gradebook_views import StudentGradebookViewSet
+from .material_views import StudentMaterialViewSet
 from .timetable_views import TimetableStudentViewSet
 
 __all__ = [
@@ -14,4 +16,6 @@ __all__ = [
     "AttendanceLogViewSet",
     "LeaveRequestViewSet",
     "ExamEventLogViewSet",
+    "StudentGradebookViewSet",
+    "StudentMaterialViewSet",
 ]

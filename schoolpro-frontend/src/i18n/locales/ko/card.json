@@ -1110,5 +1110,111 @@
       "exportSuccess": "전자 학교생활기록부를 성공적으로 다운로드했습니다!",
       "exportError": "전자 학교생활기록부 PDF 파일을 내보내지 못했습니다. 잠시 후 다시 시도해주세요."
     }
+  },
+  "materials": {
+    "header": {
+      "breadcrumbHome": "홈",
+      "breadcrumbMaterials": "학습 자료",
+      "title": "학습 자료",
+      "subtitle": "강의 자료, 복습 요약본, 모의시험 및 디지털 교과서 등 학습 지원 자료실",
+      "tabBySubjects": "과목별",
+      "tabAllMaterials": "전체 자료",
+      "subjectMaterialsTitle": "{{subject}} 과목 학습 자료",
+      "backToSubjects": "과목 목록으로 돌아가기"
+    },
+    "summary": {
+      "totalMaterials": "총 자료 수",
+      "lectures": "전자 강의 자료",
+      "outlines": "복습 요약본",
+      "examPreps": "시험 대비 문제",
+      "textbooks": "디지털 교과서",
+      "totalDownloads": "총 다운로드 수"
+    },
+    "filter": {
+      "searchMaterialPlaceholder": "강의, 요약본, 작성자, 자료 검색...",
+      "searchSubjectPlaceholder": "과목, 담당 교사, 주제 검색...",
+      "subjectLabel": "과목:",
+      "allSubjects": "전체 과목",
+      "categoryLabel": "카테고리:",
+      "allCategories": "전체 카테고리",
+      "semesterLabel": "학기:",
+      "allSemesters": "전체 학기",
+      "semester1": "1학기",
+      "semester2": "2학기",
+      "sortByLabel": "정렬:",
+      "newest": "최신순",
+      "mostDownloaded": "다운로드 많은 순",
+      "titleAsc": "자료명순 (가나다)",
+      "sizeAsc": "용량 작은 순",
+      "nameAsc": "과목명순 (가나다)",
+      "mostMaterials": "자료 많은 순",
+      "mostDownloads": "다운로드 많은 순",
+      "viewGrid": "카드 보기",
+      "viewList": "목록 보기",
+      "reset": "초기화",
+      "resetTooltip": "모든 필터 초기화",
+      "totalSubjectsCount": "총 {{count}}개 과목",
+      "totalMaterialsCount": "총 {{count}}개 자료"
+    },
+    "categories": {
+      "lecture": "강의 자료",
+      "outline": "복습 요약",
+      "textbook": "교과서",
+      "exam_prep": "시험 문제",
+      "reference": "참고 자료"
+    },
+    "actions": {
+      "viewMaterials": "자료 보기 ({{count}})",
+      "viewDetail": "상세정보",
+      "download": "다운로드 ({{size}})",
+      "downloadSimple": "다운로드",
+      "preview": "미리보기",
+      "bookmark": "보관함에 저장",
+      "unbookmark": "보관함에서 삭제",
+      "bookmarked": "저장됨",
+      "close": "닫기"
+    },
+    "meta": {
+      "teacher": "담당 교사:",
+      "lecturesCount": "강의 자료:",
+      "outlinesCount": "요약본:",
+      "examsCount": "시험 문제:",
+      "downloadsCount": "{{count}}회 다운로드",
+      "viewsCount": "{{count}}회 조회",
+      "uploadDate": "등록일: {{date}}",
+      "author": "작성자: {{author}}",
+      "viewSubjectMaterials": "{{name}} 과목 학습 자료 보기"
+    },
+    "selection": {
+      "selectAllOnPage": "전체 선택 (페이지 내 {{count}}개)",
+      "selectedCount": "선택됨: {{count}}개 자료",
+      "downloadZipPackage": "ZIP 압축 다운로드 ({{count}})",
+      "clearSelection": "선택 해제"
+    },
+    "modal": {
+      "title": "학습 자료 상세 정보",
+      "subject": "과목",
+      "category": "카테고리",
+      "author": "작성자",
+      "uploadDate": "등록일",
+      "format": "파일 형식",
+      "fileSize": "파일 크기",
+      "downloads": "다운로드 수",
+      "views": "조회수",
+      "descriptionTitle": "내용 설명",
+      "tableOfContentsTitle": "목차 구성",
+      "attachmentsTitle": "첨부 파일 목록",
+      "bookmarkSuccess": "자료가 보관함에 추가되었습니다",
+      "unbookmarkSuccess": "자료가 보관함에서 삭제되었습니다",
+      "downloadStarted": "파일 다운로드를 시작합니다: {{fileName}}",
+      "downloadBatchStarted": "{{count}}개 자료 압축 및 다운로드 준비 중..."
+    },
+    "empty": {
+      "noSubjectsTitle": "과목을 찾을 수 없습니다",
+      "noSubjectsDesc": "검색어 또는 선택한 필터에 해당하는 과목이 없습니다.",
+      "noMaterialsTitle": "학습 자료를 찾을 수 없습니다",
+      "noMaterialsDesc": "현재 필터 조건과 일치하는 자료가 없습니다. 조건을 변경해보세요.",
+      "resetFilterBtn": "필터 초기화"
+    }
   }
 }

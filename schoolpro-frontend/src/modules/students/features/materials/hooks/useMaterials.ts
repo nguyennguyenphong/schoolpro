@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 import type {
   MaterialItem,
@@ -12,6 +13,7 @@ import type {
 import { materialsService, mockMaterialsData } from "@/modules/students/features/materials/services";
 
 export function useMaterials() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Initial state parsed from URL query
@@ -215,19 +217,22 @@ export function useMaterials() {
           m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
         ),
       );
-      message.success(`Đang tải tệp: ${item.fileName}`);
+      message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName, defaultValue: `Đang bắt đầu tải tệp: ${item.fileName}` }));
     } catch {
       message.error("Lỗi khi tải tệp.");
     }
-  }, []);
+  }, [t]);
 
   const handleDownloadSelected = useCallback(() => {
     if (selectedIds.length === 0) return;
     message.success(
-      `Đang khởi tạo gói nén ZIP gồm ${selectedIds.length} tài liệu được chọn...`,
+      t("card:materials.modal.downloadBatchStarted", {
+        count: selectedIds.length,
+        defaultValue: `Đang nén và chuẩn bị tải xuống ${selectedIds.length} tài liệu...`,
+      }),
     );
     clearSelection();
-  }, [selectedIds, clearSelection]);
+  }, [selectedIds, clearSelection, t]);
 
   const toggleBookmark = useCallback((id: string) => {
     try {
@@ -237,13 +242,13 @@ export function useMaterials() {
       );
       message.success(
         isBookmarked
-          ? "Đã lưu tài liệu vào mục Yêu thích!"
-          : "Đã bỏ lưu tài liệu khỏi mục Yêu thích.",
+          ? t("card:materials.modal.bookmarkSuccess", "Đã thêm tài liệu vào mục lưu trữ quan trọng")
+          : t("card:materials.modal.unbookmarkSuccess", "Đã gỡ tài liệu khỏi mục lưu trữ"),
       );
     } catch {
       message.error("Không thể lưu tài liệu.");
     }
-  }, []);
+  }, [t]);
 
   // Modal Handlers
   const openDetail = useCallback((item: MaterialItem) => {

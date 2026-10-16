@@ -1110,5 +1110,111 @@
       "exportSuccess": "Tải bảng điểm học bạ điện tử thành công!",
       "exportError": "Không thể xuất tệp PDF học bạ điện tử. Vui lòng thử lại sau."
     }
+  },
+  "materials": {
+    "header": {
+      "breadcrumbHome": "Trang chủ",
+      "breadcrumbMaterials": "Tài liệu học tập",
+      "title": "Tài liệu học tập",
+      "subtitle": "Kho bài giảng số, đề cương ôn tập, đề thi thử và giáo trình điện tử phục vụ học tập",
+      "tabBySubjects": "Theo môn học",
+      "tabAllMaterials": "Tất cả tài liệu",
+      "subjectMaterialsTitle": "Tài liệu môn {{subject}}",
+      "backToSubjects": "Quay lại danh mục môn học"
+    },
+    "summary": {
+      "totalMaterials": "Tổng số tài liệu",
+      "lectures": "Bài giảng điện tử",
+      "outlines": "Đề cương ôn tập",
+      "examPreps": "Đề thi & Đề ôn",
+      "textbooks": "Sách giáo khoa",
+      "totalDownloads": "Tổng lượt tải về"
+    },
+    "filter": {
+      "searchMaterialPlaceholder": "Tìm kiếm bài giảng, đề cương, tác giả, tài liệu...",
+      "searchSubjectPlaceholder": "Tìm kiếm môn học, giáo viên phụ trách, chuyên đề...",
+      "subjectLabel": "Môn học:",
+      "allSubjects": "Tất cả môn học",
+      "categoryLabel": "Danh mục:",
+      "allCategories": "Tất cả danh mục",
+      "semesterLabel": "Học kỳ:",
+      "allSemesters": "Tất cả học kỳ",
+      "semester1": "Học kỳ 1",
+      "semester2": "Học kỳ 2",
+      "sortByLabel": "Sắp xếp:",
+      "newest": "Mới nhất",
+      "mostDownloaded": "Lượt tải nhiều nhất",
+      "titleAsc": "Tên tài liệu (A - Z)",
+      "sizeAsc": "Dung lượng nhỏ nhất",
+      "nameAsc": "Tên môn học (A - Z)",
+      "mostMaterials": "Nhiều tài liệu nhất",
+      "mostDownloads": "Lượt tải nhiều nhất",
+      "viewGrid": "Lưới thẻ",
+      "viewList": "Danh sách",
+      "reset": "Đặt lại",
+      "resetTooltip": "Đặt lại tất cả bộ lọc",
+      "totalSubjectsCount": "Tổng số {{count}} môn học",
+      "totalMaterialsCount": "Tổng số {{count}} tài liệu"
+    },
+    "categories": {
+      "lecture": "Bài giảng",
+      "outline": "Đề cương",
+      "textbook": "Sách giáo khoa",
+      "exam_prep": "Đề thi",
+      "reference": "Tham khảo"
+    },
+    "actions": {
+      "viewMaterials": "Xem tài liệu ({{count}})",
+      "viewDetail": "Chi tiết",
+      "download": "Tải về ({{size}})",
+      "downloadSimple": "Tải về",
+      "preview": "Xem trước tài liệu",
+      "bookmark": "Lưu vào yêu thích",
+      "unbookmark": "Bỏ lưu yêu thích",
+      "bookmarked": "Đã lưu yêu thích",
+      "close": "Đóng"
+    },
+    "meta": {
+      "teacher": "Giáo viên:",
+      "lecturesCount": "Bài giảng:",
+      "outlinesCount": "Đề cương:",
+      "examsCount": "Đề thi:",
+      "downloadsCount": "{{count}} lượt tải",
+      "viewsCount": "{{count}} lượt xem",
+      "uploadDate": "Ngày đăng: {{date}}",
+      "author": "Tác giả: {{author}}",
+      "viewSubjectMaterials": "Xem danh sách tài liệu môn {{name}}"
+    },
+    "selection": {
+      "selectAllOnPage": "Chọn tất cả ({{count}} tài liệu trên trang)",
+      "selectedCount": "Đã chọn: {{count}} tài liệu",
+      "downloadZipPackage": "Tải xuống gói ZIP ({{count}})",
+      "clearSelection": "Bỏ chọn"
+    },
+    "modal": {
+      "title": "Chi tiết tài liệu học tập",
+      "subject": "Môn học",
+      "category": "Danh mục",
+      "author": "Tác giả",
+      "uploadDate": "Ngày đăng",
+      "format": "Định dạng",
+      "fileSize": "Dung lượng",
+      "downloads": "Lượt tải về",
+      "views": "Lượt xem",
+      "descriptionTitle": "Mô tả nội dung",
+      "tableOfContentsTitle": "Mục lục tài liệu",
+      "attachmentsTitle": "Tập tin đính kèm",
+      "bookmarkSuccess": "Đã thêm tài liệu vào mục lưu trữ quan trọng",
+      "unbookmarkSuccess": "Đã gỡ tài liệu khỏi mục lưu trữ",
+      "downloadStarted": "Đang bắt đầu tải tệp: {{fileName}}",
+      "downloadBatchStarted": "Đang nén và chuẩn bị tải xuống {{count}} tài liệu..."
+    },
+    "empty": {
+      "noSubjectsTitle": "Không tìm thấy môn học",
+      "noSubjectsDesc": "Không có môn học nào phù hợp với từ khóa hoặc bộ lọc đã chọn.",
+      "noMaterialsTitle": "Không tìm thấy tài liệu học tập",
+      "noMaterialsDesc": "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.",
+      "resetFilterBtn": "Đặt lại bộ lọc"
+    }
   }
 }

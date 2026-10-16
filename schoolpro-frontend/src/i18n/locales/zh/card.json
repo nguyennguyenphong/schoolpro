@@ -1110,5 +1110,111 @@
       "exportSuccess": "成功下载电子学籍簿！",
       "exportError": "无法导出电子学籍簿PDF文件，请稍后重试。"
     }
+  },
+  "materials": {
+    "header": {
+      "breadcrumbHome": "首页",
+      "breadcrumbMaterials": "学习资料",
+      "title": "学习资料",
+      "subtitle": "数字课件、复习大纲、模拟试题及电子教材等教学资源库",
+      "tabBySubjects": "按学科",
+      "tabAllMaterials": "全部资料",
+      "subjectMaterialsTitle": "{{subject}} 学习资料",
+      "backToSubjects": "返回学科目录"
+    },
+    "summary": {
+      "totalMaterials": "资料总数",
+      "lectures": "电子课件",
+      "outlines": "复习大纲",
+      "examPreps": "试题试卷",
+      "textbooks": "电子教材",
+      "totalDownloads": "总下载量"
+    },
+    "filter": {
+      "searchMaterialPlaceholder": "搜索课件、大纲、作者、资料...",
+      "searchSubjectPlaceholder": "搜索学科、任课教师、主题...",
+      "subjectLabel": "学科:",
+      "allSubjects": "全部学科",
+      "categoryLabel": "分类:",
+      "allCategories": "全部分类",
+      "semesterLabel": "学期:",
+      "allSemesters": "全部学期",
+      "semester1": "第一学期",
+      "semester2": "第二学期",
+      "sortByLabel": "排序方式:",
+      "newest": "最新发布",
+      "mostDownloaded": "下载最多",
+      "titleAsc": "资料名称 (A - Z)",
+      "sizeAsc": "文件最小",
+      "nameAsc": "学科名称 (A - Z)",
+      "mostMaterials": "资料最多",
+      "mostDownloads": "下载最多",
+      "viewGrid": "卡片视图",
+      "viewList": "列表视图",
+      "reset": "重置",
+      "resetTooltip": "重置所有筛选",
+      "totalSubjectsCount": "共 {{count}} 门学科",
+      "totalMaterialsCount": "共 {{count}} 份资料"
+    },
+    "categories": {
+      "lecture": "课件讲义",
+      "outline": "复习大纲",
+      "textbook": "电子教材",
+      "exam_prep": "模拟试卷",
+      "reference": "参考资料"
+    },
+    "actions": {
+      "viewMaterials": "查看资料 ({{count}})",
+      "viewDetail": "详情",
+      "download": "下载 ({{size}})",
+      "downloadSimple": "下载",
+      "preview": "预览资料",
+      "bookmark": "收藏资料",
+      "unbookmark": "取消收藏",
+      "bookmarked": "已收藏",
+      "close": "关闭"
+    },
+    "meta": {
+      "teacher": "任课教师:",
+      "lecturesCount": "课件:",
+      "outlinesCount": "大纲:",
+      "examsCount": "试题:",
+      "downloadsCount": "{{count}} 次下载",
+      "viewsCount": "{{count}} 次浏览",
+      "uploadDate": "发布日期: {{date}}",
+      "author": "作者: {{author}}",
+      "viewSubjectMaterials": "查看 {{name}} 的学习资料"
+    },
+    "selection": {
+      "selectAllOnPage": "全选 (当前页 {{count}} 份资料)",
+      "selectedCount": "已选择: {{count}} 份资料",
+      "downloadZipPackage": "打包下载 ZIP ({{count}})",
+      "clearSelection": "取消选择"
+    },
+    "modal": {
+      "title": "学习资料详情",
+      "subject": "学科",
+      "category": "分类",
+      "author": "作者",
+      "uploadDate": "发布日期",
+      "format": "文件格式",
+      "fileSize": "文件大小",
+      "downloads": "下载量",
+      "views": "浏览量",
+      "descriptionTitle": "内容简介",
+      "tableOfContentsTitle": "资料目录",
+      "attachmentsTitle": "附件列表",
+      "bookmarkSuccess": "已成功收藏该资料",
+      "unbookmarkSuccess": "已从收藏夹中移除该资料",
+      "downloadStarted": "开始下载文件: {{fileName}}",
+      "downloadBatchStarted": "正在打包并准备下载 {{count}} 份资料..."
+    },
+    "empty": {
+      "noSubjectsTitle": "未找到相关学科",
+      "noSubjectsDesc": "没有匹配关键词或筛选条件的学科。",
+      "noMaterialsTitle": "未找到相关学习资料",
+      "noMaterialsDesc": "当前筛选条件下没有资料，请尝试调整筛选条件。",
+      "resetFilterBtn": "重置筛选"
+    }
   }
 }
