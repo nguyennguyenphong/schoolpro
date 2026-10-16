@@ -914,7 +914,8 @@
       "className": "班级: {{name}}",
       "semesterYear": "学期 {{semester}} • {{year}}",
       "viewTranscript": "查看电子学籍簿",
-      "exportPdf": "下载数字签名PDF"
+      "exportPdf": "下载数字签名PDF",
+      "printGradebook": "打印成绩单"
     },
     "summary": {
       "gpaTitle": "学期平均绩点 (GPA)",
@@ -1051,6 +1052,38 @@
       "close": "关闭",
       "print": "打印成绩单",
       "downloadPdf": "下载数字签名PDF"
+    },
+    "print": {
+      "pageTitle": "学生成绩单",
+      "title": "学业与表现成绩单",
+      "ministry": "教育与培训部",
+      "school": "自然科学特长高中",
+      "nationalHeader": "越南社会主义共和国",
+      "nationalMotto": "独立 - 自由 - 幸福",
+      "decreeNote": "(根据教育与培训部第22/2021/TT-BGDĐT号通告规定)",
+      "printDate": "打印日期: {{date}}",
+      "studentName": "学生姓名:",
+      "studentCode": "学号:",
+      "className": "班级:",
+      "subjectCodeColumn": "科目代码",
+      "academicYear": "学年:",
+      "semester": "学期:",
+      "homeroomTeacher": "班主任:",
+      "gpa": "学期平均绩点 (GPA):",
+      "academicRank": "学业等级:",
+      "conductRank": "表现等级:",
+      "classPosition": "班级排名:",
+      "titleAwarded": "荣誉称号:",
+      "homeroomComment": "班主任评语:",
+      "signatureStudent": "学生",
+      "signatureTeacher": "班主任",
+      "signaturePrincipal": "校长 / 校务委员会",
+      "signNote": "(签名并注明全名)",
+      "sealNote": "(签名并盖章)",
+      "back": "返回",
+      "close": "关闭窗口",
+      "printNow": "立即打印",
+      "auditFooter": "从SchoolPro教务管理系统提取 • 认证代码: {{signature}} • 生成时间: {{time}}"
     },
     "empty": {
       "noMatchingTitle": "未找到符合条件的科目",

@@ -914,7 +914,8 @@
       "className": "クラス: {{name}}",
       "semesterYear": "学期 {{semester}} • {{year}}",
       "viewTranscript": "電子指導要録を表示",
-      "exportPdf": "署名付きPDF出力"
+      "exportPdf": "署名付きPDF出力",
+      "printGradebook": "成績表を印刷"
     },
     "summary": {
       "gpaTitle": "学期評定平均 (GPA)",
@@ -1051,6 +1052,38 @@
       "close": "閉じる",
       "print": "印刷",
       "downloadPdf": "署名付きPDF出力"
+    },
+    "print": {
+      "pageTitle": "生徒成績証明書",
+      "title": "学習・行動評価成績証明書",
+      "ministry": "教育訓練省",
+      "school": "自然科学英才高等学校",
+      "nationalHeader": "ベトナム社会主義共和国",
+      "nationalMotto": "独立・自由・幸福",
+      "decreeNote": "(教育訓練省通達第22/2021/TT-BGDĐT号の規定に基づく)",
+      "printDate": "印刷日: {{date}}",
+      "studentName": "生徒氏名:",
+      "studentCode": "生徒番号:",
+      "className": "学級:",
+      "subjectCodeColumn": "科目コード",
+      "academicYear": "学年:",
+      "semester": "学期:",
+      "homeroomTeacher": "担任教師:",
+      "gpa": "学期平均点 (GPA):",
+      "academicRank": "学力評価:",
+      "conductRank": "行動評価:",
+      "classPosition": "学級順位:",
+      "titleAwarded": "表彰称号:",
+      "homeroomComment": "担任教師の所見:",
+      "signatureStudent": "生徒",
+      "signatureTeacher": "担任教師",
+      "signaturePrincipal": "校長 / 学校長",
+      "signNote": "(署名・氏名明記)",
+      "sealNote": "(署名・捺印)",
+      "back": "戻る",
+      "close": "閉じる",
+      "printNow": "今すぐ印刷",
+      "auditFooter": "SchoolPro学務管理システムから抽出 • 認証コード: {{signature}} • 発行日時: {{time}}"
     },
     "empty": {
       "noMatchingTitle": "該当する科目が見つかりません",

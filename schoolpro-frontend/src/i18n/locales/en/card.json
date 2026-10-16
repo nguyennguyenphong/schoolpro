@@ -914,7 +914,8 @@
       "className": "Class: {{name}}",
       "semesterYear": "Semester {{semester}} • {{year}}",
       "viewTranscript": "View Electronic Transcript",
-      "exportPdf": "Download Signed PDF"
+      "exportPdf": "Download Signed PDF",
+      "printGradebook": "Print Gradebook"
     },
     "summary": {
       "gpaTitle": "Semester GPA",
@@ -1051,6 +1052,38 @@
       "close": "Close",
       "print": "Print Transcript",
       "downloadPdf": "Download Signed PDF"
+    },
+    "print": {
+      "pageTitle": "Student Gradebook",
+      "title": "STUDENT ACADEMIC & CONDUCT TRANSCRIPT",
+      "ministry": "MINISTRY OF EDUCATION AND TRAINING",
+      "school": "HIGH SCHOOL FOR GIFTED STUDENTS",
+      "nationalHeader": "SOCIALIST REPUBLIC OF VIETNAM",
+      "nationalMotto": "Independence - Freedom - Happiness",
+      "decreeNote": "(Pursuant to Circular No. 22/2021/TT-BGDDT of the Ministry of Education and Training)",
+      "printDate": "Printed Date: {{date}}",
+      "studentName": "Student Full Name:",
+      "studentCode": "Student Code:",
+      "className": "Class:",
+      "subjectCodeColumn": "Subject Code",
+      "academicYear": "Academic Year:",
+      "semester": "Semester:",
+      "homeroomTeacher": "Homeroom Teacher:",
+      "gpa": "Semester GPA:",
+      "academicRank": "Academic Classification:",
+      "conductRank": "Conduct Classification:",
+      "classPosition": "Class Rank:",
+      "titleAwarded": "Awarded Title:",
+      "homeroomComment": "Homeroom Teacher's Remarks:",
+      "signatureStudent": "Student",
+      "signatureTeacher": "Homeroom Teacher",
+      "signaturePrincipal": "Principal / School Board",
+      "signNote": "(Sign and write full name)",
+      "sealNote": "(Sign and seal)",
+      "back": "Back",
+      "close": "Close Window",
+      "printNow": "Print Now",
+      "auditFooter": "Extracted from SchoolPro Academic System • Auth Code: {{signature}} • Generated: {{time}}"
     },
     "empty": {
       "noMatchingTitle": "No Matching Subjects Found",

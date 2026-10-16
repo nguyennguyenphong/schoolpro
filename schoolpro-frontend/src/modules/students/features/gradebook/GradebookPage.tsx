@@ -35,19 +35,16 @@ export const GradebookPage: React.FC = () => {
     setSortBy,
     openSubjectDetail,
     closeSubjectDetail,
-    openTranscriptModal,
     closeTranscriptModal,
     handleExportPdf,
+    handlePrintGradebook,
     resetFilters,
   } = useGradebook();
 
   return (
     <div className="space-y-4 sm:space-y-5 pb-10">
-      {/* 1. Unified Page Header with Breadcrumb & Actions matching LeaveRequests & Attendance */}
-      <GradebookPageHeader
-        onOpenTranscript={openTranscriptModal}
-        onExportPdf={handleExportPdf}
-      />
+      {/* 1. Unified Page Header with Breadcrumb & Single Print Action */}
+      <GradebookPageHeader onPrintGradebook={handlePrintGradebook} />
 
       {/* Error alert matching LeaveRequests */}
       {error && (

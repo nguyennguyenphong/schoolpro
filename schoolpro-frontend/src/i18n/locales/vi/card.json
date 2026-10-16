@@ -914,7 +914,8 @@
       "className": "Lớp: {{name}}",
       "semesterYear": "Học kỳ {{semester}} • {{year}}",
       "viewTranscript": "Xem Học bạ Điện tử",
-      "exportPdf": "Tải PDF Ký số"
+      "exportPdf": "Tải PDF Ký số",
+      "printGradebook": "In bảng điểm"
     },
     "summary": {
       "gpaTitle": "Điểm TB Học kỳ (GPA)",
@@ -1051,6 +1052,38 @@
       "close": "Đóng",
       "print": "In Bảng điểm",
       "downloadPdf": "Tải PDF Ký số"
+    },
+    "print": {
+      "pageTitle": "Bảng điểm học sinh",
+      "title": "BẢNG ĐIỂM HỌC TẬP VÀ RÈN LUYỆN",
+      "ministry": "BỘ GIÁO DỤC VÀ ĐÀO TẠO",
+      "school": "TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN KHOA HỌC TỰ NHIÊN",
+      "nationalHeader": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+      "nationalMotto": "Độc lập - Tự do - Hạnh phúc",
+      "decreeNote": "(Theo quy định tại Thông tư số 22/2021/TT-BGDĐT của Bộ Giáo dục và Đào tạo)",
+      "printDate": "Ngày in: {{date}}",
+      "studentName": "Họ và tên học sinh:",
+      "studentCode": "Mã số học sinh:",
+      "className": "Lớp học:",
+      "subjectCodeColumn": "Mã môn học",
+      "academicYear": "Năm học:",
+      "semester": "Học kỳ:",
+      "homeroomTeacher": "Giáo viên chủ nhiệm:",
+      "gpa": "Điểm trung bình học kỳ (GPA):",
+      "academicRank": "Kết quả học tập:",
+      "conductRank": "Kết quả rèn luyện:",
+      "classPosition": "Xếp hạng lớp:",
+      "titleAwarded": "Danh hiệu thi đua:",
+      "homeroomComment": "Nhận xét của Giáo viên chủ nhiệm:",
+      "signatureStudent": "Học sinh",
+      "signatureTeacher": "Giáo viên chủ nhiệm",
+      "signaturePrincipal": "Hiệu trưởng / Ban Giám hiệu",
+      "signNote": "(Ký và ghi rõ họ tên)",
+      "sealNote": "(Ký tên, đóng dấu)",
+      "back": "Quay lại",
+      "close": "Đóng trang",
+      "printNow": "In ngay",
+      "auditFooter": "Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • Mã chứng thực: {{signature}} • Ngày tạo: {{time}}"
     },
     "empty": {
       "noMatchingTitle": "Không tìm thấy môn học phù hợp",

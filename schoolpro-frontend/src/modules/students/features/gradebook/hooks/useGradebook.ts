@@ -319,6 +319,21 @@ export const useGradebook = () => {
     }
   };
 
+  const handlePrintGradebook = useCallback(() => {
+    const params = new URLSearchParams();
+    if (filter.academicYear && filter.academicYear !== "all") {
+      params.set("academicYear", filter.academicYear);
+    }
+    if (filter.semester && filter.semester !== "all") {
+      params.set("semester", filter.semester);
+    }
+    const queryString = params.toString();
+    const url = `/student/gradebook/print${queryString ? `?${queryString}` : ""}`;
+    if (typeof window !== "undefined") {
+      window.open(url, "_blank");
+    }
+  }, [filter.academicYear, filter.semester]);
+
   return {
     grades,
     total,
@@ -344,5 +359,6 @@ export const useGradebook = () => {
     openTranscriptModal,
     closeTranscriptModal,
     handleExportPdf,
+    handlePrintGradebook,
   };
 };

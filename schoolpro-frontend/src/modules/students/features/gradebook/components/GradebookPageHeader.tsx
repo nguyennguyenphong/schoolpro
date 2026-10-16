@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 interface GradebookPageHeaderProps {
-  onOpenTranscript: () => void;
-  onExportPdf: () => void;
+  onPrintGradebook: () => void;
+  onOpenTranscript?: () => void;
+  onExportPdf?: () => void;
 }
 
 export const GradebookPageHeader: React.FC<GradebookPageHeaderProps> = ({
-  onOpenTranscript,
-  onExportPdf,
+  onPrintGradebook,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button"]);
 
@@ -54,20 +54,12 @@ export const GradebookPageHeader: React.FC<GradebookPageHeaderProps> = ({
 
         <div className="flex flex-wrap items-center gap-2.5 shrink-0">
           <Button
-            variant="outline"
-            onClick={onOpenTranscript}
-            className="font-semibold text-xs sm:text-sm text-slate-700"
-          >
-            <Icon name="file-text" size={15} />
-            <span>{t("card:gradebook.header.viewTranscript")}</span>
-          </Button>
-          <Button
             variant="primary"
-            onClick={onExportPdf}
+            onClick={onPrintGradebook}
             className="font-semibold text-xs sm:text-sm"
           >
-            <Icon name="download" size={15} />
-            <span>{t("card:gradebook.header.exportPdf")}</span>
+            <Icon name="print" size={15} />
+            <span>{t("card:gradebook.header.printGradebook")}</span>
           </Button>
         </div>
       </div>

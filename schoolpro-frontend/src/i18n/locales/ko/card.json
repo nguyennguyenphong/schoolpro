@@ -914,7 +914,8 @@
       "className": "학급: {{name}}",
       "semesterYear": "학기 {{semester}} • {{year}}",
       "viewTranscript": "전자 생활기록부 보기",
-      "exportPdf": "전자서명 PDF 다운로드"
+      "exportPdf": "전자서명 PDF 다운로드",
+      "printGradebook": "성적표 인쇄"
     },
     "summary": {
       "gpaTitle": "학기 평균 평점 (GPA)",
@@ -1051,6 +1052,38 @@
       "close": "닫기",
       "print": "성적표 인쇄",
       "downloadPdf": "전자서명 PDF 다운로드"
+    },
+    "print": {
+      "pageTitle": "학생 성적표",
+      "title": "학습 및 품행 평가 성적표",
+      "ministry": "교육훈련부",
+      "school": "자연과학영재고등학교",
+      "nationalHeader": "베트남 사회주의 공화국",
+      "nationalMotto": "독립 - 자유 - 행복",
+      "decreeNote": "(교육훈련부 통람 제22/2021/TT-BGDĐT호 규정에 따름)",
+      "printDate": "인쇄일: {{date}}",
+      "studentName": "학생 성명:",
+      "studentCode": "학번:",
+      "className": "학급:",
+      "subjectCodeColumn": "과목 코드",
+      "academicYear": "학년도:",
+      "semester": "학기:",
+      "homeroomTeacher": "담임 교사:",
+      "gpa": "학기 평균 평점 (GPA):",
+      "academicRank": "학업 성적 평가:",
+      "conductRank": "품행 평가:",
+      "classPosition": "학급 석차:",
+      "titleAwarded": "표창 칭호:",
+      "homeroomComment": "담임 교사 의견:",
+      "signatureStudent": "학생",
+      "signatureTeacher": "담임 교사",
+      "signaturePrincipal": "교장 / 학교 관리위원회",
+      "signNote": "(서명 및 정자 기재)",
+      "sealNote": "(서명 및 날인)",
+      "back": "돌아가기",
+      "close": "창 닫기",
+      "printNow": "지금 인쇄",
+      "auditFooter": "SchoolPro 학무 관리 시스템에서 추출 • 인증 코드: {{signature}} • 생성 일시: {{time}}"
     },
     "empty": {
       "noMatchingTitle": "일치하는 과목을 찾을 수 없습니다",

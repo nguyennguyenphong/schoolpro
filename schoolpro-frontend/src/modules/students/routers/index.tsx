@@ -56,6 +56,12 @@ const GradebookPage = lazy(() =>
   }))
 );
 
+const GradebookPrintPage = lazy(() =>
+  import("@/modules/students/features/gradebook").then(({ GradebookPrintPage }) => ({
+    default: GradebookPrintPage,
+  }))
+);
+
 const EvaluationPage = lazy(() =>
   import("@/modules/students/features/evaluation").then(({ EvaluationPage }) => ({
     default: EvaluationPage,
@@ -129,34 +135,38 @@ const LeaveRequestFormPage = lazy(() =>
 );
 
 export const StudentRoutes = (
-  <Route element={<MainLayout />}>
-    <Route path="/student/home" element={<HomePage />} />
-    <Route path="/student/dashboard" element={<DashboardPage />} />
-    <Route path="/student/timetable" element={<TimetablePage />} />
-    <Route path="/student/attendance" element={<AttendancePage />} />
-    <Route path="/student/leave-requests" element={<LeaveRequestsPage />} />
-    <Route path="/student/leave-requests/create" element={<LeaveRequestFormPage />} />
-    <Route path="/student/leave-requests/:id" element={<LeaveRequestDetailPage />} />
-    <Route path="/student/leave-requests/:id/edit" element={<LeaveRequestFormPage />} />
-    <Route path="/student/contact-book" element={<ContactBookPage />} />
-    <Route path="/student/exams" element={<ExamsPage />} />
-    <Route path="/student/exams/:id" element={<ExamDetailPage />} />
-    <Route path="/student/notices" element={<AnnouncementsPage />} />
-    <Route path="/student/assignments" element={<AssignmentsPage />} />
-    <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />
-    <Route path="/student/materials" element={<MaterialsPage />} />
-    <Route path="/student/materials/:subjectCode" element={<SubjectMaterialsPage />} />
-    <Route path="/student/gradebook" element={<GradebookPage />} />
-    <Route path="/student/evaluations" element={<EvaluationPage />} />
-    <Route path="/student/evaluations/:id" element={<SurveyDetailPage />} />
-    <Route path="/student/profile" element={<ProfilePage />} />
-    <Route path="/student/settings" element={<SettingsPage />} />
-    <Route path="/student/change-password" element={<ChangePasswordPage />} />
-    <Route path="/student/surveys/:id" element={<SurveyDetailPage />} />
-    <Route path="/student/surveys" element={<Navigate to="/student/evaluations" replace />} />
-    <Route path="/student/grades" element={<Navigate to="/student/gradebook" replace />} />
-    <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
-    <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />
-    <Route path="/student" element={<Navigate to="/student/home" replace />} />
-  </Route>
+  <>
+    <Route element={<MainLayout />}>
+      <Route path="/student/home" element={<HomePage />} />
+      <Route path="/student/dashboard" element={<DashboardPage />} />
+      <Route path="/student/timetable" element={<TimetablePage />} />
+      <Route path="/student/attendance" element={<AttendancePage />} />
+      <Route path="/student/leave-requests" element={<LeaveRequestsPage />} />
+      <Route path="/student/leave-requests/create" element={<LeaveRequestFormPage />} />
+      <Route path="/student/leave-requests/:id" element={<LeaveRequestDetailPage />} />
+      <Route path="/student/leave-requests/:id/edit" element={<LeaveRequestFormPage />} />
+      <Route path="/student/contact-book" element={<ContactBookPage />} />
+      <Route path="/student/exams" element={<ExamsPage />} />
+      <Route path="/student/exams/:id" element={<ExamDetailPage />} />
+      <Route path="/student/notices" element={<AnnouncementsPage />} />
+      <Route path="/student/assignments" element={<AssignmentsPage />} />
+      <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />
+      <Route path="/student/materials" element={<MaterialsPage />} />
+      <Route path="/student/materials/:subjectCode" element={<SubjectMaterialsPage />} />
+      <Route path="/student/gradebook" element={<GradebookPage />} />
+      <Route path="/student/evaluations" element={<EvaluationPage />} />
+      <Route path="/student/evaluations/:id" element={<SurveyDetailPage />} />
+      <Route path="/student/profile" element={<ProfilePage />} />
+      <Route path="/student/settings" element={<SettingsPage />} />
+      <Route path="/student/change-password" element={<ChangePasswordPage />} />
+      <Route path="/student/surveys/:id" element={<SurveyDetailPage />} />
+      <Route path="/student/surveys" element={<Navigate to="/student/evaluations" replace />} />
+      <Route path="/student/grades" element={<Navigate to="/student/gradebook" replace />} />
+      <Route path="/student/announcements" element={<Navigate to="/student/notices" replace />} />
+      <Route path="/student/schedule" element={<Navigate to="/student/timetable" replace />} />
+      <Route path="/student" element={<Navigate to="/student/home" replace />} />
+    </Route>
+    {/* Standalone clean print page (pure white canvas without MainLayout) */}
+    <Route path="/student/gradebook/print" element={<GradebookPrintPage />} />
+  </>
 );
