@@ -1193,6 +1193,7 @@
       "selectAllOnPage": "全选 (当前页 {{count}} 份资料)",
       "selectedCount": "已选择: {{count}} 份资料",
       "downloadZipPackage": "打包下载 ZIP ({{count}})",
+      "downloadAll": "全部下载 ({{count}})",
       "clearSelection": "取消选择"
     },
     "modal": {

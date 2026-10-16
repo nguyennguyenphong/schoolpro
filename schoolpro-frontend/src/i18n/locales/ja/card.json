@@ -1193,6 +1193,7 @@
       "selectAllOnPage": "すべて選択 (ページ内 {{count}} 件)",
       "selectedCount": "{{count}} 件選択中",
       "downloadZipPackage": "一括ZIPダウンロード ({{count}})",
+      "downloadAll": "すべてダウンロード ({{count}})",
       "clearSelection": "選択解除"
     },
     "modal": {

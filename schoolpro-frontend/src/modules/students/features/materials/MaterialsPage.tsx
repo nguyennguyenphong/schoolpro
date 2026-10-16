@@ -43,6 +43,7 @@ export const MaterialsPage: React.FC = () => {
     selectAll,
     clearSelection,
     downloadSelected,
+    downloadAll,
     downloadMaterial,
     toggleBookmark,
     openDetail,
@@ -130,6 +131,7 @@ export const MaterialsPage: React.FC = () => {
         onSelectAll={selectAll}
         onClearSelection={clearSelection}
         onDownloadSelected={downloadSelected}
+        onDownloadAll={downloadAll}
       />
 
       {/* 5. Results Area */}

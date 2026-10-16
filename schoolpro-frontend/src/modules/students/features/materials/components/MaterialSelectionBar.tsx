@@ -11,6 +11,7 @@ interface MaterialSelectionBarProps {
   onSelectAll: () => void;
   onClearSelection: () => void;
   onDownloadSelected: () => void;
+  onDownloadAll?: () => void;
 }
 
 export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
@@ -20,17 +21,18 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
   onSelectAll,
   onClearSelection,
   onDownloadSelected,
+  onDownloadAll,
 }) => {
-  const { t } = useTranslation();
-  if (selectedCount === 0) return null;
+  const { t } = useTranslation(["card", "button"]);
+  if (totalOnPage === 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 bg-blue-50/90 border border-blue-200 rounded-xl shadow-2xs transition-all animate-fadeIn">
-      {/* Left: Select all checkbox + count */}
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 bg-blue-50/70 border border-blue-200 rounded-xl shadow-2xs transition-all">
+      {/* Left: Select all checkbox + count indicator */}
       <div className="flex items-center gap-3">
         <Checkbox
           checked={isAllSelected}
-          indeterminate={selectedCount > 0 && selectedCount < totalOnPage}
+          indeterminate={selectedCount > 0 && !isAllSelected}
           onChange={onSelectAll}
         >
           <span className="text-xs font-semibold text-slate-800">
@@ -41,37 +43,60 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           </span>
         </Checkbox>
 
-        <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
-
-        <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-1 rounded-xl border border-blue-200">
-          {t("card:materials.selection.selectedCount", {
-            count: selectedCount,
-            defaultValue: `Đã chọn: ${selectedCount} tài liệu`,
-          })}
-        </div>
+        {selectedCount > 0 && (
+          <>
+            <span className="h-4 w-px bg-blue-200 hidden sm:inline-block" />
+            <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-0.5 rounded-full border border-blue-200 shadow-2xs">
+              {t("card:materials.selection.selectedCount", {
+                count: selectedCount,
+                defaultValue: `Đã chọn: ${selectedCount} tài liệu`,
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <Button
-          variant="primary"
-          onClick={onDownloadSelected}
-        >
-          <Icon name="download" size={13} />
-          <span>
-            {t("card:materials.selection.downloadZipPackage", {
-              count: selectedCount,
-              defaultValue: `Tải xuống gói ZIP (${selectedCount})`,
-            })}
-          </span>
-        </Button>
+      <div className="flex items-center gap-2 justify-end flex-wrap">
+        {selectedCount > 0 ? (
+          <>
+            <Button
+              variant="ghost"
+              onClick={onClearSelection}
+              className="text-xs text-slate-600 hover:text-slate-800"
+            >
+              <span>{t("card:materials.selection.clearSelection", "Bỏ chọn")}</span>
+            </Button>
 
-        <Button
-          variant="ghost"
-          onClick={onClearSelection}
-        >
-          <span>{t("card:materials.selection.clearSelection", "Bỏ chọn")}</span>
-        </Button>
+            <Button
+              variant="primary"
+              onClick={onDownloadSelected}
+              className="text-xs px-3 py-1.5 font-semibold"
+            >
+              <Icon name="download" size={13} />
+              <span>
+                {t("card:materials.selection.downloadZipPackage", {
+                  count: selectedCount,
+                  defaultValue: `Tải xuống gói ZIP (${selectedCount})`,
+                })}
+              </span>
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="outline"
+            onClick={onDownloadAll || onSelectAll}
+            className="text-xs px-3 py-1.5 font-semibold text-blue-700 border-blue-200 hover:bg-blue-100/60"
+          >
+            <Icon name="download" size={13} />
+            <span>
+              {t("card:materials.selection.downloadAll", {
+                count: totalOnPage,
+                defaultValue: `Tải tất cả (${totalOnPage})`,
+              })}
+            </span>
+          </Button>
+        )}
       </div>
     </div>
   );

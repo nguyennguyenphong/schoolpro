@@ -45,6 +45,7 @@ export const SubjectMaterialsPage: React.FC = () => {
     clearSelection,
     downloadMaterial,
     downloadSelected,
+    downloadAll,
     toggleBookmark,
   } = useSubjectMaterials();
 
@@ -196,6 +197,7 @@ export const SubjectMaterialsPage: React.FC = () => {
         onSelectAll={selectAll}
         onClearSelection={clearSelection}
         onDownloadSelected={downloadSelected}
+        onDownloadAll={downloadAll}
       />
 
       {/* 4. Results Area */}

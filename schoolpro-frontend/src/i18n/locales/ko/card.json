@@ -1193,6 +1193,7 @@
       "selectAllOnPage": "전체 선택 (페이지 내 {{count}}개)",
       "selectedCount": "선택됨: {{count}}개 자료",
       "downloadZipPackage": "ZIP 압축 다운로드 ({{count}})",
+      "downloadAll": "전체 다운로드 ({{count}})",
       "clearSelection": "선택 해제"
     },
     "modal": {

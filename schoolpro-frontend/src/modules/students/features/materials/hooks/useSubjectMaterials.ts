@@ -181,6 +181,16 @@ export const useSubjectMaterials = () => {
     clearSelection();
   }, [selectedIds, clearSelection, t]);
 
+  const handleDownloadAll = useCallback(() => {
+    if (materials.length === 0) return;
+    message.success(
+      t("card:materials.modal.downloadBatchStarted", {
+        count: materials.length,
+        defaultValue: `Đang nén và chuẩn bị tải xuống ${materials.length} tài liệu...`,
+      }),
+    );
+  }, [materials.length, t]);
+
   // Bookmark toggle
   const toggleBookmark = useCallback((id: string) => {
     const isBookmarked = materialsService.toggleBookmark(id);
@@ -217,6 +227,7 @@ export const useSubjectMaterials = () => {
     clearSelection,
     downloadMaterial: handleDownload,
     downloadSelected: handleDownloadSelected,
+    downloadAll: handleDownloadAll,
     toggleBookmark,
     refetch,
   };

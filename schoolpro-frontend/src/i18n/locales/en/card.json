@@ -1193,6 +1193,7 @@
       "selectAllOnPage": "Select all ({{count}} materials on page)",
       "selectedCount": "Selected: {{count}} materials",
       "downloadZipPackage": "Download ZIP Package ({{count}})",
+      "downloadAll": "Download All ({{count}})",
       "clearSelection": "Clear"
     },
     "modal": {

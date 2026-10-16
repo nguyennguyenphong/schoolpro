@@ -1193,6 +1193,7 @@
       "selectAllOnPage": "Chọn tất cả ({{count}} tài liệu trên trang)",
       "selectedCount": "Đã chọn: {{count}} tài liệu",
       "downloadZipPackage": "Tải xuống gói ZIP ({{count}})",
+      "downloadAll": "Tải tất cả ({{count}})",
       "clearSelection": "Bỏ chọn"
     },
     "modal": {

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -30,7 +29,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   onClick,
 }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button"]);
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -110,118 +109,115 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
 
   const categoryConfig = getCategoryConfig(item.category);
 
-  const handleCheckboxClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const handleCheckboxChange = (e: any) => {
-    e.stopPropagation?.();
-    onToggleSelect?.(item.id);
-  };
-
   return (
-    <Card
+    <div
       onClick={() => onClick?.(item)}
-      className={`rounded-xl shadow-2xs transition-all cursor-pointer w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 ${
+      className={`bg-white rounded-xl border shadow-2xs p-4 sm:p-5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
-          : "hover:border-blue-300"
+          : "border-[#f0f0f0] hover:border-blue-400"
       }`}
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3.5 flex-1 min-w-0">
-          {/* Checkbox */}
-          {onToggleSelect && (
-            <div onClick={handleCheckboxClick} className="pt-1 shrink-0 flex items-center">
-              <Checkbox
-                checked={isSelected}
-                onChange={handleCheckboxChange}
-              />
-            </div>
-          )}
+      <div className="flex items-start gap-3.5 flex-1 min-w-0">
+        {/* Checkbox */}
+        {onToggleSelect && (
+          <div onClick={(e) => e.stopPropagation()} className="pt-1 shrink-0 flex items-center">
+            <Checkbox
+              checked={isSelected}
+              onChange={() => onToggleSelect(item.id)}
+            />
+          </div>
+        )}
 
-          {/* Info Column */}
-          <div className="space-y-1.5 flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Tag
-                color="blue"
-                className="m-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
-                onClick={handleSubjectClick}
-                title={t("card:materials.meta.viewSubjectMaterials", { name: item.subjectName, defaultValue: `Xem danh sách tài liệu môn ${item.subjectName}` })}
-              >
-                {item.subjectName}
-              </Tag>
-              <Tag color={categoryConfig.color} className="m-0 font-semibold text-xs">
-                {categoryConfig.label}
-              </Tag>
-              {getFormatBadge(item.format, item.fileSize)}
-              <span className="text-xs text-slate-400">
-                • {item.semester}
-              </span>
-            </div>
+        {/* Key Info */}
+        <div className="space-y-1.5 flex-1 min-w-0">
+          {/* Row 1: Badges */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              onClick={handleSubjectClick}
+              className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl whitespace-nowrap cursor-pointer hover:bg-blue-100 transition-colors"
+              title={item.subjectName}
+            >
+              {item.subjectName}
+            </span>
+            <Tag color={categoryConfig.color} className="m-0 font-semibold text-xs whitespace-nowrap">
+              {categoryConfig.label}
+            </Tag>
+            {getFormatBadge(item.format, item.fileSize)}
+            <span className="text-xs text-slate-400 whitespace-nowrap">
+              • {item.semester} ({item.academicYear})
+            </span>
+          </div>
 
-            <h3 className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors text-base line-clamp-1 mb-0">
-              {item.title}
-            </h3>
+          {/* Row 2: Title */}
+          <h3
+            className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-0 truncate"
+            title={item.title}
+          >
+            {item.title}
+          </h3>
 
-            <p className="text-xs text-slate-500 line-clamp-1 mb-0">
-              {item.description}
-            </p>
+          {/* Row 3: Description */}
+          <p className="text-xs text-slate-500 line-clamp-1 mb-0">
+            {item.description}
+          </p>
 
-            <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-0.5">
-              <span className="flex items-center gap-1 font-medium text-slate-700">
-                <Icon name="user" size={13} className="text-slate-400" />
-                {item.author}
-              </span>
-              <span className="flex items-center gap-1">
-                <Icon name="calendar" size={13} className="text-slate-400" />
-                {item.uploadDate}
-              </span>
-              <span className="flex items-center gap-1">
-                <Icon name="download" size={13} className="text-slate-400" />
-                {t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}
-              </span>
-            </div>
+          {/* Row 4: Metadata */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-0.5">
+            <span className="flex items-center gap-1.5 font-medium text-slate-700 whitespace-nowrap">
+              <Icon name="user" size={13} className="text-slate-400" />
+              <span>{item.author}</span>
+            </span>
+            <span className="hidden sm:inline">•</span>
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <Icon name="calendar" size={13} className="text-slate-400" />
+              <span>{item.uploadDate}</span>
+            </span>
+            <span className="hidden sm:inline">•</span>
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
+              <Icon name="download" size={13} className="text-slate-400" />
+              <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}</span>
+            </span>
           </div>
         </div>
-
-        {/* Action buttons */}
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-2 shrink-0 md:self-center border-t md:border-t-0 pt-3 md:pt-0 border-[#f0f0f0] justify-end"
-        >
-          <button
-            type="button"
-            onClick={() => onToggleBookmark(item.id)}
-            title={item.isBookmarked ? t("card:materials.actions.unbookmark", "Bỏ lưu yêu thích") : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
-            className={`p-2.5 rounded-lg border transition-colors flex items-center justify-center cursor-pointer ${
-              item.isBookmarked
-                ? "bg-amber-50 border-amber-300 text-amber-600"
-                : "border-[#f0f0f0] text-slate-400 hover:text-amber-500 hover:border-amber-200"
-            }`}
-          >
-            <Icon name="bookmark" size={16} />
-          </button>
-
-          <Button
-            variant="ghost"
-            onClick={() => onClick?.(item)}
-            className="text-blue-600 hover:text-blue-700 font-semibold"
-          >
-            <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
-            <Icon name="arrow-right" size={13} />
-          </Button>
-
-          <Button
-            variant="primary"
-            onClick={() => onDownload(item)}
-            className="font-semibold"
-          >
-            <Icon name="download" size={14} />
-            <span>{t("card:materials.actions.download", { size: item.fileSize, defaultValue: `Tải về (${item.fileSize})` })}</span>
-          </Button>
-        </div>
       </div>
-    </Card>
+
+      {/* Actions */}
+      <div
+        className="shrink-0 flex items-center gap-2 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-[#f0f0f0]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={() => onToggleBookmark(item.id)}
+          title={item.isBookmarked ? t("card:materials.actions.unbookmark", "Bỏ lưu yêu thích") : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
+          className={`p-2 rounded-lg border transition-colors flex items-center justify-center cursor-pointer ${
+            item.isBookmarked
+              ? "bg-amber-50 border-amber-300 text-amber-600"
+              : "border-[#f0f0f0] text-slate-400 hover:text-amber-500 hover:border-amber-200"
+          }`}
+        >
+          <Icon name="bookmark" size={15} />
+        </button>
+
+        <Button
+          variant="outline"
+          onClick={() => onClick?.(item)}
+          className="text-xs px-3 py-1.5 font-semibold"
+        >
+          <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
+          <Icon name="chevron-right" size={13} />
+        </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => onDownload(item)}
+          className="text-xs px-3 py-1.5 font-semibold"
+        >
+          <Icon name="download" size={14} />
+          <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
+        </Button>
+      </div>
+    </div>
   );
 };

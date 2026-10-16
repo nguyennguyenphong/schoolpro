@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -30,7 +29,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   onClick,
 }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button"]);
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -110,51 +109,37 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
 
   const categoryConfig = getCategoryConfig(item.category);
 
-  const handleCheckboxClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const handleCheckboxChange = (e: any) => {
-    e.stopPropagation?.();
-    onToggleSelect?.(item.id);
-  };
-
   return (
-    <Card
+    <div
       onClick={() => onClick?.(item)}
-      className={`h-full rounded-xl shadow-2xs transition-all cursor-pointer group [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5 [&>.ant-card-body]:h-full [&>.ant-card-body]:flex [&>.ant-card-body]:flex-col [&>.ant-card-body]:justify-between ${
+      className={`bg-white border rounded-xl p-4 flex flex-col justify-between gap-3.5 transition-all shadow-2xs h-full cursor-pointer group ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
-          : "hover:border-blue-300"
+          : "border-[#f0f0f0] hover:border-blue-400"
       }`}
     >
-      <div>
-        {/* Row 1: Checkbox, Tags, Format pill, Bookmark */}
-        <div className="flex items-center justify-between gap-2 mb-2.5">
-          <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+      <div className="flex flex-col gap-2.5">
+        {/* Row 1: Checkbox + Subject Badge + Category Badge & Bookmark Button */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-wrap">
             {onToggleSelect && (
-              <div onClick={handleCheckboxClick} className="shrink-0 flex items-center">
+              <div onClick={(e) => e.stopPropagation()} className="shrink-0 flex items-center">
                 <Checkbox
                   checked={isSelected}
-                  onChange={handleCheckboxChange}
+                  onChange={() => onToggleSelect(item.id)}
                 />
               </div>
             )}
-
-            <Tag
-              color="blue"
-              className="m-0 shrink-0 font-medium cursor-pointer hover:bg-blue-100 hover:text-blue-700 transition-colors"
+            <span
               onClick={handleSubjectClick}
-              title={t("card:materials.meta.viewSubjectMaterials", { name: item.subjectName, defaultValue: `Xem danh sách tài liệu môn ${item.subjectName}` })}
+              className="font-semibold text-xs text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-xl truncate max-w-[140px] cursor-pointer hover:bg-blue-100 transition-colors"
+              title={item.subjectName}
             >
               {item.subjectName}
-            </Tag>
-
-            <Tag color={categoryConfig.color} className="m-0 shrink-0 font-semibold text-xs">
+            </span>
+            <Tag color={categoryConfig.color} className="m-0 font-semibold text-[11px] shrink-0">
               {categoryConfig.label}
             </Tag>
-
-            {getFormatBadge(item.format, item.fileSize)}
           </div>
 
           <button
@@ -174,72 +159,68 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
           </button>
         </div>
 
-        {/* Row 2: Title */}
-        <h3
-          className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors mb-1.5 line-clamp-2 h-12 leading-6"
+        {/* Row 2: Title (2 lines) */}
+        <h4
+          className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug min-h-10 mb-0"
           title={item.title}
         >
           {item.title}
-        </h3>
+        </h4>
 
-        {/* Row 3: Description */}
+        {/* Row 3: Highlight Block (Format, File Size & Semester) */}
+        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-2.5 py-2 border border-[#f0f0f0] text-xs">
+          <div className="flex items-center gap-1.5 min-w-0">
+            {getFormatBadge(item.format, item.fileSize)}
+          </div>
+          <span className="text-[11px] font-semibold text-slate-500 bg-white px-2 py-0.5 rounded border border-[#f0f0f0] shrink-0">
+            {item.semester} • {item.academicYear}
+          </span>
+        </div>
+
+        {/* Row 4: Description */}
         <p
-          className="text-xs text-slate-500 mb-0 leading-5 line-clamp-2 h-10 font-normal"
+          className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-0 min-h-8"
           title={item.description}
         >
           {item.description}
         </p>
-
-        {/* Row 4: Topics if present */}
-        {item.tableOfContents && item.tableOfContents.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2.5">
-            {item.tableOfContents.slice(0, 2).map((toc, i) => (
-              <span
-                key={i}
-                className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded truncate max-w-[180px]"
-              >
-                • {toc}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* Row 5 & 6: Metadata + Direct Download Button */}
-      <div className="mt-3.5 pt-3 border-t border-[#f0f0f0] space-y-3">
-        <div className="flex items-center justify-between text-xs text-slate-500 gap-2">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <Icon name="user" size={13} className="text-slate-400 shrink-0" />
-            <span className="truncate text-slate-700 font-medium" title={item.author}>
-              {item.author}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1 text-[11px] text-slate-400 shrink-0">
-            <Icon name="clock" size={12} />
+      {/* Footer: Metadata & Action Button */}
+      <div
+        className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex flex-col gap-0.5 min-w-0">
+          <span className="text-xs text-slate-700 font-medium truncate flex items-center gap-1" title={item.author}>
+            <Icon name="user" size={12} className="text-slate-400 shrink-0" />
+            <span className="truncate">{item.author}</span>
+          </span>
+          <div className="flex items-center gap-2 text-[11px] text-slate-400">
             <span>{item.uploadDate}</span>
+            <span>•</span>
+            <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-2 pt-0.5">
-          <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
-            <Icon name="download" size={13} className="text-slate-400" />
-            {t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}
-          </span>
-
+        <div className="flex items-center gap-1.5 shrink-0">
+          <Button
+            variant="outline"
+            onClick={() => onClick?.(item)}
+            className="text-xs px-2.5 py-1 font-semibold"
+          >
+            <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
+          </Button>
           <Button
             variant="primary"
-            className="font-semibold"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDownload(item);
-            }}
+            onClick={() => onDownload(item)}
+            className="text-xs px-2.5 py-1 font-semibold"
           >
-            <Icon name="download" size={14} />
-            <span>{t("card:materials.actions.download", { size: item.fileSize, defaultValue: `Tải về (${item.fileSize})` })}</span>
+            <Icon name="download" size={13} />
+            <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
           </Button>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };

@@ -109,10 +109,6 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
     },
   ];
 
-  const subjectOptions = [
-    { label: t("card:materials.filter.allSubjects", "Tất cả môn học"), value: "all" },
-    ...subjects.map((s) => ({ label: s.name, value: s.code })),
-  ];
 
   const sortOptions = [
     { label: t("card:materials.filter.newest", "Mới nhất"), value: "newest" },

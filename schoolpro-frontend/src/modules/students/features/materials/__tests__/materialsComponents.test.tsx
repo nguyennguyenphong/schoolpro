@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MaterialCard } from "@/modules/students/features/materials/components/MaterialCard";
+import { MaterialListItem } from "@/modules/students/features/materials/components/MaterialListItem";
 import { MaterialSelectionBar } from "@/modules/students/features/materials/components/MaterialSelectionBar";
 import { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";
 import { MaterialFilterBar } from "@/modules/students/features/materials/components/MaterialFilterBar";
@@ -65,6 +66,26 @@ describe("Materials Components", () => {
     expect(downloadBtn).toBeInTheDocument();
     fireEvent.click(downloadBtn);
     expect(handleDownload).toHaveBeenCalledWith(mockMaterial);
+  });
+
+  it("renders MaterialListItem with unified layout and meta info", () => {
+    const handleDownload = vi.fn();
+    const handleBookmark = vi.fn();
+
+    render(
+      <MemoryRouter>
+        <MaterialListItem
+          item={mockMaterial}
+          onDownload={handleDownload}
+          onToggleBookmark={handleBookmark}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText("Đề thi thử học kỳ 1 môn Toán")).toBeInTheDocument();
+    expect(screen.getByText("Toán học")).toBeInTheDocument();
+    expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
+    expect(screen.getByText(/Tải về/)).toBeInTheDocument();
   });
 
   it("renders MaterialSelectionBar when items are selected", () => {
