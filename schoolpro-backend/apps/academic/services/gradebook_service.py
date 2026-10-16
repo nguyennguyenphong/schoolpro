@@ -5,14 +5,17 @@ Provides student grade feeds, granular score breakdowns, GPA calculations, and d
 """
 
 import logging
+import uuid
 from typing import Any
 
+from django.db.models import Q
 from django.utils import timezone
 
 from apps.academic.models.grading import (
     StudentTermSummary,
 )
 from apps.core.models.profile import Student
+from apps.master.models import AcademicYear, Semester
 
 logger = logging.getLogger(__name__)
 
@@ -639,6 +642,44 @@ class GradebookService:
     """
 
     @classmethod
+    def _is_uuid(cls, val: Any) -> bool:
+        if not val or not isinstance(val, str):
+            return False
+        try:
+            uuid.UUID(val.strip())
+            return True
+        except ValueError:
+            return False
+
+    @classmethod
+    def _resolve_semester(cls, semester: str | None) -> Semester | None:
+        if not semester or semester == "all":
+            return None
+        try:
+            if cls._is_uuid(semester):
+                return Semester.objects.filter(id=semester).first()
+            return (
+                Semester.objects.filter(code__iexact=semester).first()
+                or Semester.objects.filter(name__icontains=semester).first()
+            )
+        except Exception:
+            return None
+
+    @classmethod
+    def _resolve_academic_year(cls, academic_year: str | None) -> AcademicYear | None:
+        if not academic_year or academic_year == "all":
+            return None
+        try:
+            if cls._is_uuid(academic_year):
+                return AcademicYear.objects.filter(id=academic_year).first()
+            return (
+                AcademicYear.objects.filter(code__iexact=academic_year).first()
+                or AcademicYear.objects.filter(name__icontains=academic_year).first()
+            )
+        except Exception:
+            return None
+
+    @classmethod
     def resolve_student(cls, user: Any) -> Student | None:
         """
         Resolves Student profile for authenticated user.
@@ -673,9 +714,29 @@ class GradebookService:
             if student:
                 query = StudentTermSummary.objects.filter(student=student)
                 if semester and semester != "all":
-                    query = query.filter(semester__code__iexact=semester)
-                if academic_year:
-                    query = query.filter(academic_year__code__iexact=academic_year)
+                    sem_obj = cls._resolve_semester(semester)
+                    if sem_obj:
+                        query = query.filter(Q(semester=sem_obj) | Q(semester_id=sem_obj.id))
+                    elif cls._is_uuid(semester):
+                        query = query.filter(semester_id=semester)
+                    else:
+                        query = query.filter(
+                            Q(semester__code__iexact=semester)
+                            | Q(semester__name__icontains=semester)
+                        )
+                if academic_year and academic_year != "all":
+                    ay_obj = cls._resolve_academic_year(academic_year)
+                    if ay_obj:
+                        query = query.filter(
+                            Q(academic_year=ay_obj) | Q(academic_year_id=ay_obj.id)
+                        )
+                    elif cls._is_uuid(academic_year):
+                        query = query.filter(academic_year_id=academic_year)
+                    else:
+                        query = query.filter(
+                            Q(academic_year__code__iexact=academic_year)
+                            | Q(academic_year__name__icontains=academic_year)
+                        )
 
                 record = query.order_by("-created_at").first()
                 if record:
@@ -714,6 +775,44 @@ class GradebookService:
         Retrieves list of subject grade records with dynamic search, filter, and sorting.
         """
         results = [dict(item) for item in _SEEDED_SUBJECT_GRADES]
+
+        # 0. Semester & Academic Year Filter
+        # If semester is specified (e.g. Semester 2 / HK2, or unmatched UUID), return empty if no grades recorded
+        if semester and semester != "all":
+            sem_str = semester.strip().lower()
+            sem_obj = cls._resolve_semester(semester)
+            # Check if requested semester is Term 2 / HK2
+            is_term_2 = (
+                (sem_obj and sem_obj.order_no == 2)
+                or sem_str in ("hk2", "2", "học kỳ 2", "hoc ky 2")
+                or "sem_20262027_2" in sem_str
+                or sem_str.endswith("000000000002")
+            )
+            # If user asks for Term 2 and no Term 2 scores are recorded yet, return empty list
+            if is_term_2:
+                results = []
+
+        if academic_year and academic_year != "all":
+            ay_str = academic_year.strip().lower()
+            ay_obj = cls._resolve_academic_year(academic_year)
+            # If academic year is explicitly filtered and doesn't match default seeded year (2025-2026 or 2026-2027)
+            if ay_obj:
+                code_lower = ay_obj.code.lower()
+                name_lower = ay_obj.name.lower()
+                is_known_year = (
+                    "2026" in code_lower
+                    or "2025" in code_lower
+                    or "2026" in name_lower
+                    or "2025" in name_lower
+                    or "2026" in ay_str
+                    or "2025" in ay_str
+                )
+                if not is_known_year:
+                    results = []
+            else:
+                is_known_year = "2026" in ay_str or "2025" in ay_str
+                if not is_known_year:
+                    results = []
 
         # 1. Search Query filter (name, code, teacher, comment)
         if search_query and search_query.strip():

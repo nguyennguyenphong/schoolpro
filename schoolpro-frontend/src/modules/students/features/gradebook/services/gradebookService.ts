@@ -18,8 +18,18 @@ class GradebookService {
    */
   async getGradeSummary(params?: { semester?: string; academicYear?: string }): Promise<GradeSummary> {
     try {
+      const apiParams: Record<string, string | undefined> = {};
+      if (params?.semester && params.semester !== "all") {
+        apiParams.semester = params.semester;
+        apiParams.semester_id = params.semester;
+      }
+      if (params?.academicYear && params.academicYear !== "all") {
+        apiParams.academicYear = params.academicYear;
+        apiParams.academic_year_id = params.academicYear;
+      }
+
       const res = await httpClient.get<ApiResponse<GradeSummary>>("/academic/gradebook/summary/", {
-        params,
+        params: apiParams,
       });
       if (res.data?.data) {
         return res.data.data;
@@ -44,9 +54,11 @@ class GradebookService {
       }
       if (filter?.semester && filter.semester !== "all") {
         params.semester = filter.semester;
+        params.semester_id = filter.semester;
       }
       if (filter?.academicYear && filter.academicYear !== "all") {
         params.academicYear = filter.academicYear;
+        params.academic_year_id = filter.academicYear;
       }
       if (filter?.classification && filter.classification !== "all") {
         params.classification = filter.classification;
@@ -68,6 +80,32 @@ class GradebookService {
 
     // Mock calculation fallback
     let result = [...mockSubjectGrades];
+
+    // Filter by semester if specified (Term 2 has no recorded grades yet)
+    if (filter?.semester && filter.semester !== "all") {
+      const sem = filter.semester.toLowerCase().trim();
+      const isHk2 =
+        sem === "hk2" ||
+        sem === "2" ||
+        sem.includes("sem_20262027_2") ||
+        sem.endsWith("000000000002");
+      if (isHk2) {
+        result = [];
+      }
+    }
+
+    // Filter by academic year if specified
+    if (filter?.academicYear && filter.academicYear !== "all") {
+      const ay = filter.academicYear.toLowerCase().trim();
+      const isKnownYear =
+        ay.includes("2026") ||
+        ay.includes("2025") ||
+        ay.endsWith("000000002026") ||
+        ay.endsWith("000000002025");
+      if (!isKnownYear) {
+        result = [];
+      }
+    }
     if (filter?.searchQuery && filter.searchQuery.trim()) {
       const q = filter.searchQuery.toLowerCase().trim();
       result = result.filter(

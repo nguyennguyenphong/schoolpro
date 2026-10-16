@@ -18,10 +18,23 @@ export const useGradebook = () => {
 
   // Read initial filter from URL params once on mount
   const initialFilter = useMemo<GradeFilter>(() => {
+    const urlAcademicYear =
+      searchParams.get("academicYear") ||
+      searchParams.get("academic_year_id") ||
+      searchParams.get("academicYearId") ||
+      searchParams.get("year") ||
+      "";
+
+    const urlSemester =
+      searchParams.get("semester") ||
+      searchParams.get("semester_id") ||
+      searchParams.get("semesterId") ||
+      "";
+
     return {
-      searchQuery: searchParams.get("q") || "",
-      academicYear: searchParams.get("year") || "2025-2026",
-      semester: searchParams.get("semester") || "HK1",
+      searchQuery: searchParams.get("q") || searchParams.get("search") || "",
+      academicYear: urlAcademicYear,
+      semester: urlSemester,
       classification: (searchParams.get("class") as GradeClassification) || "all",
       sortBy: (searchParams.get("sort") as GradeFilter["sortBy"]) || "gpa_desc",
       viewMode: (searchParams.get("view") as GradeViewMode) || "table",
@@ -49,19 +62,26 @@ export const useGradebook = () => {
   const updateUrlParams = useCallback((newFilter: GradeFilter) => {
     const params = new URLSearchParams();
     if (newFilter.searchQuery.trim()) params.set("q", newFilter.searchQuery.trim());
-    if (newFilter.academicYear !== "2025-2026") params.set("year", newFilter.academicYear);
-    if (newFilter.semester !== "HK1") params.set("semester", newFilter.semester);
+    if (newFilter.academicYear && newFilter.academicYear !== "all") {
+      params.set("academicYear", newFilter.academicYear);
+    }
+    if (newFilter.semester && newFilter.semester !== "all") {
+      params.set("semester", newFilter.semester);
+    }
     if (newFilter.classification !== "all") params.set("class", newFilter.classification);
     if (newFilter.sortBy !== "gpa_desc") params.set("sort", newFilter.sortBy);
     if (newFilter.viewMode !== "table") params.set("view", newFilter.viewMode);
     return params;
   }, []);
 
-  // Fetch summary once on mount
+  // Fetch summary when academic year or semester filter parameters change
   useEffect(() => {
     let ignore = false;
     gradebookService
-      .getGradeSummary()
+      .getGradeSummary({
+        academicYear: filter.academicYear,
+        semester: filter.semester,
+      })
       .then((res) => {
         if (!ignore) setSummary(res);
       })
@@ -72,7 +92,7 @@ export const useGradebook = () => {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [filter.academicYear, filter.semester]);
 
   // Fetch subject grades when filter parameters change
   useEffect(() => {
@@ -133,8 +153,8 @@ export const useGradebook = () => {
   const resetFilters = useCallback(() => {
     const reset: GradeFilter = {
       searchQuery: "",
-      academicYear: "2025-2026",
-      semester: "HK1",
+      academicYear: "",
+      semester: "",
       classification: "all",
       sortBy: "gpa_desc",
       viewMode: "table",
@@ -145,8 +165,8 @@ export const useGradebook = () => {
 
   const hasActiveFilters = Boolean(
     filter.searchQuery.trim() ||
-      filter.academicYear !== "2025-2026" ||
-      filter.semester !== "HK1" ||
+      (filter.academicYear && filter.academicYear !== "all") ||
+      (filter.semester && filter.semester !== "all") ||
       filter.classification !== "all" ||
       filter.sortBy !== "gpa_desc",
   );

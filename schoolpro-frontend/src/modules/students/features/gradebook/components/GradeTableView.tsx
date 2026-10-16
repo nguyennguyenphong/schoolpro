@@ -237,6 +237,21 @@ export const GradeTableView: React.FC<GradeTableViewProps> = ({
         dataSource={grades}
         pagination={false}
         scroll={{ x: 1150 }}
+        locale={{
+          emptyText: (
+            <div className="py-12 text-center text-slate-500 space-y-2">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center mx-auto">
+                <Icon name="book" size={22} />
+              </div>
+              <h4 className="text-sm font-bold text-slate-800 mb-0">
+                {t("card:gradebook.empty.noMatchingTitle")}
+              </h4>
+              <p className="text-xs text-slate-400 mb-0 max-w-sm mx-auto">
+                {t("card:gradebook.empty.noMatchingDesc")}
+              </p>
+            </div>
+          ),
+        }}
         onRow={(record) => ({
           onClick: () => onOpenDetail(record),
           className: "cursor-pointer",

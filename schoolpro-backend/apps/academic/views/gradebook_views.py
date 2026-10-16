@@ -61,9 +61,17 @@ class StudentGradebookViewSet(viewsets.ViewSet):
         List subject grades for student with filters and search.
         """
         search_query = request.query_params.get("q") or request.query_params.get("search")
-        semester = request.query_params.get("semester")
-        academic_year = request.query_params.get("academicYear") or request.query_params.get(
-            "academic_year"
+        semester = (
+            request.query_params.get("semester_id")
+            or request.query_params.get("semesterId")
+            or request.query_params.get("semester")
+        )
+        academic_year = (
+            request.query_params.get("academic_year_id")
+            or request.query_params.get("academicYearId")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academicYear")
+            or request.query_params.get("year")
         )
         classification = request.query_params.get("classification")
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
@@ -92,9 +100,17 @@ class StudentGradebookViewSet(viewsets.ViewSet):
         """
         Summary counters and honor roll metrics for the student gradebook.
         """
-        semester = request.query_params.get("semester")
-        academic_year = request.query_params.get("academicYear") or request.query_params.get(
-            "academic_year"
+        semester = (
+            request.query_params.get("semester_id")
+            or request.query_params.get("semesterId")
+            or request.query_params.get("semester")
+        )
+        academic_year = (
+            request.query_params.get("academic_year_id")
+            or request.query_params.get("academicYearId")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academicYear")
+            or request.query_params.get("year")
         )
         data = self.service.get_grade_summary(
             request.user, semester=semester, academic_year=academic_year
@@ -106,9 +122,17 @@ class StudentGradebookViewSet(viewsets.ViewSet):
         """
         Get single subject grade detail by subject ID or code.
         """
-        semester = request.query_params.get("semester")
-        academic_year = request.query_params.get("academicYear") or request.query_params.get(
-            "academic_year"
+        semester = (
+            request.query_params.get("semester_id")
+            or request.query_params.get("semesterId")
+            or request.query_params.get("semester")
+        )
+        academic_year = (
+            request.query_params.get("academic_year_id")
+            or request.query_params.get("academicYearId")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academicYear")
+            or request.query_params.get("year")
         )
         item = self.service.get_subject_grade_detail(
             request.user, pk, semester=semester, academic_year=academic_year
@@ -131,9 +155,17 @@ class StudentGradebookViewSet(viewsets.ViewSet):
         """
         Official e-transcript / report card view.
         """
-        semester = request.query_params.get("semester")
-        academic_year = request.query_params.get("academicYear") or request.query_params.get(
-            "academic_year"
+        semester = (
+            request.query_params.get("semester_id")
+            or request.query_params.get("semesterId")
+            or request.query_params.get("semester")
+        )
+        academic_year = (
+            request.query_params.get("academic_year_id")
+            or request.query_params.get("academicYearId")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academicYear")
+            or request.query_params.get("year")
         )
         data = self.service.get_transcript(
             request.user, semester=semester, academic_year=academic_year

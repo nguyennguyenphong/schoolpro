@@ -22,7 +22,6 @@ interface GradeFilterBarProps {
   onSemesterChange: (value: string) => void;
   onClassificationChange: (value: GradeClassification) => void;
   onSortByChange: (value: GradeFilter["sortBy"]) => void;
-  onViewModeChange: (mode: GradeViewMode) => void;
   onResetFilters: () => void;
 }
 
@@ -35,11 +34,10 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
   onSemesterChange,
   onClassificationChange,
   onSortByChange,
-  onViewModeChange,
   onResetFilters,
 }) => {
   const { t } = useTranslation(["card", "button"]);
-  const { searchQuery, academicYear, semester, classification, sortBy, viewMode } = filter;
+  const { searchQuery, academicYear, semester, classification, sortBy } = filter;
 
   const [prevSearchQuery, setPrevSearchQuery] = React.useState<string>(searchQuery);
   const [localSearch, setLocalSearch] = React.useState<string>(searchQuery);
@@ -160,34 +158,6 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
             className="w-full"
           />
         </div>
-
-        {/* View Mode Toggle: Table vs Grid */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
-          <button
-            type="button"
-            onClick={() => onViewModeChange("table")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              viewMode === "table"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="menu" size={13} />
-            <span>{t("card:gradebook.filters.viewTable")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="chart" size={13} />
-            <span>{t("card:gradebook.filters.viewGrid")}</span>
-          </button>
-        </div>
       </div>
 
       {/* 3. Secondary Dropdown Filters: Academic Year, Semester, Sort & Reset Filters button */}
@@ -198,8 +168,9 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
               {t("card:gradebook.filters.academicYear")}:
             </span>
             <SelectAcademicYear
-              value={academicYear}
+              value={academicYear || undefined}
               onChange={onAcademicYearChange}
+              defaultToCurrent
               className="w-50 sm:w-50"
             />
           </div>
@@ -209,8 +180,10 @@ export const GradeFilterBar: React.FC<GradeFilterBarProps> = ({
               {t("card:gradebook.filters.semester")}:
             </span>
             <SelectSemester
-              value={semester}
+              value={semester || undefined}
+              academicYearId={academicYear}
               onChange={onSemesterChange}
+              defaultToCurrent
               className="w-50 sm:w-50"
             />
           </div>

@@ -94,3 +94,21 @@ class TestGradebookService:
         assert "fileName" in pdf_info
         assert "downloadUrl" in pdf_info
         assert "digitalSignature" in pdf_info
+
+    def test_list_subject_grades_filters_by_semester(self):
+        # Semester 1 (HK1) returns subjects
+        hk1_grades = GradebookService.list_subject_grades(user=None, semester="HK1")
+        assert len(hk1_grades) == 13
+
+        # Semester 2 (HK2) where no exams occurred returns empty list for empty state
+        hk2_grades = GradebookService.list_subject_grades(user=None, semester="HK2")
+        assert len(hk2_grades) == 0
+
+    def test_list_subject_grades_filters_by_academic_year(self):
+        # Matching year returns subjects
+        ay_grades = GradebookService.list_subject_grades(user=None, academic_year="2026-2027")
+        assert len(ay_grades) == 13
+
+        # Unknown year returns empty list for empty state
+        unknown_grades = GradebookService.list_subject_grades(user=None, academic_year="2010-2011")
+        assert len(unknown_grades) == 0
