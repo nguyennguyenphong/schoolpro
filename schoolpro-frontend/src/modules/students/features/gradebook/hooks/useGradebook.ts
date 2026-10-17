@@ -134,16 +134,23 @@ export const useGradebook = () => {
     filter.sortBy,
   ]);
 
+  const isFirstMountRef = useRef(true);
+
+  // Synchronize state changes to URL search params cleanly via effect
+  useEffect(() => {
+    if (isFirstMountRef.current) {
+      isFirstMountRef.current = false;
+      return;
+    }
+    setSearchParams(updateUrlParams(filter), { replace: true });
+  }, [filter, setSearchParams, updateUrlParams]);
+
   // Filter setters
   const updateFilter = useCallback(
     (partial: Partial<GradeFilter>) => {
-      setFilter((prev) => {
-        const next = { ...prev, ...partial };
-        setSearchParams(updateUrlParams(next), { replace: true });
-        return next;
-      });
+      setFilter((prev) => ({ ...prev, ...partial }));
     },
-    [setSearchParams, updateUrlParams],
+    [],
   );
 
   const setSearchQuery = useCallback((query: string) => updateFilter({ searchQuery: query }), [updateFilter]);
@@ -258,8 +265,7 @@ export const useGradebook = () => {
       viewMode: "table",
     };
     setFilter(reset);
-    setSearchParams(new URLSearchParams(), { replace: true });
-  }, [academicContext, setSearchParams]);
+  }, [academicContext]);
 
   // Modal actions
   const openSubjectDetail = (item: SubjectGradeItem) => {

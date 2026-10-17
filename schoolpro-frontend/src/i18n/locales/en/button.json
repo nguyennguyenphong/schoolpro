@@ -22,6 +22,8 @@
   "reloadTimetable": "Reload timetable",
   "previousDay": "Previous day",
   "nextDay": "Next day",
+  "previousWeek": "Previous week",
+  "nextWeek": "Next week",
   "markAsRead": "Mark as read",
   "markAsUnread": "Mark as unread",
   "selectAll": "Select all",

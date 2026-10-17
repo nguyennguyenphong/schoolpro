@@ -22,6 +22,8 @@
   "reloadTimetable": "時間割を再読み込み",
   "previousDay": "前日",
   "nextDay": "翌日",
+  "previousWeek": "前の週",
+  "nextWeek": "次の週",
   "markAsRead": "既読にする",
   "markAsUnread": "未読にする",
   "selectAll": "すべて選択",

@@ -19,12 +19,12 @@ import {
 describe("Rate", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
-      render(
+      const { container } = render(
         <Rate />,
       );
 
       expect(
-        screen.getByRole("radiogroup"),
+        container.querySelector(".ant-rate"),
       ).toBeInTheDocument();
     });
 
@@ -150,7 +150,7 @@ describe("Rate", () => {
         screen.getAllByRole("radio");
 
       radios.forEach((radio) => {
-        expect(radio).toBeDisabled();
+        expect(radio).toHaveAttribute("tabindex", "-1");
       });
     });
 
@@ -224,7 +224,7 @@ describe("Rate", () => {
 
   describe("half rating", () => {
     it("supports allowHalf", () => {
-      render(
+      const { container } = render(
         <Rate
           allowHalf
           value={3.5}
@@ -232,7 +232,7 @@ describe("Rate", () => {
       );
 
       expect(
-        screen.getByRole("radiogroup"),
+        container.querySelector(".ant-rate-star-half"),
       ).toBeInTheDocument();
     });
   });
@@ -246,10 +246,11 @@ describe("Rate", () => {
       );
 
       expect(
-        screen.getByRole("radiogroup", {
+        screen.getByRole("list", {
           name: "Product rating",
         }),
       ).toBeInTheDocument();
+      expect(screen.getAllByRole("radio")).toHaveLength(5);
     });
   });
 });

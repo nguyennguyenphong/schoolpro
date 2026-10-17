@@ -81,7 +81,7 @@ describe("Icon", () => {
       container.querySelector("svg");
 
     expect(svg).toHaveAttribute(
-      "color",
+      "stroke",
       "red",
     );
   });

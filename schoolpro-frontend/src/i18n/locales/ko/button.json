@@ -22,6 +22,8 @@
   "reloadTimetable": "시간표 다시 불러오기",
   "previousDay": "이전 날",
   "nextDay": "다음 날",
+  "previousWeek": "이전 주",
+  "nextWeek": "다음 주",
   "markAsRead": "읽음으로 표시",
   "markAsUnread": "읽지 않음으로 표시",
   "selectAll": "전체 선택",

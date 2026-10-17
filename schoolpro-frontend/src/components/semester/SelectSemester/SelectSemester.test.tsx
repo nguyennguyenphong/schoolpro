@@ -226,15 +226,17 @@ describe("SelectSemester Component", () => {
     it("fetches semesters from semesterApi on mount when customSemesters is omitted", async () => {
       const spy = vi
         .spyOn(semesterApi, "fetchSemesters")
-        .mockResolvedValueOnce(TEST_SEMESTERS);
+        .mockResolvedValue(TEST_SEMESTERS);
 
       render(<SelectSemester />);
 
+      const combobox = screen.getByRole("combobox");
+
+      // Wait until API fetch completes and Select is no longer disabled
       await waitFor(() => {
-        expect(spy).toHaveBeenCalled();
+        expect(combobox).not.toBeDisabled();
       });
 
-      const combobox = screen.getByRole("combobox");
       fireEvent.mouseDown(combobox);
 
       await waitFor(() => {

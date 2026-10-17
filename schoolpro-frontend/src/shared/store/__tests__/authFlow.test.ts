@@ -92,7 +92,7 @@ describe("Auth Store Session Management", () => {
     expect(state.role).toBe("R_STU_568294");
   });
 
-  it("clears state on logout", () => {
+  it("clears state on logout", async () => {
     useAuthStore.getState().setAuth({
       access: "mock_jwt_access",
       refresh: "mock_jwt_refresh",
@@ -104,7 +104,7 @@ describe("Auth Store Session Management", () => {
       remember: true,
     });
 
-    useAuthStore.getState().logout();
+    await useAuthStore.getState().logout();
 
     expect(useAuthStore.getState().isAuthenticated).toBe(false);
     expect(useAuthStore.getState().accessToken).toBeNull();

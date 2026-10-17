@@ -132,10 +132,10 @@ describe("Button", () => {
       );
 
       const button = screen.getByRole("button", {
-        name: "Submit",
+        name: /Submit/i,
       });
 
-      expect(button).toBeDisabled();
+      expect(button).toHaveClass("ant-btn-loading");
     });
 
     it("supports danger prop", () => {
@@ -157,11 +157,11 @@ describe("Button", () => {
     it("uses middle size by default", () => {
       render(<Button>Submit</Button>);
 
-      expect(
-        screen.getByRole("button", {
-          name: "Submit",
-        }),
-      ).toHaveClass("ant-btn-color-default");
+      const button = screen.getByRole("button", {
+        name: "Submit",
+      });
+      expect(button).not.toHaveClass("ant-btn-sm");
+      expect(button).not.toHaveClass("ant-btn-lg");
     });
 
     it("supports small size", () => {

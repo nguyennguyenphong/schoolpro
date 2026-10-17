@@ -297,7 +297,7 @@ export const departmentApi = {
 
       return MOCK_DEPARTMENTS;
     } catch (error) {
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
         console.warn(
           "[departmentApi] Could not connect to Master Department API endpoint. Falling back to local mock data.",
           error,

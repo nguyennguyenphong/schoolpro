@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import {
   render,
   screen,
+  fireEvent,
 } from "@testing-library/react";
 
 import {
@@ -123,9 +124,7 @@ describe("Radio", () => {
       ).toBeDisabled();
     });
 
-    it("does not change state when disabled", async () => {
-      const user = userEvent.setup();
-
+    it("does not change state when disabled", () => {
       render(
         <Radio disabled>
           Option A
@@ -137,7 +136,7 @@ describe("Radio", () => {
           name: "Option A",
         });
 
-      await user.click(radio);
+      fireEvent.click(radio);
 
       expect(radio).not.toBeChecked();
     });

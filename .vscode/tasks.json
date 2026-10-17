@@ -158,6 +158,23 @@
         "focus": true,
         "clear": true
       }
+    },
+    {
+      "label": "create branch from issue",
+      "type": "shell",
+      "command": "bash scripts/create-branch-from-issue.sh",
+      "detail": "Fetches open GitHub issues, creates standardized branch (issue code + slug) and auto-generates linked Pull Request",
+      "icon": {
+        "id": "git-pull-request",
+        "color": "terminal.ansiCyan"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true,
+        "clear": true
+      }
     }
   ]
 }

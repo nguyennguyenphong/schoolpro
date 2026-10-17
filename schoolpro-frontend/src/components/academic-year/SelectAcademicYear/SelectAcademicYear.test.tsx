@@ -210,15 +210,17 @@ describe("SelectAcademicYear Component", () => {
     it("fetches academic years from academicYearApi on mount when customAcademicYears is omitted", async () => {
       const spy = vi
         .spyOn(academicYearApi, "fetchAcademicYears")
-        .mockResolvedValueOnce(TEST_ACADEMIC_YEARS);
+        .mockResolvedValue(TEST_ACADEMIC_YEARS);
 
       render(<SelectAcademicYear />);
 
+      const combobox = screen.getByRole("combobox");
+
+      // Wait until API fetch completes and Select is no longer disabled
       await waitFor(() => {
-        expect(spy).toHaveBeenCalled();
+        expect(combobox).not.toBeDisabled();
       });
 
-      const combobox = screen.getByRole("combobox");
       fireEvent.mouseDown(combobox);
 
       await waitFor(() => {

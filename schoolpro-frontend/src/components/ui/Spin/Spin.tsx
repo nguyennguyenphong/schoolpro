@@ -7,11 +7,16 @@ import type {
 } from "@/components/ui/Spin/types";
 import "@/components/ui/Spin/styles";
 
-export const Spin = (
-  props: SpinProps,
-) => {
+export const Spin = ({
+  role = "status",
+  ...props
+}: SpinProps & { role?: string }) => {
+  const spinRole = props.spinning === false ? undefined : role;
   return (
-    <AntSpin {...props} />
+    <AntSpin
+      {...props}
+      {...({ role: spinRole } as unknown as SpinProps)}
+    />
   );
 };
 

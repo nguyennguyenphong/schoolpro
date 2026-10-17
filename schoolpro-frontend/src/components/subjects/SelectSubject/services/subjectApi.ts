@@ -441,7 +441,7 @@ export const subjectApi = {
 
       return MOCK_SUBJECTS;
     } catch (error) {
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
         console.warn(
           "[subjectApi] Could not connect to Master Subject API endpoint. Falling back to local mock data.",
           error,

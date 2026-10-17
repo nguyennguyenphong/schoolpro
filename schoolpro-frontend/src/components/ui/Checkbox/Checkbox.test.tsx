@@ -2,6 +2,7 @@ import userEvent from "@testing-library/user-event";
 import {
   render,
   screen,
+  fireEvent,
 } from "@testing-library/react";
 
 import {
@@ -158,9 +159,7 @@ describe("Checkbox", () => {
       ).toBeDisabled();
     });
 
-    it("does not change state when disabled", async () => {
-      const user = userEvent.setup();
-
+    it("does not change state when disabled", () => {
       render(
         <Checkbox disabled>
           Remember me
@@ -172,7 +171,7 @@ describe("Checkbox", () => {
           name: "Remember me",
         });
 
-      await user.click(checkbox);
+      fireEvent.click(checkbox);
 
       expect(checkbox).not.toBeChecked();
     });

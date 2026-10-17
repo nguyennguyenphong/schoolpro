@@ -50,21 +50,55 @@ const processQueue = (error: unknown | null, token: string | null = null) => {
   failedQueue = [];
 };
 
+const safeGetStorageItem = (key: string): string | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    if (typeof window.localStorage !== "undefined" && typeof window.localStorage.getItem === "function") {
+      const val = window.localStorage.getItem(key);
+      if (val) return val;
+    }
+  } catch {
+    // Ignore storage read errors
+  }
+  try {
+    if (typeof window.sessionStorage !== "undefined" && typeof window.sessionStorage.getItem === "function") {
+      return window.sessionStorage.getItem(key);
+    }
+  } catch {
+    // Ignore storage read errors
+  }
+  return null;
+};
+
+const safeRemoveStorageItem = (key: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    if (typeof window.localStorage !== "undefined" && typeof window.localStorage.removeItem === "function") {
+      window.localStorage.removeItem(key);
+    }
+  } catch {
+    // Ignore
+  }
+  try {
+    if (typeof window.sessionStorage !== "undefined" && typeof window.sessionStorage.removeItem === "function") {
+      window.sessionStorage.removeItem(key);
+    }
+  } catch {
+    // Ignore
+  }
+};
+
 /**
  * Clears all authentication credentials and safely redirects to login page.
  */
 export const clearAuthSessionAndRedirect = (reason?: string) => {
-  localStorage.removeItem("schoolpro_access_token");
-  localStorage.removeItem("schoolpro_refresh_token");
-  localStorage.removeItem("schoolpro_user");
-  localStorage.removeItem("schoolpro_role");
-  localStorage.removeItem("schoolpro_role_detail");
-
-  sessionStorage.removeItem("schoolpro_access_token");
-  sessionStorage.removeItem("schoolpro_refresh_token");
-  sessionStorage.removeItem("schoolpro_user");
-  sessionStorage.removeItem("schoolpro_role");
-  sessionStorage.removeItem("schoolpro_role_detail");
+  [
+    "schoolpro_access_token",
+    "schoolpro_refresh_token",
+    "schoolpro_user",
+    "schoolpro_role",
+    "schoolpro_role_detail",
+  ].forEach(safeRemoveStorageItem);
 
   try {
     useAuthStore.getState().logout();
@@ -89,9 +123,7 @@ httpClient.interceptors.request.use(
       config.url = config.url.replace(/^\/api\/v1/, "");
     }
 
-    const token =
-      localStorage.getItem("schoolpro_access_token") ||
-      sessionStorage.getItem("schoolpro_access_token");
+    const token = safeGetStorageItem("schoolpro_access_token");
 
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -131,9 +163,7 @@ httpClient.interceptors.response.use(
         return Promise.reject(error);
       }
 
-      const refreshToken =
-        localStorage.getItem("schoolpro_refresh_token") ||
-        sessionStorage.getItem("schoolpro_refresh_token");
+      const refreshToken = safeGetStorageItem("schoolpro_refresh_token");
 
       // No refresh token available, logout immediately
       if (!refreshToken) {

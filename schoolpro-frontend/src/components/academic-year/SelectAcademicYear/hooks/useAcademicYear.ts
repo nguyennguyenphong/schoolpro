@@ -146,11 +146,11 @@ export const useAcademicYear = (
 
       try {
         const data = await academicYearApi.fetchAcademicYears(queryParams);
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setAcademicYears(data);
         }
       } catch (err) {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsError(true);
           const errorObj =
             err instanceof Error
@@ -166,7 +166,7 @@ export const useAcademicYear = (
           );
         }
       } finally {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsLoading(false);
         }
       }

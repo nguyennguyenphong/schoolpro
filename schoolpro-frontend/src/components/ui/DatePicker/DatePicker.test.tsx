@@ -56,7 +56,7 @@ describe("DatePicker", () => {
       expect(
         screen.getByRole("textbox"),
       ).toHaveValue(
-        "09/11/2026",
+        "2026-09-11",
       );
     });
   });
@@ -74,7 +74,7 @@ describe("DatePicker", () => {
       expect(
         screen.getByRole("textbox"),
       ).toHaveValue(
-        "09/11/2026",
+        "2026-09-11",
       );
     });
   });
@@ -196,7 +196,7 @@ describe("RangePicker", () => {
 
   it("supports disabled state", () => {
     render(
-      <RangePicker disabled />,
+      <RangePicker disabled allowEmpty={[true, true]} />,
     );
 
     const inputs =

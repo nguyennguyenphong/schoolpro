@@ -17,13 +17,10 @@ describe("GradebookPrintPage Component", () => {
 
     // Wait for data loading to finish
     await waitFor(() => {
-      expect(screen.queryByText(/Đang tải dữ liệu/i)).not.toBeInTheDocument();
+      expect(
+        screen.getByText(/CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM|SOCIALIST REPUBLIC OF VIETNAM/i)
+      ).toBeInTheDocument();
     });
-
-    // Check national header and title
-    expect(
-      screen.getByText(/CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM|SOCIALIST REPUBLIC OF VIETNAM/i)
-    ).toBeInTheDocument();
     expect(
       screen.getByText(/BẢNG ĐIỂM HỌC TẬP VÀ RÈN LUYỆN|STUDENT ACADEMIC & CONDUCT TRANSCRIPT/i)
     ).toBeInTheDocument();
