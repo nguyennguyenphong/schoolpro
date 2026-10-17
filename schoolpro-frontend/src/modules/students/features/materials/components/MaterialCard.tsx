@@ -33,7 +33,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/student/materials/${item.subjectCode}`);
+    navigate(`/student/materials/subject/${item.subjectCode}`);
   };
 
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
@@ -109,10 +109,18 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
 
   const categoryConfig = getCategoryConfig(item.category);
 
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick(item);
+    } else {
+      navigate(`/student/materials/${item.id}`);
+    }
+  };
+
   return (
     <div
-      onClick={() => onClick?.(item)}
-      className={`bg-white border rounded-xl p-4 flex flex-col justify-between gap-3.5 transition-all shadow-2xs h-full cursor-pointer group ${
+      onClick={handleCardClick}
+      className={`bg-white border rounded-xl p-4 flex flex-col justify-between gap-3 transition-all shadow-2xs h-full cursor-pointer group hover:shadow-md ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : "border-[#f0f0f0] hover:border-blue-400"
@@ -159,34 +167,25 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
           </button>
         </div>
 
-        {/* Row 2: Title (2 lines) */}
+        {/* Row 2: Title */}
         <h4
-          className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug min-h-10 mb-0"
+          className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug mb-0"
           title={item.title}
         >
           {item.title}
         </h4>
 
-        {/* Row 3: Highlight Block (Format, File Size & Semester) */}
-        <div className="flex items-center justify-between gap-2 bg-slate-50 rounded-lg px-2.5 py-2 border border-[#f0f0f0] text-xs">
-          <div className="flex items-center gap-1.5 min-w-0">
-            {getFormatBadge(item.format, item.fileSize)}
-          </div>
-          <span className="text-[11px] font-semibold text-slate-500 bg-white px-2 py-0.5 rounded border border-[#f0f0f0] shrink-0">
-            {item.semester} • {item.academicYear}
+        {/* Row 3: Format & Semester Info */}
+        <div className="flex items-center gap-2 text-xs text-slate-500 flex-wrap">
+          {getFormatBadge(item.format, item.fileSize)}
+          <span className="text-slate-300">•</span>
+          <span className="text-[11px] font-medium text-slate-500">
+            {item.semester} ({item.academicYear})
           </span>
         </div>
-
-        {/* Row 4: Description */}
-        <p
-          className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-0 min-h-8"
-          title={item.description}
-        >
-          {item.description}
-        </p>
       </div>
 
-      {/* Footer: Metadata & Action Button */}
+      {/* Footer: Metadata & Direct Download Action */}
       <div
         className="pt-2.5 border-t border-[#f0f0f0] flex items-center justify-between gap-2"
         onClick={(e) => e.stopPropagation()}
@@ -199,27 +198,21 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
           <div className="flex items-center gap-2 text-[11px] text-slate-400">
             <span>{item.uploadDate}</span>
             <span>•</span>
-            <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}</span>
+            <span className="flex items-center gap-1">
+              <Icon name="download" size={11} />
+              <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}</span>
+            </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          <Button
-            variant="outline"
-            onClick={() => onClick?.(item)}
-            className="text-xs px-2.5 py-1 font-semibold"
-          >
-            <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => onDownload(item)}
-            className="text-xs px-2.5 py-1 font-semibold"
-          >
-            <Icon name="download" size={13} />
-            <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
-          </Button>
-        </div>
+        <Button
+          variant="primary"
+          onClick={() => onDownload(item)}
+          className="text-xs px-3 py-1 font-semibold shrink-0"
+        >
+          <Icon name="download" size={13} />
+          <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
+        </Button>
       </div>
     </div>
   );

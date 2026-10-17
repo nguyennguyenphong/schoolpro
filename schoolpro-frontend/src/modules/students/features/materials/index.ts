@@ -4,4 +4,5 @@ export * from "@/modules/students/features/materials/hooks";
 export * from "@/modules/students/features/materials/services";
 export { MaterialsPage } from "@/modules/students/features/materials/MaterialsPage";
 export { SubjectMaterialsPage } from "@/modules/students/features/materials/SubjectMaterialsPage";
+export { MaterialDetailPage } from "@/modules/students/features/materials/MaterialDetailPage";
 export { default } from "@/modules/students/features/materials/MaterialsPage";

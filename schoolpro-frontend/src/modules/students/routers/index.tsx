@@ -50,6 +50,12 @@ const SubjectMaterialsPage = lazy(() =>
   }))
 );
 
+const MaterialDetailPage = lazy(() =>
+  import("@/modules/students/features/materials").then(({ MaterialDetailPage }) => ({
+    default: MaterialDetailPage,
+  }))
+);
+
 const GradebookPage = lazy(() =>
   import("@/modules/students/features/gradebook").then(({ GradebookPage }) => ({
     default: GradebookPage,
@@ -152,7 +158,8 @@ export const StudentRoutes = (
       <Route path="/student/assignments" element={<AssignmentsPage />} />
       <Route path="/student/assignments/:id" element={<AssignmentSubmitPage />} />
       <Route path="/student/materials" element={<MaterialsPage />} />
-      <Route path="/student/materials/:subjectCode" element={<SubjectMaterialsPage />} />
+      <Route path="/student/materials/subject/:subjectCode" element={<SubjectMaterialsPage />} />
+      <Route path="/student/materials/:id" element={<MaterialDetailPage />} />
       <Route path="/student/gradebook" element={<GradebookPage />} />
       <Route path="/student/evaluations" element={<EvaluationPage />} />
       <Route path="/student/evaluations/:id" element={<SurveyDetailPage />} />

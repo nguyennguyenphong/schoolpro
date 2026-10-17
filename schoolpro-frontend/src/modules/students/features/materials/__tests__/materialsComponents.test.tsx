@@ -184,4 +184,25 @@ describe("Materials Components", () => {
     expect(screen.getByText("22")).toBeInTheDocument();
     expect(screen.getByText("1,250")).toBeInTheDocument();
   });
+
+  it("triggers onClick when MaterialCard is clicked", () => {
+    const handleClick = vi.fn();
+    const handleDownload = vi.fn();
+    const handleBookmark = vi.fn();
+
+    render(
+      <MemoryRouter>
+        <MaterialCard
+          item={mockMaterial}
+          onDownload={handleDownload}
+          onToggleBookmark={handleBookmark}
+          onClick={handleClick}
+        />
+      </MemoryRouter>,
+    );
+
+    const titleEl = screen.getByText("Đề thi thử học kỳ 1 môn Toán");
+    fireEvent.click(titleEl);
+    expect(handleClick).toHaveBeenCalledWith(mockMaterial);
+  });
 });

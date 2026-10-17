@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Empty } from "@/components/ui/Empty";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -10,13 +11,13 @@ import {
   MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
-  MaterialDetailModal,
   MaterialsPagination,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
 import { useMaterials } from "@/modules/students/features/materials/hooks";
 
 export const MaterialsPage: React.FC = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation(["card", "button"]);
 
   const {
@@ -26,8 +27,6 @@ export const MaterialsPage: React.FC = () => {
     subjects,
     loading,
     filter,
-    selectedMaterial,
-    isDetailOpen,
     selectedIds,
     isAllCurrentPageSelected,
     setSearchQuery,
@@ -46,8 +45,6 @@ export const MaterialsPage: React.FC = () => {
     downloadAll,
     downloadMaterial,
     toggleBookmark,
-    openDetail,
-    closeDetail,
   } = useMaterials();
 
   const hasActiveFilters = Boolean(
@@ -172,7 +169,7 @@ export const MaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
-              onClick={openDetail}
+              onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
             />
           ))}
         </div>
@@ -186,7 +183,7 @@ export const MaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
-              onClick={openDetail}
+              onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
             />
           ))}
         </div>
@@ -199,15 +196,6 @@ export const MaterialsPage: React.FC = () => {
         total={total}
         itemsCount={materials.length}
         onChange={(page, pageSize) => setPage(page, pageSize)}
-      />
-
-      {/* 7. Detail Modal */}
-      <MaterialDetailModal
-        item={selectedMaterial}
-        isOpen={isDetailOpen}
-        onClose={closeDetail}
-        onDownload={downloadMaterial}
-        onToggleBookmark={toggleBookmark}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Empty } from "@/components/ui/Empty";
@@ -12,12 +12,10 @@ import {
   MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
-  MaterialDetailModal,
   MaterialsPagination,
   MaterialsSkeleton,
 } from "@/modules/students/features/materials/components";
 import { useSubjectMaterials } from "@/modules/students/features/materials/hooks";
-import type { MaterialItem } from "@/modules/students/features/materials/types";
 
 export const SubjectMaterialsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -48,19 +46,6 @@ export const SubjectMaterialsPage: React.FC = () => {
     downloadAll,
     toggleBookmark,
   } = useSubjectMaterials();
-
-  const [selectedMaterial, setSelectedMaterial] = useState<MaterialItem | null>(null);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-
-  const handleOpenDetail = (item: MaterialItem) => {
-    setSelectedMaterial(item);
-    setIsDetailOpen(true);
-  };
-
-  const handleCloseDetail = () => {
-    setIsDetailOpen(false);
-    setSelectedMaterial(null);
-  };
 
   const hasActiveFilters = Boolean(
     filter.searchQuery.trim() ||
@@ -238,7 +223,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
-              onClick={handleOpenDetail}
+              onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
             />
           ))}
         </div>
@@ -252,7 +237,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
-              onClick={handleOpenDetail}
+              onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
             />
           ))}
         </div>
@@ -265,15 +250,6 @@ export const SubjectMaterialsPage: React.FC = () => {
         total={total}
         itemsCount={materials.length}
         onChange={(page, pageSize) => setPage(page, pageSize)}
-      />
-
-      {/* 6. Detail Modal */}
-      <MaterialDetailModal
-        item={selectedMaterial}
-        isOpen={isDetailOpen}
-        onClose={handleCloseDetail}
-        onDownload={downloadMaterial}
-        onToggleBookmark={toggleBookmark}
       />
     </div>
   );

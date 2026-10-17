@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
@@ -11,6 +12,7 @@ interface SubjectCardProps {
 }
 
 export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const getColorStyles = (scheme: SubjectItem["colorScheme"]) => {
@@ -76,7 +78,10 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
   const style = getColorStyles(item.colorScheme);
 
   return (
-    <Card className="rounded-xl border border-[#f0f0f0] shadow-2xs">
+    <Card
+      onClick={() => navigate(`/student/materials/subject/${item.code}`)}
+      className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-blue-400 transition-all cursor-pointer group"
+    >
       <div>
         {/* Header: Icon + Code + Semester */}
         <div className="flex items-center justify-between gap-3 mb-3">
@@ -143,8 +148,8 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
           className="text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all font-semibold text-xs"
           onClick={(e) => {
             e.stopPropagation();
+            navigate(`/student/materials/subject/${item.code}`);
           }}
-          href={`/student/materials/${item.code}`}
         >
           <Icon name="fileText" size={14} />
           <span>{t("card:materials.actions.viewMaterials", { count: item.totalMaterials, defaultValue: `Xem tài liệu (${item.totalMaterials})` })}</span>

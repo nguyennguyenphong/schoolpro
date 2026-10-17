@@ -374,6 +374,19 @@ class MaterialsService {
     return newState;
   }
 
+  async getMaterialById(id: string): Promise<MaterialItem | null> {
+    try {
+      const res = await httpClient.get<ApiResponse<RawBackendMaterial>>(`/academic/materials/${id}/`);
+      if (res.data?.data) {
+        return mapBackendMaterial(res.data.data);
+      }
+    } catch {
+      // Fallback to local memory mock data
+    }
+    const found = this.materials.find((m) => m.id === id);
+    return found ? { ...found } : null;
+  }
+
   incrementDownload(id: string): void {
     const item = this.materials.find((m) => m.id === id);
     if (item) {

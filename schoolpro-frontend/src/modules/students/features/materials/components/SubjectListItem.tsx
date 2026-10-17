@@ -42,7 +42,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
   const style = getColorStyles(item.colorScheme);
 
   const handleCardClick = () => {
-    navigate(`/student/materials/${item.code}`);
+    navigate(`/student/materials/subject/${item.code}`);
   };
 
   return (

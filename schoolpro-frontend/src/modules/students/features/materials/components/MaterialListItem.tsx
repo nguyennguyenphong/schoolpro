@@ -33,7 +33,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
 
   const handleSubjectClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/student/materials/${item.subjectCode}`);
+    navigate(`/student/materials/subject/${item.subjectCode}`);
   };
 
   const getFormatBadge = (fmt: MaterialFormat, size: string) => {
@@ -109,10 +109,18 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
 
   const categoryConfig = getCategoryConfig(item.category);
 
+  const handleItemClick = () => {
+    if (onClick) {
+      onClick(item);
+    } else {
+      navigate(`/student/materials/${item.id}`);
+    }
+  };
+
   return (
     <div
-      onClick={() => onClick?.(item)}
-      className={`bg-white rounded-xl border shadow-2xs p-4 sm:p-5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+      onClick={handleItemClick}
+      className={`bg-white rounded-xl border shadow-2xs p-4 sm:p-4.5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 hover:shadow-md ${
         isSelected
           ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
           : "border-[#f0f0f0] hover:border-blue-400"
@@ -121,7 +129,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
       <div className="flex items-start gap-3.5 flex-1 min-w-0">
         {/* Checkbox */}
         {onToggleSelect && (
-          <div onClick={(e) => e.stopPropagation()} className="pt-1 shrink-0 flex items-center">
+          <div onClick={(e) => e.stopPropagation()} className="pt-0.5 shrink-0 flex items-center">
             <Checkbox
               checked={isSelected}
               onChange={() => onToggleSelect(item.id)}
@@ -157,12 +165,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
             {item.title}
           </h3>
 
-          {/* Row 3: Description */}
-          <p className="text-xs text-slate-500 line-clamp-1 mb-0">
-            {item.description}
-          </p>
-
-          {/* Row 4: Metadata */}
+          {/* Row 3: Metadata */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-0.5">
             <span className="flex items-center gap-1.5 font-medium text-slate-700 whitespace-nowrap">
               <Icon name="user" size={13} className="text-slate-400" />
@@ -201,18 +204,9 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
         </button>
 
         <Button
-          variant="outline"
-          onClick={() => onClick?.(item)}
-          className="text-xs px-3 py-1.5 font-semibold"
-        >
-          <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
-          <Icon name="chevron-right" size={13} />
-        </Button>
-
-        <Button
           variant="primary"
           onClick={() => onDownload(item)}
-          className="text-xs px-3 py-1.5 font-semibold"
+          className="text-xs px-3.5 py-1.5 font-semibold"
         >
           <Icon name="download" size={14} />
           <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
