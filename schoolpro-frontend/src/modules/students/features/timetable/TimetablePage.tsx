@@ -8,7 +8,6 @@ import { useAuthStore } from "@/shared/store/useAuthStore";
 import {
   TimetableFilterBar,
   WeeklyGridView,
-  ListView,
   TimetableSkeleton,
 } from "@/modules/students/features/timetable/components";
 import { useTimetable, usePrintTimetable } from "@/modules/students/features/timetable/hooks";
@@ -29,7 +28,6 @@ export const TimetablePage: React.FC = () => {
     minDate,
     maxDate,
     setSelectedDate,
-    setViewMode,
     resetFilters,
     goToToday,
     goToPreviousDay,
@@ -87,7 +85,6 @@ export const TimetablePage: React.FC = () => {
       {/* 2. Filter Bar (Select by week and view mode) */}
       <TimetableFilterBar
         selectedDate={filter.selectedDate}
-        viewMode={filter.viewMode}
         currentWeekLabel={currentWeekLabel}
         semesterLabel={semesterLabel}
         minDate={minDate}
@@ -95,7 +92,6 @@ export const TimetablePage: React.FC = () => {
         hasActiveFilters={hasActiveFilters}
         isPrinting={isPrinting}
         onDateChange={setSelectedDate}
-        onViewModeChange={setViewMode}
         onResetFilters={resetFilters}
         onTodayClick={goToToday}
         onPrevWeekClick={goToPreviousDay}
@@ -149,13 +145,11 @@ export const TimetablePage: React.FC = () => {
             )}
           </Empty>
         </div>
-      ) : filter.viewMode === "grid" ? (
+      ) : (
         <WeeklyGridView
           selectedDate={filter.selectedDate}
           slots={slots}
         />
-      ) : (
-        <ListView slots={slots} />
       )}
     </div>
   );

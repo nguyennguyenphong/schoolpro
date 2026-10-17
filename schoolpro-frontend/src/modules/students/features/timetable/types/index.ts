@@ -42,11 +42,8 @@ export interface TimetableSlot {
 
 export type TimetableFilterMode = "date" | "week" | "month" | "year";
 
-export type TimetableViewMode = "grid" | "list";
-
 export interface TimetableFilter {
   selectedDate: string; // "YYYY-MM-DD"
-  viewMode: TimetableViewMode;
   searchQuery?: string;
   filterMode?: TimetableFilterMode;
   courseCode?: string;

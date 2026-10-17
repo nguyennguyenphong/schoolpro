@@ -4,7 +4,6 @@ import type {
   TimetableFilter,
   TimetableSummary,
   TimetableMeta,
-  TimetableViewMode,
 } from "@/modules/students/features/timetable/types";
 import { timetableService } from "@/modules/students/features/timetable/services";
 import {
@@ -33,7 +32,6 @@ export interface UseTimetableResult {
   isPrevDisabled: boolean;
   isNextDisabled: boolean;
   setSelectedDate: (date: string) => void;
-  setViewMode: (mode: TimetableViewMode) => void;
   resetFilters: () => void;
   openSlotDetail: (slot: TimetableSlot) => void;
   closeSlotDetail: () => void;
@@ -50,7 +48,6 @@ export const useTimetable = (initialDate = getTodayDateStr()): UseTimetableResul
     filter,
     hasActiveFilters,
     setSelectedDate,
-    setViewMode,
     resetFilters,
   } = useTimetableFilter(initialDate);
 
@@ -141,7 +138,6 @@ export const useTimetable = (initialDate = getTodayDateStr()): UseTimetableResul
     isPrevDisabled: navigation.isPrevDisabled,
     isNextDisabled: navigation.isNextDisabled,
     setSelectedDate,
-    setViewMode,
     resetFilters,
     openSlotDetail,
     closeSlotDetail,

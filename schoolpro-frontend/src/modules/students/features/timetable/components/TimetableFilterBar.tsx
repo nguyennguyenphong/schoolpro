@@ -5,11 +5,9 @@ import type { Dayjs } from "dayjs";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { TimetableViewMode } from "@/modules/students/features/timetable/types";
 
 interface TimetableFilterBarProps {
   selectedDate: string;
-  viewMode: TimetableViewMode;
   currentWeekLabel: string;
   semesterLabel?: string;
   minDate?: string;
@@ -17,7 +15,6 @@ interface TimetableFilterBarProps {
   hasActiveFilters?: boolean;
   isPrinting?: boolean;
   onDateChange: (dateStr: string) => void;
-  onViewModeChange: (mode: TimetableViewMode) => void;
   onResetFilters: () => void;
   onTodayClick: () => void;
   onPrevWeekClick: () => void;
@@ -27,7 +24,6 @@ interface TimetableFilterBarProps {
 
 export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   selectedDate,
-  viewMode,
   currentWeekLabel: _currentWeekLabel,
   semesterLabel: _semesterLabel,
   minDate,
@@ -35,7 +31,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
   hasActiveFilters = false,
   isPrinting = false,
   onDateChange,
-  onViewModeChange,
   onResetFilters,
   onTodayClick,
   onPrevWeekClick,
@@ -154,36 +149,6 @@ export const TimetableFilterBar: React.FC<TimetableFilterBarProps> = ({
             <span>{t("card:timetable.backToCurrentWeek")}</span>
           </Button>
         )}
-
-        {/* View Mode Toggle: Grid and List ONLY */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-[#f0f0f0] shrink-0 ml-auto sm:ml-0">
-          <button
-            type="button"
-            onClick={() => onViewModeChange("grid")}
-            className={`p-1.5 px-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-              viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-            title={t("card:timetable.viewGrid")}
-          >
-            <Icon name="calendar" size={14} />
-            <span>{t("card:timetable.viewGrid")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onViewModeChange("list")}
-            className={`p-1.5 px-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-              viewMode === "list"
-                ? "bg-white text-blue-600 shadow-2xs font-semibold"
-                : "text-slate-500 hover:text-slate-800"
-            }`}
-            title={t("card:timetable.viewList")}
-          >
-            <Icon name="file" size={14} />
-            <span>{t("card:timetable.viewList")}</span>
-          </button>
-        </div>
       </div>
     </div>
   );
