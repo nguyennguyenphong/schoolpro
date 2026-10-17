@@ -125,8 +125,6 @@ export const SubjectMaterialsPage: React.FC = () => {
                   {subject.teacher} ({subject.teacherTitle})
                 </span>
                 <span>•</span>
-                <span>Khối 11 - Lớp 11A1</span>
-                <span>•</span>
                 <span>{subject.description}</span>
               </div>
             )}
@@ -172,7 +170,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
                     ? t("card:materials.empty.noMaterialsDesc")
-                    : "Hiện tại môn học này chưa có tài liệu nào."}
+                    : t("card:materials.empty.noSubjectMaterialsDefault")}
                 </p>
               </div>
             }

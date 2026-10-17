@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pagination } from "@/components/ui/Pagination";
+import { StudentPagination } from "@/modules/students/components";
 
-interface MaterialsPaginationProps {
+export interface MaterialsPaginationProps {
   current: number;
   pageSize: number;
   total: number;
@@ -17,28 +17,17 @@ export const MaterialsPagination: React.FC<MaterialsPaginationProps> = ({
   itemsCount,
   onChange,
 }) => {
-  const { t } = useTranslation(["common", "card"]);
-
-  if (total <= 0) return null;
+  const { t } = useTranslation(["card"]);
 
   return (
-    <div className="p-4 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
-      <div className="text-xs text-slate-500">
-        {t("common:pagination.showing")}{" "}
-        <strong className="text-slate-800">{itemsCount}</strong>{" "}
-        {t("common:pagination.of")}{" "}
-        <strong className="text-slate-800">{total}</strong>{" "}
-        {t("card:materialUnit")}
-      </div>
-
-      <Pagination
-        current={current}
-        pageSize={pageSize}
-        total={total}
-        onChange={onChange}
-        showSizeChanger
-        pageSizeOptions={["10", "20", "50", "100"]}
-      />
-    </div>
+    <StudentPagination
+      current={current}
+      pageSize={pageSize}
+      total={total}
+      itemsCount={itemsCount}
+      unitLabel={t("card:materialUnit")}
+      onChange={onChange}
+    />
   );
 };
+

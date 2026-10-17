@@ -34,7 +34,7 @@ export const MaterialDetailPage: React.FC = () => {
           {t("card:materials.empty.noMaterialsTitle")}
         </h3>
         <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
-          Tài liệu học tập bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ khỏi hệ thống.
+          {t("card:materials.empty.notFoundDescription")}
         </p>
         <Button variant="primary" onClick={() => navigate("/student/materials")}>
           {t("card:materials.header.backToSubjects")}

@@ -1215,11 +1215,47 @@
       "downloadStarted": "파일 다운로드를 시작합니다: {{fileName}}",
       "downloadBatchStarted": "{{count}}개 자료 압축 및 다운로드 준비 중..."
     },
+    "detail": {
+      "specsTitle": "자료 사양",
+      "fileName": "원본 파일명",
+      "format": "형식",
+      "fileSize": "파일 크기",
+      "semesterYear": "학기 / 학년도",
+      "downloadsCount": "다운로드 수",
+      "copyrightStandard": "저작권 표준",
+      "internalUseOnly": "학교 내부 배포용",
+      "teacherSectionTitle": "담당 교사 및 교과부",
+      "departmentLabel": "교과부: {{name}}",
+      "subjectCodeLabel": "과목 코드:",
+      "quickActionsTitle": "빠른 작업",
+      "securityNotice": "자료는 SchoolPro에 의해 디지털 저작권이 보호됩니다"
+    },
+    "preview": {
+      "pedagogyStandard": "디지털 교육 표준 인증",
+      "overviewTitle": "자료 개요",
+      "onlinePreviewTitle": "온라인 미리보기: {{fileName}}",
+      "pageIndicator": "페이지 {{current}} / {{total}}",
+      "schoolHeader": "SCHOOLPRO 고등학교",
+      "departmentHeader": "교과부: {{name}}",
+      "internalDistribution": "내부 배포용",
+      "compiledBy": "편찬: {{author}} • {{semester}} ({{year}})",
+      "keyObjectives": "핵심 학습 목표:",
+      "objective1": "방법론 및 심화 이론 개념 습득.",
+      "objective2": "객관식 및 주관식 고난도 문제 유형 체계화.",
+      "downloadFullToView": "전체 내용을 보려면 자료 패키지를 다운로드하세요"
+    },
+    "outline": {
+      "topicsCount": "{{count}}개 주제",
+      "compiledBadge": "편찬 완료"
+    },
     "empty": {
       "noSubjectsTitle": "과목을 찾을 수 없습니다",
       "noSubjectsDesc": "검색어 또는 선택한 필터에 해당하는 과목이 없습니다.",
       "noMaterialsTitle": "학습 자료를 찾을 수 없습니다",
       "noMaterialsDesc": "현재 필터 조건과 일치하는 자료가 없습니다. 조건을 변경해보세요.",
+      "notFoundDescription": "찾으시는 학습 자료가 존재하지 않거나 시스템에서 삭제되었습니다.",
+      "noMaterialsDefault": "현재 이 카테고리에는 자료가 없습니다.",
+      "noSubjectMaterialsDefault": "현재 이 과목에는 자료가 없습니다.",
       "resetFilterBtn": "필터 초기화"
     }
   }

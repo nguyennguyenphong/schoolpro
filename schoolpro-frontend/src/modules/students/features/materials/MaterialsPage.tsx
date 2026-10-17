@@ -124,7 +124,7 @@ export const MaterialsPage: React.FC = () => {
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
                     ? t("card:materials.empty.noMaterialsDesc")
-                    : "Hiện tại chưa có tài liệu nào trong danh mục này."}
+                    : t("card:materials.empty.noMaterialsDefault")}
                 </p>
               </div>
             }

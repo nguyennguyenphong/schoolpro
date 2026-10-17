@@ -1215,11 +1215,47 @@
       "downloadStarted": "ファイルのダウンロードを開始しています: {{fileName}}",
       "downloadBatchStarted": "{{count}} 件の教材を圧縮してダウンロード準備中..."
     },
+    "detail": {
+      "specsTitle": "教材の仕様",
+      "fileName": "元のファイル名",
+      "format": "形式",
+      "fileSize": "ファイルサイズ",
+      "semesterYear": "学期 / 学年度",
+      "downloadsCount": "ダウンロード数",
+      "copyrightStandard": "著作権基準",
+      "internalUseOnly": "学校内部限定配布",
+      "teacherSectionTitle": "担当教師と教科部",
+      "departmentLabel": "教科部: {{name}}",
+      "subjectCodeLabel": "科目コード:",
+      "quickActionsTitle": "クイック操作",
+      "securityNotice": "教材はSchoolProによって著作権が保護されています"
+    },
+    "preview": {
+      "pedagogyStandard": "デジタル教育認定基準",
+      "overviewTitle": "教材の概要",
+      "onlinePreviewTitle": "オンラインプレビュー: {{fileName}}",
+      "pageIndicator": "ページ {{current}} / {{total}}",
+      "schoolHeader": "SCHOOLPRO高等学校",
+      "departmentHeader": "教科部: {{name}}",
+      "internalDistribution": "学内限定配布",
+      "compiledBy": "編纂: {{author}} • {{semester}} ({{year}})",
+      "keyObjectives": "主な学習目標:",
+      "objective1": "方法論と発展的理論を習得する。",
+      "objective2": "選択式および記述式の応用問題を体系化する。",
+      "downloadFullToView": "全内容を閲覧するには教材一式をダウンロードしてください"
+    },
+    "outline": {
+      "topicsCount": "{{count}} 項目",
+      "compiledBadge": "編纂済み"
+    },
     "empty": {
       "noSubjectsTitle": "科目が見つかりません",
       "noSubjectsDesc": "検索キーワードまたは指定したフィルターに該当する科目はありません。",
       "noMaterialsTitle": "教材・学習資料が見つかりません",
       "noMaterialsDesc": "現在のフィルター条件に一致する資料はありません。条件を変更してお試しください。",
+      "notFoundDescription": "お探しの学習教材は存在しないか、システムから削除されました。",
+      "noMaterialsDefault": "現在、このカテゴリには教材がありません。",
+      "noSubjectMaterialsDefault": "現在、この科目には教材がありません。",
       "resetFilterBtn": "フィルターをリセット"
     }
   }

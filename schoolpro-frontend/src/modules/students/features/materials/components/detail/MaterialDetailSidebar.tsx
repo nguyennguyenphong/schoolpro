@@ -27,43 +27,43 @@ export const MaterialDetailSidebar: React.FC<MaterialDetailSidebarProps> = ({
         <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h3 className="text-sm font-bold text-slate-900 mb-0">
-            Thông số kỹ thuật tài liệu
+            {t("card:materials.detail.specsTitle")}
           </h3>
         </div>
 
         <div className="space-y-2.5 text-xs">
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Tên tệp gốc</span>
+            <span className="text-slate-500">{t("card:materials.detail.fileName")}</span>
             <span className="font-semibold text-slate-800 truncate max-w-42.5" title={item.fileName}>
               {item.fileName}
             </span>
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Định dạng</span>
+            <span className="text-slate-500">{t("card:materials.detail.format")}</span>
             <span className="font-bold text-slate-800 uppercase">{item.format}</span>
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Dung lượng</span>
+            <span className="text-slate-500">{t("card:materials.detail.fileSize")}</span>
             <span className="font-semibold text-slate-800">{item.fileSize}</span>
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Học kỳ / Năm học</span>
+            <span className="text-slate-500">{t("card:materials.detail.semesterYear")}</span>
             <span className="font-semibold text-slate-800">
               {item.semester} ({item.academicYear})
             </span>
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Lượt tải về</span>
+            <span className="text-slate-500">{t("card:materials.detail.downloadsCount")}</span>
             <span className="font-bold text-blue-600">{item.downloadsCount.toLocaleString()}</span>
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">Tiêu chuẩn bản quyền</span>
-            <span className="font-medium text-emerald-700">Lưu hành nội bộ THPT</span>
+            <span className="text-slate-500">{t("card:materials.detail.copyrightStandard")}</span>
+            <span className="font-medium text-emerald-700">{t("card:materials.detail.internalUseOnly")}</span>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@ export const MaterialDetailSidebar: React.FC<MaterialDetailSidebarProps> = ({
         <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
           <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
           <h3 className="text-sm font-bold text-slate-900 mb-0">
-            Giáo viên & Tổ bộ môn
+            {t("card:materials.detail.teacherSectionTitle")}
           </h3>
         </div>
 
@@ -87,28 +87,24 @@ export const MaterialDetailSidebar: React.FC<MaterialDetailSidebarProps> = ({
                 {item.author}
               </h4>
               <p className="text-[11px] text-slate-500 mb-0 truncate">
-                Tổ chuyên môn: {item.subjectName}
+                {t("card:materials.detail.departmentLabel", { name: item.subjectName })}
               </p>
             </div>
           </div>
 
           <div className="pt-2 border-t border-[#f0f0f0] text-[11px] text-slate-500 space-y-1">
             <div className="flex items-center justify-between">
-              <span>Mã môn học:</span>
+              <span>{t("card:materials.detail.subjectCodeLabel")}</span>
               <Tag color="blue" className="m-0 text-[11px] font-semibold">
                 {item.subjectCode}
               </Tag>
             </div>
             <div className="flex items-center justify-between">
-              <span>Ngày đăng tải:</span>
+              <span>{t("card:materials.modal.uploadDate")}:</span>
               <strong className="text-slate-700">{item.uploadDate}</strong>
             </div>
           </div>
         </div>
-
-        <p className="text-[11px] text-slate-400 mb-0 leading-relaxed italic">
-          * Học sinh có thể gửi câu hỏi thảo luận trực tiếp đến giáo viên phụ trách bộ môn trong giờ học hoặc qua Cổng học tập.
-        </p>
       </div>
 
       {/* 3. Quick Action Card */}

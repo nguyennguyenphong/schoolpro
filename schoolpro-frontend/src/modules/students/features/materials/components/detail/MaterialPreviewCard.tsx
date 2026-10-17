@@ -30,14 +30,14 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
 
         <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-lg text-xs font-semibold self-start sm:self-auto shadow-2xs">
           <Icon name="checkCircle" size={14} className="text-emerald-600 shrink-0" />
-          <span>Đạt chuẩn sư phạm số</span>
+          <span>{t("card:materials.preview.pedagogyStandard")}</span>
         </div>
       </div>
 
       {/* 2. Document Description */}
       <div className="space-y-2">
         <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0">
-          Tổng quan tài liệu
+          {t("card:materials.preview.overviewTitle")}
         </h4>
         <p className="text-sm text-slate-700 leading-relaxed bg-slate-50/70 p-4 rounded-xl border border-[#f0f0f0] mb-0">
           {item.description}
@@ -49,10 +49,10 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
         <div className="flex items-center justify-between text-xs text-slate-500">
           <div className="flex items-center gap-1.5 font-medium text-slate-700">
             <Icon name="file" size={13} className="text-blue-600" />
-            <span>Bản xem trước trực tuyến: {item.fileName}</span>
+            <span>{t("card:materials.preview.onlinePreviewTitle", { fileName: item.fileName })}</span>
           </div>
           <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 font-semibold">
-            Trang 1 / 24
+            {t("card:materials.preview.pageIndicator", { current: 1, total: 24 })}
           </span>
         </div>
 
@@ -62,15 +62,15 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div>
                 <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mb-0">
-                  TRƯỜNG TRUNG HỌC PHỔ THÔNG CHUYÊN
+                  {t("card:materials.preview.schoolHeader")}
                 </p>
                 <p className="text-[11px] sm:text-xs font-semibold text-slate-600 mb-0">
-                  TỔ CHUYÊN MÔN: {item.subjectName.toUpperCase()}
+                  {t("card:materials.preview.departmentHeader", { name: item.subjectName.toUpperCase() })}
                 </p>
               </div>
               <div className="text-right">
                 <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                  LƯU HÀNH NỘI BỘ
+                  {t("card:materials.preview.internalDistribution")}
                 </span>
               </div>
             </div>
@@ -80,7 +80,11 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
                 {item.title}
               </h3>
               <p className="text-xs text-slate-500 mb-0">
-                Biên soạn: <strong className="text-slate-700">{item.author}</strong> • {item.semester} ({item.academicYear})
+                {t("card:materials.preview.compiledBy", {
+                  author: item.author,
+                  semester: item.semester,
+                  year: item.academicYear,
+                })}
               </p>
             </div>
 
@@ -94,10 +98,10 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
             </div>
 
             <div className="p-3 bg-blue-50/50 rounded-lg border border-blue-100 space-y-1.5 my-3">
-              <div className="text-xs font-bold text-blue-800">Mục tiêu bài học trọng tâm:</div>
+              <div className="text-xs font-bold text-blue-800">{t("card:materials.preview.keyObjectives")}</div>
               <ul className="text-xs text-blue-900/80 list-disc list-inside space-y-0.5 mb-0">
-                <li>Nắm vững phương pháp luận và lý thuyết mở rộng.</li>
-                <li>Hệ thống hóa dạng bài tập trắc nghiệm và tự luận phân hóa cao.</li>
+                <li>{t("card:materials.preview.objective1")}</li>
+                <li>{t("card:materials.preview.objective2")}</li>
               </ul>
             </div>
 
@@ -110,7 +114,7 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
           {/* Fade overlay with Download CTA */}
           <div className="w-full max-w-2xl mt-4 bg-white/95 backdrop-blur-xs p-4 rounded-xl border border-blue-200 shadow-md text-center space-y-2">
             <p className="text-xs text-slate-600 mb-0">
-              Hệ thống hiển thị xem trước trang đầu tiên. Tải về tài liệu gốc để đọc toàn bộ nội dung và bài tập chi tiết.
+              {t("card:materials.preview.downloadFullToView")}
             </p>
             <Button
               variant="primary"

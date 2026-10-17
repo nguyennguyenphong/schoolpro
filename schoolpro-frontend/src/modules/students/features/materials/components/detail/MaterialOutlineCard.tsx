@@ -31,7 +31,7 @@ export const MaterialOutlineCard: React.FC<MaterialOutlineCardProps> = ({ item }
         </div>
 
         <span className="text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
-          {contents.length} chuyên đề
+          {t("card:materials.outline.topicsCount", { count: contents.length })}
         </span>
       </div>
 
@@ -53,7 +53,7 @@ export const MaterialOutlineCard: React.FC<MaterialOutlineCardProps> = ({ item }
 
             <div className="flex items-center gap-1.5 text-emerald-600 shrink-0 font-medium">
               <Icon name="check" size={13} />
-              <span className="hidden sm:inline text-[11px]">Đã biên soạn</span>
+              <span className="hidden sm:inline text-[11px]">{t("card:materials.outline.compiledBadge")}</span>
             </div>
           </div>
         ))}

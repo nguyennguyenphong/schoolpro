@@ -1,7 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/ui/Card";
-import { Icon } from "@/components/ui/Icon";
+import {
+  StudentMetricCard,
+  StudentMetricSkeleton,
+} from "@/modules/students/components";
 import type { MaterialSummary } from "@/modules/students/features/materials/types";
 
 interface MaterialSummaryCardsProps {
@@ -10,8 +12,7 @@ interface MaterialSummaryCardsProps {
 }
 
 /**
- * Student Material Summary Cards matching the clean, responsive layout of LeaveRequestSummaryCards,
- * AttendanceSummaryCards, and AssignmentSummaryCards.
+ * Student Material Summary Cards using shared StudentMetricCard.
  */
 export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
   summary,
@@ -20,23 +21,7 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
   const { t } = useTranslation(["card"]);
 
   if (loading || !summary) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <Card key={i} className="rounded-xl shadow-2xs border-[#f0f0f0]">
-            <div className="animate-pulse">
-              <div className="flex items-center justify-between gap-2">
-                <div className="h-4 w-28 bg-slate-200 rounded" />
-                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200/70 shrink-0" />
-              </div>
-              <div className="flex items-baseline gap-2 mt-2">
-                <div className="h-8 sm:h-9 w-14 bg-slate-200 rounded-lg" />
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    );
+    return <StudentMetricSkeleton count={4} />;
   }
 
   const outlinesAndExams = summary.outlinesCount + summary.examPrepsCount;
@@ -44,88 +29,41 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Tổng số tài liệu */}
-      <Card className="rounded-xl shadow-2xs hover:border-blue-400 transition-all">
-        <div className="flex items-center justify-between gap-2">
-          <span
-            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.totalMaterials")}
-          >
-            {t("card:materials.summary.totalMaterials")}
-          </span>
-          <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
-            <Icon name="file" size={17} />
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight whitespace-nowrap">
-            {summary.total}
-          </span>
-        </div>
-      </Card>
+      <StudentMetricCard
+        title={t("card:materials.summary.totalMaterials")}
+        value={summary.total}
+        iconName="file"
+        iconBgClass="bg-blue-50 text-blue-600 border-blue-200"
+        hoverBorderClass="hover:border-blue-400"
+      />
 
       {/* 2. Bài giảng điện tử */}
-      <Card className="rounded-xl shadow-2xs hover:border-indigo-400 transition-all">
-        <div className="flex items-center justify-between gap-2">
-          <span
-            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.lectures")}
-          >
-            {t("card:materials.summary.lectures")}
-          </span>
-          <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center shrink-0">
-            <Icon name="presentation" size={17} />
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 tracking-tight whitespace-nowrap">
-            {summary.lecturesCount}
-          </span>
-        </div>
-      </Card>
+      <StudentMetricCard
+        title={t("card:materials.summary.lectures")}
+        value={summary.lecturesCount}
+        iconName="presentation"
+        iconBgClass="bg-indigo-50 text-indigo-600 border-indigo-200"
+        hoverBorderClass="hover:border-indigo-400"
+      />
 
       {/* 3. Đề cương & Đề thi */}
-      <Card className="rounded-xl shadow-2xs hover:border-amber-400 transition-all">
-        <div className="flex items-center justify-between gap-2">
-          <span
-            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.outlinesAndExams")}
-          >
-            {t("card:materials.summary.outlinesAndExams")}
-          </span>
-          <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
-            <Icon name="book" size={17} />
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight whitespace-nowrap">
-            {outlinesAndExams}
-          </span>
-        </div>
-      </Card>
+      <StudentMetricCard
+        title={t("card:materials.summary.outlinesAndExams")}
+        value={outlinesAndExams}
+        iconName="book"
+        iconBgClass="bg-amber-50 text-amber-600 border-amber-200"
+        hoverBorderClass="hover:border-amber-400"
+      />
 
       {/* 4. Tổng lượt tải về */}
-      <Card className="rounded-xl shadow-2xs hover:border-emerald-400 transition-all">
-        <div className="flex items-center justify-between gap-2">
-          <span
-            className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.totalDownloads")}
-          >
-            {t("card:materials.summary.totalDownloads")}
-          </span>
-          <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
-            <Icon name="download" size={17} />
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight whitespace-nowrap">
-            {summary.totalDownloads.toLocaleString()}
-          </span>
-        </div>
-      </Card>
+      <StudentMetricCard
+        title={t("card:materials.summary.totalDownloads")}
+        value={summary.totalDownloads.toLocaleString()}
+        iconName="download"
+        iconBgClass="bg-emerald-50 text-emerald-600 border-emerald-200"
+        hoverBorderClass="hover:border-emerald-400"
+      />
     </div>
   );
 };
+

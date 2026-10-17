@@ -1215,11 +1215,47 @@
       "downloadStarted": "Đang bắt đầu tải tệp: {{fileName}}",
       "downloadBatchStarted": "Đang nén và chuẩn bị tải xuống {{count}} tài liệu..."
     },
+    "detail": {
+      "specsTitle": "Thông số kỹ thuật tài liệu",
+      "fileName": "Tên tệp gốc",
+      "format": "Định dạng",
+      "fileSize": "Dung lượng",
+      "semesterYear": "Học kỳ / Năm học",
+      "downloadsCount": "Lượt tải về",
+      "copyrightStandard": "Tiêu chuẩn bản quyền",
+      "internalUseOnly": "Lưu hành nội bộ trường học",
+      "teacherSectionTitle": "Giáo viên & Tổ bộ môn",
+      "departmentLabel": "Tổ chuyên môn: {{name}}",
+      "subjectCodeLabel": "Mã môn học:",
+      "quickActionsTitle": "Thao tác nhanh",
+      "securityNotice": "Tài liệu được bảo vệ bản quyền số bởi SchoolPro"
+    },
+    "preview": {
+      "pedagogyStandard": "Đạt chuẩn sư phạm số",
+      "overviewTitle": "Tổng quan tài liệu",
+      "onlinePreviewTitle": "Bản xem trước trực tuyến: {{fileName}}",
+      "pageIndicator": "Trang {{current}} / {{total}}",
+      "schoolHeader": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
+      "departmentHeader": "TỔ CHUYÊN MÔN: {{name}}",
+      "internalDistribution": "LƯU HÀNH NỘI BỘ",
+      "compiledBy": "Biên soạn: {{author}} • {{semester}} ({{year}})",
+      "keyObjectives": "Mục tiêu bài học trọng tâm:",
+      "objective1": "Nắm vững phương pháp luận và lý thuyết mở rộng.",
+      "objective2": "Hệ thống hóa dạng bài tập trắc nghiệm và tự luận phân hóa cao.",
+      "downloadFullToView": "Tải về trọn bộ tài liệu để xem toàn bộ nội dung"
+    },
+    "outline": {
+      "topicsCount": "{{count}} chuyên đề",
+      "compiledBadge": "Đã biên soạn"
+    },
     "empty": {
       "noSubjectsTitle": "Không tìm thấy môn học",
       "noSubjectsDesc": "Không có môn học nào phù hợp với từ khóa hoặc bộ lọc đã chọn.",
       "noMaterialsTitle": "Không tìm thấy tài liệu học tập",
       "noMaterialsDesc": "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.",
+      "notFoundDescription": "Tài liệu học tập bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ khỏi hệ thống.",
+      "noMaterialsDefault": "Hiện tại chưa có tài liệu nào trong danh mục này.",
+      "noSubjectMaterialsDefault": "Hiện tại môn học này chưa có tài liệu nào.",
       "resetFilterBtn": "Đặt lại bộ lọc"
     }
   }

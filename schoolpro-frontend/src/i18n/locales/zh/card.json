@@ -1215,11 +1215,47 @@
       "downloadStarted": "开始下载文件: {{fileName}}",
       "downloadBatchStarted": "正在打包并准备下载 {{count}} 份资料..."
     },
+    "detail": {
+      "specsTitle": "资料规格",
+      "fileName": "原始文件名",
+      "format": "格式",
+      "fileSize": "文件大小",
+      "semesterYear": "学期 / 学年",
+      "downloadsCount": "下载次数",
+      "copyrightStandard": "版权标准",
+      "internalUseOnly": "仅限校内传阅",
+      "teacherSectionTitle": "授课教师与教研组",
+      "departmentLabel": "教研组: {{name}}",
+      "subjectCodeLabel": "科目代码:",
+      "quickActionsTitle": "快捷操作",
+      "securityNotice": "资料受SchoolPro数字版权保护"
+    },
+    "preview": {
+      "pedagogyStandard": "数字教学标准认证",
+      "overviewTitle": "资料概述",
+      "onlinePreviewTitle": "在线预览: {{fileName}}",
+      "pageIndicator": "页码 {{current}} / {{total}}",
+      "schoolHeader": "SCHOOLPRO高级中学",
+      "departmentHeader": "教研组: {{name}}",
+      "internalDistribution": "内部传阅",
+      "compiledBy": "编撰: {{author}} • {{semester}} ({{year}})",
+      "keyObjectives": "核心学习目标:",
+      "objective1": "掌握方法论及拓展理论概念。",
+      "objective2": "系统化梳理高区分度选择题与解答题类型。",
+      "downloadFullToView": "下载完整资料包以查看全部内容"
+    },
+    "outline": {
+      "topicsCount": "{{count}} 个专题",
+      "compiledBadge": "已编撰"
+    },
     "empty": {
       "noSubjectsTitle": "未找到相关学科",
       "noSubjectsDesc": "没有匹配关键词或筛选条件的学科。",
       "noMaterialsTitle": "未找到相关学习资料",
       "noMaterialsDesc": "当前筛选条件下没有资料，请尝试调整筛选条件。",
+      "notFoundDescription": "您查找的学习资料不存在或已从系统中移除。",
+      "noMaterialsDefault": "当前该分类下暂无学习资料。",
+      "noSubjectMaterialsDefault": "当前该课程暂无学习资料。",
       "resetFilterBtn": "重置筛选"
     }
   }

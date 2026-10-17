@@ -1215,11 +1215,47 @@
       "downloadStarted": "Starting download: {{fileName}}",
       "downloadBatchStarted": "Compressing and preparing download for {{count}} materials..."
     },
+    "detail": {
+      "specsTitle": "Material Specifications",
+      "fileName": "Original File Name",
+      "format": "Format",
+      "fileSize": "File Size",
+      "semesterYear": "Semester / Academic Year",
+      "downloadsCount": "Downloads",
+      "copyrightStandard": "Copyright Standard",
+      "internalUseOnly": "Internal School Distribution Only",
+      "teacherSectionTitle": "Teacher & Department",
+      "departmentLabel": "Department: {{name}}",
+      "subjectCodeLabel": "Subject Code:",
+      "quickActionsTitle": "Quick Actions",
+      "securityNotice": "Material is digitally copyright protected by SchoolPro"
+    },
+    "preview": {
+      "pedagogyStandard": "Certified Digital Pedagogy Standard",
+      "overviewTitle": "Material Overview",
+      "onlinePreviewTitle": "Online Preview: {{fileName}}",
+      "pageIndicator": "Page {{current}} / {{total}}",
+      "schoolHeader": "SCHOOLPRO HIGH SCHOOL",
+      "departmentHeader": "DEPARTMENT: {{name}}",
+      "internalDistribution": "INTERNAL DISTRIBUTION ONLY",
+      "compiledBy": "Compiled by: {{author}} • {{semester}} ({{year}})",
+      "keyObjectives": "Key Lesson Objectives:",
+      "objective1": "Master methodologies and advanced theoretical concepts.",
+      "objective2": "Systematize multiple-choice and differentiation exercise types.",
+      "downloadFullToView": "Download the full material package to view complete content"
+    },
+    "outline": {
+      "topicsCount": "{{count}} topics",
+      "compiledBadge": "Compiled"
+    },
     "empty": {
       "noSubjectsTitle": "No Subjects Found",
       "noSubjectsDesc": "No subjects match your keywords or selected filters.",
       "noMaterialsTitle": "No Learning Materials Found",
       "noMaterialsDesc": "No materials match the current filters. Try selecting different criteria.",
+      "notFoundDescription": "The learning material you are looking for does not exist or has been removed from the system.",
+      "noMaterialsDefault": "There are currently no learning materials in this category.",
+      "noSubjectMaterialsDefault": "There are currently no learning materials for this subject.",
       "resetFilterBtn": "Reset Filters"
     }
   }
