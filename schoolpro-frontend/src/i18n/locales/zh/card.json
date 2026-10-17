@@ -25,6 +25,7 @@
   },
   "quickActionsTitle": "系统功能",
   "announcementUnit": "条通知",
+  "materialUnit": "份资料",
   "features": {
     "announcements": {
       "title": "通知公告",

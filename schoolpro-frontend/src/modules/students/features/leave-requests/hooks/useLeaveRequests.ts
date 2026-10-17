@@ -45,7 +45,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     const sortBy = searchParams.get("sortBy") || "newest";
     const page = parseInt(searchParams.get("page") || "1", 10) || 1;
     const pageSize =
-      parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "9", 10) || 9;
+      parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "10", 10) || 10;
     const rawView = searchParams.get("view");
     const viewMode: LeaveRequestViewMode = rawView === "list" ? "list" : "grid";
 
@@ -90,7 +90,7 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       if (newFilter.page && newFilter.page > 1) {
         params.set("page", String(newFilter.page));
       }
-      if (newFilter.pageSize && newFilter.pageSize !== 9) {
+      if (newFilter.pageSize && newFilter.pageSize !== 10) {
         params.set("pageSize", String(newFilter.pageSize));
       }
       if (newFilter.viewMode && newFilter.viewMode !== "grid") {

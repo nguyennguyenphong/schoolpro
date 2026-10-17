@@ -16,7 +16,7 @@ export const useSubjects = () => {
       sortBy: (searchParams.get("sort") as SubjectFilter["sortBy"]) || "name_asc",
       viewMode: (searchParams.get("view") as MaterialViewMode) || "grid",
       page: Number(searchParams.get("page")) || 1,
-      pageSize: Number(searchParams.get("pageSize")) || 9,
+      pageSize: Number(searchParams.get("pageSize")) || 10,
     };
   }, [searchParams]);
 
@@ -59,7 +59,7 @@ export const useSubjects = () => {
       } else {
         params.delete("page");
       }
-      if (newFilter.pageSize !== 9) {
+      if (newFilter.pageSize !== 10) {
         params.set("pageSize", newFilter.pageSize.toString());
       } else {
         params.delete("pageSize");
@@ -125,7 +125,7 @@ export const useSubjects = () => {
       sortBy: "name_asc",
       viewMode: filter.viewMode || "grid",
       page: 1,
-      pageSize: 9,
+      pageSize: 10,
     };
     setFilter(reset);
     setSearchParams(updateUrlParams(reset), { replace: true });

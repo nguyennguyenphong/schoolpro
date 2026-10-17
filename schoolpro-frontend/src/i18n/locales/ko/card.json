@@ -25,6 +25,7 @@
   },
   "quickActionsTitle": "시스템 기능",
   "announcementUnit": "건",
+  "materialUnit": "개 학습 자료",
   "features": {
     "announcements": {
       "title": "공지사항",

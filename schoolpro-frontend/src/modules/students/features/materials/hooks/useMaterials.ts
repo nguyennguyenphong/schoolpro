@@ -38,7 +38,7 @@ export function useMaterials() {
           | "size_asc") || "newest",
       viewMode: (searchParams.get("view") as MaterialViewMode) || "grid",
       page: parseInt(searchParams.get("page") || "1", 10),
-      pageSize: parseInt(searchParams.get("pageSize") || "9", 10),
+      pageSize: parseInt(searchParams.get("pageSize") || "10", 10),
     }),
     [searchParams],
   );
@@ -108,7 +108,7 @@ export function useMaterials() {
       } else {
         params.delete("page");
       }
-      if (newFilter.pageSize !== 9) {
+      if (newFilter.pageSize !== 10) {
         params.set("pageSize", newFilter.pageSize.toString());
       } else {
         params.delete("pageSize");

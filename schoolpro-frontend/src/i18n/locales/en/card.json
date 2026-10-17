@@ -25,6 +25,7 @@
   },
   "quickActionsTitle": "System Features",
   "announcementUnit": "announcements",
+  "materialUnit": "materials",
   "features": {
     "announcements": {
       "title": "Announcements",

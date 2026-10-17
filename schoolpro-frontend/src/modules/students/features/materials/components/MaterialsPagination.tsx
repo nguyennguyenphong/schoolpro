@@ -17,17 +17,18 @@ export const MaterialsPagination: React.FC<MaterialsPaginationProps> = ({
   itemsCount,
   onChange,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t } = useTranslation(["common", "card"]);
 
   if (total <= 0) return null;
 
   return (
     <div className="p-4 bg-white rounded-xl border border-[#f0f0f0] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
       <div className="text-xs text-slate-500">
-        {t("card:materials.filter.paginationShowing", {
-          count: itemsCount,
-          total,
-        })}
+        {t("common:pagination.showing")}{" "}
+        <strong className="text-slate-800">{itemsCount}</strong>{" "}
+        {t("common:pagination.of")}{" "}
+        <strong className="text-slate-800">{total}</strong>{" "}
+        {t("card:materialUnit")}
       </div>
 
       <Pagination
@@ -36,7 +37,7 @@ export const MaterialsPagination: React.FC<MaterialsPaginationProps> = ({
         total={total}
         onChange={onChange}
         showSizeChanger
-        pageSizeOptions={["9", "18", "36", "72"]}
+        pageSizeOptions={["10", "20", "50", "100"]}
       />
     </div>
   );

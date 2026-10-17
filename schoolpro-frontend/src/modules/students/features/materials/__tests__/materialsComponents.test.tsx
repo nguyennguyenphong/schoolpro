@@ -44,7 +44,7 @@ const mockFilter: MaterialFilter = {
   sortBy: "newest",
   viewMode: "grid",
   page: 1,
-  pageSize: 9,
+  pageSize: 10,
 };
 
 describe("Materials Components", () => {
@@ -137,14 +137,14 @@ describe("Materials Components", () => {
     render(
       <MaterialsPagination
         current={1}
-        pageSize={9}
+        pageSize={10}
         total={25}
-        itemsCount={9}
+        itemsCount={10}
         onChange={handleChange}
       />,
     );
 
-    expect(screen.getByText(/trên tổng số 25/)).toBeInTheDocument();
+    expect(screen.getByText("25")).toBeInTheDocument();
   });
 
   it("renders MaterialFilterBar with category tabs and search input", () => {

@@ -32,7 +32,7 @@ export const useSubjectMaterials = () => {
       sortBy: (searchParams.get("sort") as MaterialFilter["sortBy"]) || "newest",
       viewMode: (searchParams.get("view") as MaterialViewMode) || "grid",
       page: Number(searchParams.get("page")) || 1,
-      pageSize: Number(searchParams.get("pageSize")) || 9,
+      pageSize: Number(searchParams.get("pageSize")) || 10,
     };
   }, [searchParams, subjectCode]);
 
@@ -69,7 +69,7 @@ export const useSubjectMaterials = () => {
     if (newFilter.sortBy !== "newest") params.set("sort", newFilter.sortBy);
     if (newFilter.viewMode !== "grid") params.set("view", newFilter.viewMode);
     if (newFilter.page > 1) params.set("page", newFilter.page.toString());
-    if (newFilter.pageSize !== 9) params.set("pageSize", newFilter.pageSize.toString());
+    if (newFilter.pageSize !== 10) params.set("pageSize", newFilter.pageSize.toString());
     return params;
   }, []);
 
@@ -143,7 +143,7 @@ export const useSubjectMaterials = () => {
       sortBy: "newest",
       viewMode: "grid",
       page: 1,
-      pageSize: 9,
+      pageSize: 10,
     };
     setFilter(reset);
     setSearchParams(new URLSearchParams(), { replace: true });

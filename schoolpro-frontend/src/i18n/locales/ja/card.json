@@ -25,6 +25,7 @@
   },
   "quickActionsTitle": "システム機能",
   "announcementUnit": "件",
+  "materialUnit": "件の教材",
   "features": {
     "announcements": {
       "title": "お知らせ",
