@@ -108,5 +108,9 @@
     "maxFilesWarning": "单次提交最多只能附带 {{max}} 个文件。",
     "maxFileSizeError": "文件 \"{{name}}\" 超过大小限制 ({{max}}MB)。",
     "filesAddedSuccess": "已添加 {{count}} 个作业文件。"
+  },
+  "materials": {
+    "loadFailed": "加载学习资料失败。"
   }
 }
+

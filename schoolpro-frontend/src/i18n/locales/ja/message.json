@@ -108,5 +108,9 @@
     "maxFilesWarning": "1回の提出につき最大{{max}}ファイルまで添付可能です。",
     "maxFileSizeError": "ファイル \"{{name}}\" は上限サイズ ({{max}}MB) を超えています。",
     "filesAddedSuccess": "{{count}}件のファイルを追加しました。"
+  },
+  "materials": {
+    "loadFailed": "学習教材の読み込みに失敗しました。"
   }
 }
+

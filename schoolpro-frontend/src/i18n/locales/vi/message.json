@@ -108,5 +108,9 @@
     "maxFilesWarning": "Bạn chỉ được đính kèm tối đa {{max}} tệp cho một lần nộp.",
     "maxFileSizeError": "Tệp \"{{name}}\" vượt quá giới hạn dung lượng ({{max}}MB).",
     "filesAddedSuccess": "Đã thêm {{count}} tệp bài làm."
+  },
+  "materials": {
+    "loadFailed": "Không thể tải danh sách tài liệu học tập."
   }
 }
+

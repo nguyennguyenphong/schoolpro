@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { SubjectItem } from "@/modules/students/features/materials/types";
 
+import { getSubjectColorStyle } from "@/modules/students/features/materials/utils";
+
 interface SubjectListItemProps {
   item: SubjectItem;
 }
@@ -14,32 +16,7 @@ interface SubjectListItemProps {
 export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
   const navigate = useNavigate();
   const { t } = useTranslation(["card", "button"]);
-
-  const getColorStyles = (scheme: SubjectItem["colorScheme"]) => {
-    switch (scheme) {
-      case "blue":
-        return { iconBg: "bg-blue-50 text-blue-600 border-blue-200" };
-      case "purple":
-        return { iconBg: "bg-purple-50 text-purple-600 border-purple-200" };
-      case "emerald":
-        return { iconBg: "bg-emerald-50 text-emerald-600 border-emerald-200" };
-      case "amber":
-        return { iconBg: "bg-amber-50 text-amber-600 border-amber-200" };
-      case "rose":
-        return { iconBg: "bg-rose-50 text-rose-600 border-rose-200" };
-      case "cyan":
-        return { iconBg: "bg-cyan-50 text-cyan-600 border-cyan-200" };
-      case "indigo":
-        return { iconBg: "bg-indigo-50 text-indigo-600 border-indigo-200" };
-      case "orange":
-        return { iconBg: "bg-orange-50 text-orange-600 border-orange-200" };
-      case "teal":
-      default:
-        return { iconBg: "bg-teal-50 text-teal-600 border-teal-200" };
-    }
-  };
-
-  const style = getColorStyles(item.colorScheme);
+  const style = getSubjectColorStyle(item.colorScheme);
 
   const handleCardClick = () => {
     navigate(`/student/materials/subject/${item.code}`);
@@ -48,7 +25,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
   return (
     <Card
       onClick={handleCardClick}
-      className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-blue-400 transition-all cursor-pointer group w-full [&>.ant-card-body]:p-4 sm:[&>.ant-card-body]:p-4.5"
+      className="rounded-xl border border-[#f0f0f0] shadow-2xs hover:border-blue-400 transition-all cursor-pointer group w-full"
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-start gap-3.5 flex-1 min-w-0">

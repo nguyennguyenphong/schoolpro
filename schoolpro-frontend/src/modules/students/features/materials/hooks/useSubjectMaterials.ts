@@ -10,6 +10,11 @@ import type {
   SubjectItem,
 } from "@/modules/students/features/materials/types";
 import { materialsService } from "@/modules/students/features/materials/services";
+import {
+  downloadMaterialWithFeedback,
+  downloadBatchWithFeedback,
+  toggleBookmarkWithFeedback,
+} from "@/modules/students/features/materials/utils";
 
 export const useSubjectMaterials = () => {
   const { t } = useTranslation(["card", "message"]);
@@ -86,7 +91,7 @@ export const useSubjectMaterials = () => {
         }
       } catch {
         if (!ignore) {
-          message.error("Không thể tải danh sách tài liệu học tập.");
+          message.error(t("message:materials.loadFailed"));
           setLoading(false);
         }
       }
@@ -97,7 +102,7 @@ export const useSubjectMaterials = () => {
     return () => {
       ignore = true;
     };
-  }, [filter, subjectCode, refreshKey]);
+  }, [filter, subjectCode, refreshKey, t]);
 
   // Filter setters
   const updateFilter = useCallback(
@@ -165,38 +170,28 @@ export const useSubjectMaterials = () => {
   }, [materials, selectedIds]);
 
   // Download actions
-  const handleDownload = useCallback((item: MaterialItem) => {
-    materialsService.incrementDownload(item.id);
-    message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName }));
+  const handleDownload = useCallback(async (item: MaterialItem) => {
+    await downloadMaterialWithFeedback(item, t);
+    setMaterials((prev) =>
+      prev.map((m) =>
+        m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
+      ),
+    );
   }, [t]);
 
   const handleDownloadSelected = useCallback(() => {
     if (selectedIds.length === 0) return;
-    message.success(
-      t("card:materials.modal.downloadBatchStarted", {
-        count: selectedIds.length,
-      }),
-    );
+    downloadBatchWithFeedback(selectedIds.length, t);
     clearSelection();
-  }, [selectedIds, clearSelection, t]);
+  }, [selectedIds.length, clearSelection, t]);
 
   const handleDownloadAll = useCallback(() => {
-    if (materials.length === 0) return;
-    message.success(
-      t("card:materials.modal.downloadBatchStarted", {
-        count: materials.length,
-      }),
-    );
+    downloadBatchWithFeedback(materials.length, t);
   }, [materials.length, t]);
 
   // Bookmark toggle
   const toggleBookmark = useCallback((id: string) => {
-    const isBookmarked = materialsService.toggleBookmark(id);
-    message.success(
-      isBookmarked
-        ? t("card:materials.modal.bookmarkSuccess")
-        : t("card:materials.modal.unbookmarkSuccess"),
-    );
+    const isBookmarked = toggleBookmarkWithFeedback(id, t);
     setMaterials((prev) =>
       prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),
     );

@@ -4,11 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type {
-  MaterialItem,
-  MaterialFormat,
-  MaterialCategory,
-} from "@/modules/students/features/materials/types";
+import { MaterialFormatBadge } from "@/modules/students/features/materials/components/MaterialFormatBadge";
+import { getCategoryConfig } from "@/modules/students/features/materials/utils";
+import type { MaterialItem } from "@/modules/students/features/materials/types";
 
 interface MaterialListItemProps {
   item: MaterialItem;
@@ -31,78 +29,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
     navigate(`/student/materials/subject/${item.subjectCode}`);
   };
 
-  const getFormatBadge = (fmt: MaterialFormat, size: string) => {
-    switch (fmt) {
-      case "pdf":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1 shrink-0">
-            <Icon name="file" size={12} />
-            PDF | {size}
-          </span>
-        );
-      case "word":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1 shrink-0">
-            <Icon name="fileText" size={12} />
-            DOCX | {size}
-          </span>
-        );
-      case "powerpoint":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-orange-50 text-orange-700 border border-orange-200 flex items-center gap-1 shrink-0">
-            <Icon name="presentation" size={12} />
-            PPTX | {size}
-          </span>
-        );
-      case "excel":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1 shrink-0">
-            <Icon name="fileSpreadsheet" size={12} />
-            XLSX | {size}
-          </span>
-        );
-      case "video":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1 shrink-0">
-            <Icon name="video" size={12} />
-            MP4 | {size}
-          </span>
-        );
-      case "audio":
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1 shrink-0">
-            <Icon name="music" size={12} />
-            MP3 | {size}
-          </span>
-        );
-      case "archive":
-      default:
-        return (
-          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-[#f0f0f0] flex items-center gap-1 shrink-0">
-            <Icon name="archive" size={12} />
-            ZIP | {size}
-          </span>
-        );
-    }
-  };
-
-  const getCategoryConfig = (cat: MaterialCategory) => {
-    switch (cat) {
-      case "lecture":
-        return { label: t("card:materials.categories.lecture"), color: "blue" };
-      case "outline":
-        return { label: t("card:materials.categories.outline"), color: "orange" };
-      case "textbook":
-        return { label: t("card:materials.categories.textbook"), color: "purple" };
-      case "exam_prep":
-        return { label: t("card:materials.categories.exam_prep"), color: "green" };
-      case "reference":
-      default:
-        return { label: t("card:materials.categories.reference"), color: "default" };
-    }
-  };
-
-  const categoryConfig = getCategoryConfig(item.category);
+  const categoryConfig = getCategoryConfig(item.category, t);
 
   const handleItemClick = () => {
     if (onClick) {
@@ -131,7 +58,7 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
             <Tag color={categoryConfig.color} className="m-0 font-semibold text-xs whitespace-nowrap">
               {categoryConfig.label}
             </Tag>
-            {getFormatBadge(item.format, item.fileSize)}
+            <MaterialFormatBadge format={item.format} fileSize={item.fileSize} />
           </div>
 
           {/* Row 2: Title */}

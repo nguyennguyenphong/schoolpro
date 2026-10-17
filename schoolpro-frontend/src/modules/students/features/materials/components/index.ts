@@ -9,4 +9,5 @@ export { MaterialListItem } from "@/modules/students/features/materials/componen
 export { MaterialDetailModal } from "@/modules/students/features/materials/components/MaterialDetailModal";
 export { MaterialsSkeleton } from "@/modules/students/features/materials/components/MaterialsSkeleton";
 export { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";
+export { MaterialFormatBadge } from "@/modules/students/features/materials/components/MaterialFormatBadge";
 export * from "@/modules/students/features/materials/components/detail";

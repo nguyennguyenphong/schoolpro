@@ -108,5 +108,9 @@
     "maxFilesWarning": "You may attach at most {{max}} files per submission.",
     "maxFileSizeError": "File \"{{name}}\" exceeds the {{max}}MB size limit.",
     "filesAddedSuccess": "Added {{count}} assignment file(s)."
+  },
+  "materials": {
+    "loadFailed": "Failed to load learning materials."
   }
 }
+

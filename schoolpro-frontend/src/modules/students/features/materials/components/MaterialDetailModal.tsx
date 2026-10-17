@@ -5,7 +5,9 @@ import { message } from "@/components/ui/Message";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { MaterialItem, MaterialFormat, MaterialCategory } from "@/modules/students/features/materials/types";
+import type { MaterialItem } from "@/modules/students/features/materials/types";
+import { getCategoryConfig } from "@/modules/students/features/materials/utils";
+import { MaterialFormatBadge } from "@/modules/students/features/materials/components/MaterialFormatBadge";
 
 interface MaterialDetailModalProps {
   item: MaterialItem | null;
@@ -25,69 +27,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
   const { t } = useTranslation(["card", "button", "message"]);
   if (!item) return null;
 
-  const getFormatBadge = (fmt: MaterialFormat) => {
-    switch (fmt) {
-      case "pdf":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
-            PDF Document
-          </span>
-        );
-      case "word":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-            Word DOCX
-          </span>
-        );
-      case "powerpoint":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-orange-50 text-orange-700 border border-orange-200">
-            PowerPoint PPTX
-          </span>
-        );
-      case "excel":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-            Excel XLSX
-          </span>
-        );
-      case "video":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200">
-            Video MP4
-          </span>
-        );
-      case "audio":
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
-            Audio MP3
-          </span>
-        );
-      case "archive":
-      default:
-        return (
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-[#f0f0f0]">
-            ZIP Archive
-          </span>
-        );
-    }
-  };
-
-  const getCategoryLabel = (cat: MaterialCategory) => {
-    switch (cat) {
-      case "lecture":
-        return t("card:materials.categories.lecture");
-      case "outline":
-        return t("card:materials.categories.outline");
-      case "textbook":
-        return t("card:materials.categories.textbook");
-      case "exam_prep":
-        return t("card:materials.categories.exam_prep");
-      case "reference":
-      default:
-        return t("card:materials.categories.reference");
-    }
-  };
+  const categoryConfig = getCategoryConfig(item.category, t);
 
   const renderPreviewSection = () => {
     if (item.format === "video") {
@@ -188,15 +128,15 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
     >
       <div className="space-y-5 pt-2">
         {/* Row 1: Badges & Semester */}
-        <div className="flex flex-wrap items-center justify-evenly gap-2 border-b border-[#f0f0f0] pb-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#f0f0f0] pb-3">
           <div className="flex items-center gap-1.5 flex-wrap">
-            {getFormatBadge(item.format)}
+            <MaterialFormatBadge format={item.format} />
             <Tag color="blue" className="font-medium">
               {item.subjectName}
             </Tag>
-            <span className="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded font-medium">
-              {getCategoryLabel(item.category)}
-            </span>
+            <Tag color={categoryConfig.color} className="font-medium m-0">
+              {categoryConfig.label}
+            </Tag>
             <span className="text-xs text-slate-400">
               • {item.semester}
             </span>

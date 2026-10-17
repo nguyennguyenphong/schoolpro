@@ -11,6 +11,11 @@ import type {
   MaterialViewMode,
 } from "@/modules/students/features/materials/types";
 import { materialsService, mockMaterialsData } from "@/modules/students/features/materials/services";
+import {
+  downloadMaterialWithFeedback,
+  downloadBatchWithFeedback,
+  toggleBookmarkWithFeedback,
+} from "@/modules/students/features/materials/utils";
 
 export function useMaterials() {
   const { t } = useTranslation(["card", "message"]);
@@ -128,7 +133,7 @@ export function useMaterials() {
         }
       } catch {
         if (!ignore) {
-          message.error("Không thể tải danh sách tài liệu học tập.");
+          message.error(t("message:materials.loadFailed"));
           setLoading(false);
         }
       }
@@ -139,7 +144,7 @@ export function useMaterials() {
     return () => {
       ignore = true;
     };
-  }, [filter, refreshKey]);
+  }, [filter, refreshKey, t]);
 
   // Filter setters
   const updateFilter = useCallback(
@@ -219,52 +224,29 @@ export function useMaterials() {
 
   // Download actions
   const handleDownload = useCallback(async (item: MaterialItem) => {
-    try {
-      await materialsService.incrementDownload(item.id);
-      setMaterials((prev) =>
-        prev.map((m) =>
-          m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
-        ),
-      );
-      message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName }));
-    } catch {
-      message.error(t("message:downloadError"));
-    }
+    await downloadMaterialWithFeedback(item, t);
+    setMaterials((prev) =>
+      prev.map((m) =>
+        m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
+      ),
+    );
   }, [t]);
 
   const handleDownloadSelected = useCallback(() => {
     if (selectedIds.length === 0) return;
-    message.success(
-      t("card:materials.modal.downloadBatchStarted", {
-        count: selectedIds.length,
-      }),
-    );
+    downloadBatchWithFeedback(selectedIds.length, t);
     clearSelection();
-  }, [selectedIds, clearSelection, t]);
+  }, [selectedIds.length, clearSelection, t]);
 
   const handleDownloadAll = useCallback(() => {
-    if (materials.length === 0) return;
-    message.success(
-      t("card:materials.modal.downloadBatchStarted", {
-        count: materials.length,
-      }),
-    );
+    downloadBatchWithFeedback(materials.length, t);
   }, [materials.length, t]);
 
   const toggleBookmark = useCallback((id: string) => {
-    try {
-      const isBookmarked = materialsService.toggleBookmark(id);
-      setMaterials((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),
-      );
-      message.success(
-        isBookmarked
-          ? t("card:materials.modal.bookmarkSuccess")
-          : t("card:materials.modal.unbookmarkSuccess"),
-      );
-    } catch {
-      message.error(t("message:error"));
-    }
+    const isBookmarked = toggleBookmarkWithFeedback(id, t);
+    setMaterials((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),
+    );
   }, [t]);
 
   // Modal Handlers
