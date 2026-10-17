@@ -143,11 +143,11 @@ export const useDepartment = (
 
       try {
         const data = await departmentApi.fetchDepartments(queryParams);
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setDepartments(data);
         }
       } catch (err) {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsError(true);
           const errorObj =
             err instanceof Error
@@ -163,7 +163,7 @@ export const useDepartment = (
           );
         }
       } finally {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsLoading(false);
         }
       }

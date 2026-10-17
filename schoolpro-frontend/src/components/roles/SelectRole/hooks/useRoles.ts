@@ -127,11 +127,11 @@ export const useRoles = (options: UseRolesOptions = {}): UseRolesReturn => {
 
       try {
         const data = await roleApi.fetchRoles(queryParams);
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setRoles(data);
         }
       } catch (err) {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsError(true);
           const errorObj =
             err instanceof Error
@@ -145,7 +145,7 @@ export const useRoles = (options: UseRolesOptions = {}): UseRolesReturn => {
           );
         }
       } finally {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsLoading(false);
         }
       }

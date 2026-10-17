@@ -156,15 +156,17 @@ describe("SelectSubject Component", () => {
     it("fetches subjects from subjectApi on mount when customSubjects is omitted", async () => {
       const spy = vi
         .spyOn(subjectApi, "fetchSubjects")
-        .mockResolvedValueOnce(TEST_SUBJECTS);
+        .mockResolvedValue(TEST_SUBJECTS);
 
       render(<SelectSubject />);
 
+      const combobox = screen.getByRole("combobox");
+
+      // Wait until API fetch completes and Select is no longer disabled
       await waitFor(() => {
-        expect(spy).toHaveBeenCalled();
+        expect(combobox).not.toBeDisabled();
       });
 
-      const combobox = screen.getByRole("combobox");
       fireEvent.mouseDown(combobox);
 
       await waitFor(() => {

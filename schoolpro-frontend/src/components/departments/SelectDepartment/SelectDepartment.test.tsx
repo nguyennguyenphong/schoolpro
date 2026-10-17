@@ -159,15 +159,17 @@ describe("SelectDepartment Component", () => {
     it("fetches departments from departmentApi on mount when customDepartments is omitted", async () => {
       const spy = vi
         .spyOn(departmentApi, "fetchDepartments")
-        .mockResolvedValueOnce(TEST_DEPARTMENTS);
+        .mockResolvedValue(TEST_DEPARTMENTS);
 
       render(<SelectDepartment />);
 
+      const combobox = screen.getByRole("combobox");
+
+      // Wait until API fetch completes and Select is no longer disabled
       await waitFor(() => {
-        expect(spy).toHaveBeenCalled();
+        expect(combobox).not.toBeDisabled();
       });
 
-      const combobox = screen.getByRole("combobox");
       fireEvent.mouseDown(combobox);
 
       await waitFor(() => {
