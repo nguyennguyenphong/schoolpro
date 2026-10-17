@@ -56,7 +56,7 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
           </span>
         </div>
 
-        <div className="relative rounded-xl border border-slate-300 bg-slate-100 overflow-hidden shadow-inner min-h-95 sm:min-h-[460px] flex flex-col items-center justify-between p-4 sm:p-8">
+        <div className="relative rounded-xl border border-slate-300 bg-slate-100 overflow-hidden shadow-inner min-h-95 sm:min-h-115 flex flex-col items-center justify-between p-4 sm:p-8">
           {/* Simulated document paper */}
           <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6 sm:p-10 border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
