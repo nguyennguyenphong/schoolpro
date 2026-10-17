@@ -1,4 +1,4 @@
-import type { AnnouncementItem } from "../types";
+import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
 import {
   exportTemplateService,
   formatAdminDate,

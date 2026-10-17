@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { AnnouncementCard } from "./AnnouncementCard";
-import type { AnnouncementItem } from "../types";
+import { AnnouncementCard } from "@/modules/students/features/announcements/components/AnnouncementCard";
+import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
 
 describe("AnnouncementCard", () => {
   const baseItem: AnnouncementItem = {

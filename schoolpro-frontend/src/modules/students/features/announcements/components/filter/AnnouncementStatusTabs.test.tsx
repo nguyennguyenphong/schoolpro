@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AnnouncementStatusTabs } from "./AnnouncementStatusTabs";
+import { AnnouncementStatusTabs } from "@/modules/students/features/announcements/components/filter/AnnouncementStatusTabs";
 
 describe("AnnouncementStatusTabs", () => {
   it("renders tabs with correct badge counts", () => {

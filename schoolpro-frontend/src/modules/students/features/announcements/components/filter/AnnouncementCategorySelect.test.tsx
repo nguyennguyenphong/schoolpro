@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { AnnouncementCategorySelect } from "./AnnouncementCategorySelect";
+import { AnnouncementCategorySelect } from "@/modules/students/features/announcements/components/filter/AnnouncementCategorySelect";
 
 describe("AnnouncementCategorySelect", () => {
   it("renders with default category value", () => {

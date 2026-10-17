@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox } from "antd";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 import { OPTION_LETTERS } from "@/modules/students/features/exams/utils";

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Progress } from "antd";
+import { Progress } from "@/components/ui/Progress";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";

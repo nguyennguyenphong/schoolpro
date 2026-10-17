@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal } from "@/components/ui/Modal";
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";

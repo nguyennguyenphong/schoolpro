@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Modal } from "antd";
+import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 

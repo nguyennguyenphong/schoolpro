@@ -1,6 +1,5 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
-import { Radio } from "antd";
+import { Radio, RadioGroup } from "@/components/ui/Radio";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 import { OPTION_LETTERS } from "@/modules/students/features/exams/utils";
@@ -24,9 +23,9 @@ export const QuestionRadio: React.FC<QuestionRadioProps> = ({
   const options = question.options || [];
 
   return (
-    <Radio.Group
+    <RadioGroup
       value={value ?? null}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value as string)}
       disabled={readOnly}
       className="w-full"
     >
@@ -64,6 +63,6 @@ export const QuestionRadio: React.FC<QuestionRadioProps> = ({
           );
         })}
       </div>
-    </Radio.Group>
+    </RadioGroup>
   );
 };

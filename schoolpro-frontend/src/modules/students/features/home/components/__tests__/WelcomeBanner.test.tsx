@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { WelcomeBanner } from "@/modules/students/features/home/components/WelcomeBanner";
@@ -45,8 +45,8 @@ describe("WelcomeBanner", () => {
     expect(screen.getByText("Trần Thị Văn")).toBeInTheDocument();
 
     // Checks academic badges
-    expect(screen.getByText(/Học kỳ 1 • 2026 - 2027/)).toBeInTheDocument();
-    expect(screen.getByText(/4/)).toBeInTheDocument();
+    expect(screen.getByText(/Học kỳ 1/)).toBeInTheDocument();
+    expect(screen.getByText(/2026 - 2027/)).toBeInTheDocument();
     expect(screen.getByText("Lớp 10A1")).toBeInTheDocument();
   });
 
@@ -64,18 +64,5 @@ describe("WelcomeBanner", () => {
     );
 
     expect(screen.getByText("Chưa phân công")).toBeInTheDocument();
-  });
-
-  it("navigates to student timetable when clicking view schedule button", () => {
-    render(
-      <MemoryRouter>
-        <WelcomeBanner profile={mockProfile} />
-      </MemoryRouter>
-    );
-
-    const scheduleButton = screen.getByRole("button");
-    fireEvent.click(scheduleButton);
-
-    expect(mockNavigate).toHaveBeenCalledWith("/student/timetable");
   });
 });

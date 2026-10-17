@@ -1,6 +1,5 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
-import { Radio } from "antd";
+import { Radio, RadioGroup } from "@/components/ui/Radio";
 import { Tag } from "@/components/ui/Tag";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
 
@@ -21,9 +20,9 @@ export const QuestionBoolean: React.FC<QuestionBooleanProps> = ({
   const { t } = useTranslation(["card"]);
 
   return (
-    <Radio.Group
+    <RadioGroup
       value={typeof value === "boolean" ? value : null}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value as boolean)}
       disabled={readOnly}
     >
       <div className="flex items-center gap-6">
@@ -44,7 +43,7 @@ export const QuestionBoolean: React.FC<QuestionBooleanProps> = ({
           </Tag>
         )}
       </div>
-    </Radio.Group>
+    </RadioGroup>
   );
 };
 

@@ -1,1 +1,1 @@
-export * from "./examHelpers";
+export * from "@/modules/students/features/exams/utils/examHelpers";

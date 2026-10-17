@@ -1,1 +1,1 @@
-export * from "./printAnnouncement";
+export * from "@/modules/students/features/announcements/utils/printAnnouncement";

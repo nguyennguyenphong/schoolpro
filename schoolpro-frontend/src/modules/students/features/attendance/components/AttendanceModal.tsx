@@ -1,4 +1,5 @@
-import { Modal, message } from "antd";
+import { Modal } from "@/components/ui/Modal";
+import { message } from "@/components/ui/Message";
 import type React from "react";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

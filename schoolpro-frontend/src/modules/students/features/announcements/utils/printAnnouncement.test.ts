@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { printAnnouncement } from "./printAnnouncement";
+import { printAnnouncement } from "@/modules/students/features/announcements/utils/printAnnouncement";
 import { exportTemplateService } from "@/shared/services/exportTemplateService";
-import type { AnnouncementItem } from "../types";
+import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
 
 describe("printAnnouncement", () => {
   const mockItem: AnnouncementItem = {

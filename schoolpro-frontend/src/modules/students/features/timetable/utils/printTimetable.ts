@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { httpClient } from "@/shared/api/httpClient";
 import { timetableService } from "@/modules/students/features/timetable/services/timetableService";
 import type { TimetableSlot } from "@/modules/students/features/timetable/types";

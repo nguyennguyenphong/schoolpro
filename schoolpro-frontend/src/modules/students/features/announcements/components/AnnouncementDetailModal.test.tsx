@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AnnouncementDetailModal } from "./AnnouncementDetailModal";
-import type { AnnouncementItem } from "../types";
+import { AnnouncementDetailModal } from "@/modules/students/features/announcements/components/AnnouncementDetailModal";
+import type { AnnouncementItem } from "@/modules/students/features/announcements/types";
 
 // Mock @react-pdf-viewer/core & default-layout
 vi.mock("@react-pdf-viewer/core", () => ({

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AnnouncementDropdownFilters } from "./AnnouncementDropdownFilters";
-import type { AnnouncementFilter } from "../../types";
+import { AnnouncementDropdownFilters } from "@/modules/students/features/announcements/components/filter/AnnouncementDropdownFilters";
+import type { AnnouncementFilter } from "@/modules/students/features/announcements/types";
 
 describe("AnnouncementDropdownFilters", () => {
   const defaultFilter: AnnouncementFilter = {

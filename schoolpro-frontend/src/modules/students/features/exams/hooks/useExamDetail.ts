@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { message } from "antd";
+import { message } from "@/components/ui/Message";
 import { i18n } from "@/i18n";
 import type { ExamItem } from "@/modules/students/features/exams/types";
 import { examsService } from "@/modules/students/features/exams/services";

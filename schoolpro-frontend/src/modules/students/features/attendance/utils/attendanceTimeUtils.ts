@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import i18n from "@/i18n/i18n";
 import type { AttendanceRecord } from "@/modules/students/features/attendance/types";
-import { computeRemainingSeconds } from "./attendanceGeoUtils";
+import { computeRemainingSeconds } from "@/modules/students/features/attendance/utils/attendanceGeoUtils";
 
 /**
  * Evaluates real-time attendance status based on date, time window, and timezone:

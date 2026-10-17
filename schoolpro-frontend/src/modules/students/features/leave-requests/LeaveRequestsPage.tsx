@@ -1,5 +1,5 @@
-import { Alert, Col, Row } from "antd";
 import type React from "react";
+import { Alert } from "@/components/ui/Alert";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -86,18 +86,15 @@ const LeaveRequestsPage: React.FC = () => {
           onCreateClick={handleOpenCreatePage}
         />
       ) : filter.viewMode === "grid" ? (
-        <Row
-          gutter={[16, 16]}
-          className={`transition-opacity duration-200 ${
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 transition-opacity duration-200 ${
             loading ? "opacity-60 pointer-events-none" : "opacity-100"
           }`}
         >
           {items.map((item) => (
-            <Col xs={24} md={12} xl={8} key={item.id}>
-              <LeaveRequestCard item={item} onViewDetail={handleViewDetailPage} />
-            </Col>
+            <LeaveRequestCard key={item.id} item={item} onViewDetail={handleViewDetailPage} />
           ))}
-        </Row>
+        </div>
       ) : (
         <div
           className={`flex flex-col gap-3 transition-opacity duration-200 ${

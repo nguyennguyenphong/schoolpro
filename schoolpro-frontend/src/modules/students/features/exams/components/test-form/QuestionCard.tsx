@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/Icon";
 import type { ExamQuestion } from "@/modules/students/features/exams/types";
-import { QuestionRadio } from "./QuestionRadio";
-import { QuestionCheckbox } from "./QuestionCheckbox";
-import { QuestionInput } from "./QuestionInput";
-import { QuestionTextarea } from "./QuestionTextarea";
-import { QuestionSelect } from "./QuestionSelect";
-import { QuestionRating } from "./QuestionRating";
-import { QuestionBoolean } from "./QuestionBoolean";
-import { QuestionDate } from "./QuestionDate";
+import { QuestionRadio } from "@/modules/students/features/exams/components/test-form/QuestionRadio";
+import { QuestionCheckbox } from "@/modules/students/features/exams/components/test-form/QuestionCheckbox";
+import { QuestionInput } from "@/modules/students/features/exams/components/test-form/QuestionInput";
+import { QuestionTextarea } from "@/modules/students/features/exams/components/test-form/QuestionTextarea";
+import { QuestionSelect } from "@/modules/students/features/exams/components/test-form/QuestionSelect";
+import { QuestionRating } from "@/modules/students/features/exams/components/test-form/QuestionRating";
+import { QuestionBoolean } from "@/modules/students/features/exams/components/test-form/QuestionBoolean";
+import { QuestionDate } from "@/modules/students/features/exams/components/test-form/QuestionDate";
 
 interface QuestionCardProps {
   question: ExamQuestion;

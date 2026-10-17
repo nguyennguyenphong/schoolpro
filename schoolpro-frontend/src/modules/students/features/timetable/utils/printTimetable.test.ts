@@ -3,10 +3,10 @@ import {
   buildLocalTimetablePrintHtml,
   downloadTimetableFile,
   printTimetable,
-} from "./printTimetable";
+} from "@/modules/students/features/timetable/utils/printTimetable";
 import { timetableService } from "@/modules/students/features/timetable/services/timetableService";
 import { httpClient } from "@/shared/api/httpClient";
-import type { TimetableSlot } from "../types";
+import type { TimetableSlot } from "@/modules/students/features/timetable/types";
 
 describe("printTimetable & downloadTimetableFile", () => {
   const mockSlots: TimetableSlot[] = [

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AnnouncementSearchAndView } from "./AnnouncementSearchAndView";
+import { AnnouncementSearchAndView } from "@/modules/students/features/announcements/components/filter/AnnouncementSearchAndView";
 
 describe("AnnouncementSearchAndView", () => {
   it("renders search input and triggers onSearchChange", () => {
