@@ -48,9 +48,9 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
         <div className="flex items-center justify-between gap-2">
           <span
             className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}
+            title={t("card:materials.summary.totalMaterials")}
           >
-            {t("card:materials.summary.totalMaterials", "Tổng số tài liệu")}
+            {t("card:materials.summary.totalMaterials")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
             <Icon name="file" size={17} />
@@ -69,9 +69,9 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
         <div className="flex items-center justify-between gap-2">
           <span
             className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.lectures", "Bài giảng điện tử")}
+            title={t("card:materials.summary.lectures")}
           >
-            {t("card:materials.summary.lectures", "Bài giảng điện tử")}
+            {t("card:materials.summary.lectures")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center shrink-0">
             <Icon name="presentation" size={17} />
@@ -90,9 +90,9 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
         <div className="flex items-center justify-between gap-2">
           <span
             className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.outlinesAndExams", "Đề cương & Đề thi")}
+            title={t("card:materials.summary.outlinesAndExams")}
           >
-            {t("card:materials.summary.outlinesAndExams", "Đề cương & Đề thi")}
+            {t("card:materials.summary.outlinesAndExams")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
             <Icon name="book" size={17} />
@@ -111,9 +111,9 @@ export const MaterialSummaryCards: React.FC<MaterialSummaryCardsProps> = ({
         <div className="flex items-center justify-between gap-2">
           <span
             className="text-xs font-bold text-slate-500 uppercase tracking-wider truncate whitespace-nowrap"
-            title={t("card:materials.summary.totalDownloads", "Tổng lượt tải về")}
+            title={t("card:materials.summary.totalDownloads")}
           >
-            {t("card:materials.summary.totalDownloads", "Tổng lượt tải về")}
+            {t("card:materials.summary.totalDownloads")}
           </span>
           <span className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
             <Icon name="download" size={17} />

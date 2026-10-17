@@ -13,7 +13,7 @@ import type {
 import { materialsService, mockMaterialsData } from "@/modules/students/features/materials/services";
 
 export function useMaterials() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "message"]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Initial state parsed from URL query
@@ -226,9 +226,9 @@ export function useMaterials() {
           m.id === item.id ? { ...m, downloadsCount: m.downloadsCount + 1 } : m,
         ),
       );
-      message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName, defaultValue: `Đang bắt đầu tải tệp: ${item.fileName}` }));
+      message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName }));
     } catch {
-      message.error("Lỗi khi tải tệp.");
+      message.error(t("message:downloadError"));
     }
   }, [t]);
 
@@ -237,7 +237,6 @@ export function useMaterials() {
     message.success(
       t("card:materials.modal.downloadBatchStarted", {
         count: selectedIds.length,
-        defaultValue: `Đang nén và chuẩn bị tải xuống ${selectedIds.length} tài liệu...`,
       }),
     );
     clearSelection();
@@ -248,7 +247,6 @@ export function useMaterials() {
     message.success(
       t("card:materials.modal.downloadBatchStarted", {
         count: materials.length,
-        defaultValue: `Đang nén và chuẩn bị tải xuống ${materials.length} tài liệu...`,
       }),
     );
   }, [materials.length, t]);
@@ -261,11 +259,11 @@ export function useMaterials() {
       );
       message.success(
         isBookmarked
-          ? t("card:materials.modal.bookmarkSuccess", "Đã thêm tài liệu vào mục lưu trữ quan trọng")
-          : t("card:materials.modal.unbookmarkSuccess", "Đã gỡ tài liệu khỏi mục lưu trữ"),
+          ? t("card:materials.modal.bookmarkSuccess")
+          : t("card:materials.modal.unbookmarkSuccess"),
       );
     } catch {
-      message.error("Không thể lưu tài liệu.");
+      message.error(t("message:error"));
     }
   }, [t]);
 

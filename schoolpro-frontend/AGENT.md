@@ -27,6 +27,7 @@ Mục tiêu của bạn là tạo ra code:
 9. Các trường hợp cần thiết thì viết thêm file test để kiểm tra.
 10. Không viết tắt các từ, bắt buộc phải ghi rõ ràng. Ví dụ như HS (sai) -> Học sinh (đúng). Tương tự với các từ khác.
 11. Luôn thống nhất một font chữ trong suốt quá trình coding.
+12. Không lặp code, các hàm, biến, các interface và các đối tượng liên quan có chức năng giống nhau, mục đích và công năng giống nhau thì tách ra thành 1 file để dùng chung. Tuyệt đối không lặp code.
 
 ### 1. Đọc và hiểu code trước khi sửa
 
@@ -142,6 +143,7 @@ Sau mỗi nhiệm vụ, hãy báo cáo ngắn gọn:
 3. Bạn phải cấu trúc 18n đúng chuẩn đảm bảo chúng được dịch sang đúng 5 ngôn ngữ trên.
 4. Đối với các biến, giá trị được fix cứng thì bạn cũng dịch theo, chỉ không dịch các biến động, hoặc các giá trị dữ liệu từ API.
 5. Luôn dịch chuẩn sát, phù hợp với ngôn ngữ của hệ thống.
+6. Tuyệt đối không dùng default value trong hàm t(). Như thế này là sai quy tắt của tôi, t("card:materials.header.backToSubjects", "Quay lại kho tài liệu") hoặc t("card:materials.header.subjectMaterialsTitle", { subject: subject.name, defaultValue: `Tài liệu môn ${subject.name}`, }). Chỉ có phép truyền các biến vào để dịch ra giá trị đúng như: {t("card:materials.selection.selectedCount", { count: selectedCount })}
 
 ---
 

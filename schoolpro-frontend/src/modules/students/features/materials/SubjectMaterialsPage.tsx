@@ -18,7 +18,7 @@ import { useSubjectMaterials } from "@/modules/students/features/materials/hooks
 
 export const SubjectMaterialsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button", "message"]);
   const {
     subject,
     subjectCode,
@@ -62,7 +62,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>{t("card:materials.header.breadcrumbHome", "Trang chủ")}</span>
+                  <span>{t("card:materials.header.breadcrumbHome")}</span>
                 </span>
               ),
             },
@@ -71,7 +71,7 @@ export const SubjectMaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="download" size={13} className="text-slate-400 shrink-0" />
-                  <span>{t("card:materials.header.breadcrumbMaterials", "Kho tài liệu")}</span>
+                  <span>{t("card:materials.header.breadcrumbMaterials")}</span>
                 </span>
               ),
             },
@@ -93,7 +93,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                 variant="ghost"
                 onClick={() => navigate("/student/materials")}
                 className="text-slate-600 hover:text-blue-600 hover:bg-slate-100 p-1.5"
-                title={t("card:materials.header.backToSubjects", "Quay lại danh mục môn học")}
+                title={t("card:materials.header.backToSubjects")}
               >
                 <Icon name="arrow-left" size={18} />
               </Button>
@@ -101,15 +101,9 @@ export const SubjectMaterialsPage: React.FC = () => {
               <span className="w-1.5 h-6 rounded-full bg-blue-600 inline-block" />
 
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0 leading-tight">
-                {subject
-                  ? t("card:materials.header.subjectMaterialsTitle", {
-                      subject: subject.name,
-                      defaultValue: `Tài liệu môn ${subject.name}`,
-                    })
-                  : t("card:materials.header.subjectMaterialsTitle", {
-                      subject: subjectCode,
-                      defaultValue: `Tài liệu môn ${subjectCode}`,
-                    })}
+                {t("card:materials.header.subjectMaterialsTitle", {
+                  subject: subject ? subject.name : subjectCode,
+                })}
               </h1>
 
               {subject && (
@@ -144,7 +138,7 @@ export const SubjectMaterialsPage: React.FC = () => {
             className="text-slate-700 font-medium self-start md:self-center"
           >
             <Icon name="arrow-left" size={14} />
-            <span>{t("card:materials.header.backToSubjects", "Quay lại danh mục môn học")}</span>
+            <span>{t("card:materials.header.backToSubjects")}</span>
           </Button>
         </div>
       </div>
@@ -173,11 +167,11 @@ export const SubjectMaterialsPage: React.FC = () => {
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
-                  {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu phù hợp")}
+                  {t("card:materials.empty.noMaterialsTitle")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
-                    ? t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào khớp với các điều kiện lọc đã chọn.")
+                    ? t("card:materials.empty.noMaterialsDesc")
                     : "Hiện tại môn học này chưa có tài liệu nào."}
                 </p>
               </div>
@@ -189,7 +183,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                 onClick={resetFilters}
                 className="mt-3"
               >
-                {t("card:materials.empty.resetFilterBtn", "Đặt lại tất cả bộ lọc")}
+                {t("card:materials.empty.resetFilterBtn")}
               </Button>
             )}
           </Empty>

@@ -114,7 +114,8 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
 
   return (
     <div
-      className="bg-white border border-[#f0f0f0] rounded-xl p-4 flex flex-col justify-between gap-3 transition-all shadow-2xs h-full"
+      onClick={handleCardClick}
+      className="bg-white border border-[#f0f0f0] rounded-xl p-4 flex flex-col justify-between gap-3 transition-all shadow-2xs h-full cursor-pointer hover:border-blue-200"
     >
       <div className="flex flex-col gap-2.5">
         {/* Row 1: Subject Badge + Category Badge & Bookmark Button */}
@@ -143,7 +144,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
                 ? "bg-amber-50 border-amber-300 text-amber-500"
                 : "border-[#f0f0f0] text-slate-300 hover:text-amber-500 hover:border-amber-200"
             }`}
-            title={item.isBookmarked ? t("card:materials.actions.unbookmark", "Bỏ lưu yêu thích") : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
+            title={item.isBookmarked ? t("card:materials.actions.unbookmark") : t("card:materials.actions.bookmark")}
           >
             <Icon name="bookmark" size={14} />
           </button>
@@ -181,7 +182,7 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
             className="text-xs px-3 py-1 font-semibold"
           >
             <Icon name="download" size={13} />
-            <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
+            <span>{t("card:materials.actions.downloadSimple")}</span>
           </Button>
           <Button
             variant="ghost"

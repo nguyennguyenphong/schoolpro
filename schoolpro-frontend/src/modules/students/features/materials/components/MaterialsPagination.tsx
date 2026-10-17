@@ -27,7 +27,6 @@ export const MaterialsPagination: React.FC<MaterialsPaginationProps> = ({
         {t("card:materials.filter.paginationShowing", {
           count: itemsCount,
           total,
-          defaultValue: `Hiển thị ${itemsCount} trên tổng số ${total} tài liệu học tập`,
         })}
       </div>
 

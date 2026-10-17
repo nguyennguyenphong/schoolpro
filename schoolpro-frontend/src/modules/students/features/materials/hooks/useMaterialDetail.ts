@@ -46,11 +46,10 @@ export const useMaterialDetail = (id?: string) => {
       message.success(
         t("card:materials.modal.downloadStarted", {
           fileName: item.fileName,
-          defaultValue: `Đang bắt đầu tải tệp: ${item.fileName}`,
         }),
       );
     } catch {
-      message.error(t("message:failedToDownloadFile", "Lỗi khi tải tài liệu học tập."));
+      message.error(t("message:downloadError"));
     } finally {
       setDownloading(false);
     }
@@ -62,8 +61,8 @@ export const useMaterialDetail = (id?: string) => {
     setItem((prev) => (prev ? { ...prev, isBookmarked } : null));
     message.success(
       isBookmarked
-        ? t("card:materials.modal.bookmarkSuccess", "Đã thêm tài liệu vào mục lưu trữ quan trọng")
-        : t("card:materials.modal.unbookmarkSuccess", "Đã gỡ tài liệu khỏi mục lưu trữ"),
+        ? t("card:materials.modal.bookmarkSuccess")
+        : t("card:materials.modal.unbookmarkSuccess"),
     );
   }, [item, t]);
 

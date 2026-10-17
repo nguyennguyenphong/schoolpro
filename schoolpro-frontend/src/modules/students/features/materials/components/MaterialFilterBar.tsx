@@ -74,47 +74,46 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
   }> = [
     {
       key: "all",
-      label: t("card:materials.filter.allCategories", "Tất cả danh mục"),
+      label: t("card:materials.filter.allCategories"),
       icon: "file",
       count: summary?.total,
     },
     {
       key: "lecture",
-      label: t("card:materials.categories.lecture", "Bài giảng điện tử"),
+      label: t("card:materials.categories.lecture"),
       icon: "presentation",
       count: summary?.lecturesCount,
     },
     {
       key: "outline",
-      label: t("card:materials.categories.outline", "Đề cương ôn tập"),
+      label: t("card:materials.categories.outline"),
       icon: "book",
       count: summary?.outlinesCount,
     },
     {
       key: "textbook",
-      label: t("card:materials.categories.textbook", "Sách giáo khoa"),
+      label: t("card:materials.categories.textbook"),
       icon: "book",
       count: summary?.textbooksCount,
     },
     {
       key: "exam_prep",
-      label: t("card:materials.categories.exam_prep", "Đề thi & Đề ôn"),
+      label: t("card:materials.categories.exam_prep"),
       icon: "fileText",
       count: summary?.examPrepsCount,
     },
     {
       key: "reference",
-      label: t("card:materials.categories.reference", "Tài liệu tham khảo"),
+      label: t("card:materials.categories.reference"),
       icon: "bookmark",
     },
   ];
 
-
   const sortOptions = [
-    { label: t("card:materials.filter.newest", "Mới nhất"), value: "newest" },
-    { label: t("card:materials.filter.mostDownloaded", "Lượt tải nhiều nhất"), value: "most_downloaded" },
-    { label: t("card:materials.filter.titleAsc", "Tên tài liệu (A - Z)"), value: "title_asc" },
-    { label: t("card:materials.filter.sizeAsc", "Dung lượng nhỏ nhất"), value: "size_asc" },
+    { label: t("card:materials.filter.newest"), value: "newest" },
+    { label: t("card:materials.filter.mostDownloaded"), value: "most_downloaded" },
+    { label: t("card:materials.filter.titleAsc"), value: "title_asc" },
+    { label: t("card:materials.filter.sizeAsc"), value: "size_asc" },
   ];
 
   return (
@@ -165,7 +164,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             autoFocus
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
-            placeholder={t("card:materials.filter.searchMaterialPlaceholder", "Tìm kiếm bài giảng, đề cương, tác giả, tài liệu...")}
+            placeholder={t("card:materials.filter.searchMaterialPlaceholder")}
             prefix={<Icon name="search" size={15} className="text-slate-400" />}
             allowClear
             className="w-full"
@@ -184,7 +183,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             }`}
           >
             <Icon name="chart" size={13} />
-            <span>{t("card:materials.filter.viewGrid", "Lưới thẻ")}</span>
+            <span>{t("card:materials.filter.viewGrid")}</span>
           </button>
           <button
             type="button"
@@ -196,7 +195,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
             }`}
           >
             <Icon name="menu" size={13} />
-            <span>{t("card:materials.filter.viewList", "Danh sách")}</span>
+            <span>{t("card:materials.filter.viewList")}</span>
           </button>
         </div>
       </div>
@@ -207,12 +206,12 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           {/* Năm học */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.academicYearLabel", "Năm học:")}
+              {t("card:materials.filter.academicYearLabel")}
             </span>
             <SelectAcademicYear
               value={academicYear || undefined}
               onChange={onAcademicYearChange}
-              allOptionLabel={t("card:materials.filter.allAcademicYears", "Tất cả năm học")}
+              allOptionLabel={t("card:materials.filter.allAcademicYears")}
               defaultToCurrent
               className="w-44 sm:w-50"
             />
@@ -221,13 +220,13 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.semesterLabel", "Học kỳ:")}
+              {t("card:materials.filter.semesterLabel")}
             </span>
             <SelectSemester
               value={semester || undefined}
               academicYearId={academicYear}
               onChange={onSemesterChange}
-              allOptionLabel={t("card:materials.filter.allSemesters", "Tất cả học kỳ")}
+              allOptionLabel={t("card:materials.filter.allSemesters")}
               defaultToCurrent
               className="w-40 sm:w-46"
             />
@@ -237,7 +236,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           {subjects.length > 0 && onSubjectChange && (
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-                {t("card:materials.filter.subjectLabel", "Môn học:")}
+                {t("card:materials.filter.subjectLabel")}
               </span>
               <SelectSubject
                 value={subject}
@@ -250,7 +249,7 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           {/* Sắp xếp */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.sortByLabel", "Sắp xếp:")}
+              {t("card:materials.filter.sortByLabel")}
             </span>
             <SelectSort
               value={sortBy}
@@ -266,10 +265,10 @@ export const MaterialFilterBar: React.FC<MaterialFilterBarProps> = ({
           <Button
             variant="outline"
             onClick={onResetFilters}
-            title={t("card:materials.filter.resetTooltip", "Đặt lại tất cả bộ lọc")}
+            title={t("card:materials.filter.resetTooltip")}
           >
             <Icon name="refresh" size={13} />
-            <span>{t("card:materials.filter.reset", "Đặt lại")}</span>
+            <span>{t("card:materials.filter.reset")}</span>
           </Button>
         )}
       </div>

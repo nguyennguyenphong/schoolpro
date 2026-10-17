@@ -63,7 +63,7 @@ export const MaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-500 hover:text-blue-600 transition-colors">
                   <Icon name="home" size={13} className="text-slate-400 shrink-0" />
-                  <span>{t("card:materials.header.breadcrumbHome", "Trang chủ")}</span>
+                  <span>{t("card:materials.header.breadcrumbHome")}</span>
                 </span>
               ),
             },
@@ -71,7 +71,7 @@ export const MaterialsPage: React.FC = () => {
               title: (
                 <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium">
                   <Icon name="download" size={13} className="text-blue-600 shrink-0" />
-                  <span>{t("card:materials.header.breadcrumbMaterials", "Tài liệu học tập")}</span>
+                  <span>{t("card:materials.header.breadcrumbMaterials")}</span>
                 </span>
               ),
             },
@@ -83,11 +83,11 @@ export const MaterialsPage: React.FC = () => {
             <div className="flex items-center gap-2 mb-1">
               <span className="w-1.5 h-5 rounded-full bg-blue-600 inline-block" />
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
-                {t("card:materials.header.title", "Tài liệu học tập")}
+                {t("card:materials.header.title")}
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mb-0">
-              {t("card:materials.header.subtitle", "Kho bài giảng số, đề cương ôn tập, đề thi thử và giáo trình điện tử phục vụ học tập")}
+              {t("card:materials.header.subtitle")}
             </p>
           </div>
         </div>
@@ -119,11 +119,11 @@ export const MaterialsPage: React.FC = () => {
             description={
               <div className="space-y-1.5">
                 <p className="text-sm font-bold text-slate-700 mb-0">
-                  {t("card:materials.empty.noMaterialsTitle", "Không tìm thấy tài liệu học tập")}
+                  {t("card:materials.empty.noMaterialsTitle")}
                 </p>
                 <p className="text-xs text-slate-500 mb-0 max-w-md mx-auto">
                   {hasActiveFilters
-                    ? t("card:materials.empty.noMaterialsDesc", "Không có tài liệu nào phù hợp với bộ lọc hiện tại. Hãy thử chọn điều kiện khác.")
+                    ? t("card:materials.empty.noMaterialsDesc")
                     : "Hiện tại chưa có tài liệu nào trong danh mục này."}
                 </p>
               </div>
@@ -135,7 +135,7 @@ export const MaterialsPage: React.FC = () => {
                 onClick={resetFilters}
                 className="mt-3"
               >
-                {t("card:materials.empty.resetFilterBtn", "Đặt lại bộ lọc")}
+                {t("card:materials.empty.resetFilterBtn")}
               </Button>
             )}
           </Empty>

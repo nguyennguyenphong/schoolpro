@@ -12,7 +12,7 @@ import type {
 import { materialsService } from "@/modules/students/features/materials/services";
 
 export const useSubjectMaterials = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "message"]);
   const { subjectCode } = useParams<{ subjectCode: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -167,7 +167,7 @@ export const useSubjectMaterials = () => {
   // Download actions
   const handleDownload = useCallback((item: MaterialItem) => {
     materialsService.incrementDownload(item.id);
-    message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName, defaultValue: `Đang bắt đầu tải tệp: ${item.fileName}` }));
+    message.success(t("card:materials.modal.downloadStarted", { fileName: item.fileName }));
   }, [t]);
 
   const handleDownloadSelected = useCallback(() => {
@@ -175,7 +175,6 @@ export const useSubjectMaterials = () => {
     message.success(
       t("card:materials.modal.downloadBatchStarted", {
         count: selectedIds.length,
-        defaultValue: `Đang nén và chuẩn bị tải xuống ${selectedIds.length} tài liệu...`,
       }),
     );
     clearSelection();
@@ -186,7 +185,6 @@ export const useSubjectMaterials = () => {
     message.success(
       t("card:materials.modal.downloadBatchStarted", {
         count: materials.length,
-        defaultValue: `Đang nén và chuẩn bị tải xuống ${materials.length} tài liệu...`,
       }),
     );
   }, [materials.length, t]);
@@ -196,8 +194,8 @@ export const useSubjectMaterials = () => {
     const isBookmarked = materialsService.toggleBookmark(id);
     message.success(
       isBookmarked
-        ? t("card:materials.modal.bookmarkSuccess", "Đã thêm tài liệu vào mục lưu trữ quan trọng")
-        : t("card:materials.modal.unbookmarkSuccess", "Đã gỡ tài liệu khỏi mục lưu trữ"),
+        ? t("card:materials.modal.bookmarkSuccess")
+        : t("card:materials.modal.unbookmarkSuccess"),
     );
     setMaterials((prev) =>
       prev.map((m) => (m.id === id ? { ...m, isBookmarked } : m)),

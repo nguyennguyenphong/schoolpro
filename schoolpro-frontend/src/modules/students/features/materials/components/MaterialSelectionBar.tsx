@@ -38,7 +38,6 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
           <span className="text-xs font-semibold text-slate-800">
             {t("card:materials.selection.selectAllOnPage", {
               count: totalOnPage,
-              defaultValue: `Chọn tất cả (${totalOnPage} tài liệu trên trang)`,
             })}
           </span>
         </Checkbox>
@@ -49,7 +48,6 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
             <div className="text-xs font-bold text-blue-700 bg-white px-2.5 py-0.5 rounded-full border border-blue-200 shadow-2xs">
               {t("card:materials.selection.selectedCount", {
                 count: selectedCount,
-                defaultValue: `Đã chọn: ${selectedCount} tài liệu`,
               })}
             </div>
           </>
@@ -65,7 +63,7 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
               onClick={onClearSelection}
               className="text-xs text-slate-600 hover:text-slate-800"
             >
-              <span>{t("card:materials.selection.clearSelection", "Bỏ chọn")}</span>
+              <span>{t("card:materials.selection.clearSelection")}</span>
             </Button>
 
             <Button
@@ -77,7 +75,6 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
               <span>
                 {t("card:materials.selection.downloadZipPackage", {
                   count: selectedCount,
-                  defaultValue: `Tải xuống gói ZIP (${selectedCount})`,
                 })}
               </span>
             </Button>
@@ -92,7 +89,6 @@ export const MaterialSelectionBar: React.FC<MaterialSelectionBarProps> = ({
             <span>
               {t("card:materials.selection.downloadAll", {
                 count: totalOnPage,
-                defaultValue: `Tải tất cả (${totalOnPage})`,
               })}
             </span>
           </Button>

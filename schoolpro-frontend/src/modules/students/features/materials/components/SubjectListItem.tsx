@@ -13,7 +13,7 @@ interface SubjectListItemProps {
 
 export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button"]);
 
   const getColorStyles = (scheme: SubjectItem["colorScheme"]) => {
     switch (scheme) {
@@ -69,7 +69,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
                 {item.semester} ({item.academicYear})
               </Tag>
               <span className="text-xs text-slate-500 font-medium">
-                {t("card:materials.meta.teacher", "Giáo viên:")} <strong className="text-slate-700">{item.teacher}</strong>
+                {t("card:materials.meta.teacher")} <strong className="text-slate-700">{item.teacher}</strong>
               </span>
             </div>
 
@@ -82,15 +82,15 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
             </p>
 
             <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-0.5">
-              <span>{t("card:materials.meta.lecturesCount", "Bài giảng:")} <strong className="text-slate-700">{item.lecturesCount}</strong></span>
+              <span>{t("card:materials.meta.lecturesCount")} <strong className="text-slate-700">{item.lecturesCount}</strong></span>
               <span>•</span>
-              <span>{t("card:materials.meta.outlinesCount", "Đề cương:")} <strong className="text-slate-700">{item.outlinesCount}</strong></span>
+              <span>{t("card:materials.meta.outlinesCount")} <strong className="text-slate-700">{item.outlinesCount}</strong></span>
               <span>•</span>
-              <span>{t("card:materials.meta.examsCount", "Đề thi:")} <strong className="text-slate-700">{item.examsCount}</strong></span>
+              <span>{t("card:materials.meta.examsCount")} <strong className="text-slate-700">{item.examsCount}</strong></span>
               <span>•</span>
               <span className="flex items-center gap-1">
                 <Icon name="download" size={13} className="text-slate-400" />
-                {t("card:materials.meta.downloadsCount", { count: item.totalDownloads, defaultValue: `${item.totalDownloads} lượt tải` })}
+                {t("card:materials.meta.downloadsCount", { count: item.totalDownloads })}
               </span>
             </div>
           </div>
@@ -107,7 +107,7 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
             onClick={handleCardClick}
           >
             <Icon name="fileText" size={14} />
-            <span>{t("card:materials.actions.viewMaterials", { count: item.totalMaterials, defaultValue: `Xem tài liệu (${item.totalMaterials})` })}</span>
+            <span>{t("card:materials.actions.viewMaterials", { count: item.totalMaterials })}</span>
           </Button>
         </div>
       </div>

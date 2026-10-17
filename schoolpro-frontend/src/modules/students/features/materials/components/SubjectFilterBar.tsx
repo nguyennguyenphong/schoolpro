@@ -27,7 +27,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
   onResetFilters,
   hasActiveFilters,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button"]);
   const { searchQuery, semester, sortBy, viewMode = "grid" } = filter;
 
   useEffect(() => {
@@ -39,15 +39,15 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
   }, []);
 
   const semesterOptions = [
-    { value: "all", label: t("card:materials.filter.allSemesters", "Tất cả học kỳ") },
-    { value: "Học kỳ 1", label: t("card:materials.filter.semester1", "Học kỳ 1") },
-    { value: "Học kỳ 2", label: t("card:materials.filter.semester2", "Học kỳ 2") },
+    { value: "all", label: t("card:materials.filter.allSemesters") },
+    { value: "Học kỳ 1", label: t("card:materials.filter.semester1") },
+    { value: "Học kỳ 2", label: t("card:materials.filter.semester2") },
   ];
 
   const sortOptions = [
-    { value: "name_asc", label: t("card:materials.filter.nameAsc", "Tên môn học (A - Z)") },
-    { value: "most_materials", label: t("card:materials.filter.mostMaterials", "Nhiều tài liệu nhất") },
-    { value: "most_downloads", label: t("card:materials.filter.mostDownloads", "Lượt tải nhiều nhất") },
+    { value: "name_asc", label: t("card:materials.filter.nameAsc") },
+    { value: "most_materials", label: t("card:materials.filter.mostMaterials") },
+    { value: "most_downloads", label: t("card:materials.filter.mostDownloads") },
   ];
 
   return (
@@ -60,7 +60,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
             autoFocus
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder={t("card:materials.filter.searchSubjectPlaceholder", "Tìm kiếm môn học, giáo viên phụ trách, chuyên đề...")}
+            placeholder={t("card:materials.filter.searchSubjectPlaceholder")}
             prefix={<Icon name="search" size={14} className="text-slate-400" />}
             allowClear
             className="rounded-lg text-xs w-full"
@@ -80,7 +80,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
               }`}
             >
               <Icon name="chart" size={13} />
-              <span>{t("card:materials.filter.viewGrid", "Lưới thẻ")}</span>
+              <span>{t("card:materials.filter.viewGrid")}</span>
             </button>
             <button
               type="button"
@@ -92,7 +92,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
               }`}
             >
               <Icon name="menu" size={13} />
-              <span>{t("card:materials.filter.viewList", "Danh sách")}</span>
+              <span>{t("card:materials.filter.viewList")}</span>
             </button>
           </div>
         )}
@@ -104,7 +104,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
           {/* Học kỳ */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.semesterLabel", "Học kỳ:")}
+              {t("card:materials.filter.semesterLabel")}
             </span>
             <Select
               value={semester}
@@ -117,7 +117,7 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
           {/* Sắp xếp */}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:materials.filter.sortByLabel", "Sắp xếp:")}
+              {t("card:materials.filter.sortByLabel")}
             </span>
             <Select
               value={sortBy}
@@ -131,7 +131,6 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
             <span className="text-xs text-slate-400 font-medium hidden md:inline-block">
               {t("card:materials.filter.totalSubjectsCount", {
                 count: totalSubjects,
-                defaultValue: `Tổng số ${totalSubjects} môn học`,
               })}
             </span>
           )}
@@ -141,10 +140,10 @@ export const SubjectFilterBar: React.FC<SubjectFilterBarProps> = ({
           <Button
             variant="outline"
             onClick={onResetFilters}
-            title={t("card:materials.filter.resetTooltip", "Đặt lại tất cả bộ lọc")}
+            title={t("card:materials.filter.resetTooltip")}
           >
             <Icon name="check" size={13} className="text-rose-500" />
-            <span>{t("card:materials.filter.reset", "Đặt lại")}</span>
+            <span>{t("card:materials.filter.reset")}</span>
           </Button>
         )}
       </div>

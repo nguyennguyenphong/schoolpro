@@ -22,7 +22,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
   onDownload,
   onToggleBookmark,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(["card", "button", "message"]);
   if (!item) return null;
 
   const getFormatBadge = (fmt: MaterialFormat) => {
@@ -76,16 +76,16 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
   const getCategoryLabel = (cat: MaterialCategory) => {
     switch (cat) {
       case "lecture":
-        return t("card:materials.categories.lecture", "Bài giảng");
+        return t("card:materials.categories.lecture");
       case "outline":
-        return t("card:materials.categories.outline", "Đề cương");
+        return t("card:materials.categories.outline");
       case "textbook":
-        return t("card:materials.categories.textbook", "Sách giáo khoa");
+        return t("card:materials.categories.textbook");
       case "exam_prep":
-        return t("card:materials.categories.exam_prep", "Đề thi");
+        return t("card:materials.categories.exam_prep");
       case "reference":
       default:
-        return t("card:materials.categories.reference", "Tham khảo");
+        return t("card:materials.categories.reference");
     }
   };
 
@@ -100,10 +100,10 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             <div className="mt-4 flex items-center gap-3">
               <Button
                 variant="primary"
-                onClick={() => message.info(t("card:materials.actions.preview", "Xem trước tài liệu"))}
+                onClick={() => message.info(t("card:materials.actions.preview"))}
               >
                 <Icon name="video" size={15} className="mr-1.5" />
-                <span>{t("card:materials.actions.preview", "Xem trước tài liệu")}</span>
+                <span>{t("card:materials.actions.preview")}</span>
               </Button>
             </div>
           </div>
@@ -122,10 +122,10 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
           <div className="w-full max-w-md bg-white border border-amber-200 rounded-lg p-3 shadow-2xs flex items-center justify-between gap-3">
             <Button
               variant="outline"
-              onClick={() => message.info(t("card:materials.actions.preview", "Xem trước tài liệu"))}
+              onClick={() => message.info(t("card:materials.actions.preview"))}
             >
               <Icon name="music" size={15} className="mr-1.5" />
-              <span>{t("card:materials.actions.preview", "Xem trước tài liệu")}</span>
+              <span>{t("card:materials.actions.preview")}</span>
             </Button>
             <span className="text-xs text-slate-400">00:00 / 18:45</span>
           </div>
@@ -144,7 +144,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             <div>
               <h4 className="font-semibold text-slate-800 text-sm mb-0.5">{item.fileName}</h4>
               <p className="text-xs text-slate-500">
-                {t("card:materials.modal.fileSize", "Dung lượng")}: <strong>{item.fileSize}</strong> • {t("card:materials.modal.format", "Định dạng")}: <strong>{item.format.toUpperCase()}</strong>
+                {t("card:materials.modal.fileSize")}: <strong>{item.fileSize}</strong> • {t("card:materials.modal.format")}: <strong>{item.format.toUpperCase()}</strong>
               </p>
             </div>
           </div>
@@ -155,7 +155,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               onClick={() => onDownload(item)}
             >
               <Icon name="download" size={15} />
-              <span>{t("card:materials.actions.downloadSimple", "Tải về")}</span>
+              <span>{t("card:materials.actions.downloadSimple")}</span>
             </Button>
           </div>
         </div>
@@ -214,8 +214,8 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             <Icon name="bookmark" size={14} className={item.isBookmarked ? "text-amber-600" : "text-slate-400"} />
             <span>
               {item.isBookmarked
-                ? t("card:materials.actions.bookmarked", "Đã lưu yêu thích")
-                : t("card:materials.actions.bookmark", "Lưu vào yêu thích")}
+                ? t("card:materials.actions.bookmarked")
+                : t("card:materials.actions.bookmark")}
             </span>
           </button>
         </div>
@@ -226,11 +226,11 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             {item.title}
           </h2>
           <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
-            <span>{t("card:materials.meta.author", { author: item.author, defaultValue: `Tác giả: ${item.author}` })}</span>
+            <span>{t("card:materials.meta.author", { author: item.author })}</span>
             <span>•</span>
-            <span>{t("card:materials.meta.uploadDate", { date: item.uploadDate, defaultValue: `Ngày đăng: ${item.uploadDate}` })}</span>
+            <span>{t("card:materials.meta.uploadDate", { date: item.uploadDate })}</span>
             <span>•</span>
-            <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount, defaultValue: `${item.downloadsCount} lượt tải` })}</span>
+            <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount })}</span>
           </div>
         </div>
 
@@ -242,7 +242,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
           <div className="space-y-2 pt-2 border-t border-[#f0f0f0]">
             <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-2">
               <Icon name="fileText" size={14} className="text-blue-600" />
-              <span>{t("card:materials.modal.tableOfContentsTitle", "Mục lục tài liệu")}</span>
+              <span>{t("card:materials.modal.tableOfContentsTitle")}</span>
             </h4>
             <div className="bg-slate-50 border border-[#f0f0f0] rounded-lg p-3">
               <ul className="space-y-1.5 text-xs text-slate-700">
@@ -263,7 +263,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             variant="outline"
             onClick={onClose}
           >
-            {t("card:materials.actions.close", "Đóng")}
+            {t("card:materials.actions.close")}
           </Button>
 
           <Button
@@ -271,7 +271,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             onClick={() => onDownload(item)}
           >
             <Icon name="download" size={15} />
-            <span>{t("card:materials.actions.download", { size: item.fileSize, defaultValue: `Tải về (${item.fileSize})` })}</span>
+            <span>{t("card:materials.actions.download", { size: item.fileSize })}</span>
           </Button>
         </div>
       </div>

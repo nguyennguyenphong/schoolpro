@@ -7,6 +7,11 @@ import { MaterialSelectionBar } from "@/modules/students/features/materials/comp
 import { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";
 import { MaterialFilterBar } from "@/modules/students/features/materials/components/MaterialFilterBar";
 import { MaterialSummaryCards } from "@/modules/students/features/materials/components/MaterialSummaryCards";
+import {
+  MaterialDetailHeader,
+  MaterialPreviewCard,
+  MaterialDetailSidebar,
+} from "@/modules/students/features/materials/components/detail";
 import type { MaterialItem, MaterialFilter } from "@/modules/students/features/materials/types";
 
 const mockMaterial: MaterialItem = {
@@ -59,7 +64,6 @@ describe("Materials Components", () => {
 
     expect(screen.getByText("Đề thi thử học kỳ 1 môn Toán")).toBeInTheDocument();
     expect(screen.getByText("Toán học")).toBeInTheDocument();
-    expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
     expect(screen.getByText("2026-10-10")).toBeInTheDocument();
     expect(screen.getByText("Chi tiết")).toBeInTheDocument();
 
@@ -85,7 +89,7 @@ describe("Materials Components", () => {
 
     expect(screen.getByText("Đề thi thử học kỳ 1 môn Toán")).toBeInTheDocument();
     expect(screen.getByText("Toán học")).toBeInTheDocument();
-    expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
+    expect(screen.getByText("2026-10-10")).toBeInTheDocument();
     expect(screen.getByText("Chi tiết")).toBeInTheDocument();
     expect(screen.getByText(/Tải về/)).toBeInTheDocument();
   });
@@ -207,4 +211,58 @@ describe("Materials Components", () => {
     fireEvent.click(titleEl);
     expect(handleClick).toHaveBeenCalledWith(mockMaterial);
   });
+
+  it("renders MaterialDetailHeader with breadcrumbs and actions", () => {
+    const handleBack = vi.fn();
+    const handleDownload = vi.fn();
+    const handleBookmark = vi.fn();
+
+    render(
+      <MemoryRouter>
+        <MaterialDetailHeader
+          item={mockMaterial}
+          downloading={false}
+          onBack={handleBack}
+          onDownload={handleDownload}
+          onToggleBookmark={handleBookmark}
+        />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Đề thi thử học kỳ 1 môn Toán" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Toán học (MATH11)")).toBeInTheDocument();
+    expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
+    expect(screen.getByText("Quay lại")).toBeInTheDocument();
+  });
+
+  it("renders MaterialPreviewCard with pedagogy certification badge", () => {
+    render(
+      <MaterialPreviewCard
+        item={mockMaterial}
+        downloading={false}
+        onDownload={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Đạt chuẩn sư phạm số")).toBeInTheDocument();
+    expect(screen.getByText(mockMaterial.description)).toBeInTheDocument();
+  });
+
+  it("renders MaterialDetailSidebar with file specifications and teacher info", () => {
+    render(
+      <MaterialDetailSidebar
+        item={mockMaterial}
+        downloading={false}
+        onDownload={vi.fn()}
+        onToggleBookmark={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Thông số kỹ thuật tài liệu")).toBeInTheDocument();
+    expect(screen.getByText("Giáo viên & Tổ bộ môn")).toBeInTheDocument();
+    expect(screen.getByText(mockMaterial.fileName)).toBeInTheDocument();
+  });
 });
+
