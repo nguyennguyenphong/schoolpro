@@ -172,7 +172,7 @@ export const semesterApi = {
         cacheMap.set(key, { data, timestamp: Date.now() });
         return data;
       } catch (error) {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
           console.warn(
             "[semesterApi] Could not connect to Master Semester API endpoint. Falling back to local mock data.",
             error,

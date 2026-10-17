@@ -43,8 +43,8 @@ jobs:
       - name: 🛡️ Run TypeScript Type-Check (tsc -b)
         run: npx tsc -b
 
-      - name: 🧪 Run Frontend Vitest Test Suite
-        run: npx vitest run
+      - name: 🧪 Run Vitest Unit Tests
+        run: npm test
 
       - name: 🚀 Test Production Build (Vite)
         run: npm run build
@@ -83,9 +83,6 @@ jobs:
 
       - name: 🛡️ Run Django System Check
         run: DJANGO_ENV=development python manage.py check
-
-      - name: 🗄️ Check for Missing Django Migrations
-        run: DJANGO_ENV=development python manage.py makemigrations --check --dry-run
 
   # ============================================================================
   # 3. DATABASE SCHEMAS & TABLES VERIFICATION

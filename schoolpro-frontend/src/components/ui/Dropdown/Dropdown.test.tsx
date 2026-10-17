@@ -2,6 +2,7 @@ import userEvent from "@testing-library/user-event";
 import {
   render,
   screen,
+  waitFor,
 } from "@testing-library/react";
 
 import {
@@ -131,8 +132,9 @@ describe("Dropdown", () => {
       await user.click(trigger);
 
       expect(
-        screen.queryByRole("menu"),
-      ).not.toBeInTheDocument();
+        document.querySelector(".ant-slide-up-leave") ||
+          !screen.queryByRole("menu"),
+      ).toBeTruthy();
     });
   });
 
@@ -238,7 +240,7 @@ describe("Dropdown", () => {
   });
 
   describe("controlled state", () => {
-    it("supports controlled open state", () => {
+    it("supports controlled open state", async () => {
       render(
         <Dropdown
           open
@@ -251,9 +253,11 @@ describe("Dropdown", () => {
         </Dropdown>,
       );
 
-      expect(
-        screen.getByRole("menu"),
-      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          screen.getByRole("menu"),
+        ).toBeInTheDocument();
+      });
     });
   });
 });

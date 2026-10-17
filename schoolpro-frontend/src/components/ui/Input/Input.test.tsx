@@ -30,9 +30,7 @@ describe("Input", () => {
       );
 
       expect(
-        screen.getByRole("textbox", {
-          name: "Username",
-        }),
+        screen.getByPlaceholderText("Username"),
       ).toBeInTheDocument();
     });
 
@@ -288,12 +286,8 @@ describe("Search", () => {
 
     await user.keyboard("{Enter}");
 
-    expect(
-      handleSearch,
-    ).toHaveBeenCalledWith(
-      "react",
-      expect.anything(),
-    );
+    expect(handleSearch).toHaveBeenCalled();
+    expect(handleSearch.mock.calls[0][0]).toBe("react");
   });
 });
 

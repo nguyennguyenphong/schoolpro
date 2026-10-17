@@ -158,7 +158,7 @@ export const roleApi = {
 
       return MOCK_ROLES;
     } catch (error) {
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
         console.warn(
           "[roleApi] Could not connect to Core Role API endpoint. Falling back to local mock data.",
           error,

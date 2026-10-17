@@ -210,7 +210,7 @@ describe("SelectAcademicYear Component", () => {
     it("fetches academic years from academicYearApi on mount when customAcademicYears is omitted", async () => {
       const spy = vi
         .spyOn(academicYearApi, "fetchAcademicYears")
-        .mockResolvedValueOnce(TEST_ACADEMIC_YEARS);
+        .mockResolvedValue(TEST_ACADEMIC_YEARS);
 
       render(<SelectAcademicYear />);
 

@@ -143,7 +143,7 @@ export const academicYearApi = {
         cacheMap.set(key, { data, timestamp: Date.now() });
         return data;
       } catch (error) {
-        if (import.meta.env.DEV) {
+        if (import.meta.env.DEV && import.meta.env.MODE !== "test") {
           console.warn(
             "[academicYearApi] Could not connect to Master AcademicYear API endpoint. Falling back to local mock data.",
             error,
