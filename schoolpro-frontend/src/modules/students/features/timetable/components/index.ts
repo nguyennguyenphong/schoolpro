@@ -1,4 +1,6 @@
 export { TimetableFilterBar } from "@/modules/students/features/timetable/components/TimetableFilterBar";
+export type { TimetableFilterBarProps } from "@/modules/students/features/timetable/components/TimetableFilterBar";
+export * from "@/modules/students/features/timetable/components/filter";
 export { WeeklyGridView } from "@/modules/students/features/timetable/components/WeeklyGridView";
 export { DailyAgendaView } from "@/modules/students/features/timetable/components/DailyAgendaView";
 export { TimetableSkeleton } from "@/modules/students/features/timetable/components/TimetableSkeleton";

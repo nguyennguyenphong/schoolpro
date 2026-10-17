@@ -30,8 +30,8 @@ export const TimetablePage: React.FC = () => {
     setSelectedDate,
     resetFilters,
     goToToday,
-    goToPreviousDay,
-    goToNextDay,
+    goToPreviousWeek,
+    goToNextWeek,
     refetch,
   } = useTimetable();
 
@@ -94,8 +94,8 @@ export const TimetablePage: React.FC = () => {
         onDateChange={setSelectedDate}
         onResetFilters={resetFilters}
         onTodayClick={goToToday}
-        onPrevWeekClick={goToPreviousDay}
-        onNextWeekClick={goToNextDay}
+        onPrevWeekClick={goToPreviousWeek}
+        onNextWeekClick={goToNextWeek}
         onPrint={handlePrint}
       />
 

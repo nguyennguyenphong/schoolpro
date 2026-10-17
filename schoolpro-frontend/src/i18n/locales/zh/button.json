@@ -22,6 +22,8 @@
   "reloadTimetable": "重新加载课表",
   "previousDay": "前一天",
   "nextDay": "后一天",
+  "previousWeek": "上一周",
+  "nextWeek": "下一周",
   "markAsRead": "标为已读",
   "markAsUnread": "标为未读",
   "selectAll": "全选",

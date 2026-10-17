@@ -22,6 +22,8 @@
   "reloadTimetable": "Tải lại thời khóa biểu",
   "previousDay": "Ngày trước",
   "nextDay": "Ngày sau",
+  "previousWeek": "Tuần trước",
+  "nextWeek": "Tuần sau",
   "markAsRead": "Đánh dấu đã đọc",
   "markAsUnread": "Đánh dấu chưa đọc",
   "selectAll": "Chọn tất cả",
