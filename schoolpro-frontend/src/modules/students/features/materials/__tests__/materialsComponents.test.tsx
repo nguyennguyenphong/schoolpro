@@ -61,6 +61,7 @@ describe("Materials Components", () => {
     expect(screen.getByText("Toán học")).toBeInTheDocument();
     expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
     expect(screen.getByText("2026-10-10")).toBeInTheDocument();
+    expect(screen.getByText("Chi tiết")).toBeInTheDocument();
 
     const downloadBtn = screen.getByText(/Tải về/);
     expect(downloadBtn).toBeInTheDocument();
@@ -85,6 +86,7 @@ describe("Materials Components", () => {
     expect(screen.getByText("Đề thi thử học kỳ 1 môn Toán")).toBeInTheDocument();
     expect(screen.getByText("Toán học")).toBeInTheDocument();
     expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
+    expect(screen.getByText("Chi tiết")).toBeInTheDocument();
     expect(screen.getByText(/Tải về/)).toBeInTheDocument();
   });
 

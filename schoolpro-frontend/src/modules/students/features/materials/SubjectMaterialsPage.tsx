@@ -9,7 +9,6 @@ import { Tag } from "@/components/ui/Tag";
 import {
   MaterialSummaryCards,
   MaterialFilterBar,
-  MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
   MaterialsPagination,
@@ -28,8 +27,6 @@ export const SubjectMaterialsPage: React.FC = () => {
     summary,
     loading,
     filter,
-    selectedIds,
-    isAllCurrentPageSelected,
     setSearchQuery,
     setAcademicYear,
     setCategory,
@@ -38,12 +35,7 @@ export const SubjectMaterialsPage: React.FC = () => {
     setViewMode,
     setPage,
     resetFilters,
-    toggleSelect,
-    selectAll,
-    clearSelection,
     downloadMaterial,
-    downloadSelected,
-    downloadAll,
     toggleBookmark,
   } = useSubjectMaterials();
 
@@ -174,18 +166,7 @@ export const SubjectMaterialsPage: React.FC = () => {
         hasActiveFilters={hasActiveFilters}
       />
 
-      {/* 3. Multi-selection Bar */}
-      <MaterialSelectionBar
-        selectedCount={selectedIds.length}
-        totalOnPage={materials.length}
-        isAllSelected={isAllCurrentPageSelected}
-        onSelectAll={selectAll}
-        onClearSelection={clearSelection}
-        onDownloadSelected={downloadSelected}
-        onDownloadAll={downloadAll}
-      />
-
-      {/* 4. Results Area */}
+      {/* 3. Results Area */}
       {materials.length === 0 ? (
         <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
@@ -219,8 +200,6 @@ export const SubjectMaterialsPage: React.FC = () => {
             <MaterialCard
               key={item.id}
               item={item}
-              isSelected={selectedIds.includes(item.id)}
-              onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
               onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
@@ -233,8 +212,6 @@ export const SubjectMaterialsPage: React.FC = () => {
             <MaterialListItem
               key={item.id}
               item={item}
-              isSelected={selectedIds.includes(item.id)}
-              onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
               onClick={(mat) => navigate(`/student/materials/${mat.id}`)}

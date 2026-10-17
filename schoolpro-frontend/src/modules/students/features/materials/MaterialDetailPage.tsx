@@ -23,42 +23,42 @@ export const MaterialDetailPage: React.FC = () => {
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1.5 shrink-0">
             <Icon name="file" size={13} />
-            PDF • {size}
+            PDF | {size}
           </span>
         );
       case "word":
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1.5 shrink-0">
             <Icon name="fileText" size={13} />
-            DOCX • {size}
+            DOCX | {size}
           </span>
         );
       case "powerpoint":
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-orange-50 text-orange-700 border border-orange-200 flex items-center gap-1.5 shrink-0">
             <Icon name="presentation" size={13} />
-            PPTX • {size}
+            PPTX | {size}
           </span>
         );
       case "excel":
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 shrink-0">
             <Icon name="fileSpreadsheet" size={13} />
-            XLSX • {size}
+            XLSX | {size}
           </span>
         );
       case "video":
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1.5 shrink-0">
             <Icon name="video" size={13} />
-            MP4 • {size}
+            MP4 | {size}
           </span>
         );
       case "audio":
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5 shrink-0">
             <Icon name="music" size={13} />
-            MP3 • {size}
+            MP3 | {size}
           </span>
         );
       case "archive":
@@ -66,7 +66,7 @@ export const MaterialDetailPage: React.FC = () => {
         return (
           <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-[#f0f0f0] flex items-center gap-1.5 shrink-0">
             <Icon name="archive" size={13} />
-            ZIP • {size}
+            ZIP | {size}
           </span>
         );
     }
@@ -151,7 +151,7 @@ export const MaterialDetailPage: React.FC = () => {
             },
             {
               title: (
-                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium truncate max-w-[200px] sm:max-w-xs">
+                <span className="inline-flex items-center gap-1.5 text-slate-700 font-medium truncate max-w-50 sm:max-w-xs">
                   <span>{item.title}</span>
                 </span>
               ),
@@ -318,7 +318,7 @@ export const MaterialDetailPage: React.FC = () => {
             <div className="space-y-2.5 text-xs text-slate-600">
               <div className="flex items-center justify-between py-1 border-b border-slate-100">
                 <span className="text-slate-400">{t("card:materials.modal.fileName", "Tên tệp")}:</span>
-                <span className="font-semibold text-slate-800 truncate max-w-[160px]" title={item.fileName}>
+                <span className="font-semibold text-slate-800 truncate max-w-40" title={item.fileName}>
                   {item.fileName}
                 </span>
               </div>

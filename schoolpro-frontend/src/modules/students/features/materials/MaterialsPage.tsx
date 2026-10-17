@@ -8,7 +8,6 @@ import { Icon } from "@/components/ui/Icon";
 import {
   MaterialSummaryCards,
   MaterialFilterBar,
-  MaterialSelectionBar,
   MaterialCard,
   MaterialListItem,
   MaterialsPagination,
@@ -27,8 +26,6 @@ export const MaterialsPage: React.FC = () => {
     subjects,
     loading,
     filter,
-    selectedIds,
-    isAllCurrentPageSelected,
     setSearchQuery,
     setAcademicYear,
     setSemester,
@@ -38,11 +35,6 @@ export const MaterialsPage: React.FC = () => {
     setViewMode,
     setPage,
     resetFilters,
-    toggleSelect,
-    selectAll,
-    clearSelection,
-    downloadSelected,
-    downloadAll,
     downloadMaterial,
     toggleBookmark,
   } = useMaterials();
@@ -120,18 +112,7 @@ export const MaterialsPage: React.FC = () => {
         hasActiveFilters={hasActiveFilters}
       />
 
-      {/* 4. Multi-selection Bar */}
-      <MaterialSelectionBar
-        selectedCount={selectedIds.length}
-        totalOnPage={materials.length}
-        isAllSelected={isAllCurrentPageSelected}
-        onSelectAll={selectAll}
-        onClearSelection={clearSelection}
-        onDownloadSelected={downloadSelected}
-        onDownloadAll={downloadAll}
-      />
-
-      {/* 5. Results Area */}
+      {/* 4. Results Area */}
       {materials.length === 0 ? (
         <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
@@ -165,8 +146,6 @@ export const MaterialsPage: React.FC = () => {
             <MaterialCard
               key={item.id}
               item={item}
-              isSelected={selectedIds.includes(item.id)}
-              onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
               onClick={(mat) => navigate(`/student/materials/${mat.id}`)}
@@ -179,8 +158,6 @@ export const MaterialsPage: React.FC = () => {
             <MaterialListItem
               key={item.id}
               item={item}
-              isSelected={selectedIds.includes(item.id)}
-              onToggleSelect={toggleSelect}
               onDownload={downloadMaterial}
               onToggleBookmark={toggleBookmark}
               onClick={(mat) => navigate(`/student/materials/${mat.id}`)}

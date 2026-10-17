@@ -2,11 +2,13 @@
 REST API ViewSet for Subject master reference data.
 """
 
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import permissions, status, viewsets
 
 from apps.core.authentication import SchoolProJWTAuthentication
 from apps.master.serializers.subject_serializers import SubjectListSerializer
 from apps.master.services.subject_service import SubjectService
+from common.exceptions import ResourceNotFoundError
 from common.responses.response import APIResponse
 
 
@@ -21,17 +23,49 @@ def _parse_bool_param(val: str | None) -> bool | None:
     return None
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List subjects",
+        description="Retrieve filtered list of curriculum subjects.",
+        parameters=[
+            OpenApiParameter("school_id", str, description="Filter by school UUID"),
+            OpenApiParameter("department_id", str, description="Filter by department UUID"),
+            OpenApiParameter(
+                "grade_level", int, description="Filter by grade level (e.g. 10, 11, 12)"
+            ),
+            OpenApiParameter("evaluation_type", str, description="Filter by evaluation type"),
+            OpenApiParameter("is_compulsory", bool, description="Filter compulsory subjects"),
+            OpenApiParameter("is_active", bool, description="Filter active subjects"),
+            OpenApiParameter(
+                "search", str, description="Search keyword in code, name or department"
+            ),
+        ],
+        responses={200: SubjectListSerializer(many=True)},
+    ),
+    retrieve=extend_schema(
+        summary="Get subject details",
+        description="Retrieve detailed information of a specific subject by UUID or code.",
+        responses={200: SubjectListSerializer},
+    ),
+)
 class SubjectViewSet(viewsets.GenericViewSet):
     """ViewSet for listing and retrieving Subjects."""
 
     authentication_classes = [SchoolProJWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = SubjectListSerializer
 
+    def get_permissions(self):
+        """Allow read access to authenticated users and clients."""
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
     def _get_effective_school_id(self, request):
-        user_school_id = getattr(request.user, "school_id", None)
-        if user_school_id:
-            return user_school_id
+        user = getattr(request, "user", None)
+        if user and getattr(user, "is_authenticated", False):
+            user_school_id = getattr(user, "school_id", None)
+            if user_school_id:
+                return user_school_id
         return request.query_params.get("school_id")
 
     def list(self, request, *args, **kwargs):
@@ -64,8 +98,10 @@ class SubjectViewSet(viewsets.GenericViewSet):
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         service = SubjectService()
-        obj = service.get_subject_detail(pk)
-        if not obj:
+        school_id = self._get_effective_school_id(request)
+        try:
+            obj = service.get_subject_detail(pk, school_id=school_id)
+        except ResourceNotFoundError:
             return APIResponse.error(
                 message="Không tìm thấy môn học.",
                 code=status.HTTP_404_NOT_FOUND,

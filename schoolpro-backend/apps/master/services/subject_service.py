@@ -27,8 +27,10 @@ class SubjectService:
         is_compulsory: bool | None = None,
         is_active: bool | None = None,
         search_query: str | None = None,
+        search: str | None = None,
     ):
         """List subjects with filtering and search."""
+        query = search if search is not None else search_query
         return self.repository.get_subjects_list(
             school_id=school_id,
             department_id=department_id,
@@ -36,7 +38,30 @@ class SubjectService:
             evaluation_type=evaluation_type,
             is_compulsory=is_compulsory,
             is_active=is_active,
+            search_query=query,
+        )
+
+    def list_subjects(
+        self,
+        school_id: UUID | str | None = None,
+        department_id: UUID | str | None = None,
+        grade_level: int | None = None,
+        evaluation_type: str | None = None,
+        is_compulsory: bool | None = None,
+        is_active: bool | None = None,
+        search: str | None = None,
+        search_query: str | None = None,
+    ):
+        """Alias for get_subjects matching standard ViewSet conventions."""
+        return self.get_subjects(
+            school_id=school_id,
+            department_id=department_id,
+            grade_level=grade_level,
+            evaluation_type=evaluation_type,
+            is_compulsory=is_compulsory,
+            is_active=is_active,
             search_query=search_query,
+            search=search,
         )
 
     def get_subject_detail(

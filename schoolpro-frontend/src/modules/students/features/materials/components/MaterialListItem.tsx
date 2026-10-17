@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Checkbox } from "@/components/ui/Checkbox";
 import type {
   MaterialItem,
   MaterialFormat,
@@ -13,8 +12,6 @@ import type {
 
 interface MaterialListItemProps {
   item: MaterialItem;
-  isSelected?: boolean;
-  onToggleSelect?: (id: string) => void;
   onDownload: (item: MaterialItem) => void;
   onToggleBookmark: (id: string) => void;
   onClick?: (item: MaterialItem) => void;
@@ -22,8 +19,6 @@ interface MaterialListItemProps {
 
 export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   item,
-  isSelected = false,
-  onToggleSelect,
   onDownload,
   onToggleBookmark,
   onClick,
@@ -120,23 +115,9 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
   return (
     <div
       onClick={handleItemClick}
-      className={`bg-white rounded-xl border shadow-2xs p-4 sm:p-4.5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 hover:shadow-md ${
-        isSelected
-          ? "border-blue-500 ring-2 ring-blue-100 bg-blue-50/15"
-          : "border-[#f0f0f0] hover:border-blue-400"
-      }`}
+      className="bg-white rounded-xl border border-[#f0f0f0] hover:border-blue-400 shadow-2xs p-4 sm:p-4.5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 hover:shadow-md"
     >
       <div className="flex items-start gap-3.5 flex-1 min-w-0">
-        {/* Checkbox */}
-        {onToggleSelect && (
-          <div onClick={(e) => e.stopPropagation()} className="pt-0.5 shrink-0 flex items-center">
-            <Checkbox
-              checked={isSelected}
-              onChange={() => onToggleSelect(item.id)}
-            />
-          </div>
-        )}
-
         {/* Key Info */}
         <div className="space-y-1.5 flex-1 min-w-0">
           {/* Row 1: Badges */}
@@ -202,6 +183,14 @@ export const MaterialListItem: React.FC<MaterialListItemProps> = ({
         >
           <Icon name="bookmark" size={15} />
         </button>
+
+        <Button
+          variant="outline"
+          onClick={handleItemClick}
+          className="text-xs px-3 py-1.5 font-semibold"
+        >
+          <span>{t("card:materials.actions.viewDetail", "Chi tiết")}</span>
+        </Button>
 
         <Button
           variant="primary"
