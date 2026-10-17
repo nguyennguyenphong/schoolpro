@@ -162,11 +162,11 @@ export const useSemester = (
 
       try {
         const data = await semesterApi.fetchSemesters(queryParams);
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setSemesters(data);
         }
       } catch (err) {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsError(true);
           const errorObj =
             err instanceof Error
@@ -182,7 +182,7 @@ export const useSemester = (
           );
         }
       } finally {
-        if (isSubscribed && isMountedRef.current) {
+        if (isSubscribed) {
           setIsLoading(false);
         }
       }

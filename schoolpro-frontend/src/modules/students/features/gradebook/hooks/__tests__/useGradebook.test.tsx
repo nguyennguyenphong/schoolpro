@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import React from "react";
 import { useGradebook } from "@/modules/students/features/gradebook/hooks/useGradebook";
@@ -42,8 +42,12 @@ describe("useGradebook hook", () => {
     vi.clearAllMocks();
   });
 
-  it("synchronizes academic year and semester when academic year becomes 'all'", () => {
+  it("synchronizes academic year and semester when academic year becomes 'all'", async () => {
     const { result } = renderHook(() => useGradebook(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
 
     act(() => {
       result.current.setAcademicYear("all");
@@ -51,10 +55,18 @@ describe("useGradebook hook", () => {
 
     expect(result.current.filter.academicYear).toBe("all");
     expect(result.current.filter.semester).toBe("all");
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
   });
 
-  it("handles academic year change to specific year cleanly", () => {
+  it("handles academic year change to specific year cleanly", async () => {
     const { result } = renderHook(() => useGradebook(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
 
     act(() => {
       result.current.setAcademicYear("ay-2026-2027");
@@ -62,10 +74,18 @@ describe("useGradebook hook", () => {
 
     expect(result.current.filter.academicYear).toBe("ay-2026-2027");
     expect(result.current.filter.semester).toBe("");
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
   });
 
-  it("resets filters back to clean defaults upon resetFilters()", () => {
+  it("resets filters back to clean defaults upon resetFilters()", async () => {
     const { result } = renderHook(() => useGradebook(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
 
     act(() => {
       result.current.setSearchQuery("Toán học");
@@ -83,5 +103,9 @@ describe("useGradebook hook", () => {
     expect(result.current.filter.classification).toBe("all");
     expect(result.current.filter.sortBy).toBe("gpa_desc");
     expect(result.current.hasActiveFilters).toBe(false);
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
   });
 });
