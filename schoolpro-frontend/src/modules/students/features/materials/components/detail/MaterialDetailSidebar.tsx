@@ -34,7 +34,7 @@ export const MaterialDetailSidebar: React.FC<MaterialDetailSidebarProps> = ({
         <div className="space-y-2.5 text-xs">
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
             <span className="text-slate-500">Tên tệp gốc</span>
-            <span className="font-semibold text-slate-800 truncate max-w-[170px]" title={item.fileName}>
+            <span className="font-semibold text-slate-800 truncate max-w-42.5" title={item.fileName}>
               {item.fileName}
             </span>
           </div>
