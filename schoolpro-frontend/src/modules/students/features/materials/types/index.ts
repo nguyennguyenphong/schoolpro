@@ -33,6 +33,16 @@ export interface SubjectItem {
   totalDownloads: number;
 }
 
+export interface MaterialFileItem {
+  id: string;
+  name: string;
+  size: string;
+  format: MaterialFormat;
+  url: string;
+  previewUrl?: string;
+  description?: string;
+}
+
 export interface MaterialItem {
   id: string;
   title: string;
@@ -54,6 +64,7 @@ export interface MaterialItem {
   tableOfContents?: string[];
   isBookmarked?: boolean;
   isFeatured?: boolean;
+  attachments?: MaterialFileItem[];
 }
 
 export interface MaterialSummary {

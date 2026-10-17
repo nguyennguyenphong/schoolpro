@@ -94,5 +94,7 @@
   "submitScoreAppeal": "再採点申請を送信",
   "closePreview": "プレビューを閉じる",
   "downloadFile": "ファイルをダウンロード",
-  "printTimeTable": "時間割を印刷"
+  "printTimeTable": "時間割を印刷",
+  "downloadSelectedFiles": "選択したファイルをダウンロード ({{count}})",
+  "deselectAll": "選択解除"
 }

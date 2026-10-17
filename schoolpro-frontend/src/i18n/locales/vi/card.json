@@ -1238,7 +1238,7 @@
       "schoolHeader": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
       "departmentHeader": "TỔ CHUYÊN MÔN: {{name}}",
       "internalDistribution": "LƯU HÀNH NỘI BỘ",
-      "compiledBy": "Biên soạn: {{author}} • {{semester}} ({{year}})",
+      "compiledBy": "Biên soạn: {{author}}",
       "keyObjectives": "Mục tiêu bài học trọng tâm:",
       "objective1": "Nắm vững phương pháp luận và lý thuyết mở rộng.",
       "objective2": "Hệ thống hóa dạng bài tập trắc nghiệm và tự luận phân hóa cao.",
@@ -1257,6 +1257,44 @@
       "noMaterialsDefault": "Hiện tại chưa có tài liệu nào trong danh mục này.",
       "noSubjectMaterialsDefault": "Hiện tại môn học này chưa có tài liệu nào.",
       "resetFilterBtn": "Đặt lại bộ lọc"
+    },
+    "overview": {
+      "workflowCardTitle": "Quy trình & Tiêu chuẩn phát hành",
+      "step1Title": "Biên soạn nội dung",
+      "step1Desc": "Giáo viên bộ môn biên soạn & chuẩn hóa",
+      "step2Title": "Thẩm định chuyên môn",
+      "step2Desc": "Tổ bộ môn phê duyệt đạt chuẩn",
+      "step3Title": "Phát hành số",
+      "step3Desc": "Công bố trên kho tài liệu học tập",
+      "step4Title": "Tự học & Nghiên cứu",
+      "step4Desc": "Học sinh tải về và ôn tập",
+      "officialNotice": "Tài liệu học tập chính thức lưu hành nội bộ trường học"
+    },
+    "files": {
+      "cardTitle": "Danh sách tài liệu & Tệp đính kèm",
+      "totalFilesBadge": "{{count}} tệp",
+      "selectAll": "Chọn tất cả",
+      "deselectAll": "Bỏ chọn",
+      "selectedCount": "Đã chọn: {{count}} / {{total}} tệp",
+      "downloadSelected": "Tải các tệp đã chọn ({{count}})",
+      "noFiles": "Không có tệp đính kèm nào",
+      "primaryFileBadge": "Tệp chính",
+      "supplementaryBadge": "Tệp đính kèm",
+      "downloadSingleTooltip": "Tải xuống",
+      "previewSingleTooltip": "Xem trước"
+    },
+    "previewModal": {
+      "title": "Xem trước tài liệu: {{fileName}}",
+      "unsupportedTitle": "Định dạng không hỗ trợ xem trước",
+      "unsupportedDesc": "Định dạng tệp này hiện không hỗ trợ xem trước trực tuyến. Học sinh vui lòng tải tệp xuống để mở trên thiết bị.",
+      "audioPlaying": "Trình phát âm thanh bài giảng",
+      "audioDesc": "Bản ghi âm bài giảng chuẩn dành cho học sinh luyện tập",
+      "wordNotice": "Bản xem trước tóm tắt tài liệu Word. Vui lòng tải xuống để xem đầy đủ định dạng.",
+      "excelNotice": "Bản xem trước bảng tính Excel. Vui lòng tải xuống để thao tác bảng số liệu gốc.",
+      "powerpointNotice": "Bản xem trước trình chiếu PowerPoint. Vui lòng tải xuống để xem đầy đủ hiệu ứng.",
+      "slideCounter": "Trang {{current}} / {{total}}",
+      "downloadFile": "Tải xuống tệp",
+      "close": "Đóng"
     }
   }
 }

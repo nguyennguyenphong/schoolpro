@@ -94,5 +94,7 @@
   "submitScoreAppeal": "Gửi yêu cầu phúc khảo",
   "closePreview": "Đóng xem trước",
   "downloadFile": "Tải xuống tệp",
-  "printTimeTable": "In thời khóa biểu"
+  "printTimeTable": "In thời khóa biểu",
+  "downloadSelectedFiles": "Tải các tệp đã chọn ({{count}})",
+  "deselectAll": "Bỏ chọn tất cả"
 }

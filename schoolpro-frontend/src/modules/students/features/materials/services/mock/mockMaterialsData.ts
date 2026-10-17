@@ -185,6 +185,41 @@ export const mockMaterialsData: MaterialItem[] = [
     description:
       "Tổng hợp kiến thức trọng tâm Hàm số lượng giác, Phương trình lượng giác và Quan hệ song song trong không gian kèm 120 câu trắc nghiệm.",
     tableOfContents: ["Chuyên đề 1: Hàm số lượng giác và đồ thị", "Chuyên đề 2: Phương trình lượng giác cơ bản", "Chuyên đề 3: Đường thẳng và mặt phẳng song song"],
+    attachments: [
+      {
+        id: "att-mat1-1",
+        name: "De_cuong_On_tap_Toan_11_HK1.pdf",
+        size: "2.4 MB",
+        format: "pdf",
+        url: "#download-math-outline",
+        previewUrl: "/sample-notice.pdf",
+        description: "Tài liệu đề cương chính thức của tổ chuyên môn",
+      },
+      {
+        id: "att-mat1-2",
+        name: "Phieu_bai_tap_Trac_nghiem_Luong_giac.docx",
+        size: "1.1 MB",
+        format: "word",
+        url: "#download-math-worksheet",
+        description: "120 câu trắc nghiệm có đáp án phân loại",
+      },
+      {
+        id: "att-mat1-3",
+        name: "Bang_ma_tran_va_Barem_diem.xlsx",
+        size: "420 KB",
+        format: "excel",
+        url: "#download-math-matrix",
+        description: "Bảng ma trận cấu trúc đề thi và barem điểm",
+      },
+      {
+        id: "att-mat1-4",
+        name: "Slide_Huong_dan_Giai_chi_tiet.pptx",
+        size: "6.8 MB",
+        format: "powerpoint",
+        url: "#download-math-slides",
+        description: "Slide bài giảng hướng dẫn phương pháp giải nhanh",
+      },
+    ],
   },
   {
     id: "mat-1b",

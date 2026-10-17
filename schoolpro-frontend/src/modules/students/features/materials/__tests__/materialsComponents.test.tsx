@@ -7,12 +7,25 @@ import { MaterialSelectionBar } from "@/modules/students/features/materials/comp
 import { MaterialsPagination } from "@/modules/students/features/materials/components/MaterialsPagination";
 import { MaterialFilterBar } from "@/modules/students/features/materials/components/MaterialFilterBar";
 import { MaterialSummaryCards } from "@/modules/students/features/materials/components/MaterialSummaryCards";
+vi.mock("@react-pdf-viewer/core", () => ({
+  Worker: ({ children }: { children: React.ReactNode }) => <div data-testid="pdf-worker">{children}</div>,
+  Viewer: ({ fileUrl }: { fileUrl: string }) => <div data-testid="pdf-viewer" data-url={fileUrl}>Viewer Content</div>,
+}));
+
+vi.mock("@react-pdf-viewer/default-layout", () => ({
+  defaultLayoutPlugin: () => ({}),
+}));
+
 import {
   MaterialDetailHeader,
   MaterialPreviewCard,
   MaterialDetailSidebar,
+  MaterialWorkflowCard,
+  MaterialContentCard,
+  MaterialFilesCard,
+  MaterialPreviewModal,
 } from "@/modules/students/features/materials/components/detail";
-import type { MaterialItem, MaterialFilter } from "@/modules/students/features/materials/types";
+import type { MaterialItem, MaterialFilter, MaterialFileItem } from "@/modules/students/features/materials/types";
 
 const mockMaterial: MaterialItem = {
   id: "test-mat-1",
@@ -263,6 +276,96 @@ describe("Materials Components", () => {
     expect(screen.getByText("Thông số kỹ thuật tài liệu")).toBeInTheDocument();
     expect(screen.getByText("Giáo viên & Tổ bộ môn")).toBeInTheDocument();
     expect(screen.getByText(mockMaterial.fileName)).toBeInTheDocument();
+  });
+
+  it("renders MaterialWorkflowCard with workflow title and pedagogy badge", () => {
+    render(<MaterialWorkflowCard item={mockMaterial} />);
+
+    expect(screen.getByText("Quy trình & Tiêu chuẩn phát hành")).toBeInTheDocument();
+    expect(screen.getByText("Đạt chuẩn sư phạm số")).toBeInTheDocument();
+    expect(screen.getByText("Biên soạn nội dung")).toBeInTheDocument();
+  });
+
+  it("renders MaterialContentCard without displaying semester or class", () => {
+    render(<MaterialContentCard item={mockMaterial} />);
+
+    expect(screen.getByText("Toán học (MATH11)")).toBeInTheDocument();
+    expect(screen.getByText("Thầy Nguyễn Văn Nam")).toBeInTheDocument();
+    expect(screen.getByText(mockMaterial.description)).toBeInTheDocument();
+    expect(screen.queryByText(/HK1/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/2026-2027/)).not.toBeInTheDocument();
+  });
+
+  it("renders MaterialFilesCard and supports file selection and actions", () => {
+    const mockFiles: MaterialFileItem[] = [
+      {
+        id: "f-1",
+        name: "De_thi_chinh_thuc.pdf",
+        size: "2.5 MB",
+        format: "pdf",
+        url: "#pdf",
+        description: "Tài liệu đề thi",
+      },
+      {
+        id: "f-2",
+        name: "Phieu_tra_loi.docx",
+        size: "1.1 MB",
+        format: "word",
+        url: "#docx",
+        description: "Phiếu trả lời trắc nghiệm",
+      },
+    ];
+
+    const handlePreview = vi.fn();
+    const handleDownloadSingle = vi.fn();
+    const handleDownloadSelected = vi.fn();
+
+    render(
+      <MaterialFilesCard
+        files={mockFiles}
+        onPreviewFile={handlePreview}
+        onDownloadSingle={handleDownloadSingle}
+        onDownloadSelected={handleDownloadSelected}
+      />,
+    );
+
+    expect(screen.getByText("Danh sách tài liệu & Tệp đính kèm")).toBeInTheDocument();
+    expect(screen.getByText("De_thi_chinh_thuc.pdf")).toBeInTheDocument();
+    expect(screen.getByText("Phieu_tra_loi.docx")).toBeInTheDocument();
+
+    const previewBtns = screen.getAllByRole("button", { name: /Xem trước/ });
+    expect(previewBtns.length).toBe(2);
+    fireEvent.click(previewBtns[0]);
+    expect(handlePreview).toHaveBeenCalledWith(mockFiles[0]);
+
+    const downloadBtns = screen.getAllByRole("button", { name: /Tải xuống/ });
+    expect(downloadBtns.length).toBe(2);
+    fireEvent.click(downloadBtns[1]);
+    expect(handleDownloadSingle).toHaveBeenCalledWith(mockFiles[1]);
+  });
+
+  it("renders MaterialPreviewModal with file details and preview content", () => {
+    const testFile: MaterialFileItem = {
+      id: "f-1",
+      name: "Bai_tap_on_tap.pdf",
+      size: "3.2 MB",
+      format: "pdf",
+      url: "/sample-notice.pdf",
+    };
+
+    const handleClose = vi.fn();
+
+    render(
+      <MaterialPreviewModal
+        open={true}
+        onClose={handleClose}
+        file={testFile}
+        materialTitle="Tài liệu chuyên đề"
+      />,
+    );
+
+    expect(screen.getByText("Bai_tap_on_tap.pdf")).toBeInTheDocument();
+    expect(screen.getByTestId("pdf-viewer")).toBeInTheDocument();
   });
 });
 

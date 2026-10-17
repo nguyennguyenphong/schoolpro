@@ -50,9 +50,9 @@ export const MaterialDetailSidebar: React.FC<MaterialDetailSidebarProps> = ({
           </div>
 
           <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-lg">
-            <span className="text-slate-500">{t("card:materials.detail.semesterYear")}</span>
+            <span className="text-slate-500">{t("card:materials.modal.views")}</span>
             <span className="font-semibold text-slate-800">
-              {item.semester} ({item.academicYear})
+              {item.viewsCount.toLocaleString()}
             </span>
           </div>
 

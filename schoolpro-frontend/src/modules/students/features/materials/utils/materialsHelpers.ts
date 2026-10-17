@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import { message } from "@/components/ui/Message";
 import type {
   MaterialCategory,
+  MaterialFileItem,
   MaterialFormat,
   MaterialItem,
   SubjectItem,
@@ -230,4 +231,120 @@ export const downloadBatchWithFeedback = (
       count,
     }),
   );
+};
+
+/**
+ * Resolves the list of downloadable files for a material item.
+ * If item.attachments is provided, uses it. Otherwise generates a list containing
+ * the main material file along with complementary files.
+ */
+export const getMaterialFileList = (item: MaterialItem): MaterialFileItem[] => {
+  if (item.attachments && item.attachments.length > 0) {
+    return item.attachments;
+  }
+
+  const mainFile: MaterialFileItem = {
+    id: `${item.id}-main`,
+    name: item.fileName,
+    size: item.fileSize,
+    format: item.format,
+    url: item.fileUrl,
+    previewUrl: item.previewUrl,
+    description: "Tài liệu học tập chính thức",
+  };
+
+  const supplementaryFiles: MaterialFileItem[] = [];
+
+  if (item.format === "pdf") {
+    supplementaryFiles.push({
+      id: `${item.id}-doc`,
+      name: item.fileName.replace(/\.pdf$/i, "_Phieu_Bai_Tap.docx"),
+      size: "1.2 MB",
+      format: "word",
+      url: "#download-doc",
+      description: "Phiếu bài tập tự luyện và củng cố kiến thức",
+    });
+    supplementaryFiles.push({
+      id: `${item.id}-sheet`,
+      name: item.fileName.replace(/\.pdf$/i, "_Bang_Tra_Cuu.xlsx"),
+      size: "450 KB",
+      format: "excel",
+      url: "#download-sheet",
+      description: "Bảng tra cứu công thức và barem điểm",
+    });
+    supplementaryFiles.push({
+      id: `${item.id}-slide`,
+      name: item.fileName.replace(/\.pdf$/i, "_Slide_Bai_Giang.pptx"),
+      size: "5.8 MB",
+      format: "powerpoint",
+      url: "#download-slide",
+      description: "Slide bài giảng tóm tắt minh họa",
+    });
+  } else if (item.format === "powerpoint") {
+    supplementaryFiles.push({
+      id: `${item.id}-pdf`,
+      name: item.fileName.replace(/\.pptx?$/i, "_Ban_In_Handout.pdf"),
+      size: "2.8 MB",
+      format: "pdf",
+      url: "#download-handout",
+      previewUrl: "/sample-notice.pdf",
+      description: "Bản in Handout ghi chép dành cho học sinh",
+    });
+    supplementaryFiles.push({
+      id: `${item.id}-doc`,
+      name: item.fileName.replace(/\.pptx?$/i, "_Cau_Hoi_Thao_Luan.docx"),
+      size: "980 KB",
+      format: "word",
+      url: "#download-questions",
+      description: "Hệ thống câu hỏi thảo luận nhóm",
+    });
+  } else if (item.format === "audio") {
+    supplementaryFiles.push({
+      id: `${item.id}-pdf`,
+      name: item.fileName.replace(/\.mp3$/i, "_Audio_Transcript.pdf"),
+      size: "1.6 MB",
+      format: "pdf",
+      url: "#download-transcript",
+      previewUrl: "/sample-notice.pdf",
+      description: "Văn bản lời thoại (Transcript) bài nghe",
+    });
+    supplementaryFiles.push({
+      id: `${item.id}-doc`,
+      name: item.fileName.replace(/\.mp3$/i, "_Listening_Worksheet.docx"),
+      size: "820 KB",
+      format: "word",
+      url: "#download-worksheet",
+      description: "Phiếu bài tập nghe hiểu",
+    });
+  } else if (item.format === "word") {
+    supplementaryFiles.push({
+      id: `${item.id}-pdf`,
+      name: item.fileName.replace(/\.docx?$/i, "_Ban_Xuat_Chuan.pdf"),
+      size: "2.1 MB",
+      format: "pdf",
+      url: "#download-pdf-standard",
+      previewUrl: "/sample-notice.pdf",
+      description: "Bản xuất PDF chuẩn in ấn",
+    });
+    supplementaryFiles.push({
+      id: `${item.id}-sheet`,
+      name: item.fileName.replace(/\.docx?$/i, "_Dap_An_Ma_Tran.xlsx"),
+      size: "380 KB",
+      format: "excel",
+      url: "#download-matrix",
+      description: "Ma trận đề thi và đáp án chi tiết",
+    });
+  } else {
+    supplementaryFiles.push({
+      id: `${item.id}-handout`,
+      name: item.fileName.replace(/\.[^.]+$/, "_Tai_Lieu_Huong_Dan.pdf"),
+      size: "1.5 MB",
+      format: "pdf",
+      url: "#download-guide",
+      previewUrl: "/sample-notice.pdf",
+      description: "Tài liệu hướng dẫn thực hành",
+    });
+  }
+
+  return [mainFile, ...supplementaryFiles];
 };

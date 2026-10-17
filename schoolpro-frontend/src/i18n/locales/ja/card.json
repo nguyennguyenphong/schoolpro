@@ -1238,7 +1238,7 @@
       "schoolHeader": "SCHOOLPRO高等学校",
       "departmentHeader": "教科部: {{name}}",
       "internalDistribution": "学内限定配布",
-      "compiledBy": "編纂: {{author}} • {{semester}} ({{year}})",
+      "compiledBy": "作成者: {{author}}",
       "keyObjectives": "主な学習目標:",
       "objective1": "方法論と発展的理論を習得する。",
       "objective2": "選択式および記述式の応用問題を体系化する。",
@@ -1257,6 +1257,44 @@
       "noMaterialsDefault": "現在、このカテゴリには教材がありません。",
       "noSubjectMaterialsDefault": "現在、この科目には教材がありません。",
       "resetFilterBtn": "フィルターをリセット"
+    },
+    "overview": {
+      "workflowCardTitle": "教材公開プロセスと標準規格",
+      "step1Title": "コンテンツ作成",
+      "step1Desc": "教科担当教員による作成と標準化",
+      "step2Title": "専門査読",
+      "step2Desc": "教科部会による承認完了",
+      "step3Title": "デジタル配信",
+      "step3Desc": "教材リポジトリへの掲載完了",
+      "step4Title": "自主学習・復习",
+      "step4Desc": "生徒のダウンロードと学習準備完了",
+      "officialNotice": "学校内限定配信の公式学習教材です"
+    },
+    "files": {
+      "cardTitle": "教材・添付ファイル一覧",
+      "totalFilesBadge": "{{count}} 件のファイル",
+      "selectAll": "すべて選択",
+      "deselectAll": "選択解除",
+      "selectedCount": "選択済み: {{count}} / {{total}} 件",
+      "downloadSelected": "選択したファイルをダウンロード ({{count}})",
+      "noFiles": "添付ファイルはありません",
+      "primaryFileBadge": "主要ファイル",
+      "supplementaryBadge": "添付ファイル",
+      "downloadSingleTooltip": "ダウンロード",
+      "previewSingleTooltip": "プレビュー"
+    },
+    "previewModal": {
+      "title": "教材プレビュー: {{fileName}}",
+      "unsupportedTitle": "プレビュー非対応のファイル形式",
+      "unsupportedDesc": "このファイル形式はオンラインプレビューに対応していません。端末にダウンロードしてご確認ください。",
+      "audioPlaying": "講義音声プレーヤー",
+      "audioDesc": "学習用の高音質講義音声ファイルです",
+      "wordNotice": "Word文書の要約プレビューです。すべての書式を確認するにはダウンロードしてください。",
+      "excelNotice": "Excelスプレッドシートのプレビューです。計算式や原データを確認するにはダウンロードしてください。",
+      "powerpointNotice": "PowerPointスライドのプレビューです。アニメーションを確認するにはダウンロードしてください。",
+      "slideCounter": "スライド {{current}} / {{total}}",
+      "downloadFile": "ファイルをダウンロード",
+      "close": "閉じる"
     }
   }
 }

@@ -94,5 +94,7 @@
   "submitScoreAppeal": "Submit Score Appeal",
   "closePreview": "Close Preview",
   "downloadFile": "Download File",
-  "printTimeTable": "Print Timetable"
+  "printTimeTable": "Print Timetable",
+  "downloadSelectedFiles": "Download selected files ({{count}})",
+  "deselectAll": "Deselect all"
 }

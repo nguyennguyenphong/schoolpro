@@ -1238,7 +1238,7 @@
       "schoolHeader": "SCHOOLPRO HIGH SCHOOL",
       "departmentHeader": "DEPARTMENT: {{name}}",
       "internalDistribution": "INTERNAL DISTRIBUTION ONLY",
-      "compiledBy": "Compiled by: {{author}} • {{semester}} ({{year}})",
+      "compiledBy": "Compiled by: {{author}}",
       "keyObjectives": "Key Lesson Objectives:",
       "objective1": "Master methodologies and advanced theoretical concepts.",
       "objective2": "Systematize multiple-choice and differentiation exercise types.",
@@ -1257,6 +1257,44 @@
       "noMaterialsDefault": "There are currently no learning materials in this category.",
       "noSubjectMaterialsDefault": "There are currently no learning materials for this subject.",
       "resetFilterBtn": "Reset Filters"
+    },
+    "overview": {
+      "workflowCardTitle": "Release Workflow & Standards",
+      "step1Title": "Content Authoring",
+      "step1Desc": "Subject teacher authored & standardized",
+      "step2Title": "Academic Review",
+      "step2Desc": "Department reviewed and approved",
+      "step3Title": "Digital Publishing",
+      "step3Desc": "Published on learning materials repository",
+      "step4Title": "Self-Study & Practice",
+      "step4Desc": "Ready for student download and study",
+      "officialNotice": "Official study material for internal school circulation"
+    },
+    "files": {
+      "cardTitle": "Materials & Attachments List",
+      "totalFilesBadge": "{{count}} files",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all",
+      "selectedCount": "Selected: {{count}} / {{total}} files",
+      "downloadSelected": "Download selected files ({{count}})",
+      "noFiles": "No attached files available",
+      "primaryFileBadge": "Primary file",
+      "supplementaryBadge": "Attachment",
+      "downloadSingleTooltip": "Download",
+      "previewSingleTooltip": "Preview"
+    },
+    "previewModal": {
+      "title": "Preview Material: {{fileName}}",
+      "unsupportedTitle": "Preview not supported for this format",
+      "unsupportedDesc": "This file format currently does not support online preview. Please download the file to view its full content on your device.",
+      "audioPlaying": "Lecture Audio Player",
+      "audioDesc": "Standard high-quality lecture recording for student practice",
+      "wordNotice": "Word document summary preview. Please download to view full formatting.",
+      "excelNotice": "Excel spreadsheet preview. Please download to interact with original formulas and sheets.",
+      "powerpointNotice": "PowerPoint presentation preview. Please download to view complete animations and transitions.",
+      "slideCounter": "Slide {{current}} / {{total}}",
+      "downloadFile": "Download file",
+      "close": "Close"
     }
   }
 }

@@ -94,5 +94,7 @@
   "submitScoreAppeal": "이의신청 제출",
   "closePreview": "미리보기 닫기",
   "downloadFile": "파일 다운로드",
-  "printTimeTable": "시간표 인쇄"
+  "printTimeTable": "시간표 인쇄",
+  "downloadSelectedFiles": "선택한 파일 다운로드 ({{count}})",
+  "deselectAll": "선택 해제"
 }

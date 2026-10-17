@@ -137,9 +137,6 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             <Tag color={categoryConfig.color} className="font-medium m-0">
               {categoryConfig.label}
             </Tag>
-            <span className="text-xs text-slate-400">
-              • {item.semester}
-            </span>
           </div>
 
           <button

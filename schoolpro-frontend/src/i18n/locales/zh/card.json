@@ -1238,7 +1238,7 @@
       "schoolHeader": "SCHOOLPRO高级中学",
       "departmentHeader": "教研组: {{name}}",
       "internalDistribution": "内部传阅",
-      "compiledBy": "编撰: {{author}} • {{semester}} ({{year}})",
+      "compiledBy": "编撰者: {{author}}",
       "keyObjectives": "核心学习目标:",
       "objective1": "掌握方法论及拓展理论概念。",
       "objective2": "系统化梳理高区分度选择题与解答题类型。",
@@ -1257,6 +1257,44 @@
       "noMaterialsDefault": "当前该分类下暂无学习资料。",
       "noSubjectMaterialsDefault": "当前该课程暂无学习资料。",
       "resetFilterBtn": "重置筛选"
+    },
+    "overview": {
+      "workflowCardTitle": "教材发布流程与规范",
+      "step1Title": "内容编撰",
+      "step1Desc": "科任教师编写与标准化",
+      "step2Title": "学科审定",
+      "step2Desc": "教研组审核达标批准",
+      "step3Title": "数字化发布",
+      "step3Desc": "已在学习资源库正式发布",
+      "step4Title": "自主学习",
+      "step4Desc": "学生可随时下载研读",
+      "officialNotice": "学校内部流通的官方学习资料"
+    },
+    "files": {
+      "cardTitle": "资料清单与附件列表",
+      "totalFilesBadge": "{{count}} 个文件",
+      "selectAll": "全选",
+      "deselectAll": "取消选择",
+      "selectedCount": "已选: {{count}} / {{total}} 个文件",
+      "downloadSelected": "下载选中文件 ({{count}})",
+      "noFiles": "暂无附件",
+      "primaryFileBadge": "主文件",
+      "supplementaryBadge": "附件资料",
+      "downloadSingleTooltip": "下载",
+      "previewSingleTooltip": "预览"
+    },
+    "previewModal": {
+      "title": "资料预览: {{fileName}}",
+      "unsupportedTitle": "此格式暂不支持在线预览",
+      "unsupportedDesc": "该文件格式暂不支持在线预览，请下载到本地设备以查看完整内容。",
+      "audioPlaying": "课程音频播放器",
+      "audioDesc": "供学生练习的标准高质量课程录音",
+      "wordNotice": "Word文档摘要预览，请下载以查看完整排版与表格。",
+      "excelNotice": "Excel电子表格预览，请下载以查看原始公式和数据。",
+      "powerpointNotice": "PowerPoint演示文稿预览，请下载以查看完整动画与放映效果。",
+      "slideCounter": "第 {{current}} / {{total}} 页",
+      "downloadFile": "下载文件",
+      "close": "关闭"
     }
   }
 }

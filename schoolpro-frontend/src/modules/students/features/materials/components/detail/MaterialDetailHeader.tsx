@@ -92,10 +92,6 @@ export const MaterialDetailHeader: React.FC<MaterialDetailHeaderProps> = ({
               <span>{item.uploadDate}</span>
             </span>
             <span>•</span>
-            <span>
-              {item.semester} ({item.academicYear})
-            </span>
-            <span>•</span>
             <span className="flex items-center gap-1 text-slate-600 font-medium">
               <Icon name="download" size={12} className="text-slate-400" />
               <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount })}</span>

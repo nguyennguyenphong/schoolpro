@@ -1,4 +1,8 @@
 export { MaterialDetailHeader } from "@/modules/students/features/materials/components/detail/MaterialDetailHeader";
+export { MaterialWorkflowCard } from "@/modules/students/features/materials/components/detail/MaterialWorkflowCard";
+export { MaterialContentCard } from "@/modules/students/features/materials/components/detail/MaterialContentCard";
+export { MaterialFilesCard } from "@/modules/students/features/materials/components/detail/MaterialFilesCard";
+export { MaterialPreviewModal } from "@/modules/students/features/materials/components/detail/MaterialPreviewModal";
 export { MaterialPreviewCard } from "@/modules/students/features/materials/components/detail/MaterialPreviewCard";
 export { MaterialOutlineCard } from "@/modules/students/features/materials/components/detail/MaterialOutlineCard";
 export { MaterialDetailSidebar } from "@/modules/students/features/materials/components/detail/MaterialDetailSidebar";

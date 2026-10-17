@@ -82,8 +82,6 @@ export const MaterialPreviewCard: React.FC<MaterialPreviewCardProps> = ({
               <p className="text-xs text-slate-500 mb-0">
                 {t("card:materials.preview.compiledBy", {
                   author: item.author,
-                  semester: item.semester,
-                  year: item.academicYear,
                 })}
               </p>
             </div>
