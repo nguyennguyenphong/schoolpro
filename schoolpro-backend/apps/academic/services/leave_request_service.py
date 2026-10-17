@@ -359,15 +359,18 @@ class LeaveRequestService:
                                 period_id=None,
                                 defaults={
                                     "school_class_id": req.school_class_id,
-                                    "status": "ABSENT_EXCUSED",
-                                    "method": "SYSTEM_AUTO",
+                                    "status": Attendance.StatusChoices.ABSENT_EXCUSED,
+                                    "method": Attendance.MethodChoices.EXCUSED_LEAVE,
                                     "excuse_reason": f"Đơn xin nghỉ phép #{req.code} (Tự động duyệt): {req.reason}",
                                     "recorded_by": homeroom_user,
                                 },
                             )
-                            if not created and att.status != "ABSENT_EXCUSED":
+                            if (
+                                not created
+                                and att.status != Attendance.StatusChoices.ABSENT_EXCUSED
+                            ):
                                 prev_st = att.status
-                                att.status = "ABSENT_EXCUSED"
+                                att.status = Attendance.StatusChoices.ABSENT_EXCUSED
                                 att.excuse_reason = (
                                     f"Đơn xin nghỉ phép #{req.code} (Tự động duyệt): {req.reason}"
                                 )
@@ -376,7 +379,7 @@ class LeaveRequestService:
                                     attendance=att,
                                     student_id=req.student_id,
                                     previous_status=prev_st,
-                                    new_status="ABSENT_EXCUSED",
+                                    new_status=Attendance.StatusChoices.ABSENT_EXCUSED,
                                     action="AUTO_APPROVED_LEAVE",
                                     reason=f"Tự động duyệt đơn #{req.code}",
                                     performed_by=homeroom_user,
