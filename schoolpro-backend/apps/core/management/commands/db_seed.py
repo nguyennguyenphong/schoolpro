@@ -29,6 +29,10 @@ class Command(BaseCommand):
                 "seed_role_modules",
                 "System: Role-Module Dashboard Layouts (Bố cục Dashboard 37 Roles)",
             ),
+            (
+                "seed_export_templates",
+                "System: Dynamic Export Templates (Biểu mẫu Bảng điểm & Hành chính)",
+            ),
             # 2. Master Institutional Data & Lookups
             ("seed_schools", "Master: School Profile (Hồ sơ pháp nhân trường học)"),
             ("seed_academic_years", "Master: Academic Year (Năm học)"),

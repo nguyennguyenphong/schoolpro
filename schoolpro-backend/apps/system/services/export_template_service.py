@@ -360,6 +360,43 @@ class ExportTemplateService:
         logger.info("Seeded official default leave request template: %s", template.id)
         return template
 
+    def get_or_create_default_academic_transcript_template(
+        self, school_id: Any = None
+    ) -> ExportTemplate:
+        """
+        Ensures the official Vietnamese academic transcript / gradebook template exists
+        in sys.export_templates (TemplateType.ACADEMIC).
+        """
+        existing = self.repository.get_active_by_code(
+            DEFAULT_ACADEMIC_CODE, school_id=school_id
+        ) or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
+        if existing:
+            return existing
+
+        template = ExportTemplate.objects.create(
+            code=DEFAULT_ACADEMIC_CODE,
+            name="Mẫu Bảng điểm kết quả học tập A4 Ngang",
+            description=(
+                "Biểu mẫu bảng điểm kết quả học tập A4 khổ ngang chuẩn Bộ Giáo dục và Đào tạo, "
+                "hỗ trợ điểm đánh giá thường xuyên, giữa kỳ, cuối kỳ, điểm trung bình môn, xếp loại và nhận xét."
+            ),
+            template_type=TemplateType.ACADEMIC,
+            file_format=FileFormat.HTML_PRINT,
+            header_content=DEFAULT_ACADEMIC_HEADER,
+            content=DEFAULT_ACADEMIC_CONTENT,
+            footer_content=DEFAULT_ACADEMIC_FOOTER,
+            style_content=DEFAULT_ACADEMIC_STYLES,
+            page_size="A4",
+            page_orientation="LANDSCAPE",
+            margins={"top": "8mm", "right": "12mm", "bottom": "7mm", "left": "15mm"},
+            placeholders_schema=DEFAULT_ACADEMIC_PLACEHOLDERS,
+            sample_data=DEFAULT_ACADEMIC_SAMPLE_DATA,
+            is_default=True,
+            is_active=True,
+        )
+        logger.info("Seeded official default academic transcript template: %s", template.id)
+        return template
+
     def get_or_create_default_timetable_template(self, school_id: Any = None) -> ExportTemplate:
         """
         Ensures a customizable Vietnamese administrative A4 landscape timetable template exists
@@ -994,4 +1031,334 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "homeroom_teacher": "Thầy Hoàng Văn Nam",
     "print_date": "14/10/2026 09:30",
     "timetable_table_html": "",
+}
+
+
+DEFAULT_ACADEMIC_CODE = "ACADEMIC_TRANSCRIPT_A4_LANDSCAPE"
+
+DEFAULT_ACADEMIC_HEADER = """
+<div class="toolbar">
+  <button class="print-button" type="button" onclick="window.print()">In / Lưu PDF</button>
+</div>
+
+<main class="page">
+  <header class="header">
+    <div>
+      <p class="agency-name">SỞ GIÁO DỤC VÀ ĐÀO TẠO {{school_parent_name}}</p>
+      <p class="school-name">TRƯỜNG {{school_name}}</p>
+      <div class="rule rule-left"></div>
+      <p class="doc-number">Số: {{doc_number}}</p>
+    </div>
+    <div>
+      <p class="national-name">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+      <p class="motto">Độc lập - Tự do - Hạnh phúc</p>
+      <div class="rule rule-right"></div>
+    </div>
+  </header>
+"""
+
+DEFAULT_ACADEMIC_CONTENT = """
+  <section class="title-block">
+    <h1>BẢNG ĐIỂM KẾT QUẢ HỌC TẬP</h1>
+    <p class="period">Năm học: {{academic_year}} &nbsp;&nbsp; | &nbsp;&nbsp; Học kỳ: {{semester_name}}</p>
+  </section>
+
+  <table class="student-info" aria-label="Thông tin học sinh">
+    <tbody>
+      <tr>
+        <td style="width:38%">Họ và tên học sinh: <span class="value">{{student_name}}</span></td>
+        <td style="width:24%">Mã học sinh: <span class="value">{{student_code}}</span></td>
+        <td style="width:22%">Ngày sinh: <span class="value">{{date_of_birth}}</span></td>
+        <td style="width:16%">Giới tính: <span class="value">{{gender}}</span></td>
+      </tr>
+      <tr>
+        <td>Lớp: <span class="value">{{class_name}}</span></td>
+        <td colspan="3">Nơi sinh: <span class="value">{{place_of_birth}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="score-table" aria-label="Điểm các môn học trong học kỳ hoặc năm học">
+    <colgroup>
+      <col class="subject-col">
+      <col class="regular-col"><col class="regular-col"><col class="regular-col"><col class="regular-col"><col class="regular-col">
+      <col class="exam-col"><col class="exam-col">
+      <col class="average-col">
+      <col class="rank-col">
+      <col class="comment-col">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">Môn học</th>
+        <th colspan="5">Điểm đánh giá thường xuyên</th>
+        <th rowspan="2">Giữa kỳ</th>
+        <th rowspan="2">Cuối kỳ</th>
+        <th rowspan="2">Điểm trung bình môn học</th>
+        <th rowspan="2">Xếp loại</th>
+        <th rowspan="2">Đánh giá / Nhận xét của giáo viên bộ môn</th>
+      </tr>
+      <tr>
+        <th>Lần 1</th>
+        <th>Lần 2</th>
+        <th>Lần 3</th>
+        <th>Lần 4</th>
+        <th>Lần 5</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{score_table_rows_html}}
+    </tbody>
+  </table>
+
+  <table class="summary" aria-label="Kết quả học kỳ hoặc năm học">
+    <tbody>
+      <tr>
+        <td style="width:25%"><strong>Điểm trung bình chung:</strong> {{gpa}}</td>
+        <td style="width:25%"><strong>Kết quả rèn luyện:</strong> {{conduct}}</td>
+        <td style="width:25%"><strong>Kết quả học tập:</strong> {{academic_performance}}</td>
+        <td style="width:25%"><strong>Số ngày nghỉ:</strong> {{absence_days}}</td>
+      </tr>
+      <tr>
+        <td style="width:25%" colspan="4"><strong>Nhận xét của giáo viên chủ nhiệm:</strong> {{homeroom_teacher_comment}}</td>
+      </tr>
+    </tbody>
+  </table>
+"""
+
+DEFAULT_ACADEMIC_FOOTER = """
+  <footer class="footer">
+    <div class="footer-date">{{created_date_formatted}}</div>
+    <div class="signature-row">
+      <div class="signature">
+        <div class="signature-title">NGƯỜI LẬP BẢNG KẾT QUẢ</div>
+        <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+        <div class="signature-space"></div>
+        <div class="signature-name">{{created_by_name}}</div>
+      </div>
+      <div class="signature">
+        <div class="signature-title">GIÁO VIÊN CHỦ NHIỆM</div>
+        <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+        <div class="signature-space"></div>
+        <div class="signature-name">{{homeroom_teacher_name}}</div>
+      </div>
+      <div class="signature">
+        <div class="signature-title">HIỆU TRƯỞNG</div>
+        <div class="signature-guide">(Ký, ghi rõ họ tên và đóng dấu)</div>
+        <div class="signature-space"></div>
+        <div class="signature-name">{{principal_name}}</div>
+      </div>
+    </div>
+  </footer>
+</main>
+"""
+
+DEFAULT_ACADEMIC_STYLES = """
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", Times, serif;
+  color: #000;
+  background: #e9e9e9;
+  font-size: 11pt;
+  line-height: 1.25;
+}
+.toolbar {
+  width: 297mm;
+  margin: 14px auto 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.print-button {
+  border: 0;
+  border-radius: 4px;
+  padding: 9px 16px;
+  background: #174a7e;
+  color: #fff;
+  font: 600 13px Arial, sans-serif;
+  cursor: pointer;
+}
+.page {
+  width: 297mm;
+  min-height: 210mm;
+  margin: 0 auto 20px;
+  padding: 10mm 12mm 8mm 15mm;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.14);
+}
+.header {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  text-align: center;
+  align-items: start;
+  margin-bottom: 5mm;
+}
+.header p { margin: 0 0 3px; }
+.agency-name { font-size: 10.5pt; text-transform: uppercase; }
+.school-name { font-size: 11pt; font-weight: bold; text-transform: uppercase; }
+.national-name { font-size: 11pt; font-weight: bold; text-transform: uppercase; }
+.motto { font-size: 11.5pt; font-weight: bold; }
+.rule { height: 1px; background: #000; margin: 4px auto 0; }
+.rule-left { width: 115px; }
+.rule-right { width: 160px; }
+.doc-number { margin-top: 5px !important; font-size: 10pt; }
+.title-block { text-align: center; margin: 0 0 4mm; }
+h1 { margin: 0; font-size: 16pt; text-transform: uppercase; }
+.period { margin: 3px 0 0; font-size: 11pt; font-style: italic; }
+.student-info {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin-bottom: 3mm;
+  font-size: 10.5pt;
+}
+.student-info td { padding: 3px 4px; vertical-align: top; }
+.value { font-weight: bold; }
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 9pt;
+  margin-bottom: 3mm;
+}
+.score-table col.subject-col { width: 18%; }
+.score-table col.regular-col { width: 4.5%; }
+.score-table col.exam-col { width: 5.5%; }
+.score-table col.average-col { width: 8%; }
+.score-table col.rank-col { width: 7%; }
+.score-table col.comment-col { width: 33.5%; }
+.score-table th, .score-table td {
+  border: 1px solid #000;
+  padding: 4px 3px;
+  text-align: center;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+  line-height: 1.15;
+}
+.score-table th { font-weight: bold; background: #f1f1f1; }
+.score-table th:first-child, .score-table td:first-child {
+  text-align: left;
+  padding-left: 7px;
+}
+.score-table tbody td { height: 27px; }
+.score-table .subject { font-weight: bold; }
+.summary {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 3mm 0 4mm;
+  font-size: 9.5pt;
+}
+.summary td { border: 1px solid #000; padding: 5px 6px; vertical-align: top; }
+.footer {
+  margin-top: 3mm;
+}
+.footer-date {
+  text-align: right;
+  font-size: 9.5pt;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+.signature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: start;
+}
+.notes { font-size: 9pt; padding-right: 8px; }
+.notes p { margin: 0 0 3px; }
+.signature { text-align: center; padding: 0 4px; }
+.signature-title { font-size: 10.5pt; font-weight: bold; text-transform: uppercase; }
+.signature-guide { margin-top: 2px; font-size: 9pt; font-style: italic; }
+.signature-space { height: 43px; }
+.signature-name { font-size: 10.5pt; font-weight: bold; }
+.disclaimer { margin-top: 3mm; font-size: 8pt; font-style: italic; color: #333; }
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { width: 297mm; background: #fff; }
+  .toolbar { display: none !important; }
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    margin: 0;
+    padding: 8mm 12mm 7mm 15mm;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+  .score-table th {
+    background: #f1f1f1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  tr, td, th { break-inside: avoid; }
+}
+@media screen and (max-width: 1100px) {
+  .page, .toolbar { margin-left: 12px; margin-right: 12px; }
+}
+"""
+
+DEFAULT_ACADEMIC_PLACEHOLDERS = [
+    {"key": "school_parent_name", "label": "Cơ quan quản lý (Sở GD&ĐT...)"},
+    {"key": "school_name", "label": "Tên trường học"},
+    {"key": "doc_number", "label": "Số hiệu văn bản"},
+    {"key": "academic_year", "label": "Năm học"},
+    {"key": "semester_name", "label": "Học kỳ"},
+    {"key": "student_name", "label": "Họ và tên học sinh"},
+    {"key": "student_code", "label": "Mã định danh học sinh"},
+    {"key": "date_of_birth", "label": "Ngày sinh"},
+    {"key": "gender", "label": "Giới tính"},
+    {"key": "class_name", "label": "Lớp học"},
+    {"key": "place_of_birth", "label": "Nơi sinh"},
+    {"key": "score_table_rows_html", "label": "Danh sách các dòng điểm môn học"},
+    {"key": "gpa", "label": "Điểm trung bình chung"},
+    {"key": "conduct", "label": "Kết quả rèn luyện"},
+    {"key": "academic_performance", "label": "Kết quả học tập"},
+    {"key": "absence_days", "label": "Số ngày nghỉ"},
+    {"key": "homeroom_teacher_comment", "label": "Nhận xét của giáo viên chủ nhiệm"},
+    {"key": "location_date_str", "label": "Địa danh, ngày tháng lập biểu"},
+    {"key": "created_date_formatted", "label": "Ngày tháng định dạng"},
+    {"key": "creator_name", "label": "Người lập bảng kết quả"},
+    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm"},
+    {"key": "principal_name", "label": "Hiệu trưởng"},
+]
+
+DEFAULT_ACADEMIC_SAMPLE_ROWS_HTML = """
+<tr><td class="subject">Ngữ văn</td><td>8.0</td><td>8.5</td><td>8.0</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>8.4</td><td>Tốt</td><td>Tiếp thu bài nhanh, viết văn cảm xúc và mạch lạc</td></tr>
+<tr><td class="subject">Toán</td><td>9.0</td><td>9.5</td><td>9.0</td><td>9.0</td><td>10.0</td><td>9.5</td><td>9.5</td><td>9.4</td><td>Tốt</td><td>Tư duy logic xuất sắc, tích cực xây dựng bài</td></tr>
+<tr><td class="subject">Ngoại ngữ</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>9.0</td><td>8.7</td><td>Tốt</td><td>Phát âm chuẩn, vốn từ vựng phong phú</td></tr>
+<tr><td class="subject">Vật lí</td><td>8.0</td><td>8.5</td><td>8.0</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>8.4</td><td>Tốt</td><td>Nắm chắc lý thuyết và làm bài tập tốt</td></tr>
+<tr><td class="subject">Hóa học</td><td>8.5</td><td>8.0</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.6</td><td>Tốt</td><td>Hiểu bản chất hóa học, làm thí nghiệm cẩn thận</td></tr>
+<tr><td class="subject">Sinh học</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>8.6</td><td>Tốt</td><td>Chăm chỉ, ghi nhớ tốt kiến thức sinh học</td></tr>
+<tr><td class="subject">Lịch sử</td><td>8.0</td><td>8.5</td><td>8.0</td><td>8.5</td><td>8.5</td><td>8.0</td><td>8.5</td><td>8.3</td><td>Tốt</td><td>Nắm chắc dòng sự kiện lịch sử</td></tr>
+<tr><td class="subject">Địa lí</td><td>8.5</td><td>8.0</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>8.5</td><td>Tốt</td><td>Sử dụng bản đồ và Atlat thành thạo</td></tr>
+<tr><td class="subject">Giáo dục kinh tế và pháp luật</td><td>8.5</td><td>9.0</td><td>8.5</td><td>9.0</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.7</td><td>Tốt</td><td>Hiểu biết xã hội và pháp luật tốt</td></tr>
+<tr><td class="subject">Tin học</td><td>9.5</td><td>9.0</td><td>9.5</td><td>9.5</td><td>10.0</td><td>9.5</td><td>9.5</td><td>9.5</td><td>Tốt</td><td>Kỹ năng tin học và lập trình rất tốt</td></tr>
+<tr><td class="subject">Công nghệ</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.6</td><td>Tốt</td><td>Khéo tay, thực hành sản phẩm công nghệ tốt</td></tr>
+<tr><td class="subject">Giáo dục thể chất</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Thể lực tốt, tích cực rèn luyện</td></tr>
+<tr><td class="subject">Giáo dục quốc phòng và an ninh</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.5</td><td>9.0</td><td>8.5</td><td>8.6</td><td>Tốt</td><td>Ý thức kỷ luật cao, chấp hành nghiêm quy định</td></tr>
+<tr><td class="subject">Hoạt động trải nghiệm, hướng nghiệp</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Đạt</td><td>Nhiệt tình tham gia hoạt động tập thể</td></tr>
+""".strip()
+
+DEFAULT_ACADEMIC_SAMPLE_DATA = {
+    "filename_pattern": "Bang_Diem_{{class_name}}_{{student_code}}_{{academic_year}}",
+    "school_parent_name": "THÀNH PHỐ HÀ NỘI",
+    "school_name": "THPT CHUYÊN SCHOOLPRO",
+    "doc_number": "124/BĐ-THPT",
+    "academic_year": "2026 – 2027",
+    "semester_name": "Học kỳ 1",
+    "student_name": "Nguyễn Văn An",
+    "student_code": "HS10A101",
+    "date_of_birth": "15/09/2010",
+    "gender": "Nam",
+    "class_name": "10A1",
+    "place_of_birth": "Hà Nội",
+    "score_table_rows_html": DEFAULT_ACADEMIC_SAMPLE_ROWS_HTML,
+    "gpa": "8.7",
+    "conduct": "Tốt",
+    "academic_performance": "Tốt",
+    "absence_days": "0 buổi",
+    "homeroom_teacher_comment": "Học sinh gương mẫu, chăm chỉ, có tư duy sáng tạo và ý thức kỷ luật rất tốt.",
+    "location_date_str": "Hà Nội, ngày 18 tháng 10 năm 2026",
+    "created_date_formatted": "Hà Nội, ngày 18 tháng 10 năm 2026",
+    "creator_name": "ThS. Đỗ Văn Bình",
+    "homeroom_teacher_name": "ThS. Hoàng Văn Nam",
+    "principal_name": "TS. Lê Hồng Sơn",
 }

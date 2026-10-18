@@ -12,6 +12,9 @@ from apps.academic.serializers.gradebook_serializers import (
     GradeSummarySerializer,
     SubjectGradeItemSerializer,
 )
+from apps.academic.services.academic_transcript_pdf_service import (
+    AcademicTranscriptPdfService,
+)
 from apps.academic.services.gradebook_service import GradebookService
 from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
@@ -190,3 +193,54 @@ class StudentGradebookViewSet(viewsets.ViewSet):
             request.user, semester=semester, academic_year=academic_year
         )
         return APIResponse.success(data=data, message=data.get("message", "Thành công"))
+
+    @extend_schema(
+        summary="Render academic transcript HTML/CSS via dynamic ExportTemplate",
+        description="Renders official student academic transcript (Bảng điểm kết quả học tập) into full HTML & CSS using sys.export_templates for print or preview.",
+        parameters=[
+            OpenApiParameter("semester", str, description="Semester (HK1, HK2, all)"),
+            OpenApiParameter("academicYear", str, description="Academic Year (e.g. 2025 - 2026)"),
+            OpenApiParameter(
+                "templateCode",
+                str,
+                description="Template code override (defaults to ACADEMIC_TRANSCRIPT_A4_LANDSCAPE)",
+            ),
+            OpenApiParameter("templateId", str, description="Specific ExportTemplate UUID"),
+        ],
+    )
+    @action(detail=False, methods=["get"], url_path="export-render")
+    def export_render(self, request):
+        """
+        Renders the academic transcript into full HTML/CSS for browser printing using sys.export_templates.
+        """
+        user = request.user
+        semester = (
+            request.query_params.get("semester_id")
+            or request.query_params.get("semesterId")
+            or request.query_params.get("semester")
+        )
+        academic_year = (
+            request.query_params.get("academic_year_id")
+            or request.query_params.get("academicYearId")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academicYear")
+            or request.query_params.get("year")
+        )
+        template_code = request.query_params.get("templateCode") or request.query_params.get(
+            "template_code"
+        )
+        template_id = request.query_params.get("templateId") or request.query_params.get(
+            "template_id"
+        )
+
+        rendered = AcademicTranscriptPdfService.render_academic_transcript_html(
+            user=user,
+            semester=semester,
+            academic_year=academic_year,
+            template_code=template_code,
+            template_id=template_id,
+        )
+        return APIResponse.success(
+            data=rendered,
+            message="Render bảng điểm thành công",
+        )

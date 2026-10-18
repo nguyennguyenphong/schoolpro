@@ -1,3 +1,4 @@
+from .academic_transcript_pdf_service import AcademicTranscriptPdfService
 from .assignment_service import AssignmentService
 from .attendance_realtime import AttendanceRealtimeEvent, AttendanceRealtimeService
 from .attendance_service import AttendanceService
@@ -9,6 +10,7 @@ from .timetable_pdf_service import TimetablePdfService
 from .timetable_service import TimetableService
 
 __all__ = [
+    "AcademicTranscriptPdfService",
     "AssignmentService",
     "AttendanceRealtimeEvent",
     "AttendanceRealtimeService",

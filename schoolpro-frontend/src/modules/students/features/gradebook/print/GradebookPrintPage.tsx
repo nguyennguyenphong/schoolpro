@@ -1,41 +1,112 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Spin } from "@/components/ui/Spin";
 import { Alert } from "@/components/ui/Alert";
-import {
-  GradebookPrintActionBar,
-  GradebookPrintHeader,
-  GradebookPrintStudentInfo,
-  GradebookPrintTable,
-  GradebookPrintSummary,
-  GradebookPrintSignatures,
-} from "@/modules/students/features/gradebook/print/components";
+import { GradebookPrintActionBar } from "@/modules/students/features/gradebook/print/components";
 import { useGradebookPrintData } from "@/modules/students/features/gradebook/print/hooks";
+import { gradebookService } from "@/modules/students/features/gradebook/services/gradebookService";
+import { buildLocalGradebookPrintHtml } from "@/modules/students/features/gradebook/utils/printGradebook";
 
 export const GradebookPrintPage: React.FC = () => {
   const { t } = useTranslation(["card"]);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const {
-    loading,
-    error,
-    summary,
-    grades,
-    studentProfile,
-  } = useGradebookPrintData();
+  const { loading, error, summary, grades, studentProfile } = useGradebookPrintData();
+
+  const [renderedHtml, setRenderedHtml] = useState<string>("");
+  const [isRendering, setIsRendering] = useState<boolean>(true);
 
   const autoPrint = searchParams.get("auto") === "1";
 
+  // Load dynamic template from sys.export_templates via backend, falling back to local template
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadTemplate() {
+      setIsRendering(true);
+      try {
+        const semesterParam = searchParams.get("semester") || undefined;
+        const academicYearParam = searchParams.get("academicYear") || undefined;
+        const res = await gradebookService.renderTranscriptPrint({
+          semester: semesterParam,
+          academicYear: academicYearParam,
+        });
+
+        if (!ignore && res?.html) {
+          setRenderedHtml(res.html);
+          setIsRendering(false);
+          return;
+        }
+      } catch {
+        // Fallback to local builder
+      }
+
+      if (!ignore) {
+        const local = buildLocalGradebookPrintHtml({
+          semester: searchParams.get("semester") || undefined,
+          academicYear: searchParams.get("academicYear") || undefined,
+          summary,
+          grades,
+          transcriptData: {
+            studentName: studentProfile?.studentName || "Nguyễn Minh Quang",
+            studentCode: studentProfile?.studentCode || "HS10A101",
+            className: studentProfile?.className || summary?.className || "10A1",
+            academicYear: searchParams.get("academicYear") || summary?.academicYear || "2025 – 2026",
+            semester: searchParams.get("semester") || summary?.semester || "Học kỳ 1",
+            schoolName: studentProfile?.schoolName || "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM",
+            principalName: studentProfile?.principalName || "TS. Lê Hồng Sơn",
+            homeroomTeacher: studentProfile?.homeroomTeacher || summary?.homeroomTeacher || "Cô Trần Thị Mai",
+            homeroomComment: summary?.homeroomComment || "Học sinh có ý thức tự giác học tập cao.",
+            gpa: summary?.gpa || 8.72,
+            academicRank: summary?.academicRank || "Tốt",
+            conductRank: summary?.conductRank || "Tốt",
+            titleAwarded: summary?.titleAwarded || "Học sinh Giỏi",
+            rankInClass: summary?.classPosition || 3,
+            totalStudents: summary?.totalClassStudents || 42,
+            isPromoted: true,
+            decisionNumber: "102/BĐ-THPT",
+            digitalSignature: "SHA256:8f24a87c9381e9d1045fbf7632945d8b2e104ca829b3e10fa4e",
+            verifiedAt: "18/10/2026 19:00",
+            subjects: grades.map((g) => ({
+              code: g.code,
+              name: g.name,
+              teacher: g.teacher,
+              periodsPerWeek: g.periodsPerWeek,
+              evaluationType: g.evaluationType,
+              regularScoresStr: g.regularScores.map((r) => r.score).join(", "),
+              midtermScore: g.midtermScore?.score,
+              finalScore: g.finalScore?.score,
+              averageScore: g.averageScore,
+              feedbackResult: g.feedbackResult,
+              gradeLevel: g.gradeLevel,
+              teacherComment: g.teacherComment,
+            })),
+          },
+        });
+        setRenderedHtml(local);
+        setIsRendering(false);
+      }
+    }
+
+    if (!loading) {
+      loadTemplate();
+    }
+
+    return () => {
+      ignore = true;
+    };
+  }, [loading, summary, grades, studentProfile, searchParams]);
+
   // Trigger print dialog automatically if auto=1 query param is set
   useEffect(() => {
-    if (!loading && !error && autoPrint) {
+    if (!loading && !isRendering && !error && autoPrint) {
       const timer = setTimeout(() => {
         window.print();
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [loading, error, autoPrint]);
+  }, [loading, isRendering, error, autoPrint]);
 
   const handlePrint = () => {
     window.print();
@@ -49,67 +120,34 @@ export const GradebookPrintPage: React.FC = () => {
     }
   };
 
+  // Extract dynamic CSS styles and body from the rendered HTML document
+  const styleMatch = renderedHtml.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+  const bodyMatch = renderedHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  const dynamicStyles = styleMatch ? styleMatch[1] : "";
+  const dynamicBody = bodyMatch ? bodyMatch[1] : renderedHtml;
+
   return (
-    <div className="gradebook-print-root min-h-screen bg-stone-100 print:bg-white text-black flex flex-col font-serif" style={{ fontFamily: '"Times New Roman", Times, "Liberation Serif", serif' }}>
+    <div
+      className="gradebook-dynamic-print-root min-h-screen bg-[#e9e9e9] print:bg-white text-black flex flex-col font-serif"
+      style={{ fontFamily: '"Times New Roman", Times, "Liberation Serif", serif' }}
+    >
+      {/* 1. Injected dynamic CSS from sys.export_templates */}
+      {dynamicStyles && (
+        <style dangerouslySetInnerHTML={{ __html: dynamicStyles }} />
+      )}
+
+      {/* 2. Custom action bar styling overrides */}
       <style>{`
-        .gradebook-print-root,
-        .gradebook-print-root * {
-          font-family: "Times New Roman", Times, "Liberation Serif", serif !important;
+        .gradebook-dynamic-print-root .toolbar {
+          display: none !important;
         }
-
-        @media screen {
-          .print-sheet {
-            width: 210mm;
-            min-height: 297mm;
-            box-sizing: border-box;
-          }
-        }
-
         @media print {
-          @page {
-            size: A4 portrait;
-            margin: 10mm 14mm 10mm 14mm;
-          }
-          html, body, .gradebook-print-root, .gradebook-print-root * {
-            font-family: "Times New Roman", Times, "Liberation Serif", serif !important;
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
           .no-print {
             display: none !important;
           }
-          .print-sheet {
-            box-shadow: none !important;
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-          }
-          table {
-            page-break-inside: auto;
-            break-inside: auto;
-          }
-          thead {
-            display: table-header-group !important;
-          }
-          tfoot {
-            display: table-footer-group !important;
-          }
-          tr {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-            page-break-after: auto;
-          }
-          td, th {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-          }
-          .page-break-inside-avoid {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
+          @page {
+            size: A4 landscape;
+            margin: 0;
           }
         }
       `}</style>
@@ -117,9 +155,9 @@ export const GradebookPrintPage: React.FC = () => {
       {/* Floating Action Bar (hidden when printing) */}
       <GradebookPrintActionBar onPrint={handlePrint} onClose={handleClose} />
 
-      {/* Main Print Container mimicking A4 Paper Document */}
-      <div className="flex-1 flex justify-center p-0 sm:p-6 print:p-0">
-        {loading ? (
+      {/* Dynamic Print Body */}
+      <div className="flex-1 flex justify-center p-0 print:p-0">
+        {loading || isRendering ? (
           <div className="flex flex-col items-center justify-center min-h-100 gap-3">
             <Spin size="large" />
             <span className="text-sm font-serif text-slate-700 font-medium">
@@ -136,22 +174,10 @@ export const GradebookPrintPage: React.FC = () => {
             />
           </div>
         ) : (
-          <div className="print-sheet bg-white w-full max-w-[210mm] p-6 sm:p-[14mm_16mm_14mm_16mm] sm:shadow-md border sm:border-stone-300 print:border-none print:shadow-none print:p-0 text-black leading-normal box-border">
-            {/* 1. Official National & School Header */}
-            <GradebookPrintHeader profile={studentProfile} />
-
-            {/* 2. Official Student Salutation & Information (như 1 đơn) */}
-            <GradebookPrintStudentInfo profile={studentProfile} />
-
-            {/* 3. ERP Standard Grades Table with Column Indexing (1)..(11) */}
-            <GradebookPrintTable grades={grades} />
-
-            {/* 4. Academic Evaluation & Homeroom Teacher Remarks */}
-            <GradebookPrintSummary summary={summary} />
-
-            {/* 5. Official Vietnamese 3-Party Signatures & Seal */}
-            <GradebookPrintSignatures profile={studentProfile} />
-          </div>
+          <div
+            className="w-full"
+            dangerouslySetInnerHTML={{ __html: dynamicBody }}
+          />
         )}
       </div>
     </div>

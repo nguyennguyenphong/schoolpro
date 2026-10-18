@@ -8,7 +8,9 @@ import type {
   GradeSummary,
   TranscriptData,
 } from "@/modules/students/features/gradebook/types";
+import { printGradebook } from "@/modules/students/features/gradebook/utils/printGradebook";
 import { useAuthStore } from "@/shared/store/useAuthStore";
+
 
 interface GradeTranscriptModalProps {
   isOpen: boolean;
@@ -101,13 +103,20 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
             <Button
               variant="outline"
               onClick={() => {
-                window.print();
+                printGradebook({
+                  transcriptData,
+                  summary,
+                  grades,
+                  academicYear: student.academicYear,
+                  semester: student.semester,
+                });
               }}
               className="text-slate-700 font-semibold"
             >
               <Icon name="fileText" size={14} />
               <span>{t("card:gradebook.transcriptModal.print")}</span>
             </Button>
+
             <Button variant="primary" onClick={onExportPdf} className="font-semibold">
               <Icon name="download" size={14} />
               <span>{t("card:gradebook.transcriptModal.downloadPdf")}</span>

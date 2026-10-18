@@ -22,8 +22,9 @@ describe("GradebookPrintPage Component", () => {
       ).toBeInTheDocument();
     });
     expect(
-      screen.getByText(/BẢNG ĐIỂM HỌC TẬP VÀ RÈN LUYỆN|STUDENT ACADEMIC & CONDUCT TRANSCRIPT/i)
+      screen.getByText(/BẢNG ĐIỂM KẾT QUẢ HỌC TẬP|BẢNG ĐIỂM HỌC TẬP VÀ RÈN LUYỆN|STUDENT ACADEMIC & CONDUCT TRANSCRIPT/i)
     ).toBeInTheDocument();
+
 
     // Check action bar with Print button
     const printNowButton = screen.getByRole("button", { name: /In ngay|Print Now/i });

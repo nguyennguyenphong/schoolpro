@@ -291,6 +291,30 @@ class GradebookService {
       message: "Trích xuất học bạ điện tử ký số thành công!",
     };
   }
+
+  /**
+   * Renders academic transcript HTML/CSS dynamically via sys.export_templates on backend.
+   */
+  async renderTranscriptPrint(params?: {
+    semester?: string;
+    academicYear?: string;
+    templateCode?: string;
+    templateId?: string;
+  }): Promise<{ html: string; filename?: string; template?: unknown } | null> {
+    try {
+      const res = await httpClient.get<ApiResponse<{ html: string; filename?: string; template?: unknown }>>(
+        "/academic/gradebook/export-render/",
+        { params }
+      );
+      if (res.data?.data?.html) {
+        return res.data.data;
+      }
+    } catch {
+      // Return null on failure, allowing local fallback
+    }
+    return null;
+  }
 }
+
 
 export const gradebookService = new GradebookService();

@@ -19,11 +19,13 @@ class TemplateType(models.TextChoices):
 
     ANNOUNCEMENT = "ANNOUNCEMENT", "Thông báo & Công văn"
     LEAVE_REQUEST = "LEAVE_REQUEST", "Đơn xin nghỉ phép"
-    ACADEMIC = "ACADEMIC", "Học vụ & Bảng điểm"
+    ACADEMIC = "ACADEMIC", "Bảng điểm"
     STUDENT_PROFILE = "STUDENT_PROFILE", "Hồ sơ học sinh"
-    ATTENDANCE = "ATTENDANCE", "Điểm danh & Chuyên cần"
+    ATTENDANCE = "ATTENDANCE", "Điểm danh"
+    GRATEBOOK = "GRATEBOOK", "Sổ liên lạc điện tử"
     EMULATION = "EMULATION", "Thi đua & Khen thưởng"
     FEE_RECEIPT = "FEE_RECEIPT", "Biên lai & Học phí"
+    PROFILE = "PROFILE", "Hồ sơ"
     GENERAL = "GENERAL", "Biểu mẫu chung"
 
 
