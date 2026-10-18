@@ -7,6 +7,7 @@ import { Message, message, useMessage } from "@/components/ui/Message";
 
 describe("Message", () => {
   afterEach(() => {
+    message.destroy();
     vi.clearAllTimers();
     vi.useRealTimers();
     vi.restoreAllMocks();
