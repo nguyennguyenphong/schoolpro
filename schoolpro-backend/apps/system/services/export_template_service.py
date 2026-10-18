@@ -406,24 +406,8 @@ class ExportTemplateService:
         2. Default template for TemplateType.ACADEMIC
         3. Auto-seeds TIMETABLE_WEEKLY_A4_LANDSCAPE if missing.
         """
-        existing = self.repository.get_active_by_code(
-            DEFAULT_TIMETABLE_CODE, school_id=school_id
-        ) or self.repository.get_default_by_type(TemplateType.ACADEMIC, school_id=school_id)
+        existing = self.repository.get_active_by_code(DEFAULT_TIMETABLE_CODE, school_id=school_id)
         if existing:
-            if "print-color-adjust" not in (existing.style_content or ""):
-                existing.style_content = DEFAULT_TIMETABLE_STYLES
-                existing.page_orientation = "LANDSCAPE"
-                existing.page_size = "A4"
-                existing.margins = {"top": "8mm", "right": "10mm", "bottom": "8mm", "left": "10mm"}
-                existing.save(
-                    update_fields=[
-                        "style_content",
-                        "page_orientation",
-                        "page_size",
-                        "margins",
-                        "updated_at",
-                    ]
-                )
             return existing
 
         template = ExportTemplate.objects.create(
@@ -1193,8 +1177,16 @@ h1 {
 """
 
 DEFAULT_TIMETABLE_PLACEHOLDERS = [
-    {"key": "school_parent_name", "label": "Cơ quan chủ quản", "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI"},
-    {"key": "school_name", "label": "Tên trường học", "example": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM"},
+    {
+        "key": "school_parent_name",
+        "label": "Cơ quan chủ quản",
+        "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
+    },
+    {
+        "key": "school_name",
+        "label": "Tên trường học",
+        "example": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM",
+    },
     {"key": "doc_number", "label": "Số công văn / Số hiệu", "example": "08/TKB-THPT"},
     {"key": "school_year", "label": "Năm học", "example": "2025 – 2026"},
     {"key": "semester", "label": "Học kỳ", "example": "Học kỳ 1"},
@@ -1204,10 +1196,25 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Cô Trần Thị Mai"},
     {"key": "effective_start_date", "label": "Thời gian áp dụng từ ngày", "example": "13/10/2026"},
     {"key": "effective_end_date", "label": "Thời gian áp dụng đến ngày", "example": "18/10/2026"},
-    {"key": "timetable_table_tbody_html", "label": "Nội dung các hàng thời khóa biểu (Thứ 2 - Thứ 7, Sáng - Chiều)"},
-    {"key": "general_notes", "label": "Ghi chú chung", "example": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định."},
-    {"key": "created_date_formatted", "label": "Địa danh và ngày lập biểu", "example": "Hà Nội, ngày 18 tháng 10 năm 2026"},
-    {"key": "created_by_name", "label": "Người lập thời khóa biểu", "example": "Thầy Hoàng Văn Nam"},
+    {
+        "key": "timetable_table_tbody_html",
+        "label": "Nội dung các hàng thời khóa biểu (Thứ 2 - Thứ 7, Sáng - Chiều)",
+    },
+    {
+        "key": "general_notes",
+        "label": "Ghi chú chung",
+        "example": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định.",
+    },
+    {
+        "key": "created_date_formatted",
+        "label": "Địa danh và ngày lập biểu",
+        "example": "Hà Nội, ngày 18 tháng 10 năm 2026",
+    },
+    {
+        "key": "created_by_name",
+        "label": "Người lập thời khóa biểu",
+        "example": "Thầy Hoàng Văn Nam",
+    },
 ]
 
 DEFAULT_TIMETABLE_SAMPLE_DATA = {
@@ -1234,7 +1241,6 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "schedule_matrix_html": "",
     "timetable_table_html": "",
 }
-
 
 
 DEFAULT_ACADEMIC_CODE = "ACADEMIC_TRANSCRIPT_A4_LANDSCAPE"
