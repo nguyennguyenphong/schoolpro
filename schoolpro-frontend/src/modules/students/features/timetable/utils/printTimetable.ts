@@ -109,54 +109,8 @@ export async function printTimetable(options: PrintTimetableOptions): Promise<vo
     });
   }
 
-  // 4. Always ensure print-color-adjust, page-break, and A4 landscape optimization styles
-  const styleInjection = `
-  <style>
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-    @page { size: A4 landscape !important; margin: 6mm 8mm !important; }
-    @media print {
-      html, body {
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #fff !important;
-        font-size: 8.5pt !important;
-      }
-      .print-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-      }
-      .tt-matrix-table {
-        page-break-inside: auto !important;
-      }
-      .tt-matrix-table thead {
-        display: table-header-group !important;
-      }
-      .tt-matrix-table tbody {
-        display: table-row-group !important;
-      }
-      .tt-matrix-table tr, .tt-matrix-table td, .tt-matrix-table th {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .tt-signatures-table {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        margin-top: 8px !important;
-      }
-      .tt-header-table {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-    }
-  </style>
-`;
-  htmlContent = htmlContent.includes("</head>")
-    ? htmlContent.replace("</head>", `${styleInjection}</head>`)
-    : `${styleInjection}${htmlContent}`;
+  // 4. Use the rendered dynamic template HTML directly
+  // The dynamic template contains its own complete @media print and A4 landscape styling
 
   // 5. If printWindow is available, write HTML and trigger print
   if (printWindow && !printWindow.closed) {

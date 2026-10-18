@@ -98,35 +98,16 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </div>
         </div>
 
-        {/* 4. Giáo viên & Email liên hệ giáo viên */}
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs text-slate-700">
-            <Icon
-              name="user"
-              size={14}
-              className="text-slate-400 shrink-0"
-            />
-            <span className="font-semibold text-slate-800 truncate" title={slot.instructorName}>
-              {slot.instructorName}
-            </span>
-          </div>
-          {slot.instructorEmail ? (
-            <div className="flex items-center gap-2 text-xs text-slate-600">
-              <Icon
-                name="mail"
-                size={13}
-                className="text-slate-400 shrink-0"
-              />
-              <a
-                href={`mailto:${slot.instructorEmail}`}
-                onClick={(e) => e.stopPropagation()}
-                className="text-blue-600 hover:text-blue-800 hover:underline truncate text-[11px] font-medium"
-                title={slot.instructorEmail}
-              >
-                {slot.instructorEmail}
-              </a>
-            </div>
-          ) : null}
+        {/* 4. Giáo viên */}
+        <div className="flex items-center gap-2 text-xs text-slate-700">
+          <Icon
+            name="user"
+            size={14}
+            className="text-slate-400 shrink-0"
+          />
+          <span className="font-semibold text-slate-800 truncate" title={slot.instructorName}>
+            {slot.instructorName}
+          </span>
         </div>
 
         {/* 5. Hình thức học */}
@@ -160,7 +141,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
       <div className="space-y-2 pt-2.5 border-t border-[#f0f0f0]">
         {/* 7. Ghi chú */}
         <div className="text-xs">
-          <span className="text-slate-500 font-medium block mb-1">
+          <span className="text-slate-500 font-medium italic block mb-1">
             {t("card:timetable.notes")}
           </span>
           <div
@@ -175,7 +156,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
 
         {/* 8. Liên kết khác */}
         <div className="text-xs min-h-9.5 flex flex-col justify-end">
-          <span className="text-slate-500 font-medium block mb-1">
+          <span className="text-slate-500 font-medium italic block mb-1">
             {t("card:timetable.otherLinks")}
           </span>
           {slot.onlineUrl ? (

@@ -32,6 +32,13 @@ from apps.system.services.export_template_service import (
     DEFAULT_LEAVE_REQUEST_FOOTER,
     DEFAULT_LEAVE_REQUEST_HEADER,
     DEFAULT_LEAVE_REQUEST_STYLES,
+    DEFAULT_TIMETABLE_CODE,
+    DEFAULT_TIMETABLE_CONTENT,
+    DEFAULT_TIMETABLE_FOOTER,
+    DEFAULT_TIMETABLE_HEADER,
+    DEFAULT_TIMETABLE_PLACEHOLDERS,
+    DEFAULT_TIMETABLE_SAMPLE_DATA,
+    DEFAULT_TIMETABLE_STYLES,
 )
 
 
@@ -58,10 +65,13 @@ class Command(BaseCommand):
             # 1. Official Academic Transcript Template (Bảng điểm kết quả học tập A4 Ngang)
             self._seed_academic_transcript_template(force=force)
 
-            # 2. Official Leave Request Template
+            # 2. Official Timetable Template (Thời khóa biểu A4 Ngang)
+            self._seed_timetable_template(force=force)
+
+            # 3. Official Leave Request Template
             self._seed_leave_request_template(force=force)
 
-            # 3. Official Announcement Template
+            # 4. Official Announcement Template
             self._seed_announcement_template(force=force)
 
         self.stdout.write(
@@ -133,6 +143,61 @@ class Command(BaseCommand):
                 )
             )
 
+    def _seed_timetable_template(self, force: bool = False) -> None:
+        """
+        Seeds or updates the official Timetable (Thời khóa biểu A4 Ngang)
+        template in sys.export_templates.
+        """
+        self.stdout.write("  -> Đang kiểm tra Mẫu Thời khóa biểu tuần (TIMETABLE)...")
+
+        existing = ExportTemplate.objects.filter(code=DEFAULT_TIMETABLE_CODE).first()
+
+        timetable_fields = {
+            "code": DEFAULT_TIMETABLE_CODE,
+            "name": "Mẫu Thời khóa biểu Tuần A4 Ngang",
+            "description": (
+                "Biểu mẫu thời khóa biểu tuần học tập A4 khổ ngang chuẩn sư phạm, hỗ trợ ma trận tiết học, "
+                "thông tin lớp, phòng học, giáo viên bộ môn, chữ ký duyệt và tùy biến định dạng tải xuống."
+            ),
+            "template_type": TemplateType.ACADEMIC,
+            "file_format": FileFormat.HTML_PRINT,
+            "header_content": DEFAULT_TIMETABLE_HEADER,
+            "content": DEFAULT_TIMETABLE_CONTENT,
+            "footer_content": DEFAULT_TIMETABLE_FOOTER,
+            "style_content": DEFAULT_TIMETABLE_STYLES,
+            "page_size": "A4",
+            "page_orientation": "LANDSCAPE",
+            "margins": {"top": "8mm", "right": "10mm", "bottom": "8mm", "left": "10mm"},
+            "placeholders_schema": DEFAULT_TIMETABLE_PLACEHOLDERS,
+            "sample_data": DEFAULT_TIMETABLE_SAMPLE_DATA,
+            "is_default": True,
+            "is_active": True,
+        }
+
+        if existing:
+            if force or not existing.style_content or existing.file_format != FileFormat.HTML_PRINT:
+                for k, v in timetable_fields.items():
+                    setattr(existing, k, v)
+                existing.save()
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"     [UPDATED] Đã cập nhật mẫu thời khóa biểu (ID: {existing.id}, Code: {existing.code})"
+                    )
+                )
+            else:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"     [EXISTS] Mẫu thời khóa biểu đã tồn tại (ID: {existing.id}, Code: {existing.code}). Dùng --force để ghi đè."
+                    )
+                )
+        else:
+            created = ExportTemplate.objects.create(**timetable_fields)
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"     [CREATED] Đã tạo mới mẫu thời khóa biểu (ID: {created.id}, Code: {created.code})"
+                )
+            )
+
     def _seed_leave_request_template(self, force: bool = False) -> None:
         """Seeds official Leave Request Template."""
         self.stdout.write("  -> Đang kiểm tra Mẫu Đơn xin nghỉ phép (LEAVE_REQUEST)...")
@@ -142,7 +207,7 @@ class Command(BaseCommand):
                 code=DEFAULT_LEAVE_REQUEST_CODE,
                 name="Mẫu Đơn xin nghỉ phép A4 Chuẩn",
                 description="Biểu mẫu đơn xin nghỉ phép A4 chuẩn hành chính nhà trường",
-                template_type=TemplateType.LEAVE_REQUEST,
+                template_type=TemplateType.ATTENDANCE,
                 file_format=FileFormat.HTML_PRINT,
                 header_content=DEFAULT_LEAVE_REQUEST_HEADER,
                 content=DEFAULT_LEAVE_REQUEST_CONTENT,

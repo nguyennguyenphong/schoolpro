@@ -851,7 +851,7 @@ DEFAULT_TIMETABLE_CONTENT = """
     </table>
     <section class="notes">
         <p><strong>Ghi chú chung:</strong> {{general_notes}}</p>
-        <p><strong>Quy ước:</strong> Mỗi ô tiết học ghi đầy đủ thông tin; nếu không có lịch, ghi “Không có lịch”.</p>
+        <p><strong>Quy ước:</strong> Mỗi ô tiết học ghi đầy đủ thông tin; Nếu không có lịch, ghi “Không có lịch”.</p>
     </section>
 """
 
@@ -1047,7 +1047,7 @@ h1 {
 }
 
 .timetable .lesson {
-    height: 74px;
+    min-height: 56px;
 }
 
 .subject {
@@ -1132,13 +1132,15 @@ h1 {
 @media print {
     @page {
         size: A4 landscape;
-        margin: 0;
+        margin: 12mm 15mm 12mm 15mm;
     }
 
     html,
     body {
-        width: 297mm;
-        background: #fff;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
     }
 
     .toolbar {
@@ -1146,24 +1148,44 @@ h1 {
     }
 
     .page {
-        width: 297mm;
-        min-height: 210mm;
-        margin: 0;
-        padding: 7mm 9mm 6mm;
-        box-shadow: none;
-        page-break-inside: avoid;
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .header,
+    .title-block,
+    .info,
+    .notes,
+    .footer,
+    .signature-row {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .timetable {
+        page-break-inside: auto !important;
+    }
+
+    .timetable thead {
+        display: table-header-group !important;
+    }
+
+    .timetable tbody {
+        display: table-row-group !important;
+    }
+
+    .timetable tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 
     .timetable th {
         background: #f1f1f1 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-
-    tr,
-    td,
-    th {
-        break-inside: avoid;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
 
@@ -1180,15 +1202,15 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {
         "key": "school_parent_name",
         "label": "Cơ quan chủ quản",
-        "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
+        "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HỒ CHÍ MINH",
     },
     {
         "key": "school_name",
         "label": "Tên trường học",
-        "example": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM",
+        "example": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
     },
     {"key": "doc_number", "label": "Số công văn / Số hiệu", "example": "08/TKB-THPT"},
-    {"key": "school_year", "label": "Năm học", "example": "2025 – 2026"},
+    {"key": "school_year", "label": "Năm học", "example": "2026 – 2027"},
     {"key": "semester", "label": "Học kỳ", "example": "Học kỳ 1"},
     {"key": "week_label", "label": "Tuần áp dụng", "example": "Tuần 42"},
     {"key": "class_name", "label": "Lớp học", "example": "10A1"},
@@ -1208,22 +1230,22 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {
         "key": "created_date_formatted",
         "label": "Địa danh và ngày lập biểu",
-        "example": "Hà Nội, ngày 18 tháng 10 năm 2026",
+        "example": "TP. Hồ Chí Minh, ngày 18 tháng 10 năm 2026",
     },
     {
         "key": "created_by_name",
-        "label": "Người lập thời khóa biểu",
-        "example": "Thầy Hoàng Văn Nam",
+        "label": "Người lập thời khóa biểu (Học sinh)",
+        "example": "Nguyễn Minh Quang",
     },
 ]
 
 DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "filename_pattern": "Thoi_Khoa_Bieu_{{class_name}}_{{week_label}}",
-    "school_parent_name": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
-    "school_name": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM",
+    "school_parent_name": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HỒ CHÍ MINH",
+    "school_name": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
     "doc_number": "08/TKB-THPT",
-    "school_year": "2025 – 2026",
-    "academic_year": "2025 – 2026",
+    "school_year": "2026 – 2027",
+    "academic_year": "2026 – 2027",
     "semester": "Học kỳ 1",
     "semester_name": "Học kỳ 1",
     "week_label": "Tuần 42",
@@ -1233,8 +1255,9 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "effective_start_date": "13/10/2026",
     "effective_end_date": "18/10/2026",
     "general_notes": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định.",
-    "created_date_formatted": "Hà Nội, ngày 18 tháng 10 năm 2026",
-    "created_by_name": "Thầy Hoàng Văn Nam",
+    "created_date_formatted": "TP. Hồ Chí Minh, ngày 18 tháng 10 năm 2026",
+    "created_by_name": "Nguyễn Minh Quang",
+    "principal_name": "Lê Trọng Nghĩa",
     "student_name": "Nguyễn Minh Quang",
     "student_code": "HS10A101",
     "timetable_table_tbody_html": "",

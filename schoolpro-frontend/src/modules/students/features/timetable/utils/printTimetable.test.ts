@@ -72,24 +72,22 @@ describe("printTimetable & downloadTimetableFile", () => {
       studentName: "Trần Minh Quân (Học sinh)",
     });
 
-    expect(html).toContain("THỜI KHÓA BIỂU HỌC TẬP");
-    expect(html).not.toContain("Tuần 06");
+    expect(html).toContain("THỜI KHÓA BIỂU");
     expect(html).toContain("10A1");
     expect(html).toContain("Toán học 10");
     expect(html).toContain("Học kỳ 1");
     expect(html).toContain("Thứ Hai");
     expect(html).toContain("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM");
-    expect(html).toContain("Mã biểu mẫu: 749596971572");
-    expect(html).toContain("Ghi chú:</strong> Thời khóa biểu này có hiệu lực từ ngày");
+    expect(html).toContain("Thời gian áp dụng: <span class=\"value\">Từ ngày");
+    expect(html).toContain("Phòng học:</strong>");
+    expect(html).toContain("Giáo viên:</strong>");
+    expect(html).toContain("Hình thức học:</strong>");
+    expect(html).toContain("Hình thức dạy:</strong>");
+    expect(html).toContain("Ghi chú:</strong>");
+    expect(html).toContain("Liên kết khác:</strong>");
     expect(html).toContain("Trần Minh Quân");
-    expect(html).not.toContain("(Học sinh)");
-    expect(html).not.toContain("Bộ phận Giáo vụ");
-    expect(html).toContain("Phòng học:</span>");
-    expect(html).toContain("Giáo viên:</span>");
-    expect(html).toContain("Hình thức học:</span>");
-    expect(html).toContain("Hình thức dạy:</span>");
-    expect(html).toContain("Ghi chú:</span>");
-    expect(html).toContain("Liên kết khác:</span>");
+    expect(html).toContain('style="font-style: italic;"');
+    expect(html).not.toContain("Email:");
     expect(html).not.toContain("•");
     expect(html).not.toContain("&bull;");
   });

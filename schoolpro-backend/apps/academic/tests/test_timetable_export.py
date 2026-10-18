@@ -87,12 +87,15 @@ def test_timetable_build_template_context(mock_student_user, sample_schedule_con
     context = TimetablePdfService.build_template_context(sample_schedule_context, mock_student_user)
     assert context["student_name"] == "Nguyễn Văn An"
     assert context["student_code"] == "HS10A101"
+    assert context["created_by_name"] == "Nguyễn Văn An"
     assert context["class_name"] == "10A1"
     assert context["academic_year"] == "2026 - 2027"
     assert context["semester_name"] == "Học kỳ 1"
     assert "Toán học 10" in context["timetable_table_html"]
     assert "Vật lý 10" in context["timetable_table_html"]
     assert "Nghỉ phép" in context["timetable_table_html"]
+    assert "Email:" not in context["timetable_table_html"]
+    assert "font-style: italic;" in context["timetable_table_html"]
 
 
 def test_timetable_render_html(mock_student_user, sample_schedule_context):

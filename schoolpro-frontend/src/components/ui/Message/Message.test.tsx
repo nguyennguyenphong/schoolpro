@@ -1,11 +1,17 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, afterEach, vi } from "vitest";
 
 import { Message, message, useMessage } from "@/components/ui/Message";
 
 describe("Message", () => {
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
   describe("static methods definition", () => {
     it("exposes all message utility methods", () => {
       expect(typeof message.success).toBe("function");

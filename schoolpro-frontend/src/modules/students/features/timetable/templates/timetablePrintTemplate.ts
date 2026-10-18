@@ -13,19 +13,9 @@ export interface BuildTimetablePrintHtmlOptions {
   academicYear?: string;
   homeroomTeacher?: string;
   principalName?: string;
+  schoolName?: string;
+  schoolParentName?: string;
 }
-
-export const PRINT_PERIODS_DEFINITION = [
-  { period: 1, time: "07:15 - 08:00", shift: "morning" as const },
-  { period: 2, time: "08:05 - 08:50", shift: "morning" as const },
-  { period: 3, time: "09:05 - 09:50", shift: "morning" as const },
-  { period: 4, time: "09:55 - 10:40", shift: "morning" as const },
-  { period: 5, time: "10:45 - 11:30", shift: "morning" as const },
-  { period: 6, time: "13:30 - 14:15", shift: "afternoon" as const },
-  { period: 7, time: "14:20 - 15:05", shift: "afternoon" as const },
-  { period: 8, time: "15:20 - 16:05", shift: "afternoon" as const },
-  { period: 9, time: "16:10 - 16:55", shift: "afternoon" as const },
-];
 
 export const PRINT_DAYS_OF_WEEK = [
   { key: 2, label: "Thứ Hai" },
@@ -44,7 +34,7 @@ export const CLASS_TYPE_LABELS: Record<string, string> = {
 };
 
 /**
- * Builds weekly timetable print HTML by interpolating dynamic values into the fixed HTML template file:
+ * Builds weekly timetable print HTML by interpolating dynamic values into the A4 Landscape HTML template file:
  * src/modules/students/features/timetable/templates/printTimetable.html
  */
 export function buildLocalTimetablePrintHtml(options: BuildTimetablePrintHtmlOptions): string {
@@ -53,15 +43,15 @@ export function buildLocalTimetablePrintHtml(options: BuildTimetablePrintHtmlOpt
     selectedDate,
     semesterLabel = "Học kỳ 1",
     className = "10A1",
-    templateCode = "749596971572",
+    academicYear = "2026 – 2027",
+    homeroomTeacher = "Cô Trần Thị Mai",
     studentName = "Học sinh",
-    academicYear = "2026 - 2027",
-    homeroomTeacher = "ThS. Hoàng Văn Nam",
-    principalName = "TS. Lê Hồng Sơn",
+    schoolName = "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
+    schoolParentName = "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HỒ CHÍ MINH",
   } = options;
 
-  const printDateStr = dayjs().format("DD/MM/YYYY HH:mm");
-  const cleanStudentName = studentName.replace(/\s*\((?:Học sinh|Student|HS)\)\s*/gi, "").trim() || studentName;
+  const cleanStudentName =
+    studentName.replace(/\s*\((?:Học sinh|Student|HS)\)\s*/gi, "").trim() || studentName;
 
   const selectedDayjs = dayjs(selectedDate);
   const dayOfWeekNum = selectedDayjs.day();
@@ -70,80 +60,113 @@ export function buildLocalTimetablePrintHtml(options: BuildTimetablePrintHtmlOpt
   const sunday = monday.add(6, "day");
   const weekStartDate = monday.format("DD/MM/YYYY");
   const weekEndDate = sunday.format("DD/MM/YYYY");
+  const weekLabel = options.currentWeekLabel || `Tuần ${selectedDayjs.format("WW")}`;
 
-  const findSlot = (dayKey: number, periodNum: number) => {
+  const findSlot = (dayKey: number, shiftName: "morning" | "afternoon", periodNum: number) => {
     return slots.find((s) => {
       const dow = s.dayOfWeek;
       const isDayMatched = dow === dayKey || dow === dayKey - 1;
+      if (!isDayMatched) return false;
+
       const numMatch = s.periods?.match(/\d+/);
       const num = numMatch ? parseInt(numMatch[0], 10) : 0;
-      return isDayMatched && num === periodNum;
+      const slotShift = s.shift ? s.shift.toLowerCase() : "";
+
+      if (shiftName === "morning") {
+        return (!slotShift || slotShift === "morning") && num === periodNum;
+      } else {
+        return (
+          (slotShift === "afternoon" && (num === periodNum || num === periodNum + 5)) ||
+          num === periodNum + 5
+        );
+      }
     });
   };
 
-  const tableHeaderDays = PRINT_DAYS_OF_WEEK.map((d) => `<th>${d.label}</th>`).join("");
+  const formatCell = (slot?: TimetableSlot) => {
+    if (!slot) {
+      return '<td class="lesson empty-session">Không có lịch</td>';
+    }
 
-  const rowsHtml = PRINT_PERIODS_DEFINITION
-    .map((p) => {
-      const shiftTd =
-        p.period === 1
-          ? '<td rowspan="5" class="shift-col">Sáng</td>'
-          : p.period === 6
-          ? '<td rowspan="4" class="shift-col">Chiều</td>'
-          : "";
+    const courseName = slot.courseName || "—";
+    const st = slot.startTime || "";
+    const et = slot.endTime || "";
+    const timeStr = st ? `${st} – ${et}` : ".......... – ..........";
+    const room = slot.room || "—";
+    const instructor = slot.instructorName || "—";
+    const teachingMode = slot.onlineUrl ? "Trực tuyến" : "Trực tiếp";
+    const learningMode = CLASS_TYPE_LABELS[slot.classType] || "Lý thuyết";
 
-      const dayTds = PRINT_DAYS_OF_WEEK
-        .map((d) => {
-          const slot = findSlot(d.key, p.period);
-          if (!slot) return "<td></td>";
+    let notes = "—";
+    if (slot.isOnLeave || slot.attendanceStatus === "excused") {
+      notes = `Nghỉ phép (${slot.leaveReason || "Nghỉ phép"})`;
+    } else if (slot.notes || slot.lessonTopic) {
+      notes = slot.notes || slot.lessonTopic || "—";
+    }
 
-          const leaveBadge = slot.isOnLeave
-            ? `<div class="tt-slot-excused">Nghỉ phép</div>`
-            : "";
+    const linkHtml = slot.onlineUrl
+      ? `<a href="${slot.onlineUrl}" target="_blank">${slot.onlineUrl}</a>`
+      : "—";
 
-          const learningMode = CLASS_TYPE_LABELS[slot.classType] || "Lý thuyết";
-          const teachingMode = slot.onlineUrl ? "Trực tuyến" : "Trực tiếp";
-          const notesText = slot.notes || slot.lessonTopic || "Không có";
-          const linkHtml = slot.onlineUrl
-            ? `<a href="${slot.onlineUrl}" target="_blank" class="tt-slot-link" title="${slot.onlineUrl}">Liên kết trực tuyến</a>`
-            : "Không có";
+    return `
+      <td class="lesson">
+          <div class="subject">Tên môn học: ${courseName}</div>
+          <div class="detail"><strong>Thời gian:</strong> ${timeStr}</div>
+          <div class="detail"><strong>Phòng học:</strong> ${room}</div>
+          <div class="detail"><strong>Giáo viên:</strong> ${instructor}</div>
+          <div class="detail"><strong>Hình thức dạy:</strong> ${teachingMode}</div>
+          <div class="detail"><strong>Hình thức học:</strong> ${learningMode}</div>
+          <div class="detail" style="font-style: italic;"><strong>Ghi chú:</strong> ${notes}</div>
+          <div class="detail" style="font-style: italic;"><strong>Liên kết khác:</strong> ${linkHtml}</div>
+      </td>
+    `;
+  };
 
-          return `
-            <td>
-              <div class="tt-slot-card">
-                <div class="tt-slot-subject">${slot.courseName}</div>
-                <div class="tt-slot-row"><span class="tt-slot-lbl">Phòng học:</span> <span class="tt-slot-val">${slot.room || "-"}</span> - <span class="tt-slot-lbl">Giáo viên:</span> <span class="tt-slot-val">${slot.instructorName || "-"}</span></div>
-                <div class="tt-slot-row"><span class="tt-slot-lbl">Hình thức học:</span> <span class="tt-slot-val">${learningMode}</span> - <span class="tt-slot-lbl">Hình thức dạy:</span> <span class="tt-slot-val">${teachingMode}</span></div>
-                <div class="tt-slot-row"><span class="tt-slot-lbl">Ghi chú:</span> <span class="tt-slot-val tt-slot-note">${notesText}</span> - <span class="tt-slot-lbl">Liên kết khác:</span> <span class="tt-slot-val">${linkHtml}</span></div>
-                ${leaveBadge}
-              </div>
-            </td>
-          `;
-        })
-        .join("");
+  const dayRows: string[] = [];
+  for (const day of PRINT_DAYS_OF_WEEK) {
+    const morningCells = [1, 2, 3, 4, 5]
+      .map((p) => formatCell(findSlot(day.key, "morning", p)))
+      .join("");
+    const morningRow = `
+      <tr>
+          <td class="day" rowspan="2">${day.label}</td>
+          <td class="session">Sáng</td>
+          ${morningCells}
+      </tr>
+    `;
 
-      return `
-        <tr>
-          ${shiftTd}
-          <td class="period-col">${p.period}</td>
-          <td class="time-col">${p.time}</td>
-          ${dayTds}
-        </tr>
-      `;
-    })
-    .join("");
+    const afternoonCells = [1, 2, 3, 4, 5]
+      .map((p) => formatCell(findSlot(day.key, "afternoon", p)))
+      .join("");
+    const afternoonRow = `
+      <tr>
+          <td class="session">Chiều</td>
+          ${afternoonCells}
+      </tr>
+    `;
+
+    dayRows.push(morningRow);
+    dayRows.push(afternoonRow);
+  }
+
+  const rowsHtml = dayRows.join("\n");
+  const now = dayjs();
+  const createdDateFormatted = `TP. Hồ Chí Minh, ngày ${now.format("DD")} tháng ${now.format("MM")} năm ${now.format("YYYY")}`;
 
   return rawPrintTimetableHtml
+    .replace(/\{\{schoolParentName\}\}/g, schoolParentName)
+    .replace(/\{\{schoolName\}\}/g, schoolName)
+    .replace(/\{\{docNumber\}\}/g, "08/TKB-THPT")
     .replace(/\{\{className\}\}/g, className)
+    .replace(/\{\{gradeLevel\}\}/g, "Khối 10")
     .replace(/\{\{academicYear\}\}/g, academicYear)
     .replace(/\{\{semesterLabel\}\}/g, semesterLabel)
-    .replace(/\{\{printDateStr\}\}/g, printDateStr)
+    .replace(/\{\{weekLabel\}\}/g, weekLabel)
     .replace(/\{\{weekStartDate\}\}/g, weekStartDate)
     .replace(/\{\{weekEndDate\}\}/g, weekEndDate)
-    .replace(/\{\{tableHeaderDays\}\}/g, tableHeaderDays)
     .replace(/\{\{rowsHtml\}\}/g, rowsHtml)
-    .replace(/\{\{cleanStudentName\}\}/g, cleanStudentName)
+    .replace(/\{\{generalNotes\}\}/g, "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định.")
     .replace(/\{\{homeroomTeacher\}\}/g, homeroomTeacher)
-    .replace(/\{\{principalName\}\}/g, principalName)
-    .replace(/\{\{templateCode\}\}/g, templateCode);
+    .replace(/\{\{createdByName\}\}/g, cleanStudentName)
+    .replace(/\{\{createdDateFormatted\}\}/g, createdDateFormatted);
 }

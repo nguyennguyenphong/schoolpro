@@ -1,262 +1,414 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="utf-8" />
-  <title>Thời khóa biểu - Lớp {{className}}</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      color-adjust: exact !important;
-    }
-    @page {
-      size: A4 landscape !important;
-      margin: 6mm 8mm !important;
-    }
-    html, body {
-      font-family: 'Times New Roman', 'Segoe UI', serif;
-      margin: 0;
-      padding: 0;
-      color: #0f172a;
-      font-size: 8.5pt;
-      line-height: 1.25;
-      background: #ffffff;
-    }
-    .print-container {
-      width: 100%;
-      max-width: 297mm;
-      margin: 0 auto;
-    }
-    .tt-header-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-    .title {
-      text-align: center;
-      margin: 4px 0 6px 0;
-      font-size: 15pt;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #1e3a8a;
-    }
-    .tt-matrix-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      font-size: 8pt;
-      page-break-inside: auto;
-    }
-    .tt-matrix-table thead {
-      display: table-header-group !important;
-    }
-    .tt-matrix-table tbody {
-      display: table-row-group !important;
-    }
-    .tt-matrix-table tr {
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-    .tt-matrix-table th, .tt-matrix-table td {
-      border: 1px solid #475569;
-      padding: 3px 2px;
-      text-align: center;
-      vertical-align: middle;
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-    .tt-matrix-table th {
-      background-color: #f1f5f9;
-      font-weight: bold;
-      color: #0f172a;
-      font-size: 8.5pt;
-      padding: 4px 2px;
-    }
-    .shift-col {
-      width: 38px;
-      background-color: #f8fafc;
-      font-weight: bold;
-      font-size: 8.5pt;
-    }
-    .period-col {
-      width: 32px;
-      font-weight: bold;
-      font-size: 8.5pt;
-    }
-    .time-col {
-      width: 72px;
-      font-size: 7.5pt;
-      color: #334155;
-    }
-    .tt-slot-card {
-      text-align: left;
-      line-height: 1.25;
-      padding: 1px 2px;
-    }
-    .tt-slot-subject {
-      font-weight: bold;
-      color: #1e3a8a;
-      line-height: 1.2;
-      font-size: 8pt;
-      margin-bottom: 2px;
-      border-bottom: 1px dashed #cbd5e1;
-      padding-bottom: 1.5px;
-    }
-    .tt-slot-row {
-      font-size: 7pt;
-      line-height: 1.25;
-      margin-top: 1px;
-      color: #334155;
-      word-break: break-word;
-    }
-    .tt-slot-lbl {
-      font-weight: 600;
-      color: #475569;
-    }
-    .tt-slot-val {
-      color: #0f172a;
-    }
-    .tt-slot-note {
-      font-style: italic;
-      color: #475569;
-    }
-    .tt-slot-link {
-      color: #2563eb;
-      text-decoration: underline;
-      word-break: break-all;
-    }
-    .tt-slot-excused {
-      background-color: #fef3c7;
-      border-radius: 2px;
-      padding: 1px 3px;
-      margin-top: 2px;
-      font-size: 6.5pt;
-      color: #92400e;
-      font-weight: 600;
-      border: 1px solid #fde68a;
-      display: inline-block;
-    }
-    .tt-signatures-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-    .tt-signatures-table td {
-      text-align: center;
-      vertical-align: top;
-    }
-    @media print {
-      html, body {
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #ffffff !important;
-        font-size: 8.5pt !important;
-      }
-      .print-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-      }
-      .tt-matrix-table {
-        page-break-inside: auto !important;
-      }
-      .tt-matrix-table thead {
-        display: table-header-group !important;
-      }
-      .tt-matrix-table tbody {
-        display: table-row-group !important;
-      }
-      .tt-matrix-table tr, .tt-matrix-table td, .tt-matrix-table th {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-      .tt-signatures-table {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        margin-top: 8px !important;
-      }
-      .tt-header-table {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thời khóa biểu - Lớp {{className}}</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000;
+            background: #e9e9e9;
+            font-size: 10pt;
+            line-height: 1.2;
+        }
+
+        .toolbar {
+            width: 297mm;
+            margin: 14px auto 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .print-button {
+            border: 0;
+            border-radius: 4px;
+            padding: 9px 16px;
+            background: #174a7e;
+            color: #fff;
+            font: 600 13px Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 297mm;
+            min-height: 210mm;
+            margin: 0 auto 20px;
+            padding: 9mm 10mm 7mm;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .14);
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            text-align: center;
+            align-items: start;
+            margin-bottom: 4mm;
+        }
+
+        .header p {
+            margin: 0 0 3px;
+        }
+
+        .agency-name {
+            font-size: 9.5pt;
+            text-transform: uppercase;
+        }
+
+        .school-name,
+        .national-name {
+            font-size: 10pt;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .motto {
+            font-size: 10.5pt;
+            font-weight: bold;
+        }
+
+        .rule {
+            height: 1px;
+            background: #000;
+            margin: 4px auto 0;
+        }
+
+        .rule-left {
+            width: 115px;
+        }
+
+        .rule-right {
+            width: 160px;
+        }
+
+        .doc-number {
+            margin-top: 4px !important;
+            font-size: 9pt;
+        }
+
+        .title-block {
+            text-align: center;
+            margin: 0 0 3mm;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 16pt;
+            text-transform: uppercase;
+        }
+
+        .period {
+            margin: 3px 0 0;
+            font-size: 10pt;
+            font-style: italic;
+        }
+
+        .info {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-bottom: 3mm;
+            font-size: 9.5pt;
+        }
+
+        .info td {
+            padding: 2px 4px;
+            vertical-align: top;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 7.5pt;
+            margin-bottom: 3mm;
+        }
+
+        .timetable th,
+        .timetable td {
+            border: 1px solid #000;
+            padding: 3px 3px;
+            vertical-align: top;
+            line-height: 1.15;
+            overflow-wrap: anywhere;
+        }
+
+        .timetable th {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 8.5pt;
+            background: #f1f1f1;
+        }
+
+        .timetable .day-col {
+            width: 7%;
+        }
+
+        .timetable .period-col {
+            width: 5%;
+        }
+
+        .timetable .lesson-col {
+            width: 17.6%;
+        }
+
+        .timetable .day,
+        .timetable .session {
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .timetable .lesson {
+            min-height: 56px;
+        }
+
+        .subject {
+            text-align: center;
+            font-size: 8pt;
+            font-weight: normal;
+            margin-bottom: 3px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail {
+            margin: 0 0 2px;
+        }
+
+        .detail strong {
+            font-weight: normal;
+        }
+
+        .empty-session {
+            text-align: center;
+            vertical-align: middle !important;
+            color: #555;
+            font-style: italic;
+        }
+
+        .notes {
+            font-size: 8.5pt;
+            margin-top: 2mm;
+        }
+
+        .notes p {
+            margin: 0 0 3px;
+        }
+
+        .footer {
+            margin-top: 3mm;
+        }
+
+        .footer-date {
+            width: 50%;
+            margin-left: 50%;
+            text-align: center;
+            font-size: 9pt;
+            font-style: italic;
+            margin-bottom: 5px;
+            padding: 0 4px;
+        }
+
+        .signature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: start;
+        }
+
+        .signature {
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .signature-title {
+            font-size: 9.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .signature-guide {
+            margin-top: 2px;
+            font-size: 8.5pt;
+            font-style: italic;
+        }
+
+        .signature-space {
+            height: 22px;
+        }
+
+        .signature-name {
+            font-size: 9.5pt;
+            font-weight: bold;
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 12mm 15mm 12mm 15mm;
+            }
+
+            html,
+            body {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
+
+            .toolbar {
+                display: none !important;
+            }
+
+            .page {
+                width: 100% !important;
+                min-height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .header,
+            .title-block,
+            .info,
+            .notes,
+            .footer,
+            .signature-row {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            .timetable {
+                page-break-inside: auto !important;
+            }
+
+            .timetable thead {
+                display: table-header-group !important;
+            }
+
+            .timetable tbody {
+                display: table-row-group !important;
+            }
+
+            .timetable tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            .timetable th {
+                background: #f1f1f1 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
+        @media screen and (max-width:1100px) {
+            .page,
+            .toolbar {
+                margin-left: 12px;
+                margin-right: 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="print-container">
-    <table class="tt-header-table" style="width: 100%; border-collapse: collapse; margin-bottom: 6px; padding-bottom: 4px; border: none;">
-      <tr>
-        <td style="width: 50%; text-align: left; vertical-align: top;">
-          <div style="font-size: 10pt; text-transform: uppercase; color: #475569;">SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI</div>
-          <div style="font-size: 12pt; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-top: 1px;">TRƯỜNG THPT CHUYÊN SCHOOLPRO</div>
-          <div style="width: 160px; height: 1px; background-color: #0f172a; margin: 4px 0 6px 0;"></div>
-          <div style="font-size: 10.5pt;">Lớp: <strong>{{className}}</strong> - Năm học: <strong>{{academicYear}}</strong></div>
-        </td>
-        <td style="width: 50%; text-align: right; vertical-align: top;">
-          <div style="font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-          <div style="font-size: 10pt; font-weight: bold; margin-bottom: 2px;">Độc lập - Tự do - Hạnh phúc</div>
-          <div style="width: 180px; height: 1px; background-color: #0f172a; margin: 4px 0 6px auto;"></div>
-          <div style="font-size: 9.5pt; color: #475569;">Học kỳ: <strong>{{semesterLabel}}</strong> - Ngày lập: {{printDateStr}}</div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="title">THỜI KHÓA BIỂU HỌC TẬP</div>
-
-    <table class="tt-matrix-table">
-      <thead>
-        <tr>
-          <th style="width: 48px;">Buổi</th>
-          <th style="width: 42px;">Tiết</th>
-          <th style="width: 82px;">Thời gian</th>
-          {{tableHeaderDays}}
-        </tr>
-      </thead>
-      <tbody>
-        {{rowsHtml}}
-      </tbody>
-    </table>
-
-    <div style="margin-top: 6px; font-size: 8.5pt; color: #334155; line-height: 1.35;">
-      <div><strong>Ghi chú:</strong> Thời khóa biểu này có hiệu lực từ ngày {{weekStartDate}} đến ngày {{weekEndDate}}</div>
+    <div class="toolbar">
+        <button class="print-button" type="button" onclick="window.print()">In / Lưu PDF</button>
     </div>
-
-    <table class="tt-signatures-table">
-      <tr>
-        <td style="width: 33.33%;">
-          <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase;">NGƯỜI LẬP BIỂU</div>
-          <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
-          <div style="height: 36px;"></div>
-          <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase;">{{cleanStudentName}}</div>
-        </td>
-        <td style="width: 33.33%;">
-          <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase;">GIÁO VIÊN CHỦ NHIỆM</div>
-          <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
-          <div style="height: 36px;"></div>
-          <div style="font-size: 10pt; font-weight: bold;">{{homeroomTeacher}}</div>
-        </td>
-        <td style="width: 33.33%;">
-          <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase;">HIỆU TRƯỞNG / BGH</div>
-          <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký tên và đóng dấu)</div>
-          <div style="height: 36px;"></div>
-          <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase;">{{principalName}}</div>
-        </td>
-      </tr>
-    </table>
-
-    <div style="margin-top: 8px; padding-top: 4px; border-top: 1px solid #cbd5e1; font-size: 8pt; color: #64748b; text-align: right;">
-      <span>Mã biểu mẫu: {{templateCode}}</span>
-    </div>
-  </div>
+    <main class="page">
+        <header class="header">
+            <div>
+                <p class="agency-name">{{schoolParentName}}</p>
+                <p class="school-name">{{schoolName}}</p>
+                <div class="rule rule-left"></div>
+                <p class="doc-number">Số: {{docNumber}}</p>
+            </div>
+            <div>
+                <p class="national-name">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                <p class="motto">Độc lập - Tự do - Hạnh phúc</p>
+                <div class="rule rule-right"></div>
+            </div>
+        </header>
+        <section class="title-block">
+            <h1>THỜI KHÓA BIỂU</h1>
+            <p class="period">Năm học: {{academicYear}} &nbsp; | &nbsp; Học kỳ: {{semesterLabel}} &nbsp; | &nbsp; Áp dụng từ tuần: {{weekLabel}}</p>
+        </section>
+        <table class="info" aria-label="Thông tin thời khóa biểu">
+            <tbody>
+                <tr>
+                    <td style="width:34%">Lớp: <span class="value">{{className}}</span></td>
+                    <td style="width:33%">Khối: <span class="value">{{gradeLevel}}</span></td>
+                    <td style="width:33%">Giáo viên chủ nhiệm: <span class="value">{{homeroomTeacher}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Thời gian áp dụng: <span class="value">Từ ngày {{weekStartDate}} đến ngày {{weekEndDate}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="timetable" aria-label="Thời khóa biểu theo ngày và tiết học">
+            <colgroup>
+                <col class="day-col">
+                <col class="period-col">
+                <col class="lesson-col">
+                <col class="lesson-col">
+                <col class="lesson-col">
+                <col class="lesson-col">
+                <col class="lesson-col">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Thứ</th>
+                    <th>Buổi</th>
+                    <th>Tiết 1</th>
+                    <th>Tiết 2</th>
+                    <th>Tiết 3</th>
+                    <th>Tiết 4</th>
+                    <th>Tiết 5</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{rowsHtml}}
+            </tbody>
+        </table>
+        <section class="notes">
+            <p><strong>Ghi chú chung:</strong> {{generalNotes}}</p>
+            <p><strong>Quy ước:</strong> Mỗi ô tiết học ghi đầy đủ thông tin; nếu không có lịch, ghi “Không có lịch”.</p>
+        </section>
+        <footer class="footer">
+            <div class="footer-date">{{createdDateFormatted}}</div>
+            <div class="signature-row">
+                <div class="signature">
+                    <div class="signature-title">NGƯỜI LẬP THỜI KHÓA BIỂU</div>
+                    <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+                    <div class="signature-space"></div>
+                    <div class="signature-name">{{createdByName}}</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-title">GIÁO VIÊN CHỦ NHIỆM</div>
+                    <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+                    <div class="signature-space"></div>
+                    <div class="signature-name">{{homeroomTeacher}}</div>
+                </div>
+            </div>
+        </footer>
+    </main>
 </body>
+
 </html>

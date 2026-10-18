@@ -220,19 +220,6 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                                 {slot.instructorName}
                               </span>
                             </div>
-                            {slot.instructorEmail ? (
-                              <div className="flex items-center gap-1.5">
-                                <Icon name="mail" size={13} className="text-slate-400 shrink-0" />
-                                <a
-                                  href={`mailto:${slot.instructorEmail}`}
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="text-blue-600 hover:text-blue-800 hover:underline truncate text-[11px] font-medium"
-                                  title={slot.instructorEmail}
-                                >
-                                  {slot.instructorEmail}
-                                </a>
-                              </div>
-                            ) : null}
                             <div className="flex items-center justify-between gap-1.5">
                               <Tag
                                 color={isOnline ? "purple" : "cyan"}
@@ -259,8 +246,8 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
 
                           {slot.notes && (
                             <div className="pt-1.5 border-t border-[#f0f0f0] text-[11px] text-slate-500 italic">
-                              <span className="font-medium text-slate-600 not-italic">
-                                {t("card:timetable.notes")}{" "}
+                              <span className="font-medium text-slate-600 italic">
+                                {t("card:timetable.notes")}:{" "}
                               </span>
                               {slot.notes}
                             </div>
