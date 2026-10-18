@@ -683,7 +683,26 @@
       "guardianCardTitle": "Thông tin Phụ huynh xác nhận",
       "notUpdated": "Chưa cập nhật",
       "relationshipLabel": "Mối quan hệ:",
-      "phoneLabel": "Số điện thoại:"
+      "phoneLabel": "Số điện thoại:",
+      "statusBannerApprovedTitle": "Đơn xin nghỉ học đã được phê duyệt",
+      "statusBannerPendingTitle": "Đơn đang chờ Giáo viên chủ nhiệm xét duyệt",
+      "statusBannerRejectedTitle": "Đơn xin nghỉ học không được phê duyệt",
+      "statusBannerCancelledTitle": "Đơn xin nghỉ học đã được hủy",
+      "statusBannerApprovedDescDirect": "Đơn của bạn đã được Giáo viên chủ nhiệm {{teacherName}} phê duyệt vào lúc {{time}}.",
+      "statusBannerApprovedDescAuto": "Đơn của bạn đã được hệ thống tự động phê duyệt vào lúc {{time}} theo quy định.",
+      "statusBannerPendingDesc": "Giáo viên chủ nhiệm {{teacherName}} sẽ xét duyệt đơn trước giờ học 03 giờ ({{deadline}}). Quá thời hạn trên, hệ thống sẽ tự động duyệt.",
+      "statusBannerRejectedDesc": "Giáo viên chủ nhiệm {{teacherName}} đã từ chối đơn này vào lúc {{time}}.",
+      "statusBannerCancelledDesc": "Đơn xin nghỉ học này đã được bạn chủ động hủy.",
+      "teacherAdviceTitle": "Lời dặn của Giáo viên chủ nhiệm:",
+      "teacherRejectReasonTitle": "Lý do từ chối từ Giáo viên:",
+      "stepMiniSubmitted": "Gửi đơn",
+      "stepMiniReceived": "Tiếp nhận",
+      "stepMiniResult": "Kết quả",
+      "stepMiniPending": "Đang chờ duyệt",
+      "toggleActivityLogShow": "Xem chi tiết lịch sử xử lý ({{count}} sự kiện)",
+      "toggleActivityLogHide": "Thu gọn lịch sử xử lý",
+      "lessonsScheduleTitle": "Lịch các tiết học xin nghỉ",
+      "lessonsScheduleCount": "{{count}} tiết học"
     }
   },
   "attendance": {

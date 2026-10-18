@@ -5,3 +5,4 @@ export * from "@/modules/students/features/leave-requests/components/detail/Leav
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailSkeleton";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestStepsLogCard";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestWorkflowCard";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestStatusBanner";

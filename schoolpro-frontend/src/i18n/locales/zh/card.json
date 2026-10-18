@@ -683,7 +683,26 @@
       "guardianCardTitle": "家长 / 监护人确认信息",
       "notUpdated": "未填写",
       "relationshipLabel": "与学生关系:",
-      "phoneLabel": "联系电话:"
+      "phoneLabel": "联系电话:",
+      "statusBannerApprovedTitle": "请假申请已批准",
+      "statusBannerPendingTitle": "请假申请正在等待班主任审核",
+      "statusBannerRejectedTitle": "请假申请未获批准",
+      "statusBannerCancelledTitle": "请假申请已取消",
+      "statusBannerApprovedDescDirect": "您的申请已于 {{time}} 由班主任 {{teacherName}} 批准。",
+      "statusBannerApprovedDescAuto": "根据规定，系统已于 {{time}} 自动批准您的申请。",
+      "statusBannerPendingDesc": "班主任 {{teacherName}} 将在第一节课前 3 小时（{{deadline}}）审核您的申请。逾期未审系统将自动批准。",
+      "statusBannerRejectedDesc": "班主任 {{teacherName}} 于 {{time}} 拒绝了此申请。",
+      "statusBannerCancelledDesc": "此请假申请已由您主动取消。",
+      "teacherAdviceTitle": "班主任寄语与批注：",
+      "teacherRejectReasonTitle": "教师拒绝原因：",
+      "stepMiniSubmitted": "已提交",
+      "stepMiniReceived": "已接收",
+      "stepMiniResult": "审批结果",
+      "stepMiniPending": "等待审核",
+      "toggleActivityLogShow": "查看详细处理历史（{{count}} 条事件）",
+      "toggleActivityLogHide": "收起处理历史",
+      "lessonsScheduleTitle": "请假课程安排",
+      "lessonsScheduleCount": "{{count}} 节课"
     }
   },
   "attendance": {

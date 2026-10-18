@@ -683,7 +683,26 @@
       "guardianCardTitle": "학부모 / 보호자 확인 정보",
       "notUpdated": "미입력",
       "relationshipLabel": "관계:",
-      "phoneLabel": "전화번호:"
+      "phoneLabel": "전화번호:",
+      "statusBannerApprovedTitle": "결석계가 승인되었습니다",
+      "statusBannerPendingTitle": "담임 교사 승인 대기 중입니다",
+      "statusBannerRejectedTitle": "결석계가 승인되지 않았습니다",
+      "statusBannerCancelledTitle": "결석계가 취소되었습니다",
+      "statusBannerApprovedDescDirect": "담임 교사 {{teacherName}} 님이 {{time}}에 신청을 승인하였습니다.",
+      "statusBannerApprovedDescAuto": "규정에 따라 시스템이 {{time}}에 자동으로 승인하였습니다.",
+      "statusBannerPendingDesc": "담임 교사 {{teacherName}} 님이 첫 수업 3시간 전({{deadline}})까지 검토합니다. 기한 초과 시 자동 승인됩니다.",
+      "statusBannerRejectedDesc": "담임 교사 {{teacherName}} 님이 {{time}}에 이 신청을 반려하였습니다.",
+      "statusBannerCancelledDesc": "이 결석계는 본인에 의해 취소되었습니다.",
+      "teacherAdviceTitle": "담임 교사의 조언 및 지시사항:",
+      "teacherRejectReasonTitle": "교사 반려 사유:",
+      "stepMiniSubmitted": "제출 완료",
+      "stepMiniReceived": "접수 완료",
+      "stepMiniResult": "결과",
+      "stepMiniPending": "승인 대기 중",
+      "toggleActivityLogShow": "상세 처리 내역 보기 ({{count}}개 이벤트)",
+      "toggleActivityLogHide": "처리 내역 접기",
+      "lessonsScheduleTitle": "결석 대상 수업 일정",
+      "lessonsScheduleCount": "{{count}}개 교시"
     }
   },
   "attendance": {

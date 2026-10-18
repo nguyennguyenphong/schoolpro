@@ -683,7 +683,26 @@
       "guardianCardTitle": "保護者確認情報",
       "notUpdated": "未登録",
       "relationshipLabel": "続柄:",
-      "phoneLabel": "電話番号:"
+      "phoneLabel": "電話番号:",
+      "statusBannerApprovedTitle": "欠席届が承認されました",
+      "statusBannerPendingTitle": "欠席届は担任教員による確認待ちです",
+      "statusBannerRejectedTitle": "欠席届は承認されませんでした",
+      "statusBannerCancelledTitle": "欠席届はキャンセルされました",
+      "statusBannerApprovedDescDirect": "担任の {{teacherName}} 先生が {{time}} に申請を承認しました。",
+      "statusBannerApprovedDescAuto": "規定に基づき、システムにより {{time}} に自動承認されました。",
+      "statusBannerPendingDesc": "担任の {{teacherName}} 先生が授業開始3時間前（{{deadline}}）までに確認します。期限を過ぎると自動承認されます。",
+      "statusBannerRejectedDesc": "担任の {{teacherName}} 先生が {{time}} にこの申請を却下しました。",
+      "statusBannerCancelledDesc": "この欠席届はご自身によってキャンセルされました。",
+      "teacherAdviceTitle": "担任教員からの伝言・指示：",
+      "teacherRejectReasonTitle": "教員からの却下理由：",
+      "stepMiniSubmitted": "提出済み",
+      "stepMiniReceived": "受付済み",
+      "stepMiniResult": "審査結果",
+      "stepMiniPending": "承認待ち",
+      "toggleActivityLogShow": "処理履歴の詳細を表示（{{count}} 件）",
+      "toggleActivityLogHide": "処理履歴を折りたたむ",
+      "lessonsScheduleTitle": "欠席する授業一覧",
+      "lessonsScheduleCount": "{{count}} コマ"
     }
   },
   "attendance": {

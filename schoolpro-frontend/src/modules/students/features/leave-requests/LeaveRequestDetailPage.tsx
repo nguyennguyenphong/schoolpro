@@ -7,8 +7,8 @@ import {
   LeaveRequestDetailHeader,
   LeaveRequestDetailSidebar,
   LeaveRequestDetailSkeleton,
+  LeaveRequestStatusBanner,
   LeaveRequestStepsLogCard,
-  LeaveRequestWorkflowCard,
 } from "@/modules/students/features/leave-requests/components/detail";
 import { useLeaveRequestDetail } from "@/modules/students/features/leave-requests/hooks";
 
@@ -45,6 +45,7 @@ const LeaveRequestDetailPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 sm:gap-5 pb-8">
+      {/* 1. Header with Breadcrumbs & Action Buttons */}
       <LeaveRequestDetailHeader
         item={item}
         downloading={downloading}
@@ -55,7 +56,8 @@ const LeaveRequestDetailPage: React.FC = () => {
         onDelete={handleDelete}
       />
 
-      <LeaveRequestWorkflowCard item={item} />
+      {/* 2. Student-friendly Status & Progress Banner */}
+      <LeaveRequestStatusBanner item={item} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-start">
         <div className="lg:col-span-2">

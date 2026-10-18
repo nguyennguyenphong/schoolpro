@@ -683,7 +683,26 @@
       "guardianCardTitle": "Parent / Guardian Confirmation",
       "notUpdated": "Not updated",
       "relationshipLabel": "Relationship:",
-      "phoneLabel": "Phone Number:"
+      "phoneLabel": "Phone Number:",
+      "statusBannerApprovedTitle": "Leave request has been approved",
+      "statusBannerPendingTitle": "Leave request is pending homeroom teacher review",
+      "statusBannerRejectedTitle": "Leave request was not approved",
+      "statusBannerCancelledTitle": "Leave request has been cancelled",
+      "statusBannerApprovedDescDirect": "Your request was approved by homeroom teacher {{teacherName}} at {{time}}.",
+      "statusBannerApprovedDescAuto": "Your request was automatically approved by the system at {{time}} according to regulations.",
+      "statusBannerPendingDesc": "Homeroom teacher {{teacherName}} will review your request 3 hours before the first lesson ({{deadline}}). If not reviewed by then, it will be automatically approved.",
+      "statusBannerRejectedDesc": "Homeroom teacher {{teacherName}} rejected this request at {{time}}.",
+      "statusBannerCancelledDesc": "This leave request was cancelled by you.",
+      "teacherAdviceTitle": "Teacher's Advice & Remarks:",
+      "teacherRejectReasonTitle": "Rejection Reason from Teacher:",
+      "stepMiniSubmitted": "Submitted",
+      "stepMiniReceived": "Received",
+      "stepMiniResult": "Result",
+      "stepMiniPending": "Pending Approval",
+      "toggleActivityLogShow": "View detailed activity history ({{count}} events)",
+      "toggleActivityLogHide": "Collapse activity history",
+      "lessonsScheduleTitle": "Schedule of Affected Lessons",
+      "lessonsScheduleCount": "{{count}} lessons"
     }
   },
   "attendance": {

@@ -20,36 +20,32 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
 
   return (
     <div className="flex flex-col gap-4 sm:gap-5">
-      {/* 1. Homeroom Teacher Approval & Notified Subject Teachers */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-        {/* Homeroom Teacher Section */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
-            <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
-            <h3 className="text-sm font-bold text-slate-900 mb-0">
-              {t("card:leaveRequests.detail.homeroomCardTitle")}
-            </h3>
+      {/* 1. Homeroom Teacher & Reviewer Card */}
+      <div className="bg-white p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
+        <div className="flex items-center gap-2.5 border-b border-[#f0f0f0] pb-3">
+          <span className="w-1.5 h-4.5 rounded-full bg-blue-600 inline-block" />
+          <h3 className="text-base font-bold text-slate-900 mb-0">
+            {t("card:leaveRequests.detail.homeroomCardTitle")}
+          </h3>
+        </div>
+
+        {/* Homeroom Teacher Details */}
+        <div className="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200/70 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center shrink-0">
+              <Icon name="user" size={18} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <strong className="text-sm font-bold text-slate-900 block truncate">
+                {item.homeroomTeacherName}
+              </strong>
+              <span className="text-xs text-slate-500 block truncate">
+                {t("card:leaveRequests.header.classBadge", { className: item.className })}
+              </span>
+            </div>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-xl border border-[#f0f0f0] text-xs space-y-2">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-slate-500">
-                {t("card:leaveRequests.detail.homeroomFullNameLabel")}
-              </span>
-              <strong className="text-slate-800">{item.homeroomTeacherName}</strong>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-slate-500">
-                {t("card:leaveRequests.detail.authorityLabel")}
-              </span>
-              <span className="font-semibold text-blue-600 text-right">
-                {homeroomAsSubject
-                  ? t("card:leaveRequests.detail.authorityCombined", {
-                      subjects: homeroomAsSubject.subjects.join(", "),
-                    })
-                  : t("card:leaveRequests.detail.authorityOfficial")}
-              </span>
-            </div>
+          <div className="pt-2 border-t border-slate-200/60 space-y-2 text-xs">
             {item.homeroomTeacherEmail && (
               <div className="flex items-center justify-between gap-2">
                 <span className="text-slate-500">
@@ -57,12 +53,26 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                 </span>
                 <a
                   href={`mailto:${item.homeroomTeacherEmail}`}
-                  className="text-blue-600 hover:underline font-medium truncate"
+                  className="text-blue-600 font-medium truncate max-w-44"
                 >
                   {item.homeroomTeacherEmail}
                 </a>
               </div>
             )}
+
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-slate-500">
+                {t("card:leaveRequests.detail.authorityLabel")}
+              </span>
+              <span className="font-semibold text-blue-700 text-right truncate">
+                {homeroomAsSubject
+                  ? t("card:leaveRequests.detail.authorityCombined", {
+                      subjects: homeroomAsSubject.subjects.join(", "),
+                    })
+                  : t("card:leaveRequests.detail.authorityOfficial")}
+              </span>
+            </div>
+
             {item.status === "approved" && (
               <div className="flex items-center justify-between gap-2">
                 <span className="text-slate-500">
@@ -75,6 +85,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                 </strong>
               </div>
             )}
+
             {item.reviewedAt && (
               <div className="flex items-center justify-between gap-2">
                 <span className="text-slate-500">
@@ -89,24 +100,24 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
         </div>
 
         {/* Notified Subject Teachers Section */}
-        <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800">
-              {t("card:leaveRequests.detail.subjectTeachersCardTitle")}
-            </span>
-            <Tag color="purple" className="m-0 text-[11px] font-semibold">
-              {t("card:leaveRequests.detail.subjectTeachersCountBadge", {
-                count: otherSubjectTeachers.length,
-              })}
-            </Tag>
-          </div>
+        {otherSubjectTeachers.length > 0 && (
+          <div className="space-y-2.5 pt-2 border-t border-[#f0f0f0]">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-800">
+                {t("card:leaveRequests.detail.subjectTeachersCardTitle")}
+              </span>
+              <Tag color="purple" className="m-0 text-[10px] font-semibold">
+                {t("card:leaveRequests.detail.subjectTeachersCountBadge", {
+                  count: otherSubjectTeachers.length,
+                })}
+              </Tag>
+            </div>
 
-          {otherSubjectTeachers.length > 0 ? (
             <div className="space-y-2">
               {otherSubjectTeachers.map((teacher, idx) => (
                 <div
                   key={teacher.teacherId || idx}
-                  className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2 text-xs"
+                  className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-200/70 flex items-center justify-between gap-2 text-xs"
                 >
                   <div className="min-w-0">
                     <div className="font-bold text-slate-800 truncate">{teacher.teacherName}</div>
@@ -126,84 +137,55 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                 </div>
               ))}
             </div>
-          ) : !homeroomAsSubject ? (
-            <div className="p-2.5 rounded-xl bg-slate-50 border border-[#f0f0f0] text-xs text-slate-500">
-              {t("card:leaveRequests.detail.noOtherSubjectTeachers")}
-            </div>
-          ) : null}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* 2. Student Information & Guardian Confirmation */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-        {/* Student */}
-        <div className="space-y-2.5">
-          <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
-            <span className="w-1.5 h-4 rounded-full bg-slate-700 inline-block" />
-            <h3 className="text-sm font-bold text-slate-900 mb-0">
-              {t("card:leaveRequests.detail.studentInfoCardTitle")}
-            </h3>
-          </div>
-
-          <div className="space-y-2 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">{t("card:leaveRequests.detail.fullNameLabel")}</span>
-              <strong className="text-slate-800">{item.studentName}</strong>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">
-                {t("card:leaveRequests.detail.studentCodeLabel")}
-              </span>
-              <strong className="text-slate-700">{item.studentCode}</strong>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">{t("card:leaveRequests.summary.classLabel")}</span>
-              <strong className="text-blue-600">
-                {t("card:leaveRequests.header.classBadge", { className: item.className })}
-              </strong>
-            </div>
-          </div>
+      {/* 2. Guardian Confirmation Card */}
+      <div className="bg-white p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3.5">
+        <div className="flex items-center gap-2.5 border-b border-[#f0f0f0] pb-3">
+          <span className="w-1.5 h-4.5 rounded-full bg-emerald-600 inline-block" />
+          <h3 className="text-base font-bold text-slate-900 mb-0">
+            {t("card:leaveRequests.detail.guardianCardTitle")}
+          </h3>
         </div>
 
-        {/* Parent / Guardian */}
-        <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-3.5 rounded-full bg-emerald-600 inline-block" />
-            <span className="text-xs font-bold text-slate-800">
-              {t("card:leaveRequests.detail.guardianCardTitle")}
+        <div className="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200/70 space-y-2 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-slate-500">{t("card:leaveRequests.detail.fullNameLabel")}</span>
+            <strong className="text-slate-800 text-right">
+              {item.guardianName || t("card:leaveRequests.detail.notUpdated")}
+            </strong>
+          </div>
+
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-slate-500">
+              {t("card:leaveRequests.detail.relationshipLabel")}
+            </span>
+            <span className="font-semibold text-slate-700 text-right">
+              {item.guardianRelationship || t("input:leaveRequests.relationshipParentDefault")}
             </span>
           </div>
 
-          <div className="space-y-2 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">{t("card:leaveRequests.detail.fullNameLabel")}</span>
-              <strong className="text-slate-800">
-                {item.guardianName || t("card:leaveRequests.detail.notUpdated")}
-              </strong>
+          {item.guardianPhone && (
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-slate-500">{t("card:leaveRequests.detail.phoneLabel")}</span>
+              <a
+                href={`tel:${item.guardianPhone}`}
+                className="text-blue-600 font-bold text-right"
+              >
+                {item.guardianPhone}
+              </a>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-500">
-                {t("card:leaveRequests.detail.relationshipLabel")}
-              </span>
-              <strong className="text-slate-700">
-                {item.guardianRelationship || t("input:leaveRequests.relationshipParentDefault")}
-              </strong>
-            </div>
-            {item.guardianPhone && (
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500">{t("card:leaveRequests.detail.phoneLabel")}</span>
-                <strong className="text-blue-600">{item.guardianPhone}</strong>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
 
-      {/* 3. Attached Evidence Documents */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
-        <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
-          <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />
-          <h3 className="text-sm font-bold text-slate-900 mb-0">
+      {/* 3. Supporting Documents & Attachments Card */}
+      <div className="bg-white p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3.5">
+        <div className="flex items-center gap-2.5 border-b border-[#f0f0f0] pb-3">
+          <span className="w-1.5 h-4.5 rounded-full bg-indigo-600 inline-block" />
+          <h3 className="text-base font-bold text-slate-900 mb-0">
             {t("card:leaveRequests.detail.attachmentsCardTitle")}
           </h3>
         </div>
@@ -214,19 +196,25 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
               item.attachments.map((att, idx) => (
                 <div
                   key={att.id || idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs"
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-50/90 border border-slate-200/80 text-xs"
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <Icon name="paperclip" size={14} className="text-blue-600 shrink-0" />
-                    <span className="font-semibold text-slate-800 truncate">{att.name}</span>
-                    {att.size && <span className="text-slate-400">({att.size})</span>}
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                      <Icon name="paperclip" size={15} />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-semibold text-slate-900 block truncate">
+                        {att.name}
+                      </span>
+                      {att.size && <span className="text-slate-400 text-[11px]">{att.size}</span>}
+                    </div>
                   </div>
                   {att.url && (
                     <a
                       href={att.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-blue-600 hover:underline font-semibold shrink-0"
+                      className="inline-flex items-center gap-1 text-blue-600 font-semibold shrink-0 ml-2"
                     >
                       <span>{t("button:openAttachment")}</span>
                       <Icon name="external-link" size={12} />
@@ -239,10 +227,10 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                 href={item.supportingDocumentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between p-3 rounded-xl bg-blue-50/60 border border-blue-200 text-xs font-semibold text-blue-700 hover:bg-blue-50 transition-colors"
+                className="flex items-center justify-between p-3 rounded-xl bg-blue-50/70 border border-blue-200 text-xs font-semibold text-blue-700"
               >
                 <span className="inline-flex items-center gap-2">
-                  <Icon name="paperclip" size={14} />
+                  <Icon name="paperclip" size={15} />
                   <span>{t("card:leaveRequests.detail.supportingDocumentDefault")}</span>
                 </span>
                 <Icon name="external-link" size={13} />
@@ -250,7 +238,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
             ) : null}
           </div>
         ) : (
-          <p className="text-xs text-slate-500 mb-0">
+          <p className="text-xs text-slate-400 mb-0 py-2 text-center">
             {t("card:leaveRequests.detail.noAttachments")}
           </p>
         )}
