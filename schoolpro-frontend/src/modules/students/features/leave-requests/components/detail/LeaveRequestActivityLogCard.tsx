@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Tag } from "@/components/ui/Tag";
+import type { IconName } from "@/components/ui/Icon/types";
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
 import { formatDateTimeDisplay } from "@/modules/students/features/leave-requests/utils";
 
@@ -11,20 +11,95 @@ interface LeaveRequestActivityLogCardProps {
   item: LeaveRequestItem;
 }
 
-const mapBadgeColorToDot = (color?: string): string => {
-  switch (color) {
+interface TimelineMarkerConfig {
+  bgClass: string;
+  iconName: IconName;
+}
+
+/**
+ * Resolves theme color and status icon for timeline markers based on event characteristics.
+ * Supported themes: success (approved), error (rejected), warning/in-progress (pending),
+ * notification (email/alerts), and request submission.
+ */
+const getTimelineMarkerConfig = (
+  badgeColor?: string,
+  eventType?: string
+): TimelineMarkerConfig => {
+  const normType = (eventType || "").toUpperCase();
+  const normColor = (badgeColor || "").toLowerCase();
+
+  // Success / Approved
+  if (
+    normColor === "success" ||
+    normType === "APPROVED" ||
+    normType === "AUTO_APPROVED" ||
+    normType === "LEAVE_REQUEST_REVIEWED"
+  ) {
+    return {
+      bgClass: "bg-emerald-600 text-white",
+      iconName: "check",
+    };
+  }
+
+  // Rejected / Error
+  if (normColor === "error" || normType === "REJECTED") {
+    return {
+      bgClass: "bg-rose-600 text-white",
+      iconName: "close",
+    };
+  }
+
+  // Cancelled
+  if (normType === "CANCELLED" || normColor === "default") {
+    return {
+      bgClass: "bg-slate-500 text-white",
+      iconName: "close",
+    };
+  }
+
+  // Processing / Pending / In-progress
+  if (normColor === "warning" || normType.includes("PENDING")) {
+    return {
+      bgClass: "bg-amber-500 text-white",
+      iconName: "clock",
+    };
+  }
+
+  // Notification / Email delivery
+  if (
+    normColor === "purple" ||
+    normColor === "cyan" ||
+    normType.includes("NOTIF") ||
+    normType.includes("EMAIL")
+  ) {
+    return {
+      bgClass: normColor === "purple" ? "bg-purple-600 text-white" : "bg-cyan-600 text-white",
+      iconName: "send",
+    };
+  }
+
+  // Created / Submitted
+  if (normType === "CREATED" || normType === "LEAVE_REQUEST_CREATED") {
+    return {
+      bgClass: "bg-blue-600 text-white",
+      iconName: "fileText",
+    };
+  }
+
+  // Fallback by badgeColor
+  switch (normColor) {
     case "success":
-      return "bg-emerald-600";
+      return { bgClass: "bg-emerald-600 text-white", iconName: "check" };
     case "error":
-      return "bg-rose-600";
+      return { bgClass: "bg-rose-600 text-white", iconName: "close" };
     case "warning":
-      return "bg-amber-500";
+      return { bgClass: "bg-amber-500 text-white", iconName: "clock" };
     case "purple":
-      return "bg-purple-600";
+      return { bgClass: "bg-purple-600 text-white", iconName: "send" };
     case "cyan":
-      return "bg-cyan-600";
+      return { bgClass: "bg-cyan-600 text-white", iconName: "send" };
     default:
-      return "bg-blue-600";
+      return { bgClass: "bg-blue-600 text-white", iconName: "clock" };
   }
 };
 
@@ -40,16 +115,7 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
     time: formatDateTimeDisplay(ev.createdAt),
     title: ev.title,
     actor: ev.actor,
-    badgeText: ev.badgeText || t("card:leaveRequests.detail.systemBadge"),
-    badgeColor: (ev.badgeColor || "blue") as
-      | "blue"
-      | "cyan"
-      | "purple"
-      | "success"
-      | "warning"
-      | "error"
-      | "default",
-    dotColor: mapBadgeColorToDot(ev.badgeColor),
+    marker: getTimelineMarkerConfig(ev.badgeColor, ev.eventType),
     recipientEmail: ev.recipientEmail || "",
     description: ev.description,
   }));
@@ -59,7 +125,7 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
   }
 
   return (
-    <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#f0f0f0] shadow-2xs space-y-4">
+    <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
       {/* Header with expand/collapse trigger */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
@@ -89,24 +155,26 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
       {/* Expandable Timeline Content */}
       {isExpanded && (
         <div className="pt-2 border-t border-[#f0f0f0]">
-          <div className="relative pl-4 space-y-3 pt-2 before:content-[''] before:absolute before:left-1.75 before:top-3 before:bottom-3 before:w-0.5 before:bg-slate-200">
+          <div className="relative pl-8 space-y-3.5 pt-2 before:content-[''] before:absolute before:left-3 before:top-4 before:bottom-4 before:w-0.5 before:bg-slate-200">
             {logs.map((log) => (
-              <div key={log.id} className="relative pl-4">
-                <span
-                  className={`w-3 h-3 rounded-full border-2 border-white shadow-xs absolute -left-3.5 top-2.5 ${log.dotColor}`}
-                />
+              <div key={log.id} className="relative">
+                {/* Timeline Dot Marker with status icon */}
+                <div
+                  className={`w-8 h-8 rounded-full border-2 border-white shadow-xs absolute -left-9 top-3 flex items-center justify-center shrink-0 ${log.marker.bgClass}`}
+                >
+                  <Icon name={log.marker.iconName} size={15} strokeWidth={3} />
+                </div>
+
                 <div className="p-3.5 rounded-xl bg-slate-50/90 border border-slate-200/70 space-y-1.5">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-xs sm:text-sm font-bold text-slate-900">{log.title}</span>
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <Tag color={log.badgeColor} className="m-0 text-[10px] font-semibold">
-                        {log.badgeText}
-                      </Tag>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-600">
-                        <Icon name="clock" size={11} className="text-blue-600 shrink-0" />
-                        <span>{log.time}</span>
-                      </span>
-                    </div>
+                  {/* Header Row: Title on the left, Log time on the right */}
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900">
+                      {log.title}
+                    </span>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-600 shrink-0">
+                      <Icon name="clock" size={11} className="text-blue-600 shrink-0" />
+                      <span>{log.time}</span>
+                    </span>
                   </div>
 
                   <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
