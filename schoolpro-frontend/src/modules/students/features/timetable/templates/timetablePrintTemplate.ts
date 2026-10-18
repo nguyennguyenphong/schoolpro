@@ -44,7 +44,7 @@ export function buildLocalTimetablePrintHtml(options: BuildTimetablePrintHtmlOpt
     semesterLabel = "Học kỳ 1",
     className = "10A1",
     academicYear = "2026 – 2027",
-    homeroomTeacher = "Cô Trần Thị Mai",
+    homeroomTeacher = "Trần Thị Văn",
     studentName = "Học sinh",
     schoolName = "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
     schoolParentName = "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HỒ CHÍ MINH",

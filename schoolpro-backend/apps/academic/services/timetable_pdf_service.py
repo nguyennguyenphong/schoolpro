@@ -305,11 +305,14 @@ class TimetablePdfService:
 
         if hasattr(user, "is_authenticated") and user.is_authenticated:
             try:
-                from apps.core.models.student import Student
+                from apps.core.models import Student
 
                 student_obj = (
                     Student.objects.select_related(
-                        "school", "current_class", "current_class__homeroom_teacher"
+                        "school",
+                        "current_class",
+                        "current_class__homeroom_teacher",
+                        "current_class__homeroom_teacher__user",
                     )
                     .filter(user=user)
                     .first()
@@ -319,7 +322,26 @@ class TimetablePdfService:
 
         if student_obj:
             school_obj = student_obj.school
-            school_class_obj = student_obj.current_class
+            if student_obj.current_class:
+                school_class_obj = student_obj.current_class
+            else:
+                try:
+                    from apps.core.models import StudentClassEnrollment
+
+                    enrollment = (
+                        StudentClassEnrollment.objects.select_related(
+                            "school_class",
+                            "school_class__homeroom_teacher",
+                            "school_class__homeroom_teacher__user",
+                        )
+                        .filter(student=student_obj, status="ACTIVE")
+                        .first()
+                    )
+                    if enrollment:
+                        school_class_obj = enrollment.school_class
+                except Exception:
+                    pass
+
             if student_obj.student_code:
                 student_code = student_obj.student_code
         elif hasattr(user, "school") and user.school:
@@ -343,10 +365,10 @@ class TimetablePdfService:
         slot_class_name = first_slot.get("className")
         if not school_class_obj and slot_class_name:
             try:
-                from apps.core.models.school_class import SchoolClass
+                from apps.core.models import SchoolClass
 
                 school_class_obj = (
-                    SchoolClass.objects.select_related("homeroom_teacher")
+                    SchoolClass.objects.select_related("homeroom_teacher", "homeroom_teacher__user")
                     .filter(name=slot_class_name)
                     .first()
                 )
@@ -355,11 +377,11 @@ class TimetablePdfService:
 
         if not school_class_obj and school_obj:
             try:
-                from apps.core.models.school_class import SchoolClass
+                from apps.core.models import SchoolClass
 
                 school_class_obj = (
-                    SchoolClass.objects.select_related("homeroom_teacher")
-                    .filter(school=school_obj)
+                    SchoolClass.objects.select_related("homeroom_teacher", "homeroom_teacher__user")
+                    .filter(school=school_obj, homeroom_teacher__isnull=False)
                     .first()
                 )
             except Exception:
@@ -369,20 +391,32 @@ class TimetablePdfService:
 
         if school_class_obj:
             class_name = school_class_obj.name
-            grade_level = f"Khối {school_class_obj.grade}" if school_class_obj.grade else "Khối 10"
+            if school_class_obj.grade and hasattr(school_class_obj.grade, "name"):
+                grade_level = school_class_obj.grade.name
+            elif school_class_obj.grade:
+                grade_level = str(school_class_obj.grade)
+            else:
+                grade_level = sample.get("grade_level", "Khối 10")
+            if not grade_level.startswith("Khối"):
+                grade_level = f"Khối {grade_level}"
+
             if school_class_obj.homeroom_teacher:
                 teacher = school_class_obj.homeroom_teacher
                 homeroom_teacher = (
                     getattr(teacher, "full_name", "")
-                    or f"{getattr(teacher, 'last_name', '')} {getattr(teacher, 'first_name', '')}".strip()
+                    or (
+                        f"{getattr(teacher.user, 'last_name', '')} {getattr(teacher.user, 'first_name', '')}".strip()
+                        if getattr(teacher, "user", None)
+                        else ""
+                    )
                     or str(teacher)
                 )
             else:
-                homeroom_teacher = sample.get("homeroom_teacher_name") or "Chưa phân công"
+                homeroom_teacher = sample.get("homeroom_teacher_name") or "Trần Thị Văn"
         else:
             class_name = slot_class_name or "10A1"
             grade_level = sample.get("grade_level", "Khối 10")
-            homeroom_teacher = sample.get("homeroom_teacher_name") or "Cô Trần Thị Mai"
+            homeroom_teacher = sample.get("homeroom_teacher_name") or "Trần Thị Văn"
 
         if school_obj:
             school_name = school_obj.name.upper()

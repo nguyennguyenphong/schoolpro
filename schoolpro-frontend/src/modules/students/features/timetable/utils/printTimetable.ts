@@ -13,6 +13,7 @@ export interface PrintTimetableOptions {
   semesterLabel?: string;
   className?: string;
   studentName?: string;
+  homeroomTeacher?: string;
 }
 
 import { buildLocalTimetablePrintHtml } from "@/modules/students/features/timetable/templates/timetablePrintTemplate";
@@ -106,6 +107,7 @@ export async function printTimetable(options: PrintTimetableOptions): Promise<vo
       className,
       templateCode,
       studentName: options.studentName,
+      homeroomTeacher: options.homeroomTeacher,
     });
   }
 
@@ -189,6 +191,7 @@ export interface DownloadTimetableOptions {
   currentWeekLabel?: string;
   semesterLabel?: string;
   studentName?: string;
+  homeroomTeacher?: string;
 }
 
 /**
@@ -263,6 +266,7 @@ export async function downloadTimetableFile(options: DownloadTimetableOptions): 
         semesterLabel: options.semesterLabel,
         templateCode: options.templateCode,
         studentName: options.studentName,
+        homeroomTeacher: options.homeroomTeacher,
       });
       const blob = new Blob([fallbackHtml], { type: "text/html;charset=utf-8" });
       const blobUrl = window.URL.createObjectURL(blob);

@@ -1051,7 +1051,7 @@ h1 {
 }
 
 .subject {
-    text-align: center;
+    text-align: start;
     font-size: 8pt;
     font-weight: normal;
     margin-bottom: 3px;
@@ -1215,7 +1215,7 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {"key": "week_label", "label": "Tuần áp dụng", "example": "Tuần 42"},
     {"key": "class_name", "label": "Lớp học", "example": "10A1"},
     {"key": "grade_level", "label": "Khối học", "example": "Khối 10"},
-    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Cô Trần Thị Mai"},
+    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Trần Thị Văn"},
     {"key": "effective_start_date", "label": "Thời gian áp dụng từ ngày", "example": "13/10/2026"},
     {"key": "effective_end_date", "label": "Thời gian áp dụng đến ngày", "example": "18/10/2026"},
     {
@@ -1251,7 +1251,7 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "week_label": "Tuần 42",
     "class_name": "10A1",
     "grade_level": "Khối 10",
-    "homeroom_teacher_name": "Cô Trần Thị Mai",
+    "homeroom_teacher_name": "Trần Thị Văn",
     "effective_start_date": "13/10/2026",
     "effective_end_date": "18/10/2026",
     "general_notes": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định.",

@@ -26,6 +26,11 @@ export const usePrintTimetable = ({
   const handlePrint = useCallback(async () => {
     setIsPrinting(true);
 
+    const homeroomSlot = slots?.find((s) => s.instructorName?.toLowerCase().includes("chủ nhiệm"));
+    const homeroomTeacher = homeroomSlot
+      ? homeroomSlot.instructorName.replace(/\s*\((?:Giáo viên\s*)?chủ nhiệm\)\s*/gi, "").trim()
+      : "Trần Thị Văn";
+
     try {
       await printTimetable({
         selectedDate: filter.selectedDate.toISOString(),
@@ -34,6 +39,7 @@ export const usePrintTimetable = ({
         currentWeekLabel,
         semesterLabel,
         studentName: user?.full_name || user?.name || "SchoolPro Student",
+        homeroomTeacher,
       });
     } finally {
       setIsPrinting(false);
