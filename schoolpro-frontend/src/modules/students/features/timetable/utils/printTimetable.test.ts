@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
-  buildLocalTimetablePrintHtml,
   downloadTimetableFile,
   printTimetable,
 } from "@/modules/students/features/timetable/utils/printTimetable";
@@ -61,35 +60,27 @@ describe("printTimetable & downloadTimetableFile", () => {
     }
   });
 
-  it("builds valid local HTML with matrix table, class and semester info", () => {
-    const html = buildLocalTimetablePrintHtml({
-      slots: mockSlots,
-      selectedDate: "2026-10-12",
-      currentWeekLabel: "Tuần 06",
-      semesterLabel: "Học kỳ 1",
-      className: "10A1",
-      templateCode: "749596971572",
-      studentName: "Trần Minh Quân (Học sinh)",
+  it("handles empty backend render gracefully without errors", async () => {
+    const closeSpy = vi.fn();
+    vi.spyOn(window, "open").mockReturnValue({
+      document: { open: vi.fn(), write: vi.fn(), close: vi.fn() },
+      close: closeSpy,
+      closed: false,
+    } as unknown as Window);
+
+    vi.spyOn(timetableService, "renderTimetablePrint").mockResolvedValue({
+      html: "",
+      filename: "",
+      template_code: "TIMETABLE_WEEKLY_A4_LANDSCAPE",
     });
 
-    expect(html).toContain("THỜI KHÓA BIỂU");
-    expect(html).toContain("10A1");
-    expect(html).toContain("Toán học 10");
-    expect(html).toContain("Học kỳ 1");
-    expect(html).toContain("Thứ Hai");
-    expect(html).toContain("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM");
-    expect(html).toContain("Thời gian áp dụng: <span class=\"value\">Từ ngày");
-    expect(html).toContain("Phòng học:</strong>");
-    expect(html).toContain("Giáo viên:</strong>");
-    expect(html).toContain("Hình thức học:</strong>");
-    expect(html).toContain("Hình thức dạy:</strong>");
-    expect(html).toContain("Ghi chú:</strong>");
-    expect(html).toContain("Liên kết khác:</strong>");
-    expect(html).toContain("Trần Minh Quân");
-    expect(html).toContain('style="font-style: italic;"');
-    expect(html).not.toContain("Email:");
-    expect(html).not.toContain("•");
-    expect(html).not.toContain("&bull;");
+    await printTimetable({
+      selectedDate: "2026-10-12",
+      slots: mockSlots,
+      className: "10A1",
+    });
+
+    expect(closeSpy).toHaveBeenCalled();
   });
 
   it("creates print window and triggers browser print using backend template render", async () => {

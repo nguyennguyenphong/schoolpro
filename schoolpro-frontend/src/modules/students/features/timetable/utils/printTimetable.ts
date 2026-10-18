@@ -16,16 +16,12 @@ export interface PrintTimetableOptions {
   homeroomTeacher?: string;
 }
 
-import { buildLocalTimetablePrintHtml } from "@/modules/students/features/timetable/templates/timetablePrintTemplate";
-
-export { buildLocalTimetablePrintHtml };
-
 /**
  * Triggers browser print dialog for weekly timetable using backend sys.export_templates
  * via an off-screen rendered iframe, falling back gracefully to local template if backend is unavailable.
  */
 export async function printTimetable(options: PrintTimetableOptions): Promise<void> {
-  const { selectedDate, slots = [], templateCode, templateId, currentWeekLabel, semesterLabel, className } = options;
+  const { selectedDate, templateCode, templateId, className } = options;
 
   let printDocTitle = `Thoi_Khoa_Bieu_${className || "10A1"}_${dayjs(selectedDate).format("YYYYMMDD")}`;
 
@@ -94,21 +90,19 @@ export async function printTimetable(options: PrintTimetableOptions): Promise<vo
       }
     }
   } catch {
-    // Continue with local fallback
+    // Backend render failed
   }
 
-  // 3. Fallback to local rendering if backend did not return html
+  // 3. If backend did not return html, report error and cleanup
   if (!htmlContent) {
-    htmlContent = buildLocalTimetablePrintHtml({
-      slots,
-      selectedDate,
-      currentWeekLabel,
-      semesterLabel,
-      className,
-      templateCode,
-      studentName: options.studentName,
-      homeroomTeacher: options.homeroomTeacher,
+    if (printWindow && !printWindow.closed) {
+      printWindow.close();
+    }
+    message.error({
+      content: "Không thể tải biểu mẫu in thời khóa biểu từ máy chủ. Vui lòng thử lại sau.",
+      key: "print_timetable_error",
     });
+    return;
   }
 
   // 4. Use the rendered dynamic template HTML directly
@@ -256,38 +250,9 @@ export async function downloadTimetableFile(options: DownloadTimetableOptions): 
     });
   } catch {
     hideLoading();
-    // Fallback: Generate local HTML file for download so the user is never stuck
-    try {
-      const fallbackHtml = buildLocalTimetablePrintHtml({
-        slots: options.slots || [],
-        selectedDate: options.selectedDate,
-        className: options.className,
-        currentWeekLabel: options.currentWeekLabel,
-        semesterLabel: options.semesterLabel,
-        templateCode: options.templateCode,
-        studentName: options.studentName,
-        homeroomTeacher: options.homeroomTeacher,
-      });
-      const blob = new Blob([fallbackHtml], { type: "text/html;charset=utf-8" });
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      const fallbackFilename = `Thoi_Khoa_Bieu_${options.className || "10A1"}_${dayjs(options.selectedDate).format("YYYYMMDD")}.html`;
-      link.href = blobUrl;
-      link.download = fallbackFilename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1000);
-
-      message.warning({
-        content: `Không thể kết nối máy chủ tạo PDF, đã tải xuống bản HTML (${fallbackFilename}).`,
-        key: "download_timetable",
-      });
-    } catch {
-      message.error({
-        content: "Không thể tải xuống thời khóa biểu. Vui lòng thử lại sau.",
-        key: "download_timetable",
-      });
-    }
+    message.error({
+      content: "Không thể tải xuống thời khóa biểu từ máy chủ. Vui lòng thử lại sau.",
+      key: "download_timetable",
+    });
   }
 }

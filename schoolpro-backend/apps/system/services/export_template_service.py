@@ -787,10 +787,6 @@ DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
 DEFAULT_TIMETABLE_CODE = "TIMETABLE_WEEKLY_A4_LANDSCAPE"
 
 DEFAULT_TIMETABLE_HEADER = """
-<div class="toolbar">
-    <button class="print-button" type="button" onclick="window.print()">In / Lưu PDF</button>
-</div>
-
 <main class="page">
     <header class="header">
         <div>
@@ -900,16 +896,6 @@ body {
     margin: 14px auto 10px;
     display: flex;
     justify-content: flex-end;
-}
-
-.print-button {
-    border: 0;
-    border-radius: 4px;
-    padding: 9px 16px;
-    background: #174a7e;
-    color: #fff;
-    font: 600 13px Arial, sans-serif;
-    cursor: pointer;
 }
 
 .page {
@@ -1121,7 +1107,7 @@ h1 {
 }
 
 .signature-space {
-    height: 22px;
+    height: 60px;
 }
 
 .signature-name {
@@ -1214,7 +1200,7 @@ DEFAULT_TIMETABLE_PLACEHOLDERS = [
     {"key": "semester", "label": "Học kỳ", "example": "Học kỳ 1"},
     {"key": "week_label", "label": "Tuần áp dụng", "example": "Tuần 42"},
     {"key": "class_name", "label": "Lớp học", "example": "10A1"},
-    {"key": "grade_level", "label": "Khối học", "example": "Khối 10"},
+    {"key": "grade_level", "label": "Khối học", "example": "10"},
     {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Trần Thị Văn"},
     {"key": "effective_start_date", "label": "Thời gian áp dụng từ ngày", "example": "13/10/2026"},
     {"key": "effective_end_date", "label": "Thời gian áp dụng đến ngày", "example": "18/10/2026"},
@@ -1250,7 +1236,7 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "semester_name": "Học kỳ 1",
     "week_label": "Tuần 42",
     "class_name": "10A1",
-    "grade_level": "Khối 10",
+    "grade_level": "10",
     "homeroom_teacher_name": "Trần Thị Văn",
     "effective_start_date": "13/10/2026",
     "effective_end_date": "18/10/2026",
@@ -1269,10 +1255,6 @@ DEFAULT_TIMETABLE_SAMPLE_DATA = {
 DEFAULT_ACADEMIC_CODE = "ACADEMIC_TRANSCRIPT_A4_LANDSCAPE"
 
 DEFAULT_ACADEMIC_HEADER = """
-<div class="toolbar">
-  <button class="print-button" type="button" onclick="window.print()">In / Lưu PDF</button>
-</div>
-
 <main class="page">
   <header class="header">
     <div>

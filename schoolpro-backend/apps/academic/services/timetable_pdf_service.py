@@ -392,13 +392,14 @@ class TimetablePdfService:
         if school_class_obj:
             class_name = school_class_obj.name
             if school_class_obj.grade and hasattr(school_class_obj.grade, "name"):
-                grade_level = school_class_obj.grade.name
+                raw_grade = school_class_obj.grade.name
             elif school_class_obj.grade:
-                grade_level = str(school_class_obj.grade)
+                raw_grade = str(school_class_obj.grade)
             else:
-                grade_level = sample.get("grade_level", "Khối 10")
-            if not grade_level.startswith("Khối"):
-                grade_level = f"Khối {grade_level}"
+                raw_grade = sample.get("grade_level", "10")
+            grade_level = (
+                re.sub(r"^(?:Khối\s*)+", "", str(raw_grade), flags=re.IGNORECASE).strip() or "10"
+            )
 
             if school_class_obj.homeroom_teacher:
                 teacher = school_class_obj.homeroom_teacher
@@ -415,7 +416,10 @@ class TimetablePdfService:
                 homeroom_teacher = sample.get("homeroom_teacher_name") or "Trần Thị Văn"
         else:
             class_name = slot_class_name or "10A1"
-            grade_level = sample.get("grade_level", "Khối 10")
+            raw_grade = sample.get("grade_level", "10")
+            grade_level = (
+                re.sub(r"^(?:Khối\s*)+", "", str(raw_grade), flags=re.IGNORECASE).strip() or "10"
+            )
             homeroom_teacher = sample.get("homeroom_teacher_name") or "Trần Thị Văn"
 
         if school_obj:
