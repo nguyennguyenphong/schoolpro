@@ -96,7 +96,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
         )}
 
-        {/* 1. Loại đơn & Ca nghỉ */}
+        {/* 1. Leave Type and Session Shift */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label
@@ -170,7 +170,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
         </div>
 
-        {/* 2. Từ ngày - Đến ngày */}
+        {/* 2. Date Range (Start Date - End Date) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <div>
             <label
@@ -245,7 +245,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           </div>
         </div>
 
-        {/* 3. Môn học / Tiết học xin nghỉ */}
+        {/* 3. Affected Lessons Selector */}
         <LeaveRequestLessonsSelector
           availableLessons={availableLessons}
           selectedLessonKeys={selectedLessonKeys}
@@ -257,7 +257,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           onToggleAllLessons={handleToggleAllLessons}
         />
 
-        {/* 4. Lý do xin nghỉ chi tiết */}
+        {/* 4. Detailed Reason for Leave */}
         <div>
           <label
             htmlFor="leave-request-reason"
@@ -275,7 +275,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           />
         </div>
 
-        {/* 5 & 6. Phụ huynh xác nhận & Đính kèm minh chứng */}
+        {/* 5 & 6. Guardian Confirmation and Evidence Attachments */}
         <LeaveRequestGuardianAttachmentsSection
           guardianName={guardianName}
           guardianPhone={guardianPhone}
@@ -288,7 +288,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
           onRemoveAttachment={handleRemoveAttachment}
         />
 
-        {/* 7. Cam kết học tập của học sinh */}
+        {/* 7. Student Academic Commitment */}
         <div>
           <label
             htmlFor="leave-request-commitment"

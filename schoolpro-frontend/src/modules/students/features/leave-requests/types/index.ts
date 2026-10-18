@@ -9,8 +9,6 @@ export type LeaveStatus = "pending" | "approved" | "rejected" | "cancelled";
 
 export type LeaveSessionShift = "all_day" | "morning" | "afternoon";
 
-export type LeaveRequestViewMode = "grid" | "list";
-
 export interface LeaveRequestAttachment {
   id?: string;
   name: string;
@@ -145,7 +143,6 @@ export interface LeaveRequestFilter {
   sortBy: string; // "newest" | "oldest" | "start_date"
   page: number;
   pageSize: number;
-  viewMode: LeaveRequestViewMode;
 }
 
 export interface LeaveRequestListResult {

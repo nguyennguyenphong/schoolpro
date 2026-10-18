@@ -20,9 +20,9 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
 
   return (
     <div className="flex flex-col gap-4 sm:gap-5">
-      {/* 1. Giáo viên chủ nhiệm phê duyệt & Giáo viên bộ môn nhận thông báo */}
+      {/* 1. Homeroom Teacher Approval & Notified Subject Teachers */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-        {/* Phần Giáo viên chủ nhiệm */}
+        {/* Homeroom Teacher Section */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -88,7 +88,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
           </div>
         </div>
 
-        {/* Phần Giáo viên bộ môn nhận thông báo */}
+        {/* Notified Subject Teachers Section */}
         <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-800">
@@ -134,9 +134,9 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
         </div>
       </div>
 
-      {/* 2. Thông tin Học sinh & Phụ huynh xác nhận */}
+      {/* 2. Student Information & Guardian Confirmation */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
-        {/* Học sinh */}
+        {/* Student */}
         <div className="space-y-2.5">
           <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
             <span className="w-1.5 h-4 rounded-full bg-slate-700 inline-block" />
@@ -165,7 +165,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
           </div>
         </div>
 
-        {/* Phụ huynh / Người giám hộ */}
+        {/* Parent / Guardian */}
         <div className="space-y-2.5 pt-3 border-t border-[#f0f0f0]">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-3.5 rounded-full bg-emerald-600 inline-block" />
@@ -199,7 +199,7 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
         </div>
       </div>
 
-      {/* 3. Tài liệu minh chứng đính kèm */}
+      {/* 3. Attached Evidence Documents */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <div className="flex items-center gap-2 border-b border-[#f0f0f0] pb-2.5">
           <span className="w-1.5 h-4 rounded-full bg-indigo-600 inline-block" />

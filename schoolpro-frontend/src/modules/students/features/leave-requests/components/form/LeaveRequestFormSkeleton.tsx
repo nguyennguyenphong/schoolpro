@@ -14,7 +14,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 animate-pulse">
       {/* Left 2 Columns: Form Card */}
       <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-5">
-        {/* 1. Loại đơn & Ca nghỉ */}
+        {/* 1. Leave Type and Session Shift Skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <div className="h-4 w-32 bg-slate-200 rounded" />
@@ -26,7 +26,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Từ ngày - Đến ngày - Tổng thời gian */}
+        {/* 2. Date Range and Total Duration Skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <div className="flex flex-col gap-1.5">
             <div className="h-4 w-28 bg-slate-200 rounded" />
@@ -42,7 +42,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* 3. Môn học / Tiết học xin nghỉ (LeaveRequestLessonsSelector) */}
+        {/* 3. Lessons Selector Skeleton */}
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col gap-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="h-4 w-48 bg-slate-200 rounded" />
@@ -71,13 +71,13 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* 4. Lý do xin nghỉ chi tiết */}
+        {/* 4. Reason Skeleton */}
         <div className="flex flex-col gap-1.5">
           <div className="h-4 w-40 bg-slate-200 rounded" />
           <div className="h-24 w-full bg-slate-100 border border-slate-200 rounded-lg" />
         </div>
 
-        {/* 5. Phụ huynh xác nhận */}
+        {/* 5. Guardian Confirmation Skeleton */}
         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex flex-col gap-3">
           <div className="h-4 w-52 bg-slate-200 rounded" />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -90,7 +90,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* 6. Đính kèm minh chứng */}
+        {/* 6. Evidence Attachments Skeleton */}
         <div className="flex flex-col gap-2.5">
           <div className="h-4 w-48 bg-slate-200 rounded" />
           <div className="h-28 w-full rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-1.5">
@@ -100,7 +100,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* 7. Cam kết học tập của học sinh */}
+        {/* 7. Student Commitment Skeleton */}
         <div className="flex flex-col gap-1.5">
           <div className="h-4 w-48 bg-slate-200 rounded" />
           <div className="h-20 w-full bg-slate-100 border border-slate-200 rounded-lg" />
@@ -115,7 +115,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
 
       {/* Right Column: 3 Sidebar Cards matching LeaveRequestFormSidebar */}
       <div className="flex flex-col gap-4">
-        {/* Sidebar Card 1: Tóm tắt đơn xin nghỉ (6 rows + deadline box) */}
+        {/* Sidebar Card 1: Request Summary Skeleton */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-blue-600 inline-block" />
@@ -137,7 +137,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar Card 2: Danh sách Giáo viên nhận thông báo */}
+        {/* Sidebar Card 2: Notified Instructors Skeleton */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ export const LeaveRequestFormSkeleton: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar Card 3: Quy định nghỉ phép (4 bullet rows) */}
+        {/* Sidebar Card 3: Regulations Skeleton */}
         <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs flex flex-col gap-2.5">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-4 rounded-full bg-amber-500 inline-block" />

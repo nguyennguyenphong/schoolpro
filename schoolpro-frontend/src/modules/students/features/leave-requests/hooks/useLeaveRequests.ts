@@ -9,7 +9,6 @@ import type {
   LeaveRequestItem,
   LeaveRequestRealtimePayload,
   LeaveRequestSummary,
-  LeaveRequestViewMode,
 } from "@/modules/students/features/leave-requests/types";
 
 export interface UseLeaveRequestsResult {
@@ -27,7 +26,6 @@ export interface UseLeaveRequestsResult {
   setLeaveType: (leaveType: string) => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: string) => void;
-  setViewMode: (mode: LeaveRequestViewMode) => void;
   setPage: (page: number, pageSize?: number) => void;
   resetFilters: () => void;
   deleteLeaveRequest: (item: LeaveRequestItem) => Promise<void>;
@@ -46,8 +44,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     const page = parseInt(searchParams.get("page") || "1", 10) || 1;
     const pageSize =
       parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "10", 10) || 10;
-    const rawView = searchParams.get("view");
-    const viewMode: LeaveRequestViewMode = rawView === "list" ? "list" : "grid";
 
     return {
       status,
@@ -56,7 +52,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       sortBy,
       page,
       pageSize,
-      viewMode,
     };
   }, [searchParams]);
 
@@ -92,9 +87,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       }
       if (newFilter.pageSize && newFilter.pageSize !== 10) {
         params.set("pageSize", String(newFilter.pageSize));
-      }
-      if (newFilter.viewMode && newFilter.viewMode !== "grid") {
-        params.set("view", newFilter.viewMode);
       }
       setSearchParams(params, { replace: true });
     },
@@ -253,17 +245,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     [updateUrlParams],
   );
 
-  const setViewMode = useCallback(
-    (viewMode: LeaveRequestViewMode) => {
-      setFilter((prev) => {
-        const next = { ...prev, viewMode };
-        updateUrlParams(next);
-        return next;
-      });
-    },
-    [updateUrlParams],
-  );
-
   const setPage = useCallback(
     (page: number, pageSize?: number) => {
       setFilter((prev) => {
@@ -288,7 +269,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
         sortBy: "newest",
         page: 1,
         pageSize: prev.pageSize,
-        viewMode: prev.viewMode,
       };
       updateUrlParams(next);
       return next;
@@ -328,7 +308,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     setLeaveType,
     setSearchQuery,
     setSortBy,
-    setViewMode,
     setPage,
     resetFilters,
     deleteLeaveRequest,
