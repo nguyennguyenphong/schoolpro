@@ -803,235 +803,438 @@ DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
 DEFAULT_TIMETABLE_CODE = "TIMETABLE_WEEKLY_A4_LANDSCAPE"
 
 DEFAULT_TIMETABLE_HEADER = """
-<table class="tt-header-table" style="width: 100%; border-collapse: collapse; margin-bottom: 6px; padding-bottom: 4px; border: none; page-break-inside: avoid;">
-  <tr>
-    <td style="width: 50%; text-align: center; vertical-align: top;">
-      <div style="font-size: 9.5pt; text-transform: uppercase; color: #334155;">{{school_parent_name}}</div>
-      <div style="font-size: 11pt; font-weight: bold; text-transform: uppercase; color: #0f172a; margin-top: 1px;">{{school_name}}</div>
-      <div style="width: 130px; margin: 3px auto 4px auto; border-top: 1px solid #334155;"></div>
-      <div style="font-size: 9.5pt; margin-top: 1px; color: #334155;">Lớp: <strong>{{class_name}}</strong> - Năm học: <strong>{{academic_year}}</strong></div>
-    </td>
-    <td style="width: 50%; text-align: center; vertical-align: top;">
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-      <div style="font-size: 10.5pt; font-weight: bold; color: #0f172a; margin-top: 1px;">Độc lập - Tự do - Hạnh phúc</div>
-      <div style="width: 140px; margin: 3px auto 4px auto; border-top: 1px solid #0f172a;"></div>
-      <div style="font-size: 9pt; font-style: italic; color: #475569; margin-top: 1px;">Học kỳ: {{semester_name}} - Ngày lập: {{print_date}}</div>
-    </td>
-  </tr>
-</table>
+<div class="toolbar">
+    <button class="print-button" type="button" onclick="window.print()">In / Lưu PDF</button>
+</div>
+
+<main class="page">
+    <header class="header">
+        <div>
+            <p class="agency-name">{{school_parent_name}}</p>
+            <p class="school-name">{{school_name}}</p>
+            <div class="rule rule-left"></div>
+            <p class="doc-number">Số: {{doc_number}}</p>
+        </div>
+        <div>
+            <p class="national-name">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+            <p class="motto">Độc lập - Tự do - Hạnh phúc</p>
+            <div class="rule rule-right"></div>
+        </div>
+    </header>
 """
 
 DEFAULT_TIMETABLE_CONTENT = """
-<div style="text-align: center; margin: 4px 0 6px 0;">
-  <div style="font-size: 15pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a;">THỜI KHÓA BIỂU HỌC TẬP</div>
-</div>
-
-<div class="tt-table-container">
-  {{schedule_matrix_html}}
-</div>
-
-<div style="margin-top: 6px; font-size: 8.5pt; color: #334155; line-height: 1.35;">
-  <div><strong>Ghi chú:</strong> Thời khóa biểu này có hiệu lực từ ngày {{week_start_date}} đến ngày {{week_end_date}}</div>
-</div>
+    <section class="title-block">
+        <h1>THỜI KHÓA BIỂU</h1>
+        <p class="period">Năm học: {{school_year}} &nbsp; | &nbsp; Học kỳ: {{semester}} &nbsp; | &nbsp; Áp dụng từ tuần: {{week_label}}</p>
+    </section>
+    <table class="info" aria-label="Thông tin thời khóa biểu">
+        <tbody>
+            <tr>
+                <td style="width:34%">Lớp: <span class="value">{{class_name}}</span></td>
+                <td style="width:33%">Khối: <span class="value">{{grade_level}}</span></td>
+                <td style="width:33%">Giáo viên chủ nhiệm: <span class="value">{{homeroom_teacher_name}}</span></td>
+            </tr>
+            <tr>
+                <td colspan="3">Thời gian áp dụng: <span class="value">Từ ngày {{effective_start_date}} đến ngày {{effective_end_date}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="timetable" aria-label="Thời khóa biểu theo ngày và tiết học">
+        <colgroup>
+            <col class="day-col">
+            <col class="period-col">
+            <col class="lesson-col">
+            <col class="lesson-col">
+            <col class="lesson-col">
+            <col class="lesson-col">
+            <col class="lesson-col">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Thứ</th>
+                <th>Buổi</th>
+                <th>Tiết 1</th>
+                <th>Tiết 2</th>
+                <th>Tiết 3</th>
+                <th>Tiết 4</th>
+                <th>Tiết 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{timetable_table_tbody_html}}
+        </tbody>
+    </table>
+    <section class="notes">
+        <p><strong>Ghi chú chung:</strong> {{general_notes}}</p>
+        <p><strong>Quy ước:</strong> Mỗi ô tiết học ghi đầy đủ thông tin; nếu không có lịch, ghi “Không có lịch”.</p>
+    </section>
 """
 
 DEFAULT_TIMETABLE_FOOTER = """
-<table class="tt-signatures-table" style="width: 100%; border-collapse: collapse; margin-top: 10px; page-break-inside: avoid;">
-  <tr>
-    <td style="width: 33.33%; text-align: center; vertical-align: top;">
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">NGƯỜI LẬP BIỂU</div>
-      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
-      <div style="height: 36px;"></div>
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">{{student_name}}</div>
-    </td>
-    <td style="width: 33.33%; text-align: center; vertical-align: top;">
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">GIÁO VIÊN CHỦ NHIỆM</div>
-      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký và ghi rõ họ tên)</div>
-      <div style="height: 36px;"></div>
-      <div style="font-size: 10pt; font-weight: bold; color: #0f172a;">{{homeroom_teacher_name}}</div>
-    </td>
-    <td style="width: 33.33%; text-align: center; vertical-align: top;">
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">HIỆU TRƯỞNG / BGH</div>
-      <div style="font-size: 8.5pt; font-style: italic; color: #64748b; margin-top: 1px;">(Ký tên và đóng dấu)</div>
-      <div style="height: 36px;"></div>
-      <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; color: #0f172a;">{{principal_name}}</div>
-    </td>
-  </tr>
-</table>
-
-<div style="margin-top: 8px; padding-top: 4px; border-top: 1px solid #cbd5e1; font-size: 8pt; color: #64748b; text-align: right;">
-  Mã biểu mẫu: {{template_code}}
-</div>
+    <footer class="footer">
+        <div class="footer-date">{{created_date_formatted}}</div>
+        <div class="signature-row">
+            <div class="signature">
+                <div class="signature-title">NGƯỜI LẬP THỜI KHÓA BIỂU</div>
+                <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+                <div class="signature-space"></div>
+                <div class="signature-name">{{created_by_name}}</div>
+            </div>
+            <div class="signature">
+                <div class="signature-title">GIÁO VIÊN CHỦ NHIỆM</div>
+                <div class="signature-guide">(Ký và ghi rõ họ tên)</div>
+                <div class="signature-space"></div>
+                <div class="signature-name">{{homeroom_teacher_name}}</div>
+            </div>
+        </div>
+    </footer>
+</main>
 """
 
 DEFAULT_TIMETABLE_STYLES = """
 * {
-  box-sizing: border-box;
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-  color-adjust: exact !important;
+    box-sizing: border-box;
 }
-@page {
-  size: A4 landscape !important;
-  margin: 6mm 8mm !important;
+
+html,
+body {
+    margin: 0;
+    padding: 0;
 }
-html, body {
-  font-family: 'Times New Roman', 'Segoe UI', serif !important;
-  font-size: 8.5pt !important;
-  line-height: 1.25 !important;
-  color: #0f172a !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #fff !important;
+
+body {
+    font-family: "Times New Roman", Times, serif;
+    color: #000;
+    background: #e9e9e9;
+    font-size: 10pt;
+    line-height: 1.2;
 }
-.print-container {
-  width: 100%;
-  max-width: 297mm;
-  margin: 0 auto;
+
+.toolbar {
+    width: 297mm;
+    margin: 14px auto 10px;
+    display: flex;
+    justify-content: flex-end;
 }
-.tt-matrix-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-  font-size: 8pt;
-  page-break-inside: auto;
+
+.print-button {
+    border: 0;
+    border-radius: 4px;
+    padding: 9px 16px;
+    background: #174a7e;
+    color: #fff;
+    font: 600 13px Arial, sans-serif;
+    cursor: pointer;
 }
-.tt-matrix-table thead {
-  display: table-header-group !important;
+
+.page {
+    width: 297mm;
+    min-height: 210mm;
+    margin: 0 auto 20px;
+    padding: 9mm 10mm 7mm;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .14);
 }
-.tt-matrix-table tbody {
-  display: table-row-group !important;
+
+.header {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    text-align: center;
+    align-items: start;
+    margin-bottom: 4mm;
 }
-.tt-matrix-table tr {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+
+.header p {
+    margin: 0 0 3px;
 }
-.tt-matrix-table th, .tt-matrix-table td {
-  border: 1px solid #475569;
-  padding: 3px 2px;
-  text-align: center;
-  vertical-align: middle;
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+
+.agency-name {
+    font-size: 9.5pt;
+    text-transform: uppercase;
 }
-.tt-matrix-table th {
-  background-color: #f1f5f9;
-  font-weight: bold;
-  color: #0f172a;
-  font-size: 8.5pt;
-  padding: 4px 2px;
+
+.school-name,
+.national-name {
+    font-size: 10pt;
+    font-weight: bold;
+    text-transform: uppercase;
 }
-.tt-matrix-table .shift-col {
-  width: 38px;
-  background-color: #f8fafc;
-  font-weight: bold;
-  font-size: 8.5pt;
+
+.motto {
+    font-size: 10.5pt;
+    font-weight: bold;
 }
-.tt-matrix-table .period-col {
-  width: 32px;
-  font-weight: bold;
-  font-size: 8.5pt;
+
+.rule {
+    height: 1px;
+    background: #000;
+    margin: 4px auto 0;
 }
-.tt-matrix-table .time-col {
-  width: 72px;
-  font-size: 7.5pt;
-  color: #334155;
+
+.rule-left {
+    width: 115px;
 }
-.tt-slot-card {
-  text-align: left;
-  line-height: 1.25;
-  padding: 1px 2px;
+
+.rule-right {
+    width: 160px;
 }
-.tt-slot-subject {
-  font-weight: bold;
-  color: #1e3a8a;
-  font-size: 8pt;
-  margin-bottom: 2px;
-  line-height: 1.2;
-  border-bottom: 1px dashed #cbd5e1;
-  padding-bottom: 1.5px;
+
+.doc-number {
+    margin-top: 4px !important;
+    font-size: 9pt;
 }
-.tt-slot-row {
-  font-size: 7pt;
-  line-height: 1.25;
-  margin-top: 1px;
-  color: #334155;
-  word-break: break-word;
+
+.title-block {
+    text-align: center;
+    margin: 0 0 3mm;
 }
-.tt-slot-lbl {
-  font-weight: 600;
-  color: #475569;
+
+h1 {
+    margin: 0;
+    font-size: 16pt;
+    text-transform: uppercase;
 }
-.tt-slot-val {
-  color: #0f172a;
+
+.period {
+    margin: 3px 0 0;
+    font-size: 10pt;
+    font-style: italic;
 }
-.tt-slot-note {
-  font-style: italic;
-  color: #475569;
+
+.info {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 3mm;
+    font-size: 9.5pt;
 }
-.tt-slot-link {
-  color: #2563eb;
-  text-decoration: underline;
-  word-break: break-all;
+
+.info td {
+    padding: 2px 4px;
+    vertical-align: top;
 }
-.tt-slot-excused {
-  background-color: #fef3c7;
-  border-radius: 2px;
-  padding: 1px 3px;
-  margin-top: 2px;
-  font-size: 6.5pt;
-  color: #92400e;
-  font-weight: 600;
-  border: 1px solid #fde68a;
-  display: inline-block;
+
+.value {
+    font-weight: bold;
 }
-.tt-signatures-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 7.5pt;
+    margin-bottom: 3mm;
 }
-.tt-signatures-table td {
-  text-align: center;
-  vertical-align: top;
+
+.timetable th,
+.timetable td {
+    border: 1px solid #000;
+    padding: 3px 3px;
+    vertical-align: top;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
 }
-.tt-header-table {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+
+.timetable th {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 8.5pt;
+    background: #f1f1f1;
+}
+
+.timetable .day-col {
+    width: 7%;
+}
+
+.timetable .period-col {
+    width: 5%;
+}
+
+.timetable .lesson-col {
+    width: 17.6%;
+}
+
+.timetable .day,
+.timetable .session {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.timetable .lesson {
+    height: 74px;
+}
+
+.subject {
+    text-align: center;
+    font-size: 8pt;
+    font-weight: normal;
+    margin-bottom: 3px;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.detail {
+    margin: 0 0 2px;
+}
+
+.detail strong {
+    font-weight: normal;
+}
+
+.empty-session {
+    text-align: center;
+    vertical-align: middle !important;
+    color: #555;
+    font-style: italic;
+}
+
+.notes {
+    font-size: 8.5pt;
+    margin-top: 2mm;
+}
+
+.notes p {
+    margin: 0 0 3px;
+}
+
+.footer {
+    margin-top: 3mm;
+}
+
+.footer-date {
+    width: 50%;
+    margin-left: 50%;
+    text-align: center;
+    font-size: 9pt;
+    font-style: italic;
+    margin-bottom: 5px;
+    padding: 0 4px;
+}
+
+.signature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
+.signature {
+    text-align: center;
+    padding: 0 4px;
+}
+
+.signature-title {
+    font-size: 9.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.signature-guide {
+    margin-top: 2px;
+    font-size: 8.5pt;
+    font-style: italic;
+}
+
+.signature-space {
+    height: 22px;
+}
+
+.signature-name {
+    font-size: 9.5pt;
+    font-weight: bold;
+}
+
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 297mm;
+        background: #fff;
+    }
+
+    .toolbar {
+        display: none !important;
+    }
+
+    .page {
+        width: 297mm;
+        min-height: 210mm;
+        margin: 0;
+        padding: 7mm 9mm 6mm;
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+
+    .timetable th {
+        background: #f1f1f1 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    tr,
+    td,
+    th {
+        break-inside: avoid;
+    }
+}
+
+@media screen and (max-width:1100px) {
+    .page,
+    .toolbar {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
 }
 """
 
 DEFAULT_TIMETABLE_PLACEHOLDERS = [
-    {"key": "school_name", "label": "Tên cơ sở / Trường học"},
-    {"key": "department_name", "label": "Phòng ban chuyên môn"},
-    {"key": "class_name", "label": "Lớp học"},
-    {"key": "academic_year", "label": "Năm học"},
-    {"key": "semester_name", "label": "Học kỳ"},
-    {"key": "week_label", "label": "Tuần học"},
-    {"key": "date_range", "label": "Khoảng thời gian tuần học"},
-    {"key": "student_name", "label": "Họ và tên học sinh"},
-    {"key": "student_code", "label": "Mã định danh học sinh"},
-    {"key": "homeroom_teacher", "label": "Giáo viên chủ nhiệm"},
-    {"key": "print_date", "label": "Thời điểm in"},
-    {"key": "timetable_table_html", "label": "Bảng ma trận tiết học trong tuần"},
+    {"key": "school_parent_name", "label": "Cơ quan chủ quản", "example": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI"},
+    {"key": "school_name", "label": "Tên trường học", "example": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM"},
+    {"key": "doc_number", "label": "Số công văn / Số hiệu", "example": "08/TKB-THPT"},
+    {"key": "school_year", "label": "Năm học", "example": "2025 – 2026"},
+    {"key": "semester", "label": "Học kỳ", "example": "Học kỳ 1"},
+    {"key": "week_label", "label": "Tuần áp dụng", "example": "Tuần 42"},
+    {"key": "class_name", "label": "Lớp học", "example": "10A1"},
+    {"key": "grade_level", "label": "Khối học", "example": "Khối 10"},
+    {"key": "homeroom_teacher_name", "label": "Giáo viên chủ nhiệm", "example": "Cô Trần Thị Mai"},
+    {"key": "effective_start_date", "label": "Thời gian áp dụng từ ngày", "example": "13/10/2026"},
+    {"key": "effective_end_date", "label": "Thời gian áp dụng đến ngày", "example": "18/10/2026"},
+    {"key": "timetable_table_tbody_html", "label": "Nội dung các hàng thời khóa biểu (Thứ 2 - Thứ 7, Sáng - Chiều)"},
+    {"key": "general_notes", "label": "Ghi chú chung", "example": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định."},
+    {"key": "created_date_formatted", "label": "Địa danh và ngày lập biểu", "example": "Hà Nội, ngày 18 tháng 10 năm 2026"},
+    {"key": "created_by_name", "label": "Người lập thời khóa biểu", "example": "Thầy Hoàng Văn Nam"},
 ]
 
 DEFAULT_TIMETABLE_SAMPLE_DATA = {
     "filename_pattern": "Thoi_Khoa_Bieu_{{class_name}}_{{week_label}}",
-    "school_name": "TRƯỜNG TRUNG HỌC PHỔ THÔNG SCHOOLPRO",
-    "department_name": "PHÒNG HỌC VỤ & ĐÀO TẠO",
-    "class_name": "10A1",
-    "academic_year": "2026 - 2027",
+    "school_parent_name": "SỞ GIÁO DỤC VÀ ĐÀO TẠO THÀNH PHỐ HÀ NỘI",
+    "school_name": "TRƯỜNG THPT CHUYÊN HÀ NỘI - AMSTERDAM",
+    "doc_number": "08/TKB-THPT",
+    "school_year": "2025 – 2026",
+    "academic_year": "2025 – 2026",
+    "semester": "Học kỳ 1",
     "semester_name": "Học kỳ 1",
-    "week_label": "Tuần 06",
-    "date_range": "Từ ngày 13/10/2026 đến ngày 18/10/2026",
-    "student_name": "Nguyễn Văn An",
+    "week_label": "Tuần 42",
+    "class_name": "10A1",
+    "grade_level": "Khối 10",
+    "homeroom_teacher_name": "Cô Trần Thị Mai",
+    "effective_start_date": "13/10/2026",
+    "effective_end_date": "18/10/2026",
+    "general_notes": "Học sinh có mặt trước giờ học 15 phút, mặc đồng phục đúng quy định.",
+    "created_date_formatted": "Hà Nội, ngày 18 tháng 10 năm 2026",
+    "created_by_name": "Thầy Hoàng Văn Nam",
+    "student_name": "Nguyễn Minh Quang",
     "student_code": "HS10A101",
-    "homeroom_teacher": "Thầy Hoàng Văn Nam",
-    "print_date": "14/10/2026 09:30",
+    "timetable_table_tbody_html": "",
+    "schedule_matrix_html": "",
     "timetable_table_html": "",
 }
+
 
 
 DEFAULT_ACADEMIC_CODE = "ACADEMIC_TRANSCRIPT_A4_LANDSCAPE"

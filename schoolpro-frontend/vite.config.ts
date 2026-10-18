@@ -20,6 +20,7 @@ export default defineConfig({
     setupFiles: "./src/setupTests.ts",
     testTimeout: 15000,
     hookTimeout: 15000,
+    isolate: true,
   },
   server: {
     port: 8080,

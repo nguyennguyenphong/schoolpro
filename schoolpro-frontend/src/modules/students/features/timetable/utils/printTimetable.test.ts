@@ -50,8 +50,11 @@ describe("printTimetable & downloadTimetableFile", () => {
   });
 
   afterEach(() => {
+    vi.clearAllTimers();
     vi.useRealTimers();
+
     vi.restoreAllMocks();
+
     const iframe = document.getElementById("schoolpro-timetable-print-frame");
     if (iframe?.parentNode) {
       iframe.parentNode.removeChild(iframe);
