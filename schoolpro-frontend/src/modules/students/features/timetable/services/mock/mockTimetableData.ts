@@ -1,7 +1,7 @@
 import type { TimetableSlot } from "@/modules/students/features/timetable/types";
 
 export const mockTimetableSlots: TimetableSlot[] = [
-  // --- THỨ 2 (dayOfWeek: 2) ---
+  // --- MONDAY (dayOfWeek: 2) ---
   {
     id: "slot-mon-morning",
     courseCode: "TOAN12",
@@ -16,7 +16,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Nguyễn Văn Nam",
     instructorEmail: "nam.nv@schoolpro.edu.vn",
     instructorPhone: "0912 345 678",
@@ -41,7 +40,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Sân Thể thao đa năng",
     building: "Nhà thi đấu trường",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Nguyễn Hữu Thắng",
     instructorEmail: "thang.nh@schoolpro.edu.vn",
     classType: "practice",
@@ -52,7 +50,7 @@ export const mockTimetableSlots: TimetableSlot[] = [
     colorTheme: "emerald",
   },
 
-  // --- THỨ 3 (dayOfWeek: 3) ---
+  // --- TUESDAY (dayOfWeek: 3) ---
   {
     id: "slot-tue-morning",
     courseCode: "VAN12",
@@ -67,7 +65,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Cô Trần Thị Mai Lan",
     instructorEmail: "lan.ttm@schoolpro.edu.vn",
     classType: "theory",
@@ -91,7 +88,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Phòng Máy tính 1",
     building: "Dãy nhà A (Khu Công nghệ)",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Vũ Minh Tuấn",
     instructorEmail: "tuan.vm@schoolpro.edu.vn",
     classType: "practice",
@@ -102,7 +98,7 @@ export const mockTimetableSlots: TimetableSlot[] = [
     colorTheme: "indigo",
   },
 
-  // --- THỨ 4 (dayOfWeek: 4) ---
+  // --- WEDNESDAY (dayOfWeek: 4) ---
   {
     id: "slot-wed-morning",
     courseCode: "ANH12",
@@ -117,7 +113,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Lớp học trực tuyến Trung học phổ thông",
     building: "Hệ thống E-Learning",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Cô Lê Hồng Hạnh",
     instructorEmail: "hanh.lh@schoolpro.edu.vn",
     classType: "theory",
@@ -142,7 +137,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Cô Hoàng Diệu Linh",
     instructorEmail: "linh.hd@schoolpro.edu.vn",
     classType: "theory",
@@ -153,7 +147,7 @@ export const mockTimetableSlots: TimetableSlot[] = [
     colorTheme: "amber",
   },
 
-  // --- THỨ 5 (dayOfWeek: 5) ---
+  // --- THURSDAY (dayOfWeek: 5) ---
   {
     id: "slot-thu-morning",
     courseCode: "VATLY12",
@@ -168,7 +162,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Phạm Quốc Toàn",
     instructorEmail: "toan.pq@schoolpro.edu.vn",
     classType: "theory",
@@ -192,7 +185,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Phòng Thí nghiệm Hóa học",
     building: "Dãy nhà C (Khu Thí nghiệm)",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Cô Đặng Thu Hà",
     instructorEmail: "ha.dt@schoolpro.edu.vn",
     classType: "practice",
@@ -203,7 +195,7 @@ export const mockTimetableSlots: TimetableSlot[] = [
     colorTheme: "rose",
   },
 
-  // --- THỨ 6 (dayOfWeek: 6) ---
+  // --- FRIDAY (dayOfWeek: 6) ---
   {
     id: "slot-fri-morning",
     courseCode: "DIALI12",
@@ -218,7 +210,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Trịnh Quang Huy",
     instructorEmail: "huy.tq@schoolpro.edu.vn",
     classType: "theory",
@@ -242,7 +233,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Sân tập Quân sự",
     building: "Khuôn viên trường",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Lê Trọng Tấn",
     instructorEmail: "tan.lt@schoolpro.edu.vn",
     classType: "practice",
@@ -253,7 +243,7 @@ export const mockTimetableSlots: TimetableSlot[] = [
     colorTheme: "cyan",
   },
 
-  // --- THỨ 7 (dayOfWeek: 7) ---
+  // --- SATURDAY (dayOfWeek: 7) ---
   {
     id: "slot-sat-morning",
     courseCode: "SHL12",
@@ -268,7 +258,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "morning",
     room: "Phòng 301",
     building: "Dãy nhà B",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Trần Thị Văn (Giáo viên chủ nhiệm)",
     instructorEmail: "van.tt@schoolpro.edu.vn",
     classType: "theory",
@@ -292,7 +281,6 @@ export const mockTimetableSlots: TimetableSlot[] = [
     shift: "afternoon",
     room: "Phòng Thực hành Sinh",
     building: "Dãy nhà C (Khu Thí nghiệm)",
-    campus: "Trường Trung học phổ thông SchoolPro",
     instructorName: "Thầy Bùi Đức Anh",
     instructorEmail: "anh.bd@schoolpro.edu.vn",
     classType: "practice",

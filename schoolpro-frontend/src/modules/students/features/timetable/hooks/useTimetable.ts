@@ -72,7 +72,7 @@ export const useTimetable = (initialDate = getTodayDateStr()): UseTimetableResul
       setSlots(res.slots);
       setMeta(res.meta ?? null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Lỗi tải thời khóa biểu"));
+      setError(err instanceof Error ? err : new Error("Failed to load timetable"));
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,7 @@ export const useTimetable = (initialDate = getTodayDateStr()): UseTimetableResul
         }
       } catch (err) {
         if (!ignore) {
-          setError(err instanceof Error ? err : new Error("Lỗi tải thời khóa biểu"));
+          setError(err instanceof Error ? err : new Error("Failed to load timetable"));
           setLoading(false);
         }
       }

@@ -25,7 +25,6 @@ class TimetableSlotResponseSerializer(serializers.Serializer):
     shift = serializers.CharField()
     room = serializers.CharField()
     building = serializers.CharField()
-    campus = serializers.CharField()
     instructorName = serializers.CharField()
     instructorEmail = serializers.CharField(allow_blank=True, required=False)
     instructorPhone = serializers.CharField(allow_blank=True, required=False)

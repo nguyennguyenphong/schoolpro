@@ -13,15 +13,14 @@ export interface TimetableSlot {
   classCode: string;
   className?: string;
   credits: number;
-  dayOfWeek: 2 | 3 | 4 | 5 | 6 | 7 | 8; // 2 = Thứ 2, ..., 8 = Chủ Nhật
+  dayOfWeek: 2 | 3 | 4 | 5 | 6 | 7 | 8; // 2 = Monday, ..., 8 = Sunday
   date: string; // "YYYY-MM-DD"
-  periods: string; // e.g. "Tiết 1 - 3"
+  periods: string; // e.g. "Period 1 - 3"
   startTime: string; // "07:30"
   endTime: string; // "10:00"
   shift: ClassShift;
-  room: string; // "P.402"
-  building: string; // "Tòa nhà H1"
-  campus: string; // "Cơ sở 1 (Trụ sở chính)"
+  room: string; // e.g. "Room 402"
+  building: string; // e.g. "Building A"
   instructorName: string;
   instructorEmail: string;
   instructorPhone?: string;

@@ -50,7 +50,7 @@ def sample_schedule_context():
                 "endTime": "08:50",
                 "shift": "morning",
                 "room": "Phòng B102",
-                "instructorName": "Cô Trần Thị Mai",
+                "instructorName": "Trần Thị Văn",
                 "isOnLeave": True,
                 "attendanceStatus": "excused",
                 "leaveReason": "Nghỉ ốm có phép",

@@ -164,7 +164,7 @@ class TimetableStudentViewSet(viewsets.ViewSet):
         )
         return APIResponse.success(
             data=rendered,
-            message="Render thời khóa biểu thành công",
+            message="Timetable rendered successfully",
         )
 
     @extend_schema(

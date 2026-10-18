@@ -24,7 +24,6 @@ describe("printTimetable & downloadTimetableFile", () => {
       shift: "morning",
       room: "Phòng A203",
       building: "Tòa A",
-      campus: "Cơ sở 1",
       instructorName: "Thầy Hoàng Văn Nam",
       instructorEmail: "nam@schoolpro.edu.vn",
       instructorPhone: "",

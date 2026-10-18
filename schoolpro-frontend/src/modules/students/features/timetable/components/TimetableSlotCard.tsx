@@ -37,9 +37,9 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
         </span>
       )}
 
-      {/* Top Section: Môn học, Lớp, Phòng, Thời gian, Giáo viên & Email, Hình thức */}
+      {/* Top Section: Subject, Class, Room, Time, Teacher, and Modes */}
       <div className="space-y-2.5">
-        {/* 1. Môn học & Lớp (Không hiển thị mã code) */}
+        {/* 1. Subject and Class */}
         <div className="pb-2 border-b border-[#f0f0f0] min-h-14.5">
           <div className="flex items-center justify-between gap-1 mb-1">
             <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-xl border border-blue-100">
@@ -59,7 +59,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </h4>
         </div>
 
-        {/* 2. Phòng học */}
+        {/* 2. Classroom and Building */}
         <div className="flex items-start gap-2 text-xs text-slate-700 min-h-8.5">
           <Icon
             name="map-pin"
@@ -70,18 +70,13 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
             <div className="font-semibold text-slate-800">
               <span>{slot.room}</span>
               {slot.building && (
-                <span className="font-normal text-slate-500"> • {slot.building}</span>
+                <span className="font-normal text-slate-500"> | {slot.building}</span>
               )}
             </div>
-            {slot.campus && (
-              <div className="text-[11px] text-slate-400">
-                {slot.campus}
-              </div>
-            )}
           </div>
         </div>
 
-        {/* 3. Thời gian học & Tiết mấy */}
+        {/* 3. Schedule Time and Period Number */}
         <div className="flex items-center gap-2 text-xs text-slate-700">
           <Icon
             name="clock"
@@ -98,7 +93,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </div>
         </div>
 
-        {/* 4. Giáo viên */}
+        {/* 4. Instructor */}
         <div className="flex items-center gap-2 text-xs text-slate-700">
           <Icon
             name="user"
@@ -110,7 +105,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </span>
         </div>
 
-        {/* 5. Hình thức học */}
+        {/* 5. Learning Mode */}
         <div className="flex items-center justify-between gap-1.5 text-xs">
           <span className="text-slate-500">
             {t("card:timetable.learningMode")}
@@ -123,7 +118,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </Tag>
         </div>
 
-        {/* 6. Hình thức dạy */}
+        {/* 6. Teaching Method */}
         <div className="flex items-center justify-between gap-1.5 text-xs">
           <span className="text-slate-500">
             {t("card:timetable.teachingMode")}
@@ -137,9 +132,9 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
         </div>
       </div>
 
-      {/* Bottom Section: Ghi chú & Liên kết khác */}
+      {/* Bottom Section: Notes and External Links */}
       <div className="space-y-2 pt-2.5 border-t border-[#f0f0f0]">
-        {/* 7. Ghi chú */}
+        {/* 7. Notes */}
         <div className="text-xs">
           <span className="text-slate-500 font-medium italic block mb-1">
             {t("card:timetable.notes")}
@@ -154,7 +149,7 @@ export const TimetableSlotCard: React.FC<TimetableSlotCardProps> = ({
           </div>
         </div>
 
-        {/* 8. Liên kết khác */}
+        {/* 8. External Links */}
         <div className="text-xs min-h-9.5 flex flex-col justify-end">
           <span className="text-slate-500 font-medium italic block mb-1">
             {t("card:timetable.otherLinks")}

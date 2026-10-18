@@ -59,7 +59,7 @@ export const useTimetableNavigation = ({
 
   const vacationReason = useMemo(() => meta?.selectedWeek?.vacationReason ?? null, [meta]);
 
-  // Formatted week label (e.g. "06/10/2026 - 12/10/2026 (Tuần 5)")
+  // Formatted week label (e.g. "06/10/2026 - 12/10/2026 (Week 5)")
   const currentWeekLabel = useMemo(() => {
     const targetDayjs = dayjs(selectedDate);
     const start = targetDayjs.startOf("isoWeek").format("DD/MM/YYYY");
