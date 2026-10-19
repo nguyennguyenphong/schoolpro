@@ -63,7 +63,6 @@ export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              size="small"
               onClick={handleDownload}
               className="text-xs"
             >

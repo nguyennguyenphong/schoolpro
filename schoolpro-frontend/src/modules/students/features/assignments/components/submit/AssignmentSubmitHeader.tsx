@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Tag } from "@/components/ui/Tag";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
 interface AssignmentSubmitHeaderProps {
@@ -65,29 +64,6 @@ export const AssignmentSubmitHeader: React.FC<AssignmentSubmitHeaderProps> = ({
             <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
               {typeLabel}
             </span>
-            {assignment.status === "graded" && (
-              <Tag color="success" className="m-0 text-xs font-bold px-2.5 py-0.5">
-                {t("card:assignments.statusLabels.gradedWithScoreUnit", {
-                  score: assignment.score ?? 0,
-                  max: assignment.pointsPossible,
-                })}
-              </Tag>
-            )}
-            {assignment.status === "submitted" && (
-              <Tag color="processing" className="m-0 text-xs font-bold px-2.5 py-0.5">
-                {t("card:assignments.statusLabels.submitted")}
-              </Tag>
-            )}
-            {assignment.status === "overdue" && (
-              <Tag color="error" className="m-0 text-xs font-bold px-2.5 py-0.5">
-                {t("card:assignments.statusLabels.overdue")}
-              </Tag>
-            )}
-            {assignment.status === "pending" && (
-              <Tag color="warning" className="m-0 text-xs font-bold px-2.5 py-0.5">
-                {t("card:assignments.statusLabels.notSubmitted")}
-              </Tag>
-            )}
           </div>
 
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
