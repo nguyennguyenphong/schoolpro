@@ -536,6 +536,12 @@
       "morning": "上午",
       "afternoon": "下午"
     },
+    "filters": {
+      "academicYear": "学年",
+      "semester": "学期",
+      "allAcademicYears": "所有学年",
+      "allSemesters": "所有学期"
+    },
     "header": {
       "classBadge": "{{className}} 班",
       "homeroomTeacherPrefix": "班主任:",

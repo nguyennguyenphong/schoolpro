@@ -21,10 +21,8 @@ const LeaveRequestDetailPage: React.FC = () => {
   const {
     item,
     loading,
-    downloading,
     printing,
     deleting,
-    handleDownloadPdf,
     handlePrint,
     handleDelete,
   } = useLeaveRequestDetail(id);
@@ -74,10 +72,8 @@ const LeaveRequestDetailPage: React.FC = () => {
 
           <LeaveRequestWorkspaceCard
             item={item}
-            downloading={downloading}
             printing={printing}
             deleting={deleting}
-            onDownloadPdf={handleDownloadPdf}
             onPrint={handlePrint}
             onEdit={() => navigate(`/student/leave-requests/${item.id}/edit`)}
             onDelete={handleDelete}

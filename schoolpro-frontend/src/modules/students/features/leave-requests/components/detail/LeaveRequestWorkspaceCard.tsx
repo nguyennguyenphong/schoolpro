@@ -12,10 +12,8 @@ import {
 
 interface LeaveRequestWorkspaceCardProps {
   item: LeaveRequestItem;
-  downloading?: boolean;
   printing?: boolean;
   deleting?: boolean;
-  onDownloadPdf: () => void;
   onPrint: () => void;
   onEdit: () => void;
   onDelete: () => void;
@@ -23,10 +21,8 @@ interface LeaveRequestWorkspaceCardProps {
 
 export const LeaveRequestWorkspaceCard: React.FC<LeaveRequestWorkspaceCardProps> = ({
   item,
-  downloading = false,
   printing = false,
   deleting = false,
-  onDownloadPdf,
   onPrint,
   onEdit,
   onDelete,
@@ -71,7 +67,7 @@ export const LeaveRequestWorkspaceCard: React.FC<LeaveRequestWorkspaceCardProps>
 
         <div className="flex flex-wrap items-center gap-2.5 pt-1">
           <Button
-            variant="outline"
+            variant="primary"
             onClick={onPrint}
             loading={printing}
             disabled={printing}
@@ -79,17 +75,6 @@ export const LeaveRequestWorkspaceCard: React.FC<LeaveRequestWorkspaceCardProps>
           >
             <Icon name="print" size={14} />
             <span>{t("button:printLeaveRequest")}</span>
-          </Button>
-
-          <Button
-            variant="primary"
-            onClick={onDownloadPdf}
-            loading={downloading}
-            disabled={downloading}
-            className="text-xs sm:text-sm font-semibold"
-          >
-            <Icon name="download" size={14} />
-            <span>{t("button:downloadLeaveRequestPdf")}</span>
           </Button>
 
           {isPending && (

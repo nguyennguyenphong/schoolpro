@@ -536,6 +536,12 @@
       "morning": "Buổi sáng",
       "afternoon": "Buổi chiều"
     },
+    "filters": {
+      "academicYear": "Năm học",
+      "semester": "Học kỳ",
+      "allAcademicYears": "Tất cả năm học",
+      "allSemesters": "Tất cả học kỳ"
+    },
     "header": {
       "classBadge": "Lớp {{className}}",
       "homeroomTeacherPrefix": "Giáo viên chủ nhiệm:",

@@ -27,6 +27,8 @@ export interface UseLeaveRequestsResult {
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: string) => void;
   setPage: (page: number, pageSize?: number) => void;
+  setAcademicYear: (year: string) => void;
+  setSemester: (semester: string) => void;
   resetFilters: () => void;
   deleteLeaveRequest: (item: LeaveRequestItem) => Promise<void>;
   refetch: () => Promise<void>;
@@ -44,6 +46,8 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     const page = parseInt(searchParams.get("page") || "1", 10) || 1;
     const pageSize =
       parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "10", 10) || 10;
+    const academicYear = searchParams.get("academicYear") || "";
+    const semester = searchParams.get("semester") || "";
 
     return {
       status,
@@ -52,6 +56,8 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       sortBy,
       page,
       pageSize,
+      academicYear,
+      semester,
     };
   }, [searchParams]);
 
@@ -88,6 +94,12 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       if (newFilter.pageSize && newFilter.pageSize !== 10) {
         params.set("pageSize", String(newFilter.pageSize));
       }
+      if (newFilter.academicYear) {
+        params.set("academicYear", newFilter.academicYear);
+      }
+      if (newFilter.semester) {
+        params.set("semester", newFilter.semester);
+      }
       setSearchParams(params, { replace: true });
     },
     [setSearchParams],
@@ -99,7 +111,10 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
       setError(null);
       const [listRes, sumRes] = await Promise.all([
         leaveRequestsService.getLeaveRequests(filter),
-        leaveRequestsService.getSummary(),
+        leaveRequestsService.getSummary({
+          academicYear: filter.academicYear,
+          semester: filter.semester,
+        }),
       ]);
       setItems(listRes.items);
       setTotal(listRes.total);
@@ -118,7 +133,10 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     try {
       const [listRes, sumRes] = await Promise.all([
         leaveRequestsService.getLeaveRequests(filter),
-        leaveRequestsService.getSummary(),
+        leaveRequestsService.getSummary({
+          academicYear: filter.academicYear,
+          semester: filter.semester,
+        }),
       ]);
       setItems(listRes.items);
       setTotal(listRes.total);
@@ -197,7 +215,10 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     return (
       filter.status !== "all" ||
       filter.leaveType !== "all" ||
-      filter.searchQuery.trim().length > 0
+      filter.sortBy !== "newest" ||
+      filter.searchQuery.trim().length > 0 ||
+      Boolean(filter.academicYear && filter.academicYear !== "all") ||
+      Boolean(filter.semester && filter.semester !== "all")
     );
   }, [filter]);
 
@@ -245,6 +266,28 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     [updateUrlParams],
   );
 
+  const setAcademicYear = useCallback(
+    (academicYear: string) => {
+      setFilter((prev) => {
+        const next = { ...prev, academicYear, page: 1 };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
+
+  const setSemester = useCallback(
+    (semester: string) => {
+      setFilter((prev) => {
+        const next = { ...prev, semester, page: 1 };
+        updateUrlParams(next);
+        return next;
+      });
+    },
+    [updateUrlParams],
+  );
+
   const setPage = useCallback(
     (page: number, pageSize?: number) => {
       setFilter((prev) => {
@@ -269,6 +312,8 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
         sortBy: "newest",
         page: 1,
         pageSize: prev.pageSize,
+        academicYear: prev.academicYear,
+        semester: prev.semester,
       };
       updateUrlParams(next);
       return next;
@@ -308,6 +353,8 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     setLeaveType,
     setSearchQuery,
     setSortBy,
+    setAcademicYear,
+    setSemester,
     setPage,
     resetFilters,
     deleteLeaveRequest,

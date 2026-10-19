@@ -536,6 +536,12 @@
       "morning": "Morning",
       "afternoon": "Afternoon"
     },
+    "filters": {
+      "academicYear": "Academic Year",
+      "semester": "Semester",
+      "allAcademicYears": "All Academic Years",
+      "allSemesters": "All Semesters"
+    },
     "header": {
       "classBadge": "Class {{className}}",
       "homeroomTeacherPrefix": "Homeroom Teacher:",

@@ -129,6 +129,8 @@ export interface LeaveRequestSummary {
   className?: string | null;
   semesterName?: string | null;
   academicYear?: string | null;
+  semesterId?: string | null;
+  academicYearId?: string | null;
   homeroomTeacherName?: string | null;
   homeroomTeacherEmail?: string | null;
   homeroomTeacherPhone?: string | null;
@@ -144,6 +146,8 @@ export interface LeaveRequestFilter {
   sortBy: string; // "newest" | "oldest" | "start_date"
   page: number;
   pageSize: number;
+  academicYear?: string;
+  semester?: string;
 }
 
 export interface LeaveRequestListResult {

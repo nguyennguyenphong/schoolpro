@@ -32,6 +32,7 @@ from apps.academic.services.leave_request_timetable_service import (
 )
 from apps.core.models.organization import SchoolClass, StudentClassEnrollment
 from apps.core.models.profile import Guardian, Student
+from apps.master.models.academic_year import AcademicYear
 from apps.master.models.semester import Semester
 
 logger = logging.getLogger(__name__)
@@ -975,6 +976,90 @@ class LeaveRequestService:
         }
 
     @classmethod
+    def resolve_academic_context(
+        cls,
+        user: Any,
+        student_id: str | None = None,
+        class_id: str | None = None,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
+    ) -> tuple[Student | None, SchoolClass | None, AcademicYear | None, Semester | None]:
+        """
+        Resolves the student, class, target academic year, and target semester for the context.
+        If academic_year_id or semester_id are not provided, defaults to the student's current
+        enrolled class's academic year and current active semester.
+        """
+        student = None
+        if student_id:
+            student = (
+                Student.objects.select_related("user", "current_class")
+                .filter(id=student_id)
+                .first()
+            )
+        if not student:
+            student = cls.resolve_student(user)
+
+        school_class = None
+        if class_id:
+            school_class = (
+                SchoolClass.objects.select_related(
+                    "academic_year", "homeroom_teacher", "homeroom_teacher__user"
+                )
+                .filter(id=class_id)
+                .first()
+            )
+        if not school_class and student:
+            school_class = cls.resolve_student_class(student)
+
+        # 1. Resolve Academic Year
+        target_academic_year = None
+        if academic_year_id and academic_year_id.lower() != "all":
+            target_academic_year = AcademicYear.objects.filter(id=academic_year_id).first()
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.filter(code=academic_year_id).first()
+        elif academic_year_id is None:
+            if school_class and getattr(school_class, "academic_year", None):
+                target_academic_year = school_class.academic_year
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.filter(is_current=True).first()
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.order_by("-start_date").first()
+
+        # 2. Resolve Semester
+        target_semester = None
+        if semester_id and semester_id.lower() != "all":
+            target_semester = Semester.objects.filter(id=semester_id).first()
+            if not target_semester:
+                target_semester = Semester.objects.filter(code=semester_id).first()
+            if not target_semester and semester_id in ["1", "2", "3"]:
+                sem_qs = Semester.objects.filter(order_no=int(semester_id))
+                if target_academic_year:
+                    sem_qs = sem_qs.filter(academic_year=target_academic_year)
+                target_semester = sem_qs.first()
+        elif semester_id is None:
+            if target_academic_year:
+                target_semester = Semester.objects.filter(
+                    academic_year=target_academic_year, is_current=True
+                ).first()
+                if not target_semester:
+                    today = timezone.localdate()
+                    target_semester = Semester.objects.filter(
+                        academic_year=target_academic_year,
+                        start_date__lte=today,
+                        end_date__gte=today,
+                    ).first()
+                if not target_semester:
+                    target_semester = (
+                        Semester.objects.filter(academic_year=target_academic_year)
+                        .order_by("order_no")
+                        .first()
+                    )
+            if not target_semester:
+                target_semester = Semester.objects.filter(is_current=True).first()
+
+        return student, school_class, target_academic_year, target_semester
+
+    @classmethod
     def list_leave_requests(
         cls,
         user: Any,
@@ -984,15 +1069,27 @@ class LeaveRequestService:
         sort_by: str | None = None,
         class_id: str | None = None,
         student_id: str | None = None,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
     ) -> list[dict[str, Any]]:
         """
         Retrieves filtered and sorted leave requests for the student.
+        Automatically filters by the student's active semester and academic year by default.
         Automatically runs overdue 3-hour pre-lesson auto-approval check first.
         """
+        student, school_class, target_academic_year, target_semester = cls.resolve_academic_context(
+            user=user,
+            student_id=student_id,
+            class_id=class_id,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
+        )
+
         qs = LeaveRequest.objects.select_related(
             "student",
             "student__user",
             "school_class",
+            "school_class__academic_year",
             "school_class__homeroom_teacher",
             "school_class__homeroom_teacher__user",
             "guardian",
@@ -1005,10 +1102,25 @@ class LeaveRequestService:
         elif class_id:
             qs = qs.filter(school_class_id=class_id)
         else:
-            student = cls.resolve_student(user)
             if not student:
                 return []
             qs = qs.filter(student=student)
+
+        # Filter strictly by academic year and semester of the student
+        if target_academic_year:
+            qs = qs.filter(
+                Q(school_class__academic_year=target_academic_year)
+                | Q(
+                    start_date__gte=target_academic_year.start_date,
+                    end_date__lte=target_academic_year.end_date,
+                )
+            )
+
+        if target_semester:
+            qs = qs.filter(
+                start_date__lte=target_semester.end_date,
+                end_date__gte=target_semester.start_date,
+            )
 
         # Check and auto-approve any pending request past its 3-hour pre-lesson deadline
         cls.check_and_auto_approve_overdue_requests(qs)
@@ -1043,25 +1155,34 @@ class LeaveRequestService:
         return [cls.format_leave_request_item(item, include_logs=False) for item in qs]
 
     @classmethod
-    def get_summary(cls, user: Any) -> dict[str, Any]:
+    def get_summary(
+        cls,
+        user: Any,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
+    ) -> dict[str, Any]:
         """
-        Computes aggregated summary metrics and class/guardian context for the student.
+        Computes aggregated summary metrics and class/guardian context for the student,
+        filtered by the student's enrolled academic year and semester.
         """
-        student = cls.resolve_student(user)
-        school_class = cls.resolve_student_class(student)
+        student, school_class, target_academic_year, target_semester = cls.resolve_academic_context(
+            user=user,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
+        )
         guardian = cls.resolve_primary_guardian(student)
 
         class_name = school_class.name if school_class else None
         academic_year_name = (
-            school_class.academic_year.name if school_class and school_class.academic_year else None
+            target_academic_year.name
+            if target_academic_year
+            else (
+                school_class.academic_year.name
+                if school_class and school_class.academic_year
+                else None
+            )
         )
-
-        current_semester = Semester.objects.filter(is_current=True).first()
-        if not current_semester and school_class and school_class.academic_year_id:
-            current_semester = Semester.objects.filter(
-                academic_year_id=school_class.academic_year_id
-            ).first()
-        semester_name = current_semester.name if current_semester else "Học kỳ 1"
+        semester_name = target_semester.name if target_semester else "Học kỳ 1"
 
         homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
         homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
@@ -1078,6 +1199,8 @@ class LeaveRequestService:
                 "className": class_name,
                 "semesterName": semester_name,
                 "academicYear": academic_year_name,
+                "semesterId": str(target_semester.id) if target_semester else None,
+                "academicYearId": str(target_academic_year.id) if target_academic_year else None,
                 "homeroomTeacherName": homeroom_user.full_name if homeroom_user else None,
                 "homeroomTeacherEmail": homeroom_user.email if homeroom_user else None,
                 "homeroomTeacherPhone": getattr(homeroom_user, "phone", None)
@@ -1089,6 +1212,22 @@ class LeaveRequestService:
             }
 
         qs = LeaveRequest.objects.filter(student=student)
+
+        if target_academic_year:
+            qs = qs.filter(
+                Q(school_class__academic_year=target_academic_year)
+                | Q(
+                    start_date__gte=target_academic_year.start_date,
+                    end_date__lte=target_academic_year.end_date,
+                )
+            )
+
+        if target_semester:
+            qs = qs.filter(
+                start_date__lte=target_semester.end_date,
+                end_date__gte=target_semester.start_date,
+            )
+
         cls.check_and_auto_approve_overdue_requests(qs)
 
         total = qs.count()
@@ -1124,6 +1263,8 @@ class LeaveRequestService:
             "className": class_name,
             "semesterName": semester_name,
             "academicYear": academic_year_name,
+            "semesterId": str(target_semester.id) if target_semester else None,
+            "academicYearId": str(target_academic_year.id) if target_academic_year else None,
             "homeroomTeacherName": homeroom_user.full_name
             if homeroom_user
             else "Giáo viên chủ nhiệm",

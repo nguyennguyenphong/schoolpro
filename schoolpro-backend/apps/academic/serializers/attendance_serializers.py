@@ -392,6 +392,8 @@ class LeaveRequestSummaryResponseSerializer(serializers.Serializer):
     className = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     semesterName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     academicYear = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    semesterId = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    academicYearId = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     homeroomTeacherName = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     homeroomTeacherEmail = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     homeroomTeacherPhone = serializers.CharField(allow_null=True, allow_blank=True, required=False)

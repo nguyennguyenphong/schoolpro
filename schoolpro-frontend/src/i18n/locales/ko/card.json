@@ -536,6 +536,12 @@
       "morning": "오전반",
       "afternoon": "오후반"
     },
+    "filters": {
+      "academicYear": "학년도",
+      "semester": "학기",
+      "allAcademicYears": "전체 학년도",
+      "allSemesters": "전체 학기"
+    },
     "header": {
       "classBadge": "{{className}} 반",
       "homeroomTeacherPrefix": "담임 교사:",
