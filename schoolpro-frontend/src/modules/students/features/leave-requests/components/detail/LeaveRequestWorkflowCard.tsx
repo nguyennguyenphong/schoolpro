@@ -110,9 +110,9 @@ export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> =
               content: (
                 <span className="text-[11px] text-slate-500 block mt-0.5">
                   {isApproved
-                    ? `${item.isAutoApproved ? t("card:leaveRequests.detail.step3DescAutoApproved", { time: "" }) : t("card:leaveRequests.detail.step3DescApproved", { time: "" })} (${formatDateTimeDisplay(item.reviewedAt)})`
+                    ? formatDateTimeDisplay(item.reviewedAt)
                     : isRejected
-                      ? `${t("card:leaveRequests.detail.step3DescRejected", { time: "" })} (${formatDateTimeDisplay(item.reviewedAt)})`
+                      ? formatDateTimeDisplay(item.reviewedAt)
                       : isCancelled
                         ? t("card:leaveRequests.detail.statusBannerCancelledTitle")
                         : `${t("card:leaveRequests.detail.approvalDeadlineShortLabel")} ${formatDateTimeDisplay(item.approvalDeadline)}`}

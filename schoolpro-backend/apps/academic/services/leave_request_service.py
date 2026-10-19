@@ -416,13 +416,15 @@ class LeaveRequestService:
                     # Per BR-01 / BR-03: Action of the System, not attributed to Homeroom Teacher
                     locked_req.reviewed_by = None
                     locked_req.reviewed_at = timezone.now()
-                    locked_req.teacher_note = "Hệ thống tự động phê duyệt do Giáo viên chủ nhiệm không xử lý trong thời hạn 3 giờ kể từ khi gửi đơn."
+                    locked_req.teacher_note = (
+                        "Đơn xin nghỉ phép đã được phê duyệt tự động theo quy định."
+                    )
                     locked_meta["isAutoApproved"] = True
                     locked_meta["approvalMethod"] = "AUTO"
                     locked_meta["autoApprovedAt"] = locked_req.reviewed_at.astimezone(
                         timezone.get_current_timezone()
                     ).strftime("%Y-%m-%d %H:%M")
-                    locked_meta["autoApproveReason"] = "GVCN không xử lý trong thời hạn 3 giờ."
+                    locked_meta["autoApproveReason"] = "Phê duyệt tự động theo quy định."
                     locked_req.metadata = locked_meta
                     locked_req.save()
 
@@ -465,12 +467,10 @@ class LeaveRequestService:
                         leave_request=locked_req,
                         event_type="AUTO_APPROVED",
                         title="Hệ thống tự động phê duyệt đơn xin nghỉ phép",
-                        description=(
-                            "Hệ thống tự động phê duyệt do Giáo viên chủ nhiệm không xử lý trong thời hạn 3 giờ (180 phút) kể từ khi gửi đơn."
-                        ),
+                        description=("Hệ thống tự động phê duyệt đơn xin nghỉ phép theo quy định."),
                         actor_name="Hệ thống SchoolPro",
                         actor_role="SYSTEM",
-                        badge_text="Tự động duyệt (Quá hạn 3 giờ)",
+                        badge_text="Phê duyệt tự động",
                         badge_color="purple",
                         created_at=locked_req.reviewed_at,
                     )
@@ -584,14 +584,13 @@ class LeaveRequestService:
                 hr_title = "Gửi thông báo & Email tới Giáo viên chủ nhiệm (kiêm Giáo viên bộ môn)"
                 hr_desc = (
                     f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
-                    f"(đồng thời dạy môn {subj_list}). Hạn phê duyệt trước {deadline_fmt} "
-                    f"(3 giờ kể từ khi gửi đơn)."
+                    f"(đồng thời dạy môn {subj_list}). Hạn phê duyệt trước {deadline_fmt}."
                 )
             else:
                 hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
                 hr_desc = (
                     f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
-                    f"Hạn phê duyệt trước {deadline_fmt} (3 giờ kể từ khi gửi đơn)."
+                    f"Hạn phê duyệt trước {deadline_fmt}."
                 )
 
             cls.record_event_log(
@@ -635,11 +634,11 @@ class LeaveRequestService:
                         title="Hệ thống tự động phê duyệt đơn xin nghỉ phép",
                         description=(
                             item.teacher_note
-                            or "Đã quá thời hạn 3 giờ xử lý của Giáo viên chủ nhiệm, hệ thống tự động phê duyệt đơn."
+                            or "Hệ thống tự động phê duyệt đơn xin nghỉ phép theo quy định."
                         ),
                         actor_name="Hệ thống SchoolPro",
                         actor_role="SYSTEM",
-                        badge_text="Tự động duyệt (Quá hạn 3 giờ)",
+                        badge_text="Phê duyệt tự động",
                         badge_color="purple",
                         created_at=review_dt,
                     )
@@ -899,7 +898,7 @@ class LeaveRequestService:
 
         reviewed_by_name = None
         if item.is_auto_approved:
-            reviewed_by_name = "Hệ thống SchoolPro (Tự động duyệt do quá hạn 3 giờ)"
+            reviewed_by_name = "Hệ thống SchoolPro"
         elif item.reviewed_by:
             reviewed_by_name = item.reviewed_by.full_name
         elif item.status in ("APPROVED", "REJECTED") and homeroom_user:

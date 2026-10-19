@@ -192,13 +192,13 @@ class LeaveRequestNotificationService:
             hr_desc = (
                 f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
                 f"(đồng thời dạy môn {subj_list} - {lesson_cnt} tiết). "
-                f"Hạn xử lý trước {deadline_fmt} (trong thời hạn 3 giờ kể từ khi gửi đơn)."
+                f"Hạn xử lý trước {deadline_fmt}."
             )
         else:
             hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
             hr_desc = (
                 f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
-                f"Hạn xử lý trước {deadline_fmt} (trong thời hạn 3 giờ kể từ khi gửi đơn)."
+                f"Hạn xử lý trước {deadline_fmt}."
             )
 
         email_subject_hr = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} - Học sinh {student_name} (Lớp {class_name})"
@@ -209,8 +209,7 @@ class LeaveRequestNotificationService:
             f"- Thời gian nghỉ: {date_range_fmt}\n"
             f"- Số tiết học xin nghỉ: {len(affected_lessons)} tiết\n"
             f"- Lý do: {leave_req.reason}\n"
-            f"- Hạn xử lý: Trước {deadline_fmt} (thời hạn 3 giờ liên tục kể từ khi gửi đơn).\n"
-            f"Lưu ý: Nếu quá thời hạn 3 giờ trên mà đơn chưa được xử lý, hệ thống sẽ tự động chuyển sang trạng thái Đã duyệt.\n\n"
+            f"- Hạn xử lý: Trước {deadline_fmt}.\n\n"
             f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
         )
         sent_hr = cls.send_email_safe(
@@ -324,24 +323,26 @@ class LeaveRequestNotificationService:
 
         # 1. Email to Student
         if is_auto:
-            student_subject = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} đã được HỆ THỐNG TỰ ĐỘNG PHÊ DUYỆT (Quá hạn 3 giờ)"
+            student_subject = (
+                f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} đã được TỰ ĐỘNG PHÊ DUYỆT"
+            )
             student_body = (
                 f"Chào em {student_name} (Lớp {class_name}),\n\n"
                 f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) "
-                f"đã được Hệ thống tự động phê duyệt do Giáo viên chủ nhiệm không xử lý trong thời hạn 3 giờ theo quy định.\n"
+                f"đã được Hệ thống tự động phê duyệt theo quy định của nhà trường.\n"
                 f"- Trạng thái: ĐÃ PHÊ DUYỆT (TỰ ĐỘNG)\n"
                 f"- Người xử lý: Hệ thống SchoolPro\n"
-                f"- Hình thức: Tự động phê duyệt do quá hạn xử lý (180 phút)\n"
-                f"- Ghi chú hệ thống: {leave_req.teacher_note or 'Hệ thống tự động phê duyệt do GVCN không xử lý trong thời hạn 3 giờ.'}\n\n"
+                f"- Hình thức: Tự động phê duyệt theo quy định\n"
+                f"- Ghi chú: {leave_req.teacher_note or 'Đơn đã được phê duyệt tự động theo quy định.'}\n\n"
                 f"Hệ thống đã cập nhật trạng thái Vắng có phép vào sổ điểm danh và thông báo tới các Giáo viên bộ môn.\n\n"
                 f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
             )
-            log_title = "Gửi Email thông báo kết quả Tự động phê duyệt (Quá hạn 3 giờ) tới Học sinh"
+            log_title = "Gửi Email thông báo kết quả Tự động phê duyệt tới Học sinh"
             log_desc = (
                 f"Đã gửi email thông báo kết quả 'ĐÃ PHÊ DUYỆT (TỰ ĐỘNG)' tới học sinh {student_name} "
-                f"do Giáo viên chủ nhiệm không xử lý trong thời hạn 3 giờ."
+                f"theo quy định của nhà trường."
             )
-            approver_label = "Hệ thống SchoolPro (Tự động duyệt do quá thời hạn 3 giờ)"
+            approver_label = "Hệ thống SchoolPro (Phê duyệt tự động)"
         elif is_approved:
             reviewer_name = (
                 leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name
@@ -492,12 +493,11 @@ class LeaveRequestNotificationService:
         body = (
             f"Kính gửi Thầy/Cô {homeroom_name},\n\n"
             f"Đơn xin nghỉ phép #{leave_req.code} của học sinh {student_name} (Lớp {class_name}) "
-            f"sắp hết thời hạn 3 giờ xử lý theo quy định của nhà trường:\n"
+            f"sắp hết thời hạn xử lý theo quy định của nhà trường:\n"
             f"- Thời gian gửi đơn: {created_fmt}\n"
             f"- Hạn xử lý: {deadline_fmt} (còn khoảng 30 phút)\n"
             f"- Lý do nghỉ: {leave_req.reason}\n\n"
-            f"Kính đề nghị Thầy/Cô sớm vào hệ thống xem xét phê duyệt hoặc từ chối đơn. "
-            f"Nếu quá thời hạn trên mà đơn chưa được xử lý, hệ thống sẽ tự động chuyển sang trạng thái Đã duyệt.\n\n"
+            f"Kính đề nghị Thầy/Cô sớm vào hệ thống xem xét phê duyệt hoặc từ chối đơn.\n\n"
             f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
         )
 
@@ -513,7 +513,7 @@ class LeaveRequestNotificationService:
             title="Nhắc nhở Giáo viên chủ nhiệm khi còn 30 phút trước hạn",
             description=(
                 f"Đã gửi email nhắc nhở tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email}) "
-                f"do đơn sắp hết hạn 3 giờ xử lý (hạn: {deadline_fmt})."
+                f"do đơn sắp hết hạn xử lý (hạn: {deadline_fmt})."
             ),
             actor_name="Hệ thống SchoolPro",
             actor_role="SYSTEM",

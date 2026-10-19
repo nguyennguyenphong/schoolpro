@@ -88,21 +88,6 @@ export const LeaveRequestDetailSidebar: React.FC<LeaveRequestDetailSidebarProps>
                       </div>
                     )}
                   </div>
-
-                  {/* 3-hour deadline rule callout */}
-                  <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 text-[11px] leading-relaxed text-blue-950 space-y-1">
-                    <div className="font-bold text-blue-900 flex items-center gap-1.5">
-                      <Icon name="info" size={13} className="text-blue-700 shrink-0" />
-                      <span>{t("card:leaveRequests.detail.deadlineRuleTitle")}</span>
-                    </div>
-                    <p className="mb-0 text-slate-700">
-                      {isPending
-                        ? t("card:leaveRequests.detail.deadlineWaitingHint")
-                        : item.isAutoApproved
-                          ? t("card:leaveRequests.detail.deadlineOverdueHint")
-                          : t("card:leaveRequests.detail.deadlineProcessedHint")}
-                    </p>
-                  </div>
                 </div>
               ),
             },

@@ -113,7 +113,7 @@ export const LeaveRequestContentTabsCard: React.FC<LeaveRequestContentTabsCardPr
 
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-white border border-slate-200/70">
                 <span className="text-slate-500">
-                  {t("card:leaveRequests.detail.approvalMethodLabel")}:
+                  {t("card:leaveRequests.detail.approvalMethodLabel")}
                 </span>
                 <strong
                   className={
@@ -166,17 +166,6 @@ export const LeaveRequestContentTabsCard: React.FC<LeaveRequestContentTabsCardPr
                 </span>
               </div>
             ) : null}
-          </div>
-
-          {/* 3-Hour Continuous Rule Policy Card (BR-01 / BR-03) */}
-          <div className="p-4 rounded-xl bg-blue-50/60 border border-blue-200/70 text-xs text-blue-950 space-y-1.5">
-            <div className="flex items-center gap-2 font-bold text-blue-900">
-              <Icon name="info" size={14} className="text-blue-700 shrink-0" />
-              <span>{t("card:leaveRequests.detail.deadlineRuleTitle")}</span>
-            </div>
-            <p className="mb-0 leading-relaxed text-slate-700">
-              {t("card:leaveRequests.detail.deadlineRuleDesc")}
-            </p>
           </div>
         </div>
       ),
