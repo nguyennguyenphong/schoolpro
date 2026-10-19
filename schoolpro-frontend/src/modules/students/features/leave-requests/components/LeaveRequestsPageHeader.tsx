@@ -4,8 +4,6 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
-import type { LeaveRequestSummary } from "@/modules/students/features/leave-requests/types";
-
 interface LeaveRequestsPageHeaderProps {
   onCreateClick: () => void;
 }
