@@ -278,21 +278,7 @@
       "total": "전체 과제 수",
       "pending": "미완료",
       "overdue": "기한 초과",
-      "graded": "채점 완료",
-      "tasks": "과제",
-      "needSubmit": "제출 필요",
-      "allDone": "모두 완료",
-      "urgent": "긴급",
-      "none": "없음",
-      "avgScore": "평균 점수: {{score}}/10",
-      "waitingGrade": "채점 대기: {{count}}건",
-      "completionRate": "완료율: {{rate}}%",
-      "scope": "범위:",
-      "scopeAll": "전체",
-      "all": "전체",
-      "goodEval": "양호",
-      "checkNow": "지금 확인",
-      "contactTeacher": "담당 교사 문의 필요"
+      "graded": "채점 완료"
     },
     "filters": {
       "searchPlaceholder": "과제명, 코드, 과목, 담당 교사로 검색...",
@@ -324,7 +310,8 @@
       "submittedClosed": "제출 완료 (마감됨)",
       "gradedWithScore": "채점: {{score}}/{{max}}",
       "gradedWithScoreUnit": "채점: {{score}}/{{max}}점",
-      "notSubmitted": "미제출"
+      "notSubmitted": "미제출",
+      "submittedWaitingGrade": "제출 완료 (채점 대기)"
     },
     "typeLabels": {
       "homework": "숙제",
@@ -342,8 +329,7 @@
       "attemptBadge": "제출 #{{attempt}}",
       "lateBadge": "지각 제출",
       "weightBadge": "비중 {{weight}}%",
-      "maxScoreBadge": "{{max}}점 만점",
-      "rubricBadge": "루브릭"
+      "maxScoreBadge": "{{max}}점 만점"
     },
     "detail": {
       "breadcrumbDetail": "상세 및 과제 제출",
@@ -366,7 +352,6 @@
       "extensionsTitle": "마감 기한 연장 내역",
       "extensionLevel": "{{level}}차 기한 연장",
       "originalDueLabel": "기존 마감:",
-      "newDueLabel": "변경 마감:",
       "teacherAttachmentsTitle": "담당 교사 첨부 자료 및 문제 파일",
       "filesUnit": "{{count}}개 파일",
       "rubricTitle": "채점 기준표 (Rubric) 및 모범 답안",
@@ -380,15 +365,8 @@
       "rawScoreLabel": "원점수:",
       "penaltyDeductionLabel": "지각 감점:",
       "gradedByLabel": "채점 교사:",
-      "gradedAtLabel": "채점 일시:",
       "maxScoreLabel": "만점 기준:",
       "passScoreLabel": "통과 기준점:",
-      "appealPendingTag": "이의신청 검토 중",
-      "appealApprovedTag": "이의신청 승인됨",
-      "appealRejectedTag": "이의신청 반려됨",
-      "appealSubmittedTitle": "점수 이의신청이 접수되었습니다",
-      "appealSubmittedAt": "신청 일시: {{time}}",
-      "appealTeacherResponse": "교사 답변:",
       "submissionAreaTitle": "온라인 과제 제출 영역",
       "submissionSuccessBanner": "과제가 시스템에 성공적으로 제출되었습니다",
       "submittedAtLabel": "제출 일시: {{time}}",
@@ -396,14 +374,10 @@
       "studentNoteLabel": "담당 교사에게 남긴 메모:",
       "portClosedTitle": "제출 포털이 마감되었습니다",
       "expiredTag": "기한 만료",
-      "portClosedDesc": "마감 기한({{dueDate}})이 종료되어 직접 다시 제출할 수 없습니다.",
       "reopenSentTitle": "제출 포털 재오픈 요청 완료",
       "reopenWaitingTag": "교사 승인 대기 중",
-      "reopenApprovedTag": "포털 재오픈 승인됨",
-      "reopenRejectedTag": "재오픈 반려됨",
       "reopenSentMeta": "교사 이메일: {{email}} • 요청 일시: {{time}}",
       "resubmitAllowedHint": "* 마감 기한({{dueDate}})까지 유효합니다 (제출 {{attempt}}/{{maxAttempts}}회). 필요 시 수정본을 다시 제출할 수 있습니다.",
-      "resubmitLimitReachedHint": "* 허용된 최대 재제출 횟수({{attempt}}/{{maxAttempts}}회)를 모두 사용했습니다.",
       "overdueLockedTitle": "제출 포털 잠금",
       "overdueEndedAt": "과제 제출 기한이 {{dueDate}}에 종료되었습니다.",
       "overdueLockedDesc": "학사 일정에 따라 온라인 제출 포털이 자동으로 잠겼습니다. 네트워크 오류나 불가피한 사유가 있는 경우 담당 교사에게 재오픈 요청을 보내주세요.",
@@ -424,8 +398,6 @@
       "resubmissionAllowedValue": "최대 {{count}}회",
       "resubmissionDisallowedValue": "1회만 제출 가능",
       "lateSubmissionField": "기한 후 제출:",
-      "lateAllowedWithPenalty": "허용 (-{{penalty}}%)",
-      "lateAllowedNoPenalty": "지각 제출 허용",
       "lateDisallowedValue": "마감 후 포털 잠금",
       "submissionModeField": "제출 방식:",
       "submissionModeOnline": "온라인 (SchoolPro)",
@@ -460,7 +432,9 @@
       "overdueWaitExtensionDesc": "제출 기한이 종료되어 제출 창구가 잠겼습니다. 계속 제출하려면 담당 교사의 기한 연장을 기다려야 합니다.",
       "waitingTeacherGradeTitle": "교사 채점 대기 중",
       "waitingTeacherGradeDesc": "과제가 담당 교사에게 전송되었습니다. 채점이 완료되면 점수와 상세 피드백이 여기에 표시됩니다.",
-      "pendingScoreBadge": "점수: 채점 대기 / {{max}}"
+      "pendingScoreBadge": "점수: 채점 대기 / {{max}}",
+      "submittedHeading": "제출된 과제:",
+      "submittedFileTag": "제출된 파일"
     },
     "uploader": {
       "selectByCategoryLabel": "파일 형식별 업로드 선택:",
@@ -491,7 +465,9 @@
       "previewExcelDesc": "Microsoft Excel / CSV 스프레드시트 ({{size}})",
       "previewExcelInfoTitle": "스프레드시트 안내:",
       "previewExcelInfoDesc": "통계 데이터, 수식 및 차트가 정확하게 첨부되었습니다.",
-      "previewArchiveDesc": "압축 아카이브 파일 ({{size}})"
+      "previewArchiveDesc": "압축 아카이브 파일 ({{size}})",
+      "archiveFormat": "압축 파일 (.zip, .rar)",
+      "otherFormat": "기타 파일"
     },
     "modals": {
       "reopenTitle": "제출 포털 재오픈 요청",
@@ -500,20 +476,9 @@
       "recipientEmail": "수신 이메일:",
       "subjectAndAssignment": "과목 및 과제:",
       "expiredDeadline": "종료된 마감 기한:",
-      "quickReasonsLabel": "빠른 사유 선택:",
-      "quickReason1": "초안 파일을 잘못 제출하여 최종 완성본으로 다시 제출하고자 재오픈을 요청드립니다.",
-      "quickReason2": "마감 직전 네트워크 및 기기 오류가 발생하여 부득이하게 포털 재오픈을 요청드립니다.",
-      "quickReason3": "조별 발표 영상 및 실험 데이터 표를 보완 완료하여 추가 제출하고자 합니다.",
       "messageToTeacherLabel": "선생님께 보내는 메시지:",
       "charCount": "{{count}}/{{max}}자",
-      "reopenPlaceholder": "선생님께, 과제 제출 포털 재오픈을 정중히 요청드립니다...",
-      "appealTitle": "과제 점수 이의신청 (재채점 요청)",
-      "appealSubtitle": "채점 점수 및 루브릭 평가 항목에 대해 담당 교사에게 재검토를 요청합니다",
-      "currentScoreLabel": "현재 점수:",
-      "appealQuickReason1": "서술형 문항에서 다른 풀이 방법을 사용했으나 정답이 일치하므로 재검토를 정중히 요청드립니다.",
-      "appealQuickReason2": "루브릭 세부 평가 항목의 합산 점수와 최종 점수에 차이가 있어 확인을 부탁드립니다.",
-      "appealReasonLabel": "이의신청 상세 사유:",
-      "appealPlaceholder": "재검토가 필요한 문항 번호나 채점 기준을 구체적으로 작성해 주세요..."
+      "reopenPlaceholder": "선생님께, 과제 제출 포털 재오픈을 정중히 요청드립니다..."
     }
   },
   "leaveRequests": {

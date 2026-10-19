@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
@@ -19,6 +20,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   onDocumentLoadSuccess,
   onError,
 }) => {
+  const { t } = useTranslation(["modal"]);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   return (
@@ -30,7 +32,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           renderLoader={() => (
             <div className="flex flex-col items-center justify-center h-full min-h-75 gap-3 text-slate-500">
               <Spin size="large" />
-              <span className="text-xs font-medium">Đang tải và xử lý tài liệu PDF...</span>
+              <span className="text-xs font-medium">{t("modal:pdfViewer.loading")}</span>
             </div>
           )}
           renderError={(error) => {
@@ -41,10 +43,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                   <span className="text-xl font-bold">!</span>
                 </div>
                 <h4 className="text-sm font-semibold text-slate-800 mb-1">
-                  Không thể mở tài liệu PDF trực tuyến
+                  {t("modal:pdfViewer.errorTitle")}
                 </h4>
                 <p className="text-xs text-slate-500 max-w-sm mb-4">
-                  Đã xảy ra lỗi trong quá trình phân tích tệp hoặc liên kết tài liệu không hợp lệ.
+                  {t("modal:pdfViewer.errorDesc")}
                 </p>
                 <a
                   href={fileUrl}
@@ -53,7 +55,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                   rel="noreferrer"
                   className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors"
                 >
-                  Tải tệp về máy để xem
+                  {t("modal:pdfViewer.downloadToView")}
                 </a>
               </div>
             );

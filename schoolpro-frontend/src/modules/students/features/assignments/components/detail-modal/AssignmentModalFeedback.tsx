@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentItem } from "@/modules/students/features/assignments/types";
 
@@ -9,6 +10,8 @@ interface AssignmentModalFeedbackProps {
 export const AssignmentModalFeedback: React.FC<AssignmentModalFeedbackProps> = ({
   assignment,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   if (assignment.status !== "graded") return null;
 
   return (
@@ -16,10 +19,13 @@ export const AssignmentModalFeedback: React.FC<AssignmentModalFeedbackProps> = (
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
           <Icon name="check" size={14} className="text-emerald-600" />
-          Kết quả đánh giá từ giáo viên
+          {t("card:assignments.detail.gradedFeedbackTitle")}
         </span>
         <span className="text-sm font-extrabold text-emerald-700">
-          {assignment.score} / {assignment.pointsPossible} điểm
+          {t("card:assignments.detail.scoreBadge", {
+            score: assignment.score ?? 0,
+            max: assignment.pointsPossible,
+          })}
         </span>
       </div>
       {assignment.teacherFeedback && (

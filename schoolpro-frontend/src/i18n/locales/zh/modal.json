@@ -94,5 +94,13 @@
       "validDistanceBadge": "有效 ({{distance}}米 / {{radius}}米)",
       "onTime": "准时"
     }
+  },
+  "pdfViewer": {
+    "defaultFileName": "附件材料.pdf",
+    "fileSize": "大小: {{size}}",
+    "loading": "正在加载并处理PDF文件...",
+    "errorTitle": "无法在线打开PDF文件",
+    "errorDesc": "解析文件时发生错误，或文档链接无效。",
+    "downloadToView": "下载文件到本地查看"
   }
 }

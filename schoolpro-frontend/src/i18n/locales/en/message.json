@@ -102,9 +102,6 @@
     "reopenEmptyReasonWarning": "Please enter a reason and message for your teacher!",
     "reopenSuccess": "Reopen request sent to teacher {{teacher}} ({{email}}) successfully!",
     "reopenError": "Failed to send reopen request. Please try again later!",
-    "appealEmptyReasonWarning": "Please enter your score appeal explanation!",
-    "appealSuccess": "Score appeal request sent to the subject teacher successfully!",
-    "appealError": "Could not submit score appeal request. Please try again!",
     "maxFilesWarning": "You may attach at most {{max}} files per submission.",
     "maxFileSizeError": "File \"{{name}}\" exceeds the {{max}}MB size limit.",
     "filesAddedSuccess": "Added {{count}} assignment file(s)."
@@ -113,4 +110,3 @@
     "loadFailed": "Failed to load learning materials."
   }
 }
-

@@ -61,6 +61,16 @@ class AssignmentPagination(PageNumberPagination):
                 description="Filter by assignment type (homework, quiz, project, essay, all)",
             ),
             OpenApiParameter("sortBy", str, description="Sorting mode (newest, due_soon, score)"),
+            OpenApiParameter(
+                "academic_year",
+                str,
+                description="Filter by academic year ID/code (defaults to student's current academic year)",
+            ),
+            OpenApiParameter(
+                "semester",
+                str,
+                description="Filter by semester ID/code (defaults to student's current semester)",
+            ),
             OpenApiParameter("page", int, description="Page number"),
             OpenApiParameter("pageSize", int, description="Number of items per page"),
         ],
@@ -95,6 +105,10 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
         status_filter = request.query_params.get("status")
         type_filter = request.query_params.get("type")
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
+        academic_year = request.query_params.get("academic_year") or request.query_params.get(
+            "academicYear"
+        )
+        semester = request.query_params.get("semester")
 
         items = self.service.list_assignments(
             user=user,
@@ -103,6 +117,8 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
             type_filter=type_filter,
             search_query=search_query,
             sort_by=sort_by,
+            academic_year_param=academic_year,
+            semester_param=semester,
         )
 
         paginator = self.pagination_class()
@@ -164,7 +180,15 @@ class StudentAssignmentViewSet(viewsets.ViewSet):
         """
         Retrieve summary metrics for assignment dashboard.
         """
-        summary_data = self.service.get_summary(user=request.user)
+        academic_year = request.query_params.get("academic_year") or request.query_params.get(
+            "academicYear"
+        )
+        semester = request.query_params.get("semester")
+        summary_data = self.service.get_summary(
+            user=request.user,
+            academic_year_param=academic_year,
+            semester_param=semester,
+        )
         serializer = AssignmentSummaryResponseSerializer(summary_data)
         return APIResponse.success(
             data=serializer.data,

@@ -102,9 +102,6 @@
     "reopenEmptyReasonWarning": "Vui lòng nhập lý do và lời nhắn gửi giáo viên!",
     "reopenSuccess": "Đã gửi yêu cầu mở lại cổng nộp bài đến giáo viên {{teacher}} ({{email}}) thành công!",
     "reopenError": "Đã xảy ra lỗi khi gửi yêu cầu mở lại cổng nộp bài. Vui lòng thử lại!",
-    "appealEmptyReasonWarning": "Vui lòng nhập nội dung giải trình phúc khảo điểm!",
-    "appealSuccess": "Đã gửi yêu cầu phúc khảo điểm đến giáo viên bộ môn thành công!",
-    "appealError": "Không thể gửi yêu cầu phúc khảo điểm. Vui lòng thử lại!",
     "maxFilesWarning": "Bạn chỉ được đính kèm tối đa {{max}} tệp cho một lần nộp.",
     "maxFileSizeError": "Tệp \"{{name}}\" vượt quá giới hạn dung lượng ({{max}}MB).",
     "filesAddedSuccess": "Đã thêm {{count}} tệp bài làm."
@@ -113,4 +110,3 @@
     "loadFailed": "Không thể tải danh sách tài liệu học tập."
   }
 }
-

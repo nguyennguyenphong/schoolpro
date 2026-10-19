@@ -25,6 +25,7 @@ from apps.core.models.organization import (
 )
 from apps.core.models.profile import Student, Teacher
 from apps.core.models.user import User
+from apps.master.models.semester import Semester
 from apps.master.models.subject import Subject
 
 
@@ -59,20 +60,36 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR("No Student found. Please seed students first."))
                 return
 
-            csts = list(
-                ClassSubjectTeacher.objects.filter(school_class=school_class).select_related(
-                    "subject", "teacher__user"
-                )
+            current_semester = (
+                Semester.objects.filter(is_current=True).first() or Semester.objects.first()
             )
+            csts = []
+            if current_semester:
+                csts = list(
+                    ClassSubjectTeacher.objects.filter(
+                        school_class=school_class,
+                        semester=current_semester,
+                    ).select_related("subject", "teacher__user")
+                )
+            if not csts:
+                csts = list(
+                    ClassSubjectTeacher.objects.filter(school_class=school_class).select_related(
+                        "subject", "teacher__user"
+                    )
+                )
             if not csts:
                 teacher = Teacher.objects.select_related("user").first()
                 subjects = list(Subject.objects.all()[:5])
                 for subj in subjects:
-                    if teacher:
+                    if teacher and current_semester:
                         cst_obj, _ = ClassSubjectTeacher.objects.get_or_create(
                             school_class=school_class,
                             subject=subj,
-                            defaults={"teacher": teacher},
+                            semester=current_semester,
+                            defaults={
+                                "teacher": teacher,
+                                "effective_from": current_semester.start_date,
+                            },
                         )
                         csts.append(cst_obj)
 

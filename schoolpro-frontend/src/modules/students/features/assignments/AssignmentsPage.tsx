@@ -7,7 +7,6 @@ import {
   AssignmentSummaryCards,
   AssignmentFilterBar,
   AssignmentCard,
-  AssignmentListItem,
   AssignmentSkeleton,
   AssignmentsPageHeader,
   AssignmentsEmptyState,
@@ -33,7 +32,6 @@ export const AssignmentsPage: React.FC = () => {
     setType,
     setSortBy,
     setSearchQuery,
-    setViewMode,
     setPage,
     resetFilters,
     refetch,
@@ -78,7 +76,6 @@ export const AssignmentsPage: React.FC = () => {
         type={filter.type}
         sortBy={filter.sortBy || "newest"}
         searchQuery={filter.searchQuery}
-        viewMode={filter.viewMode}
         summary={summary}
         subjects={dynamicSubjects.length > 0 ? dynamicSubjects : undefined}
         hasActiveFilters={hasActiveFilters}
@@ -87,13 +84,12 @@ export const AssignmentsPage: React.FC = () => {
         onTypeChange={setType}
         onSortByChange={setSortBy}
         onSearchChange={setSearchQuery}
-        onViewModeChange={setViewMode}
         onResetFilters={resetFilters}
       />
 
       {/* 4. Assignment Results: Loading skeleton, Error, Empty, or Grid/List */}
       {loading ? (
-        <AssignmentSkeleton viewMode={filter.viewMode} />
+        <AssignmentSkeleton />
       ) : error ? (
         <div className="p-8 text-center bg-white rounded-xl border border-rose-200 shadow-2xs">
           <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-3">
@@ -114,20 +110,10 @@ export const AssignmentsPage: React.FC = () => {
           hasActiveFilters={hasActiveFilters}
           onResetFilters={resetFilters}
         />
-      ) : filter.viewMode === "grid" ? (
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {assignments.map((item) => (
             <AssignmentCard
-              key={item.id}
-              assignment={item}
-              onClick={handleOpenAssignment}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {assignments.map((item) => (
-            <AssignmentListItem
               key={item.id}
               assignment={item}
               onClick={handleOpenAssignment}

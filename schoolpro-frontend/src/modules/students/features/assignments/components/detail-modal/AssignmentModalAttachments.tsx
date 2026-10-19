@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { message } from "@/components/ui/Message";
@@ -13,12 +14,14 @@ export const AssignmentModalAttachments: React.FC<AssignmentModalAttachmentsProp
   attachments,
   onPreviewPdf,
 }) => {
+  const { t } = useTranslation(["button", "modal"]);
+
   if (!attachments || attachments.length === 0) return null;
 
   return (
     <div>
       <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-        Tài liệu & Tệp đính kèm ({attachments.length})
+        {t("modal:attachmentsCount", { count: attachments.length })}
       </h4>
       <div className="space-y-1.5">
         {attachments.map((file, idx) => {
@@ -87,7 +90,7 @@ export const AssignmentModalAttachments: React.FC<AssignmentModalAttachmentsProp
                     }}
                   >
                     <Icon name="eye" size={12} className="mr-1" />
-                    Xem trước
+                    <span>{t("button:preview")}</span>
                   </Button>
                 )}
                 <Button
@@ -95,11 +98,11 @@ export const AssignmentModalAttachments: React.FC<AssignmentModalAttachmentsProp
                   className="text-xs h-7 px-2 shrink-0"
                   onClick={(e) => {
                     e.stopPropagation();
-                    message.info(`Đang tải xuống: ${file.name}`);
+                    message.info(`${t("button:download")}: ${file.name}`);
                   }}
                 >
                   <Icon name="download" size={12} />
-                  Tải về
+                  <span>{t("button:download")}</span>
                 </Button>
               </div>
             </div>

@@ -150,7 +150,7 @@ class AssignmentsService {
       return response.data.data;
     }
 
-    throw new Error(response.data?.message || "Không thể nộp bài tập");
+    throw new Error(response.data?.message || "Failed to submit assignment");
   }
 
   /**
@@ -169,7 +169,7 @@ class AssignmentsService {
       return response.data.data;
     }
 
-    throw new Error(response.data?.message || "Không thể gửi yêu cầu mở lại nộp bài");
+    throw new Error(response.data?.message || "Failed to send reopen request");
   }
 }
 

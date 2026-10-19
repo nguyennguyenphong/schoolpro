@@ -4,7 +4,6 @@ import type {
   AssignmentItem,
   AssignmentSummary,
   AssignmentFilter,
-  AssignmentViewMode,
   AssignmentSubmission,
 } from "@/modules/students/features/assignments/types";
 import { assignmentsService } from "@/modules/students/features/assignments/services";
@@ -24,7 +23,6 @@ export interface UseAssignmentsResult {
   setType: (type: string) => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: string) => void;
-  setViewMode: (mode: AssignmentViewMode) => void;
   setPage: (page: number, pageSize?: number) => void;
   resetFilters: () => void;
   openDetail: (item: AssignmentItem) => void;
@@ -46,8 +44,6 @@ export function useAssignments(): UseAssignmentsResult {
     const page = parseInt(searchParams.get("page") || "1", 10) || 1;
     const pageSize =
       parseInt(searchParams.get("pageSize") || searchParams.get("page_size") || "10", 10) || 10;
-    const rawView = searchParams.get("view");
-    const viewMode: AssignmentViewMode = rawView === "list" ? "list" : "grid";
 
     return {
       subject,
@@ -57,7 +53,6 @@ export function useAssignments(): UseAssignmentsResult {
       sortBy,
       page,
       pageSize,
-      viewMode,
     };
   }, [searchParams]);
 
@@ -94,9 +89,6 @@ export function useAssignments(): UseAssignmentsResult {
       }
       if (newFilter.pageSize && newFilter.pageSize !== 10) {
         params.set("pageSize", String(newFilter.pageSize));
-      }
-      if (newFilter.viewMode && newFilter.viewMode !== "grid") {
-        params.set("view", newFilter.viewMode);
       }
       setSearchParams(params, { replace: true });
     },
@@ -217,17 +209,6 @@ export function useAssignments(): UseAssignmentsResult {
     [updateUrlParams],
   );
 
-  const setViewMode = useCallback(
-    (viewMode: AssignmentViewMode) => {
-      setFilter((prev) => {
-        const next = { ...prev, viewMode };
-        updateUrlParams(next);
-        return next;
-      });
-    },
-    [updateUrlParams],
-  );
-
   const setPage = useCallback(
     (page: number, pageSize?: number) => {
       setFilter((prev) => {
@@ -250,7 +231,6 @@ export function useAssignments(): UseAssignmentsResult {
       type: "all",
       searchQuery: "",
       sortBy: "newest",
-      viewMode: "grid",
       page: 1,
       pageSize: 10,
     };
@@ -294,7 +274,6 @@ export function useAssignments(): UseAssignmentsResult {
     setType,
     setSearchQuery,
     setSortBy,
-    setViewMode,
     setPage,
     resetFilters,
     openDetail,

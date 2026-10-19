@@ -94,5 +94,13 @@
       "validDistanceBadge": "有効 ({{distance}}m / {{radius}}m)",
       "onTime": "定刻"
     }
+  },
+  "pdfViewer": {
+    "defaultFileName": "添付書類.pdf",
+    "fileSize": "サイズ: {{size}}",
+    "loading": "PDFドキュメントを読み込み処理中...",
+    "errorTitle": "PDFドキュメントをオンラインで開けません",
+    "errorDesc": "ファイルの解析中にエラーが発生したか、ドキュメントリンクが無効です。",
+    "downloadToView": "ファイルをダウンロードして表示"
   }
 }

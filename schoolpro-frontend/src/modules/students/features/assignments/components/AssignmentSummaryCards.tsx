@@ -26,7 +26,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* 1. Tổng số bài tập */}
+      {/* 1. Total assignments */}
       <StudentMetricCard
         title={t("card:assignments.summary.total")}
         value={summary.total}
@@ -35,7 +35,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({
         hoverBorderClass="hover:border-blue-400"
       />
 
-      {/* 2. Chưa hoàn thành */}
+      {/* 2. Pending */}
       <StudentMetricCard
         title={t("card:assignments.summary.pending")}
         value={summary.pendingCount}
@@ -44,7 +44,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({
         hoverBorderClass="hover:border-amber-400"
       />
 
-      {/* 3. Đã quá hạn */}
+      {/* 3. Overdue */}
       <StudentMetricCard
         title={t("card:assignments.summary.overdue")}
         value={summary.overdueCount}
@@ -53,7 +53,7 @@ export const AssignmentSummaryCards: React.FC<AssignmentSummaryCardsProps> = ({
         hoverBorderClass="hover:border-rose-400"
       />
 
-      {/* 4. Đã chấm điểm */}
+      {/* 4. Graded */}
       <StudentMetricCard
         title={t("card:assignments.summary.graded")}
         value={summary.gradedCount}

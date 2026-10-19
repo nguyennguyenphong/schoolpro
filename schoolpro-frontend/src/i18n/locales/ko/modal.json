@@ -94,5 +94,13 @@
       "validDistanceBadge": "유효 ({{distance}}m / {{radius}}m)",
       "onTime": "정시"
     }
+  },
+  "pdfViewer": {
+    "defaultFileName": "첨부파일.pdf",
+    "fileSize": "용량: {{size}}",
+    "loading": "PDF 문서를 로드하고 처리하는 중...",
+    "errorTitle": "온라인에서 PDF 문서를 열 수 없습니다",
+    "errorDesc": "파일을 분석하는 동안 오류가 발생했거나 문서 링크가 유효하지 않습니다.",
+    "downloadToView": "파일을 다운로드하여 보기"
   }
 }
