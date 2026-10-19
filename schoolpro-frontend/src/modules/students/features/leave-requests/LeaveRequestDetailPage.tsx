@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import {
   LeaveRequestDetailHeader,
+  LeaveRequestWorkflowCard,
+  LeaveRequestContentTabsCard,
+  LeaveRequestWorkspaceCard,
   LeaveRequestDetailSidebar,
   LeaveRequestDetailSkeleton,
-  LeaveRequestStatusBanner,
-  LeaveRequestStepsLogCard,
 } from "@/modules/students/features/leave-requests/components/detail";
 import { useLeaveRequestDetail } from "@/modules/students/features/leave-requests/hooks";
 
@@ -53,30 +54,38 @@ const LeaveRequestDetailPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 sm:gap-5 pb-8">
-      {/* 1. Header with Breadcrumbs & Action Buttons */}
+      {/* 1. Header with Breadcrumbs & Action Buttons (matching AssignmentSubmitHeader) */}
       <LeaveRequestDetailHeader
         item={item}
-        downloading={downloading}
-        printing={printing}
         deleting={deleting}
         onBack={() => navigate("/student/leave-requests")}
         onEdit={() => navigate(`/student/leave-requests/${item.id}/edit`)}
-        onDownloadPdf={handleDownloadPdf}
-        onPrint={handlePrint}
         onDelete={handleDelete}
       />
 
-      {/* 2. Student-friendly Status & Progress Banner */}
-      <LeaveRequestStatusBanner item={item} />
+      {/* 2. Workflow Steps Card (matching AssignmentWorkflowCard) */}
+      <LeaveRequestWorkflowCard item={item} />
 
+      {/* 3. Main 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-start">
-        <div className="lg:col-span-2">
-          <LeaveRequestStepsLogCard item={item} />
+        {/* Left Column (2 spans): Tabbed Content + Workspace Action Card */}
+        <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+          <LeaveRequestContentTabsCard item={item} />
+
+          <LeaveRequestWorkspaceCard
+            item={item}
+            downloading={downloading}
+            printing={printing}
+            deleting={deleting}
+            onDownloadPdf={handleDownloadPdf}
+            onPrint={handlePrint}
+            onEdit={() => navigate(`/student/leave-requests/${item.id}/edit`)}
+            onDelete={handleDelete}
+          />
         </div>
 
-        <div>
-          <LeaveRequestDetailSidebar item={item} />
-        </div>
+        {/* Right Column: Tabbed Deadlines/Teachers + Guardian/Notes Sidebar Cards */}
+        <LeaveRequestDetailSidebar item={item} />
       </div>
     </div>
   );

@@ -10,29 +10,22 @@ import {
   LEAVE_STATUS_COLORS,
   formatDateTimeDisplay,
   getLeaveStatusLabel,
+  getLeaveTypeLabel,
 } from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 interface LeaveRequestDetailHeaderProps {
   item: LeaveRequestItem;
-  downloading: boolean;
-  printing?: boolean;
   deleting: boolean;
   onBack: () => void;
   onEdit: () => void;
-  onDownloadPdf: () => void;
-  onPrint?: () => void;
   onDelete: () => void;
 }
 
 export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> = ({
   item,
-  downloading,
-  printing = false,
   deleting,
   onBack,
   onEdit,
-  onDownloadPdf,
-  onPrint,
   onDelete,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button", "modal"]);
@@ -84,6 +77,9 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
                 {t("card:leaveRequests.detail.requestCodeBadge", { code: item.code })}
               </span>
             )}
+            <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
+              {getLeaveTypeLabel(item.leaveType)}
+            </span>
             <Tag
               color={LEAVE_STATUS_COLORS[item.status] || "default"}
               className="m-0 text-xs font-bold px-2.5 py-0.5"
@@ -91,6 +87,10 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
               {getLeaveStatusLabel(item.status)}
             </Tag>
           </div>
+
+          <p className="text-xs sm:text-sm text-slate-500 mb-1">
+            {t("navigation:pageSubtitle.leaveRequestDetail")}
+          </p>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
             <span>
@@ -107,30 +107,6 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
           <Button variant="outline" onClick={onBack} className="text-xs sm:text-sm">
             <Icon name="arrow-left" size={14} />
             <span>{t("button:back")}</span>
-          </Button>
-
-          {onPrint && (
-            <Button
-              variant="outline"
-              onClick={onPrint}
-              loading={printing}
-              disabled={printing}
-              className="text-xs sm:text-sm font-semibold"
-            >
-              <Icon name="print" size={14} />
-              <span>{t("button:printLeaveRequest")}</span>
-            </Button>
-          )}
-
-          <Button
-            variant="primary"
-            onClick={onDownloadPdf}
-            loading={downloading}
-            disabled={downloading}
-            className="text-xs sm:text-sm font-semibold"
-          >
-            <Icon name="download" size={14} />
-            <span>{t("button:downloadLeaveRequestPdf")}</span>
           </Button>
 
           {isPending && (

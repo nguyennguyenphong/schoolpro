@@ -1,5 +1,7 @@
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestActivityLogCard";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestContentCard";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestContentTabsCard";
+export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestWorkspaceCard";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailHeader";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailSidebar";
 export * from "@/modules/students/features/leave-requests/components/detail/LeaveRequestDetailSkeleton";

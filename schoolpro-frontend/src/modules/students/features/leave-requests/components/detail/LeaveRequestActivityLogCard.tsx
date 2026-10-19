@@ -9,6 +9,8 @@ import { formatDateTimeDisplay } from "@/modules/students/features/leave-request
 
 interface LeaveRequestActivityLogCardProps {
   item: LeaveRequestItem;
+  embedded?: boolean;
+  defaultExpanded?: boolean;
 }
 
 interface TimelineMarkerConfig {
@@ -105,9 +107,11 @@ const getTimelineMarkerConfig = (
 
 export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardProps> = ({
   item,
+  embedded = false,
+  defaultExpanded = false,
 }) => {
   const { t } = useTranslation(["card", "button"]);
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(defaultExpanded || embedded);
 
   const rawLogs = item.eventLogs || [];
   const logs = rawLogs.map((ev) => ({
@@ -121,11 +125,21 @@ export const LeaveRequestActivityLogCard: React.FC<LeaveRequestActivityLogCardPr
   }));
 
   if (logs.length === 0) {
-    return null;
+    return (
+      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500 text-center">
+        {t("card:leaveRequests.detail.noAttachments")}
+      </div>
+    );
   }
 
   return (
-    <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4">
+    <div
+      className={
+        embedded
+          ? "space-y-4 pt-1"
+          : "bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-4"
+      }
+    >
       {/* Header with expand/collapse trigger */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">

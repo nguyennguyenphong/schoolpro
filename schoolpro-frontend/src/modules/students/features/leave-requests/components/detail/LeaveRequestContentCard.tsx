@@ -13,23 +13,35 @@ import {
 
 interface LeaveRequestContentCardProps {
   item: LeaveRequestItem;
+  embedded?: boolean;
 }
 
-export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = ({ item }) => {
+export const LeaveRequestContentCard: React.FC<LeaveRequestContentCardProps> = ({
+  item,
+  embedded = false,
+}) => {
   const { t } = useTranslation(["card"]);
   const affectedLessons = item.affectedLessons || [];
 
   return (
-    <div className="bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-6">
-      {/* 1. Header Section */}
-      <div className="flex items-center justify-between border-b border-[#f0f0f0] pb-3.5">
-        <div className="flex items-center gap-2.5">
-          <span className="w-1.5 h-4.5 rounded-full bg-blue-600 inline-block" />
-          <h3 className="text-base font-bold text-slate-900 mb-0">
-            {t("card:leaveRequests.detail.contentCardTitle")}
-          </h3>
+    <div
+      className={
+        embedded
+          ? "space-y-6 pt-1"
+          : "bg-white p-5 sm:p-6 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-6"
+      }
+    >
+      {/* 1. Header Section (hidden when embedded in tabs) */}
+      {!embedded && (
+        <div className="flex items-center justify-between border-b border-[#f0f0f0] pb-3.5">
+          <div className="flex items-center gap-2.5">
+            <span className="w-1.5 h-4.5 rounded-full bg-blue-600 inline-block" />
+            <h3 className="text-base font-bold text-slate-900 mb-0">
+              {t("card:leaveRequests.detail.contentCardTitle")}
+            </h3>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 2. Three Metric Highlights */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
