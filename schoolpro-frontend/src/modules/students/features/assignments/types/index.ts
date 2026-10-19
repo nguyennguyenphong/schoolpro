@@ -1,6 +1,5 @@
 export type AssignmentStatus = "pending" | "submitted" | "graded" | "overdue";
 export type AssignmentType = "homework" | "quiz" | "project" | "essay";
-export type AssignmentViewMode = "grid" | "list";
 
 export interface AssignmentAttachment {
   name: string;
@@ -143,7 +142,6 @@ export interface AssignmentFilter {
   status: string; // "all" | AssignmentStatus
   type: string; // "all" | AssignmentType
   searchQuery: string;
-  viewMode: AssignmentViewMode;
   page?: number;
   pageSize?: number;
   sortBy?: string;

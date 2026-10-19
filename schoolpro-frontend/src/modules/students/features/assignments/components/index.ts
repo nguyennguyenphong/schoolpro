@@ -1,7 +1,6 @@
 export { AssignmentSummaryCards } from "@/modules/students/features/assignments/components/AssignmentSummaryCards";
 export { AssignmentFilterBar } from "@/modules/students/features/assignments/components/AssignmentFilterBar";
 export { AssignmentCard } from "@/modules/students/features/assignments/components/AssignmentCard";
-export { AssignmentListItem } from "@/modules/students/features/assignments/components/AssignmentListItem";
 export { AssignmentDetailModal } from "@/modules/students/features/assignments/components/AssignmentDetailModal";
 export { AssignmentSkeleton } from "@/modules/students/features/assignments/components/AssignmentSkeleton";
 export { AssignmentDetailSkeleton } from "@/modules/students/features/assignments/components/AssignmentDetailSkeleton";

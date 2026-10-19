@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type {
   AssignmentSummary,
-  AssignmentViewMode,
 } from "@/modules/students/features/assignments/types";
 import { SelectSubject } from "@/components/subjects/SelectSubject";
 
@@ -22,7 +21,6 @@ interface AssignmentFilterBarProps {
   type: string;
   sortBy: string;
   searchQuery: string;
-  viewMode: AssignmentViewMode;
   summary?: AssignmentSummary | null;
   subjects?: SubjectOption[];
   hasActiveFilters?: boolean;
@@ -31,7 +29,6 @@ interface AssignmentFilterBarProps {
   onTypeChange: (val: string) => void;
   onSortByChange: (val: string) => void;
   onSearchChange: (val: string) => void;
-  onViewModeChange: (mode: AssignmentViewMode) => void;
   onResetFilters: () => void;
 }
 
@@ -41,7 +38,6 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   type,
   sortBy,
   searchQuery,
-  viewMode,
   summary,
   hasActiveFilters = false,
   onSubjectChange,
@@ -49,7 +45,6 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
   onTypeChange,
   onSortByChange,
   onSearchChange,
-  onViewModeChange,
   onResetFilters,
 }) => {
   const { t } = useTranslation(["card", "button"]);
@@ -174,34 +169,6 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
             allowClear
             className="w-full"
           />
-        </div>
-
-        {/* View Mode Toggle: Grid vs List */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
-          <button
-            type="button"
-            onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="chart" size={13} />
-            <span>{t("card:assignments.filters.grid")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              viewMode === "list"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="menu" size={13} />
-            <span>{t("card:assignments.filters.list")}</span>
-          </button>
         </div>
       </div>
 
