@@ -35,7 +35,10 @@ export const ProfileOrganizationFields: React.FC = () => {
             name="insuranceCardNumber"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
 
           <Form.Item
@@ -43,7 +46,10 @@ export const ProfileOrganizationFields: React.FC = () => {
             name="policyBeneficiary"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
         </div>
 
@@ -115,6 +121,7 @@ export const ProfileOrganizationFields: React.FC = () => {
           className="mb-0"
         >
           <Input.TextArea
+            autoComplete="off"
             rows={2}
             placeholder={t("input:placeholder.default")}
             maxLength={300}

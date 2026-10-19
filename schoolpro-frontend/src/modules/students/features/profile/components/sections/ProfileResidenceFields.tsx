@@ -33,6 +33,7 @@ export const ProfileResidenceFields: React.FC = () => {
             className="mb-0"
           >
             <Input
+              autoComplete="address-level2"
               placeholder={t("input:placeholder.default")}
               prefix={<Icon name="home" size={14} className="text-slate-400" />}
             />
@@ -43,7 +44,10 @@ export const ProfileResidenceFields: React.FC = () => {
             name="ethnicity"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
 
           <Form.Item
@@ -51,7 +55,10 @@ export const ProfileResidenceFields: React.FC = () => {
             name="religion"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
         </div>
 
@@ -62,7 +69,10 @@ export const ProfileResidenceFields: React.FC = () => {
             name="householdRegistrationNumber"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
 
           <Form.Item
@@ -71,6 +81,7 @@ export const ProfileResidenceFields: React.FC = () => {
             className="mb-0 lg:col-span-2"
           >
             <Input
+              autoComplete="street-address"
               placeholder={t("input:placeholder.address")}
               prefix={<Icon name="home" size={14} className="text-slate-400" />}
             />
@@ -84,6 +95,7 @@ export const ProfileResidenceFields: React.FC = () => {
           className="mb-0"
         >
           <Input
+            autoComplete="street-address"
             placeholder={t("input:placeholder.address")}
             prefix={<Icon name="home" size={14} className="text-slate-400" />}
           />

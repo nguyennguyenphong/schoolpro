@@ -275,7 +275,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
   return (
     <Card className="rounded-2xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-7">
       {/* 1. Header with Gamified Progress Bar */}
-      <div className="pb-5 mb-6 border-b border-[#f0f0f0] flex flex-col gap-4">
+      <div className="pb-5 mb-3 flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -330,6 +330,7 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
         layout="vertical"
         onFinish={handleSubmit}
         onValuesChange={handleValuesChange}
+        autoComplete="on"
         className="flex flex-col gap-6"
       >
         {/* Step 0: Identity & Account */}

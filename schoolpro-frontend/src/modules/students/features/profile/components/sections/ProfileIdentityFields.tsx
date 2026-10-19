@@ -65,6 +65,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
           >
             <Input
               disabled
+              autoComplete="off"
               className="bg-slate-50! text-slate-700!"
               prefix={<Icon name="user" size={14} className="text-slate-400" />}
             />
@@ -77,6 +78,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
             className="mb-0"
           >
             <Input
+              autoComplete="username"
               placeholder={t("input:placeholder.default")}
               prefix={<Icon name="user" size={14} className="text-slate-400" />}
             />
@@ -92,6 +94,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
               className="mb-0"
             >
               <Input
+                autoComplete="family-name"
                 placeholder={t("input:placeholder.default")}
                 onChange={(e) => handleNamePartChange("lastName", e.target.value)}
               />
@@ -104,6 +107,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
               className="mb-0"
             >
               <Input
+                autoComplete="given-name"
                 placeholder={t("input:placeholder.default")}
                 onChange={(e) => handleNamePartChange("firstName", e.target.value)}
               />
@@ -116,6 +120,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
               className="mb-0"
             >
               <Input
+                autoComplete="name"
                 placeholder={t("input:placeholder.default")}
                 onChange={(e) => handleFullNameChange(e.target.value)}
               />
@@ -130,7 +135,10 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
             name="preferredName"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="nickname"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
 
           <Form.Item
@@ -196,7 +204,10 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
             name="nationalId"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
 
           <Form.Item
@@ -223,7 +234,10 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
             name="nationalIdIssuedPlace"
             className="mb-0"
           >
-            <Input placeholder={t("input:placeholder.default")} />
+            <Input
+              autoComplete="off"
+              placeholder={t("input:placeholder.default")}
+            />
           </Form.Item>
         </div>
       </div>

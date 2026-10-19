@@ -37,6 +37,7 @@ export const ProfileContactFields: React.FC = () => {
             className="mb-0"
           >
             <Input
+              autoComplete="tel"
               placeholder={t("input:placeholder.phone")}
               prefix={<Icon name="user" size={14} className="text-slate-400" />}
             />
@@ -52,6 +53,7 @@ export const ProfileContactFields: React.FC = () => {
             className="mb-0"
           >
             <Input
+              autoComplete="email"
               placeholder={t("input:placeholder.email")}
               prefix={<Icon name="mail" size={14} className="text-slate-400" />}
             />
@@ -65,6 +67,7 @@ export const ProfileContactFields: React.FC = () => {
           className="mb-0"
         >
           <Input
+            autoComplete="street-address"
             placeholder={t("input:placeholder.address")}
             prefix={<Icon name="home" size={14} className="text-slate-400" />}
           />
@@ -77,6 +80,7 @@ export const ProfileContactFields: React.FC = () => {
           className="mb-0"
         >
           <Input.TextArea
+            autoComplete="off"
             rows={3}
             placeholder={t("input:placeholder.default")}
             maxLength={300}

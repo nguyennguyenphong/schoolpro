@@ -36,7 +36,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
+      <div className="flex items-center gap-3 pb-4">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="heart" size={20} />
         </span>

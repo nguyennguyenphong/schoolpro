@@ -107,6 +107,7 @@ export const HealthUpdateModal: React.FC<HealthUpdateModalProps> = ({
         layout="vertical"
         initialValues={initialValues}
         onFinish={handleFinish}
+        autoComplete="off"
         className="space-y-4 pt-2"
       >
         {/* Physical Growth & Auto Calculated BMI Card */}
