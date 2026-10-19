@@ -82,7 +82,7 @@ export const FileItemCard: React.FC<FileItemCardProps> = ({
               <span>{file.size}</span>
               {file.uploadedAt && (
                 <>
-                  <span>•</span>
+                  <span>|</span>
                   <span>{file.uploadedAt}</span>
                 </>
               )}

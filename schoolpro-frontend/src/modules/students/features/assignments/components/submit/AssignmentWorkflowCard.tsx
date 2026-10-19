@@ -98,7 +98,7 @@ export const AssignmentWorkflowCard: React.FC<AssignmentWorkflowCardProps> = ({
               ),
               content: (
                 <span className="text-[11px] text-slate-500 block mt-0.5">
-                  {assignment.assignedDate} • {assignment.teacherName}
+                  {assignment.assignedDate} | {assignment.teacherName}
                 </span>
               ),
             },
@@ -127,7 +127,7 @@ export const AssignmentWorkflowCard: React.FC<AssignmentWorkflowCardProps> = ({
               content: (
                 <span className="text-[11px] text-slate-500 block mt-0.5">
                   {assignment.status === "graded"
-                    ? `${assignment.gradedByName || assignment.teacherName} • ${t("card:assignments.detail.scoreBadge", { score: assignment.score ?? 0, max: assignment.pointsPossible })}`
+                    ? `${assignment.gradedByName || assignment.teacherName} | ${t("card:assignments.detail.scoreBadge", { score: assignment.score ?? 0, max: assignment.pointsPossible })}`
                     : `${t("card:assignments.detail.maxPointsField")} ${t("card:assignments.detail.pointsUnit", { points: assignment.pointsPossible })}`}
                 </span>
               ),

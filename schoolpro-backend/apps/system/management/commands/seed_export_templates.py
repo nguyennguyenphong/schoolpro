@@ -31,6 +31,8 @@ from apps.system.services.export_template_service import (
     DEFAULT_LEAVE_REQUEST_CONTENT,
     DEFAULT_LEAVE_REQUEST_FOOTER,
     DEFAULT_LEAVE_REQUEST_HEADER,
+    DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
+    DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
     DEFAULT_LEAVE_REQUEST_STYLES,
     DEFAULT_TIMETABLE_CODE,
     DEFAULT_TIMETABLE_CONTENT,
@@ -202,29 +204,48 @@ class Command(BaseCommand):
         """Seeds official Leave Request Template."""
         self.stdout.write("  -> Đang kiểm tra Mẫu Đơn xin nghỉ phép (LEAVE_REQUEST)...")
         existing = ExportTemplate.objects.filter(code=DEFAULT_LEAVE_REQUEST_CODE).first()
-        if not existing:
-            created = ExportTemplate.objects.create(
-                code=DEFAULT_LEAVE_REQUEST_CODE,
-                name="Mẫu Đơn xin nghỉ phép A4 Chuẩn",
-                description="Biểu mẫu đơn xin nghỉ phép A4 chuẩn hành chính nhà trường",
-                template_type=TemplateType.ATTENDANCE,
-                file_format=FileFormat.HTML_PRINT,
-                header_content=DEFAULT_LEAVE_REQUEST_HEADER,
-                content=DEFAULT_LEAVE_REQUEST_CONTENT,
-                footer_content=DEFAULT_LEAVE_REQUEST_FOOTER,
-                style_content=DEFAULT_LEAVE_REQUEST_STYLES,
-                page_size="A4",
-                page_orientation="PORTRAIT",
-                margins={"top": "15mm", "right": "15mm", "bottom": "15mm", "left": "20mm"},
-                is_default=True,
-                is_active=True,
-            )
+        leave_fields = {
+            "code": DEFAULT_LEAVE_REQUEST_CODE,
+            "name": "Mẫu Đơn xin nghỉ phép A4 Chuẩn",
+            "description": "Biểu mẫu đơn xin nghỉ phép A4 chuẩn hành chính nhà trường",
+            "template_type": TemplateType.ATTENDANCE,
+            "file_format": FileFormat.HTML_PRINT,
+            "header_content": DEFAULT_LEAVE_REQUEST_HEADER,
+            "content": DEFAULT_LEAVE_REQUEST_CONTENT,
+            "footer_content": DEFAULT_LEAVE_REQUEST_FOOTER,
+            "style_content": DEFAULT_LEAVE_REQUEST_STYLES,
+            "page_size": "A4",
+            "page_orientation": "PORTRAIT",
+            "margins": {"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"},
+            "placeholders_schema": DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
+            "sample_data": DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
+            "is_default": True,
+            "is_active": True,
+        }
+        if existing:
+            if (
+                force
+                or not existing.style_content
+                or '<main class="page">' not in (existing.header_content or "")
+            ):
+                for k, v in leave_fields.items():
+                    setattr(existing, k, v)
+                existing.save()
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"     [UPDATED] Đã cập nhật mẫu Đơn nghỉ phép (ID: {existing.id}, Code: {existing.code})"
+                    )
+                )
+            else:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"     [EXISTS] Mẫu Đơn nghỉ phép đã có sẵn (ID: {existing.id}). Dùng --force để ghi đè."
+                    )
+                )
+        else:
+            created = ExportTemplate.objects.create(**leave_fields)
             self.stdout.write(
                 self.style.SUCCESS(f"     [CREATED] Đã tạo mẫu Đơn nghỉ phép (ID: {created.id})")
-            )
-        else:
-            self.stdout.write(
-                self.style.WARNING(f"     [EXISTS] Mẫu Đơn nghỉ phép đã có sẵn (ID: {existing.id})")
             )
 
     def _seed_announcement_template(self, force: bool = False) -> None:

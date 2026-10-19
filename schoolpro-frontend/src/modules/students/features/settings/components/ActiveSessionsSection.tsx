@@ -127,7 +127,7 @@ export const ActiveSessionsSection: React.FC<ActiveSessionsSectionProps> = ({
                     )}
                   </div>
                   <p className="text-xs text-slate-500 mb-0">
-                    {session.browser} • {session.ipAddress} ({session.location})
+                    {session.browser} | {session.ipAddress} ({session.location})
                   </p>
                 </div>
               </div>
@@ -169,7 +169,7 @@ export const ActiveSessionsSection: React.FC<ActiveSessionsSectionProps> = ({
               {sessionToRevoke.deviceName}
             </span>
             <span className="text-slate-500 block">
-              {sessionToRevoke.browser} • {sessionToRevoke.ipAddress}
+              {sessionToRevoke.browser} | {sessionToRevoke.ipAddress}
             </span>
           </div>
         )}

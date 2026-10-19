@@ -362,6 +362,14 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
         class_id = request.query_params.get("class_id")
         student_id = request.query_params.get("student_id")
+        academic_year_id = (
+            request.query_params.get("academicYear")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academic_year_id")
+        )
+        semester_id = request.query_params.get("semester") or request.query_params.get(
+            "semester_id"
+        )
 
         items = LeaveRequestService.list_leave_requests(
             user=request.user,
@@ -371,6 +379,8 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
             sort_by=sort_by,
             class_id=class_id,
             student_id=student_id,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
         )
 
         paginator = self.pagination_class()
@@ -485,7 +495,19 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
     )
     @action(detail=False, methods=["get"], url_path="summary")
     def summary(self, request):
-        summary_data = LeaveRequestService.get_summary(user=request.user)
+        academic_year_id = (
+            request.query_params.get("academicYear")
+            or request.query_params.get("academic_year")
+            or request.query_params.get("academic_year_id")
+        )
+        semester_id = request.query_params.get("semester") or request.query_params.get(
+            "semester_id"
+        )
+        summary_data = LeaveRequestService.get_summary(
+            user=request.user,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
+        )
         serializer = LeaveRequestSummaryResponseSerializer(summary_data)
         return APIResponse.success(
             data=serializer.data,

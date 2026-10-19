@@ -61,18 +61,24 @@ def auto_approve_overdue_leave_requests_task(
     leave_request_id: str | None = None,
 ) -> dict[str, Any]:
     """
-    Periodically or on-deadline evaluates pending leave requests and automatically
-    approves any request whose 3-hour pre-lesson approval_deadline has arrived,
-    broadcasting real-time WebSocket updates to connected clients.
+    Periodically or on-deadline evaluates pending leave requests:
+    - Automatically approves requests whose 3-hour continuous processing deadline has expired (BR-01 / BR-03).
+    - Dispatches 30-minute approaching deadline reminders to Homeroom Teachers.
     """
     try:
         qs = None
         if leave_request_id:
             qs = LeaveRequest.objects.filter(id=leave_request_id, status="PENDING")
         approved_count = LeaveRequestService.check_and_auto_approve_overdue_requests(qs=qs)
+
+        reminder_count = 0
+        if not leave_request_id:
+            reminder_count = LeaveRequestService.check_and_send_deadline_reminders()
+
         return {
             "status": "success",
             "auto_approved_count": approved_count,
+            "reminders_sent": reminder_count,
             "leave_request_id": leave_request_id,
         }
     except Exception as exc:

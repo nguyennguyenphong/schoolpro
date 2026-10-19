@@ -303,9 +303,9 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
                     </div>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
                       <span>{session.browser}</span>
-                      <span>•</span>
+                      <span>|</span>
                       <span className="text-slate-600">{session.ipAddress}</span>
-                      <span>•</span>
+                      <span>|</span>
                       <span>{session.location}</span>
                     </div>
                     <div className="text-[11px] text-slate-400">
@@ -371,7 +371,7 @@ export const LoginHistorySection: React.FC<LoginHistorySectionProps> = ({
               {sessionToRevoke.deviceName}
             </span>
             <span className="text-slate-500 block">
-              {sessionToRevoke.browser} • {sessionToRevoke.ipAddress} ({sessionToRevoke.location})
+              {sessionToRevoke.browser} | {sessionToRevoke.ipAddress} ({sessionToRevoke.location})
             </span>
           </div>
         )}

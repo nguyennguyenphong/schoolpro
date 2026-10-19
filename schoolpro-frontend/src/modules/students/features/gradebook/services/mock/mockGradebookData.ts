@@ -13,7 +13,7 @@ export const mockGradeSummary: GradeSummary = {
   homeroomTeacher: "Trần Thị Văn",
   homeroomComment:
     "Học sinh Đỗ Minh Quân chăm ngoan, lễ phép, có ý thức tự giác và kỷ luật học tập rất cao. Tiếp thu bài nhanh, tư duy logic sắc bén ở các môn khoa học tự nhiên và có tiến bộ vượt bậc ở môn Ngoại ngữ 1. Tích cực tham gia các hoạt động tập thể của lớp 10A1.",
-  titleAwarded: "Học sinh Giỏi Học kỳ 1 • Khối 10",
+  titleAwarded: "Học sinh Giỏi Học kỳ 1 | Khối 10",
   attendanceRate: 98.8,
   academicYear: "Năm học 2026 - 2027",
   semester: "Học kỳ 1 (2026 - 2027)",

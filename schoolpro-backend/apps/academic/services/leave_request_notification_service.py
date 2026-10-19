@@ -192,13 +192,13 @@ class LeaveRequestNotificationService:
             hr_desc = (
                 f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
                 f"(đồng thời dạy môn {subj_list} - {lesson_cnt} tiết). "
-                f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
+                f"Hạn xử lý trước {deadline_fmt}."
             )
         else:
             hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
             hr_desc = (
                 f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
-                f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
+                f"Hạn xử lý trước {deadline_fmt}."
             )
 
         email_subject_hr = f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} - Học sinh {student_name} (Lớp {class_name})"
@@ -209,8 +209,7 @@ class LeaveRequestNotificationService:
             f"- Thời gian nghỉ: {date_range_fmt}\n"
             f"- Số tiết học xin nghỉ: {len(affected_lessons)} tiết\n"
             f"- Lý do: {leave_req.reason}\n"
-            f"- Hạn phê duyệt: Trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ).\n"
-            f"Lưu ý: Nếu quá thời hạn trên mà đơn chưa được duyệt, hệ thống sẽ tự động phê duyệt đơn.\n\n"
+            f"- Hạn xử lý: Trước {deadline_fmt}.\n\n"
             f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
         )
         sent_hr = cls.send_email_safe(
@@ -253,7 +252,7 @@ class LeaveRequestNotificationService:
                             f"vào thời gian {date_range_fmt} có tiết môn {subj_str} ({t['lessonCount']} tiết).\n"
                             f"- Mã đơn: {leave_req.code}\n"
                             f"- Lý do: {leave_req.reason}\n"
-                            f"- Đơn đang chờ Giáo viên chủ nhiệm ({homeroom_name}) phê duyệt (hạn trước {deadline_fmt}).\n\n"
+                            f"- Đơn đang chờ Giáo viên chủ nhiệm ({homeroom_name}) xử lý (hạn trước {deadline_fmt}).\n\n"
                             f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
                         ),
                         recipient_list=[t_email],
@@ -283,9 +282,9 @@ class LeaveRequestNotificationService:
         is_auto: bool = False,
     ) -> None:
         """
-        Triggered when a leave request is approved (either by Homeroom Teacher or Auto-Approval Engine)
+        Triggered when a leave request is approved (by Homeroom Teacher or System Auto-Approval Engine)
         or rejected by Homeroom Teacher:
-        1. Sends email to Student (and Guardian) about approval/rejection.
+        1. Sends email to Student (and Guardian) with clear distinction between System auto-approval and Teacher action.
         2. Sends notification & email to Subject Teachers confirming the approved absence.
         """
         meta = leave_req.metadata if isinstance(leave_req.metadata, dict) else {}
@@ -320,25 +319,75 @@ class LeaveRequestNotificationService:
         )
 
         review_time = leave_req.reviewed_at or timezone.now()
-        status_vi = "ĐÃ PHÊ DUYỆT" if leave_req.status == "APPROVED" else "TỪ CHỐI"
-        approver_label = (
-            "Hệ thống tự động phê duyệt (quá hạn 3 giờ trước giờ học)"
-            if is_auto
-            else f"Giáo viên chủ nhiệm {leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name}"
-        )
+        is_approved = leave_req.status == "APPROVED"
 
         # 1. Email to Student
-        student_subject = (
-            f"[SchoolPro] Thông báo kết quả đơn xin nghỉ phép #{leave_req.code}: {status_vi}"
-        )
-        student_body = (
-            f"Chào em {student_name} (Lớp {class_name}),\n\n"
-            f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) đã được xử lý:\n"
-            f"- Trạng thái: {status_vi}\n"
-            f"- Người xử lý: {approver_label}\n"
-            f"- Ghi chú: {leave_req.teacher_note or 'Đồng ý cho học sinh nghỉ học có phép.'}\n\n"
-            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
-        )
+        if is_auto:
+            student_subject = (
+                f"[SchoolPro] Đơn xin nghỉ phép #{leave_req.code} đã được TỰ ĐỘNG PHÊ DUYỆT"
+            )
+            student_body = (
+                f"Chào em {student_name} (Lớp {class_name}),\n\n"
+                f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) "
+                f"đã được Hệ thống tự động phê duyệt theo quy định của nhà trường.\n"
+                f"- Trạng thái: ĐÃ PHÊ DUYỆT (TỰ ĐỘNG)\n"
+                f"- Người xử lý: Hệ thống SchoolPro\n"
+                f"- Hình thức: Tự động phê duyệt theo quy định\n"
+                f"- Ghi chú: {leave_req.teacher_note or 'Đơn đã được phê duyệt tự động theo quy định.'}\n\n"
+                f"Hệ thống đã cập nhật trạng thái Vắng có phép vào sổ điểm danh và thông báo tới các Giáo viên bộ môn.\n\n"
+                f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
+            )
+            log_title = "Gửi Email thông báo kết quả Tự động phê duyệt tới Học sinh"
+            log_desc = (
+                f"Đã gửi email thông báo kết quả 'ĐÃ PHÊ DUYỆT (TỰ ĐỘNG)' tới học sinh {student_name} "
+                f"theo quy định của nhà trường."
+            )
+            approver_label = "Hệ thống SchoolPro (Phê duyệt tự động)"
+        elif is_approved:
+            reviewer_name = (
+                leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name
+            )
+            student_subject = (
+                f"[SchoolPro] Giáo viên chủ nhiệm ĐÃ PHÊ DUYỆT đơn xin nghỉ phép #{leave_req.code}"
+            )
+            student_body = (
+                f"Chào em {student_name} (Lớp {class_name}),\n\n"
+                f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) đã được Giáo viên chủ nhiệm phê duyệt:\n"
+                f"- Trạng thái: ĐÃ PHÊ DUYỆT\n"
+                f"- Người duyệt: Giáo viên chủ nhiệm {reviewer_name}\n"
+                f"- Ghi chú: {leave_req.teacher_note or 'Đồng ý cho học sinh nghỉ học có phép.'}\n\n"
+                f"Hệ thống đã cập nhật trạng thái Vắng có phép vào sổ điểm danh.\n\n"
+                f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
+            )
+            log_title = "Gửi Email thông báo Giáo viên chủ nhiệm ĐÃ DUYỆT đơn tới Học sinh"
+            log_desc = (
+                f"Đã gửi email xác nhận trạng thái 'ĐÃ PHÊ DUYỆT' bởi Giáo viên chủ nhiệm {reviewer_name} "
+                f"tới học sinh {student_name} ({student_email or 'Tài khoản học sinh'})."
+            )
+            approver_label = f"Giáo viên chủ nhiệm {reviewer_name}"
+        else:
+            reviewer_name = (
+                leave_req.reviewed_by.full_name if leave_req.reviewed_by else homeroom_name
+            )
+            student_subject = (
+                f"[SchoolPro] Giáo viên chủ nhiệm TỪ CHỐI đơn xin nghỉ phép #{leave_req.code}"
+            )
+            student_body = (
+                f"Chào em {student_name} (Lớp {class_name}),\n\n"
+                f"Đơn xin nghỉ phép #{leave_req.code} của em (thời gian: {date_range_fmt}) đã bị Giáo viên chủ nhiệm từ chối:\n"
+                f"- Trạng thái: TỪ CHỐI\n"
+                f"- Người từ chối: Giáo viên chủ nhiệm {reviewer_name}\n"
+                f"- Lý do từ chối: {leave_req.teacher_note}\n\n"
+                f"Vui lòng liên hệ trực tiếp Giáo viên chủ nhiệm nếu cần thêm thông tin.\n\n"
+                f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
+            )
+            log_title = "Gửi Email thông báo Giáo viên chủ nhiệm TỪ CHỐI đơn tới Học sinh"
+            log_desc = (
+                f"Đã gửi email thông báo từ chối kèm lý do '{leave_req.teacher_note}' "
+                f"tới học sinh {student_name} ({student_email or 'Tài khoản học sinh'})."
+            )
+            approver_label = f"Giáo viên chủ nhiệm {reviewer_name}"
+
         sent_student = cls.send_email_safe(
             subject=student_subject,
             plain_body=student_body,
@@ -348,11 +397,8 @@ class LeaveRequestNotificationService:
         cls.record_event_log(
             leave_request=leave_req,
             event_type="STUDENT_EMAIL_SENT",
-            title="Gửi Email thông báo kết quả duyệt đơn tới Học sinh",
-            description=(
-                f"Đã gửi email xác nhận trạng thái '{status_vi}' tới học sinh {student_name} "
-                f"({student_email or 'Tài khoản học sinh'})."
-            ),
+            title=log_title,
+            description=log_desc,
             actor_name="Hệ thống Quản lý Học vụ",
             actor_role="SYSTEM",
             badge_text="Đã gửi Email Học sinh",
@@ -363,7 +409,7 @@ class LeaveRequestNotificationService:
         )
 
         # 2. If Approved, notify Subject Teachers about the finalized approval
-        if leave_req.status == "APPROVED" and notified_teachers:
+        if is_approved and notified_teachers:
             other_teachers = [
                 t
                 for t in notified_teachers
@@ -412,3 +458,68 @@ class LeaveRequestNotificationService:
                 badge_color="success",
                 created_at=review_time + timedelta(seconds=2),
             )
+
+    @classmethod
+    def send_deadline_reminder_to_homeroom(cls, leave_req: LeaveRequest) -> bool:
+        """
+        Sends a 30-minute approaching deadline reminder to Homeroom Teacher.
+        """
+        school_class = leave_req.school_class
+        homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
+        homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
+        if not homeroom_user or not homeroom_user.email:
+            return False
+
+        homeroom_email = homeroom_user.email.strip()
+        homeroom_name = homeroom_user.full_name or "Giáo viên chủ nhiệm"
+        student = leave_req.student
+        student_user = getattr(student, "user", None) if student else None
+        student_name = student_user.full_name if student_user else "Học sinh"
+        class_name = school_class.name if school_class else ""
+
+        tz = timezone.get_current_timezone()
+        created_fmt = (
+            leave_req.created_at.astimezone(tz).strftime("%H:%M ngày %d/%m/%Y")
+            if leave_req.created_at
+            else "N/A"
+        )
+        deadline_fmt = (
+            leave_req.approval_deadline.astimezone(tz).strftime("%H:%M ngày %d/%m/%Y")
+            if leave_req.approval_deadline
+            else "N/A"
+        )
+
+        subject = f"[SchoolPro] Nhắc nhở: Đơn xin nghỉ phép #{leave_req.code} sắp hết hạn xử lý (còn 30 phút)"
+        body = (
+            f"Kính gửi Thầy/Cô {homeroom_name},\n\n"
+            f"Đơn xin nghỉ phép #{leave_req.code} của học sinh {student_name} (Lớp {class_name}) "
+            f"sắp hết thời hạn xử lý theo quy định của nhà trường:\n"
+            f"- Thời gian gửi đơn: {created_fmt}\n"
+            f"- Hạn xử lý: {deadline_fmt} (còn khoảng 30 phút)\n"
+            f"- Lý do nghỉ: {leave_req.reason}\n\n"
+            f"Kính đề nghị Thầy/Cô sớm vào hệ thống xem xét phê duyệt hoặc từ chối đơn.\n\n"
+            f"Trân trọng,\nHệ thống Quản lý Học vụ SchoolPro"
+        )
+
+        sent = cls.send_email_safe(
+            subject=subject,
+            plain_body=body,
+            recipient_list=[homeroom_email],
+        )
+
+        cls.record_event_log(
+            leave_request=leave_req,
+            event_type="DEADLINE_REMINDER_SENT",
+            title="Nhắc nhở Giáo viên chủ nhiệm khi còn 30 phút trước hạn",
+            description=(
+                f"Đã gửi email nhắc nhở tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email}) "
+                f"do đơn sắp hết hạn xử lý (hạn: {deadline_fmt})."
+            ),
+            actor_name="Hệ thống SchoolPro",
+            actor_role="SYSTEM",
+            badge_text="Nhắc nhở còn 30 phút",
+            badge_color="orange",
+            recipient_email=homeroom_email,
+            email_sent=sent,
+        )
+        return sent

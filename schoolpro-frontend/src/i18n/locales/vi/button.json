@@ -47,6 +47,7 @@
   "submitLeaveRequest": "Gửi đơn xin nghỉ phép",
   "updateLeaveRequest": "Lưu cập nhật đơn",
   "lockedNoLessons": "Đã khóa (Không có môn học)",
+  "printLeaveRequest": "In đơn nghỉ phép",
   "downloadLeaveRequestPdf": "Tải đơn (PDF)",
   "deleteLeaveRequest": "Xóa đơn",
   "backToLeaveRequests": "Quay lại danh sách đơn xin nghỉ phép",

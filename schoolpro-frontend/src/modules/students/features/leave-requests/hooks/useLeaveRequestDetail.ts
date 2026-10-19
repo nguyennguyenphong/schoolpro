@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useLeaveRequestRealtime } from "@/modules/students/features/leave-requests/hooks/useLeaveRequestRealtime";
 import { leaveRequestsService } from "@/modules/students/features/leave-requests/services";
+import { printLeaveRequest } from "@/modules/students/features/leave-requests/utils";
 import type {
   LeaveRequestItem,
   LeaveRequestRealtimePayload,
@@ -16,6 +17,7 @@ export function useLeaveRequestDetail(id?: string) {
   const [item, setItem] = useState<LeaveRequestItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [downloading, setDownloading] = useState<boolean>(false);
+  const [printing, setPrinting] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
 
   const silentRefreshDetail = useCallback(async () => {
@@ -116,6 +118,20 @@ export function useLeaveRequestDetail(id?: string) {
     }
   };
 
+  const handlePrint = async () => {
+    if (!item) return;
+    try {
+      setPrinting(true);
+      await printLeaveRequest(item);
+    } catch (err) {
+      message.error(
+        err instanceof Error ? err.message : t("message:error"),
+      );
+    } finally {
+      setPrinting(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!item) return;
     try {
@@ -136,8 +152,10 @@ export function useLeaveRequestDetail(id?: string) {
     item,
     loading,
     downloading,
+    printing,
     deleting,
     handleDownloadPdf,
+    handlePrint,
     handleDelete,
   };
 }

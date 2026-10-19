@@ -50,7 +50,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
               {file.name}
             </h4>
             <span className="text-[11px] text-slate-500 font-normal">
-              {meta.badge} • {file.size}
+              {meta.badge} | {file.size}
             </span>
           </div>
         </div>

@@ -48,6 +48,7 @@
   "updateLeaveRequest": "保存更新",
   "lockedNoLessons": "已锁定（无课程）",
   "downloadLeaveRequestPdf": "下载申请单 (PDF)",
+  "printLeaveRequest": "打印请假申请单",
   "deleteLeaveRequest": "删除请假单",
   "backToLeaveRequests": "返回请假申请列表",
   "openAttachment": "打开",

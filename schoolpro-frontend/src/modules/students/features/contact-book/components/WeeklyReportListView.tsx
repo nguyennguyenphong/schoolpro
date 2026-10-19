@@ -151,7 +151,7 @@ export const WeeklyReportListView: React.FC<WeeklyReportListViewProps> = ({
                           Ý kiến của Cha Mẹ học sinh:
                         </span>
                         <span className="text-[11px] text-blue-600 font-medium">
-                          ({report.parentFeedback.senderName} • {report.parentFeedback.submittedAt})
+                          ({report.parentFeedback.senderName} | {report.parentFeedback.submittedAt})
                         </span>
                       </div>
                       <p className="text-xs sm:text-sm text-slate-700 italic mb-0 leading-relaxed">

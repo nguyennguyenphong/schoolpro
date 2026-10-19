@@ -658,7 +658,7 @@ class Command(BaseCommand):
                         )
                     )
                     honor_title = (
-                        "Học sinh Giỏi Học kỳ 1 • Khối 10"
+                        "Học sinh Giỏi Học kỳ 1 | Khối 10"
                         if term_gpa >= Decimal("8.0")
                         else "Học sinh Tiên tiến Học kỳ 1"
                     )

@@ -42,6 +42,7 @@
     "settings": "Customize interface, language, notification channels, and account security",
     "changePassword": "Update your password periodically to maintain high account security",
     "leaveRequests": "Submit online leave requests, attach supporting documents, and track Homeroom Teacher approvals",
+    "leaveRequestDetail": "View leave request details, affected lessons from the timetable, and approval progress online",
     "leaveRequestForm": "Complete leave dates, affected lessons, and guardian confirmation to submit for Homeroom Teacher approval",
     "attendance": "100% anti-fraud attendance via 6-digit PIN Code or QR Scan/Image Upload combined with GPS Latitude & Longitude verification within the Teacher's scan radius.",
     "exams": "Timed online testing system with auto-saving answers and instant grading after submission",

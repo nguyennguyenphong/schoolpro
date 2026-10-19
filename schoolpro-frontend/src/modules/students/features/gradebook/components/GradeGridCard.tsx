@@ -171,7 +171,7 @@ export const GradeGridCard: React.FC<GradeGridCardProps> = ({ item, onOpenDetail
       {/* Row 6: Footer Action */}
       <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-between gap-2">
         <span className="text-xs text-slate-400 font-medium">
-          {item.academicYear} • {item.semester}
+          {item.academicYear} | {item.semester}
         </span>
 
         <Button

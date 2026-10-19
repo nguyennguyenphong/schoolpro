@@ -2,7 +2,6 @@ export * from "@/modules/students/features/leave-requests/components/detail";
 export * from "@/modules/students/features/leave-requests/components/form";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestCard";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestFilterBar";
-export * from "@/modules/students/features/leave-requests/components/LeaveRequestListItem";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestsEmptyState";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestSkeleton";
 export * from "@/modules/students/features/leave-requests/components/LeaveRequestsPageHeader";

@@ -107,7 +107,7 @@ export const LeaveRequestFormSidebar: React.FC<LeaveRequestFormSidebarProps> = (
         </div>
       </div>
 
-      {/* Danh sách Giáo viên nhận thông báo & Email */}
+      {/* Notified Instructors List and Email */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#f0f0f0] shadow-2xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -124,7 +124,7 @@ export const LeaveRequestFormSidebar: React.FC<LeaveRequestFormSidebarProps> = (
         </div>
 
         <div className="space-y-2 text-xs">
-          {/* Giáo viên chủ nhiệm */}
+          {/* Homeroom Teacher */}
           <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center justify-between gap-2">
             <div className="min-w-0 space-y-0.5">
               <div className="font-bold text-slate-900 truncate">{homeroomDisplayName}</div>
@@ -152,7 +152,7 @@ export const LeaveRequestFormSidebar: React.FC<LeaveRequestFormSidebarProps> = (
             </Tag>
           </div>
 
-          {/* Các Giáo viên bộ môn khác */}
+          {/* Other Subject Teachers */}
           {notificationRecipients.otherSubjectTeachers.map((teacher, idx) => (
             <div
               key={teacher.teacherId || idx}

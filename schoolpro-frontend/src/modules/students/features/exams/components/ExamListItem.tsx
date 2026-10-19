@@ -85,21 +85,21 @@ export const ExamListItem: React.FC<ExamListItemProps> = ({ item, onOpen }) => {
           <span className="font-medium text-slate-700 truncate">{item.courseName}</span>
           {item.teacherName && (
             <>
-              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">|</span>
               <span className="truncate">{item.teacherName}</span>
             </>
           )}
-          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">|</span>
           <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="clock" size={13} className="text-slate-400" />
             <span>{t("card:exams.card.duration", { minutes: item.durationMinutes })}</span>
           </span>
-          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">|</span>
           <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="file-text" size={13} className="text-slate-400" />
             <span>{t("card:exams.card.questionsCount", { count: item.totalQuestions })}</span>
           </span>
-          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">|</span>
           <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="calendar" size={13} className="text-slate-400" />
             <span>{t("card:exams.card.deadline", { date: item.endDate })}</span>

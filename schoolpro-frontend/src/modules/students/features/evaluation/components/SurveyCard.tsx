@@ -93,7 +93,7 @@ export const SurveyCard: React.FC<SurveyCardProps> = ({
             <span className="font-semibold text-slate-800">{item.targetSubject}</span>
             {item.targetTeacher && (
               <>
-                <span className="text-slate-300">•</span>
+                <span className="text-slate-300">|</span>
                 <span className="text-slate-600">{item.targetTeacher}</span>
               </>
             )}
@@ -123,7 +123,7 @@ export const SurveyCard: React.FC<SurveyCardProps> = ({
             {isCompleted && item.completedAt ? (
               <span>Đã gửi lúc: <strong>{item.completedAt}</strong></span>
             ) : (
-              <span>Học kỳ 1 • 2025-2026</span>
+              <span>Học kỳ 1 | 2025-2026</span>
             )}
           </span>
         </div>

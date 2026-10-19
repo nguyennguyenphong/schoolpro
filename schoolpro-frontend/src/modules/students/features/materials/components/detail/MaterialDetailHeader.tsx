@@ -77,7 +77,7 @@ export const MaterialDetailHeader: React.FC<MaterialDetailHeaderProps> = ({
               format={item.format}
               fileSize={item.fileSize}
               size="md"
-              separator="•"
+              separator="|"
             />
           </div>
 
@@ -86,17 +86,17 @@ export const MaterialDetailHeader: React.FC<MaterialDetailHeaderProps> = ({
               <Icon name="user" size={13} className="text-blue-600" />
               <span>{item.author}</span>
             </span>
-            <span>•</span>
+            <span>|</span>
             <span className="flex items-center gap-1.5">
               <Icon name="calendar" size={13} className="text-slate-400" />
               <span>{item.uploadDate}</span>
             </span>
-            <span>•</span>
+            <span>|</span>
             <span className="flex items-center gap-1 text-slate-600 font-medium">
               <Icon name="download" size={12} className="text-slate-400" />
               <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount })}</span>
             </span>
-            <span>•</span>
+            <span>|</span>
             <span className="flex items-center gap-1 text-slate-600 font-medium">
               <Icon name="eye" size={12} className="text-slate-400" />
               <span>{t("card:materials.meta.viewsCount", { count: item.viewsCount })}</span>

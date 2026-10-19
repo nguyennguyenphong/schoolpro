@@ -39,9 +39,9 @@ export const StudentProfileBanner: React.FC<StudentProfileBannerProps> = ({
 
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
               <span>{profile.gender}</span>
-              <span>•</span>
+              <span>|</span>
               <span>Sinh ngày: <strong className="text-slate-700 font-medium">{profile.dob}</strong></span>
-              <span>•</span>
+              <span>|</span>
               <span>Niên khóa: <strong className="text-slate-700 font-medium">2024 - 2027</strong></span>
             </div>
 
