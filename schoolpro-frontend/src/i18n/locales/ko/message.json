@@ -102,9 +102,6 @@
     "reopenEmptyReasonWarning": "담당 교사에게 보낼 사유와 메시지를 입력해 주세요!",
     "reopenSuccess": "{{teacher}} 선생님({{email}})에게 제출 포털 재오픈 요청을 보냈습니다!",
     "reopenError": "요청 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요!",
-    "appealEmptyReasonWarning": "점수 이의신청 사유를 입력해 주세요!",
-    "appealSuccess": "담당 교사에게 점수 이의신청을 성공적으로 전송했습니다!",
-    "appealError": "점수 이의신청을 보낼 수 없습니다. 다시 시도해 주세요!",
     "maxFilesWarning": "한 번에 최대 {{max}}개의 파일만 첨부할 수 있습니다.",
     "maxFileSizeError": "\"{{name}}\" 파일이 최대 용량 제한({{max}}MB)을 초과했습니다.",
     "filesAddedSuccess": "과제 파일 {{count}}개가 추가되었습니다."
@@ -113,4 +110,3 @@
     "loadFailed": "학습 자료를 불러오지 못했습니다."
   }
 }
-

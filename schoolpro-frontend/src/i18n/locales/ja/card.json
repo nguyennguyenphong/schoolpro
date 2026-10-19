@@ -278,21 +278,7 @@
       "total": "課題総数",
       "pending": "未完了",
       "overdue": "期限切れ",
-      "graded": "採点済み",
-      "tasks": "件",
-      "needSubmit": "提出が必要",
-      "allDone": "すべて完了",
-      "urgent": "至急",
-      "none": "なし",
-      "avgScore": "平均点: {{score}}/10",
-      "waitingGrade": "採点待ち: {{count}}件",
-      "completionRate": "完了率: {{rate}}%",
-      "scope": "範囲:",
-      "scopeAll": "すべて",
-      "all": "すべて",
-      "goodEval": "良好",
-      "checkNow": "今すぐ確認",
-      "contactTeacher": "担当教員へ連絡"
+      "graded": "採点済み"
     },
     "filters": {
       "searchPlaceholder": "課題名、コード、科目、担当教員で検索...",
@@ -324,7 +310,8 @@
       "submittedClosed": "提出済み（締切終了）",
       "gradedWithScore": "採点済: {{score}}/{{max}}",
       "gradedWithScoreUnit": "採点済: {{score}}/{{max}}点",
-      "notSubmitted": "未提出"
+      "notSubmitted": "未提出",
+      "submittedWaitingGrade": "提出済み（採点待ち）"
     },
     "typeLabels": {
       "homework": "宿題",
@@ -342,8 +329,7 @@
       "attemptBadge": "提出 #{{attempt}}",
       "lateBadge": "遅延提出",
       "weightBadge": "配点比率 {{weight}}%",
-      "maxScoreBadge": "{{max}}点満点",
-      "rubricBadge": "ルーブリック"
+      "maxScoreBadge": "{{max}}点満点"
     },
     "detail": {
       "breadcrumbDetail": "課題詳細・提出",
@@ -366,7 +352,6 @@
       "extensionsTitle": "提出期限の延長履歴",
       "extensionLevel": "第{{level}}回延長",
       "originalDueLabel": "当初の期限:",
-      "newDueLabel": "延長後の期限:",
       "teacherAttachmentsTitle": "教員からの添付資料・問題ファイル",
       "filesUnit": "{{count}}件",
       "rubricTitle": "採点基準（ルーブリック）と模範解答",
@@ -380,15 +365,8 @@
       "rawScoreLabel": "素点:",
       "penaltyDeductionLabel": "遅延減点:",
       "gradedByLabel": "採点教員:",
-      "gradedAtLabel": "採点日時:",
       "maxScoreLabel": "満点:",
       "passScoreLabel": "合格基準点:",
-      "appealPendingTag": "再採点申請中",
-      "appealApprovedTag": "再採点承認済",
-      "appealRejectedTag": "再採点却下",
-      "appealSubmittedTitle": "成績確認（再採点）申請を送信しました",
-      "appealSubmittedAt": "申請日時: {{time}}",
-      "appealTeacherResponse": "教員からの回答:",
       "submissionAreaTitle": "オンライン課題提出エリア",
       "submissionSuccessBanner": "課題は正常にシステムへ提出されました",
       "submittedAtLabel": "提出日時: {{time}}",
@@ -396,14 +374,10 @@
       "studentNoteLabel": "教員へのメッセージ・補足:",
       "portClosedTitle": "提出受付は終了しました",
       "expiredTag": "期限終了",
-      "portClosedDesc": "提出期限 ({{dueDate}}) を過ぎたため、再提出はできません。",
       "reopenSentTitle": "再オープン申請を送信済み",
       "reopenWaitingTag": "教員の承認待ち",
-      "reopenApprovedTag": "受付再開済み",
-      "reopenRejectedTag": "申請却下",
       "reopenSentMeta": "送信先メール: {{email}} • 送信日時: {{time}}",
       "resubmitAllowedHint": "* 提出期限 ({{dueDate}}) まで有効です（提出回数 {{attempt}}/{{maxAttempts}}）。必要に応じて再提出できます。",
-      "resubmitLimitReachedHint": "* 再提出の最大回数（{{attempt}}/{{maxAttempts}}回）に達しました。",
       "overdueLockedTitle": "提出ゲートがロックされています",
       "overdueEndedAt": "提出期限は {{dueDate}} に終了しました。",
       "overdueLockedDesc": "スケジュールに従い提出受付が自動ロックされました。通信障害やむを得ない事情がある場合は、担当教員へ再オープン申請を送信してください。",
@@ -424,8 +398,6 @@
       "resubmissionAllowedValue": "最大{{count}}回まで",
       "resubmissionDisallowedValue": "1回のみ",
       "lateSubmissionField": "期限後の提出:",
-      "lateAllowedWithPenalty": "許可（-{{penalty}}%）",
-      "lateAllowedNoPenalty": "遅延提出可",
       "lateDisallowedValue": "期限後に自動ロック",
       "submissionModeField": "提出方法:",
       "submissionModeOnline": "オンライン (SchoolPro)",
@@ -460,7 +432,9 @@
       "overdueWaitExtensionDesc": "提出期限が終了したため提出窓口がロックされました。続けて提出するには担当教員による期限延長を待つ必要があります。",
       "waitingTeacherGradeTitle": "教員の採点待ち",
       "waitingTeacherGradeDesc": "課題は担当教員に送信されました。採点が完了次第、スコアと講評がここに表示されます。",
-      "pendingScoreBadge": "スコア: 採点待ち / {{max}}"
+      "pendingScoreBadge": "スコア: 採点待ち / {{max}}",
+      "submittedHeading": "提出した課題:",
+      "submittedFileTag": "提出ファイル"
     },
     "uploader": {
       "selectByCategoryLabel": "ファイル形式を選択してアップロード:",
@@ -491,7 +465,9 @@
       "previewExcelDesc": "Microsoft Excel / CSV スプレッドシート ({{size}})",
       "previewExcelInfoTitle": "スプレッドシート情報:",
       "previewExcelInfoDesc": "統計データ、計算式、グラフが正しく添付されています。",
-      "previewArchiveDesc": "圧縮アーカイブ ({{size}})"
+      "previewArchiveDesc": "圧縮アーカイブ ({{size}})",
+      "archiveFormat": "圧縮ファイル (.zip, .rar)",
+      "otherFormat": "その他のファイル"
     },
     "modals": {
       "reopenTitle": "提出受付の再開申請",
@@ -500,20 +476,9 @@
       "recipientEmail": "送信先メール:",
       "subjectAndAssignment": "科目・課題:",
       "expiredDeadline": "終了した期限:",
-      "quickReasonsLabel": "理由テンプレート:",
-      "quickReason1": "下書きファイルを誤って提出してしまったため、完成版の再提出をお願いいたします。",
-      "quickReason2": "締切直前にネットワークおよび機器の不具合が発生したため、受付の再開をお願いいたします。",
-      "quickReason3": "グループのプレゼン動画と実験データを追加いたしましたので、補足提出の許可をお願いいたします。",
       "messageToTeacherLabel": "教員へのメッセージ内容:",
       "charCount": "{{count}}/{{max}} 文字",
-      "reopenPlaceholder": "先生へ、課題提出の再開をお願いしたくご連絡いたしました...",
-      "appealTitle": "成績確認（再採点）の申請",
-      "appealSubtitle": "採点結果およびルーブリック評価の再確認を担当教員へ依頼します",
-      "currentScoreLabel": "現在の得点:",
-      "appealQuickReason1": "記述問題について、別解の手順で正しい結論を導いているため再確認をお願いいたします。",
-      "appealQuickReason2": "ルーブリック各項目の得点合計と最終得点に差異があるため、ご確認をお願いいたします。",
-      "appealReasonLabel": "再採点申請の理由・詳細:",
-      "appealPlaceholder": "再確認を希望する設問番号や採点項目を具体的に記入してください..."
+      "reopenPlaceholder": "先生へ、課題提出の再開をお願いしたくご連絡いたしました..."
     }
   },
   "leaveRequests": {

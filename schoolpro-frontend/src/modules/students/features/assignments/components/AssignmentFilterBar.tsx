@@ -175,7 +175,7 @@ export const AssignmentFilterBar: React.FC<AssignmentFilterBarProps> = ({
       {/* 3. Filter Dropdowns */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Môn học */}
+          {/* Subject filter */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="assignment-filter-subject"

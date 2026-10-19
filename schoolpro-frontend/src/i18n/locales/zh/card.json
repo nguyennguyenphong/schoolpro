@@ -278,21 +278,7 @@
       "total": "作业总数",
       "pending": "待完成",
       "overdue": "已逾期",
-      "graded": "已批改",
-      "tasks": "项任务",
-      "needSubmit": "需提交",
-      "allDone": "全部完成",
-      "urgent": "紧急",
-      "none": "无",
-      "avgScore": "平均分: {{score}}/10",
-      "waitingGrade": "待批改: {{count}}份",
-      "completionRate": "完成进度: {{rate}}%",
-      "scope": "范围:",
-      "scopeAll": "全部",
-      "all": "全部",
-      "goodEval": "评价良好",
-      "checkNow": "立即查看",
-      "contactTeacher": "需联系任课教师"
+      "graded": "已批改"
     },
     "filters": {
       "searchPlaceholder": "按作业名称、编号、科目、教师搜索...",
@@ -324,7 +310,8 @@
       "submittedClosed": "已提交（已关闭）",
       "gradedWithScore": "已批改: {{score}}/{{max}}",
       "gradedWithScoreUnit": "已批改: {{score}}/{{max}}分",
-      "notSubmitted": "未提交"
+      "notSubmitted": "未提交",
+      "submittedWaitingGrade": "已提交（待批改）"
     },
     "typeLabels": {
       "homework": "课后作业",
@@ -342,8 +329,7 @@
       "attemptBadge": "第 #{{attempt}} 次提交",
       "lateBadge": "迟交",
       "weightBadge": "权重 {{weight}}%",
-      "maxScoreBadge": "满分 {{max}}",
-      "rubricBadge": "评分标准"
+      "maxScoreBadge": "满分 {{max}}"
     },
     "detail": {
       "breadcrumbDetail": "作业详情与提交",
@@ -366,7 +352,6 @@
       "extensionsTitle": "截止时间延期记录",
       "extensionLevel": "第{{level}}次延期",
       "originalDueLabel": "原定截止:",
-      "newDueLabel": "新截止时间:",
       "teacherAttachmentsTitle": "教师附件与参考资料",
       "filesUnit": "{{count}} 个文件",
       "rubricTitle": "评分量表 (Rubric) 与参考答案",
@@ -380,15 +365,8 @@
       "rawScoreLabel": "原始得分:",
       "penaltyDeductionLabel": "迟交扣分:",
       "gradedByLabel": "批改教师:",
-      "gradedAtLabel": "批改时间:",
       "maxScoreLabel": "满分标准:",
       "passScoreLabel": "及格分数:",
-      "appealPendingTag": "申诉审核中",
-      "appealApprovedTag": "申诉已通过",
-      "appealRejectedTag": "申诉已驳回",
-      "appealSubmittedTitle": "成绩复核申诉已提交",
-      "appealSubmittedAt": "提交时间: {{time}}",
-      "appealTeacherResponse": "教师回复:",
       "submissionAreaTitle": "在线提交作业区",
       "submissionSuccessBanner": "作业已成功上传至系统",
       "submittedAtLabel": "提交时间: {{time}}",
@@ -396,14 +374,10 @@
       "studentNoteLabel": "给任课教师的留言 / 备注:",
       "portClosedTitle": "提交通道已关闭",
       "expiredTag": "已截止",
-      "portClosedDesc": "截止时间 ({{dueDate}}) 已过，学生无法直接重新提交作业。",
       "reopenSentTitle": "已发送重新开放提交通道申请",
       "reopenWaitingTag": "等待教师回复",
-      "reopenApprovedTag": "已重新开放通道",
-      "reopenRejectedTag": "已拒绝开放",
       "reopenSentMeta": "发送至教师邮箱: {{email}} • 发送时间: {{time}}",
       "resubmitAllowedHint": "* 截止时间 ({{dueDate}}) 前依然有效（已提交 {{attempt}}/{{maxAttempts}} 次）。如有需要可重新上传修改版。",
-      "resubmitLimitReachedHint": "* 您已用完允许的最大重新提交次数 ({{attempt}}/{{maxAttempts}} 次)。",
       "overdueLockedTitle": "提交通道已锁定",
       "overdueEndedAt": "作业提交截止时间已于 {{dueDate}} 结束。",
       "overdueLockedDesc": "在线提交通道已按教务日程自动锁定。如遇技术故障或不可抗力原因需补交，请使用下方申请表直接向任课教师发送重新开放请求。",
@@ -424,8 +398,6 @@
       "resubmissionAllowedValue": "最多 {{count}} 次",
       "resubmissionDisallowedValue": "仅限提交 1 次",
       "lateSubmissionField": "逾期提交:",
-      "lateAllowedWithPenalty": "允许 (扣除 {{penalty}}%)",
-      "lateAllowedNoPenalty": "允许迟交",
       "lateDisallowedValue": "到期自动锁定",
       "submissionModeField": "提交方式:",
       "submissionModeOnline": "在线提交 (SchoolPro)",
@@ -460,7 +432,9 @@
       "overdueWaitExtensionDesc": "提交截止时间已过，系统已锁定提交入口。您必须等待教师延长截止时间后才能继续提交。",
       "waitingTeacherGradeTitle": "等待教师批改",
       "waitingTeacherGradeDesc": "您的作业已发送给任课教师。教师完成批改后，分数和详细评语将立即显示在此处。",
-      "pendingScoreBadge": "分数: 待批改 / {{max}}"
+      "pendingScoreBadge": "分数: 待批改 / {{max}}",
+      "submittedHeading": "已提交作业:",
+      "submittedFileTag": "已提交文件"
     },
     "uploader": {
       "selectByCategoryLabel": "按文件格式选择上传:",
@@ -491,7 +465,9 @@
       "previewExcelDesc": "Microsoft Excel / CSV 表格 ({{size}})",
       "previewExcelInfoTitle": "电子表格信息:",
       "previewExcelInfoDesc": "统计数据表、计算公式及图表已准确附带。",
-      "previewArchiveDesc": "压缩数据包 ({{size}})"
+      "previewArchiveDesc": "压缩数据包 ({{size}})",
+      "archiveFormat": "压缩包 (.zip, .rar)",
+      "otherFormat": "其他文件"
     },
     "modals": {
       "reopenTitle": "申请重新开放作业提交通道",
@@ -500,20 +476,9 @@
       "recipientEmail": "接收邮箱:",
       "subjectAndAssignment": "科目与作业:",
       "expiredDeadline": "已截止时间:",
-      "quickReasonsLabel": "快捷理由模板:",
-      "quickReason1": "我不小心误传了草稿文件，恳请老师允许我重新提交正式完整版作业。",
-      "quickReason2": "临近截止时遇到网络及设备故障，恳请老师重新开放提交通道。",
-      "quickReason3": "我们小组已补充完整演示视频与实验数据表，申请补交附件。",
       "messageToTeacherLabel": "给老师的留言说明:",
       "charCount": "{{count}}/{{max}} 字符",
-      "reopenPlaceholder": "尊敬的老师，我想申请重新开放作业提交通道，原因是...",
-      "appealTitle": "申请作业成绩复核 (申诉)",
-      "appealSubtitle": "向任课教师提交分数复核与评分标准申诉请求",
-      "currentScoreLabel": "当前得分:",
-      "appealQuickReason1": "恳请老师复核主观题部分，我采用了第二种解题方法，最终推导结果同样正确。",
-      "appealQuickReason2": "我发现 Rubric 各评分项累加分值与最终总分不一致，烦请老师协助核对。",
-      "appealReasonLabel": "申请成绩复核的详细说明:",
-      "appealPlaceholder": "请具体说明需要老师复核的题号或评分标准条目..."
+      "reopenPlaceholder": "尊敬的老师，我想申请重新开放作业提交通道，原因是..."
     }
   },
   "leaveRequests": {

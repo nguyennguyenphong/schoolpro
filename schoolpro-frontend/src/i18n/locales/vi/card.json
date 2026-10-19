@@ -278,21 +278,7 @@
       "total": "Tổng số bài tập",
       "pending": "Chưa hoàn thành",
       "overdue": "Đã quá hạn",
-      "graded": "Đã chấm điểm",
-      "tasks": "nhiệm vụ",
-      "needSubmit": "Cần nộp",
-      "allDone": "Đã xong hết",
-      "urgent": "Khẩn",
-      "none": "Không có",
-      "avgScore": "Điểm trung bình: {{score}}/10",
-      "waitingGrade": "Đang chờ chấm: {{count}} bài",
-      "completionRate": "Tiến độ hoàn thành: {{rate}}%",
-      "scope": "Phạm vi:",
-      "scopeAll": "Toàn bộ",
-      "all": "Toàn bộ",
-      "goodEval": "Đánh giá tốt",
-      "checkNow": "Kiểm tra ngay",
-      "contactTeacher": "Cần liên hệ: Giáo viên bộ môn"
+      "graded": "Đã chấm điểm"
     },
     "filters": {
       "searchPlaceholder": "Tìm kiếm bài tập theo tên, mã bài tập, môn học, giáo viên...",
@@ -324,7 +310,8 @@
       "submittedClosed": "Đã nộp (Đã đóng)",
       "gradedWithScore": "Đã chấm: {{score}}/{{max}}",
       "gradedWithScoreUnit": "Đã chấm: {{score}}/{{max}} điểm",
-      "notSubmitted": "Chưa nộp bài"
+      "notSubmitted": "Chưa nộp bài",
+      "submittedWaitingGrade": "Đã nộp bài (Chờ chấm)"
     },
     "typeLabels": {
       "homework": "Bài tập về nhà",
@@ -342,8 +329,7 @@
       "attemptBadge": "Lần nộp #{{attempt}}",
       "lateBadge": "Nộp muộn",
       "weightBadge": "Hệ số {{weight}}%",
-      "maxScoreBadge": "Thang điểm {{max}}",
-      "rubricBadge": "Rubric"
+      "maxScoreBadge": "Thang điểm {{max}}"
     },
     "detail": {
       "breadcrumbDetail": "Chi tiết & Nộp bài",
@@ -366,7 +352,6 @@
       "extensionsTitle": "Lịch sử gia hạn thời hạn nộp bài",
       "extensionLevel": "Gia hạn lần {{level}}",
       "originalDueLabel": "Hạn ban đầu:",
-      "newDueLabel": "Hạn mới:",
       "teacherAttachmentsTitle": "Tài liệu & Đề bài đính kèm của giáo viên",
       "filesUnit": "{{count}} tệp",
       "rubricTitle": "Tiêu chí chấm điểm (Rubric) & Đáp án mẫu",
@@ -380,15 +365,8 @@
       "rawScoreLabel": "Điểm bài làm:",
       "penaltyDeductionLabel": "Điểm trừ nộp muộn:",
       "gradedByLabel": "Giáo viên chấm:",
-      "gradedAtLabel": "Thời gian chấm:",
       "maxScoreLabel": "Thang điểm:",
       "passScoreLabel": "Điểm đạt yêu cầu:",
-      "appealPendingTag": "Đang chờ duyệt phúc khảo",
-      "appealApprovedTag": "Đã chấp nhận phúc khảo",
-      "appealRejectedTag": "Từ chối phúc khảo",
-      "appealSubmittedTitle": "Yêu cầu phúc khảo điểm đã gửi",
-      "appealSubmittedAt": "Thời gian gửi: {{time}}",
-      "appealTeacherResponse": "Phản hồi của giáo viên:",
       "submissionAreaTitle": "Khu vực Nộp bài trực tuyến",
       "submissionSuccessBanner": "Bài tập đã được gửi lên hệ thống thành công",
       "submittedAtLabel": "Thời gian nộp: {{time}}",
@@ -396,14 +374,10 @@
       "studentNoteLabel": "Lời nhắn / Ghi chú gửi giáo viên:",
       "portClosedTitle": "Cổng nộp bài đã đóng",
       "expiredTag": "Hết hạn nộp",
-      "portClosedDesc": "Hạn chót ({{dueDate}}) đã kết thúc. Học sinh không thể tự nộp lại bài làm.",
       "reopenSentTitle": "Đã gửi yêu cầu mở lại cổng nộp bài",
       "reopenWaitingTag": "Đang chờ giáo viên phản hồi",
-      "reopenApprovedTag": "Đã mở lại cổng nộp bài",
-      "reopenRejectedTag": "Đã từ chối mở cổng",
       "reopenSentMeta": "Gửi đến email giáo viên: {{email}} • Thời gian gửi: {{time}}",
       "resubmitAllowedHint": "* Thời hạn nộp bài vẫn còn hiệu lực đến {{dueDate}} (Lần nộp {{attempt}}/{{maxAttempts}}). Bạn có thể nộp lại bản sửa đổi nếu cần.",
-      "resubmitLimitReachedHint": "* Bạn đã sử dụng hết số lần nộp lại cho phép ({{attempt}}/{{maxAttempts}} lần).",
       "overdueLockedTitle": "Cổng nộp bài đã khóa",
       "overdueEndedAt": "Thời hạn nộp bài tập đã kết thúc vào lúc {{dueDate}}.",
       "overdueLockedDesc": "Cổng nộp bài trực tuyến đã tự động khóa theo lịch biểu học vụ. Nếu bạn gặp sự cố kỹ thuật hoặc có lý do bất khả kháng cần nộp bù, vui lòng sử dụng biểu mẫu yêu cầu mở lại cổng nộp bài để gửi thông điệp trực tiếp đến giáo viên phụ trách.",
@@ -424,8 +398,6 @@
       "resubmissionAllowedValue": "Tối đa {{count}} lần",
       "resubmissionDisallowedValue": "Chỉ nộp 1 lần",
       "lateSubmissionField": "Nộp sau hạn chót:",
-      "lateAllowedWithPenalty": "Cho phép (Trừ {{penalty}}%)",
-      "lateAllowedNoPenalty": "Cho phép nộp muộn",
       "lateDisallowedValue": "Khóa cổng khi hết hạn",
       "submissionModeField": "Hình thức nộp:",
       "submissionModeOnline": "Trực tuyến (SchoolPro)",
@@ -460,7 +432,9 @@
       "overdueWaitExtensionDesc": "Thời hạn nộp bài đã kết thúc. Hệ thống đã khóa cổng nộp bài, bạn phải đợi giáo viên gia hạn thêm thời gian mới được phép nộp tiếp.",
       "waitingTeacherGradeTitle": "Đang chờ giáo viên chấm điểm",
       "waitingTeacherGradeDesc": "Bài làm của bạn đã được gửi tới giáo viên bộ môn. Điểm số và nhận xét chi tiết sẽ hiển thị tại đây ngay sau khi giáo viên hoàn tất chấm bài.",
-      "pendingScoreBadge": "Điểm số: Chờ chấm / {{max}}"
+      "pendingScoreBadge": "Điểm số: Chờ chấm / {{max}}",
+      "submittedHeading": "Bài đã nộp:",
+      "submittedFileTag": "Bài làm đã nộp"
     },
     "uploader": {
       "selectByCategoryLabel": "Chọn tệp bài làm theo định dạng:",
@@ -491,7 +465,9 @@
       "previewExcelDesc": "Bảng tính Microsoft Excel / CSV ({{size}})",
       "previewExcelInfoTitle": "Thông tin bảng tính:",
       "previewExcelInfoDesc": "Tệp bảng số liệu thống kê, công thức tính toán và biểu đồ đã được đính kèm chuẩn xác.",
-      "previewArchiveDesc": "Tệp nén dữ liệu học tập ({{size}})"
+      "previewArchiveDesc": "Tệp nén dữ liệu học tập ({{size}})",
+      "archiveFormat": "Tệp nén (.zip, .rar)",
+      "otherFormat": "Tệp khác"
     },
     "modals": {
       "reopenTitle": "Yêu cầu mở lại cổng nộp bài",
@@ -500,20 +476,9 @@
       "recipientEmail": "Email nhận yêu cầu:",
       "subjectAndAssignment": "Môn học & Bài tập:",
       "expiredDeadline": "Hạn chót đã kết thúc:",
-      "quickReasonsLabel": "Gợi ý lý do nhanh:",
-      "quickReason1": "Em nộp nhầm phiên bản tệp nháp, xin phép thầy/cô cho em nộp lại bản chính thức hoàn thiện.",
-      "quickReason2": "Em gặp sự cố mất kết nối mạng và thiết bị sát giờ nộp, kính mong thầy/cô xem xét mở lại cổng.",
-      "quickReason3": "Nhóm em đã bổ sung thêm video thuyết trình và bảng số liệu thực hành còn thiếu, xin phép nộp bổ sung.",
       "messageToTeacherLabel": "Nội dung lời nhắn gửi thầy/cô:",
       "charCount": "{{count}}/{{max}} ký tự",
-      "reopenPlaceholder": "Kính gửi thầy/cô, em xin phép gửi lý do xin mở lại cổng nộp bài tập...",
-      "appealTitle": "Yêu cầu phúc khảo điểm bài tập",
-      "appealSubtitle": "Gửi đề nghị xem xét lại điểm số và tiêu chí chấm bài đến giáo viên bộ môn",
-      "currentScoreLabel": "Điểm số hiện tại:",
-      "appealQuickReason1": "Em xin phép đề nghị thầy/cô xem xét lại phần tự luận vì em trình bày theo cách giải thứ hai vẫn ra đúng kết quả.",
-      "appealQuickReason2": "Em nhận thấy điểm cộng các tiêu chí trong bảng Rubric chưa khớp với điểm tổng kết, kính mong thầy/cô kiểm tra lại giúp em.",
-      "appealReasonLabel": "Nội dung giải trình đề nghị phúc khảo:",
-      "appealPlaceholder": "Trình bày cụ thể câu hỏi hoặc tiêu chí chấm điểm cần giáo viên kiểm tra lại..."
+      "reopenPlaceholder": "Kính gửi thầy/cô, em xin phép gửi lý do xin mở lại cổng nộp bài tập..."
     }
   },
   "leaveRequests": {

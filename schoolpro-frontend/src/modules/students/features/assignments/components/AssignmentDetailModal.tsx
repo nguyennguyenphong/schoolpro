@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { message } from "@/components/ui/Message";
 import { Modal } from "@/components/ui/Modal";
 import { PdfViewerModal } from "@/components/pdf";
@@ -27,6 +28,7 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const { t } = useTranslation(["card", "message"]);
   const [submissionContent, setSubmissionContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -40,7 +42,7 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
 
   const handleSubmit = async () => {
     if (!submissionContent.trim() && !selectedFile) {
-      message.warning("Vui lòng nhập nội dung bài làm hoặc đính kèm tệp nộp bài!");
+      message.warning(t("message:assignments.emptySubmissionWarning"));
       return;
     }
 
@@ -53,11 +55,11 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
       };
 
       await onSubmit(assignment.id, submission);
-      message.success("Nộp bài tập thành công!");
+      message.success(t("message:assignments.submitSuccess"));
       setSubmissionContent("");
       setSelectedFile(null);
     } catch {
-      message.error("Đã xảy ra lỗi khi nộp bài. Vui lòng thử lại!");
+      message.error(t("message:assignments.submitError"));
     } finally {
       setSubmitting(false);
     }
@@ -78,7 +80,7 @@ export const AssignmentDetailModal: React.FC<AssignmentDetailModalProps> = ({
         {/* 2. Assignment Description */}
         <div>
           <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-            Nội dung yêu cầu đề bài
+            {t("card:assignments.detail.requirementsTitle")}
           </h4>
           <div className="bg-slate-50/80 p-3.5 rounded-xl border border-[#f0f0f0]/80 text-xs text-slate-700 leading-relaxed">
             {assignment.description}

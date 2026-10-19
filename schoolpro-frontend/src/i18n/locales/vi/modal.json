@@ -94,5 +94,13 @@
       "validDistanceBadge": "Hợp lệ ({{distance}}m / {{radius}}m)",
       "onTime": "Đúng giờ"
     }
+  },
+  "pdfViewer": {
+    "defaultFileName": "Tài liệu đính kèm.pdf",
+    "fileSize": "Dung lượng: {{size}}",
+    "loading": "Đang tải và xử lý tài liệu PDF...",
+    "errorTitle": "Không thể mở tài liệu PDF trực tuyến",
+    "errorDesc": "Đã xảy ra lỗi trong quá trình phân tích tệp hoặc liên kết tài liệu không hợp lệ.",
+    "downloadToView": "Tải tệp về máy để xem"
   }
 }

@@ -278,21 +278,7 @@
       "total": "Total Assignments",
       "pending": "Pending",
       "overdue": "Overdue",
-      "graded": "Graded",
-      "tasks": "tasks",
-      "needSubmit": "To Submit",
-      "allDone": "All Done",
-      "urgent": "Urgent",
-      "none": "None",
-      "avgScore": "Average Score: {{score}}/10",
-      "waitingGrade": "Awaiting grade: {{count}}",
-      "completionRate": "Completion rate: {{rate}}%",
-      "scope": "Scope:",
-      "scopeAll": "All",
-      "all": "All",
-      "goodEval": "Good standing",
-      "checkNow": "Check now",
-      "contactTeacher": "Contact subject teacher"
+      "graded": "Graded"
     },
     "filters": {
       "searchPlaceholder": "Search assignments by title, code, subject, teacher...",
@@ -324,7 +310,8 @@
       "submittedClosed": "Submitted (Closed)",
       "gradedWithScore": "Graded: {{score}}/{{max}}",
       "gradedWithScoreUnit": "Graded: {{score}}/{{max}} pts",
-      "notSubmitted": "Not Submitted"
+      "notSubmitted": "Not Submitted",
+      "submittedWaitingGrade": "Submitted (Awaiting Grading)"
     },
     "typeLabels": {
       "homework": "Homework",
@@ -342,8 +329,7 @@
       "attemptBadge": "Attempt #{{attempt}}",
       "lateBadge": "Submitted Late",
       "weightBadge": "Weight {{weight}}%",
-      "maxScoreBadge": "Max {{max}} pts",
-      "rubricBadge": "Rubric"
+      "maxScoreBadge": "Max {{max}} pts"
     },
     "detail": {
       "breadcrumbDetail": "Details & Submission",
@@ -366,7 +352,6 @@
       "extensionsTitle": "Deadline Extension History",
       "extensionLevel": "Extension #{{level}}",
       "originalDueLabel": "Original Due:",
-      "newDueLabel": "New Due:",
       "teacherAttachmentsTitle": "Teacher Reference Materials & Prompts",
       "filesUnit": "{{count}} files",
       "rubricTitle": "Grading Rubric & Sample Solutions",
@@ -380,15 +365,8 @@
       "rawScoreLabel": "Raw Score:",
       "penaltyDeductionLabel": "Late Penalty:",
       "gradedByLabel": "Graded by:",
-      "gradedAtLabel": "Graded at:",
       "maxScoreLabel": "Scale:",
       "passScoreLabel": "Pass Score:",
-      "appealPendingTag": "Appeal Pending",
-      "appealApprovedTag": "Appeal Approved",
-      "appealRejectedTag": "Appeal Rejected",
-      "appealSubmittedTitle": "Score Appeal Request Submitted",
-      "appealSubmittedAt": "Submitted at: {{time}}",
-      "appealTeacherResponse": "Teacher response:",
       "submissionAreaTitle": "Online Submission Portal",
       "submissionSuccessBanner": "Your assignment has been submitted successfully",
       "submittedAtLabel": "Submitted at: {{time}}",
@@ -396,14 +374,10 @@
       "studentNoteLabel": "Student Note / Answer for Teacher:",
       "portClosedTitle": "Submission Portal Closed",
       "expiredTag": "Past Due",
-      "portClosedDesc": "The deadline ({{dueDate}}) has passed. You can no longer modify your submission directly.",
       "reopenSentTitle": "Reopen Request Sent to Teacher",
       "reopenWaitingTag": "Awaiting Teacher Review",
-      "reopenApprovedTag": "Portal Reopened",
-      "reopenRejectedTag": "Reopen Declined",
       "reopenSentMeta": "Sent to teacher email: {{email}} • Requested at: {{time}}",
       "resubmitAllowedHint": "* Deadline is active until {{dueDate}} (Attempt {{attempt}}/{{maxAttempts}}). You may upload a revised version if needed.",
-      "resubmitLimitReachedHint": "* You have used all allowed resubmission attempts ({{attempt}}/{{maxAttempts}}).",
       "overdueLockedTitle": "Submission Portal Locked",
       "overdueEndedAt": "The submission deadline ended at {{dueDate}}.",
       "overdueLockedDesc": "The online submission portal has automatically locked according to the academic schedule. If you experienced technical issues or have a valid reason, please send a reopen request to your subject teacher.",
@@ -424,8 +398,6 @@
       "resubmissionAllowedValue": "Up to {{count}} attempts",
       "resubmissionDisallowedValue": "Single attempt only",
       "lateSubmissionField": "Late Submission:",
-      "lateAllowedWithPenalty": "Allowed (-{{penalty}}%)",
-      "lateAllowedNoPenalty": "Allowed",
       "lateDisallowedValue": "Locked after deadline",
       "submissionModeField": "Submission Mode:",
       "submissionModeOnline": "Online (SchoolPro)",
@@ -460,7 +432,9 @@
       "overdueWaitExtensionDesc": "The submission deadline has ended. The submission portal is locked; you must wait for the teacher to extend the deadline before submitting.",
       "waitingTeacherGradeTitle": "Waiting for teacher grading",
       "waitingTeacherGradeDesc": "Your submission has been sent to the subject teacher. Your score and detailed feedback will be displayed here once grading is complete.",
-      "pendingScoreBadge": "Score: Pending / {{max}}"
+      "pendingScoreBadge": "Score: Pending / {{max}}",
+      "submittedHeading": "Submitted Work:",
+      "submittedFileTag": "Submitted File"
     },
     "uploader": {
       "selectByCategoryLabel": "Filter upload by file format:",
@@ -491,7 +465,9 @@
       "previewExcelDesc": "Microsoft Excel / CSV Spreadsheet ({{size}})",
       "previewExcelInfoTitle": "Spreadsheet Info:",
       "previewExcelInfoDesc": "Your data tables, formulas, and charts have been attached accurately.",
-      "previewArchiveDesc": "Compressed Archive ({{size}})"
+      "previewArchiveDesc": "Compressed Archive ({{size}})",
+      "archiveFormat": "Archive (.zip, .rar)",
+      "otherFormat": "Other Files"
     },
     "modals": {
       "reopenTitle": "Request to Reopen Submission Portal",
@@ -500,20 +476,9 @@
       "recipientEmail": "Recipient Email:",
       "subjectAndAssignment": "Subject & Assignment:",
       "expiredDeadline": "Expired Deadline:",
-      "quickReasonsLabel": "Quick reason templates:",
-      "quickReason1": "I accidentally uploaded a draft file and kindly request permission to submit the final version.",
-      "quickReason2": "I experienced a network and device issue right before the deadline; please kindly reopen the portal.",
-      "quickReason3": "Our group has completed the supplemental presentation video and data sheet; we kindly ask to submit them.",
       "messageToTeacherLabel": "Message to teacher:",
       "charCount": "{{count}}/{{max}} characters",
-      "reopenPlaceholder": "Dear Teacher, I would like to request reopening the submission portal because...",
-      "appealTitle": "Submit Score Appeal Request",
-      "appealSubtitle": "Request the subject teacher to review your graded score and rubric evaluation",
-      "currentScoreLabel": "Current Score:",
-      "appealQuickReason1": "I kindly ask you to review my written solution as I used an alternative valid method that reached the correct answer.",
-      "appealQuickReason2": "I noticed a discrepancy between the individual rubric criterion points and the total score; please kindly verify.",
-      "appealReasonLabel": "Detailed appeal explanation:",
-      "appealPlaceholder": "Specify the exact question or rubric criterion you would like the teacher to review..."
+      "reopenPlaceholder": "Dear Teacher, I would like to request reopening the submission portal because..."
     }
   },
   "leaveRequests": {

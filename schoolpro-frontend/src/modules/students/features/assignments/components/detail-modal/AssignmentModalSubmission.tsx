@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { AssignmentSubmission } from "@/modules/students/features/assignments/types";
@@ -12,6 +13,8 @@ export const AssignmentModalSubmission: React.FC<AssignmentModalSubmissionProps>
   submission,
   onPreviewPdf,
 }) => {
+  const { t } = useTranslation(["card", "button"]);
+
   if (!submission) return null;
 
   const isPdf = Boolean(
@@ -22,9 +25,11 @@ export const AssignmentModalSubmission: React.FC<AssignmentModalSubmissionProps>
   return (
     <div className="bg-blue-50/60 border border-blue-200 rounded-xl p-3.5 space-y-1.5 text-xs">
       <div className="flex items-center justify-between text-blue-900 font-bold">
-        <span>Bài đã nộp:</span>
+        <span>{t("card:assignments.detail.submittedHeading")}</span>
         <span className="text-slate-500 font-normal">
-          Thời gian: {submission.submittedAt}
+          {t("card:assignments.detail.submittedAtLabel", {
+            time: submission.submittedAt,
+          })}
         </span>
       </div>
 
@@ -43,12 +48,12 @@ export const AssignmentModalSubmission: React.FC<AssignmentModalSubmissionProps>
                 onPreviewPdf({
                   url: submission.fileUrl || "/sample-notice.pdf",
                   name: submission.fileName || "Bai_lam.pdf",
-                  size: "Bài làm đã nộp",
+                  size: t("card:assignments.detail.submittedFileTag"),
                 });
               }}
             >
               <Icon name="eye" size={11} className="mr-1" />
-              Xem trước PDF
+              <span>{t("button:preview")}</span>
             </Button>
           )}
         </div>

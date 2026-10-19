@@ -94,5 +94,13 @@
       "validDistanceBadge": "Valid ({{distance}}m / {{radius}}m)",
       "onTime": "On time"
     }
+  },
+  "pdfViewer": {
+    "defaultFileName": "Attachment.pdf",
+    "fileSize": "Size: {{size}}",
+    "loading": "Loading and processing PDF document...",
+    "errorTitle": "Unable to open PDF document online",
+    "errorDesc": "An error occurred while parsing the file or the document link is invalid.",
+    "downloadToView": "Download file to view locally"
   }
 }

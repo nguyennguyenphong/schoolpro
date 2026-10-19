@@ -3,7 +3,7 @@ import type { IconName } from "@/components/ui/Icon/types";
 
 export interface FileCategoryMeta {
   category: FileCategory;
-  title: string;
+  titleKey: string;
   badge: string;
   extensions: string[];
   acceptAttr: string;
@@ -15,13 +15,12 @@ export interface FileCategoryMeta {
     badgeBg: string;
     iconBg: string;
   };
-  sampleTip: string;
 }
 
 export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
   word: {
     category: "word",
-    title: "Văn bản Word",
+    titleKey: "card:assignments.uploader.wordFormat",
     badge: "DOC / DOCX",
     extensions: [".doc", ".docx", ".rtf", ".odt"],
     acceptAttr: ".doc,.docx,.rtf,.odt,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -33,11 +32,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-blue-100 text-blue-800",
       iconBg: "bg-blue-600 text-white",
     },
-    sampleTip: "Bài luận văn, đề cương, báo cáo thu hoạch...",
   },
   excel: {
     category: "excel",
-    title: "Bảng tính Excel",
+    titleKey: "card:assignments.uploader.excelFormat",
     badge: "XLS / XLSX / CSV",
     extensions: [".xls", ".xlsx", ".csv"],
     acceptAttr: ".xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv",
@@ -49,11 +47,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-emerald-100 text-emerald-800",
       iconBg: "bg-emerald-600 text-white",
     },
-    sampleTip: "Số liệu thí nghiệm Lý/Hóa, bảng khảo sát...",
   },
   pdf: {
     category: "pdf",
-    title: "Tài liệu PDF",
+    titleKey: "card:assignments.uploader.pdfFormat",
     badge: "PDF",
     extensions: [".pdf"],
     acceptAttr: ".pdf,application/pdf",
@@ -65,11 +62,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-rose-100 text-rose-800",
       iconBg: "bg-rose-600 text-white",
     },
-    sampleTip: "File scan bài giải viết tay, bài tập xuất PDF...",
   },
   image: {
     category: "image",
-    title: "Hình ảnh",
+    titleKey: "card:assignments.uploader.imageFormat",
     badge: "JPG / PNG / WEBP",
     extensions: [".jpg", ".jpeg", ".png", ".webp", ".gif", ".heic"],
     acceptAttr: "image/jpeg,image/png,image/webp,image/gif,image/heic,.jpg,.jpeg,.png,.webp,.heic",
@@ -81,11 +77,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-indigo-100 text-indigo-800",
       iconBg: "bg-indigo-600 text-white",
     },
-    sampleTip: "Ảnh chụp tập vở, bài giải Toán/Lý, sơ đồ tư duy...",
   },
   video: {
     category: "video",
-    title: "Video Clip",
+    titleKey: "card:assignments.uploader.videoFormat",
     badge: "MP4 / MOV / WEBM",
     extensions: [".mp4", ".mov", ".avi", ".mkv", ".webm"],
     acceptAttr: "video/mp4,video/quicktime,video/webm,video/x-msvideo,.mp4,.mov,.avi,.webm",
@@ -97,11 +92,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-purple-100 text-purple-800",
       iconBg: "bg-purple-600 text-white",
     },
-    sampleTip: "Video thuyết trình nhóm, bài thể dục, kịch tiếng Anh...",
   },
   audio: {
     category: "audio",
-    title: "Âm thanh / Ghi âm",
+    titleKey: "card:assignments.uploader.audioFormat",
     badge: "MP3 / WAV / M4A",
     extensions: [".mp3", ".wav", ".m4a", ".aac", ".ogg"],
     acceptAttr: "audio/mp3,audio/mpeg,audio/wav,audio/m4a,audio/aac,audio/ogg,.mp3,.wav,.m4a,.aac,.ogg",
@@ -113,11 +107,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-amber-100 text-amber-800",
       iconBg: "bg-amber-600 text-white",
     },
-    sampleTip: "Ghi âm phát âm tiếng Anh, phần đọc thơ, thuyết minh...",
   },
   archive: {
     category: "archive",
-    title: "Tệp nén ZIP / RAR",
+    titleKey: "card:assignments.uploader.archiveFormat",
     badge: "ZIP / RAR",
     extensions: [".zip", ".rar", ".7z", ".tar"],
     acceptAttr: ".zip,.rar,.7z,.tar,application/zip,application/x-rar-compressed",
@@ -129,11 +122,10 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-slate-200 text-slate-800",
       iconBg: "bg-slate-600 text-white",
     },
-    sampleTip: "Gói nhiều file bài làm kèm tài liệu tham khảo...",
   },
   other: {
     category: "other",
-    title: "Tệp tin khác",
+    titleKey: "card:assignments.uploader.otherFormat",
     badge: "FILE",
     extensions: [],
     acceptAttr: "*/*",
@@ -145,7 +137,6 @@ export const FILE_CATEGORIES_META: Record<FileCategory, FileCategoryMeta> = {
       badgeBg: "bg-slate-100 text-slate-700",
       iconBg: "bg-slate-500 text-white",
     },
-    sampleTip: "Tệp đính kèm học tập khác...",
   },
 };
 

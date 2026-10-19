@@ -102,9 +102,6 @@
     "reopenEmptyReasonWarning": "请输入申请理由及给老师的留言！",
     "reopenSuccess": "已成功向 {{teacher}} 老师 ({{email}}) 发送重新开放通道申请！",
     "reopenError": "发送申请时发生错误，请稍后重试！",
-    "appealEmptyReasonWarning": "请输入成绩复核申诉说明！",
-    "appealSuccess": "已成功向任课教师发送成绩复核申请！",
-    "appealError": "无法发送成绩复核申请，请重试！",
     "maxFilesWarning": "单次提交最多只能附带 {{max}} 个文件。",
     "maxFileSizeError": "文件 \"{{name}}\" 超过大小限制 ({{max}}MB)。",
     "filesAddedSuccess": "已添加 {{count}} 个作业文件。"
@@ -113,4 +110,3 @@
     "loadFailed": "加载学习资料失败。"
   }
 }
-
