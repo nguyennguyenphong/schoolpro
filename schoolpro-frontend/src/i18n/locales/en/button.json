@@ -37,6 +37,7 @@
   "viewGuide": "View Guide",
   "exploreNow": "Explore Now",
   "saveChanges": "Save Changes",
+  "updateHealth": "Update Health Record",
   "changeAvatar": "Change Avatar",
   "updatePassword": "Update Password",
   "revokeSession": "Revoke Session",
@@ -98,5 +99,8 @@
   "downloadFile": "Download File",
   "printTimeTable": "Print Timetable",
   "downloadSelectedFiles": "Download selected files ({{count}})",
-  "deselectAll": "Deselect all"
+  "deselectAll": "Deselect all",
+  "nextStep": "Next Step",
+  "previousStep": "Previous Step",
+  "completeProfile": "Complete & Save Profile"
 }

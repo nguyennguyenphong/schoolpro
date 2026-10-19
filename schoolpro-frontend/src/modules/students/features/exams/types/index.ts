@@ -36,12 +36,18 @@ export interface ExamQuestion {
   sectionName?: string; // Phân chia nhóm/phần thi (VD: Phần 1: Lý thuyết cơ bản)
 }
 
+export type ExamFormat = "essay" | "multiple_choice" | "mixed" | string;
+
 export interface ExamItem {
   id: string;
   code: string;
   title: string;
   courseCode: string;
   courseName: string;
+  subjectId?: string;
+  subjectCode?: string;
+  subjectName?: string;
+  format?: ExamFormat;
   teacherName?: string;
   semester: string;
   academicYear: string;
@@ -93,6 +99,18 @@ export interface ExamSubmission {
 
 export interface ExamFilter {
   status: "all" | "pending" | "completed" | "expired";
+  subject: string;
+  format: "all" | "essay" | "multiple_choice" | "mixed" | string;
+  sortBy: "newest" | "upcoming" | "score" | string;
   searchQuery: string;
-  semester: string;
+  page: number;
+  pageSize: number;
+}
+
+export interface ExamListResult {
+  items: ExamItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }

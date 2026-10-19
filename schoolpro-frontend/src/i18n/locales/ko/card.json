@@ -109,10 +109,47 @@
       "guardians": "학부모 및 법정 보호자",
       "guardiansDesc": "전자 가정통신문 연계 및 긴급 연락을 위한 학부모 연락처 정보",
       "health": "교내 보건 및 신체 측정",
-      "healthDesc": "신체 발달 수치, 병력 주의사항 및 학생 건강보험 기록"
+      "healthDesc": "신체 발달 수치, 병력 주의사항 및 학생 건강보험 기록",
+      "identityTitle": "신원 및 계정 정보",
+      "identityDesc": "성명, 사용자 ID, 생년월일, 성별 및 주민등록번호",
+      "contactTitle": "연락처 및 개인 정보",
+      "contactDesc": "전화번호, 이메일 주소, 현재 거주지 및 자기소개",
+      "residenceTitle": "거주지 및 호적 정보",
+      "residenceDesc": "출생지, 민족, 종교, 호적등본 번호, 주민등록 주소 및 임시 주소",
+      "organizationTitle": "청소년 단체 및 우대 정책",
+      "organizationDesc": "건강보험증 번호, 우대 정책 대상자, 소년선봉대 및 청년동맹 입단일",
+      "healthUpdateTitle": "개인 건강 지표 수정"
     },
+    "academicSummary": {
+      "cardTitle": "학적 정보",
+      "studentCode": "학번",
+      "schoolName": "학교",
+      "academicYear": "학년도",
+      "semester": "학기",
+      "defaultSemester": "1학기"
+    },
+    "steps": {
+      "step1": "단계 01",
+      "step2": "단계 02",
+      "step3": "단계 03",
+      "step4": "단계 04",
+      "step1Subtitle": "성명, 학번, 주민등록번호",
+      "step2Subtitle": "전화번호, 이메일, 자기소개",
+      "step3Subtitle": "출생지, 호적, 거주 주소",
+      "step4Subtitle": "건강보험, 청소년 조직"
+    },
+    "stepInProgress": "작성 중",
+    "stepCompleted": "완료",
+    "insuranceTag": "건강보험",
     "primaryContact": "주 연락처",
-    "parentCommittee": "학부모회 임원"
+    "parentCommittee": "학부모회 임원",
+    "emergencyContact": "비상 연락처",
+    "workplace": "근무처:",
+    "homeroomTeacher": "학급 담임 교사",
+    "boarder": "기숙사생",
+    "dayStudent": "통학생",
+    "statusStudying": "재학 중",
+    "verifiedNotice": "교육부 데이터베이스 기준에 부합하는 공식 학생 기록"
   },
   "settings": {
     "title": "시스템 설정",
@@ -273,6 +310,7 @@
     }
   },
   "assignmentUnit": "개 과제",
+  "examUnit": "개 시험",
   "assignments": {
     "summary": {
       "total": "전체 과제 수",
@@ -788,8 +826,24 @@
     "filters": {
       "searchPlaceholder": "시험, 과목, 교사 검색...",
       "allStatuses": "전체 상태",
+      "subject": "과목",
+      "allSubjects": "전체 과목",
+      "format": "형태",
+      "allFormats": "전체 형태",
+      "formatEssay": "서술형",
+      "formatMultipleChoice": "객관식",
+      "formatMixed": "모두 (혼합)",
+      "sort": "정렬",
+      "sortNewest": "최신순",
+      "sortUpcoming": "시험 예정일순",
+      "sortScore": "점수순",
       "viewGrid": "카드 보기",
       "viewList": "목록 보기"
+    },
+    "formatLabels": {
+      "essay": "서술형",
+      "multipleChoice": "객관식",
+      "mixed": "혼합"
     },
     "card": {
       "multipleChoice": "객관식",

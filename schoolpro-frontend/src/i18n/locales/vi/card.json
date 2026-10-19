@@ -109,10 +109,47 @@
       "guardians": "Phụ huynh & Người giám hộ",
       "guardiansDesc": "Dữ liệu liên lạc phục vụ kết nối sổ liên lạc điện tử và thông báo khẩn cấp từ nhà trường",
       "health": "Y tế học đường & Thể chất",
-      "healthDesc": "Chỉ số thể chất, tiền sử bệnh án và hồ sơ bảo hiểm y tế học sinh"
+      "healthDesc": "Chỉ số thể chất, tiền sử bệnh án và hồ sơ bảo hiểm y tế học sinh",
+      "identityTitle": "Thông tin định danh & Tài khoản",
+      "identityDesc": "Họ tên, tên đăng nhập, ngày sinh, giới tính và mã định danh công dân",
+      "contactTitle": "Thông tin liên lạc & Cá nhân",
+      "contactDesc": "Số điện thoại, địa chỉ email, nơi ở hiện tại và giới thiệu bản thân",
+      "residenceTitle": "Thông tin cư trú & Hộ tịch",
+      "residenceDesc": "Quê quán, dân tộc, tôn giáo, sổ hộ khẩu và địa chỉ thường trú, tạm trú",
+      "organizationTitle": "Đoàn - Đội & Diện chính sách",
+      "organizationDesc": "Mã thẻ Bảo hiểm y tế, đối tượng ưu tiên chính sách, ngày vào Đội Thiếu niên Tiền phong và Đoàn Thanh niên Cộng sản",
+      "healthUpdateTitle": "Cập nhật chỉ số sức khỏe cá nhân"
     },
+    "academicSummary": {
+      "cardTitle": "Thông tin học vụ",
+      "studentCode": "Mã học sinh",
+      "schoolName": "Trường học",
+      "academicYear": "Năm học",
+      "semester": "Học kỳ",
+      "defaultSemester": "Học kỳ 1"
+    },
+    "steps": {
+      "step1": "Bước 01",
+      "step2": "Bước 02",
+      "step3": "Bước 03",
+      "step4": "Bước 04",
+      "step1Subtitle": "Họ tên, Mã học sinh, Căn cước công dân",
+      "step2Subtitle": "Số điện thoại, Thư điện tử, Tiểu sử",
+      "step3Subtitle": "Quê quán, Hộ khẩu, Địa chỉ",
+      "step4Subtitle": "Bảo hiểm y tế, Đoàn - Đội"
+    },
+    "stepInProgress": "Đang điền",
+    "stepCompleted": "Xong",
+    "insuranceTag": "Bảo hiểm y tế",
     "primaryContact": "Liên hệ chính",
-    "parentCommittee": "Ban đại diện CMHS"
+    "parentCommittee": "Ban đại diện Cha mẹ học sinh",
+    "emergencyContact": "Liên hệ khẩn cấp",
+    "workplace": "Nơi công tác:",
+    "homeroomTeacher": "Giáo viên chủ nhiệm lớp",
+    "boarder": "Nội trú",
+    "dayStudent": "Ngoại trú",
+    "statusStudying": "Đang theo học",
+    "verifiedNotice": "Hồ sơ hợp lệ theo quy chế cơ sở dữ liệu Bộ Giáo dục & Đào tạo"
   },
   "settings": {
     "title": "Cài đặt hệ thống",
@@ -273,6 +310,7 @@
     }
   },
   "assignmentUnit": "bài tập",
+  "examUnit": "bài thi",
   "assignments": {
     "summary": {
       "total": "Tổng số bài tập",
@@ -788,8 +826,24 @@
     "filters": {
       "searchPlaceholder": "Tìm kiếm đề thi, môn học, giáo viên...",
       "allStatuses": "Tất cả trạng thái",
+      "subject": "Môn học",
+      "allSubjects": "Tất cả môn học",
+      "format": "Hình thức",
+      "allFormats": "Tất cả hình thức",
+      "formatEssay": "Tự luận",
+      "formatMultipleChoice": "Trắc nghiệm",
+      "formatMixed": "Cả 2 (Kết hợp)",
+      "sort": "Sắp xếp",
+      "sortNewest": "Mới nhất",
+      "sortUpcoming": "Sắp diễn ra",
+      "sortScore": "Điểm số",
       "viewGrid": "Lưới thẻ",
       "viewList": "Danh sách"
+    },
+    "formatLabels": {
+      "essay": "Tự luận",
+      "multipleChoice": "Trắc nghiệm",
+      "mixed": "Kết hợp"
     },
     "card": {
       "multipleChoice": "Trắc nghiệm",

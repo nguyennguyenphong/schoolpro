@@ -37,6 +37,7 @@
   "viewGuide": "ガイドを見る",
   "exploreNow": "今すぐ確認",
   "saveChanges": "変更を保存",
+  "updateHealth": "健康記録を更新",
   "changeAvatar": "アバターを変更",
   "updatePassword": "パスワードを更新",
   "revokeSession": "このセッションを終了",
@@ -98,5 +99,8 @@
   "downloadFile": "ファイルをダウンロード",
   "printTimeTable": "時間割を印刷",
   "downloadSelectedFiles": "選択したファイルをダウンロード ({{count}})",
-  "deselectAll": "選択解除"
+  "deselectAll": "選択解除",
+  "nextStep": "次へ",
+  "previousStep": "前へ",
+  "completeProfile": "完了して保存"
 }

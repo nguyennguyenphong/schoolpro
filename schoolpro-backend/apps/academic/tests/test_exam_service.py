@@ -103,3 +103,133 @@ class TestExamService:
         # Immediate score mode
         exam_imm = {"scoreReleaseMode": "immediate"}
         assert ExamService.is_score_released(exam_imm) is True
+
+    def test_list_exams_filter_by_format(self):
+        mc_exams = ExamService.list_exams(user=None, format_filter="multiple_choice")
+        assert len(mc_exams) >= 1
+        assert all(e["format"] == "multiple_choice" for e in mc_exams)
+
+        essay_exams = ExamService.list_exams(user=None, format_filter="essay")
+        assert len(essay_exams) >= 1
+        assert all(e["format"] == "essay" for e in essay_exams)
+
+        mixed_exams = ExamService.list_exams(user=None, format_filter="mixed")
+        assert len(mixed_exams) >= 1
+        assert all(e["format"] == "mixed" for e in mixed_exams)
+
+    def test_list_exams_filter_by_subject(self):
+        cs_exams = ExamService.list_exams(user=None, subject="CS201")
+        assert len(cs_exams) >= 1
+        assert all(
+            "CS201" in (e.get("courseCode", "") + e.get("subjectCode", "")) for e in cs_exams
+        )
+
+        math_exams = ExamService.list_exams(user=None, subject="MATH101")
+        assert len(math_exams) >= 1
+        assert all(
+            "MATH101" in (e.get("courseCode", "") + e.get("subjectCode", "")) for e in math_exams
+        )
+
+    def test_list_exams_sort_options(self):
+        # Sort by upcoming
+        upcoming_exams = ExamService.list_exams(user=None, sort_by="upcoming")
+        assert len(upcoming_exams) >= 3
+
+        # Sort by score
+        score_exams = ExamService.list_exams(user=None, sort_by="score")
+        assert len(score_exams) >= 3
+        # First one should have the highest score if any has score
+        scored_items = [e for e in score_exams if e.get("score") is not None]
+        if len(scored_items) > 1:
+            assert scored_items[0]["score"] >= scored_items[1]["score"]
+
+    def test_list_exams_academic_context_metadata(self):
+        exams = ExamService.list_exams(user=None)
+        assert len(exams) >= 3
+        for e in exams:
+            assert "semester" in e
+            assert "academicYear" in e
+            assert "format" in e
+            assert "subjectCode" in e
+            assert "subjectName" in e
+
+    def test_viewset_list_returns_paginated_response(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIRequestFactory, force_authenticate
+
+        from apps.academic.views.exam_views import StudentExamViewSet
+
+        factory = APIRequestFactory()
+        request = factory.get("/api/v1/academic/exams/?pageSize=20&page=1")
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        force_authenticate(request, user=user)
+
+        view = StudentExamViewSet.as_view({"get": "list"})
+        response = view(request)
+        assert response.status_code == 200
+        assert response.data["success"] is True
+        assert "data" in response.data
+        assert "items" in response.data["data"]
+        assert "total" in response.data["data"]
+        assert "page" in response.data["data"]
+        assert "pageSize" in response.data["data"]
+        assert response.data["data"]["pageSize"] == 20
+
+    def test_viewset_list_allowed_page_size_enforcement(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIRequestFactory, force_authenticate
+
+        from apps.academic.views.exam_views import StudentExamViewSet
+
+        factory = APIRequestFactory()
+        # Non-allowed page size (e.g. 7 or 9) must default to 10
+        request = factory.get("/api/v1/academic/exams/?pageSize=9&page=1")
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        force_authenticate(request, user=user)
+
+        view = StudentExamViewSet.as_view({"get": "list"})
+        response = view(request)
+        assert response.status_code == 200
+        assert response.data["data"]["pageSize"] == 10
+
+    def test_viewset_list_format_filter_does_not_trigger_content_negotiation_404(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIClient
+
+        client = APIClient()
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        client.force_authenticate(user=user)
+
+        # DRF default content negotiation would treat format=multiple_choice as renderer suffix and raise Http404
+        # ExamContentNegotiation ensures this returns 200 OK
+        response = client.get(
+            "/api/v1/academic/exams/?format=multiple_choice&sortBy=upcoming&page=1&pageSize=10"
+        )
+        assert response.status_code == 200
+        assert response.data["success"] is True
+        assert response.data["data"]["pageSize"] == 10
+
+    def test_viewset_list_out_of_bounds_page_fallback(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIClient
+
+        client = APIClient()
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        client.force_authenticate(user=user)
+
+        response = client.get("/api/v1/academic/exams/?page=999&pageSize=10")
+        assert response.status_code == 200
+        assert response.data["success"] is True
+        assert response.data["data"]["page"] == 1

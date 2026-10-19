@@ -16,7 +16,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
+      <div className="flex items-center gap-3 pb-4">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="academic" size={20} />
         </span>
@@ -36,7 +36,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
       </div>
 
       {/* Class & Academic Information Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.className")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
@@ -45,9 +45,9 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
         </div>
 
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
-          <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
-          <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.classroom}
+          <span className="text-slate-400 font-medium">{t("card:profile.academicSummary.schoolName")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0 truncate" title={academicInfo.schoolName}>
+            {academicInfo.schoolName}
           </p>
         </div>
 
@@ -55,6 +55,20 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
           <span className="text-slate-400 font-medium">{t("input:labels.academicYear")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
             {academicInfo.academicYear}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("card:profile.academicSummary.semester")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.semester || t("card:profile.academicSummary.defaultSemester")}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.classroom}
           </p>
         </div>
 
@@ -68,14 +82,14 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.graduationDate")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.graduationDate || "Dự kiến 2029"}
+            {academicInfo.graduationDate || "—"}
           </p>
         </div>
 
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.boarding")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.isBoarder ? "Nội trú" : "Ngoại trú / Đi về"}
+            {academicInfo.isBoarder ? t("card:profile.boarder") : t("card:profile.dayStudent")}
           </p>
         </div>
       </div>
@@ -84,7 +98,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
       <div className="rounded-xl border border-[#f0f0f0] p-5 bg-slate-50/50 space-y-3">
         <h4 className="text-sm font-bold text-slate-800 mb-0 flex items-center gap-2">
           <Icon name="user" size={16} className="text-blue-600" />
-          <span>Giáo viên chủ nhiệm lớp</span>
+          <span>{t("card:profile.homeroomTeacher")}</span>
         </h4>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-[#f0f0f0] rounded-xl gap-4 mt-3">
