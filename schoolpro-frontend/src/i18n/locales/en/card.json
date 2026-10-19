@@ -273,6 +273,7 @@
     }
   },
   "assignmentUnit": "assignments",
+  "examUnit": "exams",
   "assignments": {
     "summary": {
       "total": "Total Assignments",
@@ -788,8 +789,24 @@
     "filters": {
       "searchPlaceholder": "Search exams, subjects, teachers...",
       "allStatuses": "All Statuses",
+      "subject": "Subject",
+      "allSubjects": "All Subjects",
+      "format": "Format",
+      "allFormats": "All Formats",
+      "formatEssay": "Essay",
+      "formatMultipleChoice": "Multiple Choice",
+      "formatMixed": "Both (Mixed)",
+      "sort": "Sort by",
+      "sortNewest": "Newest",
+      "sortUpcoming": "Upcoming",
+      "sortScore": "Score",
       "viewGrid": "Grid View",
       "viewList": "List View"
+    },
+    "formatLabels": {
+      "essay": "Essay",
+      "multipleChoice": "Multiple Choice",
+      "mixed": "Mixed"
     },
     "card": {
       "multipleChoice": "Multiple Choice",

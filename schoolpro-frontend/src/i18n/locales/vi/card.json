@@ -273,6 +273,7 @@
     }
   },
   "assignmentUnit": "bài tập",
+  "examUnit": "bài thi",
   "assignments": {
     "summary": {
       "total": "Tổng số bài tập",
@@ -788,8 +789,24 @@
     "filters": {
       "searchPlaceholder": "Tìm kiếm đề thi, môn học, giáo viên...",
       "allStatuses": "Tất cả trạng thái",
+      "subject": "Môn học",
+      "allSubjects": "Tất cả môn học",
+      "format": "Hình thức",
+      "allFormats": "Tất cả hình thức",
+      "formatEssay": "Tự luận",
+      "formatMultipleChoice": "Trắc nghiệm",
+      "formatMixed": "Cả 2 (Kết hợp)",
+      "sort": "Sắp xếp",
+      "sortNewest": "Mới nhất",
+      "sortUpcoming": "Sắp diễn ra",
+      "sortScore": "Điểm số",
       "viewGrid": "Lưới thẻ",
       "viewList": "Danh sách"
+    },
+    "formatLabels": {
+      "essay": "Tự luận",
+      "multipleChoice": "Trắc nghiệm",
+      "mixed": "Kết hợp"
     },
     "card": {
       "multipleChoice": "Trắc nghiệm",

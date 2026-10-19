@@ -20,27 +20,45 @@ export const useExams = () => {
       : "all";
 
   const searchQuery = searchParams.get("q") || "";
-  const semester = searchParams.get("semester") || "all";
+  const subject = searchParams.get("subject") || "all";
+  const format = searchParams.get("format") || "all";
+  const sortBy = searchParams.get("sortBy") || "newest";
+
+  const rawPage = parseInt(searchParams.get("page") || "1", 10);
+  const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+
+  const rawPageSize = parseInt(searchParams.get("pageSize") || "9", 10);
+  const pageSize = Number.isNaN(rawPageSize) || rawPageSize < 1 ? 9 : rawPageSize;
 
   const filter: ExamFilter = useMemo(
     () => ({
       status: activeStatus,
+      subject,
+      format,
+      sortBy,
       searchQuery,
-      semester,
+      page,
+      pageSize,
     }),
-    [activeStatus, searchQuery, semester]
+    [activeStatus, subject, format, sortBy, searchQuery, page, pageSize]
   );
 
   const hasActiveFilters = useMemo(
-    () => activeStatus !== "all" || searchQuery.trim() !== "" || (semester !== "all" && semester !== ""),
-    [activeStatus, searchQuery, semester]
+    () =>
+      activeStatus !== "all" ||
+      searchQuery.trim() !== "" ||
+      (subject !== "all" && subject !== "") ||
+      (format !== "all" && format !== "") ||
+      (sortBy !== "newest" && sortBy !== ""),
+    [activeStatus, searchQuery, subject, format, sortBy]
   );
 
   const [exams, setExams] = useState<ExamItem[]>([]);
+  const [total, setTotal] = useState<number>(0);
   const [summary, setSummary] = useState<ExamSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Sync to URL
+  // Sync status to URL
   const setFilterStatus = useCallback(
     (newStatus: string) => {
       setSearchParams((prev) => {
@@ -50,12 +68,65 @@ export const useExams = () => {
         } else {
           next.delete("status");
         }
+        next.set("page", "1");
         return next;
       });
     },
     [setSearchParams]
   );
 
+  // Sync subject to URL
+  const setSubject = useCallback(
+    (newSubject: string) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        if (newSubject && newSubject !== "all") {
+          next.set("subject", newSubject);
+        } else {
+          next.delete("subject");
+        }
+        next.set("page", "1");
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
+
+  // Sync format to URL
+  const setFormat = useCallback(
+    (newFormat: string) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        if (newFormat && newFormat !== "all") {
+          next.set("format", newFormat);
+        } else {
+          next.delete("format");
+        }
+        next.set("page", "1");
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
+
+  // Sync sortBy to URL
+  const setSortBy = useCallback(
+    (newSortBy: string) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        if (newSortBy && newSortBy !== "newest") {
+          next.set("sortBy", newSortBy);
+        } else {
+          next.delete("sortBy");
+        }
+        next.set("page", "1");
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
+
+  // Sync search to URL
   const setSearch = useCallback(
     (q: string) => {
       setSearchParams((prev) => {
@@ -65,6 +136,20 @@ export const useExams = () => {
         } else {
           next.delete("q");
         }
+        next.set("page", "1");
+        return next;
+      });
+    },
+    [setSearchParams]
+  );
+
+  // Sync page and pageSize to URL
+  const setPage = useCallback(
+    (newPage: number, newPageSize: number) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("page", String(newPage));
+        next.set("pageSize", String(newPageSize));
         return next;
       });
     },
@@ -78,11 +163,12 @@ export const useExams = () => {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      const [list, sum] = await Promise.all([
+      const [listResult, sum] = await Promise.all([
         examsService.getExams(filter),
         examsService.getExamSummary(),
       ]);
-      setExams(list);
+      setExams(listResult.items);
+      setTotal(listResult.total);
       setSummary(sum);
     } catch {
       message.error(i18n.t("card:exams.messages.listLoadError"));
@@ -96,12 +182,13 @@ export const useExams = () => {
     async function fetchAll() {
       try {
         setLoading(true);
-        const [list, sum] = await Promise.all([
+        const [listResult, sum] = await Promise.all([
           examsService.getExams(filter),
           examsService.getExamSummary(),
         ]);
         if (!ignore) {
-          setExams(list);
+          setExams(listResult.items);
+          setTotal(listResult.total);
           setSummary(sum);
         }
       } catch {
@@ -124,12 +211,18 @@ export const useExams = () => {
   return {
     filter,
     exams,
+    total,
     summary,
     loading,
     hasActiveFilters,
     setFilterStatus,
+    setSubject,
+    setFormat,
+    setSortBy,
     setSearch,
+    setPage,
     resetFilters,
     reload: loadData,
   };
 };
+

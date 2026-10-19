@@ -55,15 +55,36 @@ export const ExamCard: React.FC<ExamCardProps> = ({ item, onOpen }) => {
     );
   };
 
+  const getFormatBadge = () => {
+    const fmt = item.format?.toLowerCase();
+    if (fmt === "essay") {
+      return (
+        <Tag color="blue" className="m-0 font-semibold text-xs whitespace-nowrap">
+          {t("card:exams.formatLabels.essay")}
+        </Tag>
+      );
+    }
+    if (fmt === "multiple_choice") {
+      return (
+        <Tag color="purple" className="m-0 font-semibold text-xs whitespace-nowrap">
+          {t("card:exams.formatLabels.multipleChoice")}
+        </Tag>
+      );
+    }
+    return (
+      <Tag color="cyan" className="m-0 font-semibold text-xs whitespace-nowrap">
+        {t("card:exams.formatLabels.mixed")}
+      </Tag>
+    );
+  };
+
   return (
     <div className="bg-white rounded-xl border border-[#f0f0f0] shadow-2xs p-4 sm:p-5 flex flex-col justify-between h-full transition-all group">
       <div className="space-y-3">
         {/* 1. Course Code & Status Badges */}
         <div className="flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Tag color="purple" className="m-0 font-semibold text-xs whitespace-nowrap">
-              {t("card:exams.card.multipleChoice")}
-            </Tag>
+            {getFormatBadge()}
           </div>
 
           <div className="shrink-0">{getStatusBadge()}</div>

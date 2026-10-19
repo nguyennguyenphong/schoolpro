@@ -6,6 +6,8 @@ Follows Clean Architecture: delegates orchestration to ExamService and outputs v
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
 from apps.academic.serializers.exam_serializers import (
     ExamItemSerializer,
@@ -18,16 +20,45 @@ from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
 
 
+class ExamPagination(PageNumberPagination):
+    """
+    Pagination tailored for student exams list, accommodating both pageSize and page_size params.
+    """
+
+    page_size = 9
+    page_size_query_param = "pageSize"
+    max_page_size = 50
+    page_query_param = "page"
+
+    def get_page_size(self, request):
+        if "pageSize" in request.query_params:
+            return super().get_page_size(request)
+        if "page_size" in request.query_params:
+            self.page_size_query_param = "page_size"
+        return super().get_page_size(request)
+
+
 @extend_schema_view(
     list=extend_schema(
         summary="List student exams",
-        description="Retrieve filtered and search-enabled list of exams for authenticated student.",
+        description="Retrieve filtered, sorted, and paginated list of exams for authenticated student within current academic context.",
         parameters=[
             OpenApiParameter("q", str, description="Search keyword in title, course, or teacher"),
+            OpenApiParameter("search", str, description="Alias for q"),
             OpenApiParameter(
                 "status", str, description="Filter by status (pending, completed, expired, all)"
             ),
-            OpenApiParameter("semester", str, description="Filter by semester (HK1, HK2, all)"),
+            OpenApiParameter(
+                "subject", str, description="Filter by subject code, name, or id (or all)"
+            ),
+            OpenApiParameter(
+                "format",
+                str,
+                description="Filter by exam format (essay, multiple_choice, mixed, all)",
+            ),
+            OpenApiParameter("sortBy", str, description="Sorting mode (newest, upcoming, score)"),
+            OpenApiParameter("page", int, description="Page number"),
+            OpenApiParameter("pageSize", int, description="Number of items per page"),
         ],
         responses={200: ExamItemSerializer(many=True)},
     ),
@@ -44,6 +75,7 @@ class StudentExamViewSet(viewsets.ViewSet):
 
     authentication_classes = [SchoolProJWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = ExamPagination
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -51,24 +83,49 @@ class StudentExamViewSet(viewsets.ViewSet):
 
     def list(self, request):
         """
-        List exams for student with filters and search.
+        List exams for student with filters, search, and pagination.
         """
         search_query = request.query_params.get("q") or request.query_params.get("search")
         status_filter = request.query_params.get("status")
-        semester = request.query_params.get("semester")
+        subject = request.query_params.get("subject")
+        format_filter = request.query_params.get("format")
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
 
         items = self.service.list_exams(
             user=request.user,
             search_query=search_query,
             status_filter=status_filter,
-            semester=semester,
+            subject=subject,
+            format_filter=format_filter,
             sort_by=sort_by,
         )
-        serializer = ExamItemSerializer(items, many=True)
-        return APIResponse.success(
-            data=serializer.data,
-            message="Danh sách đề thi lấy thành công.",
+
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(items, request)
+        serializer = ExamItemSerializer(page, many=True)
+
+        return Response(
+            {
+                "success": True,
+                "code": 200,
+                "message": "Danh sách bài thi",
+                "data": {
+                    "items": serializer.data,
+                    "total": paginator.page.paginator.count,
+                    "page": paginator.page.number,
+                    "pageSize": paginator.get_page_size(request),
+                    "totalPages": paginator.page.paginator.num_pages,
+                },
+                "meta": {
+                    "pagination": {
+                        "page": paginator.page.number,
+                        "page_size": paginator.get_page_size(request),
+                        "total_items": paginator.page.paginator.count,
+                        "total_pages": paginator.page.paginator.num_pages,
+                    }
+                },
+            },
+            status=status.HTTP_200_OK,
         )
 
     @extend_schema(

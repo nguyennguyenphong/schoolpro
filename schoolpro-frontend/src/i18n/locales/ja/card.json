@@ -273,6 +273,7 @@
     }
   },
   "assignmentUnit": "件の課題",
+  "examUnit": "件のテスト",
   "assignments": {
     "summary": {
       "total": "課題総数",
@@ -788,8 +789,24 @@
     "filters": {
       "searchPlaceholder": "試験、科目、教師を検索...",
       "allStatuses": "すべてのステータス",
+      "subject": "教科",
+      "allSubjects": "すべての教科",
+      "format": "形式",
+      "allFormats": "すべての形式",
+      "formatEssay": "記述式",
+      "formatMultipleChoice": "選択式",
+      "formatMixed": "両方（混合）",
+      "sort": "並び替え",
+      "sortNewest": "最新",
+      "sortUpcoming": "近日開催",
+      "sortScore": "スコア",
       "viewGrid": "カード表示",
       "viewList": "リスト表示"
+    },
+    "formatLabels": {
+      "essay": "記述式",
+      "multipleChoice": "選択式",
+      "mixed": "混合"
     },
     "card": {
       "multipleChoice": "選択式",

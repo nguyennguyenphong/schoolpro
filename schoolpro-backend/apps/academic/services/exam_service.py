@@ -10,6 +10,7 @@ from decimal import Decimal
 from typing import Any
 from uuid import uuid4
 
+from django.db.models import Q
 from django.utils import timezone
 
 from apps.academic.models.exam import (
@@ -17,7 +18,14 @@ from apps.academic.models.exam import (
     ExamEventLog,
     ExamSubmission,
 )
+from apps.core.models.organization import (
+    ClassSubjectTeacher,
+    SchoolClass,
+    StudentClassEnrollment,
+)
 from apps.core.models.profile import Student
+from apps.master.models.academic_year import AcademicYear
+from apps.master.models.semester import Semester
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +51,17 @@ class ExamService:
         "date",
     ]
 
+    FORMAT_MAP = {
+        "ESSAY": "essay",
+        "WRITTEN": "essay",
+        "MULTIPLE_CHOICE": "multiple_choice",
+        "QUIZ": "multiple_choice",
+        "CHOICE": "multiple_choice",
+        "MIXED": "mixed",
+        "HYBRID": "mixed",
+        "COMBINED": "mixed",
+    }
+
     # Pre-configured rich dynamic exams for comprehensive testing and fallback
     SEEDED_EXAMS: list[dict[str, Any]] = [
         {
@@ -51,6 +70,9 @@ class ExamService:
             "title": "Đề thi Trắc nghiệm Giữa kỳ: Cấu trúc dữ liệu & Giải thuật",
             "courseCode": "CS201",
             "courseName": "Cấu trúc dữ liệu & Giải thuật",
+            "subjectCode": "CS201",
+            "subjectName": "Cấu trúc dữ liệu & Giải thuật",
+            "format": "multiple_choice",
             "teacherName": "ThS. Hoàng Văn Nam",
             "semester": "HK1",
             "academicYear": "2025-2026",
@@ -190,6 +212,9 @@ class ExamService:
             "title": "Đề thi Trắc nghiệm Cuối kỳ: Lập trình Web nâng cao",
             "courseCode": "CS302",
             "courseName": "Lập trình ứng dụng Web nâng cao",
+            "subjectCode": "CS302",
+            "subjectName": "Lập trình ứng dụng Web nâng cao",
+            "format": "mixed",
             "teacherName": "TS. Nguyễn Minh Khang",
             "semester": "HK1",
             "academicYear": "2025-2026",
@@ -275,6 +300,9 @@ class ExamService:
             "title": "Bài kiểm tra 15 phút: Giải tích 1 - Giới hạn và Đạo hàm",
             "courseCode": "MATH101",
             "courseName": "Giải tích 1",
+            "subjectCode": "MATH101",
+            "subjectName": "Giải tích 1",
+            "format": "essay",
             "teacherName": "PGS.TS. Trần Thị Lan",
             "semester": "HK1",
             "academicYear": "2025-2026",
@@ -357,28 +385,115 @@ class ExamService:
         return None
 
     @classmethod
+    def resolve_student_class(cls, student: Student | None) -> SchoolClass | None:
+        """
+        Resolves the primary enrolled class for the given student.
+        """
+        if not student:
+            return None
+        enrollment = (
+            StudentClassEnrollment.objects.filter(
+                student=student,
+                status="ACTIVE",
+            )
+            .select_related("school_class", "school_class__academic_year")
+            .first()
+        )
+        if enrollment and enrollment.school_class:
+            return enrollment.school_class
+        if getattr(student, "current_class", None):
+            return student.current_class
+        first_cst = (
+            ClassSubjectTeacher.objects.select_related("school_class")
+            .filter(exams__isnull=False)
+            .first()
+        )
+        if first_cst:
+            return first_cst.school_class
+        return SchoolClass.objects.first()
+
+    @classmethod
+    def resolve_current_academic_context(
+        cls, school_class: SchoolClass | None
+    ) -> tuple[AcademicYear | None, Semester | None]:
+        """
+        Resolves the current active academic year and semester for the student's class.
+        """
+        current_ay = None
+        if school_class and school_class.academic_year:
+            current_ay = school_class.academic_year
+        else:
+            try:
+                current_ay = (
+                    AcademicYear.objects.filter(is_current=True).first()
+                    or AcademicYear.objects.first()
+                )
+            except Exception:
+                current_ay = None
+
+        current_sem = None
+        try:
+            current_sem = Semester.objects.filter(is_current=True).first()
+            if not current_sem and current_ay:
+                current_sem = Semester.objects.filter(academic_year=current_ay).first()
+            if not current_sem:
+                current_sem = Semester.objects.first()
+        except Exception:
+            current_sem = None
+
+        return current_ay, current_sem
+
+    @classmethod
     def list_exams(
         cls,
         user: Any,
         search_query: str | None = None,
         status_filter: str | None = None,
-        semester: str | None = None,
+        subject: str | None = None,
+        format_filter: str | None = None,
         sort_by: str | None = None,
+        semester: str | None = None,
     ) -> list[dict[str, Any]]:
         """
-        Lists exams with dynamic status and submissions for the given student.
+        Lists exams with dynamic status, format, and submissions for the student scoped to the current academic context.
         """
         student = cls.resolve_student(user)
+        school_class = cls.resolve_student_class(student)
+        current_ay, current_sem = cls.resolve_current_academic_context(school_class)
+
+        ay_name = current_ay.name if current_ay else "2025-2026"
+        sem_name = (
+            current_sem.code
+            if current_sem and hasattr(current_sem, "code") and current_sem.code
+            else (current_sem.name if current_sem else "HK1")
+        )
+
         results: list[dict[str, Any]] = []
 
         # Try fetching from DB first
         try:
             db_exams = Exam.objects.select_related(
                 "class_subject_teacher",
+                "class_subject_teacher__school_class",
+                "class_subject_teacher__school_class__academic_year",
                 "class_subject_teacher__subject",
                 "class_subject_teacher__teacher",
                 "class_subject_teacher__teacher__user",
+                "class_subject_teacher__semester",
+                "class_subject_teacher__semester__academic_year",
             ).prefetch_related("exam_questions")
+
+            if school_class:
+                db_exams = db_exams.filter(class_subject_teacher__school_class=school_class)
+
+            if current_ay:
+                db_exams = db_exams.filter(
+                    Q(class_subject_teacher__school_class__academic_year=current_ay)
+                    | Q(class_subject_teacher__semester__academic_year=current_ay)
+                )
+
+            if current_sem:
+                db_exams = db_exams.filter(class_subject_teacher__semester=current_sem)
 
             if db_exams.exists():
                 for e in db_exams:
@@ -402,15 +517,24 @@ class ExamService:
                     elif e.end_time and e.end_time < timezone.now():
                         status_str = "expired"
 
+                    raw_fmt = str(e.format or "MIXED").upper()
+                    fmt_val = cls.FORMAT_MAP.get(raw_fmt, "mixed")
+                    subj_code = subj.code if subj else "GEN"
+                    subj_name = subj.name if subj else "Môn chung"
+
                     item = {
                         "id": str(e.id),
                         "code": str(e.id)[:8].upper(),
                         "title": e.title,
-                        "courseCode": subj.code if subj else "GEN",
-                        "courseName": subj.name if subj else "Môn chung",
+                        "courseCode": subj_code,
+                        "courseName": subj_name,
+                        "subjectId": str(subj.id) if subj and getattr(subj, "id", None) else None,
+                        "subjectCode": subj_code,
+                        "subjectName": subj_name,
+                        "format": fmt_val,
                         "teacherName": teacher_user.full_name if teacher_user else "Giáo viên",
-                        "semester": "HK1",
-                        "academicYear": "2025-2026",
+                        "semester": sem_name,
+                        "academicYear": ay_name,
                         "durationMinutes": e.duration_minutes,
                         "totalQuestions": len(questions),
                         "maxScore": float(e.max_score),
@@ -436,6 +560,8 @@ class ExamService:
         if not results:
             for base_item in cls.SEEDED_EXAMS:
                 copied = dict(base_item)
+                copied["semester"] = sem_name
+                copied["academicYear"] = ay_name
                 # Check runtime in-memory submission override
                 cached_sub = _IN_MEMORY_SUBMISSIONS.get(copied["id"])
                 if cached_sub:
@@ -451,16 +577,54 @@ class ExamService:
                 r
                 for r in results
                 if q in r["title"].lower()
-                or q in r["courseName"].lower()
-                or q in r["courseCode"].lower()
+                or q in r.get("courseName", "").lower()
+                or q in r.get("courseCode", "").lower()
+                or q in r.get("subjectName", "").lower()
+                or q in r.get("subjectCode", "").lower()
                 or q in (r.get("teacherName") or "").lower()
             ]
 
         if status_filter and status_filter != "all":
             results = [r for r in results if r["status"] == status_filter]
 
+        if subject and subject != "all":
+            subj_norm = subject.strip().lower()
+            results = [
+                r
+                for r in results
+                if str(r.get("subjectId") or "").lower() == subj_norm
+                or str(r.get("subjectCode") or "").lower() == subj_norm
+                or str(r.get("courseCode") or "").lower() == subj_norm
+                or str(r.get("subjectName") or "").lower() == subj_norm
+                or str(r.get("courseName") or "").lower() == subj_norm
+            ]
+
+        if format_filter and format_filter != "all":
+            fmt_target = format_filter.strip().lower()
+            results = [r for r in results if r.get("format", "").lower() == fmt_target]
+
         if semester and semester != "all":
             results = [r for r in results if r.get("semester") == semester]
+
+        # Sorting
+        if sort_by == "upcoming":
+
+            def _parse_upcoming_key(item: dict[str, Any]) -> str:
+                return item.get("startDate") or item.get("endDate") or "9999-99-99"
+
+            results = sorted(results, key=_parse_upcoming_key)
+        elif sort_by == "score":
+            results = sorted(
+                results,
+                key=lambda r: (r.get("score") is not None, r.get("score") or 0.0),
+                reverse=True,
+            )
+        elif sort_by == "newest":
+            results = sorted(
+                results,
+                key=lambda r: r.get("startDate") or r.get("endDate") or "",
+                reverse=True,
+            )
 
         # Check cached submissions & mask score if unreleased
         formatted_results = []

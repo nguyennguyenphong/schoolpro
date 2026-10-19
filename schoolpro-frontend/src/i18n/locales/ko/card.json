@@ -273,6 +273,7 @@
     }
   },
   "assignmentUnit": "개 과제",
+  "examUnit": "개 시험",
   "assignments": {
     "summary": {
       "total": "전체 과제 수",
@@ -788,8 +789,24 @@
     "filters": {
       "searchPlaceholder": "시험, 과목, 교사 검색...",
       "allStatuses": "전체 상태",
+      "subject": "과목",
+      "allSubjects": "전체 과목",
+      "format": "형태",
+      "allFormats": "전체 형태",
+      "formatEssay": "서술형",
+      "formatMultipleChoice": "객관식",
+      "formatMixed": "모두 (혼합)",
+      "sort": "정렬",
+      "sortNewest": "최신순",
+      "sortUpcoming": "시험 예정일순",
+      "sortScore": "점수순",
       "viewGrid": "카드 보기",
       "viewList": "목록 보기"
+    },
+    "formatLabels": {
+      "essay": "서술형",
+      "multipleChoice": "객관식",
+      "mixed": "혼합"
     },
     "card": {
       "multipleChoice": "객관식",

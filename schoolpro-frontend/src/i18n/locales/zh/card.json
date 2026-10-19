@@ -273,6 +273,7 @@
     }
   },
   "assignmentUnit": "项作业",
+  "examUnit": "场考试",
   "assignments": {
     "summary": {
       "total": "作业总数",
@@ -788,8 +789,24 @@
     "filters": {
       "searchPlaceholder": "搜索试卷、学科、教师...",
       "allStatuses": "全部状态",
+      "subject": "学科",
+      "allSubjects": "全部学科",
+      "format": "形式",
+      "allFormats": "全部形式",
+      "formatEssay": "主观题",
+      "formatMultipleChoice": "选择题",
+      "formatMixed": "两者（混合）",
+      "sort": "排序",
+      "sortNewest": "最新",
+      "sortUpcoming": "即将进行",
+      "sortScore": "得分",
       "viewGrid": "卡片视图",
       "viewList": "列表视图"
+    },
+    "formatLabels": {
+      "essay": "主观题",
+      "multipleChoice": "选择题",
+      "mixed": "混合"
     },
     "card": {
       "multipleChoice": "客观题/选择题",
