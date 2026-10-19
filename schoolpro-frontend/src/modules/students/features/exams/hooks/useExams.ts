@@ -21,7 +21,6 @@ export const useExams = () => {
 
   const searchQuery = searchParams.get("q") || "";
   const semester = searchParams.get("semester") || "all";
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const filter: ExamFilter = useMemo(
     () => ({
@@ -127,11 +126,9 @@ export const useExams = () => {
     exams,
     summary,
     loading,
-    viewMode,
     hasActiveFilters,
     setFilterStatus,
     setSearch,
-    setViewMode,
     resetFilters,
     reload: loadData,
   };
