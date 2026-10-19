@@ -105,7 +105,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
               <Icon name="phone" size={13} />
               <span>{homeroomTeacher.phone}</span>
             </a>
-            <span className="text-slate-300">•</span>
+            <span className="text-slate-300">|</span>
             <a
               href={`mailto:${homeroomTeacher.email}`}
               className="flex items-center gap-1.5 font-medium text-slate-600 hover:text-blue-600"

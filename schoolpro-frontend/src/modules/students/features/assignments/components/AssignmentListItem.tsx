@@ -114,14 +114,14 @@ export const AssignmentListItem: React.FC<AssignmentListItemProps> = ({
               </strong>
             </span>
           </span>
-          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">|</span>
           <span className="flex items-center gap-1.5 whitespace-nowrap">
             <Icon name="user" size={13} className="text-slate-400" />
             <span>{assignment.teacherName}</span>
           </span>
           {assignment.attachments && assignment.attachments.length > 0 && (
             <>
-              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">|</span>
               <span className="flex items-center gap-1 text-blue-600 whitespace-nowrap">
                 <Icon name="file" size={13} />
                 <span>

@@ -154,11 +154,11 @@ export const MaterialFilesCard: React.FC<MaterialFilesCardProps> = ({
                     </div>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500">
                       <span>{file.size}</span>
-                      <span>•</span>
+                      <span>|</span>
                       <span className="uppercase font-medium text-slate-600">{file.format}</span>
                       {file.description && (
                         <>
-                          <span>•</span>
+                          <span>|</span>
                           <span className="truncate text-slate-400 max-w-72">{file.description}</span>
                         </>
                       )}

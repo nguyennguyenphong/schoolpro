@@ -26,7 +26,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* 1. Tổng số đơn đã gửi */}
+      {/* 1. Total Submitted Requests */}
       <StudentMetricCard
         title={t("card:leaveRequests.summary.totalTitle")}
         value={summary.total}
@@ -35,7 +35,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
         hoverBorderClass="hover:border-blue-400"
       />
 
-      {/* 2. Đang chờ duyệt */}
+      {/* 2. Pending Approval */}
       <StudentMetricCard
         title={t("card:leaveRequests.summary.pendingTitle")}
         value={summary.pendingCount}
@@ -44,7 +44,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
         hoverBorderClass="hover:border-amber-400"
       />
 
-      {/* 3. Đơn đã được phê duyệt */}
+      {/* 3. Approved Requests */}
       <StudentMetricCard
         title={t("card:leaveRequests.summary.approvedTitle")}
         value={summary.approvedCount}
@@ -53,7 +53,7 @@ export const LeaveRequestSummaryCards: React.FC<LeaveRequestSummaryCardsProps> =
         hoverBorderClass="hover:border-emerald-400"
       />
 
-      {/* 4. Tổng ngày nghỉ có phép */}
+      {/* 4. Total Excused Leave Days */}
       <StudentMetricCard
         title={t("card:leaveRequests.summary.daysOffTitle")}
         value={summary.totalDaysOff}

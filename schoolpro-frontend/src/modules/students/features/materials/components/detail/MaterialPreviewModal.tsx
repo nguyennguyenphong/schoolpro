@@ -84,11 +84,11 @@ export const MaterialPreviewModal: React.FC<MaterialPreviewModalProps> = ({
               </h3>
               <div className="flex items-center gap-2 text-[11px] text-slate-400 font-medium">
                 <span>{file.size}</span>
-                <span>•</span>
+                <span>|</span>
                 <span className="uppercase">{file.format}</span>
                 {materialTitle && (
                   <>
-                    <span>•</span>
+                    <span>|</span>
                     <span className="text-slate-600 truncate max-w-60">{materialTitle}</span>
                   </>
                 )}

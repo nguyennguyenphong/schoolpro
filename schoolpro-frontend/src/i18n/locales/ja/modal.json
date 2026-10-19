@@ -19,7 +19,7 @@
   "deleteLeaveRequestConfirmTitle": "欠席届の削除を確認しますか？",
   "deleteLeaveRequestConfirmDesc": "未承認の欠席届は完全に削除されます。",
   "attendance": {
-    "bannerTag": "オンライン出席ポータル • GPS 100% 不正防止",
+    "bannerTag": "オンライン出席ポータル | GPS 100% 不正防止",
     "expiredBadgeTitle": "コード状態",
     "countdownTitle": "残り時間",
     "expiredShort": "期限切れ",
@@ -35,7 +35,7 @@
     "qr": {
       "cameraTab": "カメラで直接スキャン",
       "uploadTab": "QR画像をアップロード",
-      "cameraReadyHint": "カメラが教員のQRコードを認識しました • GPS認証の準備完了",
+      "cameraReadyHint": "カメラが教員のQRコードを認識しました | GPS認証の準備完了",
       "qrDecodedReady": "✓ 画像から有効なQRデータをデコードしました",
       "dropzoneTitle": "端末からQRコード画像を選択して出席登録",
       "dropzoneHint": "教員のプロジェクター画面から撮影したPNG、JPG、JPEG、WebP、SVGに対応"
@@ -71,7 +71,7 @@
       "studentCoords": "生徒GPS座標:",
       "distance": "教員端末までの距離:",
       "status": "認証状態:",
-      "verifiedText": "100% 有効 • 教室半径内"
+      "verifiedText": "100% 有効 | 教室半径内"
     },
     "expired": {
       "title": "出席コードの有効期限が切れました！",

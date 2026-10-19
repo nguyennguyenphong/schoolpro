@@ -99,7 +99,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                         )}
                       </div>
                       <span className="text-xs text-slate-500 block mt-0.5">
-                        Người ký: <strong>{note.parentName}</strong> ({note.parentRole || "Phụ huynh"}) • SĐT: {note.phone}
+                        Người ký: <strong>{note.parentName}</strong> ({note.parentRole || "Phụ huynh"}) | SĐT: {note.phone}
                       </span>
                     </div>
                   </div>
@@ -162,7 +162,7 @@ export const ParentExchangeView: React.FC<ParentExchangeViewProps> = ({
                       <Icon name="check" size={13} className="text-emerald-500" />
                       Ý kiến đã được lưu trữ chính thức vào hồ sơ Sổ liên lạc của học sinh
                     </span>
-                    <span className="text-blue-600 font-medium">Học kỳ 1 • 2025-2026</span>
+                    <span className="text-blue-600 font-medium">Học kỳ 1 | 2025-2026</span>
                   </div>
                 )}
               </Card>

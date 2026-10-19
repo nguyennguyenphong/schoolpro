@@ -226,15 +226,20 @@ class LeaveRequestTimetableService:
         notified_teachers = list(teachers_map.values())
         return affected_lessons, notified_teachers
 
+    APPROVAL_DURATION_HOURS = 3
+    AUTO_APPROVAL_HOURS_BEFORE_LESSON = 3
+
     @classmethod
     def calculate_first_lesson_and_deadline(
         cls,
         affected_lessons: list[dict[str, Any]],
         fallback_start_date: date,
+        submitted_at: datetime | None = None,
     ) -> tuple[datetime, datetime]:
         """
-        Determines the exact start datetime of the earliest affected lesson and
-        calculates the approval deadline = (first_lesson_start - 3 hours).
+        Determines:
+        1. earliest_dt: Start datetime of the earliest affected lesson.
+        2. deadline_dt: Approval deadline per BR-01 = submitted_at + 3 hours (180 minutes continuous).
         """
         tz = timezone.get_current_timezone()
         earliest_dt: datetime | None = None
@@ -255,5 +260,6 @@ class LeaveRequestTimetableService:
                 datetime.combine(fallback_start_date, time(7, 15)), tz
             )
 
-        deadline_dt = earliest_dt - timedelta(hours=cls.AUTO_APPROVAL_HOURS_BEFORE_LESSON)
+        ref_time = submitted_at or timezone.now()
+        deadline_dt = ref_time + timedelta(hours=cls.APPROVAL_DURATION_HOURS)
         return earliest_dt, deadline_dt

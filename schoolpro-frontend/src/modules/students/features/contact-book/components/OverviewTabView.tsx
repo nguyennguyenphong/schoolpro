@@ -57,7 +57,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
             <div>
               <span className="text-[11px] font-medium text-slate-400 block">Lớp niên khóa</span>
               <span className="text-xs sm:text-sm font-bold text-slate-800">
-                {summary.className} • {summary.semester}
+                {summary.className} | {summary.semester}
               </span>
             </div>
           </div>
@@ -311,7 +311,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                       Giáo viên chủ nhiệm đã duyệt sổ
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      Người ký: {summary.homeroomTeacher.name} • 27/09/2026
+                      Người ký: {summary.homeroomTeacher.name} | 27/09/2026
                     </span>
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export const OverviewTabView: React.FC<OverviewTabViewProps> = ({
                       Cha Mẹ học sinh đã ký xác nhận
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      Người ký: {summary.parentInfo?.fatherName || "Nguyễn Văn Bình"} (Bố) • 28/09/2026
+                      Người ký: {summary.parentInfo?.fatherName || "Nguyễn Văn Bình"} (Bố) | 28/09/2026
                     </span>
                   </div>
                 </div>

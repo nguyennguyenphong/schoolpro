@@ -8,7 +8,6 @@ import type {
   AttendanceFilter,
   AttendanceShiftFilter,
   AttendanceStatusFilter,
-  AttendanceViewMode,
 } from "@/modules/students/features/attendance/types";
 
 export interface AttendanceFilterBarProps {
@@ -24,7 +23,6 @@ export interface AttendanceFilterBarProps {
   hasActiveFilters?: boolean;
   onStatusChange: (status: AttendanceStatusFilter) => void;
   onSearchChange: (query: string) => void;
-  onViewModeChange: (mode: AttendanceViewMode) => void;
   onDateChange: (dateStr: string) => void;
   onTodayClick: () => void;
   onPrevDayClick: () => void;
@@ -39,7 +37,6 @@ export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
   hasActiveFilters = false,
   onStatusChange,
   onSearchChange,
-  onViewModeChange,
   onDateChange,
   onTodayClick,
   onPrevDayClick,
@@ -59,9 +56,7 @@ export const AttendanceFilterBar: React.FC<AttendanceFilterBarProps> = ({
       {/* 2. Search & View Mode Toggle */}
       <AttendanceSearchAndView
         searchQuery={filter.searchQuery}
-        viewMode={filter.viewMode}
         onSearchChange={onSearchChange}
-        onViewModeChange={onViewModeChange}
       />
 
       {/* 3. Date Navigation (Hôm nay / Ngày học) & Buổi học Filter */}

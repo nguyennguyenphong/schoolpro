@@ -21,14 +21,11 @@ export type AttendanceShiftFilter =
 
 export type AttendanceMethod = "qr_scan" | "qr_upload" | "code";
 
-export type AttendanceViewMode = "grid" | "list";
-
 export interface AttendanceFilter {
   selectedDate: string;
   shift: AttendanceShiftFilter;
   status: AttendanceStatusFilter;
   searchQuery: string;
-  viewMode: AttendanceViewMode;
 }
 
 export interface DailyAttendanceQueryParams {

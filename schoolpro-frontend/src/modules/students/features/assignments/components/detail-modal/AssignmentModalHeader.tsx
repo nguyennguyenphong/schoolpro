@@ -48,11 +48,11 @@ export const AssignmentModalHeader: React.FC<AssignmentModalHeaderProps> = ({
         <span>
           Giáo viên: <strong className="text-slate-700">{assignment.teacherName}</strong>
         </span>
-        <span>•</span>
+        <span>|</span>
         <span>
           Giao ngày: <strong className="text-slate-700">{assignment.assignedDate}</strong>
         </span>
-        <span>•</span>
+        <span>|</span>
         <span>
           Hạn chót:{" "}
           <strong

@@ -1,9 +1,7 @@
 import type React from "react";
-import type { AttendanceViewMode } from "@/modules/students/features/attendance/types";
 
 interface AttendanceSkeletonProps {
   count?: number;
-  viewMode?: AttendanceViewMode;
 }
 
 /**
@@ -12,31 +10,11 @@ interface AttendanceSkeletonProps {
  */
 export const AttendanceSkeleton: React.FC<AttendanceSkeletonProps> = ({
   count = 6,
-  viewMode = "grid",
 }) => {
   const skeletonKeys = Array.from(
     { length: count },
     (_, index) => `attendance-skeleton-${index + 1}`,
   );
-
-  if (viewMode === "list") {
-    return (
-      <div className="bg-white border border-[#f0f0f0] rounded-xl shadow-2xs overflow-hidden divide-y divide-slate-100 animate-pulse">
-        {skeletonKeys.map((key) => (
-          <div
-            key={key}
-            className="p-4 flex items-center justify-between gap-4"
-          >
-            <div className="h-5 w-36 bg-slate-200 rounded-md" />
-            <div className="h-5 w-52 bg-slate-200 rounded-md" />
-            <div className="h-5 w-28 bg-slate-100 rounded-md" />
-            <div className="h-5 w-36 bg-slate-100 rounded-md" />
-            <div className="h-7 w-28 bg-slate-200 rounded-lg" />
-          </div>
-        ))}
-      </div>
-    );
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 animate-pulse">

@@ -91,7 +91,7 @@ export const EvaluationPage: React.FC = () => {
               Lớp 11A1
             </span>
             <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-[#f0f0f0]">
-              Học kỳ 1 • 2025-2026
+              Học kỳ 1 | 2025-2026
             </span>
             <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
               Học sinh: Nguyễn Văn An

@@ -339,20 +339,20 @@ export const SurveyDetailPage: React.FC = () => {
           </div>
           {survey.targetTeacher && (
             <div>
-              <span className="text-slate-400">• Giáo viên: </span>
+              <span className="text-slate-400">| Giáo viên: </span>
               <strong className="text-slate-800">{survey.targetTeacher}</strong>
             </div>
           )}
           <div>
-            <span className="text-slate-400">• Hạn chót: </span>
+            <span className="text-slate-400">| Hạn chót: </span>
             <strong className="text-rose-600">{survey.endDate}</strong>
           </div>
           <div>
-            <span className="text-slate-400">• Thời lượng: </span>
+            <span className="text-slate-400">| Thời lượng: </span>
             <strong className="text-slate-800">~{survey.estimatedMinutes} phút</strong>
           </div>
           <div>
-            <span className="text-slate-400">• Quy mô: </span>
+            <span className="text-slate-400">| Quy mô: </span>
             <strong className="text-slate-800">{totalQuestions} câu hỏi</strong>
           </div>
         </div>

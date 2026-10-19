@@ -53,19 +53,47 @@ class LeaveRequestPdfService:
         """
         try:
             tpl_service = ExportTemplateService()
+            found = None
             if template_id:
                 found = tpl_service.repository.get_by_id(template_id)
-                if found:
-                    return found
 
-            if template_code:
+            if not found and template_code:
                 found = tpl_service.repository.get_active_by_code(
                     code=template_code, school_id=school_id
                 )
-                if found:
-                    return found
 
-            return tpl_service.get_or_create_default_leave_request_template(school_id=school_id)
+            if not found:
+                found = tpl_service.get_or_create_default_leave_request_template(
+                    school_id=school_id
+                )
+
+            if found and (
+                '<main class="page">' not in (found.header_content or "")
+                or "margin-top:8px" in (found.header_content or "")
+            ):
+                found.header_content = DEFAULT_LEAVE_REQUEST_HEADER
+                found.content = DEFAULT_LEAVE_REQUEST_CONTENT
+                found.footer_content = DEFAULT_LEAVE_REQUEST_FOOTER
+                found.style_content = DEFAULT_LEAVE_REQUEST_STYLES
+                found.page_size = "A4"
+                found.page_orientation = "PORTRAIT"
+                found.margins = {"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"}
+                try:
+                    found.save(
+                        update_fields=[
+                            "header_content",
+                            "content",
+                            "footer_content",
+                            "style_content",
+                            "page_size",
+                            "page_orientation",
+                            "margins",
+                        ]
+                    )
+                except Exception as save_err:
+                    logger.debug("Could not auto-update ExportTemplate record: %s", save_err)
+
+            return found
         except Exception as exc:
             logger.debug("Fallback to in-memory ExportTemplate for leave request: %s", exc)
             return ExportTemplate(
@@ -79,7 +107,7 @@ class LeaveRequestPdfService:
                 style_content=DEFAULT_LEAVE_REQUEST_STYLES,
                 page_size="A4",
                 page_orientation="PORTRAIT",
-                margins={"top": "18mm", "right": "18mm", "bottom": "18mm", "left": "22mm"},
+                margins={"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"},
                 placeholders_schema=DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
                 sample_data=DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
                 is_default=True,
@@ -105,7 +133,7 @@ class LeaveRequestPdfService:
         }
         status_labels = {
             "pending": "Chờ phê duyệt",
-            "approved": "Đã phê duyệt (Tự động)" if item.get("isAutoApproved") else "Đã phê duyệt",
+            "approved": "Đã phê duyệt",
             "rejected": "Từ chối phê duyệt",
             "cancelled": "Đã hủy đơn",
         }
@@ -151,7 +179,7 @@ class LeaveRequestPdfService:
         )
 
         homeroom_name = str(item.get("homeroomTeacherName") or "Giáo viên chủ nhiệm")
-        reviewer_name = str(item.get("reviewedByName") or homeroom_name)
+        reviewer_name = homeroom_name
         class_name = str(item.get("className") or "10A1")
         student_name = str(item.get("studentName") or "")
         student_code = str(item.get("studentCode") or "")
@@ -171,25 +199,37 @@ class LeaveRequestPdfService:
         if isinstance(affected_lessons, list) and affected_lessons:
             rows_html = []
             for idx, lesson in enumerate(affected_lessons, start=1):
+                day_label = escape(str(lesson.get("dayOfWeekLabel") or ""))
+                date_formatted = escape(fmt_date(str(lesson.get("date") or "")))
+                period_num = escape(str(lesson.get("periodNumber") or ""))
+                start_t = escape(str(lesson.get("startTime") or ""))
+                end_t = escape(str(lesson.get("endTime") or ""))
+                subj = escape(str(lesson.get("subjectName") or ""))
+                teacher = escape(str(lesson.get("teacherName") or ""))
+                time_str = (
+                    f"Tiết {period_num} ({start_t}-{end_t})"
+                    if start_t and end_t
+                    else f"Tiết {period_num}"
+                )
                 rows_html.append(
                     f"<tr>"
-                    f"<td style='border:1px solid #cbd5e1;padding:4px 8px;text-align:center;'>{idx}</td>"
-                    f"<td style='border:1px solid #cbd5e1;padding:4px 8px;'>{escape(str(lesson.get('dayOfWeekLabel') or ''))} ({escape(fmt_date(str(lesson.get('date') or '')))})</td>"
-                    f"<td style='border:1px solid #cbd5e1;padding:4px 8px;text-align:center;'>Tiết {escape(str(lesson.get('periodNumber') or ''))} ({escape(str(lesson.get('startTime') or ''))}-{escape(str(lesson.get('endTime') or ''))})</td>"
-                    f"<td style='border:1px solid #cbd5e1;padding:4px 8px;font-weight:bold;'>{escape(str(lesson.get('subjectName') or ''))}</td>"
-                    f"<td style='border:1px solid #cbd5e1;padding:4px 8px;'>{escape(str(lesson.get('teacherName') or ''))}</td>"
+                    f"<td style='border:1px solid #777;padding:5px 8px;text-align:center;'>{idx}</td>"
+                    f"<td style='border:1px solid #777;padding:5px 8px;'>{day_label} ({date_formatted})</td>"
+                    f"<td style='border:1px solid #777;padding:5px 8px;text-align:center;'>{time_str}</td>"
+                    f"<td style='border:1px solid #777;padding:5px 8px;font-weight:bold;'>{subj}</td>"
+                    f"<td style='border:1px solid #777;padding:5px 8px;'>{teacher}</td>"
                     f"</tr>"
                 )
             affected_lessons_table_html = (
-                "<div style='margin:8px 0 12px 0;'>"
-                "<div style='font-weight:bold;font-size:11pt;margin-bottom:4px;'>Chi tiết các tiết học xin nghỉ theo Thời khóa biểu:</div>"
-                "<table style='width:100%;border-collapse:collapse;font-size:10.5pt;'>"
-                "<thead><tr style='background:#f1f5f9;'>"
-                "<th style='border:1px solid #cbd5e1;padding:4px 8px;width:36px;'>STT</th>"
-                "<th style='border:1px solid #cbd5e1;padding:4px 8px;text-align:left;'>Thứ / Ngày</th>"
-                "<th style='border:1px solid #cbd5e1;padding:4px 8px;'>Tiết / Khung giờ</th>"
-                "<th style='border:1px solid #cbd5e1;padding:4px 8px;text-align:left;'>Môn học</th>"
-                "<th style='border:1px solid #cbd5e1;padding:4px 8px;text-align:left;'>Giáo viên bộ môn</th>"
+                "<div style='margin:10px 0 14px 0;'>"
+                "<div style='font-weight:bold;font-size:13pt;margin-bottom:6px;'>Chi tiết các tiết học xin nghỉ theo Thời khóa biểu:</div>"
+                "<table class='lr-timetable-table' style='width:100%;border-collapse:collapse;font-size:12pt;font-family:\"Times New Roman\",Times,serif;'>"
+                "<thead><tr style='background:#f4f4f4;'>"
+                "<th style='border:1px solid #777;padding:6px 8px;width:40px;text-align:center;'>STT</th>"
+                "<th style='border:1px solid #777;padding:6px 8px;text-align:left;'>Thứ / Ngày</th>"
+                "<th style='border:1px solid #777;padding:6px 8px;text-align:center;'>Tiết / Khung giờ</th>"
+                "<th style='border:1px solid #777;padding:6px 8px;text-align:left;'>Môn học</th>"
+                "<th style='border:1px solid #777;padding:6px 8px;text-align:left;'>Giáo viên bộ môn</th>"
                 "</tr></thead>"
                 f"<tbody>{''.join(rows_html)}</tbody></table></div>"
             )
@@ -233,6 +273,39 @@ class LeaveRequestPdfService:
 
         code_clean = str(item.get("code") or item.get("requestCode") or "DON").replace("#", "")
 
+        student_dob = str(
+            item.get("studentDob")
+            or item.get("student_dob")
+            or sample.get("student_dob")
+            or "........................."
+        )
+
+        status_lower = str(item.get("status") or "").lower()
+        if status_lower == "approved":
+            approval_checkboxes = (
+                "☑ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            )
+        elif status_lower == "rejected":
+            approval_checkboxes = (
+                "☐ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☑ Không đồng ý"
+            )
+        else:
+            approval_checkboxes = (
+                "☐ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            )
+
+        if teacher_note_raw and not any(
+            k in teacher_note_raw.lower()
+            for k in ["quá hạn", "tự động", "hệ thống", "auto", "system"]
+        ):
+            teacher_note_display = escape(teacher_note_raw)
+        elif status_lower == "approved":
+            teacher_note_display = "Đồng ý cho học sinh nghỉ học có phép."
+        elif status_lower == "rejected":
+            teacher_note_display = "Từ chối cho nghỉ"
+        else:
+            teacher_note_display = "......................................................................................................................."
+
         return {
             **sample,
             "title": f"{document_title} - {code_clean}",
@@ -254,6 +327,7 @@ class LeaveRequestPdfService:
             "reviewed_at": str(item.get("reviewedAt") or ""),
             "student_name": student_name,
             "student_code": student_code,
+            "student_dob": student_dob,
             "guardian_name": guardian_name,
             "guardian_relationship": guardian_rel,
             "guardian_phone": guardian_phone,
@@ -269,7 +343,9 @@ class LeaveRequestPdfService:
             "commitment": commitment_raw,
             "commitment_html": commitment_html,
             "teacher_note": teacher_note_raw,
+            "teacher_note_display": teacher_note_display,
             "teacher_note_block_html": teacher_note_block_html,
+            "approval_checkboxes": approval_checkboxes,
             "template_code": template.code if template else DEFAULT_LEAVE_REQUEST_CODE,
             "template_name": template.name if template else "Mẫu Đơn Xin Phép Nghỉ Học A4 Chuẩn",
             "exported_at": now_local.strftime("%H:%M %d/%m/%Y"),
@@ -416,12 +492,29 @@ class LeaveRequestPdfService:
             )
             return word_doc.encode("utf-8"), filename, "application/msword"
 
-        pdf_bytes, filename = cls.render_pdf_from_item(
-            item=item,
-            template=template,
+        html_str = template.render_html(context)
+        filename = template.resolve_filename(
             context=context,
+            extension_override="pdf",
+            default_prefix="Don_Xin_Nghi_Phep",
         )
-        return pdf_bytes, filename, "application/pdf"
+        try:
+            import weasyprint
+
+            pdf_bytes = weasyprint.HTML(string=html_str).write_pdf()
+            return pdf_bytes, filename, "application/pdf"
+        except Exception as exc:
+            logger.warning(
+                "WeasyPrint conversion failed for %s, falling back to ReportLab: %s",
+                filename,
+                exc,
+            )
+            pdf_bytes, filename = cls.render_pdf_from_item(
+                item=item,
+                template=template,
+                context=context,
+            )
+            return pdf_bytes, filename, "application/pdf"
 
     @classmethod
     def render_pdf_from_item(
@@ -571,7 +664,7 @@ class LeaveRequestPdfService:
         )
         story.append(
             Paragraph(
-                f"(Phân loại: {escape(str(ctx.get('leave_type_label') or ''))} • "
+                f"(Phân loại: {escape(str(ctx.get('leave_type_label') or ''))} | "
                 f"Trạng thái: {escape(str(ctx.get('status_label') or ''))})",
                 style_subtitle,
             )
@@ -734,9 +827,9 @@ class LeaveRequestPdfService:
 
         story.append(
             Paragraph(
-                f"<font size='9' color='#64748B'>Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • "
-                f"Mã đơn: {escape(str(ctx.get('code') or ''))} • "
-                f"Biểu mẫu: {escape(str(ctx.get('template_code') or ''))} • "
+                f"<font size='9' color='#64748B'>Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro | "
+                f"Mã đơn: {escape(str(ctx.get('code') or ''))} | "
+                f"Biểu mẫu: {escape(str(ctx.get('template_code') or ''))} | "
                 f"Thời gian xuất: {escape(str(ctx.get('exported_at') or ''))}</font>",
                 style_center,
             )

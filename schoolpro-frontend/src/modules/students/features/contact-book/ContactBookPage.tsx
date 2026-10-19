@@ -113,9 +113,9 @@ export const ContactBookPage: React.FC = () => {
             {summary && (
               <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-[#f0f0f0] text-xs">
                 <span className="text-slate-500">GPA: <strong className="text-blue-600">{summary.currentGpa.toFixed(1)}</strong></span>
-                <span className="text-slate-300">•</span>
+                <span className="text-slate-300">|</span>
                 <span className="text-slate-500">Hạnh kiểm: <strong className="text-emerald-600">{summary.conduct}</strong></span>
-                <span className="text-slate-300">•</span>
+                <span className="text-slate-300">|</span>
                 <span className="text-slate-500">Chuyên cần: <strong className="text-amber-600">{summary.attendanceRate}%</strong></span>
               </div>
             )}

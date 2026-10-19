@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LeaveRequestCard,
   LeaveRequestFilterBar,
-  LeaveRequestListItem,
   LeaveRequestSkeleton,
   LeaveRequestsEmptyState,
   LeaveRequestsPageHeader,
@@ -31,7 +30,6 @@ const LeaveRequestsPage: React.FC = () => {
     setLeaveType,
     setSearchQuery,
     setSortBy,
-    setViewMode,
     setPage,
     resetFilters,
   } = useLeaveRequests();
@@ -67,25 +65,23 @@ const LeaveRequestsPage: React.FC = () => {
         leaveType={filter.leaveType}
         searchQuery={filter.searchQuery}
         sortBy={filter.sortBy}
-        viewMode={filter.viewMode}
         hasActiveFilters={hasActiveFilters}
         onStatusChange={setStatus}
         onLeaveTypeChange={setLeaveType}
         onSearchChange={setSearchQuery}
         onSortByChange={setSortBy}
-        onViewModeChange={setViewMode}
         onResetFilters={resetFilters}
       />
 
       {loading && items.length === 0 ? (
-        <LeaveRequestSkeleton viewMode={filter.viewMode} />
+        <LeaveRequestSkeleton />
       ) : items.length === 0 ? (
         <LeaveRequestsEmptyState
           hasActiveFilters={hasActiveFilters}
           onResetFilters={resetFilters}
           onCreateClick={handleOpenCreatePage}
         />
-      ) : filter.viewMode === "grid" ? (
+      ) : (
         <div
           className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 transition-opacity duration-200 ${
             loading ? "opacity-60 pointer-events-none" : "opacity-100"
@@ -93,20 +89,6 @@ const LeaveRequestsPage: React.FC = () => {
         >
           {items.map((item) => (
             <LeaveRequestCard key={item.id} item={item} onViewDetail={handleViewDetailPage} />
-          ))}
-        </div>
-      ) : (
-        <div
-          className={`flex flex-col gap-3 transition-opacity duration-200 ${
-            loading ? "opacity-60 pointer-events-none" : "opacity-100"
-          }`}
-        >
-          {items.map((item) => (
-            <LeaveRequestListItem
-              key={item.id}
-              item={item}
-              onViewDetail={handleViewDetailPage}
-            />
           ))}
         </div>
       )}

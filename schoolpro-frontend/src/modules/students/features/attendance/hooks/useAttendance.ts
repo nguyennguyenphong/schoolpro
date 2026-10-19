@@ -11,7 +11,6 @@ import type {
   AttendanceShiftFilter,
   AttendanceStatusFilter,
   AttendanceSummary,
-  AttendanceViewMode,
   CheckInPayload,
   CheckInResult,
 } from "@/modules/students/features/attendance/types";
@@ -72,10 +71,6 @@ export const useAttendance = (initialDate = getTodayDateStr()) => {
     return searchParams.get("q") || searchParams.get("search") || "";
   }, [searchParams]);
 
-  const viewMode = useMemo<AttendanceViewMode>(() => {
-    return searchParams.get("view") === "list" ? "list" : "grid";
-  }, [searchParams]);
-
   // 2. Sync URL query parameters when any filter changes
   const updateUrlParams = useCallback(
     (patch: Partial<AttendanceFilter>) => {
@@ -114,19 +109,12 @@ export const useAttendance = (initialDate = getTodayDateStr()) => {
             next.delete("q");
           }
 
-          const nextView = patch.viewMode ?? viewMode;
-          if (nextView === "list") {
-            next.set("view", "list");
-          } else {
-            next.delete("view");
-          }
-
           return next;
         },
         { replace: true },
       );
     },
-    [selectedDate, shift, filterStatus, searchQuery, viewMode, setSearchParams],
+    [selectedDate, shift, filterStatus, searchQuery, setSearchParams],
   );
 
   const setSelectedDate = useCallback(
@@ -153,13 +141,6 @@ export const useAttendance = (initialDate = getTodayDateStr()) => {
   const setSearchQuery = useCallback(
     (newQuery: string) => {
       updateUrlParams({ searchQuery: newQuery });
-    },
-    [updateUrlParams],
-  );
-
-  const setViewMode = useCallback(
-    (newMode: AttendanceViewMode) => {
-      updateUrlParams({ viewMode: newMode });
     },
     [updateUrlParams],
   );
@@ -370,9 +351,8 @@ export const useAttendance = (initialDate = getTodayDateStr()) => {
       shift,
       status: filterStatus,
       searchQuery,
-      viewMode,
     }),
-    [selectedDate, shift, filterStatus, searchQuery, viewMode],
+    [selectedDate, shift, filterStatus, searchQuery],
   );
 
   const hasActiveFilters = Boolean(
@@ -403,8 +383,6 @@ export const useAttendance = (initialDate = getTodayDateStr()) => {
     setSearchQuery,
     shift,
     setShift,
-    viewMode,
-    setViewMode,
     records,
     summary,
     loading,

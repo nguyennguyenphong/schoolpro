@@ -60,11 +60,11 @@ export const SubjectListItem: React.FC<SubjectListItemProps> = ({ item }) => {
 
             <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap pt-0.5">
               <span>{t("card:materials.meta.lecturesCount")} <strong className="text-slate-700">{item.lecturesCount}</strong></span>
-              <span>•</span>
+              <span>|</span>
               <span>{t("card:materials.meta.outlinesCount")} <strong className="text-slate-700">{item.outlinesCount}</strong></span>
-              <span>•</span>
+              <span>|</span>
               <span>{t("card:materials.meta.examsCount")} <strong className="text-slate-700">{item.examsCount}</strong></span>
-              <span>•</span>
+              <span>|</span>
               <span className="flex items-center gap-1">
                 <Icon name="download" size={13} className="text-slate-400" />
                 {t("card:materials.meta.downloadsCount", { count: item.totalDownloads })}

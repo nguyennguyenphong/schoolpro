@@ -9,8 +9,6 @@ export type LeaveStatus = "pending" | "approved" | "rejected" | "cancelled";
 
 export type LeaveSessionShift = "all_day" | "morning" | "afternoon";
 
-export type LeaveRequestViewMode = "grid" | "list";
-
 export interface LeaveRequestAttachment {
   id?: string;
   name: string;
@@ -83,6 +81,7 @@ export interface LeaveRequestItem {
   studentId: string;
   studentCode: string;
   studentName: string;
+  studentDob?: string;
   classId: string;
   className: string;
   leaveType: LeaveType;
@@ -130,6 +129,8 @@ export interface LeaveRequestSummary {
   className?: string | null;
   semesterName?: string | null;
   academicYear?: string | null;
+  semesterId?: string | null;
+  academicYearId?: string | null;
   homeroomTeacherName?: string | null;
   homeroomTeacherEmail?: string | null;
   homeroomTeacherPhone?: string | null;
@@ -145,7 +146,8 @@ export interface LeaveRequestFilter {
   sortBy: string; // "newest" | "oldest" | "start_date"
   page: number;
   pageSize: number;
-  viewMode: LeaveRequestViewMode;
+  academicYear?: string;
+  semester?: string;
 }
 
 export interface LeaveRequestListResult {

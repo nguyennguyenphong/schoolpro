@@ -112,7 +112,7 @@ export const AnnouncementDetailModal: React.FC<AnnouncementDetailModalProps> = (
               {t("modal:authorLabel")}{" "}
               <strong className="text-slate-700">{item.author}</strong>
             </span>
-            <span>•</span>
+            <span>|</span>
             <span>
               {t("modal:viewsLabel")}{" "}
               <strong className="text-slate-700">{item.viewsCount}</strong>

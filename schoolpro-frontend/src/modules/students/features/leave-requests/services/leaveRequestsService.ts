@@ -124,6 +124,14 @@ class LeaveRequestsService {
         params.sortBy = filter.sortBy;
       }
 
+      if (filter?.academicYear && filter.academicYear !== "all") {
+        params.academicYear = filter.academicYear;
+      }
+
+      if (filter?.semester && filter.semester !== "all") {
+        params.semester = filter.semester;
+      }
+
       const response = await httpClient.get<ApiResponse<LeaveRequestListResult>>(
         "/academic/leave-requests/",
         { params },
@@ -154,10 +162,22 @@ class LeaveRequestsService {
   /**
    * Fetch aggregated summary counts and student/homeroom teacher context.
    */
-  async getSummary(): Promise<LeaveRequestSummary> {
+  async getSummary(filter?: {
+    academicYear?: string;
+    semester?: string;
+  }): Promise<LeaveRequestSummary> {
     try {
+      const params: Record<string, string | undefined> = {};
+      if (filter?.academicYear && filter.academicYear !== "all") {
+        params.academicYear = filter.academicYear;
+      }
+      if (filter?.semester && filter.semester !== "all") {
+        params.semester = filter.semester;
+      }
+
       const response = await httpClient.get<ApiResponse<LeaveRequestSummary>>(
         "/academic/leave-requests/summary/",
+        { params },
       );
 
       if (response.data?.data) {

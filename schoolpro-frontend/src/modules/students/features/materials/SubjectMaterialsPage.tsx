@@ -124,7 +124,7 @@ export const SubjectMaterialsPage: React.FC = () => {
                   <Icon name="user" size={13} className="text-blue-600" />
                   {subject.teacher} ({subject.teacherTitle})
                 </span>
-                <span>•</span>
+                <span>|</span>
                 <span>{subject.description}</span>
               </div>
             )}

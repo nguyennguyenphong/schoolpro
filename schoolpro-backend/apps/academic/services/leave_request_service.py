@@ -32,6 +32,7 @@ from apps.academic.services.leave_request_timetable_service import (
 )
 from apps.core.models.organization import SchoolClass, StudentClassEnrollment
 from apps.core.models.profile import Guardian, Student
+from apps.master.models.academic_year import AcademicYear
 from apps.master.models.semester import Semester
 
 logger = logging.getLogger(__name__)
@@ -84,7 +85,8 @@ class LeaveRequestService:
     DAY_OF_WEEK_LABELS = LeaveRequestTimetableService.DAY_OF_WEEK_LABELS
 
     MAX_ALLOWED_DAYS_PER_YEAR = 45
-    AUTO_APPROVAL_HOURS_BEFORE_LESSON = 3
+    AUTO_APPROVAL_HOURS_FROM_SUBMISSION = 3
+    AUTO_APPROVAL_HOURS_BEFORE_LESSON = 3  # Backwards compatibility alias
 
     @staticmethod
     def resolve_student(user: Any) -> Student | None:
@@ -202,9 +204,12 @@ class LeaveRequestService:
         cls,
         affected_lessons: list[dict[str, Any]],
         fallback_start_date: date,
+        submitted_at: datetime | None = None,
     ) -> tuple[datetime, datetime]:
         return LeaveRequestTimetableService.calculate_first_lesson_and_deadline(
-            affected_lessons=affected_lessons, fallback_start_date=fallback_start_date
+            affected_lessons=affected_lessons,
+            fallback_start_date=fallback_start_date,
+            submitted_at=submitted_at,
         )
 
     @classmethod
@@ -280,10 +285,66 @@ class LeaveRequestService:
         )
 
     @classmethod
+    def check_and_send_deadline_reminders(cls) -> int:
+        """
+        Sends approaching deadline reminders to Homeroom Teachers when a pending request
+        is within 30 minutes of its approval_deadline (submitted_at + 3 hours).
+        """
+        now = timezone.now()
+        thirty_mins_later = now + timedelta(minutes=30)
+        pending_qs = LeaveRequest.objects.select_related(
+            "student",
+            "student__user",
+            "school_class",
+            "school_class__homeroom_teacher",
+            "school_class__homeroom_teacher__user",
+        ).filter(
+            status="PENDING",
+            approval_deadline__isnull=False,
+            approval_deadline__lte=thirty_mins_later,
+            approval_deadline__gt=now,
+        )
+
+        reminder_count = 0
+        for req in pending_qs:
+            meta = req.metadata if isinstance(req.metadata, dict) else {}
+            if meta.get("reminder30mSent"):
+                continue
+            with transaction.atomic():
+                locked_req = (
+                    LeaveRequest.objects.select_for_update()
+                    .filter(id=req.id, status="PENDING")
+                    .first()
+                )
+                if not locked_req:
+                    continue
+                locked_meta = locked_req.metadata if isinstance(locked_req.metadata, dict) else {}
+                if locked_meta.get("reminder30mSent"):
+                    continue
+
+                sent = LeaveRequestNotificationService.send_deadline_reminder_to_homeroom(
+                    locked_req
+                )
+                if sent:
+                    locked_meta["reminder30mSent"] = True
+                    locked_meta["reminder30mSentAt"] = now.isoformat()
+                    locked_req.metadata = locked_meta
+                    locked_req.save(update_fields=["metadata"])
+                    reminder_count += 1
+        return reminder_count
+
+    @classmethod
     def check_and_auto_approve_overdue_requests(cls, qs: Any = None) -> int:
         """
-        Automatically approves any PENDING leave request whose approval_deadline
-        (3 hours before the first affected lesson) has passed without Homeroom Teacher action.
+        BR-01 / BR-03: Automatically approves any PENDING leave request whose
+        approval_deadline (submitted_at + 3 hours continuous) has arrived without
+        Homeroom Teacher action.
+
+        Concurrency & Integrity:
+        - Atomic transaction with select_for_update ensures only one actor wins
+          if Homeroom Teacher reviews at the exact moment auto-approval executes.
+        - reviewed_by is recorded as None (System), not attributed to Homeroom Teacher.
+        - approval_method is recorded as AUTO.
         """
         now = timezone.now()
         pending_qs = LeaveRequest.objects.select_related(
@@ -314,55 +375,73 @@ class LeaveRequestService:
                 meta["affectedLessons"] = affected_lessons
                 meta["notifiedTeachers"] = notified_teachers
 
-            first_lesson_dt, deadline_dt = cls.calculate_first_lesson_and_deadline(
-                affected_lessons=affected_lessons,
-                fallback_start_date=req.start_date,
-            )
-
+            submitted_ref = req.created_at or now
             if not req.approval_deadline:
-                req.approval_deadline = deadline_dt
+                req.approval_deadline = submitted_ref + timedelta(
+                    hours=cls.AUTO_APPROVAL_HOURS_FROM_SUBMISSION
+                )
                 req.save(update_fields=["approval_deadline"])
 
-            effective_deadline = req.approval_deadline or deadline_dt
+            effective_deadline = req.approval_deadline
             if now >= effective_deadline:
                 with transaction.atomic():
-                    homeroom_teacher = getattr(req.school_class, "homeroom_teacher", None)
+                    locked_req = (
+                        LeaveRequest.objects.select_for_update()
+                        .select_related(
+                            "student",
+                            "student__user",
+                            "school_class",
+                            "school_class__homeroom_teacher",
+                            "school_class__homeroom_teacher__user",
+                        )
+                        .filter(id=req.id, status="PENDING")
+                        .first()
+                    )
+                    if not locked_req:
+                        # Teacher already approved/rejected or student cancelled right before this
+                        continue
+
+                    locked_meta = (
+                        locked_req.metadata if isinstance(locked_req.metadata, dict) else {}
+                    )
+                    homeroom_teacher = getattr(locked_req.school_class, "homeroom_teacher", None)
                     homeroom_user = (
                         getattr(homeroom_teacher, "user", None)
                         if homeroom_teacher
-                        else req.requested_by
+                        else locked_req.requested_by
                     )
 
-                    req.status = "APPROVED"
-                    req.is_auto_approved = True
-                    req.reviewed_by = homeroom_user
-                    req.reviewed_at = effective_deadline
-                    if not req.teacher_note:
-                        req.teacher_note = (
-                            "Hệ thống tự động phê duyệt đơn do đã đến hạn 03 giờ trước thời gian "
-                            "diễn ra tiết học đầu tiên mà Giáo viên chủ nhiệm chưa kịp thao tác."
-                        )
-                    meta["isAutoApproved"] = True
-                    meta["autoApprovedAt"] = effective_deadline.astimezone(
+                    locked_req.status = "APPROVED"
+                    locked_req.is_auto_approved = True
+                    # Per BR-01 / BR-03: Action of the System, not attributed to Homeroom Teacher
+                    locked_req.reviewed_by = None
+                    locked_req.reviewed_at = timezone.now()
+                    locked_req.teacher_note = (
+                        "Đơn xin nghỉ phép đã được phê duyệt tự động theo quy định."
+                    )
+                    locked_meta["isAutoApproved"] = True
+                    locked_meta["approvalMethod"] = "AUTO"
+                    locked_meta["autoApprovedAt"] = locked_req.reviewed_at.astimezone(
                         timezone.get_current_timezone()
                     ).strftime("%Y-%m-%d %H:%M")
-                    req.metadata = meta
-                    req.save()
+                    locked_meta["autoApproveReason"] = "Phê duyệt tự động theo quy định."
+                    locked_req.metadata = locked_meta
+                    locked_req.save()
 
                     # Populate excused attendance records
-                    curr_d = req.start_date
-                    while curr_d <= req.end_date:
+                    curr_d = locked_req.start_date
+                    while curr_d <= locked_req.end_date:
                         if curr_d.weekday() != 6:
                             att, created = Attendance.objects.get_or_create(
-                                student_id=req.student_id,
+                                student_id=locked_req.student_id,
                                 attendance_date=curr_d,
                                 period_id=None,
                                 defaults={
-                                    "school_class_id": req.school_class_id,
+                                    "school_class_id": locked_req.school_class_id,
                                     "status": Attendance.StatusChoices.ABSENT_EXCUSED,
                                     "method": Attendance.MethodChoices.EXCUSED_LEAVE,
-                                    "excuse_reason": f"Đơn xin nghỉ phép #{req.code} (Tự động duyệt): {req.reason}",
-                                    "recorded_by": homeroom_user,
+                                    "excuse_reason": f"Đơn xin nghỉ phép #{locked_req.code} (Hệ thống tự động duyệt): {locked_req.reason}",
+                                    "recorded_by": homeroom_user or locked_req.requested_by,
                                 },
                             )
                             if (
@@ -371,37 +450,32 @@ class LeaveRequestService:
                             ):
                                 prev_st = att.status
                                 att.status = Attendance.StatusChoices.ABSENT_EXCUSED
-                                att.excuse_reason = (
-                                    f"Đơn xin nghỉ phép #{req.code} (Tự động duyệt): {req.reason}"
-                                )
+                                att.excuse_reason = f"Đơn xin nghỉ phép #{locked_req.code} (Hệ thống tự động duyệt): {locked_req.reason}"
                                 att.save()
                                 AttendanceLog.objects.create(
                                     attendance=att,
-                                    student_id=req.student_id,
+                                    student_id=locked_req.student_id,
                                     previous_status=prev_st,
                                     new_status=Attendance.StatusChoices.ABSENT_EXCUSED,
                                     action="AUTO_APPROVED_LEAVE",
-                                    reason=f"Tự động duyệt đơn #{req.code}",
-                                    performed_by=homeroom_user,
+                                    reason=f"Tự động duyệt đơn #{locked_req.code}",
+                                    performed_by=homeroom_user or locked_req.requested_by,
                                 )
                         curr_d += timedelta(days=1)
 
                     cls.record_event_log(
-                        leave_request=req,
+                        leave_request=locked_req,
                         event_type="AUTO_APPROVED",
                         title="Hệ thống tự động phê duyệt đơn xin nghỉ phép",
-                        description=(
-                            f"Đã quá hạn phê duyệt (trước thời gian diễn ra môn học {cls.AUTO_APPROVAL_HOURS_BEFORE_LESSON} giờ). "
-                            f"Hệ thống tự động phê duyệt đơn và ghi nhận Vắng có phép."
-                        ),
-                        actor_name="Hệ thống Tự động Phê duyệt (Auto-Approval)",
+                        description=("Hệ thống tự động phê duyệt đơn xin nghỉ phép theo quy định."),
+                        actor_name="Hệ thống SchoolPro",
                         actor_role="SYSTEM",
-                        badge_text="Tự động duyệt",
-                        badge_color="success",
-                        created_at=effective_deadline,
+                        badge_text="Phê duyệt tự động",
+                        badge_color="purple",
+                        created_at=locked_req.reviewed_at,
                     )
 
-                    cls.send_approval_notifications(req, is_auto=True)
+                    cls.send_approval_notifications(locked_req, is_auto=True)
                     auto_approved_count += 1
 
                     try:
@@ -410,16 +484,18 @@ class LeaveRequestService:
                             LeaveRequestRealtimeService,
                         )
 
-                        formatted_item = cls.format_leave_request_item(req, include_logs=True)
+                        formatted_item = cls.format_leave_request_item(
+                            locked_req, include_logs=True
+                        )
                         LeaveRequestRealtimeService.broadcast_event(
                             event_type=LeaveRequestRealtimeEvent.AUTO_APPROVED,
-                            leave_request=req,
+                            leave_request=locked_req,
                             item_data=formatted_item,
                             message=(
-                                f"Đơn xin nghỉ phép #{req.code} đã được hệ thống tự động phê duyệt "
-                                f"(trước giờ diễn ra môn học 03 giờ)."
+                                f"Đơn xin nghỉ phép #{locked_req.code} đã được hệ thống tự động phê duyệt "
+                                f"(quá thời hạn xử lý 3 giờ)."
                             ),
-                            actor_name="Hệ thống Tự động Phê duyệt",
+                            actor_name="Hệ thống SchoolPro",
                         )
                     except Exception as exc:
                         logger.debug("Auto-approval realtime broadcast skipped: %s", exc)
@@ -508,14 +584,13 @@ class LeaveRequestService:
                 hr_title = "Gửi thông báo & Email tới Giáo viên chủ nhiệm (kiêm Giáo viên bộ môn)"
                 hr_desc = (
                     f"Đã gửi 01 thông báo hợp nhất và email tới Giáo viên chủ nhiệm {homeroom_name} "
-                    f"(đồng thời dạy môn {subj_list}). Hạn phê duyệt trước {deadline_fmt} "
-                    f"(trước giờ diễn ra môn học 3 giờ)."
+                    f"(đồng thời dạy môn {subj_list}). Hạn phê duyệt trước {deadline_fmt}."
                 )
             else:
                 hr_title = "Gửi thông báo & Email yêu cầu phê duyệt tới Giáo viên chủ nhiệm"
                 hr_desc = (
                     f"Đã gửi thông báo và email tới Giáo viên chủ nhiệm {homeroom_name} ({homeroom_email or 'N/A'}). "
-                    f"Hạn phê duyệt trước {deadline_fmt} (trước giờ diễn ra môn học 3 giờ)."
+                    f"Hạn phê duyệt trước {deadline_fmt}."
                 )
 
             cls.record_event_log(
@@ -559,12 +634,12 @@ class LeaveRequestService:
                         title="Hệ thống tự động phê duyệt đơn xin nghỉ phép",
                         description=(
                             item.teacher_note
-                            or "Đã đến hạn 03 giờ trước giờ diễn ra môn học, hệ thống tự động phê duyệt đơn."
+                            or "Hệ thống tự động phê duyệt đơn xin nghỉ phép theo quy định."
                         ),
-                        actor_name="Hệ thống Tự động Phê duyệt",
+                        actor_name="Hệ thống SchoolPro",
                         actor_role="SYSTEM",
-                        badge_text="Tự động duyệt",
-                        badge_color="success",
+                        badge_text="Phê duyệt tự động",
+                        badge_color="purple",
                         created_at=review_dt,
                     )
                 else:
@@ -753,6 +828,11 @@ class LeaveRequestService:
 
         student = item.student
         student_user = getattr(student, "user", None) if student else None
+        student_dob = (
+            student_user.date_of_birth.strftime("%d/%m/%Y")
+            if (student_user and getattr(student_user, "date_of_birth", None))
+            else "........................."
+        )
         school_class = item.school_class
         homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
         homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
@@ -797,6 +877,7 @@ class LeaveRequestService:
         first_lesson_dt, deadline_dt = cls.calculate_first_lesson_and_deadline(
             affected_lessons=affected_lessons,
             fallback_start_date=item.start_date,
+            submitted_at=item.created_at,
         )
         effective_deadline = item.approval_deadline or deadline_dt
 
@@ -817,11 +898,20 @@ class LeaveRequestService:
 
         reviewed_by_name = None
         if item.is_auto_approved:
-            reviewed_by_name = "Hệ thống tự động duyệt (Quá hạn 3 giờ trước giờ học)"
+            reviewed_by_name = "Hệ thống SchoolPro"
         elif item.reviewed_by:
             reviewed_by_name = item.reviewed_by.full_name
         elif item.status in ("APPROVED", "REJECTED") and homeroom_user:
             reviewed_by_name = homeroom_user.full_name
+
+        approval_method = meta.get("approvalMethod")
+        if not approval_method:
+            if item.is_auto_approved:
+                approval_method = "AUTO"
+            elif item.status in ("APPROVED", "REJECTED"):
+                approval_method = "MANUAL"
+            else:
+                approval_method = None
 
         event_logs: list[dict[str, Any]] = []
         if include_logs:
@@ -841,12 +931,14 @@ class LeaveRequestService:
             "studentId": str(item.student_id),
             "studentCode": student.student_code if student else "",
             "studentName": student_user.full_name if student_user else "Học sinh",
+            "studentDob": student_dob,
             "classId": str(item.school_class_id),
             "className": school_class.name if school_class else "10A1",
             "leaveType": cls.LEAVE_TYPE_DB_TO_UI.get(item.leave_type, "other"),
             "leaveTypeCode": item.leave_type,
             "status": cls.STATUS_DB_TO_UI.get(item.status, "pending"),
             "statusCode": item.status,
+            "approvalMethod": approval_method,
             "startDate": item.start_date.strftime("%Y-%m-%d"),
             "endDate": item.end_date.strftime("%Y-%m-%d"),
             "totalDays": total_days,
@@ -883,6 +975,90 @@ class LeaveRequestService:
         }
 
     @classmethod
+    def resolve_academic_context(
+        cls,
+        user: Any,
+        student_id: str | None = None,
+        class_id: str | None = None,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
+    ) -> tuple[Student | None, SchoolClass | None, AcademicYear | None, Semester | None]:
+        """
+        Resolves the student, class, target academic year, and target semester for the context.
+        If academic_year_id or semester_id are not provided, defaults to the student's current
+        enrolled class's academic year and current active semester.
+        """
+        student = None
+        if student_id:
+            student = (
+                Student.objects.select_related("user", "current_class")
+                .filter(id=student_id)
+                .first()
+            )
+        if not student:
+            student = cls.resolve_student(user)
+
+        school_class = None
+        if class_id:
+            school_class = (
+                SchoolClass.objects.select_related(
+                    "academic_year", "homeroom_teacher", "homeroom_teacher__user"
+                )
+                .filter(id=class_id)
+                .first()
+            )
+        if not school_class and student:
+            school_class = cls.resolve_student_class(student)
+
+        # 1. Resolve Academic Year
+        target_academic_year = None
+        if academic_year_id and academic_year_id.lower() != "all":
+            target_academic_year = AcademicYear.objects.filter(id=academic_year_id).first()
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.filter(code=academic_year_id).first()
+        elif academic_year_id is None:
+            if school_class and getattr(school_class, "academic_year", None):
+                target_academic_year = school_class.academic_year
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.filter(is_current=True).first()
+            if not target_academic_year:
+                target_academic_year = AcademicYear.objects.order_by("-start_date").first()
+
+        # 2. Resolve Semester
+        target_semester = None
+        if semester_id and semester_id.lower() != "all":
+            target_semester = Semester.objects.filter(id=semester_id).first()
+            if not target_semester:
+                target_semester = Semester.objects.filter(code=semester_id).first()
+            if not target_semester and semester_id in ["1", "2", "3"]:
+                sem_qs = Semester.objects.filter(order_no=int(semester_id))
+                if target_academic_year:
+                    sem_qs = sem_qs.filter(academic_year=target_academic_year)
+                target_semester = sem_qs.first()
+        elif semester_id is None:
+            if target_academic_year:
+                target_semester = Semester.objects.filter(
+                    academic_year=target_academic_year, is_current=True
+                ).first()
+                if not target_semester:
+                    today = timezone.localdate()
+                    target_semester = Semester.objects.filter(
+                        academic_year=target_academic_year,
+                        start_date__lte=today,
+                        end_date__gte=today,
+                    ).first()
+                if not target_semester:
+                    target_semester = (
+                        Semester.objects.filter(academic_year=target_academic_year)
+                        .order_by("order_no")
+                        .first()
+                    )
+            if not target_semester:
+                target_semester = Semester.objects.filter(is_current=True).first()
+
+        return student, school_class, target_academic_year, target_semester
+
+    @classmethod
     def list_leave_requests(
         cls,
         user: Any,
@@ -892,15 +1068,27 @@ class LeaveRequestService:
         sort_by: str | None = None,
         class_id: str | None = None,
         student_id: str | None = None,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
     ) -> list[dict[str, Any]]:
         """
         Retrieves filtered and sorted leave requests for the student.
+        Automatically filters by the student's active semester and academic year by default.
         Automatically runs overdue 3-hour pre-lesson auto-approval check first.
         """
+        student, school_class, target_academic_year, target_semester = cls.resolve_academic_context(
+            user=user,
+            student_id=student_id,
+            class_id=class_id,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
+        )
+
         qs = LeaveRequest.objects.select_related(
             "student",
             "student__user",
             "school_class",
+            "school_class__academic_year",
             "school_class__homeroom_teacher",
             "school_class__homeroom_teacher__user",
             "guardian",
@@ -913,10 +1101,25 @@ class LeaveRequestService:
         elif class_id:
             qs = qs.filter(school_class_id=class_id)
         else:
-            student = cls.resolve_student(user)
             if not student:
                 return []
             qs = qs.filter(student=student)
+
+        # Filter strictly by academic year and semester of the student
+        if target_academic_year:
+            qs = qs.filter(
+                Q(school_class__academic_year=target_academic_year)
+                | Q(
+                    start_date__gte=target_academic_year.start_date,
+                    end_date__lte=target_academic_year.end_date,
+                )
+            )
+
+        if target_semester:
+            qs = qs.filter(
+                start_date__lte=target_semester.end_date,
+                end_date__gte=target_semester.start_date,
+            )
 
         # Check and auto-approve any pending request past its 3-hour pre-lesson deadline
         cls.check_and_auto_approve_overdue_requests(qs)
@@ -951,25 +1154,34 @@ class LeaveRequestService:
         return [cls.format_leave_request_item(item, include_logs=False) for item in qs]
 
     @classmethod
-    def get_summary(cls, user: Any) -> dict[str, Any]:
+    def get_summary(
+        cls,
+        user: Any,
+        academic_year_id: str | None = None,
+        semester_id: str | None = None,
+    ) -> dict[str, Any]:
         """
-        Computes aggregated summary metrics and class/guardian context for the student.
+        Computes aggregated summary metrics and class/guardian context for the student,
+        filtered by the student's enrolled academic year and semester.
         """
-        student = cls.resolve_student(user)
-        school_class = cls.resolve_student_class(student)
+        student, school_class, target_academic_year, target_semester = cls.resolve_academic_context(
+            user=user,
+            academic_year_id=academic_year_id,
+            semester_id=semester_id,
+        )
         guardian = cls.resolve_primary_guardian(student)
 
         class_name = school_class.name if school_class else None
         academic_year_name = (
-            school_class.academic_year.name if school_class and school_class.academic_year else None
+            target_academic_year.name
+            if target_academic_year
+            else (
+                school_class.academic_year.name
+                if school_class and school_class.academic_year
+                else None
+            )
         )
-
-        current_semester = Semester.objects.filter(is_current=True).first()
-        if not current_semester and school_class and school_class.academic_year_id:
-            current_semester = Semester.objects.filter(
-                academic_year_id=school_class.academic_year_id
-            ).first()
-        semester_name = current_semester.name if current_semester else "Học kỳ 1"
+        semester_name = target_semester.name if target_semester else "Học kỳ 1"
 
         homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
         homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
@@ -986,6 +1198,8 @@ class LeaveRequestService:
                 "className": class_name,
                 "semesterName": semester_name,
                 "academicYear": academic_year_name,
+                "semesterId": str(target_semester.id) if target_semester else None,
+                "academicYearId": str(target_academic_year.id) if target_academic_year else None,
                 "homeroomTeacherName": homeroom_user.full_name if homeroom_user else None,
                 "homeroomTeacherEmail": homeroom_user.email if homeroom_user else None,
                 "homeroomTeacherPhone": getattr(homeroom_user, "phone", None)
@@ -997,6 +1211,22 @@ class LeaveRequestService:
             }
 
         qs = LeaveRequest.objects.filter(student=student)
+
+        if target_academic_year:
+            qs = qs.filter(
+                Q(school_class__academic_year=target_academic_year)
+                | Q(
+                    start_date__gte=target_academic_year.start_date,
+                    end_date__lte=target_academic_year.end_date,
+                )
+            )
+
+        if target_semester:
+            qs = qs.filter(
+                start_date__lte=target_semester.end_date,
+                end_date__gte=target_semester.start_date,
+            )
+
         cls.check_and_auto_approve_overdue_requests(qs)
 
         total = qs.count()
@@ -1032,6 +1262,8 @@ class LeaveRequestService:
             "className": class_name,
             "semesterName": semester_name,
             "academicYear": academic_year_name,
+            "semesterId": str(target_semester.id) if target_semester else None,
+            "academicYearId": str(target_academic_year.id) if target_academic_year else None,
             "homeroomTeacherName": homeroom_user.full_name
             if homeroom_user
             else "Giáo viên chủ nhiệm",
@@ -1149,9 +1381,11 @@ class LeaveRequestService:
             or "Em xin hứa sẽ chép bài, làm bài tập đầy đủ và tự ôn tập kiến thức trong thời gian nghỉ học."
         )
 
+        now = timezone.now()
         first_lesson_dt, deadline_dt = cls.calculate_first_lesson_and_deadline(
             affected_lessons=affected_lessons,
             fallback_start_date=start_date,
+            submitted_at=now,
         )
 
         metadata = {
@@ -1166,6 +1400,8 @@ class LeaveRequestService:
             "approvalPolicy": "HOMEROOM_TEACHER_ONLY",
             "firstLessonStartAt": first_lesson_dt.isoformat(),
             "approvalDeadline": deadline_dt.isoformat(),
+            "submittedAt": now.isoformat(),
+            "approvalMethod": None,
         }
 
         leave_req = LeaveRequest.objects.create(
@@ -1327,6 +1563,7 @@ class LeaveRequestService:
         first_lesson_dt, deadline_dt = cls.calculate_first_lesson_and_deadline(
             affected_lessons=affected_lessons,
             fallback_start_date=leave_req.start_date,
+            submitted_at=leave_req.created_at,
         )
         leave_req.approval_deadline = deadline_dt
 

@@ -302,9 +302,9 @@ export const AttendanceModal: React.FC<AttendanceModalProps> = ({
               <span>
                 {record.period} ({record.timeSlot})
               </span>
-              <span>•</span>
+              <span>|</span>
               <span>{record.room}</span>
-              <span>•</span>
+              <span>|</span>
               <span>
                 {t("card:attendance.card.teacherLabel")} {record.teacherName}
               </span>

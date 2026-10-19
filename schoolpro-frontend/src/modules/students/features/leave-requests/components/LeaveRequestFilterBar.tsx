@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { LeaveRequestViewMode } from "@/modules/students/features/leave-requests/types";
 import { SelectSort } from "@/components/sort/SelectSort";
 import { Select } from "@/components/ui/Select";
 
@@ -12,13 +11,11 @@ interface LeaveRequestFilterBarProps {
   leaveType: string;
   searchQuery: string;
   sortBy: string;
-  viewMode: LeaveRequestViewMode;
   hasActiveFilters?: boolean;
   onStatusChange: (val: string) => void;
   onLeaveTypeChange: (val: string) => void;
   onSearchChange: (val: string) => void;
   onSortByChange: (val: string) => void;
-  onViewModeChange: (mode: LeaveRequestViewMode) => void;
   onResetFilters: () => void;
 }
 
@@ -27,13 +24,11 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
   leaveType,
   searchQuery,
   sortBy,
-  viewMode,
   hasActiveFilters = false,
   onStatusChange,
   onLeaveTypeChange,
   onSearchChange,
   onSortByChange,
-  onViewModeChange,
   onResetFilters,
 }) => {
   const { t } = useTranslation(["input", "card", "button"]);
@@ -101,40 +96,12 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             className="w-full"
           />
         </div>
-
-        {/* View Mode Toggle: Grid vs List */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
-          <button
-            type="button"
-            onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
-              viewMode === "grid"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="chart" size={13} />
-            <span>{t("input:leaveRequests.viewCard")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onViewModeChange("list")}
-            className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
-              viewMode === "list"
-                ? "bg-white text-blue-600 shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Icon name="menu" size={13} />
-            <span>{t("input:leaveRequests.viewList")}</span>
-          </button>
-        </div>
       </div>
 
       {/* Bottom row: Filter Dropdowns */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* 1. Loại nghỉ phép */}
+          {/* 1. Leave Type Filter */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="leave-request-filter-type"
@@ -147,11 +114,11 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
               value={leaveType}
               onChange={onLeaveTypeChange}
               options={leaveTypeOptions}
-              className="w-44 sm:w-48"
+              className="w-50 sm:w-50"
             />
           </div>
 
-          {/* 2. Trạng thái */}
+          {/* 2. Status Filter */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="leave-request-filter-status"
@@ -168,7 +135,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
             />
           </div>
 
-          {/* 3. Sắp xếp */}
+          {/* 3. Sort Order */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="leave-request-filter-sort"
