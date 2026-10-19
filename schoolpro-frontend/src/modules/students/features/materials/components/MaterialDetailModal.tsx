@@ -84,7 +84,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
             <div>
               <h4 className="font-semibold text-slate-800 text-sm mb-0.5">{item.fileName}</h4>
               <p className="text-xs text-slate-500">
-                {t("card:materials.modal.fileSize")}: <strong>{item.fileSize}</strong> • {t("card:materials.modal.format")}: <strong>{item.format.toUpperCase()}</strong>
+                {t("card:materials.modal.fileSize")}: <strong>{item.fileSize}</strong> | {t("card:materials.modal.format")}: <strong>{item.format.toUpperCase()}</strong>
               </p>
             </div>
           </div>
@@ -164,9 +164,9 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
           </h2>
           <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
             <span>{t("card:materials.meta.author", { author: item.author })}</span>
-            <span>•</span>
+            <span>|</span>
             <span>{t("card:materials.meta.uploadDate", { date: item.uploadDate })}</span>
-            <span>•</span>
+            <span>|</span>
             <span>{t("card:materials.meta.downloadsCount", { count: item.downloadsCount })}</span>
           </div>
         </div>

@@ -91,7 +91,7 @@ export const AttendanceDetailModal: React.FC<AttendanceDetailModalProps> = ({
             </span>
             <strong className="text-slate-800">
               {record.room}
-              {record.building ? ` • ${record.building}` : ""}
+              {record.building ? ` | ${record.building}` : ""}
             </strong>
           </div>
 

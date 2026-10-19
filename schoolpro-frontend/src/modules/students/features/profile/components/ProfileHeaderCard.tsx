@@ -62,12 +62,12 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
                   <strong className="text-slate-700">{t("input:labels.studentCode")}:</strong>{" "}
                   {personalInfo.studentCode}
                 </span>
-                <span>•</span>
+                <span>|</span>
                 <span className="flex items-center gap-1">
                   <Icon name="book" size={13} className="text-slate-400" />
                   {academicInfo.schoolName}
                 </span>
-                <span>•</span>
+                <span>|</span>
                 <span className="flex items-center gap-1">
                   <Icon name="user" size={13} className="text-slate-400" />
                   {academicInfo.academicYear}

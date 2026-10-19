@@ -80,7 +80,7 @@ describe("printLeaveRequest utils", () => {
     expect(ctx.student_code).toBe("HS2026001");
     expect(ctx.student_dob).toContain("15/05/2008");
     expect(ctx.class_name).toBe("10A1");
-    expect(ctx.approval_checkboxes).toContain("[x] Đồng ý");
+    expect(ctx.approval_checkboxes).toContain("☑ Đồng ý cho nghỉ");
     expect(ctx.teacher_note_display).toContain("Đồng ý cho học sinh nghỉ ngơi");
     expect(ctx.affected_lessons_table_html).toContain("Chi tiết các tiết học xin nghỉ theo Thời khóa biểu");
     expect(ctx.affected_lessons_table_html).toContain("Lý Quốc Tuấn");

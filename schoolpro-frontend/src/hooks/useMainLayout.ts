@@ -108,7 +108,7 @@ export const useMainLayout = () => {
 
   const currentWeekText = `Tuần ${academicContext?.current_week ?? 1}`;
 
-  const academicBadgeString = `${semesterText} • ${academicYearText} • ${currentWeekText}`;
+  const academicBadgeString = `${semesterText} | ${academicYearText} | ${currentWeekText}`;
 
   // Default routes based on role
   const defaultHomeRoute = getRoleHomeRoute(role);

@@ -53,19 +53,47 @@ class LeaveRequestPdfService:
         """
         try:
             tpl_service = ExportTemplateService()
+            found = None
             if template_id:
                 found = tpl_service.repository.get_by_id(template_id)
-                if found:
-                    return found
 
-            if template_code:
+            if not found and template_code:
                 found = tpl_service.repository.get_active_by_code(
                     code=template_code, school_id=school_id
                 )
-                if found:
-                    return found
 
-            return tpl_service.get_or_create_default_leave_request_template(school_id=school_id)
+            if not found:
+                found = tpl_service.get_or_create_default_leave_request_template(
+                    school_id=school_id
+                )
+
+            if found and (
+                '<main class="page">' not in (found.header_content or "")
+                or "margin-top:8px" in (found.header_content or "")
+            ):
+                found.header_content = DEFAULT_LEAVE_REQUEST_HEADER
+                found.content = DEFAULT_LEAVE_REQUEST_CONTENT
+                found.footer_content = DEFAULT_LEAVE_REQUEST_FOOTER
+                found.style_content = DEFAULT_LEAVE_REQUEST_STYLES
+                found.page_size = "A4"
+                found.page_orientation = "PORTRAIT"
+                found.margins = {"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"}
+                try:
+                    found.save(
+                        update_fields=[
+                            "header_content",
+                            "content",
+                            "footer_content",
+                            "style_content",
+                            "page_size",
+                            "page_orientation",
+                            "margins",
+                        ]
+                    )
+                except Exception as save_err:
+                    logger.debug("Could not auto-update ExportTemplate record: %s", save_err)
+
+            return found
         except Exception as exc:
             logger.debug("Fallback to in-memory ExportTemplate for leave request: %s", exc)
             return ExportTemplate(
@@ -79,7 +107,7 @@ class LeaveRequestPdfService:
                 style_content=DEFAULT_LEAVE_REQUEST_STYLES,
                 page_size="A4",
                 page_orientation="PORTRAIT",
-                margins={"top": "18mm", "right": "18mm", "bottom": "18mm", "left": "22mm"},
+                margins={"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"},
                 placeholders_schema=DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
                 sample_data=DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
                 is_default=True,
@@ -105,7 +133,7 @@ class LeaveRequestPdfService:
         }
         status_labels = {
             "pending": "Chờ phê duyệt",
-            "approved": "Đã phê duyệt (Tự động)" if item.get("isAutoApproved") else "Đã phê duyệt",
+            "approved": "Đã phê duyệt",
             "rejected": "Từ chối phê duyệt",
             "cancelled": "Đã hủy đơn",
         }
@@ -151,7 +179,7 @@ class LeaveRequestPdfService:
         )
 
         homeroom_name = str(item.get("homeroomTeacherName") or "Giáo viên chủ nhiệm")
-        reviewer_name = str(item.get("reviewedByName") or homeroom_name)
+        reviewer_name = homeroom_name
         class_name = str(item.get("className") or "10A1")
         student_name = str(item.get("studentName") or "")
         student_code = str(item.get("studentCode") or "")
@@ -254,17 +282,29 @@ class LeaveRequestPdfService:
 
         status_lower = str(item.get("status") or "").lower()
         if status_lower == "approved":
-            approval_checkboxes = "☑ Đồng ý cho nghỉ học &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            approval_checkboxes = (
+                "☑ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            )
         elif status_lower == "rejected":
-            approval_checkboxes = "☐ Đồng ý cho nghỉ học &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☑ Không đồng ý"
+            approval_checkboxes = (
+                "☐ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☑ Không đồng ý"
+            )
         else:
-            approval_checkboxes = "☐ Đồng ý cho nghỉ học &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            approval_checkboxes = (
+                "☐ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý"
+            )
 
-        teacher_note_display = (
-            escape(teacher_note_raw)
-            if teacher_note_raw
-            else "......................................................................................................................."
-        )
+        if teacher_note_raw and not any(
+            k in teacher_note_raw.lower()
+            for k in ["quá hạn", "tự động", "hệ thống", "auto", "system"]
+        ):
+            teacher_note_display = escape(teacher_note_raw)
+        elif status_lower == "approved":
+            teacher_note_display = "Đồng ý cho học sinh nghỉ học có phép."
+        elif status_lower == "rejected":
+            teacher_note_display = "Từ chối cho nghỉ"
+        else:
+            teacher_note_display = "......................................................................................................................."
 
         return {
             **sample,
@@ -624,7 +664,7 @@ class LeaveRequestPdfService:
         )
         story.append(
             Paragraph(
-                f"(Phân loại: {escape(str(ctx.get('leave_type_label') or ''))} • "
+                f"(Phân loại: {escape(str(ctx.get('leave_type_label') or ''))} | "
                 f"Trạng thái: {escape(str(ctx.get('status_label') or ''))})",
                 style_subtitle,
             )
@@ -787,9 +827,9 @@ class LeaveRequestPdfService:
 
         story.append(
             Paragraph(
-                f"<font size='9' color='#64748B'>Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro • "
-                f"Mã đơn: {escape(str(ctx.get('code') or ''))} • "
-                f"Biểu mẫu: {escape(str(ctx.get('template_code') or ''))} • "
+                f"<font size='9' color='#64748B'>Trích xuất từ Hệ thống Quản lý Học vụ SchoolPro | "
+                f"Mã đơn: {escape(str(ctx.get('code') or ''))} | "
+                f"Biểu mẫu: {escape(str(ctx.get('template_code') or ''))} | "
                 f"Thời gian xuất: {escape(str(ctx.get('exported_at') or ''))}</font>",
                 style_center,
             )

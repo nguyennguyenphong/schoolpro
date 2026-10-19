@@ -19,7 +19,7 @@
   "deleteLeaveRequestConfirmTitle": "确认删除请假申请？",
   "deleteLeaveRequestConfirmDesc": "此待审批的请假申请将被永久删除。",
   "attendance": {
-    "bannerTag": "在线考勤系统 • 100% GPS 防作弊",
+    "bannerTag": "在线考勤系统 | 100% GPS 防作弊",
     "expiredBadgeTitle": "代码状态",
     "countdownTitle": "剩余时间",
     "expiredShort": "已过期",
@@ -35,7 +35,7 @@
     "qr": {
       "cameraTab": "直接使用相机扫描",
       "uploadTab": "上传二维码图片",
-      "cameraReadyHint": "相机已识别到教师二维码 • 准备进行 GPS 验证",
+      "cameraReadyHint": "相机已识别到教师二维码 | 准备进行 GPS 验证",
       "qrDecodedReady": "✓ 已成功解析图片中的有效二维码数据",
       "dropzoneTitle": "从设备中选择签到二维码图片",
       "dropzoneHint": "支持从教师投影仪屏幕拍摄的 PNG、JPG、JPEG、WebP、SVG 图片"
@@ -71,7 +71,7 @@
       "studentCoords": "学生 GPS 坐标:",
       "distance": "距离教师设备:",
       "status": "验证状态:",
-      "verifiedText": "100% 有效 • 处于教室半径范围内"
+      "verifiedText": "100% 有效 | 处于教室半径范围内"
     },
     "expired": {
       "title": "签到代码已过期，无法继续使用！",

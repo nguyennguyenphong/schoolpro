@@ -138,11 +138,27 @@ def test_br03_format_leave_request_approval_method():
     assert formatted_manual["reviewedByName"] == "Thầy Nguyễn Văn Chủ Nhiệm"
 
 
-def test_academic_context_resolution_and_defaults():
+def test_academic_context_resolution_and_defaults(monkeypatch):
     """
     Verifies resolve_academic_context fallback mechanics when user has no active student.
     """
     from types import SimpleNamespace
+    from unittest.mock import MagicMock
+
+    from apps.master.models.academic_year import AcademicYear
+    from apps.master.models.semester import Semester
+
+    mock_year_qs = MagicMock()
+    mock_year_qs.first.return_value = None
+    mock_year_qs.order_by.return_value = mock_year_qs
+    monkeypatch.setattr(AcademicYear.objects, "filter", MagicMock(return_value=mock_year_qs))
+    monkeypatch.setattr(AcademicYear.objects, "order_by", MagicMock(return_value=mock_year_qs))
+
+    mock_sem_qs = MagicMock()
+    mock_sem_qs.first.return_value = None
+    mock_sem_qs.order_by.return_value = mock_sem_qs
+    monkeypatch.setattr(Semester.objects, "filter", MagicMock(return_value=mock_sem_qs))
+    monkeypatch.setattr(Semester.objects, "order_by", MagicMock(return_value=mock_sem_qs))
 
     mock_user = SimpleNamespace(id="u-nonstudent", is_staff=False, is_superuser=False)
     student, school_class, academic_year, semester = LeaveRequestService.resolve_academic_context(
@@ -152,5 +168,67 @@ def test_academic_context_resolution_and_defaults():
         academic_year_id=None,
         semester_id=None,
     )
-    # When user is not a student and no entities in DB during unit test, gracefully returns None/defaults
-    assert student is None or student is not None
+    assert student is None
+    assert academic_year is None
+    assert semester is None
+
+
+def test_leave_request_print_template_and_context():
+    """
+    Verifies that the printed leave request:
+    - Never mentions automation/auto-approval (status_label has no '(Tự động)').
+    - Explicitly displays homeroom teacher's name as reviewer and in recipient.
+    - Approval checkboxes show '☑ Đồng ý cho nghỉ' only when approved, and unchecked otherwise.
+    - Header does not have class line under School name.
+    - Main container uses <main class="page">.
+    """
+    from apps.academic.services.leave_request_pdf_service import LeaveRequestPdfService
+    from apps.system.services.export_template_service import (
+        DEFAULT_LEAVE_REQUEST_CONTENT,
+        DEFAULT_LEAVE_REQUEST_FOOTER,
+        DEFAULT_LEAVE_REQUEST_HEADER,
+    )
+
+    # 1. Header checks
+    assert '<main class="page">' in DEFAULT_LEAVE_REQUEST_HEADER
+    assert "Lớp:" not in DEFAULT_LEAVE_REQUEST_HEADER
+    assert "</main>" in DEFAULT_LEAVE_REQUEST_FOOTER
+
+    # 2. Content recipient and student block layout
+    assert "{{homeroom_teacher_name}}" in DEFAULT_LEAVE_REQUEST_CONTENT
+    assert (
+        "Mã học sinh: <strong>{{student_code}}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lớp: <strong>{{class_name}}</strong>"
+        in DEFAULT_LEAVE_REQUEST_CONTENT
+    )
+
+    # 3. Approved leave request context
+    item_approved = {
+        "status": "approved",
+        "isAutoApproved": True,
+        "homeroomTeacherName": "Cô Nguyễn Thị Mai",
+        "teacherNote": "Hệ thống tự động phê duyệt do quá hạn 3 giờ",
+        "studentName": "Đỗ Minh Quân",
+        "studentCode": "HS2026001",
+        "studentDob": "2010-03-21",
+        "className": "10A1",
+        "startDate": "2026-10-19",
+        "endDate": "2026-10-19",
+    }
+    ctx_approved = LeaveRequestPdfService.build_template_context(item_approved)
+    assert ctx_approved["status_label"] == "Đã phê duyệt"
+    assert "Tự động" not in ctx_approved["status_label"]
+    assert "Hệ thống tự động" not in ctx_approved["teacher_note_display"]
+    assert "☑ Đồng ý cho nghỉ" in ctx_approved["approval_checkboxes"]
+    assert ctx_approved["reviewer_name"] == "Cô Nguyễn Thị Mai"
+
+    # 4. Pending leave request context
+    item_pending = {
+        "status": "pending",
+        "isAutoApproved": False,
+        "homeroomTeacherName": "Cô Nguyễn Thị Mai",
+        "studentName": "Đỗ Minh Quân",
+    }
+    ctx_pending = LeaveRequestPdfService.build_template_context(item_pending)
+    assert ctx_pending["status_label"] == "Chờ phê duyệt"
+    assert "☐ Đồng ý cho nghỉ" in ctx_pending["approval_checkboxes"]
+    assert "☑" not in ctx_pending["approval_checkboxes"]

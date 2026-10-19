@@ -49,7 +49,7 @@ export const SurveyViewModal: React.FC<SurveyViewModalProps> = ({
 
           <div className="text-xs text-slate-500 flex items-center gap-2">
             <span>Thời gian nộp: <strong>{survey.completedAt || "Học kỳ 1"}</strong></span>
-            <span>•</span>
+            <span>|</span>
             <span>Hình thức: {survey.isAnonymous ? "Khảo sát ẩn danh" : "Định danh cá nhân"}</span>
           </div>
         </div>

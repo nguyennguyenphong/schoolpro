@@ -351,7 +351,7 @@ class ExportTemplateService:
             style_content=DEFAULT_LEAVE_REQUEST_STYLES,
             page_size="A4",
             page_orientation="PORTRAIT",
-            margins={"top": "18mm", "right": "18mm", "bottom": "18mm", "left": "22mm"},
+            margins={"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"},
             placeholders_schema=DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
             sample_data=DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
             is_default=True,
@@ -438,257 +438,345 @@ class ExportTemplateService:
 DEFAULT_LEAVE_REQUEST_CODE = "LEAVE_REQUEST_OFFICIAL_A4"
 
 DEFAULT_LEAVE_REQUEST_HEADER = """
-<header class="header">
-  <div class="header-left">
-    <div class="school">TRƯỜNG {{school_name}}</div>
-    <div class="school-line"></div>
-    <div style="margin-top:8px">Lớp: {{class_name}}</div>
-  </div>
-  <div class="header-right">
-    <div class="nation">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-    <div class="motto">Độc lập - Tự do - Hạnh phúc</div>
-    <div class="motto-line"></div>
-  </div>
-</header>
+<main class="page">
+  <header class="header">
+    <div class="header-left">
+      <div class="school">TRƯỜNG {{school_name}}</div>
+      <div class="school-line"></div>
+    </div>
+    <div class="header-right">
+      <div class="nation">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+      <div class="motto">Độc lập - Tự do - Hạnh phúc</div>
+      <div class="motto-line"></div>
+    </div>
+  </header>
 """
 
 DEFAULT_LEAVE_REQUEST_CONTENT = """
-<h1>Đơn xin phép nghỉ học</h1>
+  <h1>ĐƠN XIN PHÉP NGHỈ HỌC</h1>
 
-<div class="recipient">
-  <div><strong>Kính gửi:</strong> Ban Giám hiệu {{school_name_title}}</div>
-  <div>Giáo viên chủ nhiệm lớp {{class_name}} (Thầy/Cô {{homeroom_teacher_name}})</div>
-</div>
+  <div class="recipient">
+    <div><strong>Kính gửi:</strong> - Ban Giám hiệu {{school_name_title}}</div>
+    <div>- Thầy/Cô Giáo viên chủ nhiệm lớp {{class_name}}: <strong>{{homeroom_teacher_name}}</strong></div>
+    <div>- Quý Thầy/Cô giáo giảng dạy các môn học</div>
+  </div>
 
-<p class="field">Em tên là: <strong>{{student_name}}</strong></p>
-<p class="field">Mã học sinh: <strong>{{student_code}}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lớp: <strong>{{class_name}}</strong></p>
-<p class="field">Ngày, tháng, năm sinh: <strong>{{student_dob}}</strong></p>
+  <p class="field">Em tên là: <strong>{{student_name}}</strong></p>
+  <p class="field">Mã học sinh: <strong>{{student_code}}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lớp: <strong>{{class_name}}</strong></p>
+  <p class="field">Ngày, tháng, năm sinh: <strong>{{student_dob}}</strong></p>
+  <p class="field">Họ và tên Phụ huynh: <strong>{{guardian_name}}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SĐT liên hệ: <strong>{{guardian_phone}}</strong></p>
 
-<p class="indent">Nay em làm đơn này kính xin Thầy/Cô cho phép em được nghỉ học với thông tin cụ thể như sau:</p>
-<table class="lr-info-table">
-  <tr>
-    <td class="lr-info-label">Thời gian xin nghỉ:</td>
-    <td class="lr-info-value">{{date_range_text}}</td>
-  </tr>
-  <tr>
-    <td class="lr-info-label">Số ngày &amp; Ca nghỉ:</td>
-    <td class="lr-info-value"><strong>{{total_days}} ngày</strong> ({{session_shift_label}})</td>
-  </tr>
-  <tr>
-    <td class="lr-info-label">Các môn học xin nghỉ:</td>
-    <td class="lr-info-value">{{affected_subjects}}</td>
-  </tr>
-</table>
+  <p class="indent">Nay em làm đơn này kính xin Thầy/Cô cho phép em được nghỉ học với thông tin cụ thể như sau:</p>
+  <table class="lr-info-table">
+    <tr>
+      <td class="lr-info-label">Thời gian xin nghỉ:</td>
+      <td class="lr-info-value">{{date_range_text}}</td>
+    </tr>
+    <tr>
+      <td class="lr-info-label">Số ngày &amp; Ca nghỉ:</td>
+      <td class="lr-info-value"><strong>{{total_days}} ngày</strong> ({{session_shift_label}})</td>
+    </tr>
+    <tr>
+      <td class="lr-info-label">Các môn học xin nghỉ:</td>
+      <td class="lr-info-value">{{affected_subjects}}</td>
+    </tr>
+  </table>
 
-{{affected_lessons_table_html}}
+  {{affected_lessons_table_html}}
 
-<p class="field"><strong>Lý do xin nghỉ học:</strong></p>
-<div class="reason-block">
-  {{reason_html}}
-</div>
+  <div class="field reason-block-wrap">
+    <strong>Lý do xin nghỉ học:</strong>
+    <div class="reason-block">
+      {{reason_html}}
+    </div>
+  </div>
 
-<p class="indent"><strong>Lời hứa và cam kết của học sinh:</strong> {{commitment_html}}</p>
-<p class="indent">Kính mong Ban Giám hiệu và Giáo viên chủ nhiệm xem xét, chấp thuận. Em xin chân thành cảm ơn!</p>
+  <p class="indent">{{commitment_html}}</p>
+  <p class="indent">Kính mong Thầy/Cô xem xét và tạo điều kiện cho em được phép nghỉ học. Em xin chân thành cảm ơn!</p>
 """
 
 DEFAULT_LEAVE_REQUEST_FOOTER = """
-<p class="date">{{created_date_admin}}</p>
-<div class="signatures-row">
-  <div class="signature">
-    <div class="sign-title">Xác nhận của phụ huynh</div>
-    <div class="sign-note">(Ký và ghi rõ họ tên)</div>
-    <div class="sign-space"></div>
-    <div class="sign-name">{{guardian_name}}</div>
+  <p class="date">{{created_date_admin}}</p>
+  <div class="signatures-row">
+    <div class="signature">
+      <div class="sign-title">Ý KIẾN CỦA PHỤ HUYNH</div>
+      <div class="sign-note">(Ký và ghi rõ họ tên)</div>
+      <div class="sign-space"></div>
+      <div class="sign-name">{{guardian_name}}</div>
+    </div>
+    <div class="signature">
+      <div class="sign-title">NGƯỜI LÀM ĐƠN</div>
+      <div class="sign-note">(Ký và ghi rõ họ tên)</div>
+      <div class="sign-space"></div>
+      <div class="sign-name">{{student_name}}</div>
+    </div>
   </div>
-  <div class="signature">
-    <div class="sign-title">Học sinh làm đơn</div>
-    <div class="sign-note">(Ký và ghi rõ họ tên)</div>
-    <div class="sign-space"></div>
-    <div class="sign-name">{{student_name}}</div>
-  </div>
-</div>
 
-<section class="approval">
-  <div class="approval-title">Ý kiến của giáo viên chủ nhiệm</div>
-  <p>{{approval_checkboxes}}</p>
-  <p>Ý kiến khác: <em>{{teacher_note_display}}</em></p>
-  <div class="approval-sign">
-    <div class="sign-title">Giáo viên chủ nhiệm</div>
-    <div class="sign-note">({{status_label}})</div>
-    <div class="sign-space"></div>
-    <div class="sign-name">{{reviewer_name}}</div>
-  </div>
-</section>
+  <section class="approval">
+    <div class="approval-title">Ý KIẾN PHÊ DUYỆT CỦA GIÁO VIÊN CHỦ NHIỆM</div>
+    <p class="approval-status">Tình trạng phê duyệt: &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: DejaVu Sans, Arial, sans-serif;">{{approval_checkboxes}}</span></p>
+    <p class="approval-note">Ý kiến bổ sung: <em>{{teacher_note_display}}</em></p>
+    <div class="approval-sign">
+      <div class="sign-title">GIÁO VIÊN CHỦ NHIỆM</div>
+      <div class="sign-note">({{status_label}})</div>
+      <div class="sign-space"></div>
+      <div class="sign-name">{{homeroom_teacher_name}}</div>
+    </div>
+  </section>
+</main>
 """
 
 DEFAULT_LEAVE_REQUEST_STYLES = """
 * {
   box-sizing: border-box;
 }
+
 @page {
   size: A4 portrait;
-  margin: 20mm 22mm;
+  margin: 12mm 16mm;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  color: #111;
+  background: #ededed;
+  font-size: 13pt;
+  line-height: 1.4;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 20px auto;
+  padding: 14mm 18mm;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
 .header {
   display: table;
   width: 100%;
-  margin-bottom: 20px;
-  font-size: 12pt;
-  line-height: 1.3;
+  margin-bottom: 14px;
+  font-size: 11.5pt;
+  line-height: 1.28;
 }
+
 .header-left {
   display: table-cell;
   width: 44%;
   text-align: center;
   vertical-align: top;
 }
+
 .header-right {
   display: table-cell;
   width: 56%;
   text-align: center;
   vertical-align: top;
 }
+
 .school {
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 12pt;
+  font-size: 11.5pt;
 }
+
 .school-line {
   width: 75%;
   border-top: 1px solid #222;
-  margin: 7px auto 0;
+  margin: 5px auto 0;
 }
+
 .nation {
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 12pt;
+  font-size: 11.5pt;
 }
+
 .motto {
   font-weight: bold;
-  margin-top: 4px;
-  font-size: 12.5pt;
+  margin-top: 3px;
+  font-size: 12pt;
 }
+
 .motto-line {
-  width: 50%;
+  width: 48%;
   border-top: 1px solid #222;
-  margin: 6px auto 0;
+  margin: 5px auto 0;
 }
+
 h1 {
   text-align: center;
-  font-size: 18pt;
+  font-size: 16pt;
   text-transform: uppercase;
-  margin: 24px 0 18px;
+  margin: 16px 0 12px;
   font-weight: bold;
-  line-height: 1.25;
+  line-height: 1.2;
 }
+
 .recipient {
   text-align: center;
-  margin: 0 0 20px;
-  line-height: 1.65;
-  font-size: 13.5pt;
+  margin: 0 0 14px;
+  line-height: 1.5;
+  font-size: 12.5pt;
 }
+
 p {
-  margin: 9px 0;
+  margin: 6px 0;
   text-align: justify;
 }
+
 .field {
-  margin: 8px 0;
+  margin: 5px 0;
+  font-size: 12.5pt;
 }
+
 .indent {
-  text-indent: 32px;
+  text-indent: 28px;
+  font-size: 12.5pt;
 }
+
+.lr-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 8px 0;
+}
+
+.lr-info-table td {
+  border: 1px solid #777;
+  padding: 4px 8px;
+  font-size: 12pt;
+}
+
+.lr-info-label {
+  width: 30%;
+  font-weight: bold;
+  background: #fbfbfb;
+}
+
+.lr-timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 8px 0;
+  font-size: 11pt;
+  page-break-inside: avoid;
+}
+
+.lr-timetable-table th,
+.lr-timetable-table td {
+  border: 1px solid #777;
+  padding: 4px 6px;
+}
+
+.lr-timetable-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+.reason-block-wrap {
+  margin: 5px 0;
+}
+
+.reason-block {
+  margin: 3px 0 5px 0;
+  padding: 4px 8px;
+  background: #fafafa;
+  border-left: 3px solid #234f75;
+  text-align: justify;
+  font-size: 12pt;
+}
+
 .date {
   text-align: right;
   font-style: italic;
-  margin-top: 20px;
+  margin-top: 12px;
+  font-size: 12pt;
 }
+
 .signatures-row {
   display: table;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 8px;
   page-break-inside: avoid;
 }
+
 .signature {
   display: table-cell;
   width: 50%;
   text-align: center;
   vertical-align: top;
 }
+
 .sign-title {
   font-weight: bold;
   text-transform: uppercase;
+  font-size: 11.5pt;
 }
+
 .sign-note {
   font-style: italic;
-  font-size: 12pt;
+  font-size: 11pt;
 }
+
 .sign-space {
-  height: 55px;
+  height: 40px;
 }
+
 .sign-name {
   font-weight: bold;
-  font-size: 13.5pt;
+  font-size: 12.5pt;
 }
+
 .approval {
-  margin-top: 22px;
+  margin-top: 12px;
   border-top: 1px solid #777;
-  padding-top: 12px;
+  padding-top: 8px;
   page-break-inside: avoid;
 }
+
 .approval-title {
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  font-size: 12pt;
+  margin-bottom: 5px;
 }
+
 .approval p {
   text-align: left;
-  margin: 7px 0;
+  margin: 4px 0;
+  font-size: 12pt;
 }
+
 .approval-sign {
   text-align: center;
   width: 52%;
-  margin: 12px 0 0 auto;
+  margin: 6px 0 0 auto;
 }
+
 .approval-sign .sign-space {
-  height: 44px;
+  height: 36px;
 }
-.lr-info-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0 14px 0;
-}
-.lr-info-table td {
-  border: 1px solid #777;
-  padding: 6px 10px;
-  font-size: 13pt;
-}
-.lr-info-label {
-  width: 32%;
-  font-weight: bold;
-  background: #fbfbfb;
-}
-.lr-timetable-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 6px 0 12px 0;
-  font-size: 12pt;
-}
-.lr-timetable-table th,
-.lr-timetable-table td {
-  border: 1px solid #777;
-  padding: 6px 8px;
-}
-.lr-timetable-table th {
-  background: #f2f2f2;
-  font-weight: bold;
-}
-.reason-block {
-  margin: 4px 0 10px 0;
-  padding: 6px 12px;
-  background: #fafafa;
-  border-left: 3px solid #234f75;
-  text-align: justify;
+
+@media print {
+  body {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+  .page {
+    width: 100% !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
 }
 """
 
@@ -803,7 +891,7 @@ DEFAULT_LEAVE_REQUEST_SAMPLE_DATA = {
     "teacher_note": "Đồng ý cho học sinh nghỉ học có phép.",
     "teacher_note_display": "Đồng ý cho học sinh nghỉ học có phép.",
     "teacher_note_block_html": "",
-    "approval_checkboxes": "☑ Đồng ý cho nghỉ học &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý",
+    "approval_checkboxes": "☑ Đồng ý cho nghỉ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đồng ý",
     "template_code": DEFAULT_LEAVE_REQUEST_CODE,
     "exported_at": "11:30 12/10/2026",
 }

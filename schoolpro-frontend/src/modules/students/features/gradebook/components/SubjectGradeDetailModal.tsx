@@ -78,15 +78,15 @@ export const SubjectGradeDetailModal: React.FC<SubjectGradeDetailModalProps> = (
               <Icon name="user" size={12} className="text-blue-600" />
               {item.teacher} ({item.teacherTitle})
             </span>
-            <span>•</span>
+            <span>|</span>
             <span>
               {t("card:gradebook.detailModal.periodsPerWeek", {
                 count: item.periodsPerWeek,
               })}
             </span>
-            <span>•</span>
+            <span>|</span>
             <span>
-              {item.academicYear} • {item.semester}
+              {item.academicYear} | {item.semester}
             </span>
           </div>
         </div>

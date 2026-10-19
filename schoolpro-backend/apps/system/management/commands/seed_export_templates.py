@@ -216,14 +216,18 @@ class Command(BaseCommand):
             "style_content": DEFAULT_LEAVE_REQUEST_STYLES,
             "page_size": "A4",
             "page_orientation": "PORTRAIT",
-            "margins": {"top": "20mm", "right": "22mm", "bottom": "20mm", "left": "22mm"},
+            "margins": {"top": "12mm", "right": "16mm", "bottom": "12mm", "left": "16mm"},
             "placeholders_schema": DEFAULT_LEAVE_REQUEST_PLACEHOLDERS,
             "sample_data": DEFAULT_LEAVE_REQUEST_SAMPLE_DATA,
             "is_default": True,
             "is_active": True,
         }
         if existing:
-            if force or not existing.style_content:
+            if (
+                force
+                or not existing.style_content
+                or '<main class="page">' not in (existing.header_content or "")
+            ):
                 for k, v in leave_fields.items():
                     setattr(existing, k, v)
                 existing.save()

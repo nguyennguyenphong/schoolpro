@@ -151,7 +151,7 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
                   {priorityConfig.label}
                 </Tag>
               )}
-              <span className="text-xs text-slate-400">• {item.publishDate}</span>
+              <span className="text-xs text-slate-400">| {item.publishDate}</span>
             </div>
 
             {/* Title */}
@@ -167,9 +167,9 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
             {/* Department & Author */}
             <div className="flex items-center gap-3 text-xs text-slate-400 pt-0.5">
               <span className="text-slate-600 font-medium">{item.department}</span>
-              <span>•</span>
+              <span>|</span>
               <span>{item.author}</span>
-              <span>•</span>
+              <span>|</span>
               <span>
                 {t("card:meta.views", {
                   count: item.viewsCount,

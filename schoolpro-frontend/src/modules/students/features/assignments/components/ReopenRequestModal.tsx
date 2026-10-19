@@ -90,7 +90,7 @@ export const ReopenRequestModal: React.FC<ReopenRequestModalProps> = ({
               {t("card:assignments.modals.subjectAndAssignment")}
             </span>
             <span className="text-slate-800 font-medium truncate max-w-65">
-              {assignment.subjectName} • {assignment.title}
+              {assignment.subjectName} | {assignment.title}
             </span>
           </div>
 

@@ -19,7 +19,7 @@
   "deleteLeaveRequestConfirmTitle": "Xác nhận xóa đơn xin nghỉ phép?",
   "deleteLeaveRequestConfirmDesc": "Đơn xin nghỉ phép chưa duyệt này sẽ bị xóa vĩnh viễn.",
   "attendance": {
-    "bannerTag": "Cổng điểm danh trực tuyến • Chống gian lận GPS 100%",
+    "bannerTag": "Cổng điểm danh trực tuyến | Chống gian lận GPS 100%",
     "expiredBadgeTitle": "Trạng thái mã",
     "countdownTitle": "Thời gian còn lại",
     "expiredShort": "ĐÃ HẾT HẠN",
@@ -35,7 +35,7 @@
     "qr": {
       "cameraTab": "Quét trực tiếp qua Camera",
       "uploadTab": "Tải ảnh mã QR lên",
-      "cameraReadyHint": "Camera đã nhận diện mã QR của Giáo viên • Sẵn sàng xác thực GPS",
+      "cameraReadyHint": "Camera đã nhận diện mã QR của Giáo viên | Sẵn sàng xác thực GPS",
       "qrDecodedReady": "✓ Đã giải mã dữ liệu QR hợp lệ từ ảnh",
       "dropzoneTitle": "Chọn ảnh mã QR từ thiết bị để điểm danh",
       "dropzoneHint": "Hỗ trợ ảnh PNG, JPG, JPEG, WebP, SVG chụp từ màn hình chiếu của Giáo viên"
@@ -71,7 +71,7 @@
       "studentCoords": "Tọa độ GPS Học sinh:",
       "distance": "Khoảng cách tới thiết bị Giáo viên:",
       "status": "Trạng thái xác thực:",
-      "verifiedText": "Hợp lệ 100% • Trong bán kính lớp học"
+      "verifiedText": "Hợp lệ 100% | Trong bán kính lớp học"
     },
     "expired": {
       "title": "Mã điểm danh đã hết hạn và không còn giá trị sử dụng!",

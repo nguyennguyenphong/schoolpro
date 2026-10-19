@@ -107,7 +107,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
           <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.vision")}</span>
             <p className="font-bold text-slate-800 text-sm mb-0">
-              Trái: {healthRecord.visionLeft} • Phải: {healthRecord.visionRight}
+              Trái: {healthRecord.visionLeft} | Phải: {healthRecord.visionRight}
             </p>
           </div>
 

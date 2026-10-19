@@ -251,7 +251,7 @@ export const AttendanceListView: React.FC<AttendanceListViewProps> = ({
                       {rec.building && (
                         <span className="text-slate-400">
                           {" "}
-                          • {rec.building}
+                          | {rec.building}
                         </span>
                       )}
                     </td>

@@ -302,7 +302,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   </Tag>
                 </div>
                 <p className="text-xs text-slate-500 mb-0 truncate">
-                  {userCode ? `${userCode} • ` : ""}{subInfo}
+                  {userCode ? `${userCode} | ` : ""}{subInfo}
                 </p>
               </div>
             </div>

@@ -90,7 +90,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ overview }) => {
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-[#f0f0f0]">
-          <span>Vắng phép: <strong className="text-slate-700">{overview.excusedAbsences}</strong> • K.Phép: <strong className="text-slate-700">{overview.unexcusedAbsences}</strong></span>
+          <span>Vắng phép: <strong className="text-slate-700">{overview.excusedAbsences}</strong> | K.Phép: <strong className="text-slate-700">{overview.unexcusedAbsences}</strong></span>
           <span className="text-amber-600 font-medium">Muộn: {overview.lateCount}</span>
         </div>
       </Card>

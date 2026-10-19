@@ -17,6 +17,8 @@ interface LeaveRequestWorkflowCardProps {
 export const LeaveRequestWorkflowCard: React.FC<LeaveRequestWorkflowCardProps> = ({ item }) => {
   const { t } = useTranslation(["card"]);
 
+  console.log("item", item.approvalDeadline);
+
   const isApproved = item.status === "approved";
   const isPending = item.status === "pending";
   const isRejected = item.status === "rejected";

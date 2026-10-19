@@ -19,7 +19,7 @@
   "deleteLeaveRequestConfirmTitle": "결석계를 삭제하시겠습니까?",
   "deleteLeaveRequestConfirmDesc": "미승인 상태의 이 결석계는 영구적으로 삭제됩니다.",
   "attendance": {
-    "bannerTag": "온라인 출석 포털 • 100% GPS 부정 방지",
+    "bannerTag": "온라인 출석 포털 | 100% GPS 부정 방지",
     "expiredBadgeTitle": "코드 상태",
     "countdownTitle": "남은 시간",
     "expiredShort": "만료됨",
@@ -35,7 +35,7 @@
     "qr": {
       "cameraTab": "카메라로 직접 스캔",
       "uploadTab": "QR 이미지 업로드",
-      "cameraReadyHint": "카메라가 교사의 QR 코드를 인식했습니다 • GPS 인증 준비 완료",
+      "cameraReadyHint": "카메라가 교사의 QR 코드를 인식했습니다 | GPS 인증 준비 완료",
       "qrDecodedReady": "✓ 이미지에서 유효한 QR 데이터를 디코딩했습니다",
       "dropzoneTitle": "기기에서 QR 코드 이미지를 선택하여 출석",
       "dropzoneHint": "교사의 프로젝터 화면을 촬영한 PNG, JPG, JPEG, WebP, SVG 지원"
@@ -71,7 +71,7 @@
       "studentCoords": "학생 GPS 좌표:",
       "distance": "교사 기기까지의 거리:",
       "status": "인증 상태:",
-      "verifiedText": "100% 유효 • 교실 반경 내"
+      "verifiedText": "100% 유효 | 교실 반경 내"
     },
     "expired": {
       "title": "출석 코드가 만료되어 더 이상 유효하지 않습니다!",

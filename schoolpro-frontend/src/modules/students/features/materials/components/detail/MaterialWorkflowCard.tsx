@@ -99,7 +99,7 @@ export const MaterialWorkflowCard: React.FC<MaterialWorkflowCardProps> = ({ item
           <span>{t("card:materials.overview.officialNotice")}</span>
         </div>
         <span className="text-[11px] font-medium text-blue-800">
-          {t("card:materials.meta.author", { author: item.author })} • <strong>{item.subjectName}</strong>
+          {t("card:materials.meta.author", { author: item.author })} | <strong>{item.subjectName}</strong>
         </span>
       </div>
     </div>

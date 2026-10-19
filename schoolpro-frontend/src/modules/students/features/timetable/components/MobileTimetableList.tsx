@@ -211,7 +211,7 @@ export const MobileTimetableList: React.FC<MobileTimetableListProps> = ({
                             <div className="flex items-center gap-1.5">
                               <Icon name="map-pin" size={13} className="text-slate-400 shrink-0" />
                               <span className="truncate" title={slot.room}>
-                                {slot.room} • {slot.building}
+                                {slot.room} | {slot.building}
                               </span>
                             </div>
                             <div className="flex items-center gap-1.5">

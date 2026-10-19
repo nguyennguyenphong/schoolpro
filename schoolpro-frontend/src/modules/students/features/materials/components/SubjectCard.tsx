@@ -51,7 +51,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({ item }) => {
         <div className="flex items-center gap-2 text-xs text-slate-600 mb-3 bg-slate-50/80 px-2.5 py-1.5 rounded-lg border border-[#f0f0f0]">
           <Icon name="user" size={13} className="text-slate-400 shrink-0" />
           <span className="font-semibold text-slate-700">{item.teacher}</span>
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-400">|</span>
           <span className="text-slate-500 truncate">{item.teacherTitle}</span>
         </div>
 

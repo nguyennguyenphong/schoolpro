@@ -171,7 +171,7 @@ export const GradeTranscriptModal: React.FC<GradeTranscriptModalProps> = ({
               {t("card:gradebook.transcriptModal.schoolYear")}
             </span>
             <strong className="text-sm text-slate-900">
-              {student.academicYear} • {student.semester}
+              {student.academicYear} | {student.semester}
             </strong>
           </div>
         </div>
