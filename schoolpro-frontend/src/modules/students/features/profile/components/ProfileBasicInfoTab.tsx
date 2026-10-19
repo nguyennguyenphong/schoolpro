@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { Form } from "@/components/ui/Form";
-import { Steps } from "@/components/ui/Steps";
 import { Progress } from "@/components/ui/Progress";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -10,6 +9,10 @@ import type {
   StudentPersonalInfo,
   UpdateProfilePayload,
 } from "@/modules/students/features/profile/types";
+import {
+  ProfileStepperNav,
+  type ProfileStepItem,
+} from "@/modules/students/features/profile/components/ProfileStepperNav";
 import { ProfileIdentityFields } from "@/modules/students/features/profile/components/sections/ProfileIdentityFields";
 import { ProfileContactFields } from "@/modules/students/features/profile/components/sections/ProfileContactFields";
 import { ProfileResidenceFields } from "@/modules/students/features/profile/components/sections/ProfileResidenceFields";
@@ -235,23 +238,35 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
     }
   };
 
-  const stepItems = useMemo(
+  const stepItems: ProfileStepItem[] = useMemo(
     () => [
       {
+        id: "step-identity",
+        stepNumber: "Bước 01",
         title: t("card:profile.sections.identityTitle"),
-        icon: <Icon name="user" size={16} />,
+        subtitle: "Họ tên, Mã HS, CCCD",
+        iconName: "user",
       },
       {
+        id: "step-contact",
+        stepNumber: "Bước 02",
         title: t("card:profile.sections.contactTitle"),
-        icon: <Icon name="mail" size={16} />,
+        subtitle: "Số điện thoại, Email, Bio",
+        iconName: "mail",
       },
       {
+        id: "step-residence",
+        stepNumber: "Bước 03",
         title: t("card:profile.sections.residenceTitle"),
-        icon: <Icon name="home" size={16} />,
+        subtitle: "Quê quán, Hộ khẩu, Địa chỉ",
+        iconName: "home",
       },
       {
+        id: "step-organization",
+        stepNumber: "Bước 04",
         title: t("card:profile.sections.organizationTitle"),
-        icon: <Icon name="sparkles" size={16} />,
+        subtitle: "BHYT, Đoàn - Đội",
+        iconName: "sparkles",
       },
     ],
     [t]
@@ -298,13 +313,13 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
           </div>
         </div>
 
-        {/* 2. Interactive Steps Navigation (Clickable) */}
-        <div className="pt-2">
-          <Steps
-            current={currentStep}
-            onChange={(step) => setCurrentStep(step)}
-            items={stepItems}
-            className="cursor-pointer"
+        {/* 2. Custom Interactive Stepper with Active Background & Border Highlights */}
+        <div className="pt-1">
+          <ProfileStepperNav
+            currentStep={currentStep}
+            onStepChange={(step) => setCurrentStep(step)}
+            steps={stepItems}
+            disabled={isSubmitting || disabled}
           />
         </div>
       </div>
