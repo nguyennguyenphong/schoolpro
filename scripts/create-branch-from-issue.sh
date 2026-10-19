@@ -26,6 +26,26 @@ if ! command -v git >/dev/null 2>&1; then
   exit 1
 fi
 
+# 2. Check current branch must be 'main'
+current_branch=$(git branch --show-current 2>/dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+
+if [ "$current_branch" != "main" ]; then
+  echo -e "\n${RED}${BOLD}======================================================================${NC}"
+  echo -e "${RED}${BOLD}   ❌ ERROR: YOU MUST SWITCH TO 'main' BRANCH BEFORE PROCEEDING!     ${NC}"
+  echo -e "${RED}${BOLD}======================================================================${NC}"
+  echo -e "${RED}Current branch:${NC} ${YELLOW}${BOLD}${current_branch:-<unknown>}${NC}"
+  echo -e "${RED}Mandatory requirement: You must be on the '${BOLD}main${NC}${RED}' branch to create a new branch and Pull Request.${NC}"
+  echo -e "${RED}This ensures your new feature branch cleanly diverges from the latest codebase.${NC}\n"
+  echo -e "${YELLOW}👉 Please run the following command in your terminal:${NC}"
+  echo -e "   ${CYAN}${BOLD}git checkout main${NC}  ${YELLOW}(or: ${CYAN}${BOLD}git switch main${NC}${YELLOW})${NC}"
+  echo -e "   ${CYAN}${BOLD}git pull origin main${NC}  ${YELLOW}(to sync latest changes)${NC}"
+  echo -e "${YELLOW}Then rerun the '${BOLD}create branch from issue${NC}${YELLOW}' task.${NC}\n"
+  exit 1
+fi
+
+echo -e "\n${GREEN}✅ Current branch: ${BOLD}main${NC}${GREEN} (Valid to create a new branch).${NC}"
+
+# 3. Check GitHub CLI prerequisites
 if ! command -v gh >/dev/null 2>&1; then
   echo -e "${RED}❌ Error: GitHub CLI ('gh') is not installed.${NC}"
   echo -e "${YELLOW}👉 Install with: brew install gh${NC}"
@@ -39,17 +59,23 @@ if ! gh auth status >/dev/null 2>&1; then
   gh auth login
 fi
 
-# 2. Check git working directory status
+# 4. Check git working directory status
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-  echo -e "${YELLOW}⚠️  Warning: Working directory has uncommitted changes.${NC}"
+  echo -e "${YELLOW}⚠️  Warning: Working directory on 'main' branch has uncommitted changes.${NC}"
   read -r -p "Do you want to continue creating a branch from the current state? [y/N]: " continue_dirty
   if [[ ! "$continue_dirty" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Operation cancelled. Please commit or stash changes before creating a new branch.${NC}"
     exit 0
   fi
+else
+  # Optionally sync latest main from origin when working tree is clean
+  echo -e "${BLUE}⏳ Checking and syncing latest changes from origin/main...${NC}"
+  if git pull origin main --ff-only 2>/dev/null; then
+    echo -e "${GREEN}✅ Branch 'main' is up to date with origin/main.${NC}"
+  fi
 fi
 
-# 3. Fetch open issues from repository
+# 5. Fetch open issues from repository
 echo -e "\n${BLUE}⏳ Fetching open GitHub issues...${NC}"
 issues_json=$(gh issue list --state open --limit 30 --json number,title,labels 2>/dev/null || echo "[]")
 
@@ -127,7 +153,7 @@ fi
 
 echo -e "\n${CYAN}Selected issue: ${BOLD}#${selected_number} - ${selected_title}${NC}"
 
-# 4. Generate clean URL/Git slug (with full accent normalization)
+# 6. Generate clean URL/Git slug (with full accent normalization)
 slug=$(node -e '
   const input = process.argv[1] || "";
   const slug = input
@@ -152,7 +178,7 @@ branch_name="${custom_branch:-$default_branch}"
 # Sanitize branch name
 branch_name=$(echo "$branch_name" | tr ' ' '-' | sed 's/--*/-/g')
 
-# 5. Create and switch to local branch
+# 7. Create and switch to local branch
 echo -e "\n${BLUE}⏳ Creating and checking out branch '${BOLD}${branch_name}${NC}${BLUE}'...${NC}"
 
 if git show-ref --verify --quiet "refs/heads/${branch_name}"; then
@@ -162,7 +188,7 @@ else
   git checkout -b "${branch_name}"
 fi
 
-# 6. Initialize branch and push to remote origin
+# 8. Initialize branch and push to remote origin
 echo -e "\n${BLUE}⏳ Initializing commit and pushing branch to origin...${NC}"
 
 # Create an initial empty commit to allow creating Pull Request immediately if branch has no commits
@@ -172,7 +198,7 @@ fi
 
 git push -u origin "${branch_name}"
 
-# 7. Auto-create Pull Request linked to the Issue
+# 9. Auto-create Pull Request linked to the Issue
 echo -e "\n${BLUE}⏳ Auto-generating Pull Request for Issue #${selected_number}...${NC}"
 
 # Check if a PR already exists for this branch
@@ -215,6 +241,7 @@ EOF
   pr_url=$(gh pr create \
     --title "$pr_title" \
     --body "$pr_body" \
+    --base "main" \
     --head "$branch_name" \
     "${extra_args[@]}" 2>/dev/null || echo "")
 
@@ -224,11 +251,11 @@ EOF
   else
     # Fallback if pr create needs manual intervention or web prompt
     echo -e "${YELLOW}Opening GitHub CLI Pull Request creation interface...${NC}"
-    gh pr create --title "$pr_title" --body "$pr_body" --head "$branch_name" "${extra_args[@]}" || true
+    gh pr create --title "$pr_title" --body "$pr_body" --base "main" --head "$branch_name" "${extra_args[@]}" || true
   fi
 fi
 
-# 8. Success Summary
+# 10. Success Summary
 echo -e "\n${GREEN}${BOLD}======================================================================${NC}"
 echo -e "${GREEN}${BOLD}   ✅ Branch & Pull Request Setup Complete!                          ${NC}"
 echo -e "${GREEN}${BOLD}======================================================================${NC}"

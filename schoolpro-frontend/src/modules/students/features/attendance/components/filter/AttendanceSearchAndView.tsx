@@ -3,13 +3,10 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
-import type { AttendanceViewMode } from "@/modules/students/features/attendance/types";
 
 export interface AttendanceSearchAndViewProps {
   searchQuery: string;
-  viewMode: AttendanceViewMode;
   onSearchChange: (query: string) => void;
-  onViewModeChange: (mode: AttendanceViewMode) => void;
 }
 
 /**
@@ -18,7 +15,7 @@ export interface AttendanceSearchAndViewProps {
  */
 export const AttendanceSearchAndView: React.FC<
   AttendanceSearchAndViewProps
-> = ({ searchQuery, viewMode, onSearchChange, onViewModeChange }) => {
+> = ({ searchQuery, onSearchChange }) => {
   const { t } = useTranslation(["input", "card"]);
 
   useEffect(() => {
@@ -44,34 +41,6 @@ export const AttendanceSearchAndView: React.FC<
           className="w-full"
           autoFocus
         />
-      </div>
-
-      {/* View Mode Toggle: Grid vs List */}
-      <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-[#f0f0f0] shrink-0 self-end sm:self-auto">
-        <button
-          type="button"
-          onClick={() => onViewModeChange("grid")}
-          className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewMode === "grid"
-              ? "bg-white text-blue-600 shadow-xs"
-              : "text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          <Icon name="chart" size={13} />
-          <span>{t("input:leaveRequests.viewCard")}</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => onViewModeChange("list")}
-          className={`px-3 py-1 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 cursor-pointer ${
-            viewMode === "list"
-              ? "bg-white text-blue-600 shadow-xs"
-              : "text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          <Icon name="menu" size={13} />
-          <span>{t("input:leaveRequests.viewList")}</span>
-        </button>
       </div>
     </div>
   );

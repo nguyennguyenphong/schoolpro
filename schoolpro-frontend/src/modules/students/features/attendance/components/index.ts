@@ -1,7 +1,6 @@
 export * from "@/modules/students/features/attendance/components/AttendanceDetailModal";
 export * from "@/modules/students/features/attendance/components/AttendanceFilterBar";
 export * from "@/modules/students/features/attendance/components/AttendanceGpsVerificationCard";
-export * from "@/modules/students/features/attendance/components/AttendanceListView";
 export * from "@/modules/students/features/attendance/components/AttendanceModal";
 export * from "@/modules/students/features/attendance/components/AttendancePageHeader";
 export * from "@/modules/students/features/attendance/components/AttendanceSkeleton";

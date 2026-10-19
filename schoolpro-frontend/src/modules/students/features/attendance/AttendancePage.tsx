@@ -7,7 +7,6 @@ import { Icon } from "@/components/ui/Icon";
 import {
   AttendanceDetailModal,
   AttendanceFilterBar,
-  AttendanceListView,
   AttendanceModal,
   AttendancePageHeader,
   AttendanceSkeleton,
@@ -24,7 +23,6 @@ export const AttendancePage: React.FC = () => {
     setSelectedDate,
     setSearchQuery,
     setShift,
-    setViewMode,
     records,
     summary,
     loading,
@@ -93,7 +91,6 @@ export const AttendancePage: React.FC = () => {
         hasActiveFilters={hasActiveFilters}
         onStatusChange={setFilterStatus}
         onSearchChange={setSearchQuery}
-        onViewModeChange={setViewMode}
         onDateChange={setSelectedDate}
         onTodayClick={goToToday}
         onPrevDayClick={goToPreviousDay}
@@ -104,7 +101,7 @@ export const AttendancePage: React.FC = () => {
 
       {/* 4. Schedule & Attendance Results Area (Grid Cards or Table List) */}
       {loading && records.length === 0 ? (
-        <AttendanceSkeleton count={6} viewMode={filter.viewMode} />
+        <AttendanceSkeleton count={6} />
       ) : records.length === 0 ? (
         <div className="p-10 sm:p-14 text-center bg-white rounded-xl border border-[#f0f0f0] shadow-2xs">
           <Empty
@@ -135,7 +132,7 @@ export const AttendancePage: React.FC = () => {
             )}
           </Empty>
         </div>
-      ) : filter.viewMode === "grid" ? (
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {records.map((record) => (
             <SubjectAttendanceCard
@@ -146,12 +143,6 @@ export const AttendancePage: React.FC = () => {
             />
           ))}
         </div>
-      ) : (
-        <AttendanceListView
-          records={records}
-          onOpenCheckIn={handleOpenCheckIn}
-          onViewDetail={handleOpenDetail}
-        />
       )}
 
       {/* 5. Student Check-in Modal (6-Digit PIN + QR Camera/Image Upload + GPS Verification) */}
