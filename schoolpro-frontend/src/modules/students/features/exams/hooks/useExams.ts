@@ -27,8 +27,8 @@ export const useExams = () => {
   const rawPage = parseInt(searchParams.get("page") || "1", 10);
   const page = Number.isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
-  const rawPageSize = parseInt(searchParams.get("pageSize") || "9", 10);
-  const pageSize = Number.isNaN(rawPageSize) || rawPageSize < 1 ? 9 : rawPageSize;
+  const rawPageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+  const pageSize = [10, 20, 50, 100].includes(rawPageSize) ? rawPageSize : 10;
 
   const filter: ExamFilter = useMemo(
     () => ({

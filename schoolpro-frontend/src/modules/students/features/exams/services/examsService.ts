@@ -50,7 +50,7 @@ class ExamsService {
           items: data.items,
           total: data.total ?? data.items.length,
           page: data.page ?? 1,
-          pageSize: data.pageSize ?? 9,
+          pageSize: data.pageSize ?? 10,
           totalPages: data.totalPages ?? 1,
         };
       }
@@ -59,12 +59,12 @@ class ExamsService {
           items: data,
           total: data.length,
           page: 1,
-          pageSize: data.length || 9,
+          pageSize: data.length || 10,
           totalPages: 1,
         };
       }
     }
-    return { items: [], total: 0, page: 1, pageSize: 9, totalPages: 0 };
+    return { items: [], total: 0, page: 1, pageSize: 10, totalPages: 0 };
   }
 
   /**

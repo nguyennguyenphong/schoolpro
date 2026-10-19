@@ -6,6 +6,7 @@ Follows Clean Architecture: delegates orchestration to ExamService and outputs v
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.negotiation import DefaultContentNegotiation
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -20,22 +21,44 @@ from apps.core.authentication import SchoolProJWTAuthentication
 from common.responses.response import APIResponse
 
 
+class ExamContentNegotiation(DefaultContentNegotiation):
+    """
+    Custom content negotiation that does not treat business filter `format` (e.g. essay, multiple_choice)
+    as a DRF renderer format override unless matching an active renderer format (e.g. json, api).
+    """
+
+    def filter_renderers(self, renderers, format):
+        filtered = [
+            renderer for renderer in renderers if getattr(renderer, "format", None) == format
+        ]
+        return filtered if filtered else renderers
+
+
 class ExamPagination(PageNumberPagination):
     """
     Pagination tailored for student exams list, accommodating both pageSize and page_size params.
+    Enforces allowed page sizes: 10, 20, 50, 100 with default 10.
     """
 
-    page_size = 9
+    page_size = 10
     page_size_query_param = "pageSize"
-    max_page_size = 50
+    max_page_size = 100
     page_query_param = "page"
 
+    ALLOWED_PAGE_SIZES = {10, 20, 50, 100}
+
     def get_page_size(self, request):
-        if "pageSize" in request.query_params:
-            return super().get_page_size(request)
-        if "page_size" in request.query_params:
-            self.page_size_query_param = "page_size"
-        return super().get_page_size(request)
+        params = getattr(request, "query_params", getattr(request, "GET", {}))
+        size_val = params.get("pageSize") or params.get("page_size")
+        if size_val:
+            try:
+                size_int = int(size_val)
+                if size_int in self.ALLOWED_PAGE_SIZES:
+                    return size_int
+                return self.page_size
+            except (ValueError, TypeError):
+                return self.page_size
+        return self.page_size
 
 
 @extend_schema_view(
@@ -58,7 +81,11 @@ class ExamPagination(PageNumberPagination):
             ),
             OpenApiParameter("sortBy", str, description="Sorting mode (newest, upcoming, score)"),
             OpenApiParameter("page", int, description="Page number"),
-            OpenApiParameter("pageSize", int, description="Number of items per page"),
+            OpenApiParameter(
+                "pageSize",
+                int,
+                description="Number of items per page (10, 20, 50, 100). Default: 10",
+            ),
         ],
         responses={200: ExamItemSerializer(many=True)},
     ),
@@ -76,6 +103,7 @@ class StudentExamViewSet(viewsets.ViewSet):
     authentication_classes = [SchoolProJWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = ExamPagination
+    content_negotiation_class = ExamContentNegotiation
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -88,7 +116,11 @@ class StudentExamViewSet(viewsets.ViewSet):
         search_query = request.query_params.get("q") or request.query_params.get("search")
         status_filter = request.query_params.get("status")
         subject = request.query_params.get("subject")
-        format_filter = request.query_params.get("format")
+        format_filter = (
+            request.query_params.get("format")
+            or request.query_params.get("examFormat")
+            or request.query_params.get("exam_format")
+        )
         sort_by = request.query_params.get("sortBy") or request.query_params.get("sort_by")
 
         items = self.service.list_exams(
@@ -101,7 +133,19 @@ class StudentExamViewSet(viewsets.ViewSet):
         )
 
         paginator = self.pagination_class()
-        page = paginator.paginate_queryset(items, request)
+        try:
+            page = paginator.paginate_queryset(items, request)
+            total_items = paginator.page.paginator.count
+            current_page = paginator.page.number
+            page_size = paginator.get_page_size(request) or 10
+            total_pages = paginator.page.paginator.num_pages
+        except Exception:
+            page_size = paginator.get_page_size(request) or 10
+            total_items = len(items)
+            total_pages = (total_items + page_size - 1) // page_size if total_items > 0 else 0
+            current_page = 1
+            page = items[:page_size]
+
         serializer = ExamItemSerializer(page, many=True)
 
         return Response(
@@ -111,17 +155,17 @@ class StudentExamViewSet(viewsets.ViewSet):
                 "message": "Danh sách bài thi",
                 "data": {
                     "items": serializer.data,
-                    "total": paginator.page.paginator.count,
-                    "page": paginator.page.number,
-                    "pageSize": paginator.get_page_size(request),
-                    "totalPages": paginator.page.paginator.num_pages,
+                    "total": total_items,
+                    "page": current_page,
+                    "pageSize": page_size,
+                    "totalPages": total_pages,
                 },
                 "meta": {
                     "pagination": {
-                        "page": paginator.page.number,
-                        "page_size": paginator.get_page_size(request),
-                        "total_items": paginator.page.paginator.count,
-                        "total_pages": paginator.page.paginator.num_pages,
+                        "page": current_page,
+                        "page_size": page_size,
+                        "total_items": total_items,
+                        "total_pages": total_pages,
                     }
                 },
             },

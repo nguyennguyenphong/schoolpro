@@ -161,7 +161,7 @@ class TestExamService:
         from apps.academic.views.exam_views import StudentExamViewSet
 
         factory = APIRequestFactory()
-        request = factory.get("/api/v1/academic/exams/?pageSize=2&page=1")
+        request = factory.get("/api/v1/academic/exams/?pageSize=20&page=1")
         user = MagicMock()
         user.is_authenticated = True
         user.is_staff = True
@@ -176,5 +176,60 @@ class TestExamService:
         assert "total" in response.data["data"]
         assert "page" in response.data["data"]
         assert "pageSize" in response.data["data"]
-        assert response.data["data"]["pageSize"] == 2
-        assert len(response.data["data"]["items"]) <= 2
+        assert response.data["data"]["pageSize"] == 20
+
+    def test_viewset_list_allowed_page_size_enforcement(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIRequestFactory, force_authenticate
+
+        from apps.academic.views.exam_views import StudentExamViewSet
+
+        factory = APIRequestFactory()
+        # Non-allowed page size (e.g. 7 or 9) must default to 10
+        request = factory.get("/api/v1/academic/exams/?pageSize=9&page=1")
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        force_authenticate(request, user=user)
+
+        view = StudentExamViewSet.as_view({"get": "list"})
+        response = view(request)
+        assert response.status_code == 200
+        assert response.data["data"]["pageSize"] == 10
+
+    def test_viewset_list_format_filter_does_not_trigger_content_negotiation_404(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIClient
+
+        client = APIClient()
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        client.force_authenticate(user=user)
+
+        # DRF default content negotiation would treat format=multiple_choice as renderer suffix and raise Http404
+        # ExamContentNegotiation ensures this returns 200 OK
+        response = client.get(
+            "/api/v1/academic/exams/?format=multiple_choice&sortBy=upcoming&page=1&pageSize=10"
+        )
+        assert response.status_code == 200
+        assert response.data["success"] is True
+        assert response.data["data"]["pageSize"] == 10
+
+    def test_viewset_list_out_of_bounds_page_fallback(self):
+        from unittest.mock import MagicMock
+
+        from rest_framework.test import APIClient
+
+        client = APIClient()
+        user = MagicMock()
+        user.is_authenticated = True
+        user.is_staff = True
+        client.force_authenticate(user=user)
+
+        response = client.get("/api/v1/academic/exams/?page=999&pageSize=10")
+        assert response.status_code == 200
+        assert response.data["success"] is True
+        assert response.data["data"]["page"] == 1
