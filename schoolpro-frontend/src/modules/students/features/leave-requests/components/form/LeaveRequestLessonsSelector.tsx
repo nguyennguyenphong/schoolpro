@@ -104,13 +104,6 @@ export const LeaveRequestLessonsSelector: React.FC<LeaveRequestLessonsSelectorPr
             <span className="text-xs sm:text-sm font-bold text-slate-800">
               {t("card:leaveRequests.form.lessonsSectionTitle")}
             </span>
-            {availableLessons.length > 0 && !loadingLessons && (
-              <span className="text-xs font-semibold text-blue-700 bg-blue-100/80 px-2.5 py-0.5 rounded-full border border-blue-200">
-                {t("card:leaveRequests.form.periodsCount", {
-                  count: availableLessons.length,
-                })}
-              </span>
-            )}
           </div>
 
           {uniqueSubjects.length > 0 && !loadingLessons && (
