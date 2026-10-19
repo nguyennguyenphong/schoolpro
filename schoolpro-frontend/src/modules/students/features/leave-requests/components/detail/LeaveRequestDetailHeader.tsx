@@ -4,14 +4,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Popconfirm } from "@/components/ui/Popconfirm";
-import { Tag } from "@/components/ui/Tag";
 import type { LeaveRequestItem } from "@/modules/students/features/leave-requests/types";
-import {
-  LEAVE_STATUS_COLORS,
-  formatDateTimeDisplay,
-  getLeaveStatusLabel,
-  getLeaveTypeLabel,
-} from "@/modules/students/features/leave-requests/utils/leaveRequestHelpers";
 
 interface LeaveRequestDetailHeaderProps {
   item: LeaveRequestItem;
@@ -77,29 +70,11 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
                 {t("card:leaveRequests.detail.requestCodeBadge", { code: item.code })}
               </span>
             )}
-            <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
-              {getLeaveTypeLabel(item.leaveType)}
-            </span>
-            <Tag
-              color={LEAVE_STATUS_COLORS[item.status] || "default"}
-              className="m-0 text-xs font-bold px-2.5 py-0.5"
-            >
-              {getLeaveStatusLabel(item.status)}
-            </Tag>
           </div>
 
           <p className="text-xs sm:text-sm text-slate-500 mb-1">
             {t("navigation:pageSubtitle.leaveRequestDetail")}
           </p>
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-            <span>
-              {t("card:leaveRequests.detail.submittedAtPrefix")}{" "}
-              <strong className="text-slate-700 font-semibold">
-                {formatDateTimeDisplay(item.createdAt)}
-              </strong>
-            </span>
-          </div>
         </div>
 
         {/* Action Buttons */}
