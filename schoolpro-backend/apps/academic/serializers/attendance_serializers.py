@@ -369,6 +369,7 @@ class LeaveRequestItemResponseSerializer(serializers.Serializer):
     firstLessonStartAt = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     approvalDeadline = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     isAutoApproved = serializers.BooleanField(default=False, required=False)
+    approvalMethod = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     eventLogs = LeaveRequestEventLogItemSerializer(many=True, required=False)
     cancelReason = serializers.CharField(allow_null=True, allow_blank=True, required=False)
     cancelledAt = serializers.CharField(allow_null=True, allow_blank=True, required=False)
@@ -450,3 +451,12 @@ class ReviewLeaveRequestInputSerializer(serializers.Serializer):
 
     action = serializers.ChoiceField(choices=["APPROVE", "REJECT"])
     teacher_note = serializers.CharField(required=False, allow_blank=True, default="")
+
+    def validate(self, attrs):
+        action = attrs.get("action")
+        teacher_note = (attrs.get("teacher_note") or "").strip()
+        if action == "REJECT" and not teacher_note:
+            raise serializers.ValidationError(
+                {"teacher_note": "Bắt buộc ghi rõ lý do từ chối đơn xin nghỉ phép."}
+            )
+        return attrs

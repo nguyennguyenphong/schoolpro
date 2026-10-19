@@ -83,16 +83,25 @@ def test_broadcast_event_dispatches_via_on_commit():
 
 def test_auto_approve_overdue_leave_requests_task_invokes_service():
     """
-    Verifies that the Celery task delegates to LeaveRequestService.check_and_auto_approve_overdue_requests.
+    Verifies that the Celery task delegates to LeaveRequestService.check_and_auto_approve_overdue_requests
+    and LeaveRequestService.check_and_send_deadline_reminders.
     """
-    with patch(
-        "apps.academic.services.leave_request_service.LeaveRequestService.check_and_auto_approve_overdue_requests",
-        return_value=2,
-    ) as mock_check:
+    with (
+        patch(
+            "apps.academic.services.leave_request_service.LeaveRequestService.check_and_auto_approve_overdue_requests",
+            return_value=2,
+        ) as mock_check,
+        patch(
+            "apps.academic.services.leave_request_service.LeaveRequestService.check_and_send_deadline_reminders",
+            return_value=1,
+        ) as mock_remind,
+    ):
         result = auto_approve_overdue_leave_requests_task()
         assert result["status"] == "success"
         assert result["auto_approved_count"] == 2
+        assert result["reminders_sent"] == 1
         mock_check.assert_called_once_with(qs=None)
+        mock_remind.assert_called_once()
 
 
 def test_dynamic_export_template_renders_custom_filename_html_css_word_and_pdf():

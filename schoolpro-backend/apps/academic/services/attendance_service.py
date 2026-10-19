@@ -167,14 +167,20 @@ class AttendanceService:
         Approve or reject a student leave request.
         If approved, automatically pre-creates or updates Attendance records as ABSENT_EXCUSED.
         """
-        leave_req = LeaveRequest.objects.select_related(
-            "student",
-            "school_class",
-            "school_class__homeroom_teacher",
-            "school_class__homeroom_teacher__user",
-        ).get(id=leave_request_id)
+        leave_req = (
+            LeaveRequest.objects.select_for_update()
+            .select_related(
+                "student",
+                "school_class",
+                "school_class__homeroom_teacher",
+                "school_class__homeroom_teacher__user",
+            )
+            .get(id=leave_request_id)
+        )
         if leave_req.status != "PENDING":
-            raise ValueError(f"Leave request is already {leave_req.status}.")
+            raise ValueError(
+                f"Đơn xin nghỉ phép đã ở trạng thái '{leave_req.status}', không thể xử lý lại."
+            )
 
         homeroom_teacher = (
             getattr(leave_req.school_class, "homeroom_teacher", None)
@@ -193,12 +199,19 @@ class AttendanceService:
             )
 
         new_status = "APPROVED" if action.upper() == "APPROVE" else "REJECTED"
+        cleaned_note = (teacher_note or "").strip()
+        if new_status == "REJECTED" and not cleaned_note:
+            raise ValueError("Bắt buộc ghi rõ lý do từ chối đơn xin nghỉ phép.")
+
         review_time = timezone.now()
         leave_req.status = new_status
         leave_req.reviewed_by = reviewer
         leave_req.reviewed_at = review_time
-        leave_req.teacher_note = teacher_note
+        leave_req.teacher_note = cleaned_note
         leave_req.is_auto_approved = False
+        meta = leave_req.metadata if isinstance(leave_req.metadata, dict) else {}
+        meta["approvalMethod"] = "MANUAL"
+        leave_req.metadata = meta
         leave_req.save()
 
         from apps.academic.services.leave_request_service import LeaveRequestService
