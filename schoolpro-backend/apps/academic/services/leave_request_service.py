@@ -828,6 +828,11 @@ class LeaveRequestService:
 
         student = item.student
         student_user = getattr(student, "user", None) if student else None
+        student_dob = (
+            student_user.date_of_birth.strftime("%d/%m/%Y")
+            if (student_user and getattr(student_user, "date_of_birth", None))
+            else "........................."
+        )
         school_class = item.school_class
         homeroom_teacher = getattr(school_class, "homeroom_teacher", None) if school_class else None
         homeroom_user = getattr(homeroom_teacher, "user", None) if homeroom_teacher else None
@@ -926,6 +931,7 @@ class LeaveRequestService:
             "studentId": str(item.student_id),
             "studentCode": student.student_code if student else "",
             "studentName": student_user.full_name if student_user else "Học sinh",
+            "studentDob": student_dob,
             "classId": str(item.school_class_id),
             "className": school_class.name if school_class else "10A1",
             "leaveType": cls.LEAVE_TYPE_DB_TO_UI.get(item.leave_type, "other"),

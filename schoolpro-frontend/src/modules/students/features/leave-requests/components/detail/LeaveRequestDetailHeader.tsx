@@ -15,20 +15,24 @@ import {
 interface LeaveRequestDetailHeaderProps {
   item: LeaveRequestItem;
   downloading: boolean;
+  printing?: boolean;
   deleting: boolean;
   onBack: () => void;
   onEdit: () => void;
   onDownloadPdf: () => void;
+  onPrint?: () => void;
   onDelete: () => void;
 }
 
 export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> = ({
   item,
   downloading,
+  printing = false,
   deleting,
   onBack,
   onEdit,
   onDownloadPdf,
+  onPrint,
   onDelete,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button", "modal"]);
@@ -104,6 +108,19 @@ export const LeaveRequestDetailHeader: React.FC<LeaveRequestDetailHeaderProps> =
             <Icon name="arrow-left" size={14} />
             <span>{t("button:back")}</span>
           </Button>
+
+          {onPrint && (
+            <Button
+              variant="outline"
+              onClick={onPrint}
+              loading={printing}
+              disabled={printing}
+              className="text-xs sm:text-sm font-semibold"
+            >
+              <Icon name="print" size={14} />
+              <span>{t("button:printLeaveRequest")}</span>
+            </Button>
+          )}
 
           <Button
             variant="primary"

@@ -17,8 +17,16 @@ const LeaveRequestDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { item, loading, downloading, deleting, handleDownloadPdf, handleDelete } =
-    useLeaveRequestDetail(id);
+  const {
+    item,
+    loading,
+    downloading,
+    printing,
+    deleting,
+    handleDownloadPdf,
+    handlePrint,
+    handleDelete,
+  } = useLeaveRequestDetail(id);
 
   if (loading) {
     return <LeaveRequestDetailSkeleton />;
@@ -49,10 +57,12 @@ const LeaveRequestDetailPage: React.FC = () => {
       <LeaveRequestDetailHeader
         item={item}
         downloading={downloading}
+        printing={printing}
         deleting={deleting}
         onBack={() => navigate("/student/leave-requests")}
         onEdit={() => navigate(`/student/leave-requests/${item.id}/edit`)}
         onDownloadPdf={handleDownloadPdf}
+        onPrint={handlePrint}
         onDelete={handleDelete}
       />
 

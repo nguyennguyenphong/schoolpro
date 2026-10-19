@@ -81,6 +81,7 @@ export interface LeaveRequestItem {
   studentId: string;
   studentCode: string;
   studentName: string;
+  studentDob?: string;
   classId: string;
   className: string;
   leaveType: LeaveType;
