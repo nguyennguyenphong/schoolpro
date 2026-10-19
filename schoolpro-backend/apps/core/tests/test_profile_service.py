@@ -44,6 +44,10 @@ class TestStudentProfile:
         a = data["academicInfo"]
         assert "className" in a
         assert "homeroomTeacher" in a
+        assert "semester" in a
+        assert "schoolName" in a
+        assert "academicYear" in a
+        assert "THPT" not in a["schoolName"]
 
         h = data["healthRecord"]
         assert "heightCm" in h

@@ -120,6 +120,27 @@
       "organizationDesc": "건강보험증 번호, 우대 정책 대상자, 소년선봉대 및 청년동맹 입단일",
       "healthUpdateTitle": "개인 건강 지표 수정"
     },
+    "academicSummary": {
+      "cardTitle": "학적 정보",
+      "studentCode": "학번",
+      "schoolName": "학교",
+      "academicYear": "학년도",
+      "semester": "학기",
+      "defaultSemester": "1학기"
+    },
+    "steps": {
+      "step1": "단계 01",
+      "step2": "단계 02",
+      "step3": "단계 03",
+      "step4": "단계 04",
+      "step1Subtitle": "성명, 학번, 주민등록번호",
+      "step2Subtitle": "전화번호, 이메일, 자기소개",
+      "step3Subtitle": "출생지, 호적, 거주 주소",
+      "step4Subtitle": "건강보험, 청소년 조직"
+    },
+    "stepInProgress": "작성 중",
+    "stepCompleted": "완료",
+    "insuranceTag": "건강보험",
     "primaryContact": "주 연락처",
     "parentCommittee": "학부모회 임원",
     "emergencyContact": "비상 연락처",

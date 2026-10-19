@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/Progress";
 import { Icon } from "@/components/ui/Icon";
 import type { StudentProfileData } from "@/modules/students/features/profile/types";
 import { AvatarUploadModal } from "@/modules/students/features/profile/components/AvatarUploadModal";
+import { ProfileAcademicSummaryCard } from "@/modules/students/features/profile/components/ProfileAcademicSummaryCard";
 
 interface ProfileHeaderCardProps {
   profile: StudentProfileData;
@@ -49,29 +50,12 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
                 <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-0">
                   {personalInfo.fullName}
                 </h1>
-                <Tag color="blue" className="font-semibold text-xs px-2 py-0.5 m-0">
+                <Tag color="blue" className="font-semibold text-xs px-2.5 py-0.5 m-0">
                   {academicInfo.className}
                 </Tag>
-                <Tag color="green" className="font-semibold text-xs px-2 py-0.5 m-0">
+                <Tag color="green" className="font-semibold text-xs px-2.5 py-0.5 m-0">
                   {t("card:profile.statusStudying")}
                 </Tag>
-              </div>
-
-              <div className="flex items-center gap-3 text-xs text-slate-500 flex-wrap">
-                <span className="flex items-center gap-1 font-medium">
-                  <strong className="text-slate-700">{t("input:labels.studentCode")}:</strong>{" "}
-                  {personalInfo.studentCode}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Icon name="book" size={13} className="text-slate-400" />
-                  {academicInfo.schoolName}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Icon name="user" size={13} className="text-slate-400" />
-                  {academicInfo.academicYear}
-                </span>
               </div>
             </div>
           </div>
@@ -96,6 +80,16 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
               {t("card:profile.verifiedNotice")}
             </p>
           </div>
+        </div>
+
+        {/* Academic Identity Summary Card */}
+        <div className="mt-2 pt-2">
+          <ProfileAcademicSummaryCard
+            studentCode={personalInfo.studentCode}
+            schoolName={academicInfo.schoolName}
+            academicYear={academicInfo.academicYear}
+            semester={academicInfo.semester}
+          />
         </div>
       </Card>
 

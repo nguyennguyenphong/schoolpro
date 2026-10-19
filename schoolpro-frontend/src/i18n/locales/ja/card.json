@@ -120,6 +120,27 @@
       "organizationDesc": "健康保険証番号、優遇政策対象、少年先鋒隊・青年同盟の加入日",
       "healthUpdateTitle": "個人健康指標の更新"
     },
+    "academicSummary": {
+      "cardTitle": "学籍情報",
+      "studentCode": "学籍番号",
+      "schoolName": "学校名",
+      "academicYear": "年度",
+      "semester": "学期",
+      "defaultSemester": "第1学期"
+    },
+    "steps": {
+      "step1": "ステップ 01",
+      "step2": "ステップ 02",
+      "step3": "ステップ 03",
+      "step4": "ステップ 04",
+      "step1Subtitle": "氏名、学籍番号、市民身分証明書",
+      "step2Subtitle": "電話番号、メール、自己紹介",
+      "step3Subtitle": "出生地、戸籍、現住所",
+      "step4Subtitle": "健康保険、青年組織"
+    },
+    "stepInProgress": "入力中",
+    "stepCompleted": "完了",
+    "insuranceTag": "健康保険",
     "primaryContact": "主連絡先",
     "parentCommittee": "PTA役員",
     "emergencyContact": "緊急連絡先",

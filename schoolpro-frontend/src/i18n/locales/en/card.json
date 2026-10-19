@@ -120,6 +120,27 @@
       "organizationDesc": "Health insurance card, policy beneficiaries, and Youth Union/Pioneer affiliations",
       "healthUpdateTitle": "Update Personal Health Indicators"
     },
+    "academicSummary": {
+      "cardTitle": "Academic Information",
+      "studentCode": "Student Code",
+      "schoolName": "School",
+      "academicYear": "Academic Year",
+      "semester": "Semester",
+      "defaultSemester": "Semester 1"
+    },
+    "steps": {
+      "step1": "Step 01",
+      "step2": "Step 02",
+      "step3": "Step 03",
+      "step4": "Step 04",
+      "step1Subtitle": "Full Name, Student Code, Citizen ID",
+      "step2Subtitle": "Phone, Email Address, Biography",
+      "step3Subtitle": "Place of Birth, Household, Address",
+      "step4Subtitle": "Health Insurance, Youth Organization"
+    },
+    "stepInProgress": "In Progress",
+    "stepCompleted": "Done",
+    "insuranceTag": "Health Insurance",
     "primaryContact": "Primary Contact",
     "parentCommittee": "Parent Committee",
     "emergencyContact": "Emergency Contact",

@@ -120,6 +120,27 @@
       "organizationDesc": "医保卡号、优待政策对象、少先队及共青团入团日期",
       "healthUpdateTitle": "更新个人健康指标"
     },
+    "academicSummary": {
+      "cardTitle": "学籍信息",
+      "studentCode": "学号",
+      "schoolName": "学校",
+      "academicYear": "学年",
+      "semester": "学期",
+      "defaultSemester": "第一学期"
+    },
+    "steps": {
+      "step1": "步骤 01",
+      "step2": "步骤 02",
+      "step3": "步骤 03",
+      "step4": "步骤 04",
+      "step1Subtitle": "姓名、学号、公民身份证号",
+      "step2Subtitle": "电话、电子邮箱、个人简介",
+      "step3Subtitle": "出生地、户籍、常住地址",
+      "step4Subtitle": "医疗保险、共青团少先队"
+    },
+    "stepInProgress": "填写中",
+    "stepCompleted": "已完成",
+    "insuranceTag": "医疗保险",
     "primaryContact": "主要联络人",
     "parentCommittee": "家委会成员",
     "emergencyContact": "紧急联系人",

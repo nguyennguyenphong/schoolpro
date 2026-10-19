@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Icon } from "@/components/ui/Icon";
 import type { IconName } from "@/components/ui/Icon/types";
 
@@ -23,6 +24,8 @@ export const ProfileStepperNav: React.FC<ProfileStepperNavProps> = ({
   steps,
   disabled = false,
 }) => {
+  const { t } = useTranslation(["card"]);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
       {steps.map((step, idx) => {
@@ -40,7 +43,7 @@ export const ProfileStepperNav: React.FC<ProfileStepperNavProps> = ({
               relative flex items-center gap-3 p-3 sm:p-3.5 rounded-xl text-left transition-all duration-200 cursor-pointer
               ${
                 isActive
-                  ? "bg-linear-to-r from-blue-50 via-indigo-50/50 to-blue-50/80 border-2 border-blue-600 shadow-sm"
+                  ? "bg-linear-to-r from-blue-50 via-indigo-50/50 to-blue-50/80 border border-blue-600 shadow-sm"
                   : isCompleted
                     ? "bg-emerald-50/50 border border-emerald-200 hover:bg-emerald-50/80 hover:border-emerald-300"
                     : "bg-slate-50/60 border border-slate-200/80 hover:bg-slate-100/70 hover:border-slate-300"
@@ -86,13 +89,13 @@ export const ProfileStepperNav: React.FC<ProfileStepperNavProps> = ({
                 {isActive && (
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-100/90 px-1.5 py-0.5 rounded-full shadow-2xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                    Đang điền
+                    {t("card:profile.stepInProgress")}
                   </span>
                 )}
                 {isCompleted && (
                   <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded-full">
                     <Icon name="check" size={10} />
-                    Xong
+                    {t("card:profile.stepCompleted")}
                   </span>
                 )}
               </div>

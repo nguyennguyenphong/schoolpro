@@ -47,7 +47,7 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
             </h2>
             <div className="flex items-center gap-2">
               <Tag color="cyan" className="font-bold text-xs px-2.5 py-0.5 m-0">
-                BHYT: {healthRecord.insuranceCode}
+                {t("card:profile.insuranceTag")}: {healthRecord.insuranceCode}
               </Tag>
               {onSave && (
                 <Button

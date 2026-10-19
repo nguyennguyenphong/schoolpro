@@ -52,6 +52,7 @@ export interface StudentAcademicInfo {
   gradeLevel: string;
   schoolName: string;
   academicYear: string;
+  semester?: string;
   admissionDate: string;
   graduationDate: string | null;
   status: AcademicStatus;

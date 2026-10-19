@@ -159,11 +159,40 @@ class StudentProfileService:
             else "2029-06-30"
         )
 
+        semester_name = "Học kỳ 1"
+        try:
+            from apps.master.models.semester import Semester
+
+            if school_class and school_class.academic_year:
+                sem = (
+                    Semester.objects.filter(
+                        academic_year=school_class.academic_year, is_current=True
+                    ).first()
+                    or Semester.objects.filter(academic_year=school_class.academic_year)
+                    .order_by("order_no")
+                    .first()
+                )
+            else:
+                sem = (
+                    Semester.objects.filter(is_current=True).first()
+                    or Semester.objects.order_by("order_no").first()
+                )
+            if sem and sem.name:
+                semester_name = sem.name
+        except Exception as exc:
+            logger.warning("Error resolving semester for student profile: %s", exc)
+
+        raw_school = (
+            school.name if school and school.name else "Trường Trung học phổ thông SchoolPro"
+        )
+        clean_school_name = raw_school.replace("THPT", "Trung học phổ thông")
+
         academic_info = {
             "className": school_class.name if school_class else "10A1",
             "gradeLevel": grade_name or "Khối 10",
-            "schoolName": school.name if school else "Trường THPT SchoolPro",
+            "schoolName": clean_school_name,
             "academicYear": academic_year_name,
+            "semester": semester_name,
             "admissionDate": admission_date_str,
             "graduationDate": graduation_date_str,
             "status": student.status if student else "STUDYING",
@@ -215,13 +244,15 @@ class StudentProfileService:
             ),
             "nationalIdIssuedDate": id_issued_date_str or "",
             "nationalIdIssuedPlace": (
-                student.national_id_issued_place if student else "Cục Cảnh sát QLHC về TTXH"
+                student.national_id_issued_place
+                if student
+                else "Cục Cảnh sát Quản lý hành chính về trật tự xã hội"
             )
-            or "Cục Cảnh sát QLHC về TTXH",
+            or "Cục Cảnh sát Quản lý hành chính về trật tự xã hội",
             "ethnicity": (student.ethnicity if student else "Kinh") or "Kinh",
             "religion": (student.religion if student else "Không") or "Không",
-            "birthPlace": (student.birth_place if student else "TP. Hồ Chí Minh")
-            or "TP. Hồ Chí Minh",
+            "birthPlace": (student.birth_place if student else "Thành phố Hồ Chí Minh")
+            or "Thành phố Hồ Chí Minh",
             "phone": target_user.phone or "",
             "email": target_user.email or "",
             "address": target_user.address or (student.permanent_address if student else "") or "",
@@ -339,7 +370,7 @@ class StudentProfileService:
                     "isPrimaryContact": True,
                     "isEmergencyContact": True,
                     "isParentCommittee": True,
-                    "committeeRole": "Ủy viên Ban đại diện CMHS",
+                    "committeeRole": "Ủy viên Ban đại diện Cha mẹ học sinh",
                     "notes": "Liên hệ trong giờ hành chính",
                 },
                 {

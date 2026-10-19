@@ -41,7 +41,7 @@ export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ fo
   return (
     <section id="profile-section-identity" className="scroll-mt-6">
       {/* Section Header */}
-      <div className="flex items-center gap-3 pb-3 mb-5 border-b border-slate-100">
+      <div className="flex items-center gap-3 pb-3 mb-3">
         <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
           <Icon name="user" size={17} />
         </span>

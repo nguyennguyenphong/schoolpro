@@ -36,7 +36,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
       </div>
 
       {/* Class & Academic Information Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.className")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
@@ -45,9 +45,9 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
         </div>
 
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
-          <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
-          <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.classroom}
+          <span className="text-slate-400 font-medium">{t("card:profile.academicSummary.schoolName")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0 truncate" title={academicInfo.schoolName}>
+            {academicInfo.schoolName}
           </p>
         </div>
 
@@ -55,6 +55,20 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
           <span className="text-slate-400 font-medium">{t("input:labels.academicYear")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
             {academicInfo.academicYear}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("card:profile.academicSummary.semester")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.semester || t("card:profile.academicSummary.defaultSemester")}
+          </p>
+        </div>
+
+        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+          <span className="text-slate-400 font-medium">{t("input:labels.classroom")}</span>
+          <p className="font-bold text-slate-800 text-sm mb-0">
+            {academicInfo.classroom}
           </p>
         </div>
 
