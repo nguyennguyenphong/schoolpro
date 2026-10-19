@@ -109,10 +109,23 @@
       "guardians": "학부모 및 법정 보호자",
       "guardiansDesc": "전자 가정통신문 연계 및 긴급 연락을 위한 학부모 연락처 정보",
       "health": "교내 보건 및 신체 측정",
-      "healthDesc": "신체 발달 수치, 병력 주의사항 및 학생 건강보험 기록"
+      "healthDesc": "신체 발달 수치, 병력 주의사항 및 학생 건강보험 기록",
+      "identityTitle": "학생 신원 정보 (학교 발급)",
+      "identityDesc": "학교에서 관리하고 보안을 유지하는 공식 법적 신원 기록",
+      "residenceTitle": "거주지 및 호적 정보 (수정 가능)",
+      "contactTitle": "연락처 및 개인 정보 (수정 가능)",
+      "organizationTitle": "청소년 단체 및 우대 정책 (수정 가능)",
+      "healthUpdateTitle": "개인 건강 지표 수정"
     },
     "primaryContact": "주 연락처",
-    "parentCommittee": "학부모회 임원"
+    "parentCommittee": "학부모회 임원",
+    "emergencyContact": "비상 연락처",
+    "workplace": "근무처:",
+    "homeroomTeacher": "학급 담임 교사",
+    "boarder": "기숙사생",
+    "dayStudent": "통학생",
+    "statusStudying": "재학 중",
+    "verifiedNotice": "교육부 데이터베이스 기준에 부합하는 공식 학생 기록"
   },
   "settings": {
     "title": "시스템 설정",

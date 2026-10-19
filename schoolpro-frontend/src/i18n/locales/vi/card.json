@@ -109,10 +109,23 @@
       "guardians": "Phụ huynh & Người giám hộ",
       "guardiansDesc": "Dữ liệu liên lạc phục vụ kết nối sổ liên lạc điện tử và thông báo khẩn cấp từ nhà trường",
       "health": "Y tế học đường & Thể chất",
-      "healthDesc": "Chỉ số thể chất, tiền sử bệnh án và hồ sơ bảo hiểm y tế học sinh"
+      "healthDesc": "Chỉ số thể chất, tiền sử bệnh án và hồ sơ bảo hiểm y tế học sinh",
+      "identityTitle": "Thông tin định danh học sinh (Nhà trường cấp)",
+      "identityDesc": "Thông tin pháp lý chính thức được quản lý và bảo mật bởi nhà trường",
+      "residenceTitle": "Thông tin cư trú & Hộ tịch (Có thể cập nhật)",
+      "contactTitle": "Thông tin liên lạc & Cá nhân (Có thể cập nhật)",
+      "organizationTitle": "Đoàn - Đội & Diện chính sách (Có thể cập nhật)",
+      "healthUpdateTitle": "Cập nhật chỉ số sức khỏe cá nhân"
     },
     "primaryContact": "Liên hệ chính",
-    "parentCommittee": "Ban đại diện CMHS"
+    "parentCommittee": "Ban đại diện CMHS",
+    "emergencyContact": "Liên hệ khẩn cấp",
+    "workplace": "Nơi công tác:",
+    "homeroomTeacher": "Giáo viên chủ nhiệm lớp",
+    "boarder": "Nội trú",
+    "dayStudent": "Ngoại trú",
+    "statusStudying": "Đang theo học",
+    "verifiedNotice": "Hồ sơ hợp lệ theo quy chế cơ sở dữ liệu Bộ Giáo dục & Đào tạo"
   },
   "settings": {
     "title": "Cài đặt hệ thống",

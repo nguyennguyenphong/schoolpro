@@ -53,7 +53,7 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
                   {academicInfo.className}
                 </Tag>
                 <Tag color="green" className="font-semibold text-xs px-2 py-0.5 m-0">
-                  Đang theo học
+                  {t("card:profile.statusStudying")}
                 </Tag>
               </div>
 
@@ -93,7 +93,7 @@ export const ProfileHeaderCard: React.FC<ProfileHeaderCardProps> = ({
               className="m-0"
             />
             <p className="text-[11px] text-slate-400 mb-0">
-              Hồ sơ hợp lệ theo quy chế cơ sở dữ liệu Bộ Giáo dục & Đào tạo
+              {t("card:profile.verifiedNotice")}
             </p>
           </div>
         </div>

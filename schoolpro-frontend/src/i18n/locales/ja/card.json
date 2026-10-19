@@ -109,10 +109,23 @@
       "guardians": "保護者および法定代理人",
       "guardiansDesc": "連絡帳連携および緊急連絡用の保護者連絡先データ",
       "health": "校内健康管理と身体測定",
-      "healthDesc": "身体測定指標、既往歴、健康保険証番号の記録"
+      "healthDesc": "身体測定指標、既往歴、健康保険証番号の記録",
+      "identityTitle": "生徒身元情報（学校発行）",
+      "identityDesc": "学校によって管理および保護されている公式の法的身元記録",
+      "residenceTitle": "居住地および戸籍情報（更新可能）",
+      "contactTitle": "連絡先および個人情報（更新可能）",
+      "organizationTitle": "青少年組織および優遇政策（更新可能）",
+      "healthUpdateTitle": "個人健康指標の更新"
     },
     "primaryContact": "主連絡先",
-    "parentCommittee": "PTA役員"
+    "parentCommittee": "PTA役員",
+    "emergencyContact": "緊急連絡先",
+    "workplace": "勤務先:",
+    "homeroomTeacher": "学級担任教師",
+    "boarder": "全寮制",
+    "dayStudent": "通学制",
+    "statusStudying": "在学中",
+    "verifiedNotice": "教育省データベース基準に準拠した有効な学生記録"
   },
   "settings": {
     "title": "システム設定",

@@ -109,10 +109,23 @@
       "guardians": "家长与法定监护人",
       "guardiansDesc": "用于家校电子联络手册及紧急联络的家庭通讯信息",
       "health": "校园健康管理与体质记录",
-      "healthDesc": "体质体能指标、过敏病史及学生医疗保险档案"
+      "healthDesc": "体质体能指标、过敏病史及学生医疗保险档案",
+      "identityTitle": "学生身份信息（学校签发）",
+      "identityDesc": "由学校管理并保密的官方合法身份档案",
+      "residenceTitle": "居住及户籍信息（可更新）",
+      "contactTitle": "联系方式及个人信息（可更新）",
+      "organizationTitle": "团委少先队及政策优待（可更新）",
+      "healthUpdateTitle": "更新个人健康指标"
     },
     "primaryContact": "主要联络人",
-    "parentCommittee": "家委会成员"
+    "parentCommittee": "家委会成员",
+    "emergencyContact": "紧急联系人",
+    "workplace": "工作单位:",
+    "homeroomTeacher": "班主任老师",
+    "boarder": "住校生",
+    "dayStudent": "走读生",
+    "statusStudying": "在读",
+    "verifiedNotice": "符合教育部教育数据库标准的官方合规档案"
   },
   "settings": {
     "title": "系统设置",

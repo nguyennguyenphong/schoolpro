@@ -108,7 +108,10 @@ export const ProfilePage: React.FC = () => {
         )}
 
         {profile && activeTab === "health" && (
-          <ProfileHealthTab healthRecord={profile.healthRecord} />
+          <ProfileHealthTab
+            healthRecord={profile.healthRecord}
+            onSave={updateBasicInfo}
+          />
         )}
       </Card>
     </div>

@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Tag } from "@/components/ui/Tag";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { StudentHealthRecord } from "@/modules/students/features/profile/types";
+import type {
+  StudentHealthRecord,
+  UpdateProfilePayload,
+} from "@/modules/students/features/profile/types";
+import { HealthUpdateModal } from "@/modules/students/features/profile/components/HealthUpdateModal";
 
 interface ProfileHealthTabProps {
   healthRecord: StudentHealthRecord;
+  onSave?: (payload: UpdateProfilePayload) => Promise<boolean>;
 }
 
 export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
   healthRecord,
+  onSave,
 }) => {
-  const { t } = useTranslation(["card", "input"]);
+  const { t } = useTranslation(["card", "input", "button"]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // Calculate BMI: weight / (height / 100)^2
   const heightM = healthRecord.heightCm / 100;
@@ -19,9 +27,9 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
   const numBmi = parseFloat(bmi);
 
   const getBmiStatus = (val: number) => {
-    if (val < 18.5) return { text: "Thiếu cân nhẹ", color: "orange" };
-    if (val <= 24.9) return { text: "Thể trạng Cân đối", color: "green" };
-    return { text: "Thừa cân nhẹ", color: "red" };
+    if (val < 18.5) return { text: "BMI < 18.5", color: "orange" };
+    if (val <= 24.9) return { text: "18.5 - 24.9", color: "green" };
+    return { text: "BMI ≥ 25.0", color: "red" };
   };
 
   const bmiStatus = getBmiStatus(numBmi);
@@ -37,9 +45,22 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
             <h2 className="text-base sm:text-lg font-bold text-slate-900 mb-0.5">
               {t("card:profile.sections.health")}
             </h2>
-            <Tag color="cyan" className="font-bold text-xs px-2.5 py-0.5 m-0">
-              BHYT: {healthRecord.insuranceCode}
-            </Tag>
+            <div className="flex items-center gap-2">
+              <Tag color="cyan" className="font-bold text-xs px-2.5 py-0.5 m-0">
+                BHYT: {healthRecord.insuranceCode}
+              </Tag>
+              {onSave && (
+                <Button
+                  size="small"
+                  variant="outline"
+                  onClick={() => setIsModalOpen(true)}
+                  className="flex items-center gap-1.5"
+                >
+                  <Icon name="edit" size={13} />
+                  <span>{t("button:updateHealth")}</span>
+                </Button>
+              )}
+            </div>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             {t("card:profile.sections.healthDesc")}
@@ -52,31 +73,35 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
         <div className="flex items-center justify-between pb-1 border-b border-[#f0f0f0]/60">
           <div>
             <h3 className="text-sm font-bold text-slate-800 mb-0.5">
-              Chỉ số thể chất & Sức khỏe định kỳ
+              {t("card:profile.sections.health")}
             </h3>
             <p className="text-xs text-slate-500 mb-0">
-              Lần khám gần nhất: <strong>{healthRecord.lastCheckupAt}</strong> tại Phòng Y tế học đường
+              {t("input:labels.lastCheckup")}: <strong>{healthRecord.lastCheckupAt}</strong>
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
           <div className="p-3.5 bg-white border border-[#f0f0f0] rounded-xl space-y-1 shadow-2xs">
-            <span className="text-xs text-slate-500 font-medium">Chiều cao</span>
+            <span className="text-xs text-slate-500 font-medium">
+              {t("input:labels.height")}
+            </span>
             <p className="text-lg sm:text-xl font-extrabold text-blue-700 mb-0">
               {healthRecord.heightCm} <span className="text-xs font-semibold text-slate-500">cm</span>
             </p>
           </div>
 
           <div className="p-3.5 bg-white border border-[#f0f0f0] rounded-xl space-y-1 shadow-2xs">
-            <span className="text-xs text-slate-500 font-medium">Cân nặng</span>
+            <span className="text-xs text-slate-500 font-medium">
+              {t("input:labels.weight")}
+            </span>
             <p className="text-lg sm:text-xl font-extrabold text-emerald-700 mb-0">
               {healthRecord.weightKg} <span className="text-xs font-semibold text-slate-500">kg</span>
             </p>
           </div>
 
           <div className="p-3.5 bg-white border border-[#f0f0f0] rounded-xl space-y-1 shadow-2xs">
-            <span className="text-xs text-slate-500 font-medium">Chỉ số BMI</span>
+            <span className="text-xs text-slate-500 font-medium">BMI</span>
             <div className="flex items-center gap-2">
               <p className="text-lg sm:text-xl font-extrabold text-purple-700 mb-0">
                 {bmi}
@@ -88,7 +113,9 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
           </div>
 
           <div className="p-3.5 bg-white border border-[#f0f0f0] rounded-xl space-y-1 shadow-2xs">
-            <span className="text-xs text-slate-500 font-medium">Nhóm máu</span>
+            <span className="text-xs text-slate-500 font-medium">
+              {t("input:labels.bloodType")}
+            </span>
             <p className="text-lg sm:text-xl font-extrabold text-rose-700 mb-0">
               {healthRecord.bloodType}
             </p>
@@ -100,14 +127,14 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
       <div className="rounded-xl border border-[#f0f0f0] p-5 bg-white space-y-4">
         <h4 className="text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
           <Icon name="checkCircle" size={15} className="text-blue-600" />
-          <span>Hồ sơ bệnh án & Lưu ý lâm sàng</span>
+          <span>{t("card:profile.sections.healthDesc")}</span>
         </h4>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
           <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.vision")}</span>
             <p className="font-bold text-slate-800 text-sm mb-0">
-              Trái: {healthRecord.visionLeft} • Phải: {healthRecord.visionRight}
+              L: {healthRecord.visionLeft} • R: {healthRecord.visionRight}
             </p>
           </div>
 
@@ -121,25 +148,72 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
           <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.allergies")}</span>
             <p className="font-medium text-slate-700 mb-0 leading-relaxed">
-              {healthRecord.allergies}
+              {healthRecord.allergies || "—"}
             </p>
           </div>
 
           <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
             <span className="text-slate-400 font-medium">{t("input:labels.chronicIllness")}</span>
             <p className="font-medium text-slate-700 mb-0 leading-relaxed">
-              {healthRecord.chronicIllness}
+              {healthRecord.chronicIllness || "—"}
             </p>
           </div>
+
+          {healthRecord.hearingStatus && (
+            <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+              <span className="text-slate-400 font-medium">{t("input:labels.hearingStatus")}</span>
+              <p className="font-medium text-slate-700 mb-0 leading-relaxed">
+                {healthRecord.hearingStatus}
+              </p>
+            </div>
+          )}
+
+          {healthRecord.dentalStatus && (
+            <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+              <span className="text-slate-400 font-medium">{t("input:labels.dentalStatus")}</span>
+              <p className="font-medium text-slate-700 mb-0 leading-relaxed">
+                {healthRecord.dentalStatus}
+              </p>
+            </div>
+          )}
+
+          {healthRecord.skeletalStatus && (
+            <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+              <span className="text-slate-400 font-medium">{t("input:labels.skeletalStatus")}</span>
+              <p className="font-medium text-slate-700 mb-0 leading-relaxed">
+                {healthRecord.skeletalStatus}
+              </p>
+            </div>
+          )}
+
+          {healthRecord.specialCareInstructions && (
+            <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+              <span className="text-slate-400 font-medium">{t("input:labels.specialCareInstructions")}</span>
+              <p className="font-medium text-slate-700 mb-0 leading-relaxed">
+                {healthRecord.specialCareInstructions}
+              </p>
+            </div>
+          )}
         </div>
 
-        <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl text-xs space-y-1">
-          <span className="text-slate-400 font-medium">{t("input:labels.healthNotes")}</span>
-          <p className="font-medium text-slate-700 mb-0 leading-relaxed">
-            {healthRecord.notes}
-          </p>
-        </div>
+        {healthRecord.notes && (
+          <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl text-xs space-y-1">
+            <span className="text-slate-400 font-medium">{t("input:labels.healthNotes")}</span>
+            <p className="font-medium text-slate-700 mb-0 leading-relaxed">
+              {healthRecord.notes}
+            </p>
+          </div>
+        )}
       </div>
+
+      {onSave && (
+        <HealthUpdateModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          healthRecord={healthRecord}
+          onSave={onSave}
+        />
+      )}
     </div>
   );
 };

@@ -11,6 +11,7 @@ from apps.core.views.auth_views import (
     AuthMeView,
     AuthTokenRefreshView,
 )
+from apps.core.views.profile_views import StudentProfileView
 from apps.core.views.role_views import PermissionViewSet, RoleViewSet
 
 app_name = "core"
@@ -24,6 +25,9 @@ urlpatterns = [
     path("auth/me/", AuthMeView.as_view(), name="auth-me"),
     path("auth/logout/", AuthLogoutView.as_view(), name="auth-logout"),
     path("auth/refresh/", AuthTokenRefreshView.as_view(), name="auth-refresh"),
+    # Student Profile endpoints
+    path("profile/", StudentProfileView.as_view(), name="student-profile"),
+    path("students/profile/", StudentProfileView.as_view(), name="student-profile-alias"),
     # Role & Permission viewsets
     path("", include(router.urls)),
 ]

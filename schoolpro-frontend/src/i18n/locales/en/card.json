@@ -109,10 +109,23 @@
       "guardians": "Parents & Guardians",
       "guardiansDesc": "Contact details for parent-teacher electronic portal and emergency contact",
       "health": "Campus Healthcare & Physical Profile",
-      "healthDesc": "Physical metrics, medical history, and student health insurance records"
+      "healthDesc": "Physical metrics, medical history, and student health insurance records",
+      "identityTitle": "Student Identity Information (School Issued)",
+      "identityDesc": "Official legal identity records managed and secured by the school",
+      "residenceTitle": "Residence & Citizen Information (Editable)",
+      "contactTitle": "Contact & Personal Information (Editable)",
+      "organizationTitle": "Youth Organization & Policy Benefits (Editable)",
+      "healthUpdateTitle": "Update Personal Health Indicators"
     },
     "primaryContact": "Primary Contact",
-    "parentCommittee": "Parent Committee"
+    "parentCommittee": "Parent Committee",
+    "emergencyContact": "Emergency Contact",
+    "workplace": "Workplace:",
+    "homeroomTeacher": "Homeroom Teacher",
+    "boarder": "Boarding Student",
+    "dayStudent": "Day Student",
+    "statusStudying": "Enrolled",
+    "verifiedNotice": "Valid profile according to Ministry of Education & Training database standards"
   },
   "settings": {
     "title": "System Settings",

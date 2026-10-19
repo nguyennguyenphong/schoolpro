@@ -68,14 +68,14 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.graduationDate")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.graduationDate || "Dự kiến 2029"}
+            {academicInfo.graduationDate || "—"}
           </p>
         </div>
 
         <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
           <span className="text-slate-400 font-medium">{t("input:labels.boarding")}</span>
           <p className="font-bold text-slate-800 text-sm mb-0">
-            {academicInfo.isBoarder ? "Nội trú" : "Ngoại trú / Đi về"}
+            {academicInfo.isBoarder ? t("card:profile.boarder") : t("card:profile.dayStudent")}
           </p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export const ProfileAcademicTab: React.FC<ProfileAcademicTabProps> = ({
       <div className="rounded-xl border border-[#f0f0f0] p-5 bg-slate-50/50 space-y-3">
         <h4 className="text-sm font-bold text-slate-800 mb-0 flex items-center gap-2">
           <Icon name="user" size={16} className="text-blue-600" />
-          <span>Giáo viên chủ nhiệm lớp</span>
+          <span>{t("card:profile.homeroomTeacher")}</span>
         </h4>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-[#f0f0f0] rounded-xl gap-4 mt-3">

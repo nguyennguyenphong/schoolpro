@@ -11,16 +11,16 @@ interface ProfileGuardiansTabProps {
 export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
   guardians,
 }) => {
-  const { t } = useTranslation(["card"]);
+  const { t } = useTranslation(["card", "input"]);
 
   const getRelationshipLabel = (rel: string) => {
     switch (rel) {
       case "FATHER":
-        return "Bố (Cha)";
+        return "Bố (Father)";
       case "MOTHER":
-        return "Mẹ";
+        return "Mẹ (Mother)";
       default:
-        return "Người giám hộ";
+        return "Guardian";
     }
   };
 
@@ -36,7 +36,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
               {t("card:profile.sections.guardians")}
             </h2>
             <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-[#f0f0f0]">
-              {guardians.length} người
+              {guardians.length}
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
@@ -59,7 +59,7 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
                 <h4 className="text-base font-bold text-slate-900 mb-0 pt-1">
                   {g.fullName}
                 </h4>
-                <p className="text-xs text-slate-500 mb-0">{g.job}</p>
+                <p className="text-xs text-slate-500 mb-0">{g.job || "—"}</p>
               </div>
 
               <div className="flex flex-col items-end gap-1.5 shrink-0">
@@ -73,13 +73,18 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
                     {t("card:profile.parentCommittee")}
                   </Tag>
                 )}
+                {g.isEmergencyContact && (
+                  <Tag color="rose" className="font-semibold text-[11px] m-0">
+                    {t("card:profile.emergencyContact")}
+                  </Tag>
+                )}
               </div>
             </div>
 
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center gap-2 text-slate-600">
                 <Icon name="phone" size={14} className="text-slate-400 shrink-0" />
-                <span className="text-slate-400">Số điện thoại:</span>
+                <span className="text-slate-400">{t("input:labels.phone")}:</span>
                 <a
                   href={`tel:${g.phone.replace(/\s+/g, "")}`}
                   className="font-bold text-blue-600 hover:underline"
@@ -91,13 +96,29 @@ export const ProfileGuardiansTab: React.FC<ProfileGuardiansTabProps> = ({
               {g.email && (
                 <div className="flex items-center gap-2 text-slate-600">
                   <Icon name="mail" size={14} className="text-slate-400 shrink-0" />
-                  <span className="text-slate-400">Email:</span>
+                  <span className="text-slate-400">{t("input:labels.email")}:</span>
                   <a
                     href={`mailto:${g.email}`}
                     className="font-medium text-slate-700 hover:text-blue-600"
                   >
                     {g.email}
                   </a>
+                </div>
+              )}
+
+              {g.workplace && (
+                <div className="flex items-center gap-2 text-slate-600">
+                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                  <span className="text-slate-400">{t("input:labels.workplace")}:</span>
+                  <span className="font-medium text-slate-700">{g.workplace}</span>
+                </div>
+              )}
+
+              {g.address && (
+                <div className="flex items-center gap-2 text-slate-600">
+                  <Icon name="home" size={14} className="text-slate-400 shrink-0" />
+                  <span className="text-slate-400">{t("input:labels.address")}:</span>
+                  <span className="font-medium text-slate-700">{g.address}</span>
                 </div>
               )}
             </div>
