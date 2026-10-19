@@ -196,3 +196,88 @@ def test_submit_assignment_enforces_late_and_resubmission_limits():
                 content="Nộp bài trễ",
                 files=[{"id": "f1", "name": "bai.pdf", "size": "1 MB", "type": "pdf"}],
             )
+
+
+def test_resolve_current_academic_context():
+    """
+    Verifies that resolve_current_academic_context prioritizes enrolled class academic year
+    and current active semester.
+    """
+    dummy_ay = SimpleNamespace(id="ay-2026", name="2026-2027", is_current=True)
+    dummy_sem = SimpleNamespace(
+        id="sem-1", name="Học kỳ 1", is_current=True, academic_year=dummy_ay
+    )
+    dummy_class = SimpleNamespace(id="cls-1", name="10A1", academic_year=dummy_ay)
+    dummy_student = SimpleNamespace(id="stu-1", current_class=dummy_class)
+
+    with (
+        patch("apps.master.models.academic_year.AcademicYear.objects"),
+        patch("apps.master.models.semester.Semester.objects") as mock_sem_mgr,
+    ):
+        mock_sem_mgr.filter.return_value.first.return_value = dummy_sem
+
+        ay, sem = AssignmentService.resolve_current_academic_context(
+            student=dummy_student, school_class=dummy_class
+        )
+        assert ay == dummy_ay
+        assert sem == dummy_sem
+
+
+def test_format_assignment_item_includes_academic_year_and_semester():
+    """
+    Verifies that format_assignment_item includes academicYear, semesterName, and semesterId.
+    """
+    dummy_ay = SimpleNamespace(name="2026-2027")
+    dummy_sem = SimpleNamespace(id="sem-uuid-1", name="Học kỳ 1", academic_year=dummy_ay)
+    assignment = _make_dummy_assignment()
+    assignment.class_subject_teacher.school_class.academic_year = dummy_ay
+    assignment.class_subject_teacher.semester = dummy_sem
+
+    item = AssignmentService.format_assignment_item(assignment)
+    assert item["academicYear"] == "2026-2027"
+    assert item["semesterName"] == "Học kỳ 1"
+    assert item["semesterId"] == "sem-uuid-1"
+
+
+def test_list_assignments_scopes_to_current_academic_year_and_semester():
+    """
+    Verifies that list_assignments automatically filters by current academic year and semester.
+    """
+    dummy_ay = SimpleNamespace(id="ay-1", name="2026-2027", is_current=True)
+    dummy_sem = SimpleNamespace(
+        id="sem-1", name="Học kỳ 1", is_current=True, academic_year=dummy_ay
+    )
+    dummy_class = SimpleNamespace(id="cls-1", name="10A1", academic_year=dummy_ay)
+    dummy_student = SimpleNamespace(
+        id="stu-1", user=SimpleNamespace(id="usr-1"), current_class=dummy_class
+    )
+
+    assignment = _make_dummy_assignment()
+    assignment.class_subject_teacher.school_class.academic_year = dummy_ay
+    assignment.class_subject_teacher.semester = dummy_sem
+
+    mock_qs = MagicMock()
+    mock_qs.select_related.return_value.order_by.return_value = mock_qs
+    mock_qs.filter.return_value = mock_qs
+    mock_qs.__iter__.return_value = [assignment]
+
+    with (
+        patch.object(AssignmentService, "resolve_student", return_value=dummy_student),
+        patch.object(AssignmentService, "resolve_student_class", return_value=dummy_class),
+        patch.object(
+            AssignmentService,
+            "resolve_current_academic_context",
+            return_value=(dummy_ay, dummy_sem),
+        ),
+        patch("apps.academic.models.assignment.Assignment.objects.filter", return_value=mock_qs),
+        patch(
+            "apps.academic.models.assignment.AssignmentSubmission.objects.filter"
+        ) as mock_sub_mgr,
+    ):
+        mock_sub_mgr.return_value.select_related.return_value = []
+
+        items = AssignmentService.list_assignments(user=dummy_student.user)
+        assert len(items) == 1
+        assert items[0]["title"] == assignment.title
+        assert items[0]["academicYear"] == "2026-2027"
+        assert items[0]["semesterName"] == "Học kỳ 1"

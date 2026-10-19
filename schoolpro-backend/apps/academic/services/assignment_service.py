@@ -5,9 +5,11 @@ reopen requests, deadline extensions, rubric evaluation, and audit event logs.
 """
 
 import logging
+import uuid
 from typing import Any
 
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 
 from apps.academic.models.assignment import (
@@ -23,6 +25,16 @@ from apps.core.models.organization import (
 from apps.core.models.profile import Student
 
 logger = logging.getLogger(__name__)
+
+
+def _is_valid_uuid(val: Any) -> bool:
+    if not val:
+        return False
+    try:
+        uuid.UUID(str(val))
+        return True
+    except (ValueError, TypeError):
+        return False
 
 
 class AssignmentService:
@@ -86,7 +98,8 @@ class AssignmentService:
     @staticmethod
     def resolve_student_class(student: Student | None) -> Any | None:
         """
-        Resolves the primary enrolled class for the given student.
+        Resolves the primary enrolled class for the given student,
+        preferring active enrollment in the current academic year if available.
         """
         if not student:
             return None
@@ -94,10 +107,20 @@ class AssignmentService:
             StudentClassEnrollment.objects.filter(
                 student=student,
                 status="ACTIVE",
+                school_class__academic_year__is_current=True,
             )
             .select_related("school_class", "school_class__academic_year")
             .first()
         )
+        if not enrollment:
+            enrollment = (
+                StudentClassEnrollment.objects.filter(
+                    student=student,
+                    status="ACTIVE",
+                )
+                .select_related("school_class", "school_class__academic_year")
+                .first()
+            )
         if enrollment and enrollment.school_class:
             return enrollment.school_class
         if getattr(student, "current_class", None):
@@ -110,6 +133,59 @@ class AssignmentService:
         if first_cst:
             return first_cst.school_class
         return SchoolClass.objects.first()
+
+    @classmethod
+    def resolve_current_academic_context(
+        cls,
+        student: Student | None = None,
+        school_class: Any | None = None,
+    ) -> tuple[Any | None, Any | None]:
+        """
+        Resolves current AcademicYear and Semester for the student and their enrolled class.
+        Returns (academic_year, semester).
+        """
+        from apps.master.models.academic_year import AcademicYear
+        from apps.master.models.semester import Semester
+
+        academic_year = None
+        # 1. Prefer academic year from student's enrolled class
+        if school_class and getattr(school_class, "academic_year", None):
+            academic_year = school_class.academic_year
+        elif (
+            student
+            and getattr(student, "current_class", None)
+            and getattr(student.current_class, "academic_year", None)
+        ):
+            academic_year = student.current_class.academic_year
+
+        # 2. If still none, check is_current=True on AcademicYear
+        if not academic_year:
+            academic_year = (
+                AcademicYear.objects.filter(is_current=True).first()
+                or AcademicYear.objects.order_by("-start_date").first()
+            )
+
+        # 3. Resolve current semester for this academic year
+        semester = None
+        if academic_year:
+            semester = Semester.objects.filter(
+                academic_year=academic_year,
+                is_current=True,
+            ).first()
+            if not semester:
+                semester = (
+                    Semester.objects.filter(academic_year=academic_year)
+                    .order_by("-start_date")
+                    .first()
+                )
+
+        if not semester:
+            semester = (
+                Semester.objects.filter(is_current=True).first()
+                or Semester.objects.order_by("-start_date").first()
+            )
+
+        return academic_year, semester
 
     @staticmethod
     def get_effective_due_date(assignment: Assignment) -> Any:
@@ -309,6 +385,16 @@ class AssignmentService:
         cst = assignment.class_subject_teacher
         subject = cst.subject if cst else None
         school_class = cst.school_class if cst else None
+        semester = getattr(cst, "semester", None) if cst else None
+        academic_year = (
+            school_class.academic_year
+            if school_class and getattr(school_class, "academic_year", None)
+            else (
+                semester.academic_year
+                if semester and getattr(semester, "academic_year", None)
+                else None
+            )
+        )
         teacher_user = cst.teacher.user if cst and cst.teacher else assignment.created_by
         teacher_name = teacher_user.full_name if teacher_user else "Giáo viên bộ môn"
         teacher_email = teacher_user.email if teacher_user and teacher_user.email else ""
@@ -506,6 +592,13 @@ class AssignmentService:
             "subjectCode": subject_code,
             "subjectName": subject.name if subject else "Môn học",
             "className": school_class.name if school_class else "",
+            "academicYear": (
+                academic_year.name if academic_year and getattr(academic_year, "name", None) else ""
+            ),
+            "semesterName": (semester.name if semester and getattr(semester, "name", None) else ""),
+            "semesterId": (
+                str(semester.id) if semester and getattr(semester, "id", None) else None
+            ),
             "teacherName": teacher_name,
             "teacherEmail": teacher_email,
             "type": ui_type,
@@ -553,9 +646,12 @@ class AssignmentService:
         type_filter: str | None = None,
         search_query: str | None = None,
         sort_by: str | None = None,
+        academic_year_param: str | None = None,
+        semester_param: str | None = None,
     ) -> list[dict[str, Any]]:
         """
-        Lists all published assignments for the student's class with filters and student submissions.
+        Lists all published assignments for the student's class with filters and student submissions,
+        always scoped to the current academic year and current semester by default.
         """
         student = cls.resolve_student(user)
         if not student:
@@ -565,6 +661,37 @@ class AssignmentService:
         if not school_class:
             return []
 
+        from apps.master.models.academic_year import AcademicYear
+        from apps.master.models.semester import Semester
+
+        current_ay, current_sem = cls.resolve_current_academic_context(
+            student=student, school_class=school_class
+        )
+
+        target_ay = current_ay
+        if academic_year_param and academic_year_param != "all":
+            ay_match = (
+                AcademicYear.objects.filter(id=academic_year_param).first()
+                if _is_valid_uuid(academic_year_param)
+                else AcademicYear.objects.filter(
+                    Q(code=academic_year_param) | Q(name=academic_year_param)
+                ).first()
+            )
+            if ay_match:
+                target_ay = ay_match
+
+        target_sem = current_sem
+        if semester_param and semester_param != "all":
+            sem_match = (
+                Semester.objects.filter(id=semester_param).first()
+                if _is_valid_uuid(semester_param)
+                else Semester.objects.filter(
+                    Q(code=semester_param) | Q(name=semester_param)
+                ).first()
+            )
+            if sem_match:
+                target_sem = sem_match
+
         assignments_qs = (
             Assignment.objects.filter(
                 class_subject_teacher__school_class=school_class,
@@ -572,12 +699,24 @@ class AssignmentService:
             )
             .select_related(
                 "class_subject_teacher__school_class",
+                "class_subject_teacher__school_class__academic_year",
                 "class_subject_teacher__subject",
                 "class_subject_teacher__teacher__user",
+                "class_subject_teacher__semester",
+                "class_subject_teacher__semester__academic_year",
                 "created_by",
             )
             .order_by("-assigned_date", "-due_date")
         )
+
+        if target_ay and academic_year_param != "all":
+            assignments_qs = assignments_qs.filter(
+                Q(class_subject_teacher__school_class__academic_year=target_ay)
+                | Q(class_subject_teacher__semester__academic_year=target_ay)
+            )
+
+        if target_sem and semester_param != "all":
+            assignments_qs = assignments_qs.filter(class_subject_teacher__semester=target_sem)
 
         assignments_list = list(assignments_qs)
         if not assignments_list:
@@ -679,15 +818,29 @@ class AssignmentService:
         )
 
     @classmethod
-    def get_summary(cls, user: Any) -> dict[str, Any]:
+    def get_summary(
+        cls,
+        user: Any,
+        academic_year_param: str | None = None,
+        semester_param: str | None = None,
+    ) -> dict[str, Any]:
         """
-        Computes summary dashboard counts, average score, and available subjects for current student.
+        Computes summary dashboard counts, average score, and available subjects for current student,
+        strictly scoped to current academic year and semester.
         """
         student = cls.resolve_student(user)
         school_class = cls.resolve_student_class(student) if student else None
         class_name = school_class.name if school_class else None
 
-        all_items = cls.list_assignments(user=user)
+        academic_year, semester = cls.resolve_current_academic_context(
+            student=student, school_class=school_class
+        )
+
+        all_items = cls.list_assignments(
+            user=user,
+            academic_year_param=academic_year_param,
+            semester_param=semester_param,
+        )
 
         total = len(all_items)
         pending_count = sum(1 for i in all_items if i["status"] == "pending")
@@ -721,8 +874,14 @@ class AssignmentService:
             "overdueCount": overdue_count,
             "averageScore": avg_score,
             "className": class_name,
-            "semesterName": "Học kỳ 1",
-            "academicYear": "2026-2027",
+            "semesterName": (
+                semester.name if semester and getattr(semester, "name", None) else None
+            ),
+            "academicYear": (
+                academic_year.name
+                if academic_year and getattr(academic_year, "name", None)
+                else None
+            ),
             "subjects": list(subjects_map.values()),
         }
 
