@@ -194,6 +194,21 @@ export const ProfileHealthTab: React.FC<ProfileHealthTabProps> = ({
               </p>
             </div>
           )}
+
+          {healthRecord.healthClassification && (
+            <div className="p-3.5 bg-slate-50 border border-[#f0f0f0] rounded-xl space-y-1">
+              <span className="text-slate-400 font-medium">{t("input:labels.healthClassification")}</span>
+              <p className="font-bold text-slate-800 text-sm mb-0">
+                {healthRecord.healthClassification === "TYPE_1"
+                  ? "Loại 1 (Rất tốt)"
+                  : healthRecord.healthClassification === "TYPE_2"
+                  ? "Loại 2 (Tốt)"
+                  : healthRecord.healthClassification === "TYPE_3"
+                  ? "Loại 3 (Trung bình)"
+                  : healthRecord.healthClassification}
+              </p>
+            </div>
+          )}
         </div>
 
         {healthRecord.notes && (

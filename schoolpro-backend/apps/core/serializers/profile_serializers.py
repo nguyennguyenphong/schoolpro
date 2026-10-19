@@ -17,6 +17,9 @@ class StudentPersonalInfoSerializer(serializers.Serializer):
     id = serializers.CharField()
     studentCode = serializers.CharField()
     fullName = serializers.CharField()
+    firstName = serializers.CharField(allow_blank=True, default="")
+    lastName = serializers.CharField(allow_blank=True, default="")
+    preferredName = serializers.CharField(allow_blank=True, default="")
     username = serializers.CharField()
     avatarUrl = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     dateOfBirth = serializers.CharField(allow_blank=True, allow_null=True, required=False)
@@ -24,6 +27,7 @@ class StudentPersonalInfoSerializer(serializers.Serializer):
     nationalId = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     nationalIdIssuedDate = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     nationalIdIssuedPlace = serializers.CharField(allow_blank=True, allow_null=True, required=False)
+    admissionDate = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     ethnicity = serializers.CharField(allow_blank=True, default="Kinh")
     religion = serializers.CharField(allow_blank=True, default="Không")
     birthPlace = serializers.CharField(allow_blank=True, allow_null=True, required=False)
@@ -106,7 +110,14 @@ class StudentProfileResponseSerializer(serializers.Serializer):
 
 
 class StudentProfileUpdateSerializer(serializers.Serializer):
-    # User fields
+    # User identity & authentication fields
+    username = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    fullName = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    firstName = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    lastName = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    preferredName = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    dateOfBirth = serializers.DateField(required=False, allow_null=True)
+    gender = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     phone = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     email = serializers.EmailField(required=False, allow_blank=True, allow_null=True)
     address = serializers.CharField(required=False, allow_blank=True, allow_null=True)
@@ -114,6 +125,11 @@ class StudentProfileUpdateSerializer(serializers.Serializer):
     avatarUrl = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     # Student dossier fields
+    nationalId = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    nationalIdNumber = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    nationalIdIssuedDate = serializers.DateField(required=False, allow_null=True)
+    nationalIdIssuedPlace = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    admissionDate = serializers.DateField(required=False, allow_null=True)
     permanentAddress = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     temporaryAddress = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     householdRegistrationNumber = serializers.CharField(
@@ -122,8 +138,6 @@ class StudentProfileUpdateSerializer(serializers.Serializer):
     birthPlace = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     ethnicity = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     religion = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    nationalIdIssuedDate = serializers.DateField(required=False, allow_null=True)
-    nationalIdIssuedPlace = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     insuranceCardNumber = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     policyBeneficiary = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     bloodType = serializers.CharField(required=False, allow_blank=True, allow_null=True)
@@ -138,9 +152,14 @@ class StudentProfileUpdateSerializer(serializers.Serializer):
     # Health record fields
     heightCm = serializers.FloatField(required=False, allow_null=True)
     weightKg = serializers.FloatField(required=False, allow_null=True)
+    bmi = serializers.FloatField(required=False, allow_null=True)
     visionLeft = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     visionRight = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    hearingStatus = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    dentalStatus = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    skeletalStatus = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     chronicIllness = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    healthClassification = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     healthNotes = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     specialCareInstructions = serializers.CharField(
         required=False, allow_blank=True, allow_null=True

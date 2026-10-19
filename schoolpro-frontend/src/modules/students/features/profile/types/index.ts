@@ -7,10 +7,14 @@ export interface StudentPersonalInfo {
   id: string;
   studentCode: string;
   fullName: string;
+  firstName?: string;
+  lastName?: string;
+  preferredName?: string;
   username: string;
   avatarUrl: string;
   dateOfBirth: string;
   gender: GenderType;
+  admissionDate?: string;
   nationalId: string;
   nationalIdIssuedDate?: string;
   nationalIdIssuedPlace?: string;
@@ -101,6 +105,18 @@ export interface StudentProfileData {
 }
 
 export interface UpdateProfilePayload {
+  // Identity & Account fields
+  username?: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  preferredName?: string;
+  dateOfBirth?: string;
+  gender?: GenderType | string;
+  nationalId?: string;
+  nationalIdNumber?: string;
+  admissionDate?: string;
+
   // Contact & User fields
   phone?: string;
   email?: string;
@@ -132,9 +148,14 @@ export interface UpdateProfilePayload {
   // Health record
   heightCm?: number;
   weightKg?: number;
+  bmi?: number;
   bloodType?: string;
   visionLeft?: string;
   visionRight?: string;
+  hearingStatus?: string;
+  dentalStatus?: string;
+  skeletalStatus?: string;
+  healthClassification?: string;
   allergies?: string;
   chronicIllness?: string;
   healthNotes?: string;

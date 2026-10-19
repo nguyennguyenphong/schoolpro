@@ -16,7 +16,7 @@ export const ProfileResidenceSection: React.FC = () => {
         </h4>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
         <Form.Item label={t("input:labels.birthPlace")} name="birthPlace">
           <Input placeholder={t("input:placeholder.default")} />
         </Form.Item>
@@ -32,20 +32,6 @@ export const ProfileResidenceSection: React.FC = () => {
         <Form.Item
           label={t("input:labels.householdRegistrationNumber")}
           name="householdRegistrationNumber"
-        >
-          <Input placeholder={t("input:placeholder.default")} />
-        </Form.Item>
-
-        <Form.Item
-          label={t("input:labels.nationalIdIssuedDate")}
-          name="nationalIdIssuedDate"
-        >
-          <Input type="date" placeholder={t("input:placeholder.date")} />
-        </Form.Item>
-
-        <Form.Item
-          label={t("input:labels.nationalIdIssuedPlace")}
-          name="nationalIdIssuedPlace"
         >
           <Input placeholder={t("input:placeholder.default")} />
         </Form.Item>

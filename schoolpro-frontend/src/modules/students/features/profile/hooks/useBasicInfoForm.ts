@@ -5,6 +5,19 @@ import type {
 } from "@/modules/students/features/profile/types";
 
 export interface BasicInfoFormValues {
+  // Identity & Account
+  username: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  preferredName: string;
+  dateOfBirth: string;
+  gender: string;
+  nationalId: string;
+  nationalIdIssuedDate: string;
+  nationalIdIssuedPlace: string;
+  admissionDate: string;
+
   // Contact
   phone: string;
   email: string;
@@ -15,8 +28,6 @@ export interface BasicInfoFormValues {
   birthPlace: string;
   ethnicity: string;
   religion: string;
-  nationalIdIssuedDate: string;
-  nationalIdIssuedPlace: string;
   permanentAddress: string;
   temporaryAddress: string;
   householdRegistrationNumber: string;
@@ -57,19 +68,35 @@ export const useBasicInfoForm = ({
 }: UseBasicInfoFormProps): UseBasicInfoFormReturn => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  // Derive initial first and last name if not explicitly set
+  let initialFirst = personalInfo.firstName || "";
+  let initialLast = personalInfo.lastName || "";
+  if (!initialFirst && !initialLast && personalInfo.fullName) {
+    const parts = personalInfo.fullName.trim().split(" ");
+    if (parts.length > 1) {
+      initialLast = parts.slice(0, -1).join(" ");
+      initialFirst = parts[parts.length - 1];
+    } else {
+      initialFirst = parts[0];
+    }
+  }
+
   const initialValues: Record<string, unknown> = {
-    // Read-only reference fields
-    fullName: personalInfo.fullName,
+    // Reference
     studentCode: personalInfo.studentCode,
-    username: personalInfo.username,
-    dateOfBirth: personalInfo.dateOfBirth,
-    gender:
-      personalInfo.gender === "MALE"
-        ? "Nam"
-        : personalInfo.gender === "FEMALE"
-        ? "Nữ"
-        : "Khác",
-    nationalId: personalInfo.nationalId,
+
+    // Identity & Account
+    username: personalInfo.username || "",
+    fullName: personalInfo.fullName || "",
+    firstName: initialFirst,
+    lastName: initialLast,
+    preferredName: personalInfo.preferredName || "",
+    dateOfBirth: personalInfo.dateOfBirth || "",
+    gender: personalInfo.gender || "MALE",
+    nationalId: personalInfo.nationalId || "",
+    nationalIdIssuedDate: personalInfo.nationalIdIssuedDate || "",
+    nationalIdIssuedPlace: personalInfo.nationalIdIssuedPlace || "",
+    admissionDate: personalInfo.admissionDate || "",
 
     // Editable Contact
     phone: personalInfo.phone || "",
@@ -81,8 +108,6 @@ export const useBasicInfoForm = ({
     birthPlace: personalInfo.birthPlace || "",
     ethnicity: personalInfo.ethnicity || "Kinh",
     religion: personalInfo.religion || "Không",
-    nationalIdIssuedDate: personalInfo.nationalIdIssuedDate || "",
-    nationalIdIssuedPlace: personalInfo.nationalIdIssuedPlace || "",
     permanentAddress: personalInfo.permanentAddress || personalInfo.address || "",
     temporaryAddress: personalInfo.temporaryAddress || personalInfo.address || "",
     householdRegistrationNumber: personalInfo.householdRegistrationNumber || "",
@@ -106,7 +131,26 @@ export const useBasicInfoForm = ({
   const handleSubmit = async (values: BasicInfoFormValues) => {
     try {
       setIsSubmitting(true);
+      // Auto-compute fullName if not directly customized
+      let computedFullName = values.fullName?.trim();
+      if (!computedFullName && (values.lastName || values.firstName)) {
+        computedFullName = `${values.lastName ? values.lastName.trim() + " " : ""}${
+          values.firstName ? values.firstName.trim() : ""
+        }`.trim();
+      }
+
       await onSave({
+        username: values.username,
+        fullName: computedFullName,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        preferredName: values.preferredName,
+        dateOfBirth: values.dateOfBirth || undefined,
+        gender: values.gender,
+        nationalId: values.nationalId,
+        nationalIdIssuedDate: values.nationalIdIssuedDate || undefined,
+        nationalIdIssuedPlace: values.nationalIdIssuedPlace,
+        admissionDate: values.admissionDate || undefined,
         phone: values.phone,
         email: values.email,
         address: values.address,
@@ -114,8 +158,6 @@ export const useBasicInfoForm = ({
         birthPlace: values.birthPlace,
         ethnicity: values.ethnicity,
         religion: values.religion,
-        nationalIdIssuedDate: values.nationalIdIssuedDate || undefined,
-        nationalIdIssuedPlace: values.nationalIdIssuedPlace,
         permanentAddress: values.permanentAddress,
         temporaryAddress: values.temporaryAddress,
         householdRegistrationNumber: values.householdRegistrationNumber,

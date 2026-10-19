@@ -198,10 +198,18 @@ class StudentProfileService:
             "id": str(student.id) if student else str(target_user.id),
             "studentCode": student.student_code if student else "105494395865",
             "fullName": target_user.full_name or "Học sinh",
+            "firstName": target_user.first_name or "",
+            "lastName": target_user.last_name or "",
+            "preferredName": target_user.preferred_name or "",
             "username": target_user.username or "",
             "avatarUrl": target_user.avatar_url or "",
             "dateOfBirth": dob_str,
             "gender": (target_user.gender_code or "MALE").upper(),
+            "admissionDate": (
+                student.admission_date.strftime("%Y-%m-%d")
+                if student and student.admission_date
+                else "2026-09-05"
+            ),
             "nationalId": (
                 (student.national_id_number if student else None) or target_user.national_id or ""
             ),
@@ -394,27 +402,84 @@ class StudentProfileService:
             with transaction.atomic():
                 # 1. Update User attributes
                 user_updated_fields: list[str] = []
+
+                if "username" in data and data["username"]:
+                    u_clean = str(data["username"]).strip()
+                    if u_clean and u_clean != target_user.username:
+                        if (
+                            not User.objects.filter(username=u_clean)
+                            .exclude(id=target_user.id)
+                            .exists()
+                        ):
+                            target_user.username = u_clean
+                            user_updated_fields.append("username")
+
+                if "firstName" in data and data["firstName"] is not None:
+                    target_user.first_name = str(data["firstName"]).strip()
+                    user_updated_fields.append("first_name")
+                if "lastName" in data and data["lastName"] is not None:
+                    target_user.last_name = str(data["lastName"]).strip()
+                    user_updated_fields.append("last_name")
+                if "preferredName" in data and data["preferredName"] is not None:
+                    target_user.preferred_name = str(data["preferredName"]).strip()
+                    user_updated_fields.append("preferred_name")
+
+                if "fullName" in data and data["fullName"] is not None:
+                    f_clean = str(data["fullName"]).strip()
+                    target_user.full_name = f_clean
+                    user_updated_fields.append("full_name")
+                    if not target_user.first_name and not target_user.last_name:
+                        parts = f_clean.split()
+                        if len(parts) > 1:
+                            target_user.last_name = " ".join(parts[:-1])
+                            target_user.first_name = parts[-1]
+                            user_updated_fields.extend(["first_name", "last_name"])
+                        elif len(parts) == 1:
+                            target_user.first_name = parts[0]
+                            user_updated_fields.append("first_name")
+                elif ("firstName" in data or "lastName" in data) and not data.get("fullName"):
+                    computed_full = (
+                        f"{target_user.last_name or ''} {target_user.first_name or ''}".strip()
+                    )
+                    if computed_full:
+                        target_user.full_name = computed_full
+                        user_updated_fields.append("full_name")
+
+                if "dateOfBirth" in data and data["dateOfBirth"]:
+                    target_user.date_of_birth = data["dateOfBirth"]
+                    user_updated_fields.append("date_of_birth")
+
+                if "gender" in data and data["gender"]:
+                    target_user.gender_code = str(data["gender"]).strip().upper()
+                    user_updated_fields.append("gender_code")
+
+                nid_val = data.get("nationalId") or data.get("nationalIdNumber")
+                if nid_val is not None:
+                    clean_nid = str(nid_val).strip()
+                    target_user.national_id = clean_nid
+                    user_updated_fields.append("national_id")
+
                 if "phone" in data and data["phone"] is not None:
-                    target_user.phone = data["phone"].strip()
+                    target_user.phone = str(data["phone"]).strip()
                     user_updated_fields.append("phone")
                 if "email" in data and data["email"] is not None:
-                    target_user.email = data["email"].strip()
+                    target_user.email = str(data["email"]).strip()
                     user_updated_fields.append("email")
                 if "address" in data and data["address"] is not None:
-                    target_user.address = data["address"].strip()
+                    target_user.address = str(data["address"]).strip()
                     user_updated_fields.append("address")
                 if "bio" in data and data["bio"] is not None:
-                    target_user.bio = data["bio"].strip()
+                    target_user.bio = str(data["bio"]).strip()
                     user_updated_fields.append("bio")
                 if "avatarUrl" in data and data["avatarUrl"] is not None:
-                    target_user.avatar_url = data["avatarUrl"].strip()
+                    target_user.avatar_url = str(data["avatarUrl"]).strip()
                     user_updated_fields.append("avatar_url")
 
                 if user_updated_fields and hasattr(target_user, "save"):
                     target_user.updated_at = timezone.now()
                     user_updated_fields.append("updated_at")
                     try:
-                        target_user.save(update_fields=user_updated_fields)
+                        target_user.save(update_fields=list(set(user_updated_fields)))
                     except Exception as u_exc:
                         logger.warning("Could not persist User updates: %s", u_exc)
 
@@ -422,7 +487,12 @@ class StudentProfileService:
                 if student:
                     student_updated_fields: list[str] = []
 
+                    if nid_val is not None:
+                        student.national_id_number = str(nid_val).strip()
+                        student_updated_fields.append("national_id_number")
+
                     field_mappings = {
+                        "admissionDate": "admission_date",
                         "permanentAddress": "permanent_address",
                         "temporaryAddress": "temporary_address",
                         "householdRegistrationNumber": "household_registration_number",
@@ -454,7 +524,7 @@ class StudentProfileService:
                     if student_updated_fields:
                         student.updated_at = timezone.now()
                         student_updated_fields.append("updated_at")
-                        student.save(update_fields=student_updated_fields)
+                        student.save(update_fields=list(set(student_updated_fields)))
 
                     # 3. Update or Create StudentHealthRecord
                     health_rec = StudentHealthRecord.objects.filter(student=student).first()
@@ -475,43 +545,59 @@ class StudentProfileService:
                         health_rec.weight_kg = data["weightKg"]
                         health_changed = True
 
+                    # Automatic BMI calculation
                     if (
                         health_rec.height_cm
                         and health_rec.weight_kg
                         and float(health_rec.height_cm) > 0
                     ):
                         hm = float(health_rec.height_cm) / 100.0
-                        health_rec.bmi = round(float(health_rec.weight_kg) / (hm * hm), 2)
+                        health_rec.bmi = round(float(health_rec.weight_kg) / (hm * hm), 1)
+                        health_changed = True
+                    elif "bmi" in data and data["bmi"] is not None:
+                        health_rec.bmi = data["bmi"]
                         health_changed = True
 
                     if "bloodType" in data and data["bloodType"]:
-                        health_rec.blood_type = data["bloodType"].strip()
+                        health_rec.blood_type = str(data["bloodType"]).strip()
                         health_changed = True
                     if "allergies" in data and data["allergies"] is not None:
-                        health_rec.allergies = data["allergies"].strip()
+                        health_rec.allergies = str(data["allergies"]).strip()
                         health_changed = True
                     if "chronicIllness" in data and data["chronicIllness"] is not None:
-                        health_rec.chronic_illness = data["chronicIllness"].strip()
+                        health_rec.chronic_illness = str(data["chronicIllness"]).strip()
                         health_changed = True
                     if "visionLeft" in data and data["visionLeft"] is not None:
-                        health_rec.vision_left = data["visionLeft"].strip()
+                        health_rec.vision_left = str(data["visionLeft"]).strip()
                         health_changed = True
                     if "visionRight" in data and data["visionRight"] is not None:
-                        health_rec.vision_right = data["visionRight"].strip()
+                        health_rec.vision_right = str(data["visionRight"]).strip()
+                        health_changed = True
+                    if "hearingStatus" in data and data["hearingStatus"] is not None:
+                        health_rec.hearing_status = str(data["hearingStatus"]).strip()
+                        health_changed = True
+                    if "dentalStatus" in data and data["dentalStatus"] is not None:
+                        health_rec.dental_status = str(data["dentalStatus"]).strip()
+                        health_changed = True
+                    if "skeletalStatus" in data and data["skeletalStatus"] is not None:
+                        health_rec.skeletal_status = str(data["skeletalStatus"]).strip()
+                        health_changed = True
+                    if "healthClassification" in data and data["healthClassification"] is not None:
+                        health_rec.health_classification = str(data["healthClassification"]).strip()
                         health_changed = True
                     if "healthNotes" in data and data["healthNotes"] is not None:
-                        health_rec.notes = data["healthNotes"].strip()
+                        health_rec.notes = str(data["healthNotes"]).strip()
                         health_changed = True
                     if (
                         "specialCareInstructions" in data
                         and data["specialCareInstructions"] is not None
                     ):
-                        health_rec.special_care_instructions = data[
-                            "specialCareInstructions"
-                        ].strip()
+                        health_rec.special_care_instructions = str(
+                            data["specialCareInstructions"]
+                        ).strip()
                         health_changed = True
                     if "insuranceCardNumber" in data and data["insuranceCardNumber"] is not None:
-                        health_rec.insurance_code = data["insuranceCardNumber"].strip()
+                        health_rec.insurance_code = str(data["insuranceCardNumber"]).strip()
                         health_changed = True
 
                     if health_changed or not health_rec.id:

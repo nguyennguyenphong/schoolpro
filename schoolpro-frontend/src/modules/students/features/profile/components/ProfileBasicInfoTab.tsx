@@ -54,8 +54,8 @@ export const ProfileBasicInfoTab: React.FC<ProfileBasicInfoTabProps> = ({
         onFinish={handleSubmit}
         className="space-y-5"
       >
-        {/* 1. Read-only official identity dossier */}
-        <ProfileIdentitySection />
+        {/* 1. Identity & Account dossier (editable) */}
+        <ProfileIdentitySection form={form} />
 
         {/* 2. Contact details & bio */}
         <ProfileContactSection />
