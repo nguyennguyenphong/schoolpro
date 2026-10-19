@@ -86,34 +86,40 @@ export const ProfilePage: React.FC = () => {
         </Card>
       </div>
 
-      {/* 4. Tab Content Section inside separate Card component */}
-      <Card
-        loading={loading && !profile}
-        className="shadow-2xs"
-      >
-        {profile && activeTab === "personal" && (
-          <ProfileBasicInfoTab
-            personalInfo={profile.personalInfo}
-            onSave={updateBasicInfo}
-            disabled={updating}
-          />
-        )}
+      {/* 4. Tab Content Section */}
+      {activeTab === "personal" ? (
+        loading && !profile ? (
+          <Card loading className="shadow-2xs" />
+        ) : (
+          profile && (
+            <ProfileBasicInfoTab
+              personalInfo={profile.personalInfo}
+              onSave={updateBasicInfo}
+              disabled={updating}
+            />
+          )
+        )
+      ) : (
+        <Card
+          loading={loading && !profile}
+          className="shadow-2xs"
+        >
+          {profile && activeTab === "academic" && (
+            <ProfileAcademicTab academicInfo={profile.academicInfo} />
+          )}
 
-        {profile && activeTab === "academic" && (
-          <ProfileAcademicTab academicInfo={profile.academicInfo} />
-        )}
+          {profile && activeTab === "guardians" && (
+            <ProfileGuardiansTab guardians={profile.guardians} />
+          )}
 
-        {profile && activeTab === "guardians" && (
-          <ProfileGuardiansTab guardians={profile.guardians} />
-        )}
-
-        {profile && activeTab === "health" && (
-          <ProfileHealthTab
-            healthRecord={profile.healthRecord}
-            onSave={updateBasicInfo}
-          />
-        )}
-      </Card>
+          {profile && activeTab === "health" && (
+            <ProfileHealthTab
+              healthRecord={profile.healthRecord}
+              onSave={updateBasicInfo}
+            />
+          )}
+        </Card>
+      )}
     </div>
   );
 };
