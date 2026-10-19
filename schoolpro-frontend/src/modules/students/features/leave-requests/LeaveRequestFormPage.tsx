@@ -272,6 +272,7 @@ const LeaveRequestFormBody: React.FC<LeaveRequestFormBodyProps> = ({
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder={t("input:leaveRequests.reasonPlaceholder")}
+            required
           />
         </div>
 

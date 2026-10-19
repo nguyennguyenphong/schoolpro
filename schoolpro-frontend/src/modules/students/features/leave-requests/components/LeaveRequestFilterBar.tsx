@@ -114,7 +114,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
               value={leaveType}
               onChange={onLeaveTypeChange}
               options={leaveTypeOptions}
-              className="w-44 sm:w-48"
+              className="w-50 sm:w-50"
             />
           </div>
 
