@@ -1,77 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import type { FormInstance } from "antd";
 import dayjs, { type Dayjs } from "dayjs";
-import { Card } from "@/components/ui/Card";
 import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { DatePicker } from "@/components/ui/DatePicker";
-import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type {
-  StudentPersonalInfo,
-  UpdateProfilePayload,
-} from "@/modules/students/features/profile/types";
 
-interface ProfileIdentityCardProps {
-  personalInfo: StudentPersonalInfo;
-  onSave: (payload: UpdateProfilePayload) => Promise<boolean>;
-  disabled?: boolean;
+interface ProfileIdentityFieldsProps {
+  form: FormInstance;
 }
 
-interface IdentityFormValues {
-  studentCode: string;
-  username: string;
-  preferredName: string;
-  lastName: string;
-  firstName: string;
-  fullName: string;
-  dateOfBirth?: string;
-  gender: string;
-  admissionDate?: string;
-  nationalId: string;
-  nationalIdIssuedDate?: string;
-  nationalIdIssuedPlace: string;
-}
-
-export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
-  personalInfo,
-  onSave,
-  disabled = false,
-}) => {
-  const { t } = useTranslation(["card", "input", "button", "validation"]);
-  const [form] = Form.useForm<IdentityFormValues>();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  // Synchronize form values whenever personalInfo changes
-  useEffect(() => {
-    let initFirst = personalInfo.firstName || "";
-    let initLast = personalInfo.lastName || "";
-    if (!initFirst && !initLast && personalInfo.fullName) {
-      const parts = personalInfo.fullName.trim().split(/\s+/);
-      if (parts.length > 1) {
-        initLast = parts.slice(0, -1).join(" ");
-        initFirst = parts[parts.length - 1];
-      } else {
-        initFirst = parts[0];
-      }
-    }
-
-    form.setFieldsValue({
-      studentCode: personalInfo.studentCode || "",
-      username: personalInfo.username || "",
-      preferredName: personalInfo.preferredName || "",
-      lastName: initLast,
-      firstName: initFirst,
-      fullName: personalInfo.fullName || "",
-      dateOfBirth: personalInfo.dateOfBirth || undefined,
-      gender: personalInfo.gender || "MALE",
-      admissionDate: personalInfo.admissionDate || undefined,
-      nationalId: personalInfo.nationalId || "",
-      nationalIdIssuedDate: personalInfo.nationalIdIssuedDate || undefined,
-      nationalIdIssuedPlace: personalInfo.nationalIdIssuedPlace || "",
-    });
-  }, [personalInfo, form]);
+export const ProfileIdentityFields: React.FC<ProfileIdentityFieldsProps> = ({ form }) => {
+  const { t } = useTranslation(["card", "input", "validation"]);
 
   const handleNamePartChange = (field: "firstName" | "lastName", val: string) => {
     const currentFirst = field === "firstName" ? val : form.getFieldValue("firstName") || "";
@@ -96,40 +38,12 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
     }
   };
 
-  const handleSubmit = async (values: IdentityFormValues) => {
-    try {
-      setIsSubmitting(true);
-      let computedFullName = values.fullName?.trim();
-      if (!computedFullName && (values.lastName || values.firstName)) {
-        computedFullName = `${values.lastName ? values.lastName.trim() + " " : ""}${
-          values.firstName ? values.firstName.trim() : ""
-        }`.trim();
-      }
-
-      await onSave({
-        username: values.username,
-        fullName: computedFullName,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        preferredName: values.preferredName,
-        dateOfBirth: values.dateOfBirth || undefined,
-        gender: values.gender,
-        admissionDate: values.admissionDate || undefined,
-        nationalId: values.nationalId,
-        nationalIdIssuedDate: values.nationalIdIssuedDate || undefined,
-        nationalIdIssuedPlace: values.nationalIdIssuedPlace,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
-      {/* Card Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
-        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
-          <Icon name="user" size={18} />
+    <section id="profile-section-identity" className="scroll-mt-6">
+      {/* Section Header */}
+      <div className="flex items-center gap-3 pb-3 mb-5 border-b border-slate-100">
+        <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="user" size={17} />
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-0.5">
@@ -141,12 +55,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
         </div>
       </div>
 
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        className="pt-5 flex flex-col gap-4.5"
-      >
+      <div className="flex flex-col gap-4.5">
         {/* Row 1: Student Code & Username */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Form.Item
@@ -214,7 +123,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
           </div>
         </div>
 
-        {/* Row 3: Demographics & Personal Attributes (Preferred name, DOB, Gender, Admission Date) */}
+        {/* Row 3: Demographics & Personal Attributes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Form.Item
             label={t("input:labels.preferredName")}
@@ -317,24 +226,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
         </div>
-
-        {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
-          <Button
-            htmlType="submit"
-            variant="primary"
-            disabled={isSubmitting || disabled}
-            className="px-5 h-9.5 text-xs sm:text-sm font-semibold shadow-xs"
-          >
-            <Icon
-              name={isSubmitting || disabled ? "loading" : "check"}
-              size={14}
-              className={isSubmitting || disabled ? "animate-spin" : ""}
-            />
-            {t("button:saveChanges")}
-          </Button>
-        </div>
-      </Form>
-    </Card>
+      </div>
+    </section>
   );
 };

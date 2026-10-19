@@ -99,5 +99,8 @@
   "downloadFile": "Download File",
   "printTimeTable": "Print Timetable",
   "downloadSelectedFiles": "Download selected files ({{count}})",
-  "deselectAll": "Deselect all"
+  "deselectAll": "Deselect all",
+  "nextStep": "Next Step",
+  "previousStep": "Previous Step",
+  "completeProfile": "Complete & Save Profile"
 }

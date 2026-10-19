@@ -99,5 +99,8 @@
   "downloadFile": "파일 다운로드",
   "printTimeTable": "시간표 인쇄",
   "downloadSelectedFiles": "선택한 파일 다운로드 ({{count}})",
-  "deselectAll": "선택 해제"
+  "deselectAll": "선택 해제",
+  "nextStep": "다음 단계",
+  "previousStep": "이전 단계",
+  "completeProfile": "완료 및 프로필 저장"
 }

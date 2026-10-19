@@ -99,5 +99,8 @@
   "downloadFile": "Tải xuống tệp",
   "printTimeTable": "In thời khóa biểu",
   "downloadSelectedFiles": "Tải các tệp đã chọn ({{count}})",
-  "deselectAll": "Bỏ chọn tất cả"
+  "deselectAll": "Bỏ chọn tất cả",
+  "nextStep": "Tiếp theo",
+  "previousStep": "Quay lại",
+  "completeProfile": "Hoàn tất & Lưu hồ sơ"
 }

@@ -99,5 +99,8 @@
   "downloadFile": "下载文件",
   "printTimeTable": "打印课程表",
   "downloadSelectedFiles": "下载选中文件 ({{count}})",
-  "deselectAll": "取消选择"
+  "deselectAll": "取消选择",
+  "nextStep": "下一步",
+  "previousStep": "上一步",
+  "completeProfile": "完成并保存档案"
 }

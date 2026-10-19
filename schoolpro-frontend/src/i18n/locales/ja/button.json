@@ -99,5 +99,8 @@
   "downloadFile": "ファイルをダウンロード",
   "printTimeTable": "時間割を印刷",
   "downloadSelectedFiles": "選択したファイルをダウンロード ({{count}})",
-  "deselectAll": "選択解除"
+  "deselectAll": "選択解除",
+  "nextStep": "次へ",
+  "previousStep": "前へ",
+  "completeProfile": "完了して保存"
 }

@@ -1,78 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import dayjs, { type Dayjs } from "dayjs";
-import { Card } from "@/components/ui/Card";
 import { Form } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { Switch } from "@/components/ui/Switch";
 import { DatePicker } from "@/components/ui/DatePicker";
-import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type {
-  StudentPersonalInfo,
-  UpdateProfilePayload,
-} from "@/modules/students/features/profile/types";
 
-interface ProfileOrganizationCardProps {
-  personalInfo: StudentPersonalInfo;
-  onSave: (payload: UpdateProfilePayload) => Promise<boolean>;
-  disabled?: boolean;
-}
-
-interface OrganizationFormValues {
-  insuranceCardNumber: string;
-  policyBeneficiary: string;
-  isPioneer: boolean;
-  pioneerEntryDate?: string;
-  isUnionMember: boolean;
-  unionEntryDate?: string;
-  specialNotes: string;
-}
-
-export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = ({
-  personalInfo,
-  onSave,
-  disabled = false,
-}) => {
-  const { t } = useTranslation(["card", "input", "button"]);
-  const [form] = Form.useForm<OrganizationFormValues>();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  useEffect(() => {
-    form.setFieldsValue({
-      insuranceCardNumber: personalInfo.insuranceCardNumber || "",
-      policyBeneficiary: personalInfo.policyBeneficiary || "",
-      isPioneer: Boolean(personalInfo.isPioneer),
-      pioneerEntryDate: personalInfo.pioneerEntryDate || undefined,
-      isUnionMember: Boolean(personalInfo.isUnionMember),
-      unionEntryDate: personalInfo.unionEntryDate || undefined,
-      specialNotes: personalInfo.specialNotes || "",
-    });
-  }, [personalInfo, form]);
-
-  const handleSubmit = async (values: OrganizationFormValues) => {
-    try {
-      setIsSubmitting(true);
-      await onSave({
-        insuranceCardNumber: values.insuranceCardNumber,
-        policyBeneficiary: values.policyBeneficiary,
-        isPioneer: values.isPioneer,
-        pioneerEntryDate: values.pioneerEntryDate || undefined,
-        isUnionMember: values.isUnionMember,
-        unionEntryDate: values.unionEntryDate || undefined,
-        specialNotes: values.specialNotes,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+export const ProfileOrganizationFields: React.FC = () => {
+  const { t } = useTranslation(["card", "input"]);
 
   return (
-    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
-      {/* Card Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
-        <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
-          <Icon name="sparkles" size={18} />
+    <section id="profile-section-organization" className="scroll-mt-6">
+      {/* Section Header */}
+      <div className="flex items-center gap-3 pb-3 mb-5 border-b border-slate-100">
+        <span className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+          <Icon name="sparkles" size={17} />
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-0.5">
@@ -84,12 +27,7 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
         </div>
       </div>
 
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        className="pt-5 flex flex-col gap-4.5"
-      >
+      <div className="flex flex-col gap-4.5">
         {/* Row 1: Insurance & Policy Status */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Form.Item
@@ -183,24 +121,7 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
             showCount
           />
         </Form.Item>
-
-        {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
-          <Button
-            htmlType="submit"
-            variant="primary"
-            disabled={isSubmitting || disabled}
-            className="px-5 h-9.5 text-xs sm:text-sm font-semibold shadow-xs"
-          >
-            <Icon
-              name={isSubmitting || disabled ? "loading" : "check"}
-              size={14}
-              className={isSubmitting || disabled ? "animate-spin" : ""}
-            />
-            {t("button:saveChanges")}
-          </Button>
-        </div>
-      </Form>
-    </Card>
+      </div>
+    </section>
   );
 };
