@@ -27,8 +27,6 @@ export interface UseLeaveRequestsResult {
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: string) => void;
   setPage: (page: number, pageSize?: number) => void;
-  setAcademicYear: (year: string) => void;
-  setSemester: (semester: string) => void;
   resetFilters: () => void;
   deleteLeaveRequest: (item: LeaveRequestItem) => Promise<void>;
   refetch: () => Promise<void>;
@@ -266,28 +264,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     [updateUrlParams],
   );
 
-  const setAcademicYear = useCallback(
-    (academicYear: string) => {
-      setFilter((prev) => {
-        const next = { ...prev, academicYear, page: 1 };
-        updateUrlParams(next);
-        return next;
-      });
-    },
-    [updateUrlParams],
-  );
-
-  const setSemester = useCallback(
-    (semester: string) => {
-      setFilter((prev) => {
-        const next = { ...prev, semester, page: 1 };
-        updateUrlParams(next);
-        return next;
-      });
-    },
-    [updateUrlParams],
-  );
-
   const setPage = useCallback(
     (page: number, pageSize?: number) => {
       setFilter((prev) => {
@@ -353,8 +329,6 @@ export function useLeaveRequests(): UseLeaveRequestsResult {
     setLeaveType,
     setSearchQuery,
     setSortBy,
-    setAcademicYear,
-    setSemester,
     setPage,
     resetFilters,
     deleteLeaveRequest,

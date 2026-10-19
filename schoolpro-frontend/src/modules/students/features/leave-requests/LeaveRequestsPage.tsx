@@ -30,8 +30,6 @@ const LeaveRequestsPage: React.FC = () => {
     setLeaveType,
     setSearchQuery,
     setSortBy,
-    setAcademicYear,
-    setSemester,
     setPage,
     resetFilters,
   } = useLeaveRequests();
@@ -48,7 +46,6 @@ const LeaveRequestsPage: React.FC = () => {
     <div className="flex flex-col gap-4 pb-6">
       <LeaveRequestsPageHeader
         onCreateClick={handleOpenCreatePage}
-        summary={summary}
       />
 
       {error && (
@@ -68,15 +65,11 @@ const LeaveRequestsPage: React.FC = () => {
         leaveType={filter.leaveType}
         searchQuery={filter.searchQuery}
         sortBy={filter.sortBy}
-        academicYear={filter.academicYear}
-        semester={filter.semester}
         hasActiveFilters={hasActiveFilters}
         onStatusChange={setStatus}
         onLeaveTypeChange={setLeaveType}
         onSearchChange={setSearchQuery}
         onSortByChange={setSortBy}
-        onAcademicYearChange={setAcademicYear}
-        onSemesterChange={setSemester}
         onResetFilters={resetFilters}
       />
 

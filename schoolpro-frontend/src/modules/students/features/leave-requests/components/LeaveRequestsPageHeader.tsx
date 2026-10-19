@@ -8,12 +8,10 @@ import type { LeaveRequestSummary } from "@/modules/students/features/leave-requ
 
 interface LeaveRequestsPageHeaderProps {
   onCreateClick: () => void;
-  summary?: LeaveRequestSummary | null;
 }
 
 export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = ({
   onCreateClick,
-  summary,
 }) => {
   const { t } = useTranslation(["navigation", "card", "button"]);
 
@@ -48,17 +46,6 @@ export const LeaveRequestsPageHeader: React.FC<LeaveRequestsPageHeaderProps> = (
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-0">
               {t("navigation:pageTitle.leaveRequests")}
             </h1>
-            {summary?.className && (
-              <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-lg border border-blue-200">
-                {summary.className}
-              </span>
-            )}
-            {summary?.semesterName && (
-              <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
-                {summary.semesterName}
-                {summary.academicYear ? ` • ${summary.academicYear}` : ""}
-              </span>
-            )}
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mb-0">
             {t("navigation:pageSubtitle.leaveRequests")}

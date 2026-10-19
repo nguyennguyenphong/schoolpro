@@ -5,23 +5,17 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SelectSort } from "@/components/sort/SelectSort";
 import { Select } from "@/components/ui/Select";
-import { SelectAcademicYear } from "@/components/academic-year/SelectAcademicYear";
-import { SelectSemester } from "@/components/semester/SelectSemester";
 
 interface LeaveRequestFilterBarProps {
   status: string;
   leaveType: string;
   searchQuery: string;
   sortBy: string;
-  academicYear?: string;
-  semester?: string;
   hasActiveFilters?: boolean;
   onStatusChange: (val: string) => void;
   onLeaveTypeChange: (val: string) => void;
   onSearchChange: (val: string) => void;
   onSortByChange: (val: string) => void;
-  onAcademicYearChange: (val: string) => void;
-  onSemesterChange: (val: string, option?: unknown) => void;
   onResetFilters: () => void;
 }
 
@@ -30,15 +24,11 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
   leaveType,
   searchQuery,
   sortBy,
-  academicYear,
-  semester,
   hasActiveFilters = false,
   onStatusChange,
   onLeaveTypeChange,
   onSearchChange,
   onSortByChange,
-  onAcademicYearChange,
-  onSemesterChange,
   onResetFilters,
 }) => {
   const { t } = useTranslation(["input", "card", "button"]);
@@ -111,36 +101,7 @@ export const LeaveRequestFilterBar: React.FC<LeaveRequestFilterBarProps> = ({
       {/* Bottom row: Filter Dropdowns */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-[#f0f0f0]">
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* 1. Academic Year Filter */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:leaveRequests.filters.academicYear")}:
-            </span>
-            <SelectAcademicYear
-              value={academicYear || undefined}
-              onChange={onAcademicYearChange}
-              allOptionLabel={t("card:leaveRequests.filters.allAcademicYears")}
-              defaultToCurrent
-              className="w-44 sm:w-48"
-            />
-          </div>
-
-          {/* 2. Semester Filter */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-              {t("card:leaveRequests.filters.semester")}:
-            </span>
-            <SelectSemester
-              value={semester || undefined}
-              academicYearId={academicYear}
-              onChange={onSemesterChange}
-              allOptionLabel={t("card:leaveRequests.filters.allSemesters")}
-              defaultToCurrent
-              className="w-40 sm:w-44"
-            />
-          </div>
-
-          {/* 3. Leave Type Filter */}
+          {/* 1. Leave Type Filter */}
           <div className="flex items-center gap-1.5">
             <label
               htmlFor="leave-request-filter-type"
