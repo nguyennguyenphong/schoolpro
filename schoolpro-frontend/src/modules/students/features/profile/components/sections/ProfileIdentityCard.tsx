@@ -125,7 +125,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
   };
 
   return (
-    <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
+    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
       {/* Card Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -145,64 +145,85 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        className="pt-4 space-y-4"
+        className="pt-5 flex flex-col gap-4.5"
       >
-        {/* Row 1: Student Code & Username & Preferred Name */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          <Form.Item label={t("input:labels.studentCode")} name="studentCode">
-            <Input disabled className="bg-slate-50! text-slate-700!" />
+        {/* Row 1: Student Code & Username */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Form.Item
+            label={t("input:labels.studentCode")}
+            name="studentCode"
+            className="mb-0"
+          >
+            <Input
+              disabled
+              className="bg-slate-50! text-slate-700!"
+              prefix={<Icon name="user" size={14} className="text-slate-400" />}
+            />
           </Form.Item>
 
           <Form.Item
             label={t("input:labels.username")}
             name="username"
             rules={[{ required: true, message: t("validation:required") }]}
+            className="mb-0"
           >
             <Input
               placeholder={t("input:placeholder.default")}
               prefix={<Icon name="user" size={14} className="text-slate-400" />}
             />
           </Form.Item>
-
-          <Form.Item label={t("input:labels.preferredName")} name="preferredName">
-            <Input placeholder={t("input:placeholder.default")} />
-          </Form.Item>
         </div>
 
         {/* Row 2: Name components with real-time automatic synchronization */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 p-3.5 bg-blue-50/40 rounded-xl border border-blue-100/60">
-          <Form.Item label={t("input:labels.lastName")} name="lastName">
-            <Input
-              placeholder={t("input:placeholder.default")}
-              onChange={(e) => handleNamePartChange("lastName", e.target.value)}
-            />
-          </Form.Item>
+        <div className="p-4 bg-blue-50/40 rounded-xl border border-blue-100/60 flex flex-col gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <Form.Item
+              label={t("input:labels.lastName")}
+              name="lastName"
+              className="mb-0"
+            >
+              <Input
+                placeholder={t("input:placeholder.default")}
+                onChange={(e) => handleNamePartChange("lastName", e.target.value)}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label={t("input:labels.firstName")}
-            name="firstName"
-            rules={[{ required: true, message: t("validation:required") }]}
-          >
-            <Input
-              placeholder={t("input:placeholder.default")}
-              onChange={(e) => handleNamePartChange("firstName", e.target.value)}
-            />
-          </Form.Item>
+            <Form.Item
+              label={t("input:labels.firstName")}
+              name="firstName"
+              rules={[{ required: true, message: t("validation:required") }]}
+              className="mb-0"
+            >
+              <Input
+                placeholder={t("input:placeholder.default")}
+                onChange={(e) => handleNamePartChange("firstName", e.target.value)}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label={t("input:labels.fullName")}
-            name="fullName"
-            rules={[{ required: true, message: t("validation:required") }]}
-          >
-            <Input
-              placeholder={t("input:placeholder.default")}
-              onChange={(e) => handleFullNameChange(e.target.value)}
-            />
-          </Form.Item>
+            <Form.Item
+              label={t("input:labels.fullName")}
+              name="fullName"
+              rules={[{ required: true, message: t("validation:required") }]}
+              className="mb-0"
+            >
+              <Input
+                placeholder={t("input:placeholder.default")}
+                onChange={(e) => handleFullNameChange(e.target.value)}
+              />
+            </Form.Item>
+          </div>
         </div>
 
-        {/* Row 3: Demographics (DatePicker for DOB and Admission Date) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        {/* Row 3: Demographics & Personal Attributes (Preferred name, DOB, Gender, Admission Date) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Form.Item
+            label={t("input:labels.preferredName")}
+            name="preferredName"
+            className="mb-0"
+          >
+            <Input placeholder={t("input:placeholder.default")} />
+          </Form.Item>
+
           <Form.Item
             label={t("input:labels.dateOfBirth")}
             name="dateOfBirth"
@@ -213,6 +234,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
               val && dayjs.isDayjs(val) ? val.format("YYYY-MM-DD") : undefined
             }
             rules={[{ required: true, message: t("validation:required") }]}
+            className="mb-0"
           >
             <DatePicker
               className="w-full"
@@ -226,8 +248,10 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
             label={t("input:labels.gender")}
             name="gender"
             rules={[{ required: true, message: t("validation:required") }]}
+            className="mb-0"
           >
             <Select
+              className="w-full"
               options={[
                 { value: "MALE", label: t("input:labels.genderMale") },
                 { value: "FEMALE", label: t("input:labels.genderFemale") },
@@ -245,6 +269,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
             normalize={(val: Dayjs | null) =>
               val && dayjs.isDayjs(val) ? val.format("YYYY-MM-DD") : undefined
             }
+            className="mb-0"
           >
             <DatePicker
               className="w-full"
@@ -255,9 +280,13 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
           </Form.Item>
         </div>
 
-        {/* Row 4: Citizen ID Dossier with DatePicker */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-          <Form.Item label={t("input:labels.nationalId")} name="nationalId">
+        {/* Row 4: Citizen ID Dossier */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Form.Item
+            label={t("input:labels.nationalId")}
+            name="nationalId"
+            className="mb-0"
+          >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
 
@@ -270,6 +299,7 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
             normalize={(val: Dayjs | null) =>
               val && dayjs.isDayjs(val) ? val.format("YYYY-MM-DD") : undefined
             }
+            className="mb-0"
           >
             <DatePicker
               className="w-full"
@@ -282,13 +312,14 @@ export const ProfileIdentityCard: React.FC<ProfileIdentityCardProps> = ({
           <Form.Item
             label={t("input:labels.nationalIdIssuedPlace")}
             name="nationalIdIssuedPlace"
+            className="mb-0"
           >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
         </div>
 
         {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
           <Button
             htmlType="submit"
             variant="primary"

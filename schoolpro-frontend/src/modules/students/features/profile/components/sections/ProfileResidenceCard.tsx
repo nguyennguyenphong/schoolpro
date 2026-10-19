@@ -62,7 +62,7 @@ export const ProfileResidenceCard: React.FC<ProfileResidenceCardProps> = ({
   };
 
   return (
-    <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
+    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
       {/* Card Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -82,47 +82,74 @@ export const ProfileResidenceCard: React.FC<ProfileResidenceCardProps> = ({
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        className="pt-4 space-y-4"
+        className="pt-5 flex flex-col gap-4.5"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <Form.Item label={t("input:labels.birthPlace")} name="birthPlace">
+        {/* Row 1: Vital Statistics & Origin (Birth Place, Ethnicity, Religion) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Form.Item
+            label={t("input:labels.birthPlace")}
+            name="birthPlace"
+            className="mb-0"
+          >
+            <Input
+              placeholder={t("input:placeholder.default")}
+              prefix={<Icon name="home" size={14} className="text-slate-400" />}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label={t("input:labels.ethnicity")}
+            name="ethnicity"
+            className="mb-0"
+          >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
 
-          <Form.Item label={t("input:labels.ethnicity")} name="ethnicity">
+          <Form.Item
+            label={t("input:labels.religion")}
+            name="religion"
+            className="mb-0"
+          >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
+        </div>
 
-          <Form.Item label={t("input:labels.religion")} name="religion">
-            <Input placeholder={t("input:placeholder.default")} />
-          </Form.Item>
-
+        {/* Row 2: Household Registry & Permanent Residence */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <Form.Item
             label={t("input:labels.householdRegistrationNumber")}
             name="householdRegistrationNumber"
+            className="mb-0"
           >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <Form.Item
             label={t("input:labels.permanentAddress")}
             name="permanentAddress"
+            className="mb-0 lg:col-span-2"
           >
-            <Input placeholder={t("input:placeholder.address")} />
-          </Form.Item>
-
-          <Form.Item
-            label={t("input:labels.temporaryAddress")}
-            name="temporaryAddress"
-          >
-            <Input placeholder={t("input:placeholder.address")} />
+            <Input
+              placeholder={t("input:placeholder.address")}
+              prefix={<Icon name="home" size={14} className="text-slate-400" />}
+            />
           </Form.Item>
         </div>
 
+        {/* Row 3: Current Temporary Residence */}
+        <Form.Item
+          label={t("input:labels.temporaryAddress")}
+          name="temporaryAddress"
+          className="mb-0"
+        >
+          <Input
+            placeholder={t("input:placeholder.address")}
+            prefix={<Icon name="home" size={14} className="text-slate-400" />}
+          />
+        </Form.Item>
+
         {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
           <Button
             htmlType="submit"
             variant="primary"

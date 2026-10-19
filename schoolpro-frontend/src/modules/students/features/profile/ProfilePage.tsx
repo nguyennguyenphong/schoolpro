@@ -76,7 +76,7 @@ export const ProfilePage: React.FC = () => {
       )}
 
       {/* 3. Separate Tab Navigation Bar inside Card component */}
-      <div className="mb-4 mt-4">
+      <div className="mb-6 mt-4">
         <Card className="shadow-2xs">
           <ProfileTabs
             activeTab={activeTab}

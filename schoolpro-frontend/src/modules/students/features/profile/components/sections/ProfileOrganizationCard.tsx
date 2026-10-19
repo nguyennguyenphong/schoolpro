@@ -68,7 +68,7 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
   };
 
   return (
-    <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
+    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
       {/* Card Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -88,12 +88,14 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        className="pt-4 space-y-4"
+        className="pt-5 flex flex-col gap-4.5"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        {/* Row 1: Insurance & Policy Status */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Form.Item
             label={t("input:labels.insuranceCardNumber")}
             name="insuranceCardNumber"
+            className="mb-0"
           >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
@@ -101,12 +103,13 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
           <Form.Item
             label={t("input:labels.policyBeneficiary")}
             name="policyBeneficiary"
+            className="mb-0"
           >
             <Input placeholder={t("input:placeholder.default")} />
           </Form.Item>
         </div>
 
-        {/* Youth Organization Affiliation Dossier */}
+        {/* Row 2: Youth Organization Affiliation Dossier */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-50/70 rounded-xl border border-slate-200">
           <div className="space-y-2.5">
             <div className="flex items-center justify-between">
@@ -167,7 +170,12 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
           </div>
         </div>
 
-        <Form.Item label={t("input:labels.specialNotes")} name="specialNotes">
+        {/* Row 3: Special Notes */}
+        <Form.Item
+          label={t("input:labels.specialNotes")}
+          name="specialNotes"
+          className="mb-0"
+        >
           <Input.TextArea
             rows={2}
             placeholder={t("input:placeholder.default")}
@@ -177,7 +185,7 @@ export const ProfileOrganizationCard: React.FC<ProfileOrganizationCardProps> = (
         </Form.Item>
 
         {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
           <Button
             htmlType="submit"
             variant="primary"

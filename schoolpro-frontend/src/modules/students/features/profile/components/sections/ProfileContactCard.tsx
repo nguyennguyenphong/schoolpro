@@ -56,7 +56,7 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
   };
 
   return (
-    <Card className="rounded-xl border-[#f0f0f0] shadow-2xs [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
+    <Card className="rounded-xl border border-[#f0f0f0] bg-white shadow-2xs overflow-hidden [&>.ant-card-body]:p-5 sm:[&>.ant-card-body]:p-6">
       {/* Card Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-[#f0f0f0]">
         <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
@@ -76,9 +76,10 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        className="pt-4 space-y-4"
+        className="pt-5 flex flex-col gap-4.5"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        {/* Row 1: Phone & Email */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Form.Item
             label={t("input:labels.phone")}
             name="phone"
@@ -86,6 +87,7 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
               { required: true, message: t("validation:required") },
               { pattern: /^[0-9+\s-]{9,15}$/, message: t("validation:invalidPhone") },
             ]}
+            className="mb-0"
           >
             <Input
               placeholder={t("input:placeholder.phone")}
@@ -100,6 +102,7 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
               { required: true, message: t("validation:required") },
               { type: "email", message: t("validation:invalidEmail") },
             ]}
+            className="mb-0"
           >
             <Input
               placeholder={t("input:placeholder.email")}
@@ -108,11 +111,24 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
           </Form.Item>
         </div>
 
-        <Form.Item label={t("input:labels.address")} name="address">
-          <Input placeholder={t("input:placeholder.address")} />
+        {/* Row 2: Current Address */}
+        <Form.Item
+          label={t("input:labels.address")}
+          name="address"
+          className="mb-0"
+        >
+          <Input
+            placeholder={t("input:placeholder.address")}
+            prefix={<Icon name="home" size={14} className="text-slate-400" />}
+          />
         </Form.Item>
 
-        <Form.Item label={t("input:labels.bio")} name="bio">
+        {/* Row 3: Biography */}
+        <Form.Item
+          label={t("input:labels.bio")}
+          name="bio"
+          className="mb-0"
+        >
           <Input.TextArea
             rows={3}
             placeholder={t("input:placeholder.default")}
@@ -122,7 +138,7 @@ export const ProfileContactCard: React.FC<ProfileContactCardProps> = ({
         </Form.Item>
 
         {/* Card Footer: Dedicated Update Button */}
-        <div className="flex items-center justify-end pt-3 border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-end pt-3 mt-1 border-t border-[#f0f0f0]">
           <Button
             htmlType="submit"
             variant="primary"
